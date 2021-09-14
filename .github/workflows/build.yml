@@ -1,0 +1,76 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - 'ide/**'
+      - 'scripts/**'
+      - .gitignore
+      - AUTHORS.md
+      - CHANGELOG.md
+      - CODE_OF_CONDUCT.md
+      - DEPENDENCIES.md
+      - LICENSE.md
+      - README.md
+  pull_request:
+    branches: [ main ]
+
+env:
+  build_dir: "build"
+  config: "Release"
+  build_tests: "ON"
+  ocl_nug_version: "0.777.77"
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      artifact: "spla-windows-x64"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install OpenCL
+        shell: bash
+        run: |
+          export NUGETDIR="C:\\NUGET"
+          export OCL_ROOT="$NUGETDIR\\opencl-nug.${{ env.ocl_nug_version }}\\build\\native"
+          echo "OCL_ROOT=${OCL_ROOT}" >> $GITHUB_ENV
+          echo "OpenCL path = ${OCL_ROOT}"
+          nuget install opencl-nug -Version ${{ env.ocl_nug_version }} -OutputDirectory $NUGETDIR
+          choco install opencl-intel-cpu-runtime
+
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.0.0
+        id: install-boost
+        with:
+          boost_version: 1.77.0
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Configure CMake
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Run unit-tests
+        shell: bash
+        run: python3 scripts/run_tests.py --build-dir=${{ env.build_dir }}
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.artifact}}
+          path: ${{env.build_dir}}

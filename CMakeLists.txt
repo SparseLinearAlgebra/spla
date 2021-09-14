@@ -102,9 +102,8 @@ endfunction()
 function(spla_target_link_options target)
     if (MSVC)
         target_link_options(${target}
-                PRIVATE /INCREMENTAL:NO
-                PRIVATE /NODEFAULTLIB:MSVCRT
-                PRIVATE /machine:X64)
+                PUBLIC /INCREMENTAL:NO
+                PUBLIC /machine:X64)
     endif()
 endfunction()
 
@@ -119,6 +118,7 @@ set(Boost_NO_WARN_NEW_VERSIONS OFF)
 set(Boost_ARCHITECTURE x64)
 set(Boost_DEBUG ON)
 find_package(Boost REQUIRED)
+list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
 
 message(STATUS "Add OpenCL package required header files")
 find_package(OpenCL REQUIRED)
@@ -130,7 +130,6 @@ if (SPLA_BUILD_TESTS)
     add_subdirectory(deps/gtest)
 endif()
 
-list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
 
 ######################################################################
 ## Source code configuration

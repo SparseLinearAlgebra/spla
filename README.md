@@ -1,5 +1,7 @@
 # spla
 
+[![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
+
 **spla** is a C++ sparse linear algebra library for multi-GPU computations based
 on OpenCL and Boost.Compute technologies. It provides linear algebra primitives,
 such as matrices, vectors and scalars, supports matrix-matrix, matrix-vector, vector-vector 
