@@ -34,6 +34,53 @@ resources management and fancy syntax sugar for native integration into Python-r
 - Windows 10
 - Linux-based OS 
 
+## Building from sources
+
+### Prerequisites
+
+- Common:
+    - Git (to get source code)
+    - CMake (the latest version)
+    - Boost library (the latest version)
+    - Python 3.7+
+- Windows 10: 
+    - Microsoft Visual C++ compiler (MSVC) 
+    - x64 Native Tools Command Prompt for VS
+
+### Get source code   
+
+The following script snippet downloads project source code repository, enters project root folder 
+and runs submodules init in order to get dependencies source code initialized.
+Must be executed from the folder where you want to locate project.
+
+```shell
+$ git clone https://github.com/JetBrains-Research/spla.git
+$ cd spla
+$ git submodule update --init --recursive
+```
+
+### Configure and run build
+
+The following code snippet runs cmake build configuration process
+with output into `build` directory, in `Release` mode with tests `SPLA_BUILD_TESTS=ON` enabled.
+Then runs build process for `build` directory in verbose mode with `-j 4` four system threads.
+Must be executed from project root folder.
+
+```shell
+$ cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON
+$ cmake --build build --target all --verbose -j 4
+```
+
+### Run unit-tests
+
+The following code snippet executed python script, which allows to
+run all native C++ library unit-tests, located in build directory,
+specified in `--build-dir=build`. Must be executed from project root folder.
+
+```shell
+python ./scripts/run_tests.py --build-dir=build
+```
+
 ## Directory structure
 
 ```

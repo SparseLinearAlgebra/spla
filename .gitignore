@@ -2,6 +2,9 @@
 /**/.idea
 /**/*build*
 
+# Python cache files
+/**/__pycache__
+
 # Prerequisites
 *.d
 

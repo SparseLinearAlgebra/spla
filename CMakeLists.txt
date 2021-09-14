@@ -14,7 +14,7 @@ set(SPLA_DEBUG NO)
 set(SPLA_RELEASE NO)
 set(SPLA_TARGET_LINUX NO)
 set(SPLA_TARGET_WINDOWS NO)
-set(SPLA_ARCH x64)
+set(SPLA_TARGET_NAME)
 
 ####################################################################
 ## Define platform
@@ -23,10 +23,13 @@ set(SPLA_ARCH x64)
 ##  - LINUX   = Linux
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     set(SPLA_TARGET_WINDOWS YES)
+    set(SPLA_TARGET_NAME "spla.dll")
     list(APPEND SPLA_DEFINES SPLA_TARGET_WINDOWS)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(SPLA_TARGET_LINUX YES)
+    set(SPLA_TARGET_NAME "libspla.so")
     list(APPEND SPLA_DEFINES SPLA_TARGET_LINUX)
 else()
     message(FATAL_ERROR "Unsupported target platform")
@@ -108,12 +111,26 @@ endfunction()
 ######################################################################
 ## Dependencies config
 
+message(STATUS "Add Boost headers, required for Boost.Compute")
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_NO_WARN_NEW_VERSIONS OFF)
+set(Boost_ARCHITECTURE x64)
+set(Boost_DEBUG ON)
+find_package(Boost REQUIRED)
+
+message(STATUS "Add OpenCL package required header files")
+find_package(OpenCL REQUIRED)
+
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add Google test as unit test framework")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     set(gtest_hide_internal_symbols ON CACHE BOOL "" FORCE)
     add_subdirectory(deps/gtest)
 endif()
+
+list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
 
 ######################################################################
 ## Source code configuration
@@ -125,8 +142,10 @@ add_library(spla SHARED
         ${SPLA_CPP_HEADERS}
         ${SPLA_CPP_SOURCES})
 
-set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+target_include_directories(spla PUBLIC ${Boost_INCLUDE_DIR})
+target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
+target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)
