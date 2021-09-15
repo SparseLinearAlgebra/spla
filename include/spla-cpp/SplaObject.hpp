@@ -25,32 +25,58 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARY_HPP
-#define SPLA_SPLALIBRARY_HPP
+#ifndef SPLA_SPLAOBJECT_HPP
+#define SPLA_SPLAOBJECT_HPP
 
 #include <spla-cpp/SplaRefCnt.hpp>
-#include <unordered_map>
 #include <string>
 
 namespace spla {
 
+    /** Type name of concrete object. */
+    enum class ObjectType {
+        Type,
+        Matrix,
+        Vector,
+        Scalar,
+        Descriptor,
+        FunctionUnary,
+        FunctionBinary,
+        Unknown
+    };
+
     /**
-     * @brief Spla library.
+     * @brief Math object.
      *
-     * Primary access point to the spla library operations.
-     * This class encapsulates global library state, allows to create objects and
-     * execute operations. Must be created as first spla object in the application.
+     * Base class for any spla library object, which can be used in math operations.
      */
-    class Library {
+    class Object: public RefCnt {
     public:
+        explicit Object(class Library& library) : mLibrary(library) { }
+        ~Object() override = default;
 
+        const std::wstring& GetLabel() const {
+            return mLabel;
+        }
 
+        ObjectType GetType() const {
+            return mType;
+        }
+
+        class Library& GetLibrary() const {
+            return mLibrary;
+        }
 
     private:
-        // Basic values types, registered in the library
-        std::unordered_map<std::wstring, RefPtr<class Type>> mRegisteredTypes;
+        // User defined text label (for profiling/debugging)
+        // Unix: utf-32, Windows: utf-16
+        std::wstring mLabel;
+        // Type of the object
+        ObjectType mType = ObjectType::Unknown;
+        // Global library instance
+        class Library& mLibrary;
     };
 
 }
 
-#endif //SPLA_SPLALIBRARY_HPP
+#endif //SPLA_SPLAOBJECT_HPP

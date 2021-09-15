@@ -22,7 +22,6 @@ env:
   build_dir: "build"
   config: "Release"
   build_tests: "ON"
-  ocl_nug_version: "0.777.77"
 
 jobs:
 
@@ -30,6 +29,7 @@ jobs:
     runs-on: windows-latest
     env:
       artifact: "spla-windows-x64"
+      ocl_nug_version: "0.777.77"
     steps:
       - uses: actions/checkout@v2
         with:

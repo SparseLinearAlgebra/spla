@@ -1,4 +1,10 @@
 set(SPLA_CPP_SOURCES
+        sources/SplaDescriptor.cpp
+        sources/SplaFunctionBinary.cpp
+        sources/SplaFunctionUnary.cpp
         sources/SplaLibrary.cpp
+        sources/SplaMatrix.cpp
         sources/SplaRefCnt.cpp
-        sources/SplaType.cpp)
+        sources/SplaScalar.cpp
+        sources/SplaType.cpp
+        sources/SplaVector.cpp)

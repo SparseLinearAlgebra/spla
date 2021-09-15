@@ -28,10 +28,44 @@
 #ifndef SPLA_SPLATYPE_HPP
 #define SPLA_SPLATYPE_HPP
 
+#include <spla-cpp/SplaObject.hpp>
+
 namespace spla {
 
-    class SplaType {
+    /**
+     * @brief Math values type.
+     *
+     * Represents predefined of user-defined type description.
+     * In the library values types is effectively a unique type string name,
+     * type annotations, size in bytes and etc. Value itself is bytes memory
+     * region, interpreted in the way defined by the user.
+     */
+    class Type final: public Object{
+    public:
+        ~Type() override = default;
 
+        enum class Archetype {
+            BuiltIn,
+            UserDefined
+        };
+
+        /**
+         * Makes new user-defined type.
+         *
+         * @param typeName Unique name of the type
+         * @param typeSize Size of the type values in bytes
+         * @param library Library global instance
+         *
+         * @return New type instance
+         */
+        static RefPtr<Type> MakeType(std::wstring typeName, size_t typeSize, class Library& library);
+
+    private:
+        Type(std::wstring typeName, size_t typeSize, Archetype archetype, class Library& library);
+
+        std::wstring mTypeName;
+        size_t mByteSize;
+        Archetype mArchetype;
     };
 
 }

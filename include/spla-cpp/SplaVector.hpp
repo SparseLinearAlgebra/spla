@@ -25,32 +25,18 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARY_HPP
-#define SPLA_SPLALIBRARY_HPP
+#ifndef SPLA_SPLAVECTOR_HPP
+#define SPLA_SPLAVECTOR_HPP
 
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <unordered_map>
-#include <string>
+#include <spla-cpp/SplaObject.hpp>
 
 namespace spla {
 
-    /**
-     * @brief Spla library.
-     *
-     * Primary access point to the spla library operations.
-     * This class encapsulates global library state, allows to create objects and
-     * execute operations. Must be created as first spla object in the application.
-     */
-    class Library {
+    class Vector final: public Object {
     public:
 
-
-
-    private:
-        // Basic values types, registered in the library
-        std::unordered_map<std::wstring, RefPtr<class Type>> mRegisteredTypes;
     };
 
 }
 
-#endif //SPLA_SPLALIBRARY_HPP
+#endif //SPLA_SPLAVECTOR_HPP
