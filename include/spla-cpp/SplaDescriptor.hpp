@@ -29,12 +29,80 @@
 #define SPLA_SPLADESCRIPTOR_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <unordered_map>
+#include <string>
 
 namespace spla {
 
+    /**
+     * @brief Operation descriptor.
+     *
+     * Descriptor allows to tweak operation execution by specification
+     * of the additional params.
+     *
+     * Params may be specified as is, or with additional string value,
+     * which can be used to provide additional param options.
+     */
     class Descriptor final: public Object {
     public:
+        ~Descriptor() override = default;
 
+        enum class Param {
+            /** Provided matrix/vector values are sorted in row-column order */
+            ValuesSorted,
+            /** Provided matrix/vector values has no duplicated */
+            NoDuplicates,
+            /** Profiles time of the operation and outputs result to the log */
+            ProfileTime,
+            /** Transpose operation arg 1 matrix before operation */
+            TransposeArg1,
+            /** Transpose operation arg 2 matrix before operation */
+            TransposeArg2,
+        };
+
+        /**
+         * Set descriptor param value.
+         * Pass empty string to set param, which does not expects any string value.
+         *
+         * @param param Param name to set
+         * @param value String param value; may be empty
+         */
+        void SetParam(Param param, std::wstring value);
+
+        /**
+         * Get descriptor param value.
+         * If param was set without value, returned string value is empty.
+         *
+         * @param param Param name to get
+         * @param[out] value Output string param value; may be empty
+         *
+         * @return True if this param was set in descriptor
+         */
+        bool GetParam(Param param, std::wstring& value) const;
+
+        /**
+         * Check if specified param was set in descriptor.
+         *
+         * @param param Param name to check
+         *
+         * @return True if this param was set in descriptor
+         */
+        bool IsParamSet(Param param) const;
+
+        /**
+         * Make new descriptor instance for specified library.
+         *
+         * @param library Library instance
+         *
+         * @return New descriptor instance
+         */
+        static RefPtr<Descriptor> Make(class Library& library);
+
+    private:
+        explicit Descriptor(class Library& library);
+
+        // Map of desc configurable params and its values
+        std::unordered_map<Param, std::wstring> mParams;
     };
 
 }

@@ -26,3 +26,30 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaDescriptor.hpp>
+
+spla::Descriptor::Descriptor(class spla::Library &library) : Object(library) {
+
+}
+
+void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::wstring value) {
+    mParams.emplace(param, std::move(value));
+}
+
+bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::wstring &value) const {
+    auto query = mParams.find(param);
+
+    if (query != mParams.end()) {
+        value = query->second;
+        return true;
+    }
+
+    return false;
+}
+
+bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
+    return mParams.find(param) != mParams.end();
+}
+
+spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
+    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
+}
