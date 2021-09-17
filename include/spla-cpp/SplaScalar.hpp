@@ -29,10 +29,11 @@
 #define SPLA_SPLASCALAR_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaType.hpp>
 
 namespace spla {
 
-    class Scalar final: public Object {
+    class Scalar final: public Object, public TypedObject {
     public:
 
     };

@@ -29,10 +29,11 @@
 #define SPLA_SPLAVECTOR_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaType.hpp>
 
 namespace spla {
 
-    class Vector final: public Object {
+    class Vector final: public Object, public TypedObject {
     public:
 
     };

@@ -84,7 +84,6 @@ namespace spla {
 
     template<typename T>
     static inline T* Ref(T* object) {
-        static_assert(std::is_base_of<RefCnt, T>::value, "T must be derived from RefCnt");
         assert(object);
         object->AddRef();
         return object;
@@ -92,7 +91,6 @@ namespace spla {
 
     template<typename T>
     static inline T* SafeRef(T* object) {
-        static_assert(std::is_base_of<RefCnt, T>::value, "T must be derived from RefCnt");
         if (object)
             object->AddRef();
         return object;
@@ -100,7 +98,6 @@ namespace spla {
 
     template<typename T>
     static inline void Unref(T* object) {
-        static_assert(std::is_base_of<RefCnt, T>::value, "T must be derived from RefCnt");
         if (object)
             Unref(object);
     }
@@ -108,8 +105,6 @@ namespace spla {
     template<typename T>
     class RefPtr {
     public:
-        static_assert(std::is_base_of<RefCnt, T>::value, "T must be derived from RefCnt");
-
         RefPtr() = default;
         explicit RefPtr(T* object) {
             if (object)
@@ -138,6 +133,20 @@ namespace spla {
             if (this != &other)
                 this->Reset(other.Release());
             return *this;
+        }
+
+        bool operator==(const RefPtr &other) const {
+            return mObject == other.mObject;
+        }
+
+        T* operator->() const {
+            assert(mObject);
+            return mObject;
+        }
+
+        T& operator*() const {
+            assert(mObject);
+            return *mObject;
         }
 
         explicit operator bool() {

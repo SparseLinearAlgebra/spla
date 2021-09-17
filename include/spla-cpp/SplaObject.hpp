@@ -71,8 +71,10 @@ namespace spla {
         // User defined text label (for profiling/debugging)
         // Unix: utf-32, Windows: utf-16
         std::wstring mLabel;
+
         // Type of the object
         ObjectType mType = ObjectType::Unknown;
+
         // Global library instance
         class Library& mLibrary;
     };

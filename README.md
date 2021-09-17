@@ -34,7 +34,7 @@ resources management and fancy syntax sugar for native integration into Python-r
 ### Platforms
 
 - Windows 10
-- Linux-based OS 
+- Linux-based OS (Ubuntu 20.04)
 
 ## Building from sources
 
@@ -43,7 +43,9 @@ resources management and fancy syntax sugar for native integration into Python-r
 - Common:
     - Git (to get source code)
     - CMake (the latest version)
+    - Ninja (as build files generator)
     - Boost library (the latest version)
+    - OpenCL 2.0+ SDK
     - Python 3.7+
 - Windows 10: 
     - Microsoft Visual C++ compiler (MSVC) 

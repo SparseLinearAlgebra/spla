@@ -29,15 +29,15 @@
 #include <spla-cpp/SplaLibrary.hpp>
 
 spla::RefPtr<spla::Type> spla::Type::MakeType(std::wstring typeName, size_t typeSize, spla::Library &library) {
-    RefPtr<Type> type{new Type(std::move(typeName), typeSize, Archetype::UserDefined, library)};
+    RefPtr<Type> type{new Type(std::move(typeName), typeSize, false, library)};
     return type;
 }
 
-spla::Type::Type(std::wstring typeName, size_t typeSize, spla::Type::Archetype archetype,
+spla::Type::Type(std::wstring typeName, size_t typeSize, bool builtIn,
                  spla::Library &library)
                  : Object(library),
                    mTypeName(std::move(typeName)),
                    mByteSize(typeSize),
-                   mArchetype(archetype) {
+                   mBuiltIn(builtIn) {
 
 }

@@ -40,14 +40,21 @@ namespace spla {
      * type annotations, size in bytes and etc. Value itself is bytes memory
      * region, interpreted in the way defined by the user.
      */
-    class Type final: public Object{
+    class Type final: public Object {
     public:
         ~Type() override = default;
 
-        enum class Archetype {
-            BuiltIn,
-            UserDefined
-        };
+        const std::wstring& GetTypeName() const {
+            return mTypeName;
+        }
+
+        size_t GetByteSize() const {
+            return mByteSize;
+        }
+
+        bool IsBuiltIn() const {
+            return mBuiltIn;
+        }
 
         /**
          * Makes new user-defined type.
@@ -61,11 +68,42 @@ namespace spla {
         static RefPtr<Type> MakeType(std::wstring typeName, size_t typeSize, class Library& library);
 
     private:
-        Type(std::wstring typeName, size_t typeSize, Archetype archetype, class Library& library);
+        Type(std::wstring typeName, size_t typeSize, bool builtIn, class Library& library);
 
+        // Unique type name
+        // Unix: utf-32, Windows: utf-16
         std::wstring mTypeName;
-        size_t mByteSize;
-        Archetype mArchetype;
+
+        // Size of the type value in bytes
+        // Note: if size is 0 => Object with this type have no values
+        size_t mByteSize = 0;
+
+        // True for built-in (predefined) types
+        bool mBuiltIn = false;
+    };
+
+    /** Inherit from this class if your object must have type info */
+    class TypedObject {
+    public:
+
+        /** @return True if this and other typed object has compatible types */
+        bool IsCompatible(const TypedObject& other) {
+            return mType == other.mType;
+        }
+
+        /** @return Type info of this object */
+        const RefPtr<Type> &GetType() {
+            return mType;
+        }
+
+    protected:
+
+        void SetType(const RefPtr<Type> &type) {
+            mType = type;
+        }
+
+    private:
+        RefPtr<Type> mType;
     };
 
 }

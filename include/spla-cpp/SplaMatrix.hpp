@@ -29,10 +29,11 @@
 #define SPLA_SPLAMATRIX_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaType.hpp>
 
 namespace spla {
 
-    class Matrix final: public Object {
+    class Matrix final: public Object, public TypedObject {
     public:
 
     };

@@ -182,4 +182,34 @@ TEST(Basic, SortIndices) {
     }
 }
 
+TEST(Basic, SVM) {
+    namespace compute = boost::compute;
+
+    compute::device gpu = compute::system::default_device();
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    const int size = 10;
+    cl_int input[size] = { 2, 3, 1, 0, 9, 7, 8, 6, 5, 4 };
+    cl_int output[size] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    compute::svm_ptr<cl_int> buffer = compute::svm_alloc<cl_int>(ctx, size);
+
+    queue.enqueue_svm_memcpy(buffer.get(), input, size * sizeof(int)).wait();
+
+    compute::sort((cl_int*)buffer.get(),
+                  (cl_int*)buffer.get() + size,
+                  queue);
+
+    queue.enqueue_svm_memcpy(output, buffer.get(), size * sizeof(int)).wait();
+
+    cl_int prev = -1;
+    for (int i = 0; i < size; i++) {
+        EXPECT_LT(prev, output[i]);
+        prev = output[i];
+    }
+
+    compute::svm_free(ctx, buffer);
+}
+
 SPLA_GTEST_MAIN
