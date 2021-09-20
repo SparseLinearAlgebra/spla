@@ -33,9 +33,31 @@
 
 namespace spla {
 
-    class Vector final: public Object, public TypedObject {
+    class SPLA_API Vector final: public Object, public TypedObject {
     public:
+        ~Vector() override = default;
 
+        /** @return Number of vector rows */
+        size_t GetNrows() const;
+
+        /** @return Number of vector values */
+        size_t GetNvals() const;
+
+        /**
+         * Make new vector with specified size
+         *
+         * @param nrows Number of vector rows
+         * @param library Library global instance
+         *
+         * @return New vector instance
+         */
+        static RefPtr<Vector> Make(size_t nrows, class Library& library);
+
+    private:
+        Vector(size_t nrows, class Library& library);
+
+        // Separate storage for private impl
+        RefPtr<class VectorStorage> mStorage;
     };
 
 }

@@ -26,3 +26,19 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaVector.hpp>
+
+size_t spla::Vector::GetNrows() const {
+    return 0;
+}
+
+size_t spla::Vector::GetNvals() const {
+    return 0;
+}
+
+spla::RefPtr<spla::Vector> spla::Vector::Make(size_t nrows, spla::Library &library) {
+    return spla::RefPtr<spla::Vector>(new Vector(nrows, library));
+}
+
+spla::Vector::Vector(size_t nrows, spla::Library &library) : Object(ObjectType::Vector, library) {
+
+}

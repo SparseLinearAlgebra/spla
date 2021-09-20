@@ -25,45 +25,110 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#include <spla-cpp/SplaData.hpp>
+#include <spla-cpp/SplaLibrary.hpp>
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
-
-namespace spla {
-
-    class SPLA_API Matrix final: public Object, public TypedObject {
-    public:
-        ~Matrix() override = default;
-
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
-
-    private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
-    };
+spla::Data::Data(spla::ObjectType dataType, spla::Library &library) : Object(dataType, library) {
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+void spla::Data::SetReleaseProc(ReleaseProc releaseProc) {
+    mReleaseProc = std::move(releaseProc);
+}
+
+spla::DataMatrix::DataMatrix(spla::Library &library) : Data(ObjectType::DataMatrix, library) {
+
+}
+
+spla::DataMatrix::~DataMatrix() {
+    if (mReleaseProc) {
+        if (mRows)
+            mReleaseProc(mRows);
+        if (mCols)
+            mReleaseProc(mCols);
+        if (mValues)
+            mReleaseProc(mValues);
+
+        mRows = nullptr;
+        mCols = nullptr;
+        mValues = nullptr;
+    }
+}
+
+void spla::DataMatrix::SetRows(unsigned int* rows) {
+    mRows = rows;
+}
+
+void spla::DataMatrix::SetCols(unsigned int* cols) {
+    mCols = cols;
+}
+
+void spla::DataMatrix::SetValues(void* values) {
+    mValues = values;
+}
+
+unsigned int* spla::DataMatrix::GetRows() const {
+    return mRows;
+}
+
+unsigned int* spla::DataMatrix::GetCols() const {
+    return mCols;
+}
+
+void* spla::DataMatrix::GetValues() const {
+    return mValues;
+}
+
+spla::DataVector::DataVector(spla::Library &library) : Data(ObjectType::DataVector, library) {
+
+}
+
+spla::DataVector::~DataVector() {
+    if (mReleaseProc) {
+        if (mRows)
+            mReleaseProc(mRows);
+        if (mValues)
+            mReleaseProc(mValues);
+
+        mRows = nullptr;
+        mValues = nullptr;
+    }
+}
+
+void spla::DataVector::SetRows(unsigned int* rows) {
+    mRows = rows;
+}
+
+void spla::DataVector::SetValues(void* values) {
+    mValues = values;
+}
+
+unsigned int* spla::DataVector::GetRows() const {
+    return mRows;
+}
+
+
+void* spla::DataVector::GetValues() const {
+    return mValues;
+}
+
+spla::DataScalar::DataScalar(spla::Library &library) : Data(ObjectType::DataScalar, library) {
+
+}
+
+spla::DataScalar::~DataScalar() {
+    if (mReleaseProc) {
+        if (mValue)
+            mReleaseProc(mValue);
+
+        mValue = nullptr;
+    }
+}
+
+void spla::DataScalar::SetValue(void* value) {
+    mValue = value;
+}
+
+void* spla::DataScalar::GetValue() const {
+    return mValue;
+}

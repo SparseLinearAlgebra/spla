@@ -43,7 +43,7 @@ namespace spla {
      * Params may be specified as is, or with additional string value,
      * which can be used to provide additional param options.
      */
-    class Descriptor final: public Object {
+    class SPLA_API Descriptor final: public Object {
     public:
         ~Descriptor() override = default;
 

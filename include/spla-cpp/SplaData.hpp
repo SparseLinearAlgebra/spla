@@ -25,45 +25,80 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#ifndef SPLA_SPLADATA_HPP
+#define SPLA_SPLADATA_HPP
 
 #include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <functional>
 
 namespace spla {
 
-    class SPLA_API Matrix final: public Object, public TypedObject {
+    /** Generic data container to pass to/from CPU user host-data (with autorelease feature) */
+    class SPLA_API Data: public Object {
     public:
-        ~Matrix() override = default;
+        Data(ObjectType dataType, class Library& library);
+        ~Data() override = default;
 
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
+        using ReleaseProc = std::function<void(void*)>;
+        void SetReleaseProc(ReleaseProc releaseProc);
 
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
+    protected:
+        ReleaseProc mReleaseProc;
+    };
 
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
+    /** Matrix ram coo data */
+    class SPLA_API DataMatrix final: public Data {
+    public:
+        explicit DataMatrix(class Library& library);
+        ~DataMatrix() override;
 
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
+        void SetRows(unsigned int* rows);
+        void SetCols(unsigned int* cols);
+        void SetValues(void* values);
+
+        unsigned int* GetRows() const;
+        unsigned int* GetCols() const;
+        void* GetValues() const;
 
     private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
+        ReleaseProc mReleaseProc;
+        unsigned int* mRows = nullptr;
+        unsigned int* mCols = nullptr;
+        void* mValues = nullptr;
+    };
 
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
+    /** Vector ram coo data */
+    class SPLA_API DataVector final: public Data {
+    public:
+        explicit DataVector(class Library& library);
+        ~DataVector() override;
+
+        void SetRows(unsigned int* rows);
+        void SetValues(void* values);
+
+        unsigned int* GetRows() const;
+        void* GetValues() const;
+
+    private:
+        ReleaseProc mReleaseProc;
+        unsigned int* mRows = nullptr;
+        void* mValues = nullptr;
+    };
+
+    /** Scalar ram data */
+    class SPLA_API DataScalar final: public Data {
+    public:
+        explicit DataScalar(class Library& library);
+        ~DataScalar() override;
+
+        void SetValue(void* value);
+        void* GetValue() const;
+
+    private:
+        ReleaseProc mReleaseProc;
+        void* mValue = nullptr;
     };
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+#endif //SPLA_SPLADATA_HPP

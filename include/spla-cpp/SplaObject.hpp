@@ -42,6 +42,11 @@ namespace spla {
         Descriptor,
         FunctionUnary,
         FunctionBinary,
+        Schedule,
+        ScheduleNode,
+        DataMatrix,
+        DataVector,
+        DataScalar,
         Unknown
     };
 
@@ -50,9 +55,9 @@ namespace spla {
      *
      * Base class for any spla library object, which can be used in math operations.
      */
-    class Object: public RefCnt {
+    class SPLA_API Object: public RefCnt {
     public:
-        explicit Object(class Library& library) : mLibrary(library) { }
+        explicit Object(ObjectType type, class Library& library) : mType(type), mLibrary(library) { }
         ~Object() override = default;
 
         const std::wstring& GetLabel() const {

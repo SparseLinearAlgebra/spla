@@ -29,6 +29,7 @@
 #define SPLA_SPLALIBRARY_HPP
 
 #include <spla-cpp/SplaRefCnt.hpp>
+#include <spla-cpp/SplaType.hpp>
 #include <unordered_map>
 #include <string>
 
@@ -41,14 +42,15 @@ namespace spla {
      * This class encapsulates global library state, allows to create objects and
      * execute operations. Must be created as first spla object in the application.
      */
-    class Library {
+    class SPLA_API Library {
     public:
 
 
-
     private:
+        friend class Type;
+
         // Basic values types, registered in the library
-        std::unordered_map<std::wstring, RefPtr<class Type>> mRegisteredTypes;
+        std::unordered_map<std::wstring, RefPtr<Type>> mRegisteredTypes;
     };
 
 }

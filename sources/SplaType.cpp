@@ -35,7 +35,7 @@ spla::RefPtr<spla::Type> spla::Type::MakeType(std::wstring typeName, size_t type
 
 spla::Type::Type(std::wstring typeName, size_t typeSize, bool builtIn,
                  spla::Library &library)
-                 : Object(library),
+                 : Object(ObjectType::Type, library),
                    mTypeName(std::move(typeName)),
                    mByteSize(typeSize),
                    mBuiltIn(builtIn) {

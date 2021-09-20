@@ -26,3 +26,23 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaMatrix.hpp>
+
+size_t spla::Matrix::GetNrows() const {
+    return 0;
+}
+
+size_t spla::Matrix::GetNcols() const {
+    return 0;
+}
+
+size_t spla::Matrix::GetNvals() const {
+    return 0;
+}
+
+spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols, spla::Library &library) {
+    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, library));
+}
+
+spla::Matrix::Matrix(size_t nrows, size_t ncols, spla::Library &library) : Object(ObjectType::Matrix, library) {
+
+}

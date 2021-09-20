@@ -83,16 +83,16 @@ namespace spla {
     };
 
     /** Inherit from this class if your object must have type info */
-    class TypedObject {
+    class SPLA_API TypedObject {
     public:
 
         /** @return True if this and other typed object has compatible types */
-        bool IsCompatible(const TypedObject& other) {
+        bool IsCompatible(const TypedObject& other) const {
             return mType == other.mType;
         }
 
         /** @return Type info of this object */
-        const RefPtr<Type> &GetType() {
+        const RefPtr<Type> &GetType() const {
             return mType;
         }
 

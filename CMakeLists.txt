@@ -23,7 +23,7 @@ set(SPLA_TARGET_NAME)
 ##  - LINUX   = Linux
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE) #?
     set(SPLA_TARGET_WINDOWS YES)
     set(SPLA_TARGET_NAME "spla.dll")
     list(APPEND SPLA_DEFINES SPLA_TARGET_WINDOWS)
@@ -145,6 +145,8 @@ target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PUBLIC ${Boost_INCLUDE_DIR})
 target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
 target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
+
+target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)

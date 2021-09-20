@@ -71,7 +71,7 @@ Then runs build process for `build` directory in verbose mode with `-j 4` four s
 Must be executed from project root folder.
 
 ```shell
-$ cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON
+$ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON
 $ cmake --build build --target all --verbose -j 4
 ```
 

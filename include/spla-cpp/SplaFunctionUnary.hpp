@@ -29,12 +29,41 @@
 #define SPLA_SPLAFUNCTIONUNARY_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaType.hpp>
+#include <string>
+#include <bitset>
 
 namespace spla {
 
-    class FunctionUnary final: public Object {
+    class SPLA_API FunctionUnary final: public Object {
     public:
+        ~FunctionUnary() override = default;
 
+        enum class Flags {
+            Max = 1
+        };
+
+        const RefPtr<Type> &GetArg1() const {
+            return mArg1;
+        }
+
+        const RefPtr<Type> &GetResult() const {
+            return mResult;
+        }
+
+        const std::string &GetSource() const {
+            return mSource;
+        }
+
+        bool IsApplicable(const TypedObject& arg1, const TypedObject& result) const {
+            return arg1.GetType() == mArg1 && result.GetType() == mResult;
+        }
+
+    private:
+        RefPtr<Type> mArg1;
+        RefPtr<Type> mResult;
+        std::string mSource;
+        std::bitset<static_cast<size_t>(Flags::Max)> mFlags;
     };
 
 }

@@ -28,6 +28,7 @@
 #ifndef SPLA_SPLAREFCNT_HPP
 #define SPLA_SPLAREFCNT_HPP
 
+#include <spla-cpp/SplaConfig.hpp>
 #include <cassert>
 #include <atomic>
 
@@ -41,7 +42,7 @@ namespace spla {
      *
      * @see RefPtr
      */
-    class RefCnt {
+    class SPLA_API RefCnt {
     public:
 
         virtual ~RefCnt() {
@@ -103,7 +104,7 @@ namespace spla {
     }
 
     template<typename T>
-    class RefPtr {
+    class SPLA_API RefPtr {
     public:
         RefPtr() = default;
         explicit RefPtr(T* object) {

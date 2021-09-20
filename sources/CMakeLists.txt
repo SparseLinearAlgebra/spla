@@ -1,4 +1,5 @@
 set(SPLA_CPP_SOURCES
+        sources/SplaData.cpp
         sources/SplaDescriptor.cpp
         sources/SplaFunctionBinary.cpp
         sources/SplaFunctionUnary.cpp

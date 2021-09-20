@@ -32,7 +32,7 @@
 
 namespace spla {
 
-    class FunctionBinary final: public Object {
+    class SPLA_API FunctionBinary final: public Object {
     public:
 
     };

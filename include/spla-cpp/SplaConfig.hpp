@@ -25,45 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#ifndef SPLA_SPLACONFIG_HPP
+#define SPLA_SPLACONFIG_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#ifdef SPLA_MSVC
+    #ifdef SPLA_EXPORTS
+        #define SPLA_API __declspec(dllexport)
+    #else
+        #define SPLA_API __declspec(dllimport)
+    #endif
+#else
+    #define SPLA_API
+#endif
 
-namespace spla {
-
-    class SPLA_API Matrix final: public Object, public TypedObject {
-    public:
-        ~Matrix() override = default;
-
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
-
-    private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
-    };
-
-}
-
-#endif //SPLA_SPLAMATRIX_HPP
+#endif //SPLA_SPLACONFIG_HPP
