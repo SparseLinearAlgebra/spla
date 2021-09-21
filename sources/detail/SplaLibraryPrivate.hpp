@@ -25,19 +25,27 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#ifndef SPLA_SPLALIBRARYPRIVATE_HPP
+#define SPLA_SPLALIBRARYPRIVATE_HPP
+
 #include <spla-cpp/SplaLibrary.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
-#include <memory>
+#include <taskflow/taskflow.hpp>
 
-spla::Library::Library() {
-    mPrivate = std::make_unique<LibraryPrivate>();
+namespace spla {
+
+    /** Private library state, accessible for all objects within library */
+    class LibraryPrivate {
+    public:
+        LibraryPrivate() = default;
+
+        tf::Executor& GetTaskFlowExecutor() {
+            return mExecutor;
+        }
+
+    private:
+        tf::Executor mExecutor;
+    };
+
 }
 
-spla::Library::~Library() {
-
-}
-
-class spla::LibraryPrivate& spla::Library::GetPrivate() {
-    return *mPrivate;
-}
-
+#endif //SPLA_SPLALIBRARYPRIVATE_HPP

@@ -9,3 +9,7 @@ set(SPLA_CPP_SOURCES
         sources/SplaScalar.cpp
         sources/SplaType.cpp
         sources/SplaVector.cpp)
+
+set(SPLA_DETAIL_SOURCES
+        sources/detail/SplaLibraryPrivate.cpp
+        sources/detail/SplaLibraryPrivate.hpp)

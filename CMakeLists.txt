@@ -57,7 +57,7 @@ endif()
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -123,6 +123,17 @@ list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
 message(STATUS "Add OpenCL package required header files")
 find_package(OpenCL REQUIRED)
 
+message(STATUS "Add Taskflow library")
+set(TF_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
+set(TF_BUILD_CUDA OFF CACHE BOOL "" FORCE)
+set(TF_BUILD_SYCL OFF CACHE BOOL "" FORCE)
+set(TF_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(TF_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(TF_BUILD_PROFILER OFF CACHE BOOL "" FORCE)
+add_subdirectory(deps/taskflow)
+add_library(taskflow INTERFACE)
+target_include_directories(taskflow INTERFACE ${CMAKE_SOURCE_DIR}/deps/taskflow)
+
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add Google test as unit test framework")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -139,12 +150,15 @@ include(sources/CMakeLists.txt)
 
 add_library(spla SHARED
         ${SPLA_CPP_HEADERS}
-        ${SPLA_CPP_SOURCES})
+        ${SPLA_CPP_SOURCES}
+        ${SPLA_DETAIL_SOURCES})
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/sources)
 target_include_directories(spla PUBLIC ${Boost_INCLUDE_DIR})
 target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
 target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
+target_link_libraries(spla PRIVATE taskflow)
 
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 

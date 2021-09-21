@@ -25,19 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#ifndef SPLA_SPLA_HPP
+#define SPLA_SPLA_HPP
+
+#include <spla-cpp/SplaConfig.hpp>
+#include <spla-cpp/SplaData.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
+#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <spla-cpp/SplaFunctionUnary.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
-#include <memory>
+#include <spla-cpp/SplaMatrix.hpp>
+#include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
+#include <spla-cpp/SplaScalar.hpp>
+#include <spla-cpp/SplaType.hpp>
+#include <spla-cpp/SplaVector.hpp>
 
-spla::Library::Library() {
-    mPrivate = std::make_unique<LibraryPrivate>();
-}
-
-spla::Library::~Library() {
-
-}
-
-class spla::LibraryPrivate& spla::Library::GetPrivate() {
-    return *mPrivate;
-}
-
+#endif //SPLA_SPLA_HPP

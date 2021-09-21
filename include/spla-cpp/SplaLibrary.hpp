@@ -28,10 +28,8 @@
 #ifndef SPLA_SPLALIBRARY_HPP
 #define SPLA_SPLALIBRARY_HPP
 
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <unordered_map>
-#include <string>
+#include <spla-cpp/SplaConfig.hpp>
+#include <memory>
 
 namespace spla {
 
@@ -44,13 +42,15 @@ namespace spla {
      */
     class SPLA_API Library {
     public:
+        Library();
+        ~Library();
 
+        /** @return Private state (for internal usage only) */
+        class LibraryPrivate &GetPrivate();
 
     private:
-        friend class Type;
-
-        // Basic values types, registered in the library
-        std::unordered_map<std::wstring, RefPtr<Type>> mRegisteredTypes;
+        // Private state
+        std::unique_ptr<class LibraryPrivate> mPrivate;
     };
 
 }

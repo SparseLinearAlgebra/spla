@@ -29,6 +29,8 @@
 #define SPLA_SPLATYPE_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include "SplaLibrary.hpp"
+
 
 namespace spla {
 

@@ -1,4 +1,5 @@
 set(SPLA_CPP_HEADERS
+        include/spla-cpp/Spla.hpp
         include/spla-cpp/SplaConfig.hpp
         include/spla-cpp/SplaData.hpp
         include/spla-cpp/SplaDescriptor.hpp

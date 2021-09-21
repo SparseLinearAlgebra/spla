@@ -1,19 +1,20 @@
 # spla
 
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
 **spla** is a C++ sparse linear algebra library for multi-GPU computations based
-on OpenCL and Boost.Compute technologies. It provides linear algebra primitives,
-such as matrices, vectors and scalars, supports matrix-matrix, matrix-vector, vector-vector 
-operations, and gives an ability to customize underlying values types and 
-parametrise operations with arbitrary user defined functions.
+on `OpenCL` and `Boost.Compute` technologies. It provides linear algebra primitives,
+such as matrices, vectors and scalars, supports wide variety of operations,
+and gives an ability to customize underlying values types and 
+parametrise operations using arbitrary user defined functions.
 
 **Core** of the library is C and C++ interfaces, which give access to library features.
 Also, library has python **pyspla** package - wrapper for spla C API.
 This package exports library features and primitives in high-level manner with automated 
 resources management and fancy syntax sugar for native integration into Python-runtime.
 
-> Note: project under heavy development!
+> Note: project under heavy development! Not ready for usage.
 
 ### Features
 
@@ -34,7 +35,7 @@ resources management and fancy syntax sugar for native integration into Python-r
 ### Platforms
 
 - Windows 10
-- Linux-based OS (Ubuntu 20.04)
+- Linux (Ubuntu 20.04)
 
 ## Building from sources
 
@@ -48,12 +49,14 @@ resources management and fancy syntax sugar for native integration into Python-r
     - OpenCL 2.0+ SDK
     - Python 3.7+
 - Windows 10: 
-    - Microsoft Visual C++ compiler (MSVC) 
+    - Microsoft Visual C++ compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
+- Ubuntu 20.04:
+    - GNU C++ Compiler with C++ 17 support
 
 ### Get source code   
 
-The following script snippet downloads project source code repository, enters project root folder 
+The following code snippet downloads project source code repository, enters project root folder 
 and runs submodules init in order to get dependencies source code initialized.
 Must be executed from the folder where you want to locate project.
 
@@ -88,7 +91,7 @@ python ./scripts/run_tests.py --build-dir=build
 ## Directory structure
 
 ```
-.
+spla
 ├── .github - GitHub Actions CI/CD setup 
 ├── docs - documents, text files and various helpful stuff
 ├── scripts - short utility programs 
@@ -102,7 +105,7 @@ python ./scripts/run_tests.py --build-dir=build
 │   └── tests - python package regression tests   
 ├── deps - project dependencies
 │   ├── gtest - google test framework for unit testing
-│   └── compute - boost project C++ GPU computing library for OpenCL
+│   └── taskflow - taskflow library for parallel tasks execution
 └── CMakeLists.txt - library cmake config, add this as sub-directory to your project
 ```
 

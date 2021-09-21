@@ -25,19 +25,4 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaLibrary.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
-#include <memory>
-
-spla::Library::Library() {
-    mPrivate = std::make_unique<LibraryPrivate>();
-}
-
-spla::Library::~Library() {
-
-}
-
-class spla::LibraryPrivate& spla::Library::GetPrivate() {
-    return *mPrivate;
-}
-
