@@ -69,7 +69,7 @@ namespace spla {
          *
          * @return New type instance
          */
-        static RefPtr<Type> MakeType(std::wstring id, size_t typeSize, class Library& library);
+        static RefPtr<Type> Make(std::wstring id, size_t typeSize, class Library& library);
 
     private:
         Type(std::wstring id, size_t typeSize, bool builtIn, class Library& library);

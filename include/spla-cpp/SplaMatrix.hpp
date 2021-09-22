@@ -38,7 +38,7 @@ namespace spla {
      */
     class SPLA_API Matrix final: public Object, public TypedObject {
     public:
-        ~Matrix() override = default;
+        ~Matrix() override;
 
         /** @return Number of matrix rows */
         size_t GetNrows() const;
@@ -54,17 +54,18 @@ namespace spla {
          *
          * @param nrows Number of matrix rows
          * @param ncols Number of matrix columns
+         * @param type Type of stored values
          * @param library Library global instance
          *
          * @return New matrix instance
          */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
+        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library& library);
 
     private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
+        Matrix(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library& library);
 
         // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
+        //RefPtr<class MatrixStorage> mStorage;
     };
 
 }

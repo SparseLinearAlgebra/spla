@@ -25,19 +25,30 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
+#ifndef SPLA_SPLAEXPRESSIONCONTEXT_HPP
+#define SPLA_SPLAEXPRESSIONCONTEXT_HPP
 
-spla::RefPtr<spla::Type> spla::Type::Make(std::wstring id, size_t typeSize, spla::Library &library) {
-    RefPtr<Type> type{new Type(std::move(id), typeSize, false, library)};
-    return type;
+#include <spla-cpp/SplaExpression.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
+#include <taskflow/taskflow.hpp>
+#include <vector>
+
+namespace spla {
+
+    class ExpressionContext {
+    public:
+        /** Associated expression */
+        RefPtr<Expression> expression;
+        /** Nodes to start evaluation */
+        std::vector<size_t> startNodes;
+        /** Final nodes */
+        std::vector<size_t> endNodes;
+        /** Order of the expression traversal to submit computation */
+        std::vector<size_t> traversal;
+        /** Expression taskflow graph */
+        tf::Taskflow taskflow;
+    };
+
 }
 
-spla::Type::Type(std::wstring id, size_t typeSize, bool builtIn,
-                 spla::Library &library)
-                 : Object(Object::TypeName::Type, library),
-                   mId(std::move(id)),
-                   mByteSize(typeSize),
-                   mBuiltIn(builtIn) {
-
-}
+#endif //SPLA_SPLAEXPRESSIONCONTEXT_HPP

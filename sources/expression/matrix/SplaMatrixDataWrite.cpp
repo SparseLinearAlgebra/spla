@@ -25,19 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
+#include "SplaMatrixDataWrite.hpp"
 
-spla::RefPtr<spla::Type> spla::Type::Make(std::wstring id, size_t typeSize, spla::Library &library) {
-    RefPtr<Type> type{new Type(std::move(id), typeSize, false, library)};
-    return type;
+bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
+    return true;
 }
 
-spla::Type::Type(std::wstring id, size_t typeSize, bool builtIn,
-                 spla::Library &library)
-                 : Object(Object::TypeName::Type, library),
-                   mId(std::move(id)),
-                   mByteSize(typeSize),
-                   mBuiltIn(builtIn) {
+void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
+    // todo: impl me!
+}
 
+spla::ExpressionNode::Operation spla::MatrixDataWrite::GetOperationType() const {
+    return ExpressionNode::Operation::MatrixDataWrite;
 }

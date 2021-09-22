@@ -6,4 +6,5 @@ function(spla_test_target target)
 endfunction()
 
 spla_test_target(TestBasic)
+spla_test_target(TestExpression)
 

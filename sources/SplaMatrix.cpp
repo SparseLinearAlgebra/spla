@@ -39,10 +39,14 @@ size_t spla::Matrix::GetNvals() const {
     return 0;
 }
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols, spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, library));
+spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols, const RefPtr<Type> &type, spla::Library &library) {
+    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
 }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols, spla::Library &library) : Object(Object::TypeName::Matrix, library) {
+spla::Matrix::Matrix(size_t nrows, size_t ncols, const RefPtr<Type> &type, spla::Library &library) : Object(Object::TypeName::Matrix, library) {
+    SetType(type);
+}
+
+spla::Matrix::~Matrix() {
 
 }

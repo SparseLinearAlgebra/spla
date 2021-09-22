@@ -34,7 +34,7 @@ spla::RefPtr<spla::Expression> spla::Expression::Make(spla::Library &library) {
 }
 
 spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::Expression, library) {
-
+    SetState(State::Default);
 }
 
 void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred,
@@ -49,6 +49,17 @@ void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred
     pred->Link(succ.Get());
 }
 
+spla::Expression::State spla::Expression::GetState() const {
+    return static_cast<State>(mState.load());
+}
+
+bool spla::Expression::Empty() const {
+    return mNodes.empty();
+}
+
+const std::vector<spla::RefPtr<spla::ExpressionNode>> &spla::Expression::GetNodes() const {
+    return mNodes;
+}
 
 spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
@@ -58,6 +69,7 @@ spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
         CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, L"Passed null argument to op=" << ExpressionNodeOpToStr(op));
 
     RefPtr<ExpressionNode> node(new ExpressionNode(op, *this, GetLibrary()));
+    node->SetIdx(mNodes.size());
     node->SetArgs(std::move(args));
     node->SetDescriptor(desc.IsNull()? GetLibrary().GetPrivate().GetDefaultDesc(): desc);
     mNodes.push_back(node);
@@ -117,4 +129,8 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector, const s
     return MakeNode(ExpressionNode::Operation::VectorDataRead,
                     std::move(args),
                     desc);
+}
+
+void spla::Expression::SetState(State state) {
+    mState.store(static_cast<long>(state));
 }

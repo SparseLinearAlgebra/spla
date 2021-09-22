@@ -62,12 +62,12 @@ namespace spla {
 
         int32_t AddRef() const {
             assert(GetRefs() > 0);
-            return mRefs.fetch_add(1, std::memory_order_acq_rel);
+            return mRefs.fetch_add(1);
         }
 
         int32_t RelRef() const {
             assert(GetRefs() > 0);
-            auto refs = mRefs.fetch_sub(1, std::memory_order_acq_rel);
+            auto refs = mRefs.fetch_sub(1);
 
             if (refs == 1) {
                 // Was last reference
@@ -100,7 +100,7 @@ namespace spla {
     template<typename T>
     static inline void Unref(T* object) {
         if (object)
-            Unref(object);
+            object->RelRef();
     }
 
     /**
@@ -112,7 +112,7 @@ namespace spla {
     class SPLA_API RefPtr {
     public:
         RefPtr() = default;
-        explicit RefPtr(T* object) {
+        RefPtr(T* object) {
             if (object)
                 mObject = Ref(object);
         }

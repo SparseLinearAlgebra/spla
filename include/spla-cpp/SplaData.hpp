@@ -63,7 +63,6 @@ namespace spla {
      */
     class SPLA_API DataMatrix final: public Data {
     public:
-        explicit DataMatrix(class Library& library);
         ~DataMatrix() override;
 
         /**
@@ -105,7 +104,11 @@ namespace spla {
         /** @return Number of entries in data */
         size_t GetNvals() const;
 
+        static RefPtr<DataMatrix> Make(Library& library);
+
     private:
+        explicit DataMatrix(class Library& library);
+
         unsigned int* mRows = nullptr;
         unsigned int* mCols = nullptr;
         void* mValues = nullptr;
@@ -150,6 +153,8 @@ namespace spla {
         /** @return Number of entries in data */
         size_t GetNvals() const;
 
+        static RefPtr<DataVector> Make(Library& library);
+
     private:
         unsigned int* mRows = nullptr;
         void* mValues = nullptr;
@@ -173,6 +178,8 @@ namespace spla {
 
         /** @return Scalar values */
         void* GetValue() const;
+
+        static RefPtr<DataScalar> Make(Library& library);
 
     private:
         void* mValue = nullptr;

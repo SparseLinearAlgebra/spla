@@ -30,6 +30,7 @@
 
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
+#include <expression/SplaExpressionContext.hpp>
 
 namespace spla {
 
@@ -49,9 +50,21 @@ namespace spla {
      */
     class NodeProcessor: public RefCnt {
     public:
-        virtual bool Select(const ExpressionNode& node) = 0;
+        /**
+         *
+         * @param nodeIdx
+         * @param context
+         *
+         * @return
+         */
+        virtual bool Select(size_t nodeIdx, ExpressionContext& context) = 0;
 
-        virtual void Process(const ExpressionNode& node) = 0;
+        /**
+         *
+         * @param nodeIdx
+         * @param context
+         */
+        virtual void Process(size_t nodeIdx, ExpressionContext& context) = 0;
 
         /** @return Type of the expression node operation, handled by this processor */
         virtual ExpressionNode::Operation GetOperationType() const = 0;

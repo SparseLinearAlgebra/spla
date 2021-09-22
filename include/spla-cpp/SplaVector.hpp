@@ -38,7 +38,7 @@ namespace spla {
      */
     class SPLA_API Vector final: public Object, public TypedObject {
     public:
-        ~Vector() override = default;
+        ~Vector() override;
 
         /** @return Number of vector rows */
         size_t GetNrows() const;
@@ -50,17 +50,18 @@ namespace spla {
          * Make new vector with specified size
          *
          * @param nrows Number of vector rows
+         * @param type Type of stored values
          * @param library Library global instance
          *
          * @return New vector instance
          */
-        static RefPtr<Vector> Make(size_t nrows, class Library& library);
+        static RefPtr<Vector> Make(size_t nrows, const RefPtr<Type> &type, class Library& library);
 
     private:
-        Vector(size_t nrows, class Library& library);
+        Vector(size_t nrows, const RefPtr<Type> &type, class Library& library);
 
         // Separate storage for private impl
-        RefPtr<class VectorStorage> mStorage;
+        //RefPtr<class VectorStorage> mStorage;
     };
 
 }

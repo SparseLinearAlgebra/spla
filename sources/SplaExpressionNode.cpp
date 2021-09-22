@@ -31,12 +31,21 @@ const std::vector<spla::RefPtr<spla::Object>> &spla::ExpressionNode::GetArgs() c
     return mArgs;
 }
 
+const spla::RefPtr<spla::Object> &spla::ExpressionNode::GetArg(unsigned int idx) const {
+    assert(idx < mArgs.size());
+    return mArgs[idx];
+}
+
 const spla::RefPtr<spla::Descriptor> &spla::ExpressionNode::GetDescriptor() const {
     return mDescriptor;
 }
 
 spla::ExpressionNode::Operation spla::ExpressionNode::GetNodeOp() const {
     return mNodeOp;
+}
+
+size_t spla::ExpressionNode::GetIdx() const {
+    return mIdx;
 }
 
 spla::ExpressionNode::ExpressionNode(spla::ExpressionNode::Operation operation, spla::Expression &expression, spla::Library &library)
@@ -49,6 +58,10 @@ spla::ExpressionNode::ExpressionNode(spla::ExpressionNode::Operation operation, 
 void spla::ExpressionNode::Link(spla::ExpressionNode *next) {
     next->mPrev.push_back(this);
     mNext.push_back(next);
+}
+
+void spla::ExpressionNode::SetIdx(size_t idx) {
+    mIdx = idx;
 }
 
 bool spla::ExpressionNode::Belongs(class Expression &expression) const {
@@ -70,5 +83,3 @@ const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetPrev() const 
 const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetNext() const {
     return mNext;
 }
-
-

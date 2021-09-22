@@ -3,7 +3,8 @@ import argparse
 import subprocess
 
 TESTS = [
-    "TestBasic"
+    "TestBasic",
+    "TestExpression"
 ]
 
 

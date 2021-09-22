@@ -36,6 +36,7 @@
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
 #include <vector>
+#include <atomic>
 
 namespace spla {
 
@@ -46,6 +47,18 @@ namespace spla {
     class SPLA_API Expression final: public Object {
     public:
         ~Expression() override = default;
+
+        /** Current expression state */
+        enum class State {
+            /** Default expression state after creation */
+            Default,
+            /** Expression submitted for evaluation */
+            Submitted,
+            /** Expression successfully evaluated after submission */
+            Evaluated,
+            /** Expression evaluation aborted due error/exception */
+            Aborted
+        };
 
         /**
          * Makes dependency between provided expression nodes.
@@ -126,6 +139,15 @@ namespace spla {
                                             const RefPtr<DataVector> &data,
                                             const RefPtr<Descriptor> &desc);
 
+        /** @return Current expression state */
+        State GetState() const;
+
+        /** @return True if this is empty expression (has no nodes for computation) */
+        bool Empty() const;
+
+        /** @return Nodes of this expression */
+        const std::vector<RefPtr<class ExpressionNode>> &GetNodes() const;
+
         /**
          * Creates new expression.
          *
@@ -136,10 +158,17 @@ namespace spla {
         static RefPtr<Expression> Make(class Library& library);
 
     private:
+        friend class ExpressionManager;
         explicit Expression(class Library& library);
-        RefPtr<ExpressionNode> MakeNode(ExpressionNode::Operation op, std::vector<RefPtr<Object>> &&args, const RefPtr<Descriptor> &desc);
+
+        RefPtr<ExpressionNode> MakeNode(ExpressionNode::Operation op,
+                                        std::vector<RefPtr<Object>> &&args,
+                                        const RefPtr<Descriptor> &desc);
+
+        void SetState(State state);
 
         std::vector<RefPtr<class ExpressionNode>> mNodes;
+        std::atomic_long mState;
     };
 
 }

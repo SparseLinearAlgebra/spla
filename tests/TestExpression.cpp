@@ -25,4 +25,42 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaRefCnt.hpp>
+#include <Testing.hpp>
+#include <spla-cpp/Spla.hpp>
+
+TEST(Expression, Empty) {
+    using namespace spla;
+
+    Library library;
+    RefPtr<Expression> empty = Expression::Make(library);
+    library.Submit(empty);
+
+    EXPECT_EQ(empty->GetState(), Expression::State::Evaluated);
+}
+
+TEST(Expression, Graph) {
+    using namespace spla;
+
+    size_t M = 10000, N = 2000;
+
+    Library library;
+    auto type = Type::Make(L"TEST", 0, library);
+    auto mat = Matrix::Make(M, N, type, library);
+    auto data = DataMatrix::Make(library);
+
+    auto expr = Expression::Make(library);
+    auto node0 = expr->MakeDataWrite(mat, data, nullptr);
+    auto node1 = expr->MakeDataWrite(mat, data, nullptr);
+    auto node2 = expr->MakeDataWrite(mat, data, nullptr);
+    auto node3 = expr->MakeDataWrite(mat, data, nullptr);
+
+    expr->Dependency(node0, node2);
+    expr->Dependency(node1, node2);
+    expr->Dependency(node2, node3);
+
+    library.Submit(expr);
+
+    EXPECT_EQ(expr->GetState(), Expression::State::Evaluated);
+}
+
+SPLA_GTEST_MAIN

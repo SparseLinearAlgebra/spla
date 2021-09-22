@@ -92,10 +92,12 @@ endfunction()
 
 function(spla_target_compile_options target)
     if (MSVC)
+        set(CMAKE_CXX_FLAGS_RELEASE "/MT")
+        set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+
         target_compile_options(${target}
-                PUBLIC /source-charset:utf-8
-                PUBLIC $<$<CONFIG:Debug>: /MDd>
-                PUBLIC $<$<CONFIG:Release>: /MD>)
+                PUBLIC /std:c++17
+                PUBLIC /source-charset:utf-8)
     endif()
 endfunction()
 
@@ -136,7 +138,9 @@ target_include_directories(taskflow INTERFACE ${CMAKE_SOURCE_DIR}/deps/taskflow)
 
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add Google test as unit test framework")
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt OFF CACHE BOOL "" FORCE)
     set(gtest_hide_internal_symbols ON CACHE BOOL "" FORCE)
     add_subdirectory(deps/gtest)
 endif()
@@ -174,4 +178,19 @@ spla_target_link_options(spla)
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add tests directory")
     add_subdirectory(tests)
+
+    if (SPLA_TARGET_WINDOWS)
+        file(GLOB TARGET_FILES "${CMAKE_BINARY_DIR}/spla*")
+        message(STATUS "${TARGET_FILES}")
+
+        foreach(TARGET_FILE ${TARGET_FILES})
+            add_custom_command(
+                    TARGET spla POST_BUILD
+                    COMMAND "${CMAKE_COMMAND}" -E
+                    copy
+                    ${TARGET_FILE}
+                    "${CMAKE_BINARY_DIR}/tests"
+                    COMMENT "Copy ${TARGET_FILE} into test directory")
+        endforeach()
+    endif()
 endif()

@@ -87,6 +87,10 @@ size_t spla::DataMatrix::GetNvals() const {
     return mNvals;
 }
 
+spla::RefPtr<spla::DataMatrix> spla::DataMatrix::Make(spla::Library &library) {
+    return spla::RefPtr<spla::DataMatrix>(new DataMatrix(library));
+}
+
 spla::DataVector::DataVector(spla::Library &library) : Data(Object::TypeName::DataVector, library) {
 
 }
@@ -128,6 +132,10 @@ size_t spla::DataVector::GetNvals() const {
     return mNvals;
 }
 
+spla::RefPtr<spla::DataVector> spla::DataVector::Make(spla::Library &library) {
+    return spla::RefPtr<spla::DataVector>(new DataVector(library));
+}
+
 spla::DataScalar::DataScalar(spla::Library &library) : Data(Object::TypeName::DataScalar, library) {
 
 }
@@ -147,4 +155,8 @@ void spla::DataScalar::SetValue(void* value) {
 
 void* spla::DataScalar::GetValue() const {
     return mValue;
+}
+
+spla::RefPtr<spla::DataScalar> spla::DataScalar::Make(spla::Library &library) {
+    return spla::RefPtr<spla::DataScalar>(new DataScalar(library));
 }
