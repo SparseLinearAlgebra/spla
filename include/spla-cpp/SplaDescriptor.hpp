@@ -35,7 +35,7 @@
 namespace spla {
 
     /**
-     * @brief Operation descriptor.
+     * @class Descriptor
      *
      * Descriptor allows to tweak operation execution by specification
      * of the additional params.

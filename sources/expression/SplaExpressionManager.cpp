@@ -25,48 +25,30 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#include <expression/SplaExpressionManager.hpp>
+#include <detail/SplaError.hpp>
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
-
-namespace spla {
-
-    /**
-     * @class Matrix
-     */
-    class SPLA_API Matrix final: public Object, public TypedObject {
-    public:
-        ~Matrix() override = default;
-
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
-
-    private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
-    };
+spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(library) {
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expression) {
+
+}
+
+void spla::ExpressionManager::Register(const spla::RefPtr<spla::NodeProcessor> &processor) {
+    CHECK_RAISE_ERROR(processor.IsNotNull(), InvalidArgument, L"Passed null processor");
+
+    ExpressionNode::Operation op = processor->GetOperationType();
+    auto list = mProcessors.find(op);
+
+    if (list == mProcessors.end())
+        list = mProcessors.emplace(op, ProcessorList()).first;
+
+    list->second.push_back(processor);
+}
+
+spla::RefPtr<spla::NodeProcessor>
+spla::ExpressionManager::SelectProcessor(const spla::RefPtr<spla::ExpressionNode> &node) {
+    return spla::RefPtr<spla::NodeProcessor>();
+}

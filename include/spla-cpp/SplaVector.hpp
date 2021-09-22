@@ -33,6 +33,9 @@
 
 namespace spla {
 
+    /**
+     * @class Vector
+     */
     class SPLA_API Vector final: public Object, public TypedObject {
     public:
         ~Vector() override = default;

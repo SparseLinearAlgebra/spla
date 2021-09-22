@@ -29,21 +29,36 @@
 #define SPLA_SPLALIBRARYPRIVATE_HPP
 
 #include <spla-cpp/SplaLibrary.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
 #include <taskflow/taskflow.hpp>
+#include <expression/SplaExpressionManager.hpp>
 
 namespace spla {
 
-    /** Private library state, accessible for all objects within library */
+    /**
+     * @class LibraryPrivate
+     * Private library state, accessible for all objects within library
+     */
     class LibraryPrivate {
     public:
-        LibraryPrivate() = default;
+        explicit LibraryPrivate(Library& library);
 
         tf::Executor& GetTaskFlowExecutor() {
             return mExecutor;
         }
 
+        const RefPtr<Descriptor> &GetDefaultDesc() {
+            return mDefaultDesc;
+        }
+
+        const RefPtr<ExpressionManager> &GetExprManager() {
+            return mExprManager;
+        }
+
     private:
         tf::Executor mExecutor;
+        RefPtr<Descriptor> mDefaultDesc;
+        RefPtr<ExpressionManager> mExprManager;
     };
 
 }

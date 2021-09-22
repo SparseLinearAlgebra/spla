@@ -26,3 +26,9 @@
 /**********************************************************************************/
 
 #include <detail/SplaLibraryPrivate.hpp>
+#include <expression/SplaExpressionManager.hpp>
+
+spla::LibraryPrivate::LibraryPrivate(spla::Library &library) {
+    mDefaultDesc = Descriptor::Make(library);
+    mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
+}

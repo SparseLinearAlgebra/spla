@@ -35,7 +35,7 @@
 namespace spla {
 
     /**
-     * @brief Reference counted object.
+     * @class RefCnt
      *
      * Inherit from this class to have shared-ref logic for your class objects.
      * Use RefPtr to wrap and automate RefCnt objects references counting.
@@ -103,6 +103,11 @@ namespace spla {
             Unref(object);
     }
 
+    /**
+     * @class RefPtr
+     * Automates reference counting and behaves as shared smar pointer.
+     * @tparam T Type referenced object
+     */
     template<typename T>
     class SPLA_API RefPtr {
     public:
@@ -140,6 +145,14 @@ namespace spla {
             return mObject == other.mObject;
         }
 
+        [[nodiscard]] bool IsNull() const {
+            return mObject == nullptr;
+        }
+
+        [[nodiscard]] bool IsNotNull() const {
+            return mObject;
+        }
+
         T* operator->() const {
             assert(mObject);
             return mObject;
@@ -150,7 +163,7 @@ namespace spla {
             return *mObject;
         }
 
-        explicit operator bool() {
+        explicit operator bool() const {
             return mObject != nullptr;
         }
 
@@ -168,6 +181,11 @@ namespace spla {
 
         T* Get() const {
             return mObject;
+        }
+
+        template<class G>
+        RefPtr<G> As() const {
+            return RefPtr<G>(mObject);
         }
 
     private:

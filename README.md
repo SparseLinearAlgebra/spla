@@ -1,5 +1,6 @@
 # spla
 
+[![JB Research](https://jb.gg/badges/research-flat-square.svg)](https://research.jetbrains.org/)
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 

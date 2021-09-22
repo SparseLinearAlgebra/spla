@@ -29,31 +29,33 @@
 #define SPLA_SPLATYPE_HPP
 
 #include <spla-cpp/SplaObject.hpp>
-#include "SplaLibrary.hpp"
-
 
 namespace spla {
 
     /**
-     * @brief Math values type.
+     * @class Type
      *
      * Represents predefined of user-defined type description.
+     *
      * In the library values types is effectively a unique type string name,
      * type annotations, size in bytes and etc. Value itself is bytes memory
      * region, interpreted in the way defined by the user.
      */
-    class Type final: public Object {
+    class SPLA_API Type final: public Object {
     public:
         ~Type() override = default;
 
-        const std::wstring& GetTypeName() const {
-            return mTypeName;
+        /** @return Type string name */
+        const std::wstring& GetId() const {
+            return mId;
         }
 
+        /** @return Size in bytes of the single value of this type */
         size_t GetByteSize() const {
             return mByteSize;
         }
 
+        /** @return True if it is built-in predefined type */
         bool IsBuiltIn() const {
             return mBuiltIn;
         }
@@ -61,20 +63,20 @@ namespace spla {
         /**
          * Makes new user-defined type.
          *
-         * @param typeName Unique name of the type
+         * @param id Unique name of the type
          * @param typeSize Size of the type values in bytes
          * @param library Library global instance
          *
          * @return New type instance
          */
-        static RefPtr<Type> MakeType(std::wstring typeName, size_t typeSize, class Library& library);
+        static RefPtr<Type> MakeType(std::wstring id, size_t typeSize, class Library& library);
 
     private:
-        Type(std::wstring typeName, size_t typeSize, bool builtIn, class Library& library);
+        Type(std::wstring id, size_t typeSize, bool builtIn, class Library& library);
 
-        // Unique type name
+        // Unique type name (id)
         // Unix: utf-32, Windows: utf-16
-        std::wstring mTypeName;
+        std::wstring mId;
 
         // Size of the type value in bytes
         // Note: if size is 0 => Object with this type have no values
@@ -89,17 +91,16 @@ namespace spla {
     public:
 
         /** @return True if this and other typed object has compatible types */
-        bool IsCompatible(const TypedObject& other) const {
+        [[nodiscard]] bool IsCompatible(const TypedObject& other) const {
             return mType == other.mType;
         }
 
         /** @return Type info of this object */
-        const RefPtr<Type> &GetType() const {
+        [[nodiscard]] const RefPtr<Type> &GetType() const {
             return mType;
         }
 
     protected:
-
         void SetType(const RefPtr<Type> &type) {
             mType = type;
         }

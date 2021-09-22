@@ -43,6 +43,6 @@ spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols, spla::
     return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, library));
 }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols, spla::Library &library) : Object(ObjectType::Matrix, library) {
+spla::Matrix::Matrix(size_t nrows, size_t ncols, spla::Library &library) : Object(Object::TypeName::Matrix, library) {
 
 }

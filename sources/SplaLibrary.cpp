@@ -30,14 +30,17 @@
 #include <memory>
 
 spla::Library::Library() {
-    mPrivate = std::make_unique<LibraryPrivate>();
+    mPrivate = std::make_unique<LibraryPrivate>(*this);
 }
 
 spla::Library::~Library() {
 
 }
 
+void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
+    GetPrivate().GetExprManager()->Submit(expression);
+}
+
 class spla::LibraryPrivate& spla::Library::GetPrivate() {
     return *mPrivate;
 }
-

@@ -29,12 +29,13 @@
 #define SPLA_SPLALIBRARY_HPP
 
 #include <spla-cpp/SplaConfig.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 #include <memory>
 
 namespace spla {
 
     /**
-     * @brief Spla library.
+     * @class Library
      *
      * Primary access point to the spla library operations.
      * This class encapsulates global library state, allows to create objects and
@@ -44,6 +45,12 @@ namespace spla {
     public:
         Library();
         ~Library();
+
+        /**
+         * Submit expression for the execution.
+         * @param expression Expression for execution
+         */
+        void Submit(const RefPtr<class Expression> &expression);
 
         /** @return Private state (for internal usage only) */
         class LibraryPrivate &GetPrivate();

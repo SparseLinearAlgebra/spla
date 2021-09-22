@@ -27,7 +27,7 @@
 
 #include <spla-cpp/SplaDescriptor.hpp>
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(ObjectType::Descriptor, library) {
+spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
 
 }
 

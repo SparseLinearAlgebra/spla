@@ -33,39 +33,40 @@
 
 namespace spla {
 
-    /** Type name of concrete object. */
-    enum class ObjectType {
-        Type,
-        Matrix,
-        Vector,
-        Scalar,
-        Descriptor,
-        FunctionUnary,
-        FunctionBinary,
-        Schedule,
-        ScheduleNode,
-        DataMatrix,
-        DataVector,
-        DataScalar,
-        Unknown
-    };
-
     /**
-     * @brief Math object.
+     * @class Object
      *
      * Base class for any spla library object, which can be used in math operations.
      */
     class SPLA_API Object: public RefCnt {
     public:
-        explicit Object(ObjectType type, class Library& library) : mType(type), mLibrary(library) { }
         ~Object() override = default;
+
+        /** Type name of concrete object. */
+        enum class TypeName {
+            Type,
+            Matrix,
+            Vector,
+            Scalar,
+            Descriptor,
+            FunctionUnary,
+            FunctionBinary,
+            Expression,
+            ExpressionNode,
+            DataMatrix,
+            DataVector,
+            DataScalar,
+            Unknown
+        };
+
+        explicit Object(TypeName typeName, class Library& library) : mTypeName(typeName), mLibrary(library) { }
 
         const std::wstring& GetLabel() const {
             return mLabel;
         }
 
-        ObjectType GetType() const {
-            return mType;
+        TypeName GetTypeName() const {
+            return mTypeName;
         }
 
         class Library& GetLibrary() const {
@@ -78,11 +79,31 @@ namespace spla {
         std::wstring mLabel;
 
         // Type of the object
-        ObjectType mType = ObjectType::Unknown;
+        TypeName mTypeName = TypeName::Unknown;
 
         // Global library instance
         class Library& mLibrary;
     };
+
+    /** @return Object type string name */
+    static inline const wchar_t* ObjectTypeToStr(Object::TypeName typeName) {
+        switch (typeName) {
+            case Object::TypeName::Type: return L"Type";
+            case Object::TypeName::Matrix: return L"Matrix";
+            case Object::TypeName::Vector: return L"Vector";
+            case Object::TypeName::Scalar: return L"Scalar";
+            case Object::TypeName::Descriptor: return L"Descriptor";
+            case Object::TypeName::FunctionUnary: return L"FunctionUnary";
+            case Object::TypeName::FunctionBinary: return L"FunctionBinary";
+            case Object::TypeName::Expression: return L"Expression";
+            case Object::TypeName::ExpressionNode: return L"ExpressionNode";
+            case Object::TypeName::DataMatrix: return L"DataMatrix";
+            case Object::TypeName::DataVector: return L"DataVector";
+            case Object::TypeName::DataScalar: return L"DataScalar";
+
+            default: return L"Unknown";
+        }
+    }
 
 }
 

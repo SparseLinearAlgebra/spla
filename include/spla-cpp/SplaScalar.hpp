@@ -33,6 +33,9 @@
 
 namespace spla {
 
+    /**
+     * @class Scalar
+     */
     class SPLA_API Scalar final: public Object, public TypedObject {
     public:
 

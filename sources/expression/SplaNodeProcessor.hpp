@@ -25,48 +25,38 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#ifndef SPLA_SPLANODEPROCESSOR_HPP
+#define SPLA_SPLANODEPROCESSOR_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
 
 namespace spla {
 
     /**
-     * @class Matrix
+     * @class NodeProcessor
+     *
+     * Interface to the expression node processor class.
+     *
+     * Node processor allows to implement custom node processing logic and
+     * select required processor automatically in runtime. Selection is based
+     * on the node content and global library setting.
+     *
+     * Single node operation may be supported in multiple node processors.
+     * In runtime expression manager will select best matching processor for execution.
+     *
+     * @see ExpressionManager
      */
-    class SPLA_API Matrix final: public Object, public TypedObject {
+    class NodeProcessor: public RefCnt {
     public:
-        ~Matrix() override = default;
+        virtual bool Select(const ExpressionNode& node) = 0;
 
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
+        virtual void Process(const ExpressionNode& node) = 0;
 
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
-
-    private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
+        /** @return Type of the expression node operation, handled by this processor */
+        virtual ExpressionNode::Operation GetOperationType() const = 0;
     };
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+#endif //SPLA_SPLANODEPROCESSOR_HPP

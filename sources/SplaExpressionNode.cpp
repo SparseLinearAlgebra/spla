@@ -25,48 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#include <spla-cpp/SplaExpressionNode.hpp>
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+const std::vector<spla::RefPtr<spla::Object>> &spla::ExpressionNode::GetArgs() const {
+    return mArgs;
+}
 
-namespace spla {
+const spla::RefPtr<spla::Descriptor> &spla::ExpressionNode::GetDescriptor() const {
+    return mDescriptor;
+}
 
-    /**
-     * @class Matrix
-     */
-    class SPLA_API Matrix final: public Object, public TypedObject {
-    public:
-        ~Matrix() override = default;
+spla::ExpressionNode::Operation spla::ExpressionNode::GetNodeOp() const {
+    return mNodeOp;
+}
 
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
-
-    private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
-    };
+spla::ExpressionNode::ExpressionNode(spla::ExpressionNode::Operation operation, spla::Expression &expression, spla::Library &library)
+    : Object(Object::TypeName::ExpressionNode, library),
+      mNodeOp(operation),
+      mParent(expression) {
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+void spla::ExpressionNode::Link(spla::ExpressionNode *next) {
+    next->mPrev.push_back(this);
+    mNext.push_back(next);
+}
+
+bool spla::ExpressionNode::Belongs(class Expression &expression) const {
+    return &expression == &mParent;
+}
+
+void spla::ExpressionNode::SetArgs(std::vector<RefPtr<Object>> &&args) {
+    mArgs = std::move(args);
+}
+
+void spla::ExpressionNode::SetDescriptor(const spla::RefPtr<spla::Descriptor> &desc) {
+    mDescriptor = desc;
+}
+
+const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetPrev() const {
+    return mPrev;
+}
+
+const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetNext() const {
+    return mNext;
+}
+
+

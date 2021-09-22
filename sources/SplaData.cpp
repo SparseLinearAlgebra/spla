@@ -28,7 +28,7 @@
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
 
-spla::Data::Data(spla::ObjectType dataType, spla::Library &library) : Object(dataType, library) {
+spla::Data::Data(spla::Object::TypeName dataType, spla::Library &library) : Object(dataType, library) {
 
 }
 
@@ -36,7 +36,7 @@ void spla::Data::SetReleaseProc(ReleaseProc releaseProc) {
     mReleaseProc = std::move(releaseProc);
 }
 
-spla::DataMatrix::DataMatrix(spla::Library &library) : Data(ObjectType::DataMatrix, library) {
+spla::DataMatrix::DataMatrix(spla::Library &library) : Data(Object::TypeName::DataMatrix, library) {
 
 }
 
@@ -79,7 +79,15 @@ void* spla::DataMatrix::GetValues() const {
     return mValues;
 }
 
-spla::DataVector::DataVector(spla::Library &library) : Data(ObjectType::DataVector, library) {
+void spla::DataMatrix::SetNvals(size_t nvals) {
+    mNvals = nvals;
+}
+
+size_t spla::DataMatrix::GetNvals() const {
+    return mNvals;
+}
+
+spla::DataVector::DataVector(spla::Library &library) : Data(Object::TypeName::DataVector, library) {
 
 }
 
@@ -112,7 +120,15 @@ void* spla::DataVector::GetValues() const {
     return mValues;
 }
 
-spla::DataScalar::DataScalar(spla::Library &library) : Data(ObjectType::DataScalar, library) {
+void spla::DataVector::SetNvals(size_t nvals) {
+    mNvals = nvals;
+}
+
+size_t spla::DataVector::GetNvals() const {
+    return mNvals;
+}
+
+spla::DataScalar::DataScalar(spla::Library &library) : Data(Object::TypeName::DataScalar, library) {
 
 }
 

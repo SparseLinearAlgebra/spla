@@ -31,6 +31,8 @@
 #include <spla-cpp/SplaConfig.hpp>
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
+#include <spla-cpp/SplaExpression.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaFunctionUnary.hpp>
 #include <spla-cpp/SplaLibrary.hpp>

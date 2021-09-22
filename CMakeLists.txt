@@ -151,7 +151,9 @@ include(sources/CMakeLists.txt)
 add_library(spla SHARED
         ${SPLA_CPP_HEADERS}
         ${SPLA_CPP_SOURCES}
-        ${SPLA_DETAIL_SOURCES})
+        ${SPLA_DETAIL_SOURCES}
+        ${SPLA_EXPRESSION_SOURCES}
+        )
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/sources)

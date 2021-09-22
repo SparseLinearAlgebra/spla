@@ -25,48 +25,36 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#ifndef SPLA_SPLAEXPRESSIONMANAGER_HPP
+#define SPLA_SPLAEXPRESSIONMANAGER_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <spla-cpp/SplaLibrary.hpp>
+#include <spla-cpp/SplaExpression.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
+#include <expression/SplaNodeProcessor.hpp>
+#include <unordered_map>
 
 namespace spla {
 
-    /**
-     * @class Matrix
-     */
-    class SPLA_API Matrix final: public Object, public TypedObject {
+    class ExpressionManager final: public RefCnt {
     public:
-        ~Matrix() override = default;
+        explicit ExpressionManager(Library& library);
+        ~ExpressionManager() override = default;
 
-        /** @return Number of matrix rows */
-        size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        size_t GetNvals() const;
-
-        /**
-         * Make new matrix with specified size
-         *
-         * @param nrows Number of matrix rows
-         * @param ncols Number of matrix columns
-         * @param library Library global instance
-         *
-         * @return New matrix instance
-         */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, class Library& library);
+        void Submit(const RefPtr<Expression> &expression);
+        void Register(const RefPtr<NodeProcessor> &processor);
 
     private:
-        Matrix(size_t nrows, size_t ncols, class Library& library);
+        RefPtr<NodeProcessor> SelectProcessor(const RefPtr<ExpressionNode> &node);
 
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
+    private:
+        using ProcessorList = std::vector<RefPtr<NodeProcessor>>;
+        using ProcessorMap = std::unordered_map<ExpressionNode::Operation, ProcessorList>;
+        ProcessorMap mProcessors;
+
+        Library& mLibrary;
     };
 
 }
 
-#endif //SPLA_SPLAMATRIX_HPP
+#endif //SPLA_SPLAEXPRESSIONMANAGER_HPP
