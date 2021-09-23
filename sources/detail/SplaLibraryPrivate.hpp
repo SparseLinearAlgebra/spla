@@ -42,19 +42,19 @@ namespace spla {
      */
     class LibraryPrivate {
     public:
-        explicit LibraryPrivate(Library& library, const Library::Config& config);
+        explicit LibraryPrivate(Library &library, const Library::Config &config);
 
-        tf::Executor& GetTaskFlowExecutor() {
-            return mExecutor;
-        }
+        tf::Executor &GetTaskFlowExecutor();
 
-        const RefPtr<Descriptor> &GetDefaultDesc() {
-            return mDefaultDesc;
-        }
+        const RefPtr<Descriptor> &GetDefaultDesc();
 
-        const RefPtr<ExpressionManager> &GetExprManager() {
-            return mExprManager;
-        }
+        const RefPtr<ExpressionManager> &GetExprManager();
+
+        const std::vector<boost::compute::device> &GetDevices() const noexcept;
+
+        const boost::compute::platform &GetPlatform() const noexcept;
+
+        const boost::compute::context &GetContext() const noexcept;
 
     private:
         tf::Executor mExecutor;

@@ -30,9 +30,9 @@
 #include <expression/SplaExpressionManager.hpp>
 
 namespace {
-    std::vector<boost::compute::device> FindAllDevices(const std::vector<std::string>& names) {
+    std::vector<boost::compute::device> FindAllDevices(const std::vector<std::string> &names) {
         std::vector<boost::compute::device> foundDevices;
-        for (const std::string& name : names) {
+        for (const std::string &name : names) {
             try {
                 foundDevices.push_back(boost::compute::system::find_device(name));
             } catch (const boost::compute::no_device_found&) {
@@ -42,12 +42,12 @@ namespace {
         return foundDevices;
     }
 
-    boost::compute::platform GetDevicesPlatform(const std::vector<boost::compute::device>& devices) {
+    boost::compute::platform GetDevicesPlatform(const std::vector<boost::compute::device> &devices) {
         if (devices.empty()) {
             RAISE_ERROR(DeviceNotPresent, "No device was found");
         }
         auto platformId = devices[0].platform().id();
-        for (const auto& device : devices) {
+        for (const auto &device : devices) {
             if (platformId != device.platform().id()) {
                 RAISE_ERROR(DeviceError, "Could not initialize context when devices has different platforms");
             }
@@ -56,9 +56,33 @@ namespace {
     }
 }
 
+tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {
+    return mExecutor;
+}
+
+const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() {
+    return mDefaultDesc;
+}
+
+const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManager() {
+    return mExprManager;
+}
+
+const std::vector<boost::compute::device> &spla::LibraryPrivate::GetDevices() const noexcept {
+    return mDevices;
+}
+
+const boost::compute::platform &spla::LibraryPrivate::GetPlatform() const noexcept {
+    return mPlatform;
+}
+
+const boost::compute::context &spla::LibraryPrivate::GetContext() const noexcept {
+    return mContext;
+}
+
 spla::LibraryPrivate::LibraryPrivate(
     spla::Library &library,
-    const spla::Library::Config& config
+    const spla::Library::Config &config
 ) : mDefaultDesc(Descriptor::Make(library)),
     mExprManager(RefPtr<ExpressionManager>(new ExpressionManager(library))),
     mDevices(FindAllDevices(config.GetDevicesNames())),
