@@ -30,9 +30,8 @@
 
 #include <spla-cpp/SplaConfig.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
-#include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
 #include <memory>
+#include <vector>
 
 namespace spla {
 
@@ -52,17 +51,15 @@ namespace spla {
          * @p Config initializes OpenCL context, which includes all
          * specified devices.
          */
-        class Config {
+        class SPLA_API Config {
         public:
             /**
              * Type of OpenCL device.
-             *
-             * @note It is just an alias for boost::compute::device::type
              */
             enum DeviceType {
-                GPU = boost::compute::device::type::gpu,
-                CPU = boost::compute::device::type::cpu,
-                Accelerator = boost::compute::device::type::accelerator,
+                GPU,
+                CPU,
+                Accelerator,
             };
 
             /**
@@ -76,13 +73,13 @@ namespace spla {
             /**
              * Creates @p Config with all specified devices.
              *
-             * @param devices Vector of devices which will be used in context.
+             * @param devices Vector of device names which will be used in context.
              *
              * @note No checks about devices are performed, so
              * first make sure that all @p devices can be used in
              * the same context.
              */
-            explicit Config(std::vector<boost::compute::device> devices);
+            explicit Config(const std::vector<std::string>& devices);
 
             /**
              * Creates @p Config with only one default device.
@@ -93,13 +90,13 @@ namespace spla {
              * Creates @p Config with all devices from @p platform,
              * specified type @p type and @p amount.
              * 
-             * @param platform OpenCL platform.
+             * @param platform Name of OpenCL platform.
              * @param type Type of required device type.
              * @param amount Quantity of devices of @p type which will be used in context.
              * In this case all devices in context will be of same type.
              */
             explicit Config(
-                const boost::compute::platform& platform,
+                const std::string& platform,
                 DeviceType type,
                 DeviceAmount amount
             );
@@ -123,7 +120,7 @@ namespace spla {
              * Creates @p Config with context will contain devices in
              * quantiity @p amount.
              * 
-             * @param amount Quantityof required devices.
+             * @param amount Quantity of required devices.
              * 
              * @note No platform is specified, so the one containing more
              * devices will be used.
@@ -132,12 +129,15 @@ namespace spla {
                 DeviceAmount amount
             );
 
+            const std::vector<std::string>& GetDevicesNames() const noexcept;
+
         private:
-            std::vector<boost::compute::device> mDevices;
-            boost::compute::context mContext;
+            std::vector<std::string> mDevicesNames;
         };
 
     public:
+        Library(const Config& config);
+
         Library();
 
         ~Library();
