@@ -32,6 +32,7 @@
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace spla {
 
