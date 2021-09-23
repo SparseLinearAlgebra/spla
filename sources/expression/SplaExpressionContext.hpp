@@ -47,6 +47,8 @@ namespace spla {
         std::vector<size_t> traversal;
         /** Expression taskflow graph */
         tf::Taskflow taskflow;
+        /** Taskflows composed for each node */
+        std::vector<tf::Taskflow> nodesTaskflow;
     };
 
 }

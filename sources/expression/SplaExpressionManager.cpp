@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <expression/SplaExpressionManager.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
 #include <detail/SplaError.hpp>
 #include <numeric>
 #include <vector>
@@ -56,13 +57,11 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
     context.expression = expression;
 
     FindStartNodes(context);
-
     CHECK_RAISE_ERROR(!context.startNodes.empty(), InvalidArgument,
                       L"No start nodes to run computation in expression=" << expression->GetLabel()
                       << L"; Possibly have some dependency cycle?");
 
     FindEndNodes(context);
-
     CHECK_RAISE_ERROR(!context.endNodes.empty(), InvalidArgument,
                       L"No end nodes in expression=" << expression->GetLabel()
                       << "; Possibly have some dependency cycle?");
@@ -71,6 +70,11 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
     DefineTraversalPath(context);
 
     auto& traversal = context.traversal;
+    auto& taskflow = context.taskflow;
+    auto& nodesTaskflow = context.nodesTaskflow;
+    auto& nodes = expression->GetNodes();
+
+    nodesTaskflow.resize(nodes.size());
 
     for (auto idx: traversal) {
         // Select processor for node
@@ -79,7 +83,32 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
         processor->Process(idx, context);
     }
 
+    std::vector<tf::Task> modules;
+    modules.reserve(nodes.size());
+
+    for (auto& nodeTaskflow: nodesTaskflow) {
+        // Build temporary modules to sync sub-flows
+        modules.push_back(taskflow.composed_of(nodeTaskflow));
+    }
+
+    for (size_t idx: traversal) {
+        // Compose final taskflow graph
+        auto& node = nodes[idx];
+        auto& next = node->GetNext();
+        auto& thisModule = modules[idx];
+
+        // For each child make thisModule -> nextModule dependency
+        for (auto& n: next) {
+            auto& nextModule = modules[n->GetIdx()];
+            thisModule.precede(nextModule);
+        }
+    }
+
+    auto& executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
+    auto future = executor.run(taskflow);
+
     // todo: check async completion
+    future.wait();
     expression->SetState(Expression::State::Evaluated);
 }
 

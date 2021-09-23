@@ -34,6 +34,7 @@ namespace spla {
 
     class MatrixDataWrite final: public NodeProcessor {
     public:
+        ~MatrixDataWrite() override = default;
         bool Select(size_t nodeIdx, ExpressionContext &context) override;
         void Process(size_t nodeIdx, ExpressionContext &context) override;
         ExpressionNode::Operation GetOperationType() const override;

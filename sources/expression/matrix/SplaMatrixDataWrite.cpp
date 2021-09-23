@@ -25,7 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "SplaMatrixDataWrite.hpp"
+#include <expression/matrix/SplaMatrixDataWrite.hpp>
+#include <iostream>
 
 bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
@@ -33,6 +34,14 @@ bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &cont
 
 void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
     // todo: impl me!
+    auto& taskflow = context.nodesTaskflow[nodeIdx];
+
+    // todo: remove it!
+    taskflow.emplace([=](){
+        std::wstringstream msg;
+        msg << L"Run MatrixDataWrite for node idx=" << nodeIdx << std::endl;
+        std::wcout << msg.str();
+    });
 }
 
 spla::ExpressionNode::Operation spla::MatrixDataWrite::GetOperationType() const {
