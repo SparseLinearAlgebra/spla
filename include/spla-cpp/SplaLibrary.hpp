@@ -79,7 +79,7 @@ namespace spla {
              * first make sure that all @p devices can be used in
              * the same context.
              */
-            explicit Config(const std::vector<std::string>& devices);
+            explicit Config(const std::vector<std::string> &devices);
 
             /**
              * Creates @p Config with only one default device.
@@ -96,7 +96,7 @@ namespace spla {
              * In this case all devices in context will be of same type.
              */
             explicit Config(
-                const std::string& platform,
+                const std::string &platform,
                 DeviceType type,
                 DeviceAmount amount
             );
@@ -129,14 +129,14 @@ namespace spla {
                 DeviceAmount amount
             );
 
-            const std::vector<std::string>& GetDevicesNames() const noexcept;
+            const std::vector<std::string> &GetDevicesNames() const noexcept;
 
         private:
             std::vector<std::string> mDevicesNames;
         };
 
     public:
-        Library(const Config& config);
+        Library(const Config &config);
 
         Library();
 
@@ -146,10 +146,20 @@ namespace spla {
          * Submit expression for the execution.
          * @param expression Expression for execution
          */
-        void Submit(const RefPtr<class Expression>& expression);
+        void Submit(const RefPtr<class Expression> &expression);
 
         /** @return Private state (for internal usage only) */
-        class LibraryPrivate& GetPrivate();
+        class LibraryPrivate &GetPrivate();
+
+        /** @return Private state (for internal usage only) */
+        const class LibraryPrivate &GetPrivate() const noexcept;
+
+        /**
+         * Get description of computational devices.
+         * 
+         * @return String representation of config
+         */
+        [[nodiscard]] std::string PrintContextConfig() const noexcept;
 
     private:
         // Private state

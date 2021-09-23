@@ -31,10 +31,11 @@
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
 #include <memory>
+#include <sstream>
 
 namespace {
-    boost::compute::platform FindPlatform(const std::string& platformName) {
-        for (const auto& platform : boost::compute::system::platforms()) {
+    boost::compute::platform FindPlatform(const std::string &platformName) {
+        for (const auto &platform : boost::compute::system::platforms()) {
             if (platform.name() == platformName) {
                 return platform;
             }
@@ -42,7 +43,7 @@ namespace {
         RAISE_ERROR(DeviceNotPresent, ("No such OpenCL platform: '" + platformName + "'").c_str());
     }
 
-    boost::compute::device FindDevice(const std::string& deviceName) {
+    boost::compute::device FindDevice(const std::string &deviceName) {
         try {
             return boost::compute::system::find_device(deviceName);
         } catch (const boost::compute::no_device_found&) {
@@ -50,19 +51,19 @@ namespace {
         }
     }
 
-    void CheckAnyDevicePresent(const std::vector<std::string>& devices) {
+    void CheckAnyDevicePresent(const std::vector<std::string> &devices) {
         if (devices.empty()) {
             RAISE_ERROR(DeviceNotPresent, "No OpenCL found matching given constraints");
         }
     }
 
     std::vector<std::string> SelectDevices(
-        const std::string& platform,
+        const std::string &platform,
         spla::Library::Config::DeviceType type,
         spla::Library::Config::DeviceAmount amount
     ) {
         std::vector<std::string> selectedDevices;
-        for (const auto& device : FindPlatform(platform).devices()) {
+        for (const auto &device : FindPlatform(platform).devices()) {
             if (static_cast<spla::Library::Config::DeviceType>(device.type()) == type) {
                 selectedDevices.push_back(device.name());
                 if (amount == spla::Library::Config::DeviceAmount::One) {
@@ -79,7 +80,7 @@ namespace {
         spla::Library::Config::DeviceAmount amount
     ) {
         std::vector<std::string> platformDevices;
-        for (const auto& platform : boost::compute::system::platforms()) {
+        for (const auto &platform : boost::compute::system::platforms()) {
             std::vector<std::string> thisPlatformDevices =
                 SelectDevices(platform.name(), type, amount);
             if (thisPlatformDevices.size() > platformDevices.size()) {
@@ -97,10 +98,10 @@ namespace {
             RAISE_ERROR(DeviceNotPresent, "Runtime environment does not have any OpenCL platform");
         }
         std::vector<std::string> platformDevices;
-        for (const auto& platform : boost::compute::system::platforms()) {
+        for (const auto &platform : boost::compute::system::platforms()) {
             if (platform.device_count() > platformDevices.size()) {
                 platformDevices.clear();
-                for (const auto& platformDevice : platform.devices()) {
+                for (const auto &platformDevice : platform.devices()) {
                     platformDevices.push_back(platformDevice.name());
                 }
             }
@@ -121,7 +122,7 @@ namespace {
     }
 }
 
-spla::Library::Library(const Config& config)
+spla::Library::Library(const Config &config)
     : mPrivate(std::make_unique<LibraryPrivate>(*this, config)) {
 }
 
@@ -137,16 +138,41 @@ void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
     GetPrivate().GetExprManager()->Submit(expression);
 }
 
-class spla::LibraryPrivate& spla::Library::GetPrivate() {
+std::string spla::Library::PrintContextConfig() const noexcept {
+    std::stringstream confStream;
+    
+    const boost::compute::platform &platform = GetPrivate().GetPlatform();
+    const std::vector<boost::compute::device> &devices = GetPrivate().GetDevices();
+    confStream <<
+        "Platform: " << platform.name() << " (" << platform.id() << ")" << '\n' <<
+        "   Vendor: " << platform.vendor() << '\n' <<
+        "   Profile: " << platform.profile() << '\n' <<
+        "   Version: " << platform.version() << '\n' <<
+        "Total Devices: " << devices.size() << '\n';
+    for (const boost::compute::device &device : devices) {
+        confStream <<
+            "   * Device: " << device.name() << " (" << device.id()  << ")" << '\n' <<
+            "        Vendor: " << device.vendor() << '\n' <<
+            "        Profile: " << device.profile() << '\n' <<
+            "        Version: " << device.version() << '\n';
+    }
+    return confStream.str();
+}
+
+class spla::LibraryPrivate &spla::Library::GetPrivate() {
     return *mPrivate;
 }
 
-spla::Library::Config::Config(const std::vector<std::string>& devices) : mDevicesNames(std::move(devices)) {}
+const class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
+    return *mPrivate;
+}
+
+spla::Library::Config::Config(const std::vector<std::string> &devices) : mDevicesNames(std::move(devices)) {}
 
 spla::Library::Config::Config() : Config({SelectDefaultDevice().name()}) {}
 
 spla::Library::Config::Config(
-    const std::string& platform,
+    const std::string &platform,
     DeviceType type,
     DeviceAmount amount
 ) : Config(SelectDevices(platform, type, amount)) {}
@@ -160,6 +186,6 @@ spla::Library::Config::Config(
     DeviceAmount amount
 ) : Config(SelectDevices(amount)) {}
 
-const std::vector<std::string>& spla::Library::Config::GetDevicesNames() const noexcept {
+const std::vector<std::string> &spla::Library::Config::GetDevicesNames() const noexcept {
     return mDevicesNames;
 }
