@@ -63,7 +63,7 @@ void spla::DataMatrix::SetCols(unsigned int* cols) {
     mCols = cols;
 }
 
-void spla::DataMatrix::SetValues(void* values) {
+void spla::DataMatrix::SetVals(void* values) {
     mValues = values;
 }
 
@@ -75,7 +75,7 @@ unsigned int* spla::DataMatrix::GetCols() const {
     return mCols;
 }
 
-void* spla::DataMatrix::GetValues() const {
+void* spla::DataMatrix::GetVals() const {
     return mValues;
 }
 
@@ -111,7 +111,7 @@ void spla::DataVector::SetRows(unsigned int* rows) {
     mRows = rows;
 }
 
-void spla::DataVector::SetValues(void* values) {
+void spla::DataVector::SetVals(void* values) {
     mValues = values;
 }
 
@@ -120,7 +120,7 @@ unsigned int* spla::DataVector::GetRows() const {
 }
 
 
-void* spla::DataVector::GetValues() const {
+void* spla::DataVector::GetVals() const {
     return mValues;
 }
 

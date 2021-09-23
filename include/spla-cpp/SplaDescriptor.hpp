@@ -67,7 +67,7 @@ namespace spla {
          * @param param Param name to set
          * @param value String param value; may be empty
          */
-        void SetParam(Param param, std::wstring value);
+        void SetParam(Param param, std::wstring value = std::wstring());
 
         /**
          * Get descriptor param value.

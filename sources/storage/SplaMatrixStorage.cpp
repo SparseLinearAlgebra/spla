@@ -25,18 +25,4 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TESTING_HPP
-#define SPLA_TESTING_HPP
-
-#include <gtest/gtest.h>
-#include <utils/Matrix.hpp>
-
-// Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                                         \
-    int main(int argc, char *argv[]) {                                          \
-        ::testing::GTEST_FLAG(catch_exceptions) = false;                        \
-        ::testing::InitGoogleTest(&argc, argv);                                 \
-        return RUN_ALL_TESTS();                                                 \
-    }
-
-#endif //SPLA_TESTING_HPP
+#include "SplaMatrixStorage.hpp"

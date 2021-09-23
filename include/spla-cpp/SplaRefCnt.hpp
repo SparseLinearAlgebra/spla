@@ -42,7 +42,7 @@ namespace spla {
      *
      * @see RefPtr
      */
-    class SPLA_API RefCnt {
+    class RefCnt {
     public:
 
         virtual ~RefCnt() {
@@ -109,7 +109,7 @@ namespace spla {
      * @tparam T Type referenced object
      */
     template<typename T>
-    class SPLA_API RefPtr {
+    class RefPtr {
     public:
         RefPtr() = default;
         RefPtr(T* object) {

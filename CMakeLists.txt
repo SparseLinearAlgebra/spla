@@ -157,6 +157,7 @@ add_library(spla SHARED
         ${SPLA_CPP_SOURCES}
         ${SPLA_DETAIL_SOURCES}
         ${SPLA_EXPRESSION_SOURCES}
+        ${SPLA_STORAGE_SOURCES}
         )
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)

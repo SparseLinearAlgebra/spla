@@ -85,7 +85,7 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataWrite(const RefPtr<Matrix> &matrix,
                                              const RefPtr<DataMatrix> &data,
-                                             const RefPtr<Descriptor> &desc);
+                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
          * Make user vector data write to the provided vector object.
@@ -103,7 +103,7 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataWrite(const RefPtr<Vector> &vector,
                                              const RefPtr<DataVector> &data,
-                                             const RefPtr<Descriptor> &desc);
+                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
          * Make matrix data read from the provided matrix object.
@@ -120,7 +120,7 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataRead(const RefPtr<Matrix> &matrix,
                                             const RefPtr<DataMatrix> &data,
-                                            const RefPtr<Descriptor> &desc);
+                                            const RefPtr<Descriptor> &desc = nullptr);
 
         /**
          * Make vertex data read from the provided vector object.
@@ -137,7 +137,7 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataRead(const RefPtr<Vector> &vector,
                                             const RefPtr<DataVector> &data,
-                                            const RefPtr<Descriptor> &desc);
+                                            const RefPtr<Descriptor> &desc = nullptr);
 
         /** @return Current expression state */
         State GetState() const;

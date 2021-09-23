@@ -23,5 +23,12 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/SplaExpressionContext.hpp
         sources/expression/SplaExpressionManager.cpp
         sources/expression/SplaExpressionManager.hpp
-        sources/expression/SplaNodeProcessor.hpp
-        )
+        sources/expression/SplaNodeProcessor.hpp)
+
+set(SPLA_STORAGE_SOURCES
+        sources/storage/SplaMatrixStorage.cpp
+        sources/storage/SplaMatrixStorage.hpp
+        sources/storage/SplaVectorStorage.cpp
+        sources/storage/SplaVectorStorage.hpp
+        sources/storage/SplaScalarStorage.cpp
+        sources/storage/SplaScalarStorage.hpp)

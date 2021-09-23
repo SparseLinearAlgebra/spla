@@ -84,7 +84,7 @@ namespace spla {
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetValues(void* values);
+        void SetVals(void* values);
 
         /**
          * Set values count in this data storage.
@@ -99,7 +99,7 @@ namespace spla {
         unsigned int* GetCols() const;
 
         /**@return Values buffer */
-        void* GetValues() const;
+        void* GetVals() const;
 
         /** @return Number of entries in data */
         size_t GetNvals() const;
@@ -136,7 +136,7 @@ namespace spla {
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetValues(void* values);
+        void SetVals(void* values);
 
         /**
          * Set values count in this data storage.
@@ -148,7 +148,7 @@ namespace spla {
         unsigned int* GetRows() const;
 
         /**@return Values buffer */
-        void* GetValues() const;
+        void* GetVals() const;
 
         /** @return Number of entries in data */
         size_t GetNvals() const;
