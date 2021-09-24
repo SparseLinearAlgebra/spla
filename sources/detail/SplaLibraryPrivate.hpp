@@ -28,10 +28,10 @@
 #ifndef SPLA_SPLALIBRARYPRIVATE_HPP
 #define SPLA_SPLALIBRARYPRIVATE_HPP
 
-#include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
+#include <boost/compute/device.hpp>
+#include <boost/compute/system.hpp>
 #include <taskflow/taskflow.hpp>
 #include <expression/SplaExpressionManager.hpp>
 
@@ -42,7 +42,7 @@ namespace spla {
      */
     class LibraryPrivate {
     public:
-        explicit LibraryPrivate(Library &library, const Library::Config &config);
+        explicit LibraryPrivate(Library &library, Library::Config config);
 
         tf::Executor &GetTaskFlowExecutor();
 
@@ -56,6 +56,8 @@ namespace spla {
 
         const boost::compute::context &GetContext() const noexcept;
 
+        const Library::Config &GetContextConfig() const noexcept;
+
     private:
         tf::Executor mExecutor;
         RefPtr<Descriptor> mDefaultDesc;
@@ -63,6 +65,7 @@ namespace spla {
         std::vector<boost::compute::device> mDevices;
         boost::compute::platform mPlatform;
         boost::compute::context mContext;
+        Library::Config mContextConfig;
     };
 
 }

@@ -44,7 +44,7 @@ namespace {
 
     boost::compute::platform GetDevicesPlatform(const std::vector<boost::compute::device> &devices) {
         if (devices.empty()) {
-            RAISE_ERROR(DeviceNotPresent, "No device was found");
+            RAISE_ERROR(DeviceNotPresent, "No OpenCL device has been found that meets these constraints");
         }
         auto platformId = devices[0].platform().id();
         for (const auto &device : devices) {
@@ -54,6 +54,17 @@ namespace {
         }
         return devices[0].platform();
     }
+}
+
+spla::LibraryPrivate::LibraryPrivate(
+    spla::Library &library,
+    spla::Library::Config config)
+: mDevices(FindAllDevices(config.GetDevicesNames())),
+  mPlatform(GetDevicesPlatform(mDevices)),
+  mContext(mDevices),
+  mContextConfig(std::move(config)) {
+      mDefaultDesc = Descriptor::Make(library);
+      mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
 }
 
 tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {
@@ -80,12 +91,6 @@ const boost::compute::context &spla::LibraryPrivate::GetContext() const noexcept
     return mContext;
 }
 
-spla::LibraryPrivate::LibraryPrivate(
-    spla::Library &library,
-    const spla::Library::Config &config
-) : mDefaultDesc(Descriptor::Make(library)),
-    mExprManager(RefPtr<ExpressionManager>(new ExpressionManager(library))),
-    mDevices(FindAllDevices(config.GetDevicesNames())),
-    mPlatform(GetDevicesPlatform(mDevices)),
-    mContext(mDevices) {
+const spla::Library::Config &spla::LibraryPrivate::GetContextConfig() const noexcept {
+    return mContextConfig;
 }
