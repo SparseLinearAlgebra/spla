@@ -38,6 +38,7 @@ namespace spla {
         Error,
         DeviceError,
         DeviceNotPresent,
+        PlatformNotPresent,
         MemOpFailed,
         InvalidArgument,
         InvalidState,

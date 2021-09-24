@@ -31,6 +31,9 @@
 #include <spla-cpp/SplaConfig.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <memory>
+#include <vector>
+#include <string>
+#include <optional>
 
 namespace spla {
 
@@ -43,7 +46,77 @@ namespace spla {
      */
     class SPLA_API Library {
     public:
+        /**
+         * @class Config
+         *
+         * Represents system configuration used in all computations.
+         * @p Config initializes OpenCL context, which includes all
+         * specified devices.
+         */
+        class SPLA_API Config {
+        public:
+            /**
+             * Type of OpenCL device.
+             */
+            enum DeviceType {
+                GPU,
+                CPU,
+                Accelerator,
+            };
+
+            /**
+             * Initializes @p Config.
+             * If no other setter will be called, context with only one default device will be created.
+             * Otherwise context will contain those and only those devices, which meet given
+             * constraints.
+             */
+            explicit Config();
+
+            /**
+             * Sets platform name to @p platformName.
+             * All context devices will belong to specified platform.
+             * If this function was not called,
+             * the one for which as many devices as possible meet the given parameters will be used.
+             * 
+             * @param platformName Full name of OpenCL platform.
+             */
+            Config &SetPlatform(std::string platformName);
+
+            /**
+             * Sets device type to @p deviceType.
+             * All devices will be chosen, if device type was not set.
+             * 
+             * @param deviceType Type of device to be set.
+             */
+            Config &SetDeviceType(DeviceType deviceType);
+
+            /**
+             * Limits the quantity of devices in context.
+             * @p 1 by default.
+             * 
+             * @param deviceAmount Required quantity of devices.
+             */
+            Config &LimitAmount(std::size_t deviceAmount);
+
+            /**
+             * Removes any limit on devices amount.
+             * Hence, all avaiable devices will be used.
+             */
+            Config &RemoveAmountLimit();
+
+            std::vector<std::string> GetDevicesNames() const;
+
+        private:
+            std::optional<std::string> mPlatformName;
+            std::optional<DeviceType> mDeviceType;
+            std::optional<std::size_t> mDeviceAmount = std::optional{1U};
+        };
+
+    public:
+        Library(Config config);
+
         Library();
+
         ~Library();
 
         /**
@@ -54,6 +127,16 @@ namespace spla {
 
         /** @return Private state (for internal usage only) */
         class LibraryPrivate &GetPrivate();
+
+        /** @return Private state (for internal usage only) */
+        const class LibraryPrivate &GetPrivate() const noexcept;
+
+        /**
+         * Get description of computational devices.
+         * 
+         * @return String representation of config
+         */
+        [[nodiscard]] std::string PrintContextConfig() const noexcept;
 
     private:
         // Private state

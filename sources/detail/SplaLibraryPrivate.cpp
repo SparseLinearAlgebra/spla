@@ -26,9 +26,71 @@
 /**********************************************************************************/
 
 #include <detail/SplaLibraryPrivate.hpp>
+#include <detail/SplaError.hpp>
 #include <expression/SplaExpressionManager.hpp>
 
-spla::LibraryPrivate::LibraryPrivate(spla::Library &library) {
-    mDefaultDesc = Descriptor::Make(library);
-    mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
+namespace {
+    std::vector<boost::compute::device> FindAllDevices(const std::vector<std::string> &names) {
+        std::vector<boost::compute::device> foundDevices;
+        for (const std::string &name : names) {
+            try {
+                foundDevices.push_back(boost::compute::system::find_device(name));
+            } catch (const boost::compute::no_device_found&) {
+                RAISE_ERROR(DeviceNotPresent, ("Device does not exist: '" + name + "'").c_str())
+            }
+        }
+        return foundDevices;
+    }
+
+    boost::compute::platform GetDevicesPlatform(const std::vector<boost::compute::device> &devices) {
+        if (devices.empty()) {
+            RAISE_ERROR(DeviceNotPresent, "No OpenCL device has been found that meets these constraints");
+        }
+        auto platformId = devices[0].platform().id();
+        for (const auto &device : devices) {
+            if (platformId != device.platform().id()) {
+                RAISE_ERROR(DeviceError, "Could not initialize context when devices has different platforms");
+            }
+        }
+        return devices[0].platform();
+    }
+}
+
+spla::LibraryPrivate::LibraryPrivate(
+    spla::Library &library,
+    spla::Library::Config config)
+: mDevices(FindAllDevices(config.GetDevicesNames())),
+  mPlatform(GetDevicesPlatform(mDevices)),
+  mContext(mDevices),
+  mContextConfig(std::move(config)) {
+      mDefaultDesc = Descriptor::Make(library);
+      mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
+}
+
+tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {
+    return mExecutor;
+}
+
+const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() {
+    return mDefaultDesc;
+}
+
+const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManager() {
+    return mExprManager;
+}
+
+const std::vector<boost::compute::device> &spla::LibraryPrivate::GetDevices() const noexcept {
+    return mDevices;
+}
+
+const boost::compute::platform &spla::LibraryPrivate::GetPlatform() const noexcept {
+    return mPlatform;
+}
+
+const boost::compute::context &spla::LibraryPrivate::GetContext() const noexcept {
+    return mContext;
+}
+
+const spla::Library::Config &spla::LibraryPrivate::GetContextConfig() const noexcept {
+    return mContextConfig;
 }

@@ -30,35 +30,42 @@
 
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
+#include <boost/compute/device.hpp>
+#include <boost/compute/system.hpp>
 #include <taskflow/taskflow.hpp>
 #include <expression/SplaExpressionManager.hpp>
 
 namespace spla {
-
     /**
      * @class LibraryPrivate
      * Private library state, accessible for all objects within library
      */
     class LibraryPrivate {
     public:
-        explicit LibraryPrivate(Library& library);
+        explicit LibraryPrivate(Library &library, Library::Config config);
 
-        tf::Executor& GetTaskFlowExecutor() {
-            return mExecutor;
-        }
+        tf::Executor &GetTaskFlowExecutor();
 
-        const RefPtr<Descriptor> &GetDefaultDesc() {
-            return mDefaultDesc;
-        }
+        const RefPtr<Descriptor> &GetDefaultDesc();
 
-        const RefPtr<ExpressionManager> &GetExprManager() {
-            return mExprManager;
-        }
+        const RefPtr<ExpressionManager> &GetExprManager();
+
+        const std::vector<boost::compute::device> &GetDevices() const noexcept;
+
+        const boost::compute::platform &GetPlatform() const noexcept;
+
+        const boost::compute::context &GetContext() const noexcept;
+
+        const Library::Config &GetContextConfig() const noexcept;
 
     private:
         tf::Executor mExecutor;
         RefPtr<Descriptor> mDefaultDesc;
         RefPtr<ExpressionManager> mExprManager;
+        std::vector<boost::compute::device> mDevices;
+        boost::compute::platform mPlatform;
+        boost::compute::context mContext;
+        Library::Config mContextConfig;
     };
 
 }

@@ -26,21 +26,112 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaLibrary.hpp>
+#include <detail/SplaError.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
+#include <boost/compute/device.hpp>
+#include <boost/compute/system.hpp>
 #include <memory>
+#include <sstream>
 
-spla::Library::Library() {
-    mPrivate = std::make_unique<LibraryPrivate>(*this);
+spla::Library::Library(Config config)
+    : mPrivate(std::make_unique<LibraryPrivate>(*this, std::move(config))) {
+}
+
+spla::Library::Library()
+    : Library(Config()) {
 }
 
 spla::Library::~Library() {
-
 }
 
 void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
     GetPrivate().GetExprManager()->Submit(expression);
 }
 
-class spla::LibraryPrivate& spla::Library::GetPrivate() {
+std::string spla::Library::PrintContextConfig() const noexcept {
+    std::stringstream confStream;
+    
+    const boost::compute::platform &platform = GetPrivate().GetPlatform();
+    const std::vector<boost::compute::device> &devices = GetPrivate().GetDevices();
+    confStream <<
+        "Platform: " << platform.name() << " (" << platform.id() << ")" << '\n' <<
+        "   Vendor: " << platform.vendor() << '\n' <<
+        "   Profile: " << platform.profile() << '\n' <<
+        "   Version: " << platform.version() << '\n' <<
+        "Total Devices: " << devices.size() << '\n';
+    for (const boost::compute::device &device : devices) {
+        confStream <<
+            "   * Device: " << device.name() << " (" << device.id()  << ")" << '\n' <<
+            "        Vendor: " << device.vendor() << '\n' <<
+            "        Profile: " << device.profile() << '\n' <<
+            "        Version: " << device.version() << '\n';
+    }
+    return confStream.str();
+}
+
+class spla::LibraryPrivate &spla::Library::GetPrivate() {
     return *mPrivate;
+}
+
+const class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
+    return *mPrivate;
+}
+
+spla::Library::Config::Config() {}
+
+spla::Library::Config &spla::Library::Config::SetPlatform(std::string platformName) {
+    mPlatformName.emplace(std::move(platformName));
+    return *this;
+}
+
+spla::Library::Config &spla::Library::Config::LimitAmount(std::size_t amount) {
+    mDeviceAmount = std::optional{amount};
+    return *this;
+}
+
+spla::Library::Config &spla::Library::Config::RemoveAmountLimit() {
+    mDeviceAmount = std::nullopt;
+    return *this;
+}
+
+spla::Library::Config &spla::Library::Config::SetDeviceType(DeviceType type) {
+    mDeviceType.emplace(type);
+    return *this;
+}
+
+std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
+    std::vector<std::string> devicesNames;
+
+    if (!mDeviceType.has_value() &&
+        !mPlatformName.has_value() &&
+        mDeviceAmount.has_value() &&
+        mDeviceAmount.value() == 1U)
+    {
+        return {boost::compute::system::default_device().name()};
+    }
+
+    bool platformExists = false;
+    for (const boost::compute::platform &platform : boost::compute::system::platforms()) {
+        if (mPlatformName.has_value() && platform.name() != mPlatformName.value()) {
+            continue;
+        }
+        for (const boost::compute::device &device : platform.devices()) {
+            bool matchType = !mDeviceType.has_value() || (
+                (mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
+                (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
+                (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator)
+            );
+            bool matchPlatform = !mPlatformName.has_value() || device.platform().name() == mPlatformName.value();
+            if (matchType && matchPlatform) {
+                devicesNames.push_back(device.name());
+            }
+        }
+    }
+    if (mPlatformName.has_value() && !platformExists) {
+        RAISE_ERROR(DeviceNotPresent, ("No OpenCL platform found with name '" + mPlatformName.value() + "'").c_str());
+    }
+    if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
+        devicesNames.resize(mDeviceAmount.value());
+    }
+    return devicesNames;
 }
