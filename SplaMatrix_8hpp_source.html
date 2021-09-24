@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classspla_1_1Matrix.html">   39</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Matrix.html">Matrix</a> final: <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a>, <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classspla_1_1Matrix.html">   39</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Matrix.html">Matrix</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a>, <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        ~<a class="code" href="classspla_1_1Matrix.html">Matrix</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
@@ -114,18 +114,18 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classspla_1_1Matrix.html#a786fb888e614561bb2b7bfde2aaedfcc">   50</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Matrix.html#a786fb888e614561bb2b7bfde2aaedfcc">GetNvals</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1Matrix.html#a4fb115dbada04c63584819df60fb309d">   62</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> <a class="code" href="classspla_1_1Matrix.html#a4fb115dbada04c63584819df60fb309d">Make</a>(<span class="keywordtype">size_t</span> nrows, <span class="keywordtype">size_t</span> ncols, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1Matrix.html#a4fb115dbada04c63584819df60fb309d">   62</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> <a class="code" href="classspla_1_1Matrix.html#a4fb115dbada04c63584819df60fb309d">Make</a>(<span class="keywordtype">size_t</span> nrows, <span class="keywordtype">size_t</span> ncols, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="classspla_1_1Matrix.html">Matrix</a>(<span class="keywordtype">size_t</span> nrows, <span class="keywordtype">size_t</span> ncols, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="classspla_1_1Matrix.html">Matrix</a>(<span class="keywordtype">size_t</span> nrows, <span class="keywordtype">size_t</span> ncols, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">// Separate storage for private impl</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">//RefPtr&lt;class MatrixStorage&gt; mStorage;</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    };</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_SPLAMATRIX_HPP</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMATRIX_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1Matrix_html"><div class="ttname"><a href="classspla_1_1Matrix.html">spla::Matrix</a></div><div class="ttdef"><b>Definition:</b> SplaMatrix.hpp:39</div></div>
 <div class="ttc" id="aclassspla_1_1Matrix_html_a39c666abe16313337d97501b9a46cd38"><div class="ttname"><a href="classspla_1_1Matrix.html#a39c666abe16313337d97501b9a46cd38">spla::Matrix::GetNrows</a></div><div class="ttdeci">size_t GetNrows() const</div></div>
@@ -133,7 +133,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Matrix_html_a786fb888e614561bb2b7bfde2aaedfcc"><div class="ttname"><a href="classspla_1_1Matrix.html#a786fb888e614561bb2b7bfde2aaedfcc">spla::Matrix::GetNvals</a></div><div class="ttdeci">size_t GetNvals() const</div></div>
 <div class="ttc" id="aclassspla_1_1Matrix_html_ab0510a9e3fcae559102b88a1f2b1b954"><div class="ttname"><a href="classspla_1_1Matrix.html#ab0510a9e3fcae559102b88a1f2b1b954">spla::Matrix::GetNcols</a></div><div class="ttdeci">size_t GetNcols() const</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:112</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 <div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:90</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -99,12 +99,12 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLALIBRARY_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLALIBRARY_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaConfig.hpp&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaRefCnt.hpp&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaConfig.hpp&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaRefCnt.hpp&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
@@ -156,9 +156,9 @@ $(function() {
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        std::unique_ptr&lt;class LibraryPrivate&gt; mPrivate;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    };</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html">spla::Library::Config</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:56</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a05889e1b474b50366a655371a8a637f2"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a05889e1b474b50366a655371a8a637f2">spla::Library::Config::SetDeviceType</a></div><div class="ttdeci">Config &amp; SetDeviceType(DeviceType deviceType)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a081d751b684cc556ac160bf2c1009322"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a081d751b684cc556ac160bf2c1009322">spla::Library::Config::SetPlatform</a></div><div class="ttdeci">Config &amp; SetPlatform(std::string platformName)</div></div>
@@ -170,7 +170,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Library_html_a7cc87f55e209cda10af256d84caeb3d1"><div class="ttname"><a href="classspla_1_1Library.html#a7cc87f55e209cda10af256d84caeb3d1">spla::Library::Submit</a></div><div class="ttdeci">void Submit(const RefPtr&lt; class Expression &gt; &amp;expression)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html_a97031b707c9a4c100a4a67ea13414716"><div class="ttname"><a href="classspla_1_1Library.html#a97031b707c9a4c100a4a67ea13414716">spla::Library::GetPrivate</a></div><div class="ttdeci">const class LibraryPrivate &amp; GetPrivate() const noexcept</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html_aca51ca03010503192094c52871fa57b4"><div class="ttname"><a href="classspla_1_1Library.html#aca51ca03010503192094c52871fa57b4">spla::Library::GetPrivate</a></div><div class="ttdeci">class LibraryPrivate &amp; GetPrivate()</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:112</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

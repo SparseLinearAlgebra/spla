@@ -99,19 +99,19 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLAEXPRESSION_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAEXPRESSION_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaObject.hpp&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaRefCnt.hpp&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaMatrix.hpp&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaVector.hpp&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaData.hpp&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaDescriptor.hpp&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaExpressionNode.hpp&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaData.hpp&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaDescriptor.hpp&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaExpressionNode.hpp&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaMatrix.hpp&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaObject.hpp&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaRefCnt.hpp&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaVector.hpp&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html">   47</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Expression.html">Expression</a> final: <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html">   47</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Expression.html">Expression</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        ~<a class="code" href="classspla_1_1Expression.html">Expression</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
@@ -146,11 +146,11 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#a728606a54734db273495461c3b47c59c">  149</a></span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;class ExpressionNode&gt;&gt; &amp;<a class="code" href="classspla_1_1Expression.html#a728606a54734db273495461c3b47c59c">GetNodes</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#aa9ade658a152a6422cbb04f772da420b">  158</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Expression&gt;</a> <a class="code" href="classspla_1_1Expression.html#aa9ade658a152a6422cbb04f772da420b">Make</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#aa9ade658a152a6422cbb04f772da420b">  158</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Expression&gt;</a> <a class="code" href="classspla_1_1Expression.html#aa9ade658a152a6422cbb04f772da420b">Make</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span>ExpressionManager;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Expression.html">Expression</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Expression.html">Expression</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;ExpressionNode&gt;</a> MakeNode(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">ExpressionNode::Operation</a> op,</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                                        std::vector&lt;<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a>&gt; &amp;&amp;args,</div>
@@ -162,9 +162,9 @@ $(function() {
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        std::atomic_long mState;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    };</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_SPLAEXPRESSION_HPP</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAEXPRESSION_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39f"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">spla::ExpressionNode::Operation</a></div><div class="ttdeci">Operation</div><div class="ttdef"><b>Definition:</b> SplaExpressionNode.hpp:50</div></div>
 <div class="ttc" id="aclassspla_1_1Expression_html"><div class="ttname"><a href="classspla_1_1Expression.html">spla::Expression</a></div><div class="ttdef"><b>Definition:</b> SplaExpression.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1Expression_html_a1d70fe7744b9b8c4b31ce3553bfc6245"><div class="ttname"><a href="classspla_1_1Expression.html#a1d70fe7744b9b8c4b31ce3553bfc6245">spla::Expression::MakeDataWrite</a></div><div class="ttdeci">RefPtr&lt; ExpressionNode &gt; MakeDataWrite(const RefPtr&lt; Vector &gt; &amp;vector, const RefPtr&lt; DataVector &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)</div></div>
@@ -179,7 +179,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Expression_html_ab5884d434dad2913085064b3ca6dedf7"><div class="ttname"><a href="classspla_1_1Expression.html#ab5884d434dad2913085064b3ca6dedf7">spla::Expression::MakeDataRead</a></div><div class="ttdeci">RefPtr&lt; ExpressionNode &gt; MakeDataRead(const RefPtr&lt; Matrix &gt; &amp;matrix, const RefPtr&lt; DataMatrix &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:112</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

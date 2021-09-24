@@ -99,14 +99,14 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaObject.hpp&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaType.hpp&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;bitset&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;bitset&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaObject.hpp&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaType.hpp&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html">   38</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a> final: <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html">   38</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        ~<a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
@@ -126,7 +126,7 @@ $(function() {
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> mSource;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">bool</span> IsApplicable(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a>&amp; arg1, <span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a>&amp; result)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">bool</span> IsApplicable(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;arg1, <span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;result)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> arg1.<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>() == mArg1 &amp;&amp; result.<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>() == mResult;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
@@ -137,14 +137,14 @@ $(function() {
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        std::bitset&lt;static_cast&lt;size_t&gt;(Flags::Max)&gt; mFlags;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1FunctionUnary_html"><div class="ttname"><a href="classspla_1_1FunctionUnary.html">spla::FunctionUnary</a></div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:38</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:112</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 <div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:90</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html_afbede1902e7cedf7ddb796e4285b37f1"><div class="ttname"><a href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">spla::TypedObject::GetType</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetType() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:99</div></div>
+<div class="ttc" id="aclassspla_1_1TypedObject_html_afbede1902e7cedf7ddb796e4285b37f1"><div class="ttname"><a href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">spla::TypedObject::GetType</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetType() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:98</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

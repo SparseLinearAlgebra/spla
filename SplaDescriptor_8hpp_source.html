@@ -100,12 +100,12 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLADESCRIPTOR_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;spla-cpp/SplaObject.hpp&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html">   46</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a> final: <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html">   46</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        ~<a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
@@ -119,22 +119,22 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#ad6b5124f7412cab67539a310daca050e">   70</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Descriptor.html#ad6b5124f7412cab67539a310daca050e">SetParam</a>(<a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param, std::wstring value = std::wstring());</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a30d4e04a4e56fe23ccca880d698bd264">   81</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Descriptor.html#a30d4e04a4e56fe23ccca880d698bd264">GetParam</a>(<a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param, std::wstring&amp; value) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a30d4e04a4e56fe23ccca880d698bd264">   81</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Descriptor.html#a30d4e04a4e56fe23ccca880d698bd264">GetParam</a>(<a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param, std::wstring &amp;value) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6">   90</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6">IsParamSet</a>(<a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6">   99</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> <a class="code" href="classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6">Make</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6">   99</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> <a class="code" href="classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6">Make</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a>&amp; library);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="comment">// Map of desc configurable params and its values</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        std::unordered_map&lt;Param, std::wstring&gt; mParams;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    };</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_SPLADESCRIPTOR_HPP</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLADESCRIPTOR_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1Descriptor_html"><div class="ttname"><a href="classspla_1_1Descriptor.html">spla::Descriptor</a></div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:46</div></div>
 <div class="ttc" id="aclassspla_1_1Descriptor_html_a16260a969c6e93808f43eb4a34182db6"><div class="ttname"><a href="classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6">spla::Descriptor::Make</a></div><div class="ttdeci">static RefPtr&lt; Descriptor &gt; Make(class Library &amp;library)</div></div>
 <div class="ttc" id="aclassspla_1_1Descriptor_html_a170315e556403cafe78aaa9b9f2c7cc6"><div class="ttname"><a href="classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6">spla::Descriptor::IsParamSet</a></div><div class="ttdeci">bool IsParamSet(Param param) const</div></div>
@@ -143,7 +143,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Descriptor_html_ad6b5124f7412cab67539a310daca050e"><div class="ttname"><a href="classspla_1_1Descriptor.html#ad6b5124f7412cab67539a310daca050e">spla::Descriptor::SetParam</a></div><div class="ttdeci">void SetParam(Param param, std::wstring value=std::wstring())</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:112</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
