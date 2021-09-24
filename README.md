@@ -2,6 +2,7 @@
 
 [![JB Research](https://jb.gg/badges/research-flat-square.svg)](https://research.jetbrains.org/)
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
+[![Pages](https://github.com/JetBrains-Research/spla/actions/workflows/docs.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
 **spla** is a C++ sparse linear algebra library for multi-GPU computations based

@@ -4,7 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'include/'
+      - '.github/**'
+      - 'include/**'
+      - 'Doxyfile'
 
 jobs:
   build:
