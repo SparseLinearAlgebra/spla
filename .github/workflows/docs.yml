@@ -1,0 +1,30 @@
+name: Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Doxygen
+        run: |
+         sudo apt-add-repository universe
+         sudo apt-get update
+         sudo apt-get install doxygen
+
+      - name: Generage Doxygen config
+        run: doxygen -g
+
+      - uses: actions/checkout@v2
+
+      - name: Generate documentation
+        uses: mattnotmitt/doxygen-action@v1.3.1
+
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/html/
