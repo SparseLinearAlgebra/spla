@@ -38,7 +38,7 @@ namespace spla {
      *
      * Base class for any spla library object, which can be used in math operations.
      */
-    class SPLA_API Object: public RefCnt {
+    class SPLA_API Object : public RefCnt {
     public:
         ~Object() override = default;
 
@@ -59,9 +59,9 @@ namespace spla {
             Unknown
         };
 
-        explicit Object(TypeName typeName, class Library& library) : mTypeName(typeName), mLibrary(library) { }
+        explicit Object(TypeName typeName, class Library &library) : mTypeName(typeName), mLibrary(library) {}
 
-        const std::wstring& GetLabel() const {
+        const std::wstring &GetLabel() const {
             return mLabel;
         }
 
@@ -69,7 +69,7 @@ namespace spla {
             return mTypeName;
         }
 
-        class Library& GetLibrary() const {
+        class Library &GetLibrary() const {
             return mLibrary;
         }
 
@@ -82,29 +82,42 @@ namespace spla {
         TypeName mTypeName = TypeName::Unknown;
 
         // Global library instance
-        class Library& mLibrary;
+        class Library &mLibrary;
     };
 
     /** @return Object type string name */
-    static inline const wchar_t* ObjectTypeToStr(Object::TypeName typeName) {
+    static inline const wchar_t *ObjectTypeToStr(Object::TypeName typeName) {
         switch (typeName) {
-            case Object::TypeName::Type: return L"Type";
-            case Object::TypeName::Matrix: return L"Matrix";
-            case Object::TypeName::Vector: return L"Vector";
-            case Object::TypeName::Scalar: return L"Scalar";
-            case Object::TypeName::Descriptor: return L"Descriptor";
-            case Object::TypeName::FunctionUnary: return L"FunctionUnary";
-            case Object::TypeName::FunctionBinary: return L"FunctionBinary";
-            case Object::TypeName::Expression: return L"Expression";
-            case Object::TypeName::ExpressionNode: return L"ExpressionNode";
-            case Object::TypeName::DataMatrix: return L"DataMatrix";
-            case Object::TypeName::DataVector: return L"DataVector";
-            case Object::TypeName::DataScalar: return L"DataScalar";
+            case Object::TypeName::Type:
+                return L"Type";
+            case Object::TypeName::Matrix:
+                return L"Matrix";
+            case Object::TypeName::Vector:
+                return L"Vector";
+            case Object::TypeName::Scalar:
+                return L"Scalar";
+            case Object::TypeName::Descriptor:
+                return L"Descriptor";
+            case Object::TypeName::FunctionUnary:
+                return L"FunctionUnary";
+            case Object::TypeName::FunctionBinary:
+                return L"FunctionBinary";
+            case Object::TypeName::Expression:
+                return L"Expression";
+            case Object::TypeName::ExpressionNode:
+                return L"ExpressionNode";
+            case Object::TypeName::DataMatrix:
+                return L"DataMatrix";
+            case Object::TypeName::DataVector:
+                return L"DataVector";
+            case Object::TypeName::DataScalar:
+                return L"DataScalar";
 
-            default: return L"Unknown";
+            default:
+                return L"Unknown";
         }
     }
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAOBJECT_HPP
+#endif//SPLA_SPLAOBJECT_HPP

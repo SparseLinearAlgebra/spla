@@ -28,9 +28,9 @@
 #ifndef SPLA_SPLANODEPROCESSOR_HPP
 #define SPLA_SPLANODEPROCESSOR_HPP
 
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
 #include <expression/SplaExpressionContext.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {
 
@@ -48,7 +48,7 @@ namespace spla {
      *
      * @see ExpressionManager
      */
-    class NodeProcessor: public RefCnt {
+    class NodeProcessor : public RefCnt {
     public:
         /**
          *
@@ -57,19 +57,19 @@ namespace spla {
          *
          * @return
          */
-        virtual bool Select(size_t nodeIdx, ExpressionContext& context) = 0;
+        virtual bool Select(size_t nodeIdx, ExpressionContext &context) = 0;
 
         /**
          *
          * @param nodeIdx
          * @param context
          */
-        virtual void Process(size_t nodeIdx, ExpressionContext& context) = 0;
+        virtual void Process(size_t nodeIdx, ExpressionContext &context) = 0;
 
         /** @return Type of the expression node operation, handled by this processor */
         virtual ExpressionNode::Operation GetOperationType() const = 0;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLANODEPROCESSOR_HPP
+#endif//SPLA_SPLANODEPROCESSOR_HPP

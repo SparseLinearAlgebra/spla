@@ -28,7 +28,6 @@
 #include <spla-cpp/SplaDescriptor.hpp>
 
 spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
-
 }
 
 void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::wstring value) {

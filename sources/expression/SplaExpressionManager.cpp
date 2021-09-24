@@ -25,9 +25,9 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <expression/SplaExpressionManager.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
 #include <detail/SplaError.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
+#include <expression/SplaExpressionManager.hpp>
 #include <numeric>
 #include <vector>
 
@@ -59,24 +59,24 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
     FindStartNodes(context);
     CHECK_RAISE_ERROR(!context.startNodes.empty(), InvalidArgument,
                       L"No start nodes to run computation in expression=" << expression->GetLabel()
-                      << L"; Possibly have some dependency cycle?");
+                                                                          << L"; Possibly have some dependency cycle?");
 
     FindEndNodes(context);
     CHECK_RAISE_ERROR(!context.endNodes.empty(), InvalidArgument,
                       L"No end nodes in expression=" << expression->GetLabel()
-                      << "; Possibly have some dependency cycle?");
+                                                     << "; Possibly have some dependency cycle?");
 
     CheckCycles(context);
     DefineTraversalPath(context);
 
-    auto& traversal = context.traversal;
-    auto& taskflow = context.taskflow;
-    auto& nodesTaskflow = context.nodesTaskflow;
-    auto& nodes = expression->GetNodes();
+    auto &traversal = context.traversal;
+    auto &taskflow = context.taskflow;
+    auto &nodesTaskflow = context.nodesTaskflow;
+    auto &nodes = expression->GetNodes();
 
     nodesTaskflow.resize(nodes.size());
 
-    for (auto idx: traversal) {
+    for (auto idx : traversal) {
         // Select processor for node
         auto processor = SelectProcessor(idx, context);
         // Actually process node
@@ -86,25 +86,25 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
     std::vector<tf::Task> modules;
     modules.reserve(nodes.size());
 
-    for (auto& nodeTaskflow: nodesTaskflow) {
+    for (auto &nodeTaskflow : nodesTaskflow) {
         // Build temporary modules to sync sub-flows
         modules.push_back(taskflow.composed_of(nodeTaskflow));
     }
 
-    for (size_t idx: traversal) {
+    for (size_t idx : traversal) {
         // Compose final taskflow graph
-        auto& node = nodes[idx];
-        auto& next = node->GetNext();
-        auto& thisModule = modules[idx];
+        auto &node = nodes[idx];
+        auto &next = node->GetNext();
+        auto &thisModule = modules[idx];
 
         // For each child make thisModule -> nextModule dependency
-        for (auto& n: next) {
-            auto& nextModule = modules[n->GetIdx()];
+        for (auto &n : next) {
+            auto &nextModule = modules[n->GetIdx()];
             thisModule.precede(nextModule);
         }
     }
 
-    auto& executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
+    auto &executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
     auto future = executor.run(taskflow);
 
     // todo: check async completion
@@ -125,9 +125,9 @@ void spla::ExpressionManager::Register(const spla::RefPtr<spla::NodeProcessor> &
 }
 
 void spla::ExpressionManager::FindStartNodes(spla::ExpressionContext &context) {
-    auto& expression = context.expression;
-    auto& nodes = expression->GetNodes();
-    auto& start = context.startNodes;
+    auto &expression = context.expression;
+    auto &nodes = expression->GetNodes();
+    auto &start = context.startNodes;
 
     for (size_t idx = 0; idx < nodes.size(); idx++) {
         // No incoming dependency
@@ -137,9 +137,9 @@ void spla::ExpressionManager::FindStartNodes(spla::ExpressionContext &context) {
 }
 
 void spla::ExpressionManager::FindEndNodes(spla::ExpressionContext &context) {
-    auto& expression = context.expression;
-    auto& nodes = expression->GetNodes();
-    auto& end = context.endNodes;
+    auto &expression = context.expression;
+    auto &nodes = expression->GetNodes();
+    auto &end = context.endNodes;
 
     for (size_t idx = 0; idx < nodes.size(); idx++) {
         // No incoming dependency
@@ -149,12 +149,12 @@ void spla::ExpressionManager::FindEndNodes(spla::ExpressionContext &context) {
 }
 
 void spla::ExpressionManager::CheckCycles(spla::ExpressionContext &context) {
-    auto& expression = context.expression;
-    auto& nodes = expression->GetNodes();
-    auto& start = context.startNodes;
+    auto &expression = context.expression;
+    auto &nodes = expression->GetNodes();
+    auto &start = context.startNodes;
     auto nodesCount = nodes.size();
 
-    for (auto n: start) {
+    for (auto n : start) {
         std::vector<int> visited(nodesCount, 0);
         auto cycle = CheckCyclesImpl(n, visited, nodes);
         CHECK_RAISE_ERROR(!cycle, InvalidArgument, L"Provided expression has dependency cycle");
@@ -166,10 +166,10 @@ bool spla::ExpressionManager::CheckCyclesImpl(size_t idx, std::vector<int> &visi
     if (visited[idx])
         return true;
 
-    auto& node = nodes[idx];
-    auto& next = node->GetNext();
+    auto &node = nodes[idx];
+    auto &next = node->GetNext();
 
-    for (const auto& n: next) {
+    for (const auto &n : next) {
         if (CheckCyclesImpl(n->GetIdx(), visited, nodes))
             return true;
     }
@@ -178,31 +178,31 @@ bool spla::ExpressionManager::CheckCyclesImpl(size_t idx, std::vector<int> &visi
 }
 
 void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionContext &context) {
-    auto& expression = context.expression;
-    auto& nodes = expression->GetNodes();
-    auto& start = context.startNodes;
+    auto &expression = context.expression;
+    auto &nodes = expression->GetNodes();
+    auto &start = context.startNodes;
     auto nodesCount = nodes.size();
 
     size_t t = 0;
     std::vector<size_t> out(nodesCount, t);
 
-    for (auto s: start)
+    for (auto s : start)
         DefineTraversalPathImpl(s, t, out, nodes);
 
-    using Pair = std::pair<size_t,size_t>;
+    using Pair = std::pair<size_t, size_t>;
     std::vector<Pair> traversal;
 
     traversal.reserve(nodesCount);
     for (size_t i = 0; i < nodesCount; i++)
         traversal.emplace_back(out[i], i);
 
-    std::sort(traversal.begin(), traversal.end(), [](const Pair& a, const Pair& b) {
+    std::sort(traversal.begin(), traversal.end(), [](const Pair &a, const Pair &b) {
         return a.first > b.first;
     });
 
     context.traversal.resize(nodesCount);
 
-    std::transform(traversal.begin(), traversal.end(), context.traversal.begin(), [](const Pair& a) -> size_t {
+    std::transform(traversal.begin(), traversal.end(), context.traversal.begin(), [](const Pair &a) -> size_t {
         return a.second;
     });
 }
@@ -212,10 +212,10 @@ void spla::ExpressionManager::DefineTraversalPathImpl(size_t idx, size_t &t, std
     if (!out[idx]) {
         t += 1;
 
-        auto& node = nodes[idx];
-        auto& next = node->GetNext();
+        auto &node = nodes[idx];
+        auto &next = node->GetNext();
 
-        for (const auto& n: next)
+        for (const auto &n : next)
             DefineTraversalPathImpl(n->GetIdx(), t, out, nodes);
 
         t += 1;
@@ -226,8 +226,8 @@ void spla::ExpressionManager::DefineTraversalPathImpl(size_t idx, size_t &t, std
 
 spla::RefPtr<spla::NodeProcessor>
 spla::ExpressionManager::SelectProcessor(size_t nodeIdx, spla::ExpressionContext &context) {
-    auto& nodes = context.expression->GetNodes();
-    auto& node = nodes[nodeIdx];
+    auto &nodes = context.expression->GetNodes();
+    auto &node = nodes[nodeIdx];
     ExpressionNode::Operation op = node->GetNodeOp();
 
     auto iter = mProcessors.find(op);
@@ -235,11 +235,11 @@ spla::ExpressionManager::SelectProcessor(size_t nodeIdx, spla::ExpressionContext
     CHECK_RAISE_ERROR(iter != mProcessors.end(), InvalidState,
                       L"No processors for such op=" << ExpressionNodeOpToStr(op));
 
-    const auto& processors = iter->second;
+    const auto &processors = iter->second;
 
     // NOTE: Iterate through all processors for this operation and
     // select the first one, which meets requirements
-    for (auto& processor: processors)
+    for (auto &processor : processors)
         if (processor->Select(nodeIdx, context))
             return processor;
 

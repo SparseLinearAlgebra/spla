@@ -28,12 +28,12 @@
 #ifndef SPLA_SPLALIBRARYPRIVATE_HPP
 #define SPLA_SPLALIBRARYPRIVATE_HPP
 
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
-#include <taskflow/taskflow.hpp>
 #include <expression/SplaExpressionManager.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
+#include <spla-cpp/SplaLibrary.hpp>
+#include <taskflow/taskflow.hpp>
 
 namespace spla {
     /**
@@ -68,6 +68,6 @@ namespace spla {
         Library::Config mContextConfig;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLALIBRARYPRIVATE_HPP
+#endif//SPLA_SPLALIBRARYPRIVATE_HPP

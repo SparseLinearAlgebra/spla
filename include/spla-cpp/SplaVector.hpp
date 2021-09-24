@@ -36,7 +36,7 @@ namespace spla {
     /**
      * @class Vector
      */
-    class SPLA_API Vector final: public Object, public TypedObject {
+    class SPLA_API Vector final : public Object, public TypedObject {
     public:
         ~Vector() override;
 
@@ -55,15 +55,15 @@ namespace spla {
          *
          * @return New vector instance
          */
-        static RefPtr<Vector> Make(size_t nrows, const RefPtr<Type> &type, class Library& library);
+        static RefPtr<Vector> Make(size_t nrows, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Vector(size_t nrows, const RefPtr<Type> &type, class Library& library);
+        Vector(size_t nrows, const RefPtr<Type> &type, class Library &library);
 
         // Separate storage for private impl
         //RefPtr<class VectorStorage> mStorage;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAVECTOR_HPP
+#endif//SPLA_SPLAVECTOR_HPP

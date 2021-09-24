@@ -29,7 +29,6 @@
 #include <spla-cpp/SplaLibrary.hpp>
 
 spla::Data::Data(spla::Object::TypeName dataType, spla::Library &library) : Object(dataType, library) {
-
 }
 
 void spla::Data::SetReleaseProc(ReleaseProc releaseProc) {
@@ -37,7 +36,6 @@ void spla::Data::SetReleaseProc(ReleaseProc releaseProc) {
 }
 
 spla::DataMatrix::DataMatrix(spla::Library &library) : Data(Object::TypeName::DataMatrix, library) {
-
 }
 
 spla::DataMatrix::~DataMatrix() {
@@ -55,27 +53,27 @@ spla::DataMatrix::~DataMatrix() {
     }
 }
 
-void spla::DataMatrix::SetRows(unsigned int* rows) {
+void spla::DataMatrix::SetRows(unsigned int *rows) {
     mRows = rows;
 }
 
-void spla::DataMatrix::SetCols(unsigned int* cols) {
+void spla::DataMatrix::SetCols(unsigned int *cols) {
     mCols = cols;
 }
 
-void spla::DataMatrix::SetVals(void* values) {
+void spla::DataMatrix::SetVals(void *values) {
     mValues = values;
 }
 
-unsigned int* spla::DataMatrix::GetRows() const {
+unsigned int *spla::DataMatrix::GetRows() const {
     return mRows;
 }
 
-unsigned int* spla::DataMatrix::GetCols() const {
+unsigned int *spla::DataMatrix::GetCols() const {
     return mCols;
 }
 
-void* spla::DataMatrix::GetVals() const {
+void *spla::DataMatrix::GetVals() const {
     return mValues;
 }
 
@@ -92,7 +90,6 @@ spla::RefPtr<spla::DataMatrix> spla::DataMatrix::Make(spla::Library &library) {
 }
 
 spla::DataVector::DataVector(spla::Library &library) : Data(Object::TypeName::DataVector, library) {
-
 }
 
 spla::DataVector::~DataVector() {
@@ -107,20 +104,20 @@ spla::DataVector::~DataVector() {
     }
 }
 
-void spla::DataVector::SetRows(unsigned int* rows) {
+void spla::DataVector::SetRows(unsigned int *rows) {
     mRows = rows;
 }
 
-void spla::DataVector::SetVals(void* values) {
+void spla::DataVector::SetVals(void *values) {
     mValues = values;
 }
 
-unsigned int* spla::DataVector::GetRows() const {
+unsigned int *spla::DataVector::GetRows() const {
     return mRows;
 }
 
 
-void* spla::DataVector::GetVals() const {
+void *spla::DataVector::GetVals() const {
     return mValues;
 }
 
@@ -137,7 +134,6 @@ spla::RefPtr<spla::DataVector> spla::DataVector::Make(spla::Library &library) {
 }
 
 spla::DataScalar::DataScalar(spla::Library &library) : Data(Object::TypeName::DataScalar, library) {
-
 }
 
 spla::DataScalar::~DataScalar() {
@@ -149,11 +145,11 @@ spla::DataScalar::~DataScalar() {
     }
 }
 
-void spla::DataScalar::SetValue(void* value) {
+void spla::DataScalar::SetValue(void *value) {
     mValue = value;
 }
 
-void* spla::DataScalar::GetValue() const {
+void *spla::DataScalar::GetValue() const {
     return mValue;
 }
 

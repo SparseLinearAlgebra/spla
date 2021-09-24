@@ -28,10 +28,10 @@
 #ifndef SPLA_SPLAEXPRESSIONNODE_HPP
 #define SPLA_SPLAEXPRESSIONNODE_HPP
 
-#include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
-#include <vector>
+#include <spla-cpp/SplaObject.hpp>
 #include <string>
+#include <vector>
 
 namespace spla {
 
@@ -42,7 +42,7 @@ namespace spla {
      * Stores operation type and required arguments for evaluation.
      * Expression nodes form a computational expression (or dag) with specific dependencies ordering.
      */
-    class SPLA_API ExpressionNode final: public Object {
+    class SPLA_API ExpressionNode final : public Object {
     public:
         ~ExpressionNode() override = default;
 
@@ -81,16 +81,16 @@ namespace spla {
         friend class Expression;
         friend class ExpressionManager;
 
-        ExpressionNode(Operation operation, class Expression& expression, class Library& library);
+        ExpressionNode(Operation operation, class Expression &expression, class Library &library);
 
-        void Link(ExpressionNode* next);
+        void Link(ExpressionNode *next);
         void SetIdx(size_t idx);
-        bool Belongs(class Expression& expression) const;
+        bool Belongs(class Expression &expression) const;
         void SetArgs(std::vector<RefPtr<Object>> &&args);
         void SetDescriptor(const RefPtr<Descriptor> &desc);
 
-        const std::vector<ExpressionNode*> &GetPrev() const;
-        const std::vector<ExpressionNode*> &GetNext() const;
+        const std::vector<ExpressionNode *> &GetPrev() const;
+        const std::vector<ExpressionNode *> &GetNext() const;
 
     private:
         // Node private content
@@ -100,24 +100,31 @@ namespace spla {
         size_t mIdx;
 
         // Expression impl related
-        class Expression& mParent;
-        std::vector<ExpressionNode*> mPrev;
-        std::vector<ExpressionNode*> mNext;
+        class Expression &mParent;
+        std::vector<ExpressionNode *> mPrev;
+        std::vector<ExpressionNode *> mNext;
     };
 
     /** @return String name of the expression node operation */
-    static inline const wchar_t* ExpressionNodeOpToStr(ExpressionNode::Operation op) {
+    static inline const wchar_t *ExpressionNodeOpToStr(ExpressionNode::Operation op) {
         switch (op) {
-            case ExpressionNode::Operation::MatrixDataRead: return L"MatrixDataRead";
-            case ExpressionNode::Operation::MatrixDataWrite: return L"MatrixDataWrite";
-            case ExpressionNode::Operation::VectorDataRead: return L"VectorDataRead";
-            case ExpressionNode::Operation::VectorDataWrite: return L"VectorDataWrite";
-            case ExpressionNode::Operation::ScalarDataRead: return L"ScalarDataRead";
-            case ExpressionNode::Operation::ScalarDataWrite: return L"ScalarDataWrite";
+            case ExpressionNode::Operation::MatrixDataRead:
+                return L"MatrixDataRead";
+            case ExpressionNode::Operation::MatrixDataWrite:
+                return L"MatrixDataWrite";
+            case ExpressionNode::Operation::VectorDataRead:
+                return L"VectorDataRead";
+            case ExpressionNode::Operation::VectorDataWrite:
+                return L"VectorDataWrite";
+            case ExpressionNode::Operation::ScalarDataRead:
+                return L"ScalarDataRead";
+            case ExpressionNode::Operation::ScalarDataWrite:
+                return L"ScalarDataWrite";
 
-            default: return L"Unknown";
+            default:
+                return L"Unknown";
         }
     }
-}
+}// namespace spla
 
-#endif //SPLA_SPLAEXPRESSIONNODE_HPP
+#endif//SPLA_SPLAEXPRESSIONNODE_HPP

@@ -38,4 +38,4 @@
     #define SPLA_API
 #endif
 
-#endif //SPLA_SPLACONFIG_HPP
+#endif//SPLA_SPLACONFIG_HPP

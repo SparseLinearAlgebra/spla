@@ -28,9 +28,9 @@
 #ifndef SPLA_SPLAREFCNT_HPP
 #define SPLA_SPLAREFCNT_HPP
 
-#include <spla-cpp/SplaConfig.hpp>
-#include <cassert>
 #include <atomic>
+#include <cassert>
+#include <spla-cpp/SplaConfig.hpp>
 
 namespace spla {
 
@@ -44,7 +44,6 @@ namespace spla {
      */
     class RefCnt {
     public:
-
         virtual ~RefCnt() {
 #ifdef SPLA_DEBUG
             assert(mRefs.load() == 0);
@@ -84,21 +83,21 @@ namespace spla {
     };
 
     template<typename T>
-    static inline T* Ref(T* object) {
+    static inline T *Ref(T *object) {
         assert(object);
         object->AddRef();
         return object;
     }
 
     template<typename T>
-    static inline T* SafeRef(T* object) {
+    static inline T *SafeRef(T *object) {
         if (object)
             object->AddRef();
         return object;
     }
 
     template<typename T>
-    static inline void Unref(T* object) {
+    static inline void Unref(T *object) {
         if (object)
             object->RelRef();
     }
@@ -112,15 +111,15 @@ namespace spla {
     class RefPtr {
     public:
         RefPtr() = default;
-        RefPtr(T* object) {
+        RefPtr(T *object) {
             if (object)
                 mObject = Ref(object);
         }
-        RefPtr(const RefPtr& other) {
+        RefPtr(const RefPtr &other) {
             if (other.mObject)
                 mObject = Ref(other.mObject);
         }
-        RefPtr(RefPtr&& other) noexcept {
+        RefPtr(RefPtr &&other) noexcept {
             mObject = other.mObject;
             other.mObject = nullptr;
         }
@@ -129,7 +128,7 @@ namespace spla {
             mObject = nullptr;
         }
 
-        RefPtr<T> &operator=(const RefPtr& other) {
+        RefPtr<T> &operator=(const RefPtr &other) {
             if (this != &other)
                 this->Reset(SafeRef(other.Get()));
             return *this;
@@ -153,12 +152,12 @@ namespace spla {
             return mObject;
         }
 
-        T* operator->() const {
+        T *operator->() const {
             assert(mObject);
             return mObject;
         }
 
-        T& operator*() const {
+        T &operator*() const {
             assert(mObject);
             return *mObject;
         }
@@ -167,19 +166,19 @@ namespace spla {
             return mObject != nullptr;
         }
 
-        void Reset(T* ptr = nullptr) {
-            T* old = mObject;
+        void Reset(T *ptr = nullptr) {
+            T *old = mObject;
             mObject = ptr;
             Unref(old);
         }
 
-        T* Release() {
-            T* ptr = mObject;
+        T *Release() {
+            T *ptr = mObject;
             mObject = nullptr;
             return ptr;
         }
 
-        T* Get() const {
+        T *Get() const {
             return mObject;
         }
 
@@ -189,9 +188,9 @@ namespace spla {
         }
 
     private:
-        T* mObject = nullptr;
+        T *mObject = nullptr;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAREFCNT_HPP
+#endif//SPLA_SPLAREFCNT_HPP

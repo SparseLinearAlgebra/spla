@@ -35,14 +35,17 @@ size_t spla::Vector::GetNvals() const {
     return 0;
 }
 
-spla::RefPtr<spla::Vector> spla::Vector::Make(size_t nrows, const RefPtr<Type> &type, spla::Library &library) {
+spla::RefPtr<spla::Vector> spla::Vector::Make(size_t nrows,
+                                              const RefPtr<Type> &type,
+                                              spla::Library &library) {
     return spla::RefPtr<spla::Vector>(new Vector(nrows, type, library));
 }
 
-spla::Vector::Vector(size_t nrows, const RefPtr<Type> &type, spla::Library &library) : Object(Object::TypeName::Vector, library) {
+spla::Vector::Vector(size_t nrows,
+                     const RefPtr<Type> &type,
+                     spla::Library &library) : Object(Object::TypeName::Vector, library) {
     SetType(type);
 }
 
 spla::Vector::~Vector() {
-
 }

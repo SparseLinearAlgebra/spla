@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaLibraryPrivate.hpp>
 #include <detail/SplaError.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
 #include <expression/SplaExpressionManager.hpp>
 
 namespace {
@@ -35,7 +35,7 @@ namespace {
         for (const std::string &name : names) {
             try {
                 foundDevices.push_back(boost::compute::system::find_device(name));
-            } catch (const boost::compute::no_device_found&) {
+            } catch (const boost::compute::no_device_found &) {
                 RAISE_ERROR(DeviceNotPresent, ("Device does not exist: '" + name + "'").c_str())
             }
         }
@@ -54,17 +54,17 @@ namespace {
         }
         return devices[0].platform();
     }
-}
+}// namespace
 
 spla::LibraryPrivate::LibraryPrivate(
-    spla::Library &library,
-    spla::Library::Config config)
-: mDevices(FindAllDevices(config.GetDevicesNames())),
-  mPlatform(GetDevicesPlatform(mDevices)),
-  mContext(mDevices),
-  mContextConfig(std::move(config)) {
-      mDefaultDesc = Descriptor::Make(library);
-      mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
+        spla::Library &library,
+        spla::Library::Config config)
+    : mDevices(FindAllDevices(config.GetDevicesNames())),
+      mPlatform(GetDevicesPlatform(mDevices)),
+      mContext(mDevices),
+      mContextConfig(std::move(config)) {
+    mDefaultDesc = Descriptor::Make(library);
+    mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
 }
 
 tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {

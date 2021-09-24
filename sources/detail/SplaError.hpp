@@ -29,8 +29,8 @@
 #define SPLA_SPLAERROR_HPP
 
 #include <exception>
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace spla {
 
@@ -48,25 +48,23 @@ namespace spla {
     /**
      * Generic library exception.
      */
-    class Exception: public std::exception {
+    class Exception : public std::exception {
     public:
-
         Exception(std::wstring message, std::string function, std::string file, size_t line, Status status, bool critical)
-                : std::exception(),
-                  mMessage(std::move(message)),
-                  mFunction(std::move(function)),
-                  mFile(std::move(file)),
-                  mLine(line),
-                  mStatus(status),
-                  mCritical(critical) {
-
+            : std::exception(),
+              mMessage(std::move(message)),
+              mFunction(std::move(function)),
+              mFile(std::move(file)),
+              mLine(line),
+              mStatus(status),
+              mCritical(critical) {
         }
 
-        Exception(const Exception& e) noexcept = default;
-        Exception(Exception&& e) noexcept = default;
+        Exception(const Exception &e) noexcept = default;
+        Exception(Exception &&e) noexcept = default;
         ~Exception() noexcept override = default;
 
-        const char* what() const noexcept override {
+        const char *what() const noexcept override {
             if (!mCached) {
                 mCached = true;
 
@@ -81,15 +79,15 @@ namespace spla {
             return mWhatCached.c_str();
         }
 
-        const std::wstring& GetMessage() const noexcept {
+        const std::wstring &GetMessage() const noexcept {
             return mMessage;
         }
 
-        const std::string& GetFunction() const noexcept {
+        const std::string &GetFunction() const noexcept {
             return mFunction;
         }
 
-        const std::string& GetFile() const noexcept {
+        const std::string &GetFile() const noexcept {
             return mFile;
         }
 
@@ -122,15 +120,14 @@ namespace spla {
      * @tparam Type Exception error code (type)
      */
     template<Status status>
-    class TException: public Exception {
+    class TException : public Exception {
     public:
-        TException(std::wstring message, std::string&& function, std::string&& file, size_t line, bool critical)
-                : Exception(std::move(message), std::move(function), std::move(file), line, status, critical)  {
-
+        TException(std::wstring message, std::string &&function, std::string &&file, size_t line, bool critical)
+            : Exception(std::move(message), std::move(function), std::move(file), line, status, critical) {
         }
 
-        TException(const TException& other) noexcept = default;
-        TException(TException&& other) noexcept = default;
+        TException(const TException &other) noexcept = default;
+        TException(TException &&other) noexcept = default;
         ~TException() noexcept override = default;
     };
 
@@ -143,28 +140,34 @@ namespace spla {
     using InvalidState = TException<Status::InvalidState>;
     using NotImplemented = TException<Status::NotImplemented>;
 
-}
+}// namespace spla
 
 // An error, in theory, can recover after this
-#define RAISE_ERROR(type, message)                                                      \
-    do {                                                                                \
-        ::std::wstringstream __ws;                                                      \
-        __ws << message;                                                                \
-        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, false);        \
+#define RAISE_ERROR(type, message)                                               \
+    do {                                                                         \
+        ::std::wstringstream __ws;                                               \
+        __ws << message;                                                         \
+        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, false); \
     } while (0);
 
-#define CHECK_RAISE_ERROR(condition, type, message)                                     \
-    if (!(condition)) { RAISE_ERROR(type, message); } else { }
+#define CHECK_RAISE_ERROR(condition, type, message) \
+    if (!(condition)) {                             \
+        RAISE_ERROR(type, message);                 \
+    } else {                                        \
+    }
 
 // Critical errors, cause library shutdown
-#define RAISE_CRITICAL_ERROR(type, message)                                             \
-    do {                                                                                \
-        ::std::wstringstream __ws;                                                      \
-        __ws << message;                                                                \
-        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, true);         \
+#define RAISE_CRITICAL_ERROR(type, message)                                     \
+    do {                                                                        \
+        ::std::wstringstream __ws;                                              \
+        __ws << message;                                                        \
+        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, true); \
     } while (0);
 
-#define CHECK_RAISE_CRITICAL_ERROR(condition, type, message)                            \
-    if (!(condition)) { RAISE_CRITICAL_ERROR(type, message); } else { }
+#define CHECK_RAISE_CRITICAL_ERROR(condition, type, message) \
+    if (!(condition)) {                                      \
+        RAISE_CRITICAL_ERROR(type, message);                 \
+    } else {                                                 \
+    }
 
-#endif //SPLA_SPLAERROR_HPP
+#endif//SPLA_SPLAERROR_HPP

@@ -28,13 +28,13 @@
 #ifndef SPLA_MATRIX_HPP
 #define SPLA_MATRIX_HPP
 
-#include <spla-cpp/Spla.hpp>
-#include <vector>
-#include <utility>
+#include <cstdlib>
+#include <cstring>
 #include <functional>
 #include <random>
-#include <cstring>
-#include <cstdlib>
+#include <spla-cpp/Spla.hpp>
+#include <utility>
+#include <vector>
 
 namespace utils {
 
@@ -81,7 +81,7 @@ namespace utils {
             std::vector<unsigned int> spCols(nvals);
             std::vector<char> spVals(nvals * elementSize);
 
-            auto& library = m->GetLibrary();
+            auto &library = m->GetLibrary();
             auto data = spla::DataMatrix::Make(library);
             data->SetRows(spRows.data());
             data->SetCols(spCols.data());
@@ -116,7 +116,7 @@ namespace utils {
                 indices.emplace_back(row, col);
             }
 
-            std::sort(indices.begin(), indices.end(), [](const Pair& a, const Pair& b) {
+            std::sort(indices.begin(), indices.end(), [](const Pair &a, const Pair &b) {
                 return a.first < b.first || (a.first == b.first && a.second < b.second);
             });
 
@@ -124,7 +124,7 @@ namespace utils {
 
             Pair prev{static_cast<unsigned int>(nrows), static_cast<unsigned int>(ncols)};
             for (size_t i = 0; i < indices.size(); i++) {
-                auto& p = indices[i];
+                auto &p = indices[i];
 
                 if (p != prev) {
                     toCopy.push_back(i);
@@ -140,8 +140,8 @@ namespace utils {
             r.rows.reserve(r.nvals);
             r.cols.reserve(r.nvals);
 
-            for (auto idx: toCopy) {
-                auto& p = indices[idx];
+            for (auto idx : toCopy) {
+                auto &p = indices[idx];
                 r.rows.push_back(p.first);
                 r.rows.push_back(p.second);
             }
@@ -154,7 +154,7 @@ namespace utils {
 
                 size_t offset = 0;
 
-                for (auto idx: toCopy) {
+                for (auto idx : toCopy) {
                     std::memcpy(r.vals.data() + offset, vals.data() + elementSize * idx, elementSize);
                     offset += elementSize;
                 }
@@ -192,6 +192,6 @@ namespace utils {
         }
     };
 
-}
+}// namespace utils
 
-#endif //SPLA_MATRIX_HPP
+#endif//SPLA_MATRIX_HPP

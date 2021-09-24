@@ -26,11 +26,11 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
-#include <boost/compute.hpp>
-#include <vector>
 #include <algorithm>
-#include <random>
+#include <boost/compute.hpp>
 #include <chrono>
+#include <random>
+#include <vector>
 
 TEST(Basic, BoostExample) {
     namespace compute = boost::compute;
@@ -47,7 +47,7 @@ TEST(Basic, BoostExample) {
 
     // generate random numbers on the host
     std::vector<float> host_vector(1000000);
-    std::generate(host_vector.begin(), host_vector.end(), [&](){ return dist(engine); });
+    std::generate(host_vector.begin(), host_vector.end(), [&]() { return dist(engine); });
 
     // create vector on the device
     compute::vector<float> device_vector(1000000, ctx);
@@ -63,7 +63,7 @@ TEST(Basic, BoostExample) {
 
     // Ensure, that data is sorted
     float prev = -1;
-    for (auto v: host_vector) {
+    for (auto v : host_vector) {
         EXPECT_LE(prev, v);
         prev = v;
     }
@@ -79,13 +79,13 @@ TEST(Basic, PriceCost) {
 
     // prices #1 (from 10.0 to 11.0)
     std::vector<float> prices1;
-    for(float i = 10.0; i <= 11.0; i += 0.1){
+    for (float i = 10.0; i <= 11.0; i += 0.1) {
         prices1.push_back(i);
     }
 
     // prices #2 (from 11.0 to 10.0)
     std::vector<float> prices2;
-    for(float i = 11.0; i >= 10.0; i -= 0.1){
+    for (float i = 11.0; i >= 10.0; i -= 0.1) {
         prices2.push_back(i);
     }
 
@@ -114,15 +114,12 @@ TEST(Basic, PriceCost) {
     compute::vector<float>::iterator iter = boost::get<0>(
             compute::find_if(
                     compute::make_zip_iterator(
-                            boost::make_tuple(gpu_prices1.begin(), gpu_prices2.begin())
-                    ),
+                            boost::make_tuple(gpu_prices1.begin(), gpu_prices2.begin())),
                     compute::make_zip_iterator(
-                            boost::make_tuple(gpu_prices1.end(), gpu_prices2.end())
-                    ),
+                            boost::make_tuple(gpu_prices1.end(), gpu_prices2.end())),
                     check_price_cross,
-                    queue
-            ).get_iterator_tuple()
-    );
+                    queue)
+                    .get_iterator_tuple());
 
     // print out result
     int index = std::distance(gpu_prices1.begin(), iter);
@@ -143,7 +140,7 @@ TEST(Basic, SortIndices) {
     std::default_random_engine engine(std::chrono::system_clock::now().time_since_epoch().count());
     auto indicesCount = 100;
     auto dist = std::uniform_int_distribution<int>(0, indicesCount);
-    auto generator = [&](){ return dist(engine); };
+    auto generator = [&]() { return dist(engine); };
 
     std::vector<int> I(indicesCount);
     std::vector<int> J(indicesCount);
@@ -190,15 +187,15 @@ TEST(Basic, SVM) {
     compute::command_queue queue(ctx, gpu);
 
     const int size = 10;
-    cl_int input[size] = { 2, 3, 1, 0, 9, 7, 8, 6, 5, 4 };
-    cl_int output[size] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    cl_int input[size] = {2, 3, 1, 0, 9, 7, 8, 6, 5, 4};
+    cl_int output[size] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     compute::svm_ptr<cl_int> buffer = compute::svm_alloc<cl_int>(ctx, size);
 
     queue.enqueue_svm_memcpy(buffer.get(), input, size * sizeof(int)).wait();
 
-    compute::sort((cl_int*)buffer.get(),
-                  (cl_int*)buffer.get() + size,
+    compute::sort((cl_int *) buffer.get(),
+                  (cl_int *) buffer.get() + size,
                   queue);
 
     queue.enqueue_svm_memcpy(output, buffer.get(), size * sizeof(int)).wait();

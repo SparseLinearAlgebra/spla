@@ -28,11 +28,11 @@
 #ifndef SPLA_SPLAEXPRESSIONMANAGER_HPP
 #define SPLA_SPLAEXPRESSIONMANAGER_HPP
 
-#include <spla-cpp/SplaLibrary.hpp>
+#include <expression/SplaExpressionContext.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 #include <spla-cpp/SplaExpression.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
-#include <expression/SplaNodeProcessor.hpp>
-#include <expression/SplaExpressionContext.hpp>
+#include <spla-cpp/SplaLibrary.hpp>
 #include <unordered_map>
 
 namespace spla {
@@ -51,32 +51,32 @@ namespace spla {
      * @see ExpressionNode
      * @see NodeProcessor
      */
-    class ExpressionManager final: public RefCnt {
+    class ExpressionManager final : public RefCnt {
     public:
-        explicit ExpressionManager(Library& library);
+        explicit ExpressionManager(Library &library);
         ~ExpressionManager() override = default;
 
         void Submit(const RefPtr<Expression> &expression);
         void Register(const RefPtr<NodeProcessor> &processor);
 
     private:
-        void FindStartNodes(ExpressionContext& context);
-        void FindEndNodes(ExpressionContext& context);
-        void CheckCycles(ExpressionContext& context);
+        void FindStartNodes(ExpressionContext &context);
+        void FindEndNodes(ExpressionContext &context);
+        void CheckCycles(ExpressionContext &context);
         bool CheckCyclesImpl(size_t idx, std::vector<int> &visited, const std::vector<RefPtr<ExpressionNode>> &nodes);
-        void DefineTraversalPath(ExpressionContext& context);
+        void DefineTraversalPath(ExpressionContext &context);
         void DefineTraversalPathImpl(size_t idx, size_t &t, std::vector<size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
 
-        RefPtr<NodeProcessor> SelectProcessor(size_t nodeIdx, ExpressionContext& context);
+        RefPtr<NodeProcessor> SelectProcessor(size_t nodeIdx, ExpressionContext &context);
 
     private:
         using ProcessorList = std::vector<RefPtr<NodeProcessor>>;
         using ProcessorMap = std::unordered_map<ExpressionNode::Operation, ProcessorList>;
         ProcessorMap mProcessors;
 
-        Library& mLibrary;
+        Library &mLibrary;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAEXPRESSIONMANAGER_HPP
+#endif//SPLA_SPLAEXPRESSIONMANAGER_HPP

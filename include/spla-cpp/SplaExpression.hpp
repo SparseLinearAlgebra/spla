@@ -28,15 +28,15 @@
 #ifndef SPLA_SPLAEXPRESSION_HPP
 #define SPLA_SPLAEXPRESSION_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaMatrix.hpp>
-#include <spla-cpp/SplaVector.hpp>
+#include <atomic>
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
+#include <spla-cpp/SplaMatrix.hpp>
+#include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
+#include <spla-cpp/SplaVector.hpp>
 #include <vector>
-#include <atomic>
 
 namespace spla {
 
@@ -44,7 +44,7 @@ namespace spla {
      * @class Expression
      *
      */
-    class SPLA_API Expression final: public Object {
+    class SPLA_API Expression final : public Object {
     public:
         ~Expression() override = default;
 
@@ -155,11 +155,11 @@ namespace spla {
          *
          * @return Created expression
          */
-        static RefPtr<Expression> Make(class Library& library);
+        static RefPtr<Expression> Make(class Library &library);
 
     private:
         friend class ExpressionManager;
-        explicit Expression(class Library& library);
+        explicit Expression(class Library &library);
 
         RefPtr<ExpressionNode> MakeNode(ExpressionNode::Operation op,
                                         std::vector<RefPtr<Object>> &&args,
@@ -171,6 +171,6 @@ namespace spla {
         std::atomic_long mState;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAEXPRESSION_HPP
+#endif//SPLA_SPLAEXPRESSION_HPP

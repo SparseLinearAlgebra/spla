@@ -32,11 +32,10 @@
 
 namespace spla {
 
-    class SPLA_API FunctionBinary final: public Object {
+    class SPLA_API FunctionBinary final : public Object {
     public:
-
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAFUNCTIONBINARY_HPP
+#endif//SPLA_SPLAFUNCTIONBINARY_HPP

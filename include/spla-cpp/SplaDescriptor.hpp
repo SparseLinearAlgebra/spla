@@ -29,8 +29,8 @@
 #define SPLA_SPLADESCRIPTOR_HPP
 
 #include <spla-cpp/SplaObject.hpp>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 namespace spla {
 
@@ -43,7 +43,7 @@ namespace spla {
      * Params may be specified as is, or with additional string value,
      * which can be used to provide additional param options.
      */
-    class SPLA_API Descriptor final: public Object {
+    class SPLA_API Descriptor final : public Object {
     public:
         ~Descriptor() override = default;
 
@@ -78,7 +78,7 @@ namespace spla {
          *
          * @return True if this param was set in descriptor
          */
-        bool GetParam(Param param, std::wstring& value) const;
+        bool GetParam(Param param, std::wstring &value) const;
 
         /**
          * Check if specified param was set in descriptor.
@@ -96,15 +96,15 @@ namespace spla {
          *
          * @return New descriptor instance
          */
-        static RefPtr<Descriptor> Make(class Library& library);
+        static RefPtr<Descriptor> Make(class Library &library);
 
     private:
-        explicit Descriptor(class Library& library);
+        explicit Descriptor(class Library &library);
 
         // Map of desc configurable params and its values
         std::unordered_map<Param, std::wstring> mParams;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLADESCRIPTOR_HPP
+#endif//SPLA_SPLADESCRIPTOR_HPP

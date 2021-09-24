@@ -25,12 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaLibrary.hpp>
-#include <detail/SplaError.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
+#include <detail/SplaError.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
 #include <memory>
+#include <spla-cpp/SplaLibrary.hpp>
 #include <sstream>
 
 spla::Library::Library(Config config)
@@ -50,21 +50,19 @@ void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
 
 std::string spla::Library::PrintContextConfig() const noexcept {
     std::stringstream confStream;
-    
+
     const boost::compute::platform &platform = GetPrivate().GetPlatform();
     const std::vector<boost::compute::device> &devices = GetPrivate().GetDevices();
-    confStream <<
-        "Platform: " << platform.name() << " (" << platform.id() << ")" << '\n' <<
-        "   Vendor: " << platform.vendor() << '\n' <<
-        "   Profile: " << platform.profile() << '\n' <<
-        "   Version: " << platform.version() << '\n' <<
-        "Total Devices: " << devices.size() << '\n';
+    confStream << "Platform: " << platform.name() << " (" << platform.id() << ")" << '\n'
+               << "   Vendor: " << platform.vendor() << '\n'
+               << "   Profile: " << platform.profile() << '\n'
+               << "   Version: " << platform.version() << '\n'
+               << "Total Devices: " << devices.size() << '\n';
     for (const boost::compute::device &device : devices) {
-        confStream <<
-            "   * Device: " << device.name() << " (" << device.id()  << ")" << '\n' <<
-            "        Vendor: " << device.vendor() << '\n' <<
-            "        Profile: " << device.profile() << '\n' <<
-            "        Version: " << device.version() << '\n';
+        confStream << "   * Device: " << device.name() << " (" << device.id() << ")" << '\n'
+                   << "        Vendor: " << device.vendor() << '\n'
+                   << "        Profile: " << device.profile() << '\n'
+                   << "        Version: " << device.version() << '\n';
     }
     return confStream.str();
 }
@@ -105,8 +103,7 @@ std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
     if (!mDeviceType.has_value() &&
         !mPlatformName.has_value() &&
         mDeviceAmount.has_value() &&
-        mDeviceAmount.value() == 1U)
-    {
+        mDeviceAmount.value() == 1U) {
         return {boost::compute::system::default_device().name()};
     }
 
@@ -116,11 +113,9 @@ std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
             continue;
         }
         for (const boost::compute::device &device : platform.devices()) {
-            bool matchType = !mDeviceType.has_value() || (
-                (mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
-                (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
-                (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator)
-            );
+            bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
+                                                          (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
+                                                          (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator));
             bool matchPlatform = !mPlatformName.has_value() || device.platform().name() == mPlatformName.value();
             if (matchType && matchPlatform) {
                 devicesNames.push_back(device.name());

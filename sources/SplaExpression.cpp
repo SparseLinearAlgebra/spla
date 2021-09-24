@@ -25,9 +25,9 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaExpression.hpp>
 #include <detail/SplaError.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
+#include <spla-cpp/SplaExpression.hpp>
 
 spla::RefPtr<spla::Expression> spla::Expression::Make(spla::Library &library) {
     return spla::RefPtr<spla::Expression>(new Expression(library));
@@ -65,13 +65,13 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
                            std::vector<RefPtr<Object>> &&args,
                            const spla::RefPtr<spla::Descriptor> &desc) {
-    for (const auto& arg: args)
+    for (const auto &arg : args)
         CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, L"Passed null argument to op=" << ExpressionNodeOpToStr(op));
 
     RefPtr<ExpressionNode> node(new ExpressionNode(op, *this, GetLibrary()));
     node->SetIdx(mNodes.size());
     node->SetArgs(std::move(args));
-    node->SetDescriptor(desc.IsNull()? GetLibrary().GetPrivate().GetDefaultDesc(): desc);
+    node->SetDescriptor(desc.IsNull() ? GetLibrary().GetPrivate().GetDefaultDesc() : desc);
     mNodes.push_back(node);
     return node;
 }
@@ -82,8 +82,7 @@ spla::Expression::MakeDataWrite(const spla::RefPtr<spla::Matrix> &matrix,
                                 const spla::RefPtr<spla::Descriptor> &desc) {
     std::vector<RefPtr<Object>> args = {
             matrix.As<Object>(),
-            data.As<Object>()
-    };
+            data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::MatrixDataWrite,
                     std::move(args),
@@ -96,8 +95,7 @@ spla::Expression::MakeDataWrite(const spla::RefPtr<spla::Vector> &vector,
                                 const spla::RefPtr<spla::Descriptor> &desc) {
     std::vector<RefPtr<Object>> args = {
             vector.As<Object>(),
-            data.As<Object>()
-    };
+            data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::VectorDataWrite,
                     std::move(args),
@@ -110,8 +108,7 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Matrix> &matrix,
                                const spla::RefPtr<spla::Descriptor> &desc) {
     std::vector<RefPtr<Object>> args = {
             matrix.As<Object>(),
-            data.As<Object>()
-    };
+            data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::MatrixDataRead,
                     std::move(args),
@@ -119,12 +116,12 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Matrix> &matrix,
 }
 
 spla::RefPtr<spla::ExpressionNode>
-spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector, const spla::RefPtr<spla::DataVector> &data,
+spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
+                               const spla::RefPtr<spla::DataVector> &data,
                                const spla::RefPtr<spla::Descriptor> &desc) {
     std::vector<RefPtr<Object>> args = {
             vector.As<Object>(),
-            data.As<Object>()
-    };
+            data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::VectorDataRead,
                     std::move(args),

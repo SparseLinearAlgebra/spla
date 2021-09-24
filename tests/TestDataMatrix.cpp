@@ -27,7 +27,7 @@
 
 #include <Testing.hpp>
 
-static void testCommon(spla::Library& library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
+static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
     utils::Matrix source = utils::Matrix::Generate(M, N, nvals, seed);
     source.FillFloatData(seed);
 
@@ -51,7 +51,7 @@ static void testCommon(spla::Library& library, size_t M, size_t N, size_t nvals,
     // EXPECT_TRUE(expected.Equals(spM));
 }
 
-static void testSortedNoDuplicates(spla::Library& library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
+static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
     utils::Matrix source = utils::Matrix::GenerateStDp(M, N, nvals, seed);
     source.FillFloatData(seed);
 
@@ -74,7 +74,7 @@ static void testSortedNoDuplicates(spla::Library& library, size_t M, size_t N, s
     library.Submit(spExprWrite);
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix& expected = source;
+    utils::Matrix &expected = source;
     // todo: uncomment later, since for now it won't pass
     // EXPECT_TRUE(expected.Equals(spM));
 }

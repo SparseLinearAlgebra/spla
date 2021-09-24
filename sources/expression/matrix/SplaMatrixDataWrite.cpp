@@ -34,10 +34,10 @@ bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &cont
 
 void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
     // todo: impl me!
-    auto& taskflow = context.nodesTaskflow[nodeIdx];
+    auto &taskflow = context.nodesTaskflow[nodeIdx];
 
     // todo: remove it!
-    taskflow.emplace([=](){
+    taskflow.emplace([=]() {
         std::wstringstream msg;
         msg << L"Run MatrixDataWrite for node idx=" << nodeIdx << std::endl;
         std::wcout << msg.str();

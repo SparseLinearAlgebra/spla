@@ -28,8 +28,8 @@
 #ifndef SPLA_SPLADATA_HPP
 #define SPLA_SPLADATA_HPP
 
-#include <spla-cpp/SplaObject.hpp>
 #include <functional>
+#include <spla-cpp/SplaObject.hpp>
 
 namespace spla {
 
@@ -37,13 +37,13 @@ namespace spla {
      * @class Data
      * Generic data container to pass to/from CPU user host-data (with autorelease feature).
      */
-    class SPLA_API Data: public Object {
+    class SPLA_API Data : public Object {
     public:
-        Data(Object::TypeName dataType, class Library& library);
+        Data(Object::TypeName dataType, class Library &library);
         ~Data() override = default;
 
         /** Release proc used to release user data pointers */
-        using ReleaseProc = std::function<void(void*)>;
+        using ReleaseProc = std::function<void(void *)>;
 
         /**
          * Set release proc, used to deallocate data raw memory pointers, provided by user.
@@ -61,7 +61,7 @@ namespace spla {
      * @class DataMatrix
      * Matrix ram coo data.
      */
-    class SPLA_API DataMatrix final: public Data {
+    class SPLA_API DataMatrix final : public Data {
     public:
         ~DataMatrix() override;
 
@@ -70,21 +70,21 @@ namespace spla {
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetRows(unsigned int* rows);
+        void SetRows(unsigned int *rows);
 
         /**
          * Set column indices buffer pointer.
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetCols(unsigned int* cols);
+        void SetCols(unsigned int *cols);
 
         /**
          * Set values buffer pointer.
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetVals(void* values);
+        void SetVals(void *values);
 
         /**
          * Set values count in this data storage.
@@ -93,25 +93,25 @@ namespace spla {
         void SetNvals(size_t nvals);
 
         /** @return Row indices buffer */
-        unsigned int* GetRows() const;
+        unsigned int *GetRows() const;
 
         /** @return Column indices buffer */
-        unsigned int* GetCols() const;
+        unsigned int *GetCols() const;
 
         /**@return Values buffer */
-        void* GetVals() const;
+        void *GetVals() const;
 
         /** @return Number of entries in data */
         size_t GetNvals() const;
 
-        static RefPtr<DataMatrix> Make(Library& library);
+        static RefPtr<DataMatrix> Make(Library &library);
 
     private:
-        explicit DataMatrix(class Library& library);
+        explicit DataMatrix(class Library &library);
 
-        unsigned int* mRows = nullptr;
-        unsigned int* mCols = nullptr;
-        void* mValues = nullptr;
+        unsigned int *mRows = nullptr;
+        unsigned int *mCols = nullptr;
+        void *mValues = nullptr;
         size_t mNvals = 0;
     };
 
@@ -119,9 +119,9 @@ namespace spla {
      * @class DataVector
      * Vector ram coo data.
      */
-    class SPLA_API DataVector final: public Data {
+    class SPLA_API DataVector final : public Data {
     public:
-        explicit DataVector(class Library& library);
+        explicit DataVector(class Library &library);
         ~DataVector() override;
 
         /**
@@ -129,14 +129,14 @@ namespace spla {
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetRows(unsigned int* rows);
+        void SetRows(unsigned int *rows);
 
         /**
          * Set values buffer pointer.
          * @note Pass null, if this data must be ignored in `read` operations.
          * @param rows Data pointer
          */
-        void SetVals(void* values);
+        void SetVals(void *values);
 
         /**
          * Set values count in this data storage.
@@ -145,19 +145,19 @@ namespace spla {
         void SetNvals(size_t nvals);
 
         /** @return Row indices buffer */
-        unsigned int* GetRows() const;
+        unsigned int *GetRows() const;
 
         /**@return Values buffer */
-        void* GetVals() const;
+        void *GetVals() const;
 
         /** @return Number of entries in data */
         size_t GetNvals() const;
 
-        static RefPtr<DataVector> Make(Library& library);
+        static RefPtr<DataVector> Make(Library &library);
 
     private:
-        unsigned int* mRows = nullptr;
-        void* mValues = nullptr;
+        unsigned int *mRows = nullptr;
+        void *mValues = nullptr;
         size_t mNvals = 0;
     };
 
@@ -165,26 +165,26 @@ namespace spla {
      * @class DataScalar
      * Scalar ram data
      */
-    class SPLA_API DataScalar final: public Data {
+    class SPLA_API DataScalar final : public Data {
     public:
-        explicit DataScalar(class Library& library);
+        explicit DataScalar(class Library &library);
         ~DataScalar() override;
 
         /**
          * Set value buffer.
          * @param value Data pointer
          */
-        void SetValue(void* value);
+        void SetValue(void *value);
 
         /** @return Scalar values */
-        void* GetValue() const;
+        void *GetValue() const;
 
-        static RefPtr<DataScalar> Make(Library& library);
+        static RefPtr<DataScalar> Make(Library &library);
 
     private:
-        void* mValue = nullptr;
+        void *mValue = nullptr;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLADATA_HPP
+#endif//SPLA_SPLADATA_HPP

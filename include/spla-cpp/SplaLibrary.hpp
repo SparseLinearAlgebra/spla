@@ -28,12 +28,12 @@
 #ifndef SPLA_SPLALIBRARY_HPP
 #define SPLA_SPLALIBRARY_HPP
 
+#include <memory>
+#include <optional>
 #include <spla-cpp/SplaConfig.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
-#include <memory>
-#include <vector>
 #include <string>
-#include <optional>
+#include <vector>
 
 namespace spla {
 
@@ -143,6 +143,6 @@ namespace spla {
         std::unique_ptr<class LibraryPrivate> mPrivate;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLALIBRARY_HPP
+#endif//SPLA_SPLALIBRARY_HPP

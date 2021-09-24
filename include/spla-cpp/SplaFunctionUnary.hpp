@@ -28,14 +28,14 @@
 #ifndef SPLA_SPLAFUNCTIONUNARY_HPP
 #define SPLA_SPLAFUNCTIONUNARY_HPP
 
+#include <bitset>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
 #include <string>
-#include <bitset>
 
 namespace spla {
 
-    class SPLA_API FunctionUnary final: public Object {
+    class SPLA_API FunctionUnary final : public Object {
     public:
         ~FunctionUnary() override = default;
 
@@ -55,7 +55,7 @@ namespace spla {
             return mSource;
         }
 
-        bool IsApplicable(const TypedObject& arg1, const TypedObject& result) const {
+        bool IsApplicable(const TypedObject &arg1, const TypedObject &result) const {
             return arg1.GetType() == mArg1 && result.GetType() == mResult;
         }
 
@@ -66,6 +66,6 @@ namespace spla {
         std::bitset<static_cast<size_t>(Flags::Max)> mFlags;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAFUNCTIONUNARY_HPP
+#endif//SPLA_SPLAFUNCTIONUNARY_HPP

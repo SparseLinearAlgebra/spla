@@ -52,7 +52,6 @@ spla::ExpressionNode::ExpressionNode(spla::ExpressionNode::Operation operation, 
     : Object(Object::TypeName::ExpressionNode, library),
       mNodeOp(operation),
       mParent(expression) {
-
 }
 
 void spla::ExpressionNode::Link(spla::ExpressionNode *next) {
@@ -76,10 +75,10 @@ void spla::ExpressionNode::SetDescriptor(const spla::RefPtr<spla::Descriptor> &d
     mDescriptor = desc;
 }
 
-const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetPrev() const {
+const std::vector<spla::ExpressionNode *> &spla::ExpressionNode::GetPrev() const {
     return mPrev;
 }
 
-const std::vector<spla::ExpressionNode*> &spla::ExpressionNode::GetNext() const {
+const std::vector<spla::ExpressionNode *> &spla::ExpressionNode::GetNext() const {
     return mNext;
 }

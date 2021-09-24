@@ -32,7 +32,7 @@
 
 namespace spla {
 
-    class MatrixDataWrite final: public NodeProcessor {
+    class MatrixDataWrite final : public NodeProcessor {
     public:
         ~MatrixDataWrite() override = default;
         bool Select(size_t nodeIdx, ExpressionContext &context) override;
@@ -40,6 +40,6 @@ namespace spla {
         ExpressionNode::Operation GetOperationType() const override;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAMATRIXDATAWRITE_HPP
+#endif//SPLA_SPLAMATRIXDATAWRITE_HPP

@@ -41,12 +41,12 @@ namespace spla {
      * type annotations, size in bytes and etc. Value itself is bytes memory
      * region, interpreted in the way defined by the user.
      */
-    class SPLA_API Type final: public Object {
+    class SPLA_API Type final : public Object {
     public:
         ~Type() override = default;
 
         /** @return Type string name */
-        const std::wstring& GetId() const {
+        const std::wstring &GetId() const {
             return mId;
         }
 
@@ -69,10 +69,10 @@ namespace spla {
          *
          * @return New type instance
          */
-        static RefPtr<Type> Make(std::wstring id, size_t typeSize, class Library& library);
+        static RefPtr<Type> Make(std::wstring id, size_t typeSize, class Library &library);
 
     private:
-        Type(std::wstring id, size_t typeSize, bool builtIn, class Library& library);
+        Type(std::wstring id, size_t typeSize, bool builtIn, class Library &library);
 
         // Unique type name (id)
         // Unix: utf-32, Windows: utf-16
@@ -89,9 +89,8 @@ namespace spla {
     /** Inherit from this class if your object must have type info */
     class SPLA_API TypedObject {
     public:
-
         /** @return True if this and other typed object has compatible types */
-        [[nodiscard]] bool IsCompatible(const TypedObject& other) const {
+        [[nodiscard]] bool IsCompatible(const TypedObject &other) const {
             return mType == other.mType;
         }
 
@@ -109,6 +108,6 @@ namespace spla {
         RefPtr<Type> mType;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLATYPE_HPP
+#endif//SPLA_SPLATYPE_HPP

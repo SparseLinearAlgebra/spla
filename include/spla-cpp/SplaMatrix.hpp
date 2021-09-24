@@ -36,7 +36,7 @@ namespace spla {
     /**
      * @class Matrix
      */
-    class SPLA_API Matrix final: public Object, public TypedObject {
+    class SPLA_API Matrix final : public Object, public TypedObject {
     public:
         ~Matrix() override;
 
@@ -59,15 +59,15 @@ namespace spla {
          *
          * @return New matrix instance
          */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library& library);
+        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Matrix(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library& library);
+        Matrix(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library &library);
 
         // Separate storage for private impl
         //RefPtr<class MatrixStorage> mStorage;
     };
 
-}
+}// namespace spla
 
-#endif //SPLA_SPLAMATRIX_HPP
+#endif//SPLA_SPLAMATRIX_HPP
