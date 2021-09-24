@@ -33,6 +33,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace spla {
 
@@ -64,80 +65,55 @@ namespace spla {
             };
 
             /**
-             * Amount of used OpenCL devices.
-             */
-            enum DeviceAmount {
-                One,
-                All,
-            };
-
-            /**
-             * Creates @p Config with all specified devices.
-             *
-             * @param devices Vector of device names which will be used in context.
-             *
-             * @note No checks about devices are performed, so
-             * first make sure that all @p devices can be used in
-             * the same context.
-             */
-            explicit Config(const std::vector<std::string> &devices);
-
-            /**
-             * Creates @p Config with only one default device.
+             * Initializes @p Config.
+             * If no other setter will be called, context with only one default device will be created.
+             * Otherwise context will contain those and only those devices, which meet given
+             * constraints.
              */
             explicit Config();
 
             /**
-             * Creates @p Config with all devices from @p platform,
-             * specified type @p type and @p amount.
+             * Sets platform name to @p platformName.
+             * All context devices will belong to specified platform.
+             * If this function was not called,
+             * the one for which as many devices as possible meet the given parameters will be used.
              * 
-             * @param platform Name of OpenCL platform.
-             * @param type Type of required device type.
-             * @param amount Quantity of devices of @p type which will be used in context.
-             * In this case all devices in context will be of same type.
+             * @param platformName Full name of OpenCL platform.
              */
-            explicit Config(
-                const std::string &platform,
-                DeviceType type,
-                DeviceAmount amount
-            );
+            Config &SetPlatform(std::string platformName);
 
             /**
-             * Creates @p Config which context will contain devices of @p type
-             * in quantity @p amount.
+             * Sets device type to @p deviceType.
+             * All devices will be chosen, if device type was not set.
              * 
-             * @param type Type of required device.
-             * @param amount Quantity of required device type.
-             * 
-             * @note No platform is specified, so the one containing more
-             * devices of type @p type will be used.
+             * @param deviceType Type of device to be set.
              */
-            explicit Config(
-                DeviceType type,
-                DeviceAmount amount
-            );
+            Config &SetDeviceType(DeviceType deviceType);
 
             /**
-             * Creates @p Config with context will contain devices in
-             * quantiity @p amount.
+             * Limits the quantity of devices in context.
+             * @p 1 by default.
              * 
-             * @param amount Quantity of required devices.
-             * 
-             * @note No platform is specified, so the one containing more
-             * devices will be used.
+             * @param deviceAmount Required quantity of devices.
              */
-            explicit Config(
-                DeviceAmount amount
-            );
+            Config &LimitAmount(std::size_t deviceAmount);
 
-            const std::vector<std::string> &GetDevicesNames() const noexcept;
+            /**
+             * Removes any limit on devices amount.
+             * Hence, all avaiable devices will be used.
+             */
+            Config &RemoveAmountLimit();
+
+            std::vector<std::string> GetDevicesNames() const;
 
         private:
-            std::vector<std::string> mDevicesNames;
+            std::optional<std::string> mPlatformName;
+            std::optional<DeviceType> mDeviceType;
+            std::optional<std::size_t> mDeviceAmount = std::optional{1U};
         };
 
     public:
-        Library(const Config &config);
+        Library(Config config);
 
         Library();
 

@@ -33,97 +33,8 @@
 #include <memory>
 #include <sstream>
 
-namespace {
-    boost::compute::platform FindPlatform(const std::string &platformName) {
-        for (const auto &platform : boost::compute::system::platforms()) {
-            if (platform.name() == platformName) {
-                return platform;
-            }
-        }
-        RAISE_ERROR(DeviceNotPresent, ("No such OpenCL platform: '" + platformName + "'").c_str());
-    }
-
-    boost::compute::device FindDevice(const std::string &deviceName) {
-        try {
-            return boost::compute::system::find_device(deviceName);
-        } catch (const boost::compute::no_device_found&) {
-            RAISE_ERROR(DeviceNotPresent, ("No such OpenCL device present: '" + deviceName + "'").c_str());
-        }
-    }
-
-    void CheckAnyDevicePresent(const std::vector<std::string> &devices) {
-        if (devices.empty()) {
-            RAISE_ERROR(DeviceNotPresent, "No OpenCL found matching given constraints");
-        }
-    }
-
-    std::vector<std::string> SelectDevices(
-        const std::string &platform,
-        spla::Library::Config::DeviceType type,
-        spla::Library::Config::DeviceAmount amount
-    ) {
-        std::vector<std::string> selectedDevices;
-        for (const auto &device : FindPlatform(platform).devices()) {
-            if (static_cast<spla::Library::Config::DeviceType>(device.type()) == type) {
-                selectedDevices.push_back(device.name());
-                if (amount == spla::Library::Config::DeviceAmount::One) {
-                    break;
-                }
-            }
-        }
-        CheckAnyDevicePresent(selectedDevices);
-        return selectedDevices;
-    }
-
-    std::vector<std::string> SelectDevices(
-        spla::Library::Config::DeviceType type,
-        spla::Library::Config::DeviceAmount amount
-    ) {
-        std::vector<std::string> platformDevices;
-        for (const auto &platform : boost::compute::system::platforms()) {
-            std::vector<std::string> thisPlatformDevices =
-                SelectDevices(platform.name(), type, amount);
-            if (thisPlatformDevices.size() > platformDevices.size()) {
-                platformDevices = thisPlatformDevices;
-            }
-        }
-        CheckAnyDevicePresent(platformDevices);
-        return platformDevices;
-    }
-
-    std::vector<std::string> SelectDevices(
-        spla::Library::Config::DeviceAmount amount
-    ) {
-        if (boost::compute::system::platform_count() == 0) {
-            RAISE_ERROR(DeviceNotPresent, "Runtime environment does not have any OpenCL platform");
-        }
-        std::vector<std::string> platformDevices;
-        for (const auto &platform : boost::compute::system::platforms()) {
-            if (platform.device_count() > platformDevices.size()) {
-                platformDevices.clear();
-                for (const auto &platformDevice : platform.devices()) {
-                    platformDevices.push_back(platformDevice.name());
-                }
-            }
-        }
-        if (amount == spla::Library::Config::DeviceAmount::One && !platformDevices.empty()) {
-            platformDevices.resize(1);
-        }
-        CheckAnyDevicePresent(platformDevices);
-        return platformDevices;
-    }
-
-    boost::compute::device SelectDefaultDevice() {
-        try {
-            return boost::compute::system::default_device();
-        } catch (const boost::compute::no_device_found&) {
-            RAISE_ERROR(DeviceNotPresent, "Default device not found");
-        }
-    }
-}
-
-spla::Library::Library(const Config &config)
-    : mPrivate(std::make_unique<LibraryPrivate>(*this, config)) {
+spla::Library::Library(Config config)
+    : mPrivate(std::make_unique<LibraryPrivate>(*this, std::move(config))) {
 }
 
 spla::Library::Library()
@@ -131,7 +42,6 @@ spla::Library::Library()
 }
 
 spla::Library::~Library() {
-
 }
 
 void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
@@ -167,25 +77,61 @@ const class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
     return *mPrivate;
 }
 
-spla::Library::Config::Config(const std::vector<std::string> &devices) : mDevicesNames(std::move(devices)) {}
+spla::Library::Config::Config() {}
 
-spla::Library::Config::Config() : Config({SelectDefaultDevice().name()}) {}
+spla::Library::Config &spla::Library::Config::SetPlatform(std::string platformName) {
+    mPlatformName.emplace(std::move(platformName));
+    return *this;
+}
 
-spla::Library::Config::Config(
-    const std::string &platform,
-    DeviceType type,
-    DeviceAmount amount
-) : Config(SelectDevices(platform, type, amount)) {}
+spla::Library::Config &spla::Library::Config::LimitAmount(std::size_t amount) {
+    mDeviceAmount = std::optional{amount};
+    return *this;
+}
 
-spla::Library::Config::Config(
-    DeviceType type,
-    DeviceAmount amount
-) : Config(SelectDevices(type, amount)) {}
+spla::Library::Config &spla::Library::Config::RemoveAmountLimit() {
+    mDeviceAmount = std::nullopt;
+    return *this;
+}
 
-spla::Library::Config::Config(
-    DeviceAmount amount
-) : Config(SelectDevices(amount)) {}
+spla::Library::Config &spla::Library::Config::SetDeviceType(DeviceType type) {
+    mDeviceType.emplace(type);
+    return *this;
+}
 
-const std::vector<std::string> &spla::Library::Config::GetDevicesNames() const noexcept {
-    return mDevicesNames;
+std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
+    std::vector<std::string> devicesNames;
+
+    if (!mDeviceType.has_value() &&
+        !mPlatformName.has_value() &&
+        mDeviceAmount.has_value() &&
+        mDeviceAmount.value() == 1U)
+    {
+        return {boost::compute::system::default_device().name()};
+    }
+
+    bool platformExists = false;
+    for (const boost::compute::platform &platform : boost::compute::system::platforms()) {
+        if (mPlatformName.has_value() && platform.name() != mPlatformName.value()) {
+            continue;
+        }
+        for (const boost::compute::device &device : platform.devices()) {
+            bool matchType = !mDeviceType.has_value() || (
+                (mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
+                (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
+                (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator)
+            );
+            bool matchPlatform = !mPlatformName.has_value() || device.platform().name() == mPlatformName.value();
+            if (matchType && matchPlatform) {
+                devicesNames.push_back(device.name());
+            }
+        }
+    }
+    if (mPlatformName.has_value() && !platformExists) {
+        RAISE_ERROR(DeviceNotPresent, ("No OpenCL platform found with name '" + mPlatformName.value() + "'").c_str());
+    }
+    if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
+        devicesNames.resize(mDeviceAmount.value());
+    }
+    return devicesNames;
 }
