@@ -2493,4 +2493,4 @@ GENERATE_LEGEND        = YES
 
 DOT_CLEANUP            = YES
 
-INCLUDE                = spla-cpp/
+INCLUDE                = include/spla-cpp/

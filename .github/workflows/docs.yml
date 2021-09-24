@@ -3,6 +3,8 @@ name: Pages
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'include/'
 
 jobs:
   build:
