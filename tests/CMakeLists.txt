@@ -8,4 +8,4 @@ endfunction()
 spla_test_target(TestBasic)
 spla_test_target(TestExpression)
 spla_test_target(TestDataMatrix)
-
+spla_test_target(TestDataVector)
