@@ -143,7 +143,7 @@ namespace utils {
             for (auto idx : toCopy) {
                 auto &p = indices[idx];
                 r.rows.push_back(p.first);
-                r.rows.push_back(p.second);
+                r.cols.push_back(p.second);
             }
 
             if (!vals.empty()) {

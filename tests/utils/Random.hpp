@@ -25,19 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TESTING_HPP
-#define SPLA_TESTING_HPP
+#ifndef SPLA_MATRIX_HPP
+#define SPLA_MATRIX_HPP
 
-#include <gtest/gtest.h>
-#include <utils/Matrix.hpp>
-#include <utils/Vector.hpp>
+#include <random>
 
-// Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                                         \
-    int main(int argc, char *argv[]) {                                          \
-        ::testing::GTEST_FLAG(catch_exceptions) = false;                        \
-        ::testing::InitGoogleTest(&argc, argv);                                 \
-        return RUN_ALL_TESTS();                                                 \
+namespace utils {
+
+template <typename T>
+class UniformRealGenerator {
+public:
+    explicit UniformRealGenerator(size_t seed = 0)
+        : mEngine(seed) {
     }
 
-#endif //SPLA_TESTING_HPP
+    T operator()() {
+        return mDist(mEngine);
+    }
+
+private:
+    std::default_random_engine mEngine;
+    std::uniform_real_distribution<T> mDist;
+};
+
+}// namespace utils
+
+#endif//SPLA_MATRIX_HPP
