@@ -75,7 +75,7 @@ const class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
     return *mPrivate;
 }
 
-spla::Library::Config::Config() {}
+spla::Library::Config::Config() = default;
 
 spla::Library::Config &spla::Library::Config::SetPlatform(std::string platformName) {
     mPlatformName.emplace(std::move(platformName));

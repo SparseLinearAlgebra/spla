@@ -14,7 +14,8 @@ set(SPLA_CPP_SOURCES
 set(SPLA_DETAIL_SOURCES
         sources/detail/SplaError.hpp
         sources/detail/SplaLibraryPrivate.cpp
-        sources/detail/SplaLibraryPrivate.hpp)
+        sources/detail/SplaLibraryPrivate.hpp
+        sources/detail/SplaSvm.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.cpp

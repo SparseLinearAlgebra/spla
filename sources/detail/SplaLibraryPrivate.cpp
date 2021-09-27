@@ -71,11 +71,11 @@ tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {
     return mExecutor;
 }
 
-const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() {
+const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() const noexcept {
     return mDefaultDesc;
 }
 
-const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManager() {
+const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManager() const noexcept {
     return mExprManager;
 }
 

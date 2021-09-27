@@ -25,49 +25,54 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARYPRIVATE_HPP
-#define SPLA_SPLALIBRARYPRIVATE_HPP
+#ifndef SPLA_SPLASVM_HPP
+#define SPLA_SPLASVM_HPP
 
-#include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
-#include <expression/SplaExpressionManager.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
+#include <boost/compute/svm.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
-#include <taskflow/taskflow.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {
+
     /**
-     * @class LibraryPrivate
-     * Private library state, accessible for all objects within library.
+     * @class Svm
+     *
+     * Reference counted shared pointer wrapper around boost::compute svm pointer.
+     * Uses Library global context for memory allocation.
+     * Automatically releases svm memory when no references to this object.
+     *
+     * @tparam T Type of the elements, pointed by the svm pointer.
      */
-    class LibraryPrivate {
+    template<typename T>
+    class Svm final : public RefCnt {
     public:
-        explicit LibraryPrivate(Library &library, Library::Config config);
+        using Ptr = boost::compute::svm_ptr<T>;
 
-        tf::Executor &GetTaskFlowExecutor();
+        ~Svm() override {
+            assert(mPtr);
+            auto &ctx = mPtr.get_context();
+            boost::compute::svm_free(ctx, mPtr);
+        }
 
-        const RefPtr<Descriptor> &GetDefaultDesc() const noexcept;
+        [[nodiscard]] Ptr Get() const {
+            return mPtr;
+        }
 
-        const RefPtr<ExpressionManager> &GetExprManager() const noexcept;
-
-        const std::vector<boost::compute::device> &GetDevices() const noexcept;
-
-        const boost::compute::platform &GetPlatform() const noexcept;
-
-        const boost::compute::context &GetContext() const noexcept;
-
-        const Library::Config &GetContextConfig() const noexcept;
+        [[nodiscard]] static RefPtr<Svm<T>> Make(size_t size, Library &library, cl_svm_mem_flags flags = CL_MEM_READ_WRITE) {
+            assert(size);
+            auto &state = library.GetPrivate();
+            auto &ctx = state.GetContext();
+            Ptr ptr = boost::compute::svm_alloc<T>(ctx, size, flags);
+            return RefPtr<Svm<T>>(new Svm<T>(ptr));
+        }
 
     private:
-        tf::Executor mExecutor;
-        RefPtr<Descriptor> mDefaultDesc;
-        RefPtr<ExpressionManager> mExprManager;
-        std::vector<boost::compute::device> mDevices;
-        boost::compute::platform mPlatform;
-        boost::compute::context mContext;
-        Library::Config mContextConfig;
+        explicit Svm(Ptr ptr) : mPtr(ptr) {}
+
+        Ptr mPtr;
     };
 
 }// namespace spla
 
-#endif//SPLA_SPLALIBRARYPRIVATE_HPP
+#endif//SPLA_SPLASVM_HPP
