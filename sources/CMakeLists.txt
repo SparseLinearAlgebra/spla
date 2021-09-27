@@ -19,6 +19,8 @@ set(SPLA_DETAIL_SOURCES
 set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.cpp
         sources/expression/matrix/SplaMatrixDataWrite.hpp
+        sources/expression/vector/SplaVectorDataWrite.cpp
+        sources/expression/vector/SplaVectorDataWrite.hpp
         sources/expression/SplaExpressionContext.cpp
         sources/expression/SplaExpressionContext.hpp
         sources/expression/SplaExpressionManager.cpp

@@ -25,29 +25,25 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <expression/vector/SplaVectorDataWrite.hpp>
+#include <iostream>
 
-#include <random>
+bool spla::VectorDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
+    return true;
+}
 
-namespace utils {
+void spla::VectorDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
+    // todo: impl me!
+    auto &taskflow = context.nodesTaskflow[nodeIdx];
 
-    template<typename T>
-    class UniformRealGenerator {
-    public:
-        explicit UniformRealGenerator(size_t seed = 0)
-            : mEngine(seed) {
-        }
+    // todo: remove it!
+    taskflow.emplace([=]() {
+      std::wstringstream msg;
+      msg << L"Run VectorDataWrite for node idx=" << nodeIdx << std::endl;
+      std::wcout << msg.str();
+    });
+}
 
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
-    };
-
-}// namespace utils
-
-#endif//SPLA_RANDOM_HPP
+spla::ExpressionNode::Operation spla::VectorDataWrite::GetOperationType() const {
+    return ExpressionNode::Operation::VectorDataWrite;
+}

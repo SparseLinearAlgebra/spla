@@ -28,17 +28,18 @@
 #include <Testing.hpp>
 
 static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
-    utils::Matrix source = utils::Matrix::Generate(M, N, nvals, seed);
-    source.FillFloatData(seed);
+    utils::Matrix source = utils::Matrix<float>::Generate(M, N, nvals, seed);
+    source.Fill(utils::UniformRealGenerator<float>());
 
-    auto spT = spla::Type::Make(L"float", source.elementSize, library);
+    auto spT = spla::Type::Make(L"float", sizeof(float), library);
     auto spM = spla::Matrix::Make(M, N, spT, library);
     auto spDesc = spla::Descriptor::Make(library);
 
     auto spDataSrc = spla::DataMatrix::Make(library);
-    spDataSrc->SetRows(source.rows.data());
-    spDataSrc->SetCols(source.cols.data());
-    spDataSrc->SetVals(source.vals.data());
+    spDataSrc->SetRows(source.GetRows());
+    spDataSrc->SetCols(source.GetCols());
+    spDataSrc->SetVals(source.GetVals());
+    spDataSrc->SetNvals(source.GetNvals());
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spM, spDataSrc, spDesc);
@@ -46,16 +47,16 @@ static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals,
     library.Submit(spExprWrite);
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix expected = source.SortReduceDuplicates();
+    utils::Matrix<float> expected = source.SortReduceDuplicates();
     // todo: uncomment later, since for now it won't pass
     // EXPECT_TRUE(expected.Equals(spM));
 }
 
 static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
-    utils::Matrix source = utils::Matrix::GenerateStDp(M, N, nvals, seed);
-    source.FillFloatData(seed);
+    utils::Matrix source = utils::Matrix<float>::Generate(M, N, nvals, seed).SortReduceDuplicates();
+    source.Fill(utils::UniformRealGenerator<float>());
 
-    auto spT = spla::Type::Make(L"float", source.elementSize, library);
+    auto spT = spla::Type::Make(L"float", sizeof(float), library);
     auto spM = spla::Matrix::Make(M, N, spT, library);
 
     // Specify, that values already in row-col order + no duplicates
@@ -64,9 +65,10 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, s
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
     auto spDataSrc = spla::DataMatrix::Make(library);
-    spDataSrc->SetRows(source.rows.data());
-    spDataSrc->SetCols(source.cols.data());
-    spDataSrc->SetVals(source.vals.data());
+    spDataSrc->SetRows(source.GetRows());
+    spDataSrc->SetCols(source.GetCols());
+    spDataSrc->SetVals(source.GetVals());
+    spDataSrc->SetNvals(source.GetNvals());
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spM, spDataSrc, spDesc);
@@ -74,7 +76,7 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, s
     library.Submit(spExprWrite);
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix &expected = source;
+    utils::Matrix<float> &expected = source;
     // todo: uncomment later, since for now it won't pass
     // EXPECT_TRUE(expected.Equals(spM));
 }

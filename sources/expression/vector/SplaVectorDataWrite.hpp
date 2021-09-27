@@ -25,29 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#ifndef SPLA_SPLAVECTORDATAWRITE_HPP
+#define SPLA_SPLAVECTORDATAWRITE_HPP
 
-#include <random>
+#include <expression/SplaNodeProcessor.hpp>
 
-namespace utils {
+namespace spla {
 
-    template<typename T>
-    class UniformRealGenerator {
+    class VectorDataWrite final : public NodeProcessor {
     public:
-        explicit UniformRealGenerator(size_t seed = 0)
-            : mEngine(seed) {
-        }
-
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
+        ~VectorDataWrite() override = default;
+        bool Select(size_t nodeIdx, ExpressionContext &context) override;
+        void Process(size_t nodeIdx, ExpressionContext &context) override;
+        ExpressionNode::Operation GetOperationType() const override;
     };
 
-}// namespace utils
+}// namespace spla
 
-#endif//SPLA_RANDOM_HPP
+#endif//SPLA_SPLAVECTORDATAWRITE_HPP

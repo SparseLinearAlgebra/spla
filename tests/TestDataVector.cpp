@@ -25,11 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <utils/Random.hpp>
 #include <Testing.hpp>
 
 static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
-    utils::Vector source = utils::Vector<float>(M, nvals, false, seed);
+    utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed);
     source.Fill(utils::UniformRealGenerator<float>());
 
     auto spT = spla::Type::Make(L"float", sizeof(float), library);
@@ -38,7 +37,8 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
 
     auto spDataSrc = spla::DataVector::Make(library);
     spDataSrc->SetRows(source.GetRows());
-    spDataSrc->SetVals(source.GetData());
+    spDataSrc->SetVals(source.GetVals());
+    spDataSrc->SetNvals(source.GetNvals());
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
@@ -52,7 +52,7 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
 }
 
 static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
-    utils::Vector source = utils::Vector<float>(M, nvals, true, seed);
+    utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed).SortReduceDuplicates();
     source.Fill(utils::UniformRealGenerator<float>());
 
     auto spT = spla::Type::Make(L"float", sizeof(float), library);
@@ -65,7 +65,8 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
 
     auto spDataSrc = spla::DataVector::Make(library);
     spDataSrc->SetRows(source.GetRows());
-    spDataSrc->SetVals(source.GetData());
+    spDataSrc->SetVals(source.GetVals());
+    spDataSrc->SetNvals(source.GetNvals());
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
@@ -73,7 +74,7 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     library.Submit(spExprWrite);
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector expected = source.SortReduceDuplicates();
+    utils::Vector<float> &expected = source;
     // todo: uncomment later, since for now it won't pass
     // EXPECT_TRUE(expected.Equals(spV));
 }
@@ -85,16 +86,6 @@ static void test(size_t M, size_t base, size_t step, size_t iter) {
         size_t nvals = base + i * step;
         testCommon(library, M, nvals, i);
         testSortedNoDuplicates(library, M, nvals, i);
-    }
-}
-
-TEST(UtilsVector, UniqueSort) {
-    for (size_t testN = 0; testN < 100; ++testN) {
-        utils::Vector vector = utils::Vector<float>(10, 5, true);
-        EXPECT_EQ(vector.GetValues(), 5);
-        for (size_t valueN = 1; valueN < vector.GetValues(); ++valueN) {
-            EXPECT_TRUE(vector.GetValuesVector()[valueN - 1] <= vector.GetValuesVector()[valueN]);
-        }
     }
 }
 

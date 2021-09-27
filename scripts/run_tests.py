@@ -5,6 +5,7 @@ import subprocess
 TESTS = [
     "TestBasic",
     "TestDataMatrix",
+    "TestDataVector",
     "TestExpression"
 ]
 

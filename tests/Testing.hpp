@@ -30,14 +30,15 @@
 
 #include <gtest/gtest.h>
 #include <utils/Matrix.hpp>
+#include <utils/Random.hpp>
 #include <utils/Vector.hpp>
 
 // Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                                         \
-    int main(int argc, char *argv[]) {                                          \
-        ::testing::GTEST_FLAG(catch_exceptions) = false;                        \
-        ::testing::InitGoogleTest(&argc, argv);                                 \
-        return RUN_ALL_TESTS();                                                 \
+#define SPLA_GTEST_MAIN                                  \
+    int main(int argc, char *argv[]) {                   \
+        ::testing::GTEST_FLAG(catch_exceptions) = false; \
+        ::testing::InitGoogleTest(&argc, argv);          \
+        return RUN_ALL_TESTS();                          \
     }
 
-#endif //SPLA_TESTING_HPP
+#endif//SPLA_TESTING_HPP

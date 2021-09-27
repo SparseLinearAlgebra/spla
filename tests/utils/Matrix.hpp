@@ -38,55 +38,85 @@
 
 namespace utils {
 
+    template<typename T>
     class Matrix {
     public:
-        std::vector<unsigned int> rows;
-        std::vector<unsigned int> cols;
-        std::vector<char> vals;
+        using Index = unsigned int;
+        static constexpr std::size_t IndexSize = sizeof(Index);
+        static constexpr std::size_t ElementSize = sizeof(T);
 
-        size_t nrows = 0;
-        size_t ncols = 0;
-        size_t nvals = 0;
-        size_t elementSize = 0;
+        Matrix(size_t nrows, size_t ncols, std::vector<Index> rows, std::vector<Index> cols, std::vector<T> vals)
+            : mRows(std::move(rows)),
+              mCols(std::move(cols)),
+              mVals(std::move(vals)),
+              mNrows(nrows),
+              mNcols(ncols) {
+            assert(nrows > 0);
+            assert(ncols > 0);
+            assert(mRows.size() == mCols.size());
+            assert(mCols.size() == mVals.size());
+        }
 
-        void FillFloatData(size_t seed = 0) {
-            assert(elementSize == 0);
-            assert(vals.empty());
-
-            elementSize = sizeof(float);
-            vals.resize(nvals * elementSize);
-
-            std::default_random_engine engine(seed);
-            auto dist = std::uniform_real_distribution<float>();
-
-            size_t offset = 0;
-            for (size_t k = 0; k < nvals; k++) {
-                auto value = dist(engine);
-                std::memcpy(vals.data() + offset, &value, elementSize);
-                offset += elementSize;
+        template<typename Gen>
+        void Fill(Gen generator) {
+            for (T &value : mVals) {
+                value = generator();
             }
         }
 
+        [[nodiscard]] T *GetVals() {
+            return mVals.data();
+        }
+
+        [[nodiscard]] Index *GetRows() {
+            return mRows.data();
+        }
+
+        [[nodiscard]] Index *GetCols() {
+            return mCols.data();
+        }
+
+        [[nodiscard]] const T *GetVals() const {
+            return mVals.data();
+        }
+
+        [[nodiscard]] const Index *GetRows() const {
+            return mRows.data();
+        }
+
+        [[nodiscard]] const Index *GetCols() const {
+            return mCols.data();
+        }
+
+        [[nodiscard]] std::size_t GetNrows() const {
+            return mNrows;
+        }
+
+        [[nodiscard]] std::size_t GetNcols() const {
+            return mNcols;
+        }
+
+        [[nodiscard]] std::size_t GetNvals() const {
+            return mVals.size();
+        }
+
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m) const {
-            if (m->GetNrows() != nrows || m->GetNcols() != ncols || m->GetNvals() != nvals)
+            if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols() || m->GetNvals() != GetNvals())
                 return false;
 
-            auto type = m->GetType();
-            auto size = type->GetByteSize();
-
-            if (elementSize != size)
+            if (ElementSize != m->GetType()->GetByteSize())
                 return false;
 
-            std::vector<unsigned int> spRows(nvals);
-            std::vector<unsigned int> spCols(nvals);
-            std::vector<char> spVals(nvals * elementSize);
+            std::vector<Index> spRows(GetNvals());
+            std::vector<Index> spCols(GetNvals());
+            std::vector<T> spVals(GetNvals());
 
             auto &library = m->GetLibrary();
             auto data = spla::DataMatrix::Make(library);
             data->SetRows(spRows.data());
             data->SetCols(spCols.data());
             data->SetVals(spVals.data());
-            data->SetNvals(nvals);
+            data->SetNvals(GetNvals());
 
             auto readExpr = spla::Expression::Make(library);
             readExpr->MakeDataRead(m, data);
@@ -95,101 +125,90 @@ namespace utils {
             if (readExpr->GetState() != spla::Expression::State::Evaluated)
                 return false;
 
-            if (!std::memcmp(rows.data(), spRows.data(), nvals * sizeof(unsigned int)))
+            if (!std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize))
                 return false;
-            if (!std::memcmp(cols.data(), spCols.data(), nvals * sizeof(unsigned int)))
+            if (!std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize))
                 return false;
-            if (elementSize && !std::memcmp(vals.data(), spVals.data(), nvals * elementSize))
+            if (!std::memcmp(mVals.data(), spVals.data(), GetNvals() * ElementSize))
                 return false;
 
             return true;
         }
 
         [[nodiscard]] Matrix SortReduceDuplicates() const {
-            using Pair = std::pair<unsigned int, unsigned int>;
-            std::vector<Pair> indices;
-            indices.reserve(nvals);
+            using Pair = std::pair<Index, Index>;
+            using Tuple = std::pair<Pair, size_t>;
 
-            for (size_t i = 0; i < nvals; i++) {
-                auto row = rows[i];
-                auto col = cols[i];
-                indices.emplace_back(row, col);
+            std::vector<Tuple> indices;
+            indices.reserve(GetNvals());
+
+            for (size_t i = 0; i < GetNvals(); i++) {
+                auto row = mRows[i];
+                auto col = mCols[i];
+                indices.emplace_back(Pair{row, col}, i);
             }
 
-            std::sort(indices.begin(), indices.end(), [](const Pair &a, const Pair &b) {
-                return a.first < b.first || (a.first == b.first && a.second < b.second);
+            std::sort(indices.begin(), indices.end(), [](const Tuple &t1, const Tuple &t2) {
+                const auto &a = t1.first;
+                const auto &b = t2.first;
+                return a.first < b.first ||
+                       (a.first == b.first && a.second < b.second) ||
+                       (a == b && t1.second < t2.second);
             });
 
-            std::vector<size_t> toCopy;
+            indices.erase(std::unique(indices.begin(), indices.end(), [](const Tuple &a, const Tuple &b) {
+                              return a.first == b.first;
+                          }),
+                          indices.end());
 
-            Pair prev{static_cast<unsigned int>(nrows), static_cast<unsigned int>(ncols)};
-            for (size_t i = 0; i < indices.size(); i++) {
-                auto &p = indices[i];
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<T> vals;
 
-                if (p != prev) {
-                    toCopy.push_back(i);
-                    prev = p;
-                }
+            rows.reserve(indices.size());
+            cols.reserve(indices.size());
+            vals.reserve(indices.size());
+
+            for (const auto &index : indices) {
+                auto i = index.second;
+                rows.push_back(GetRows()[i]);
+                cols.push_back(GetCols()[i]);
+                vals.push_back(GetVals()[i]);
             }
 
-            Matrix r;
-            r.nrows = nrows;
-            r.ncols = ncols;
-            r.nvals = toCopy.size();
-
-            r.rows.reserve(r.nvals);
-            r.cols.reserve(r.nvals);
-
-            for (auto idx : toCopy) {
-                auto &p = indices[idx];
-                r.rows.push_back(p.first);
-                r.cols.push_back(p.second);
-            }
-
-            if (!vals.empty()) {
-                assert(elementSize * nvals == vals.size());
-
-                r.elementSize = elementSize;
-                r.vals.resize(r.nvals * r.elementSize);
-
-                size_t offset = 0;
-
-                for (auto idx : toCopy) {
-                    std::memcpy(r.vals.data() + offset, vals.data() + elementSize * idx, elementSize);
-                    offset += elementSize;
-                }
-            }
-
-            return r;
+            return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
         }
 
-        static Matrix Generate(size_t nrows, size_t ncols, size_t nvals, size_t seed = 0) {
-            Matrix m;
-            m.nrows = nrows;
-            m.ncols = ncols;
+        static Matrix Generate(size_t nrows, size_t ncols, size_t nvals, size_t seed = 0, const T &value = T()) {
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<T> vals(nvals, value);
+
+            rows.reserve(nvals);
+            cols.reserve(nvals);
 
             std::default_random_engine engine(seed);
-            auto distRows = std::uniform_int_distribution<unsigned int>(0, nrows);
-            auto distCols = std::uniform_int_distribution<unsigned int>(0, ncols);
+            auto distRows = std::uniform_int_distribution<Index>(0, nrows > 0 ? nrows - 1 : nrows);
+            auto distCols = std::uniform_int_distribution<Index>(0, ncols > 0 ? ncols - 1 : ncols);
 
             for (size_t i = 0; i < nvals; i++) {
                 auto row = distRows(engine);
                 auto col = distCols(engine);
-
-                if (row < nrows && col < ncols) {
-                    m.rows.push_back(row);
-                    m.cols.push_back(col);
-                    m.nvals += 1;
-                }
+                assert(row < nrows);
+                assert(col < ncols);
+                rows.push_back(row);
+                cols.push_back(col);
             }
 
-            return m;
+            return Matrix<T>(nrows, ncols, std::move(rows), std::move(cols), std::move(vals));
         }
 
-        static Matrix GenerateStDp(size_t nrows, size_t ncols, size_t nvals, size_t seed = 0) {
-            Matrix m = Generate(nrows, ncols, nvals, seed);
-            return m.SortReduceDuplicates();
-        }
+    private:
+        std::vector<Index> mRows;
+        std::vector<Index> mCols;
+        std::vector<T> mVals;
+        size_t mNrows = 0;
+        size_t mNcols = 0;
     };
 
 }// namespace utils

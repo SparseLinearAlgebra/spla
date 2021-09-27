@@ -28,82 +28,78 @@
 #ifndef SPLA_VECTOR_HPP
 #define SPLA_VECTOR_HPP
 
-#include <spla-cpp/Spla.hpp>
-#include <utility>
-#include <vector>
-#include <unordered_map>
 #include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <random>
+#include <spla-cpp/Spla.hpp>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 namespace utils {
 
-    template <typename T>
+    template<typename T>
     class Vector {
     public:
-        using RowIndex = unsigned int;
-        static constexpr std::size_t RowIndexSize = sizeof(RowIndex);
+        using Index = unsigned int;
+        static constexpr std::size_t IndexSize = sizeof(Index);
         static constexpr std::size_t ElementSize = sizeof(T);
 
-        explicit Vector(std::size_t size, std::size_t values, bool sorted, std::size_t seed = 0)
-            : mSize(size),
-              mValues(values),
-              mRows(values) {
-            std::default_random_engine engine(seed);
-            auto distRows = std::uniform_int_distribution<size_t>(0, size - 1);
-
-            for (size_t i = 0; i < values; i++) {
-                mRows[i] = distRows(engine);
-            }
-            
-            if (sorted) {
-                *this = SortReduceDuplicates();
-            }
+        Vector(size_t nrows, std::vector<Index> rows, std::vector<T> vals)
+            : mRows(std::move(rows)),
+              mVals(std::move(vals)),
+              mNrows(nrows) {
+            assert(nrows > 0);
+            assert(mRows.size() == mVals.size());
         }
 
-        template <typename Gen>
+        template<typename Gen>
         void Fill(Gen generator) {
-            for (T &value : mValues) {
+            for (T &value : mVals) {
                 value = generator();
             }
         }
 
-        const std::vector<T> &GetValuesVector() const noexcept {
-            return mValues;
+        [[nodiscard]] T *GetVals() {
+            return mVals.data();
         }
 
-        [[nodiscard]] T *GetData() noexcept {
-            return mValues.data();
-        }
-
-        [[nodiscard]] RowIndex *GetRows() noexcept {
+        [[nodiscard]] Index *GetRows() {
             return mRows.data();
         }
 
-        [[nodiscard]] std::size_t GetSize() const noexcept {
-            return mSize;
+        [[nodiscard]] const T *GetVals() const {
+            return mVals.data();
         }
 
-        [[nodiscard]] std::size_t GetValues() const noexcept {
-            return mValues.size();
+        [[nodiscard]] const Index *GetRows() const {
+            return mRows.data();
+        }
+
+        [[nodiscard]] std::size_t GetNrows() const {
+            return mNrows;
+        }
+
+        [[nodiscard]] std::size_t GetNvals() const {
+            return mVals.size();
         }
 
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v) const {
-            if (v->GetNrows() != GetSize() || v->GetNvals() != GetValues())
+            if (v->GetNrows() != GetNrows() || v->GetNvals() != GetNvals())
                 return false;
 
             if (ElementSize != v->GetType()->GetByteSize())
                 return false;
 
-            std::vector<RowIndex> spRows(mSize);
-            std::vector<char> spVals(GetSize() * ElementSize);
+            std::vector<Index> spRows(GetNvals());
+            std::vector<T> spVals(GetNvals());
 
             auto &library = v->GetLibrary();
             auto data = spla::DataVector::Make(library);
             data->SetRows(spRows.data());
             data->SetVals(spVals.data());
-            data->SetNvals(GetValues());
+            data->SetNvals(GetNvals());
 
             auto readExpr = spla::Expression::Make(library);
             readExpr->MakeDataRead(v, data);
@@ -112,40 +108,71 @@ namespace utils {
             if (readExpr->GetState() != spla::Expression::State::Evaluated)
                 return false;
 
-            if (!std::memcmp(GetRows(), spRows.data(), GetSize() * RowIndexSize))
+            if (!std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize))
                 return false;
-            if (!std::memcmp(GetData(), spVals.data(), GetValues() * ElementSize))
+            if (!std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize))
                 return false;
 
             return true;
         }
 
         [[nodiscard]] Vector SortReduceDuplicates() const {
-            std::vector<RowIndex> sortedIndices = mRows;
-            std::sort(sortedIndices.begin(), sortedIndices.end());
-            sortedIndices.erase(std::unique(sortedIndices.begin(), sortedIndices.end()), sortedIndices.end());
-            std::unordered_map<RowIndex, T> positionValue;
-            for (size_t i = 0; i < mRows.size(); ++i) {
-                positionValue[mRows[i]] = mValues[i];
+            using Pair = std::pair<Index, size_t>;
+
+            std::vector<Pair> indices;
+            indices.reserve(GetNvals());
+
+            for (size_t i = 0; i < GetNvals(); i++) {
+                auto row = mRows[i];
+                indices.emplace_back(row, i);
             }
 
-            Vector vSorted(*this);
-            vSorted.mSize = mSize;
-            vSorted.mRows = sortedIndices;
-            vSorted.mValues.resize(0);
-            vSorted.mValues.reserve(mSize);
+            std::sort(indices.begin(), indices.end(), [](const Pair &a, const Pair &b) {
+                return a.first < b.first || (a.first == b.first && a.second < b.second);
+            });
 
-            for (RowIndex initialIndex : sortedIndices) {
-                vSorted.mValues.push_back(positionValue[initialIndex]);
+            indices.erase(std::unique(indices.begin(), indices.end(), [](const Pair &a, const Pair &b) {
+                              return a.first == b.first;
+                          }),
+                          indices.end());
+
+            std::vector<Index> rows;
+            std::vector<T> vals;
+
+            rows.reserve(indices.size());
+            vals.reserve(indices.size());
+
+            for (const auto &index : indices) {
+                auto i = index.second;
+                rows.push_back(GetRows()[i]);
+                vals.push_back(GetVals()[i]);
             }
 
-            return vSorted;
+            return Vector<T>(GetNrows(), std::move(rows), std::move(vals));
         }
 
-        private:
-            std::size_t mSize;
-            std::vector<T> mValues;
-            std::vector<unsigned int> mRows;
+        static Vector Generate(size_t nrows, size_t nvals, size_t seed = 0, const T &value = T()) {
+            std::vector<Index> rows;
+            std::vector<T> vals(nvals, value);
+
+            rows.reserve(nvals);
+
+            std::default_random_engine engine(seed);
+            auto distRows = std::uniform_int_distribution<Index>(0, nrows > 0 ? nrows - 1 : nrows);
+
+            for (size_t i = 0; i < nvals; i++) {
+                auto row = distRows(engine);
+                assert(row < nrows);
+                rows.push_back(row);
+            }
+
+            return Vector<T>(nrows, std::move(rows), std::move(vals));
+        }
+
+    private:
+        std::vector<Index> mRows;
+        std::vector<T> mVals;
+        std::size_t mNrows;
     };
 
 }// namespace utils
