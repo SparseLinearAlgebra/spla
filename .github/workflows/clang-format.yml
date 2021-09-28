@@ -8,6 +8,7 @@ on:
       - 'sources/**'
       - 'include/**'
       - 'tests/**'
+      - '.clang-format'
 
 jobs:
   formatting-check:
