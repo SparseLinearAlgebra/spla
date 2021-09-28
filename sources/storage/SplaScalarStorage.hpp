@@ -30,8 +30,7 @@
 
 
 class SplaScalarStorage {
-
 };
 
 
-#endif //SPLA_SPLASCALARSTORAGE_HPP
+#endif//SPLA_SPLASCALARSTORAGE_HPP

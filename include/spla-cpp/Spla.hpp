@@ -43,4 +43,4 @@
 #include <spla-cpp/SplaType.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
-#endif //SPLA_SPLA_HPP
+#endif//SPLA_SPLA_HPP

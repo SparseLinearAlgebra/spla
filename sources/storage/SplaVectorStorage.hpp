@@ -30,8 +30,7 @@
 
 
 class SplaVectorStorage {
-
 };
 
 
-#endif //SPLA_SPLAVECTORSTORAGE_HPP
+#endif//SPLA_SPLAVECTORSTORAGE_HPP

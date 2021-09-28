@@ -30,8 +30,7 @@
 
 
 class SplaMatrixStorage {
-
 };
 
 
-#endif //SPLA_SPLAMATRIXSTORAGE_HPP
+#endif//SPLA_SPLAMATRIXSTORAGE_HPP

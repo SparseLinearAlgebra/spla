@@ -38,9 +38,9 @@ void spla::VectorDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
 
     // todo: remove it!
     taskflow.emplace([=]() {
-      std::wstringstream msg;
-      msg << L"Run VectorDataWrite for node idx=" << nodeIdx << std::endl;
-      std::wcout << msg.str();
+        std::wstringstream msg;
+        msg << L"Run VectorDataWrite for node idx=" << nodeIdx << std::endl;
+        std::wcout << msg.str();
     });
 }
 
