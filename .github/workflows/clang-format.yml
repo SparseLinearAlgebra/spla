@@ -8,6 +8,7 @@ on:
       - 'sources/**'
       - 'include/**'
       - 'tests/**'
+      - '.clang-format'
 
 jobs:
   formatting-check:
@@ -24,4 +25,5 @@ jobs:
     - name: Run clang-format style check
       uses: jidicula/clang-format-action@v4.0.0
       with:
+        clang-format-version: '12'
         check-path: ${{ matrix.path }}
