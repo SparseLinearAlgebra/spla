@@ -25,37 +25,28 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#ifndef SPLA_SPLAMATH_HPP
+#define SPLA_SPLAMATH_HPP
 
-size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
-}
+#include <cstddef>
 
-size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
+namespace spla {
 
-size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
+    namespace math {
 
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
+        static inline size_t GetBlocksCount(size_t dim, size_t blockSize) {
+            auto rest = dim % blockSize;
+            return dim / blockSize + (rest ? 1 : 0);
+        }
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
+        static inline size_t GetBlockActualSize(size_t blockIdx, size_t dim, size_t blockSize) {
+            auto first = blockIdx * blockSize;
+            auto size = dim - first;
+            return size < blockSize ? size : blockSize;
+        }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
+    }// namespace math
 
-spla::Matrix::~Matrix() {
-}
+}// namespace spla
+
+#endif//SPLA_SPLAMATH_HPP

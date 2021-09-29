@@ -65,22 +65,18 @@ namespace {
         sinks.push_back(consoleSink);
 #endif
 
-
 #if defined(SPLA_TARGET_WINDOWS)
         auto &filename = config.GetLogFilenameUTF32();
-        if (filename.has_value()) {
-            auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.value());
-            fileSink->set_level(spdlog::level::trace);
-            sinks.push_back(fileSink);
-        }
 #elif defined(SPLA_TARGET_LINUX)
         auto &filename = config.GetLogFilenameUTF8();
+#endif
+
         if (filename.has_value()) {
             auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.value());
             fileSink->set_level(spdlog::level::trace);
             sinks.push_back(fileSink);
         }
-#endif
+
         auto logger = std::make_shared<spdlog::logger>("spla-logger", sinks.begin(), sinks.end());
         logger->set_level(static_cast<spdlog::level::level_enum>(SPDLOG_ACTIVE_LEVEL));
 
@@ -130,4 +126,8 @@ const spla::Library::Config &spla::LibraryPrivate::GetContextConfig() const noex
 
 const std::shared_ptr<spdlog::logger> &spla::LibraryPrivate::GetLogger() const noexcept {
     return mLogger;
+}
+
+size_t spla::LibraryPrivate::GetBlockSize() const noexcept {
+    return mContextConfig.GetBlockSize();
 }

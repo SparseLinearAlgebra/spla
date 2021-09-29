@@ -50,7 +50,7 @@ namespace spla {
         using Ptr = boost::compute::svm_ptr<T>;
 
         ~Svm() override {
-            assert(mPtr);
+            assert(mPtr.get());
             auto &ctx = mPtr.get_context();
             boost::compute::svm_free(ctx, mPtr);
         }

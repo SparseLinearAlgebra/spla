@@ -25,37 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
 
-size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
+spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(size_t nrows, size_t ncols, size_t nvals,
+                                                    spla::RefPtr<spla::Svm<unsigned int>> rows,
+                                                    spla::RefPtr<spla::Svm<unsigned int>> cols,
+                                                    spla::RefPtr<spla::Svm<unsigned char>> vals) {
+    return spla::RefPtr<spla::MatrixCOO>(new MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)));
 }
 
-size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
-
-size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
-
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
-
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
-
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
-
-spla::Matrix::~Matrix() {
+spla::MatrixCOO::MatrixCOO(size_t nrows, size_t ncols, size_t nvals,
+                           spla::RefPtr<spla::Svm<unsigned int>> rows,
+                           spla::RefPtr<spla::Svm<unsigned int>> cols,
+                           spla::RefPtr<spla::Svm<unsigned char>> vals)
+    : MatrixBlock(nrows, ncols, nvals),
+      mRows(std::move(rows)),
+      mCols(std::move(cols)),
+      mVals(std::move(vals)) {
 }

@@ -13,8 +13,10 @@ set(SPLA_CPP_SOURCES
 
 set(SPLA_DETAIL_SOURCES
         sources/detail/SplaError.hpp
+        sources/detail/SplaHash.hpp
         sources/detail/SplaLibraryPrivate.cpp
         sources/detail/SplaLibraryPrivate.hpp
+        sources/detail/SplaMath.hpp
         sources/detail/SplaSvm.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
@@ -29,6 +31,9 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/SplaNodeProcessor.hpp)
 
 set(SPLA_STORAGE_SOURCES
+        sources/storage/block/SplaMatrixCOO.cpp
+        sources/storage/block/SplaMatrixCOO.hpp
+        sources/storage/SplaMatrixBlock.hpp
         sources/storage/SplaMatrixStorage.cpp
         sources/storage/SplaMatrixStorage.hpp
         sources/storage/SplaVectorStorage.cpp

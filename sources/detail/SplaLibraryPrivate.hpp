@@ -61,6 +61,8 @@ namespace spla {
 
         const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
 
+        size_t GetBlockSize() const noexcept;
+
     private:
         tf::Executor mExecutor;
         RefPtr<Descriptor> mDefaultDesc;

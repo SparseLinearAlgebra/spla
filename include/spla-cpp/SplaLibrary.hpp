@@ -55,6 +55,13 @@ namespace spla {
          */
         class SPLA_API Config {
         public:
+
+            /**
+             * Default size (nrows and ncols) for matrix/vector block size.
+             * Used to split matrix or vector into equal sized storage blocks.
+             */
+            static const size_t DEFAULT_BLOCK_SIZE = 1000000;
+
             /**
              * Type of OpenCL device.
              */
@@ -131,12 +138,16 @@ namespace spla {
             /** @return UTF-32 log filename (for windows) */
             [[nodiscard]] const std::optional<std::wstring> &GetLogFilenameUTF32() const;
 
+            /** @return Block size */
+            [[nodiscard]] size_t GetBlockSize() const;
+
         private:
             std::optional<std::string> mPlatformName;
             std::optional<DeviceType> mDeviceType;
             std::optional<std::size_t> mDeviceAmount = std::optional{1U};
             std::optional<std::string> mLogFilenameUTF8;
             std::optional<std::wstring> mLogFilenameUTF32;
+            size_t mBlockSize = DEFAULT_BLOCK_SIZE;
         };
 
     public:

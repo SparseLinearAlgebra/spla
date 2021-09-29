@@ -25,37 +25,46 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#ifndef SPLA_SPLAMATRIXBLOCK_HPP
+#define SPLA_SPLAMATRIXBLOCK_HPP
 
-size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
-}
+#include <spla-cpp/SplaRefCnt.hpp>
 
-size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
+namespace spla {
 
-size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
+    /**
+     * @class MatrixBlock
+     *
+     * Base class for a matrix block.
+     * Used in matrix storage to represent block of the matrix with specific sparse storage schema.
+     * Common matrix blocks: CSR, COO, dense and etc.
+     */
+    class MatrixBlock : public RefCnt {
+    public:
+        MatrixBlock(size_t nrows, size_t ncols, size_t nvals) : mNrows(nrows), mNcols(ncols), mNvals(nvals) {}
+        ~MatrixBlock() override = default;
 
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
+        /** @return Number of rows of the block */
+        [[nodiscard]] size_t GetNrows() const noexcept {
+            return mNrows;
+        }
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
+        /** @return Number of columns of the block */
+        [[nodiscard]] size_t GetNcols() const noexcept {
+            return mNcols;
+        }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
+        /** @return Number of values in block */
+        [[nodiscard]] size_t GetNvals() const noexcept {
+            return mNvals;
+        }
 
-spla::Matrix::~Matrix() {
-}
+    protected:
+        size_t mNrows;
+        size_t mNcols;
+        size_t mNvals;
+    };
+
+}// namespace spla
+
+#endif//SPLA_SPLAMATRIXBLOCK_HPP

@@ -25,37 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#ifndef SPLA_SPLAHASH_HPP
+#define SPLA_SPLAHASH_HPP
 
-size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
-}
+#include <utility>
 
-size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
+namespace spla {
 
-size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
+    struct PairHash {
+    public:
+        template<typename T, typename U>
+        std::size_t operator()(const std::pair<T, U> &x) const {
+            return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+        }
+    };
 
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
+}// namespace spla
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
-
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
-
-spla::Matrix::~Matrix() {
-}
+#endif//SPLA_SPLAHASH_HPP

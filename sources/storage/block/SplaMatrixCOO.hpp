@@ -25,37 +25,46 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#ifndef SPLA_SPLAMATRIXCOO_HPP
+#define SPLA_SPLAMATRIXCOO_HPP
 
-size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
-}
+#include <detail/SplaSvm.hpp>
+#include <storage/SplaMatrixBlock.hpp>
 
-size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
+namespace spla {
 
-size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
+    class MatrixCOO final : public MatrixBlock {
+    public:
+        ~MatrixCOO() override = default;
 
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
+        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetRows() const noexcept {
+            return mRows;
+        }
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
+        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetCols() const noexcept {
+            return mCols;
+        }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
+        [[nodiscard]] const RefPtr<Svm<unsigned char>> &GetVals() const noexcept {
+            return mVals;
+        }
 
-spla::Matrix::~Matrix() {
-}
+        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals,
+                                      RefPtr<Svm<unsigned int>> rows,
+                                      RefPtr<Svm<unsigned int>> cols,
+                                      RefPtr<Svm<unsigned char>> vals);
+
+    private:
+        MatrixCOO(size_t nrows, size_t ncols, size_t nvals,
+                  RefPtr<Svm<unsigned int>> rows,
+                  RefPtr<Svm<unsigned int>> cols,
+                  RefPtr<Svm<unsigned char>> vals);
+
+        RefPtr<Svm<unsigned int>> mRows;
+        RefPtr<Svm<unsigned int>> mCols;
+        RefPtr<Svm<unsigned char>> mVals;
+    };
+
+}// namespace spla
+
+#endif//SPLA_SPLAMATRIXCOO_HPP

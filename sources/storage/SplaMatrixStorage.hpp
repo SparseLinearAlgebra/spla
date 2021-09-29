@@ -28,9 +28,61 @@
 #ifndef SPLA_SPLAMATRIXSTORAGE_HPP
 #define SPLA_SPLAMATRIXSTORAGE_HPP
 
+#include <detail/SplaHash.hpp>
+#include <mutex>
+#include <spla-cpp/SplaLibrary.hpp>
+#include <storage/SplaMatrixBlock.hpp>
+#include <unordered_map>
+#include <vector>
 
-class SplaMatrixStorage {
-};
+namespace spla {
 
+    class MatrixStorage final : public RefCnt {
+    public:
+        using Index = std::pair<unsigned int, unsigned int>;
+        using Entry = std::pair<Index, RefPtr<MatrixBlock>>;
+        using EntryList = std::vector<Entry>;
+
+        ~MatrixStorage() override = default;
+
+        /** Set block at specified block index */
+        void SetBlock(const Index &index, const RefPtr<MatrixBlock> &block);
+
+        /** Get list of non-null presented blocks in storage */
+        void GetBlocks(EntryList &entryList) const;
+
+        /** Get blocks grid (number of blocks in each dimension) */
+        void GetBlocksGrid(size_t &rows, size_t &cols) const;
+
+        /** @return Block at specified index; may be null */
+        RefPtr<MatrixBlock> GetBlock(const Index &index) const;
+
+        /** @return Number of rows of the storage */
+        [[nodiscard]] size_t GetNrows() const noexcept;
+
+        /** @return Number of columns of the storage */
+        [[nodiscard]] size_t GetNcols() const noexcept;
+
+        /** @return Number of values in storage */
+        [[nodiscard]] size_t GetNvals() const noexcept;
+
+        static RefPtr<MatrixStorage> Make(size_t nrows, size_t ncols, Library &library);
+
+    private:
+        MatrixStorage(size_t nrows, size_t ncols, Library &library);
+
+        std::unordered_map<Index, RefPtr<MatrixBlock>, PairHash> mBlocks;
+        mutable std::mutex mMutex;
+        size_t mNrows;
+        size_t mNcols;
+        size_t mNvals = 0;
+        size_t mNblockRows = 0;
+        size_t mNblockCols = 0;
+        size_t mBlockSize = 0;
+
+        Library &mLibrary;
+    };
+
+}// namespace spla
 
 #endif//SPLA_SPLAMATRIXSTORAGE_HPP

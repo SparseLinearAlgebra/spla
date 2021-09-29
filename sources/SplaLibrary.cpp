@@ -147,3 +147,6 @@ const std::optional<std::string> &spla::Library::Config::GetLogFilenameUTF8() co
 const std::optional<std::wstring> &spla::Library::Config::GetLogFilenameUTF32() const {
     return mLogFilenameUTF32;
 }
+size_t spla::Library::Config::GetBlockSize() const {
+    return mBlockSize;
+}
