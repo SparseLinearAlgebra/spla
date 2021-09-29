@@ -96,9 +96,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a747d31dc9af6a726f3cc3637409cacf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2078856cd6a3a8e6ae8988347d848aa9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9">RemoveAmountLimit</a> ()</td></tr>
 <tr class="separator:a2078856cd6a3a8e6ae8988347d848aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9fe8713541e425fee45b9afd6faa7eb"><td class="memItemLeft" align="right" valign="top"><a id="af9fe8713541e425fee45b9afd6faa7eb"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetDevicesNames</b> () const</td></tr>
+<tr class="memitem:ac6d26df251783fb7a3abb89e36e44a15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#ac6d26df251783fb7a3abb89e36e44a15">SetLogFilename</a> (std::wstring filename)</td></tr>
+<tr class="separator:ac6d26df251783fb7a3abb89e36e44a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d985e8666c283c99e613abfd0a7f692"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a1d985e8666c283c99e613abfd0a7f692">SetLogFilename</a> (std::string filename)</td></tr>
+<tr class="separator:a1d985e8666c283c99e613abfd0a7f692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9fe8713541e425fee45b9afd6faa7eb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">GetDevicesNames</a> () const</td></tr>
 <tr class="separator:af9fe8713541e425fee45b9afd6faa7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a338f6793758fac2b882c606713588e21"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a338f6793758fac2b882c606713588e21">GetLogFilenameUTF8</a> () const</td></tr>
+<tr class="separator:a338f6793758fac2b882c606713588e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a7394674b64deaeedee35211bb84a4"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; std::wstring &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a98a7394674b64deaeedee35211bb84a4">GetLogFilenameUTF32</a> () const</td></tr>
+<tr class="separator:a98a7394674b64deaeedee35211bb84a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents system configuration used in all computations. <code><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a></code> initializes OpenCL context, which includes all specified devices. </p>
@@ -146,6 +153,60 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af9fe8713541e425fee45b9afd6faa7eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9fe8713541e425fee45b9afd6faa7eb">&#9670;&nbsp;</a></span>GetDevicesNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; spla::Library::Config::GetDevicesNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>List of available devices for specified config settings </dd></dl>
+
+</div>
+</div>
+<a id="a98a7394674b64deaeedee35211bb84a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a7394674b64deaeedee35211bb84a4">&#9670;&nbsp;</a></span>GetLogFilenameUTF32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::optional&lt;std::wstring&gt;&amp; spla::Library::Config::GetLogFilenameUTF32 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>UTF-32 log filename (for windows) </dd></dl>
+
+</div>
+</div>
+<a id="a338f6793758fac2b882c606713588e21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a338f6793758fac2b882c606713588e21">&#9670;&nbsp;</a></span>GetLogFilenameUTF8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::optional&lt;std::string&gt;&amp; spla::Library::Config::GetLogFilenameUTF8 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>UTF-8 log filename (for unix) </dd></dl>
+
+</div>
+</div>
 <a id="a747d31dc9af6a726f3cc3637409cacf1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a747d31dc9af6a726f3cc3637409cacf1">&#9670;&nbsp;</a></span>LimitAmount()</h2>
 
@@ -185,7 +246,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Removes any limit on devices amount. Hence, all avaiable devices will be used. </p>
+<p>Removes any limit on devices amount. Hence, all available devices will be used. </p>
 
 </div>
 </div>
@@ -211,6 +272,58 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1d985e8666c283c99e613abfd0a7f692"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d985e8666c283c99e613abfd0a7f692">&#9670;&nbsp;</a></span>SetLogFilename() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a>&amp; spla::Library::Config::SetLogFilename </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set log file name, to log trace messages in debug library build. </p><dl class="section note"><dt>Note</dt><dd>Use on unix platform to specify log file name.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>UTF-8 encoded file name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This config </dd></dl>
+
+</div>
+</div>
+<a id="ac6d26df251783fb7a3abb89e36e44a15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6d26df251783fb7a3abb89e36e44a15">&#9670;&nbsp;</a></span>SetLogFilename() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a>&amp; spla::Library::Config::SetLogFilename </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set log file name, to log trace messages in debug library build. </p><dl class="section note"><dt>Note</dt><dd>Use on windows platform to specify log file name.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>UTF-32 encoded file name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This config </dd></dl>
 
 </div>
 </div>
