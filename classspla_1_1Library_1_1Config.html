@@ -68,6 +68,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classspla_1_1Library_1_1Config-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::Library::Config Class Reference</div>  </div>
@@ -106,6 +107,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a338f6793758fac2b882c606713588e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98a7394674b64deaeedee35211bb84a4"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; std::wstring &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a98a7394674b64deaeedee35211bb84a4">GetLogFilenameUTF32</a> () const</td></tr>
 <tr class="separator:a98a7394674b64deaeedee35211bb84a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad2582cdf1f29fe827f7b58a2daefaa1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#aad2582cdf1f29fe827f7b58a2daefaa1">GetBlockSize</a> () const</td></tr>
+<tr class="separator:aad2582cdf1f29fe827f7b58a2daefaa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4d40fe4daa2526da47c57e6e17fae47b"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a4d40fe4daa2526da47c57e6e17fae47b">DEFAULT_BLOCK_SIZE</a> = 1000000</td></tr>
+<tr class="separator:a4d40fe4daa2526da47c57e6e17fae47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents system configuration used in all computations. <code><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a></code> initializes OpenCL context, which includes all specified devices. </p>
@@ -153,6 +161,24 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aad2582cdf1f29fe827f7b58a2daefaa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2582cdf1f29fe827f7b58a2daefaa1">&#9670;&nbsp;</a></span>GetBlockSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t spla::Library::Config::GetBlockSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Block size </dd></dl>
+
+</div>
+</div>
 <a id="af9fe8713541e425fee45b9afd6faa7eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9fe8713541e425fee45b9afd6faa7eb">&#9670;&nbsp;</a></span>GetDevicesNames()</h2>
 
@@ -349,6 +375,30 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a4d40fe4daa2526da47c57e6e17fae47b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d40fe4daa2526da47c57e6e17fae47b">&#9670;&nbsp;</a></span>DEFAULT_BLOCK_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t spla::Library::Config::DEFAULT_BLOCK_SIZE = 1000000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Default size (nrows and ncols) for matrix/vector block size. Used to split matrix or vector into equal sized storage blocks. </p>
 
 </div>
 </div>
