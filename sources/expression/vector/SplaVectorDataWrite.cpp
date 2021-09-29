@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <detail/SplaLibraryPrivate.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
-#include <iostream>
 
 bool spla::VectorDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
@@ -35,12 +35,11 @@ bool spla::VectorDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &cont
 void spla::VectorDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
     // todo: impl me!
     auto &taskflow = context.nodesTaskflow[nodeIdx];
+    auto logger = context.expression->GetLibrary().GetPrivate().GetLogger();
 
     // todo: remove it!
     taskflow.emplace([=]() {
-        std::wstringstream msg;
-        msg << L"Run VectorDataWrite for node idx=" << nodeIdx << std::endl;
-        std::wcout << msg.str();
+        SPDLOG_LOGGER_TRACE(logger, "Process node {}", nodeIdx);
     });
 }
 

@@ -4,3 +4,6 @@
 [submodule "deps/taskflow"]
 	path = deps/taskflow
 	url = https://github.com/taskflow/taskflow.git
+[submodule "deps/spdlog"]
+	path = deps/spdlog
+	url = https://github.com/gabime/spdlog.git

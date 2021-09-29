@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <detail/SplaLibraryPrivate.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
-#include <iostream>
 
 bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
@@ -35,12 +35,11 @@ bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &cont
 void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
     // todo: impl me!
     auto &taskflow = context.nodesTaskflow[nodeIdx];
+    auto logger = context.expression->GetLibrary().GetPrivate().GetLogger();
 
     // todo: remove it!
     taskflow.emplace([=]() {
-        std::wstringstream msg;
-        msg << L"Run MatrixDataWrite for node idx=" << nodeIdx << std::endl;
-        std::wcout << msg.str();
+        SPDLOG_LOGGER_TRACE(logger, "Process node {}", nodeIdx);
     });
 }
 

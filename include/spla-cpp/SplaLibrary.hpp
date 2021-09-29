@@ -100,16 +100,43 @@ namespace spla {
 
             /**
              * Removes any limit on devices amount.
-             * Hence, all avaiable devices will be used.
+             * Hence, all available devices will be used.
              */
             Config &RemoveAmountLimit();
 
-            std::vector<std::string> GetDevicesNames() const;
+            /**
+             * Set log file name, to log trace messages in debug library build.
+             * @note Use on windows platform to specify log file name.
+             *
+             * @param filename UTF-32 encoded file name
+             * @return This config
+             */
+            Config &SetLogFilename(std::wstring filename);
+
+            /**
+             * Set log file name, to log trace messages in debug library build.
+             * @note Use on unix platform to specify log file name.
+             *
+             * @param filename UTF-8 encoded file name
+             * @return This config
+             */
+            Config &SetLogFilename(std::string filename);
+
+            /** @return List of available devices for specified config settings */
+            [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
+
+            /** @return UTF-8 log filename (for unix) */
+            [[nodiscard]] const std::optional<std::string> &GetLogFilenameUTF8() const;
+
+            /** @return UTF-32 log filename (for windows) */
+            [[nodiscard]] const std::optional<std::wstring> &GetLogFilenameUTF32() const;
 
         private:
             std::optional<std::string> mPlatformName;
             std::optional<DeviceType> mDeviceType;
             std::optional<std::size_t> mDeviceAmount = std::optional{1U};
+            std::optional<std::string> mLogFilenameUTF8;
+            std::optional<std::wstring> mLogFilenameUTF32;
         };
 
     public:

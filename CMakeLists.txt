@@ -10,6 +10,8 @@ option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 ## internal definitions
 
 set(SPLA_DEFINES)
+set(SPLA_DEFINES_DEBUG)
+set(SPLA_DEFINES_RELEASE)
 set(SPLA_DEBUG NO)
 set(SPLA_RELEASE NO)
 set(SPLA_TARGET_LINUX NO)
@@ -78,6 +80,18 @@ function(spla_target_compile_definitions target)
         target_compile_definitions(${target} PUBLIC ${DEFINITION})
     endforeach()
 
+    if (SPLA_DEBUG)
+        foreach(DEFINITION ${SPLA_DEFINES_DEBUG})
+            target_compile_definitions(${target} PUBLIC ${DEFINITION})
+        endforeach()
+    endif()
+
+    if (SPLA_RELEASE)
+        foreach(DEFINITION ${SPLA_DEFINES_RELEASE})
+            target_compile_definitions(${target} PUBLIC ${DEFINITION})
+        endforeach()
+    endif()
+
     if (SPLA_TARGET_WINDOWS)
         target_compile_definitions(${target}
                 PUBLIC WIN32
@@ -125,14 +139,17 @@ list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
 message(STATUS "Add OpenCL package required header files")
 find_package(OpenCL REQUIRED)
 
+message(STATUS "Add spdlog library")
+add_library(spdlog INTERFACE)
+target_include_directories(spdlog INTERFACE ${CMAKE_SOURCE_DIR}/deps/spdlog/include)
+list(APPEND SPLA_DEFINES_DEBUG SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE)
+list(APPEND SPLA_DEFINES_RELEASE SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_ERROR)
+if (SPLA_TARGET_WINDOWS)
+    list(APPEND SPLA_DEFINES SPDLOG_WCHAR_TO_UTF8_SUPPORT)
+    list(APPEND SPLA_DEFINES SPDLOG_WCHAR_FILENAMES)
+endif()
+
 message(STATUS "Add Taskflow library")
-set(TF_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
-set(TF_BUILD_CUDA OFF CACHE BOOL "" FORCE)
-set(TF_BUILD_SYCL OFF CACHE BOOL "" FORCE)
-set(TF_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(TF_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(TF_BUILD_PROFILER OFF CACHE BOOL "" FORCE)
-add_subdirectory(deps/taskflow)
 add_library(taskflow INTERFACE)
 target_include_directories(taskflow INTERFACE ${CMAKE_SOURCE_DIR}/deps/taskflow)
 
@@ -144,7 +161,6 @@ if (SPLA_BUILD_TESTS)
     set(gtest_hide_internal_symbols ON CACHE BOOL "" FORCE)
     add_subdirectory(deps/gtest)
 endif()
-
 
 ######################################################################
 ## Source code configuration
@@ -166,6 +182,7 @@ target_include_directories(spla PUBLIC ${Boost_INCLUDE_DIR})
 target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
 target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
 target_link_libraries(spla PRIVATE taskflow)
+target_link_libraries(spla PRIVATE spdlog)
 
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 

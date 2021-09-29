@@ -6,16 +6,10 @@
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
-**spla** is a C++ sparse linear algebra library for multi-GPU computations based
-on `OpenCL` and `Boost.Compute` technologies. It provides linear algebra primitives,
-such as matrices, vectors and scalars, supports wide variety of operations,
-and gives an ability to customize underlying values types and 
-parametrise operations using arbitrary user defined functions.
-
-**Core** of the library is C and C++ interfaces, which give access to library features.
-Also, library has python **pyspla** package - wrapper for spla C API.
-This package exports library features and primitives in high-level manner with automated 
-resources management and fancy syntax sugar for native integration into Python-runtime.
+**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL` 
+and `Boost.Compute` technologies. It provides linear algebra primitives, such as matrices, 
+vectors and scalars, supports wide variety of operations, and gives an ability to customize 
+underlying values types and parametrise operations using arbitrary user defined functions.
 
 > Note: project under heavy development! Not ready for usage.
 
@@ -108,6 +102,7 @@ spla
 │   └── tests - python package regression tests   
 ├── deps - project dependencies
 │   ├── gtest - google test framework for unit testing
+│   ├── spdlog - spdlog library for debug/release loggging features
 │   └── taskflow - taskflow library for parallel tasks execution
 └── CMakeLists.txt - library cmake config, add this as sub-directory to your project
 ```
@@ -115,14 +110,15 @@ spla
 ## Contributors
 
 - Egor Orachyov (Github: [@EgorOrachyov](https://github.com/EgorOrachyov))
+- Gleb Marin (Github: [@Glebanister](https://github.com/Glebanister))
 - Semyon Grigorev (Github: [@gsvgit](https://github.com/gsvgit))
 
 ## Citation
 
 ```ignorelang
 @online{spla,
-  author = {Orachyov, Egor and Grigorev, Semyon},
-  title = {spla: C++/Python sparse linear algebra library for multi-GPU computations},
+  author = {Orachyov, Egor and Marin, Gleb and Grigorev, Semyon},
+  title = {spla: Generalized sparse linear algebra framework for multi-GPU computations},
   year = 2021,
   url = {https://github.com/JetBrains-Research/spla},
   note = {Version 0.0.0}
@@ -138,3 +134,5 @@ This project licensed under MIT License. License text can be found in the
 
 This is a research project of the Programming Languages and Tools Laboratory
 at JetBrains-Research. Laboratory website [link](https://research.jetbrains.org/groups/plt_lab/).
+
+![JetBrains](https://github.com/JetBrains-Research/spla/raw/main/docs/logos/jetbrains-logo.svg?raw=true&sanitize=true)

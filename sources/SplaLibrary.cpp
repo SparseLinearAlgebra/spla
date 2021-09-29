@@ -97,6 +97,15 @@ spla::Library::Config &spla::Library::Config::SetDeviceType(DeviceType type) {
     return *this;
 }
 
+spla::Library::Config &spla::Library::Config::SetLogFilename(std::wstring filename) {
+    mLogFilenameUTF32.emplace(std::move(filename));
+    return *this;
+}
+spla::Library::Config &spla::Library::Config::SetLogFilename(std::string filename) {
+    mLogFilenameUTF8.emplace(std::move(filename));
+    return *this;
+}
+
 std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
     std::vector<std::string> devicesNames;
 
@@ -129,4 +138,12 @@ std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
         devicesNames.resize(mDeviceAmount.value());
     }
     return devicesNames;
+}
+
+const std::optional<std::string> &spla::Library::Config::GetLogFilenameUTF8() const {
+    return mLogFilenameUTF8;
+}
+
+const std::optional<std::wstring> &spla::Library::Config::GetLogFilenameUTF32() const {
+    return mLogFilenameUTF32;
 }

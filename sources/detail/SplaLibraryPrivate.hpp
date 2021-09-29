@@ -31,6 +31,7 @@
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
 #include <expression/SplaExpressionManager.hpp>
+#include <spdlog/spdlog.h>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <taskflow/taskflow.hpp>
@@ -58,6 +59,8 @@ namespace spla {
 
         const Library::Config &GetContextConfig() const noexcept;
 
+        const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
+
     private:
         tf::Executor mExecutor;
         RefPtr<Descriptor> mDefaultDesc;
@@ -66,6 +69,7 @@ namespace spla {
         boost::compute::platform mPlatform;
         boost::compute::context mContext;
         Library::Config mContextConfig;
+        std::shared_ptr<spdlog::logger> mLogger;
     };
 
 }// namespace spla

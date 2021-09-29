@@ -27,7 +27,8 @@
 
 #include <detail/SplaError.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
-#include <expression/SplaExpressionManager.hpp>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace {
     std::vector<boost::compute::device> FindAllDevices(const std::vector<std::string> &names) {
@@ -54,6 +55,37 @@ namespace {
         }
         return devices[0].platform();
     }
+
+    std::shared_ptr<spdlog::logger> SetupLogger(const spla::Library::Config &config) {
+        std::vector<spdlog::sink_ptr> sinks;
+
+#ifdef SPLA_DEBUG
+        auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        consoleSink->set_level(spdlog::level::trace);
+        sinks.push_back(consoleSink);
+#endif
+
+
+#if defined(SPLA_TARGET_WINDOWS)
+        auto &filename = config.GetLogFilenameUTF32();
+        if (filename.has_value()) {
+            auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.value());
+            fileSink->set_level(spdlog::level::trace);
+            sinks.push_back(fileSink);
+        }
+#elif defined(SPLA_TARGET_LINUX)
+        auto &filename = config.GetLogFilenameUTF8();
+        if (filename.has_value()) {
+            auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.value());
+            fileSink->set_level(spdlog::level::trace);
+            sinks.push_back(fileSink);
+        }
+#endif
+        auto logger = std::make_shared<spdlog::logger>("spla-logger", sinks.begin(), sinks.end());
+        logger->set_level(static_cast<spdlog::level::level_enum>(SPDLOG_ACTIVE_LEVEL));
+
+        return logger;
+    }
 }// namespace
 
 spla::LibraryPrivate::LibraryPrivate(
@@ -63,6 +95,7 @@ spla::LibraryPrivate::LibraryPrivate(
       mPlatform(GetDevicesPlatform(mDevices)),
       mContext(mDevices),
       mContextConfig(std::move(config)) {
+    mLogger = SetupLogger(mContextConfig);
     mDefaultDesc = Descriptor::Make(library);
     mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
 }
@@ -93,4 +126,8 @@ const boost::compute::context &spla::LibraryPrivate::GetContext() const noexcept
 
 const spla::Library::Config &spla::LibraryPrivate::GetContextConfig() const noexcept {
     return mContextConfig;
+}
+
+const std::shared_ptr<spdlog::logger> &spla::LibraryPrivate::GetLogger() const noexcept {
+    return mLogger;
 }
