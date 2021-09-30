@@ -61,22 +61,24 @@ namespace spla {
 
         explicit Object(TypeName typeName, class Library &library) : mTypeName(typeName), mLibrary(library) {}
 
-        const std::wstring &GetLabel() const {
+        /** @return Object string text label for debugging */
+        const std::string &GetLabel() const {
             return mLabel;
         }
 
+        /** @return Type specification of the object */
         TypeName GetTypeName() const {
             return mTypeName;
         }
 
+        /** @return Library instance that this object is associated with */
         class Library &GetLibrary() const {
             return mLibrary;
         }
 
     private:
         // User defined text label (for profiling/debugging)
-        // Unix: utf-32, Windows: utf-16
-        std::wstring mLabel;
+        std::string mLabel;
 
         // Type of the object
         TypeName mTypeName = TypeName::Unknown;
@@ -86,35 +88,35 @@ namespace spla {
     };
 
     /** @return Object type string name */
-    static inline const wchar_t *ObjectTypeToStr(Object::TypeName typeName) {
+    static inline const char *ObjectTypeToStr(Object::TypeName typeName) {
         switch (typeName) {
             case Object::TypeName::Type:
-                return L"Type";
+                return "Type";
             case Object::TypeName::Matrix:
-                return L"Matrix";
+                return "Matrix";
             case Object::TypeName::Vector:
-                return L"Vector";
+                return "Vector";
             case Object::TypeName::Scalar:
-                return L"Scalar";
+                return "Scalar";
             case Object::TypeName::Descriptor:
-                return L"Descriptor";
+                return "Descriptor";
             case Object::TypeName::FunctionUnary:
-                return L"FunctionUnary";
+                return "FunctionUnary";
             case Object::TypeName::FunctionBinary:
-                return L"FunctionBinary";
+                return "FunctionBinary";
             case Object::TypeName::Expression:
-                return L"Expression";
+                return "Expression";
             case Object::TypeName::ExpressionNode:
-                return L"ExpressionNode";
+                return "ExpressionNode";
             case Object::TypeName::DataMatrix:
-                return L"DataMatrix";
+                return "DataMatrix";
             case Object::TypeName::DataVector:
-                return L"DataVector";
+                return "DataVector";
             case Object::TypeName::DataScalar:
-                return L"DataScalar";
+                return "DataScalar";
 
             default:
-                return L"Unknown";
+                return "Unknown";
         }
     }
 

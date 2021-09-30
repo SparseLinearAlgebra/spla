@@ -46,7 +46,7 @@ namespace spla {
         ~Type() override = default;
 
         /** @return Type string name */
-        const std::wstring &GetId() const {
+        const std::string &GetId() const {
             return mId;
         }
 
@@ -69,14 +69,14 @@ namespace spla {
          *
          * @return New type instance
          */
-        static RefPtr<Type> Make(std::wstring id, size_t typeSize, class Library &library);
+        static RefPtr<Type> Make(std::string id, size_t typeSize, class Library &library);
 
     private:
-        Type(std::wstring id, size_t typeSize, bool builtIn, class Library &library);
+        Type(std::string id, size_t typeSize, bool builtIn, class Library &library);
 
         // Unique type name (id)
         // Unix: utf-32, Windows: utf-16
-        std::wstring mId;
+        std::string mId;
 
         // Size of the type value in bytes
         // Note: if size is 0 => Object with this type have no values

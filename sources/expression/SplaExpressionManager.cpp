@@ -42,9 +42,9 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
 }
 
 void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expression) {
-    CHECK_RAISE_ERROR(expression.IsNotNull(), InvalidArgument, L"Passed null expression");
+    CHECK_RAISE_ERROR(expression.IsNotNull(), InvalidArgument, "Passed null expression");
     CHECK_RAISE_ERROR(expression->GetState() == Expression::State::Default, InvalidArgument,
-                      L"Passed expression=" << expression->GetLabel() << L" must be in `Default` state before evaluation");
+                      "Passed expression=" << expression->GetLabel() << " must be in `Default` state before evaluation");
 
     expression->SetState(Expression::State::Submitted);
 
@@ -60,13 +60,13 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
 
     FindStartNodes(context);
     CHECK_RAISE_ERROR(!context.startNodes.empty(), InvalidArgument,
-                      L"No start nodes to run computation in expression=" << expression->GetLabel()
-                                                                          << L"; Possibly have some dependency cycle?");
+                      "No start nodes to run computation in expression=" << expression->GetLabel()
+                                                                         << "; Possibly have some dependency cycle?");
 
     FindEndNodes(context);
     CHECK_RAISE_ERROR(!context.endNodes.empty(), InvalidArgument,
-                      L"No end nodes in expression=" << expression->GetLabel()
-                                                     << "; Possibly have some dependency cycle?");
+                      "No end nodes in expression=" << expression->GetLabel()
+                                                    << "; Possibly have some dependency cycle?");
 
     CheckCycles(context);
     DefineTraversalPath(context);
@@ -115,7 +115,7 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
 }
 
 void spla::ExpressionManager::Register(const spla::RefPtr<spla::NodeProcessor> &processor) {
-    CHECK_RAISE_ERROR(processor.IsNotNull(), InvalidArgument, L"Passed null processor");
+    CHECK_RAISE_ERROR(processor.IsNotNull(), InvalidArgument, "Passed null processor");
 
     ExpressionNode::Operation op = processor->GetOperationType();
     auto list = mProcessors.find(op);
@@ -159,7 +159,7 @@ void spla::ExpressionManager::CheckCycles(spla::ExpressionContext &context) {
     for (auto n : start) {
         std::vector<int> visited(nodesCount, 0);
         auto cycle = CheckCyclesImpl(n, visited, nodes);
-        CHECK_RAISE_ERROR(!cycle, InvalidArgument, L"Provided expression has dependency cycle");
+        CHECK_RAISE_ERROR(!cycle, InvalidArgument, "Provided expression has dependency cycle");
     }
 }
 
@@ -235,7 +235,7 @@ spla::ExpressionManager::SelectProcessor(size_t nodeIdx, spla::ExpressionContext
     auto iter = mProcessors.find(op);
 
     CHECK_RAISE_ERROR(iter != mProcessors.end(), InvalidState,
-                      L"No processors for such op=" << ExpressionNodeOpToStr(op));
+                      "No processors for such op=" << ExpressionNodeOpToStr(op));
 
     const auto &processors = iter->second;
 

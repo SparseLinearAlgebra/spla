@@ -28,12 +28,12 @@
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaType.hpp>
 
-spla::RefPtr<spla::Type> spla::Type::Make(std::wstring id, size_t typeSize, spla::Library &library) {
+spla::RefPtr<spla::Type> spla::Type::Make(std::string id, size_t typeSize, spla::Library &library) {
     RefPtr<Type> type{new Type(std::move(id), typeSize, false, library)};
     return type;
 }
 
-spla::Type::Type(std::wstring id,
+spla::Type::Type(std::string id,
                  size_t typeSize,
                  bool builtIn,
                  spla::Library &library)

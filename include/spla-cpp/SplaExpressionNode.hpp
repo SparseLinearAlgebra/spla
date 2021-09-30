@@ -106,23 +106,23 @@ namespace spla {
     };
 
     /** @return String name of the expression node operation */
-    static inline const wchar_t *ExpressionNodeOpToStr(ExpressionNode::Operation op) {
+    static inline const char *ExpressionNodeOpToStr(ExpressionNode::Operation op) {
         switch (op) {
             case ExpressionNode::Operation::MatrixDataRead:
-                return L"MatrixDataRead";
+                return "MatrixDataRead";
             case ExpressionNode::Operation::MatrixDataWrite:
-                return L"MatrixDataWrite";
+                return "MatrixDataWrite";
             case ExpressionNode::Operation::VectorDataRead:
-                return L"VectorDataRead";
+                return "VectorDataRead";
             case ExpressionNode::Operation::VectorDataWrite:
-                return L"VectorDataWrite";
+                return "VectorDataWrite";
             case ExpressionNode::Operation::ScalarDataRead:
-                return L"ScalarDataRead";
+                return "ScalarDataRead";
             case ExpressionNode::Operation::ScalarDataWrite:
-                return L"ScalarDataWrite";
+                return "ScalarDataWrite";
 
             default:
-                return L"Unknown";
+                return "Unknown";
         }
     }
 }// namespace spla

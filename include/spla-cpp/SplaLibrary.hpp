@@ -55,7 +55,6 @@ namespace spla {
          */
         class SPLA_API Config {
         public:
-
             /**
              * Default size (nrows and ncols) for matrix/vector block size.
              * Used to split matrix or vector into equal sized storage blocks.
@@ -113,30 +112,20 @@ namespace spla {
 
             /**
              * Set log file name, to log trace messages in debug library build.
-             * @note Use on windows platform to specify log file name.
              *
-             * @param filename UTF-32 encoded file name
+             * @note Use utf-16 encoded wstring on windows platform to specify log file name.
+             * @note Use utf-8 encoded string on windows platform to specify log file name.
+             *
+             * @param filename Log file name
              * @return This config
              */
-            Config &SetLogFilename(std::wstring filename);
-
-            /**
-             * Set log file name, to log trace messages in debug library build.
-             * @note Use on unix platform to specify log file name.
-             *
-             * @param filename UTF-8 encoded file name
-             * @return This config
-             */
-            Config &SetLogFilename(std::string filename);
+            Config &SetLogFilename(Filename filename);
 
             /** @return List of available devices for specified config settings */
             [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
 
-            /** @return UTF-8 log filename (for unix) */
-            [[nodiscard]] const std::optional<std::string> &GetLogFilenameUTF8() const;
-
-            /** @return UTF-32 log filename (for windows) */
-            [[nodiscard]] const std::optional<std::wstring> &GetLogFilenameUTF32() const;
+            /** @return Log filename */
+            [[nodiscard]] const std::optional<Filename> &GetLogFilename() const;
 
             /** @return Block size */
             [[nodiscard]] size_t GetBlockSize() const;
@@ -145,8 +134,7 @@ namespace spla {
             std::optional<std::string> mPlatformName;
             std::optional<DeviceType> mDeviceType;
             std::optional<std::size_t> mDeviceAmount = std::optional{1U};
-            std::optional<std::string> mLogFilenameUTF8;
-            std::optional<std::wstring> mLogFilenameUTF32;
+            std::optional<Filename> mLogFilename;
             size_t mBlockSize = DEFAULT_BLOCK_SIZE;
         };
 

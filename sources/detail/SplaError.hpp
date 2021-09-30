@@ -50,7 +50,7 @@ namespace spla {
      */
     class Exception : public std::exception {
     public:
-        Exception(std::wstring message, std::string function, std::string file, size_t line, Status status, bool critical)
+        Exception(std::string message, std::string function, std::string file, size_t line, Status status, bool critical)
             : std::exception(),
               mMessage(std::move(message)),
               mFunction(std::move(function)),
@@ -79,7 +79,7 @@ namespace spla {
             return mWhatCached.c_str();
         }
 
-        const std::wstring &GetMessage() const noexcept {
+        const std::string &GetMessage() const noexcept {
             return mMessage;
         }
 
@@ -104,7 +104,7 @@ namespace spla {
         }
 
     private:
-        std::wstring mMessage;
+        std::string mMessage;
         std::string mFunction;
         std::string mFile;
         size_t mLine;
@@ -122,7 +122,7 @@ namespace spla {
     template<Status status>
     class TException : public Exception {
     public:
-        TException(std::wstring message, std::string &&function, std::string &&file, size_t line, bool critical)
+        TException(std::string message, std::string &&function, std::string &&file, size_t line, bool critical)
             : Exception(std::move(message), std::move(function), std::move(file), line, status, critical) {
         }
 
@@ -145,7 +145,7 @@ namespace spla {
 // An error, in theory, can recover after this
 #define RAISE_ERROR(type, message)                                               \
     do {                                                                         \
-        ::std::wstringstream __ws;                                               \
+        ::std::stringstream __ws;                                                \
         __ws << message;                                                         \
         throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, false); \
     } while (0);
@@ -159,7 +159,7 @@ namespace spla {
 // Critical errors, cause library shutdown
 #define RAISE_CRITICAL_ERROR(type, message)                                     \
     do {                                                                        \
-        ::std::wstringstream __ws;                                              \
+        ::std::stringstream __ws;                                               \
         __ws << message;                                                        \
         throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, true); \
     } while (0);

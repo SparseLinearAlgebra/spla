@@ -65,12 +65,7 @@ namespace {
         sinks.push_back(consoleSink);
 #endif
 
-#if defined(SPLA_TARGET_WINDOWS)
-        auto &filename = config.GetLogFilenameUTF32();
-#elif defined(SPLA_TARGET_LINUX)
-        auto &filename = config.GetLogFilenameUTF8();
-#endif
-
+        auto &filename = config.GetLogFilename();
         if (filename.has_value()) {
             auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename.value());
             fileSink->set_level(spdlog::level::trace);

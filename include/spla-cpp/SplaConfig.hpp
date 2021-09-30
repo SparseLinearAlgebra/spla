@@ -28,6 +28,8 @@
 #ifndef SPLA_SPLACONFIG_HPP
 #define SPLA_SPLACONFIG_HPP
 
+#include <string>
+
 #ifdef SPLA_MSVC
     #ifdef SPLA_EXPORTS
         #define SPLA_API __declspec(dllexport)
@@ -37,5 +39,17 @@
 #else
     #define SPLA_API
 #endif
+
+#define SPLA_TEXT(text) u8##text
+
+namespace spla {
+#if defined(SPLA_TARGET_WINDOWS)
+    using Filename = std::wstring;
+#elif defined(SPLA_TARGET_LINUX)
+    using Filename = std::string;
+#else
+    #error Unsupported platfrom
+#endif
+}// namespace spla
 
 #endif//SPLA_SPLACONFIG_HPP

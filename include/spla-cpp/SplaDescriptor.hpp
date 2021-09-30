@@ -67,7 +67,7 @@ namespace spla {
          * @param param Param name to set
          * @param value String param value; may be empty
          */
-        void SetParam(Param param, std::wstring value = std::wstring());
+        void SetParam(Param param, std::string value = std::string());
 
         /**
          * Get descriptor param value.
@@ -78,7 +78,7 @@ namespace spla {
          *
          * @return True if this param was set in descriptor
          */
-        bool GetParam(Param param, std::wstring &value) const;
+        bool GetParam(Param param, std::string &value) const;
 
         /**
          * Check if specified param was set in descriptor.
@@ -102,7 +102,7 @@ namespace spla {
         explicit Descriptor(class Library &library);
 
         // Map of desc configurable params and its values
-        std::unordered_map<Param, std::wstring> mParams;
+        std::unordered_map<Param, std::string> mParams;
     };
 
 }// namespace spla

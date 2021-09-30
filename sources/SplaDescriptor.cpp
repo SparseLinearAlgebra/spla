@@ -30,11 +30,11 @@
 spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
 }
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::wstring value) {
+void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
     mParams.emplace(param, std::move(value));
 }
 
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::wstring &value) const {
+bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
     auto query = mParams.find(param);
 
     if (query != mParams.end()) {

@@ -39,11 +39,11 @@ spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::
 
 void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred,
                                   const spla::RefPtr<spla::ExpressionNode> &succ) {
-    CHECK_RAISE_ERROR(pred.IsNotNull(), InvalidArgument, L"Passed null arg");
-    CHECK_RAISE_ERROR(succ.IsNotNull(), InvalidArgument, L"Passed null arg");
+    CHECK_RAISE_ERROR(pred.IsNotNull(), InvalidArgument, "Passed null arg");
+    CHECK_RAISE_ERROR(succ.IsNotNull(), InvalidArgument, "Passed null arg");
 
-    CHECK_RAISE_ERROR(pred->Belongs(*this), InvalidArgument, L"Node must be part of expression");
-    CHECK_RAISE_ERROR(succ->Belongs(*this), InvalidArgument, L"Node must be part of expression");
+    CHECK_RAISE_ERROR(pred->Belongs(*this), InvalidArgument, "Node must be part of expression");
+    CHECK_RAISE_ERROR(succ->Belongs(*this), InvalidArgument, "Node must be part of expression");
 
     // NOTE: Cycles check is done later
     pred->Link(succ.Get());
@@ -66,7 +66,7 @@ spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
                            std::vector<RefPtr<Object>> &&args,
                            const spla::RefPtr<spla::Descriptor> &desc) {
     for (const auto &arg : args)
-        CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, L"Passed null argument to op=" << ExpressionNodeOpToStr(op));
+        CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, "Passed null argument to op=" << ExpressionNodeOpToStr(op));
 
     RefPtr<ExpressionNode> node(new ExpressionNode(op, *this, GetLibrary()));
     node->SetIdx(mNodes.size());

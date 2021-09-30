@@ -44,7 +44,7 @@ TEST(Expression, Graph) {
     size_t M = 10000, N = 2000;
 
     Library library;
-    auto type = Type::Make(L"TEST", 0, library);
+    auto type = Type::Make("TEST", 0, library);
     auto mat = Matrix::Make(M, N, type, library);
     auto data = DataMatrix::Make(library);
 

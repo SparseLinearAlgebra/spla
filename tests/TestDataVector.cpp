@@ -31,7 +31,7 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
     utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed);
     source.Fill(utils::UniformRealGenerator<float>());
 
-    auto spT = spla::Type::Make(L"float", sizeof(float), library);
+    auto spT = spla::Type::Make("float", sizeof(float), library);
     auto spV = spla::Vector::Make(M, spT, library);
     auto spDesc = spla::Descriptor::Make(library);
 
@@ -55,7 +55,7 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed).SortReduceDuplicates();
     source.Fill(utils::UniformRealGenerator<float>());
 
-    auto spT = spla::Type::Make(L"float", sizeof(float), library);
+    auto spT = spla::Type::Make("float", sizeof(float), library);
     auto spV = spla::Vector::Make(M, spT, library);
 
     // Specify, that values already in row order + no duplicates
