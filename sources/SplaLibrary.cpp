@@ -34,18 +34,25 @@
 #include <sstream>
 
 spla::Library::Library(Config config)
-    : mPrivate(std::make_unique<LibraryPrivate>(*this, std::move(config))) {
+    : mPrivate(std::make_shared<LibraryPrivate>(*this, std::move(config))) {
 }
 
 spla::Library::Library()
     : Library(Config()) {
 }
 
-spla::Library::~Library() {
+spla::Library::~Library() = default;
+
+void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) const {
+    GetPrivate().GetExprManager()->Submit(expression);
 }
 
-void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) {
-    GetPrivate().GetExprManager()->Submit(expression);
+class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
+    return *mPrivate;
+}
+
+const std::shared_ptr<class spla::LibraryPrivate> &spla::Library::GetPrivatePtr() const noexcept {
+    return mPrivate;
 }
 
 std::string spla::Library::PrintContextConfig() const noexcept {
@@ -65,14 +72,6 @@ std::string spla::Library::PrintContextConfig() const noexcept {
                    << "        Version: " << device.version() << '\n';
     }
     return confStream.str();
-}
-
-class spla::LibraryPrivate &spla::Library::GetPrivate() {
-    return *mPrivate;
-}
-
-const class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
-    return *mPrivate;
 }
 
 spla::Library::Config::Config() = default;
@@ -99,6 +98,12 @@ spla::Library::Config &spla::Library::Config::SetDeviceType(DeviceType type) {
 
 spla::Library::Config &spla::Library::Config::SetLogFilename(spla::Filename filename) {
     mLogFilename.emplace(std::move(filename));
+    return *this;
+}
+
+spla::Library::Config &spla::Library::Config::SetBlockSize(size_t blockSize) {
+    assert(blockSize > 0);
+    mBlockSize = blockSize;
     return *this;
 }
 

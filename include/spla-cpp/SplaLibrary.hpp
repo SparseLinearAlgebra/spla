@@ -121,6 +121,23 @@ namespace spla {
              */
             Config &SetLogFilename(Filename filename);
 
+            /**
+             * Set matrix/vector block size param.
+             *
+             * This param used to split primitives data:
+             * - matrix data in equally sized blocks of size `blockSize` x `blockSize`
+             * - vector data in equally sized blocks of size `blockSize` x 1
+             * Edge blocks has clamped size.
+             *
+             * This param defines granularity of the data processing, since
+             * each block processing can be submitted to the separate gpu/queue
+             * as a stand alone task.
+             *
+             * @param blockSize Size of the matrix/vector block; must be greater then zero
+             * @return This config
+             */
+            Config &SetBlockSize(size_t blockSize);
+
             /** @return List of available devices for specified config settings */
             [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
 
@@ -149,13 +166,13 @@ namespace spla {
          * Submit expression for the execution.
          * @param expression Expression for execution
          */
-        void Submit(const RefPtr<class Expression> &expression);
+        void Submit(const RefPtr<class Expression> &expression) const;
 
         /** @return Private state (for internal usage only) */
-        class LibraryPrivate &GetPrivate();
+        [[nodiscard]] class LibraryPrivate &GetPrivate() const noexcept;
 
         /** @return Private state (for internal usage only) */
-        const class LibraryPrivate &GetPrivate() const noexcept;
+        [[nodiscard]] const std::shared_ptr<class LibraryPrivate> &GetPrivatePtr() const noexcept;
 
         /**
          * Get description of computational devices.
@@ -166,7 +183,7 @@ namespace spla {
 
     private:
         // Private state
-        std::unique_ptr<class LibraryPrivate> mPrivate;
+        std::shared_ptr<class LibraryPrivate> mPrivate;
     };
 
 }// namespace spla
