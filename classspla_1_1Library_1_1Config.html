@@ -99,6 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2078856cd6a3a8e6ae8988347d848aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96f01b0da8d48aed00b0209feba0321c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a96f01b0da8d48aed00b0209feba0321c">SetLogFilename</a> (Filename filename)</td></tr>
 <tr class="separator:a96f01b0da8d48aed00b0209feba0321c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c79b99404014800313ec6adf7937a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8">SetBlockSize</a> (size_t blockSize)</td></tr>
+<tr class="separator:a24c79b99404014800313ec6adf7937a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9fe8713541e425fee45b9afd6faa7eb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">GetDevicesNames</a> () const</td></tr>
 <tr class="separator:af9fe8713541e425fee45b9afd6faa7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d143ce4d324af4326141dbe102e4ae5"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; Filename &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">GetLogFilename</a> () const</td></tr>
@@ -251,6 +253,37 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Removes any limit on devices amount. Hence, all available devices will be used. </p>
+
+</div>
+</div>
+<a id="a24c79b99404014800313ec6adf7937a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24c79b99404014800313ec6adf7937a8">&#9670;&nbsp;</a></span>SetBlockSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a>&amp; spla::Library::Config::SetBlockSize </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>blockSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set matrix/vector block size param.</p>
+<p>This param used to split primitives data:</p><ul>
+<li>matrix data in equally sized blocks of size <code>blockSize</code> x <code>blockSize</code></li>
+<li>vector data in equally sized blocks of size <code>blockSize</code> x 1 Edge blocks has clamped size.</li>
+</ul>
+<p>This param defines granularity of the data processing, since each block processing can be submitted to the separate gpu/queue as a stand alone task.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSize</td><td>Size of the matrix/vector block; must be greater then zero </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This config </dd></dl>
 
 </div>
 </div>

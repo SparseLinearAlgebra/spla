@@ -132,47 +132,50 @@ $(function() {
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a96f01b0da8d48aed00b0209feba0321c">  122</a></span>&#160;            <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;<a class="code" href="classspla_1_1Library_1_1Config.html#a96f01b0da8d48aed00b0209feba0321c">SetLogFilename</a>(Filename filename);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">  125</a></span>&#160;            [[nodiscard]] std::vector&lt;std::string&gt; <a class="code" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">GetDevicesNames</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">  128</a></span>&#160;            [[nodiscard]] <span class="keyword">const</span> std::optional&lt;Filename&gt; &amp;<a class="code" href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">GetLogFilename</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#aad2582cdf1f29fe827f7b58a2daefaa1">  131</a></span>&#160;            [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Library_1_1Config.html#aad2582cdf1f29fe827f7b58a2daefaa1">GetBlockSize</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            std::optional&lt;std::string&gt; mPlatformName;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            std::optional&lt;DeviceType&gt; mDeviceType;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            std::optional&lt;std::size_t&gt; mDeviceAmount = std::optional{1U};</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            std::optional&lt;Filename&gt; mLogFilename;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordtype">size_t</span> mBlockSize = DEFAULT_BLOCK_SIZE;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        };</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8">  139</a></span>&#160;            <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;<a class="code" href="classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8">SetBlockSize</a>(<span class="keywordtype">size_t</span> blockSize);</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a>(Config config);</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">  142</a></span>&#160;            [[nodiscard]] std::vector&lt;std::string&gt; <a class="code" href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">GetDevicesNames</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a>();</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        ~<a class="code" href="classspla_1_1Library.html">Library</a>();</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a7cc87f55e209cda10af256d84caeb3d1">  152</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Library.html#a7cc87f55e209cda10af256d84caeb3d1">Submit</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;class Expression&gt;</a> &amp;expression);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#aca51ca03010503192094c52871fa57b4">  155</a></span>&#160;        <span class="keyword">class </span>LibraryPrivate &amp;<a class="code" href="classspla_1_1Library.html#aca51ca03010503192094c52871fa57b4">GetPrivate</a>();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a97031b707c9a4c100a4a67ea13414716">  158</a></span>&#160;        <span class="keyword">const</span> <span class="keyword">class </span>LibraryPrivate &amp;<a class="code" href="classspla_1_1Library.html#a97031b707c9a4c100a4a67ea13414716">GetPrivate</a>() const noexcept;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a38fdd6082ccd96bb72312170af82e6cd">  165</a></span>&#160;        [[nodiscard]] std::<span class="keywordtype">string</span> PrintContextConfig() const noexcept;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    private:</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="comment">// Private state</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        std::unique_ptr&lt;class LibraryPrivate&gt; mPrivate;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    };</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">  145</a></span>&#160;            [[nodiscard]] <span class="keyword">const</span> std::optional&lt;Filename&gt; &amp;<a class="code" href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">GetLogFilename</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#aad2582cdf1f29fe827f7b58a2daefaa1">  148</a></span>&#160;            [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Library_1_1Config.html#aad2582cdf1f29fe827f7b58a2daefaa1">GetBlockSize</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            std::optional&lt;std::string&gt; mPlatformName;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            std::optional&lt;DeviceType&gt; mDeviceType;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            std::optional&lt;std::size_t&gt; mDeviceAmount = std::optional{1U};</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            std::optional&lt;Filename&gt; mLogFilename;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordtype">size_t</span> mBlockSize = DEFAULT_BLOCK_SIZE;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        };</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a>(Config config);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a>();</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        ~<a class="code" href="classspla_1_1Library.html">Library</a>();</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4">  169</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4">Submit</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;class Expression&gt;</a> &amp;expression) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a91b71d485e838ee78810ee4a316c559f">  172</a></span>&#160;        [[nodiscard]] <span class="keyword">class </span>LibraryPrivate &amp;<a class="code" href="classspla_1_1Library.html#a91b71d485e838ee78810ee4a316c559f">GetPrivate</a>() const noexcept;</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a05de3a56a7dbe7b46c8f297b5c7bed28">  175</a></span>&#160;        [[nodiscard]] const std::shared_ptr&lt;class LibraryPrivate&gt; &amp;GetPrivatePtr() const noexcept;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a38fdd6082ccd96bb72312170af82e6cd">  182</a></span>&#160;        [[nodiscard]] std::<span class="keywordtype">string</span> PrintContextConfig() const noexcept;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    private:</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="comment">// Private state</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        std::shared_ptr&lt;class LibraryPrivate&gt; mPrivate;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    };</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html">spla::Library::Config</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:56</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a05889e1b474b50366a655371a8a637f2"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a05889e1b474b50366a655371a8a637f2">spla::Library::Config::SetDeviceType</a></div><div class="ttdeci">Config &amp; SetDeviceType(DeviceType deviceType)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a081d751b684cc556ac160bf2c1009322"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a081d751b684cc556ac160bf2c1009322">spla::Library::Config::SetPlatform</a></div><div class="ttdeci">Config &amp; SetPlatform(std::string platformName)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a2078856cd6a3a8e6ae8988347d848aa9"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9">spla::Library::Config::RemoveAmountLimit</a></div><div class="ttdeci">Config &amp; RemoveAmountLimit()</div></div>
+<div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a24c79b99404014800313ec6adf7937a8"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8">spla::Library::Config::SetBlockSize</a></div><div class="ttdeci">Config &amp; SetBlockSize(size_t blockSize)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a2d143ce4d324af4326141dbe102e4ae5"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a2d143ce4d324af4326141dbe102e4ae5">spla::Library::Config::GetLogFilename</a></div><div class="ttdeci">const std::optional&lt; Filename &gt; &amp; GetLogFilename() const</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a747d31dc9af6a726f3cc3637409cacf1"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a747d31dc9af6a726f3cc3637409cacf1">spla::Library::Config::LimitAmount</a></div><div class="ttdeci">Config &amp; LimitAmount(std::size_t deviceAmount)</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_a954fe345d6dff0d543a48019fdbd34a5"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#a954fe345d6dff0d543a48019fdbd34a5">spla::Library::Config::Config</a></div><div class="ttdeci">Config()</div></div>
@@ -181,9 +184,8 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_ae9c06614083b2661687a75a60e226a2e"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e">spla::Library::Config::DeviceType</a></div><div class="ttdeci">DeviceType</div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:67</div></div>
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_af9fe8713541e425fee45b9afd6faa7eb"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#af9fe8713541e425fee45b9afd6faa7eb">spla::Library::Config::GetDevicesNames</a></div><div class="ttdeci">std::vector&lt; std::string &gt; GetDevicesNames() const</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
-<div class="ttc" id="aclassspla_1_1Library_html_a7cc87f55e209cda10af256d84caeb3d1"><div class="ttname"><a href="classspla_1_1Library.html#a7cc87f55e209cda10af256d84caeb3d1">spla::Library::Submit</a></div><div class="ttdeci">void Submit(const RefPtr&lt; class Expression &gt; &amp;expression)</div></div>
-<div class="ttc" id="aclassspla_1_1Library_html_a97031b707c9a4c100a4a67ea13414716"><div class="ttname"><a href="classspla_1_1Library.html#a97031b707c9a4c100a4a67ea13414716">spla::Library::GetPrivate</a></div><div class="ttdeci">const class LibraryPrivate &amp; GetPrivate() const noexcept</div></div>
-<div class="ttc" id="aclassspla_1_1Library_html_aca51ca03010503192094c52871fa57b4"><div class="ttname"><a href="classspla_1_1Library.html#aca51ca03010503192094c52871fa57b4">spla::Library::GetPrivate</a></div><div class="ttdeci">class LibraryPrivate &amp; GetPrivate()</div></div>
+<div class="ttc" id="aclassspla_1_1Library_html_a3d6f8603c1273e65cd21051872c0d4e4"><div class="ttname"><a href="classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4">spla::Library::Submit</a></div><div class="ttdeci">void Submit(const RefPtr&lt; class Expression &gt; &amp;expression) const</div></div>
+<div class="ttc" id="aclassspla_1_1Library_html_a91b71d485e838ee78810ee4a316c559f"><div class="ttname"><a href="classspla_1_1Library.html#a91b71d485e838ee78810ee4a316c559f">spla::Library::GetPrivate</a></div><div class="ttdeci">class LibraryPrivate &amp; GetPrivate() const noexcept</div></div>
 <div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
