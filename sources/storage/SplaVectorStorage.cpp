@@ -25,4 +25,56 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "SplaVectorStorage.hpp"
+#include <detail/SplaLibraryPrivate.hpp>
+#include <detail/SplaMath.hpp>
+#include <storage/SplaVectorStorage.hpp>
+
+void spla::VectorStorage::SetBlock(const spla::VectorStorage::Index &index, const spla::RefPtr<spla::VectorBlock> &block) {
+    assert(index < mNblockRows);
+    assert(block.IsNotNull());
+
+    std::lock_guard<std::mutex> lock(mMutex);
+    auto &prev = mBlocks[index];
+
+    if (prev.IsNotNull())
+        mNvals -= prev->GetNvals();
+
+    prev = block;
+    mNvals += block->GetNvals();
+}
+
+void spla::VectorStorage::GetBlocks(spla::VectorStorage::EntryList &entryList) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    entryList.clear();
+    entryList.insert(entryList.begin(), mBlocks.begin(), mBlocks.end());
+}
+
+void spla::VectorStorage::GetBlocksGrid(size_t &rows) const {
+    rows = mNblockRows;
+}
+
+spla::RefPtr<spla::VectorBlock> spla::VectorStorage::GetBlock(const spla::VectorStorage::Index &index) const {
+    assert(index < mNblockRows);
+    std::lock_guard<std::mutex> lock(mMutex);
+    auto entry = mBlocks.find(index);
+    return entry != mBlocks.end() ? entry->second : nullptr;
+}
+
+size_t spla::VectorStorage::GetNrows() const noexcept {
+    return mNrows;
+}
+
+size_t spla::VectorStorage::GetNvals() const noexcept {
+    std::lock_guard<std::mutex> lock(mMutex);
+    return mNvals;
+}
+
+spla::RefPtr<spla::VectorStorage> spla::VectorStorage::Make(size_t nrows, spla::Library &library) {
+    return spla::RefPtr<spla::VectorStorage>(new VectorStorage(nrows, library));
+}
+
+spla::VectorStorage::VectorStorage(size_t nrows, spla::Library &library)
+    : mNrows(nrows), mLibrary(library) {
+    mBlockSize = mLibrary.GetPrivate().GetBlockSize();
+    mNblockRows = math::GetBlocksCount(nrows, mBlockSize);
+}

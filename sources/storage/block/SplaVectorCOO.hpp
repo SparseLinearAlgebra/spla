@@ -25,58 +25,39 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAVECTORSTORAGE_HPP
-#define SPLA_SPLAVECTORSTORAGE_HPP
+#ifndef SPLA_SPLAVECTORCOO_HPP
+#define SPLA_SPLAVECTORCOO_HPP
 
-#include <mutex>
-#include <spla-cpp/SplaLibrary.hpp>
+#include <detail/SplaSvm.hpp>
 #include <storage/SplaVectorBlock.hpp>
-#include <unordered_map>
-#include <vector>
 
 namespace spla {
 
-    class VectorStorage final : public RefCnt {
+    class VectorCOO final : public VectorBlock {
     public:
-        using Index = unsigned int;
-        using Entry = std::pair<Index, RefPtr<VectorBlock>>;
-        using EntryList = std::vector<Entry>;
+        ~VectorCOO() override = default;
 
-        ~VectorStorage() override = default;
+        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetRows() const noexcept {
+            return mRows;
+        }
 
-        /** Set block at specified block index */
-        void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
+        [[nodiscard]] const RefPtr<Svm<unsigned char>> &GetVals() const noexcept {
+            return mVals;
+        }
 
-        /** Get list of non-null presented blocks in storage */
-        void GetBlocks(EntryList &entryList) const;
-
-        /** Get blocks grid (total number of blocks) */
-        void GetBlocksGrid(size_t &rows) const;
-
-        /** @return Block at specified index; may be null */
-        RefPtr<VectorBlock> GetBlock(const Index &index) const;
-
-        /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
-
-        /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
-
-        static RefPtr<VectorStorage> Make(size_t nrows, Library &library);
+        static RefPtr<VectorCOO> Make(size_t nrows, size_t nvals,
+                                      RefPtr<Svm<unsigned int>> rows,
+                                      RefPtr<Svm<unsigned char>> vals);
 
     private:
-        VectorStorage(size_t nrows, Library &library);
+        VectorCOO(size_t nrows, size_t nvals,
+                  RefPtr<Svm<unsigned int>> rows,
+                  RefPtr<Svm<unsigned char>> vals);
 
-        std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
-        mutable std::mutex mMutex;
-        size_t mNrows;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mBlockSize = 0;
-
-        Library &mLibrary;
+        RefPtr<Svm<unsigned int>> mRows;
+        RefPtr<Svm<unsigned char>> mVals;
     };
 
 }// namespace spla
 
-#endif//SPLA_SPLAVECTORSTORAGE_HPP
+#endif//SPLA_SPLAVECTORCOO_HPP
