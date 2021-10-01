@@ -25,58 +25,18 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAVECTORSTORAGE_HPP
-#define SPLA_SPLAVECTORSTORAGE_HPP
+#include <storage/block/SplaVectorCOO.hpp>
 
-#include <mutex>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <storage/SplaVectorBlock.hpp>
-#include <unordered_map>
-#include <vector>
+spla::RefPtr<spla::VectorCOO> spla::VectorCOO::Make(size_t nrows, size_t nvals,
+                                                    spla::RefPtr<spla::Svm<unsigned int>> rows,
+                                                    spla::RefPtr<spla::Svm<unsigned char>> vals) {
+    return spla::RefPtr<spla::VectorCOO>(new VectorCOO(nrows, nvals, std::move(rows), std::move(vals)));
+}
 
-namespace spla {
-
-    class VectorStorage final : public RefCnt {
-    public:
-        using Index = unsigned int;
-        using Entry = std::pair<Index, RefPtr<VectorBlock>>;
-        using EntryList = std::vector<Entry>;
-
-        ~VectorStorage() override = default;
-
-        /** Set block at specified block index */
-        void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
-
-        /** Get list of non-null presented blocks in storage */
-        void GetBlocks(EntryList &entryList) const;
-
-        /** Get blocks grid (total number of blocks) */
-        void GetBlocksGrid(size_t &rows) const;
-
-        /** @return Block at specified index; may be null */
-        RefPtr<VectorBlock> GetBlock(const Index &index) const;
-
-        /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
-
-        /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
-
-        static RefPtr<VectorStorage> Make(size_t nrows, Library &library);
-
-    private:
-        VectorStorage(size_t nrows, Library &library);
-
-        std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
-        mutable std::mutex mMutex;
-        size_t mNrows;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mBlockSize = 0;
-
-        Library &mLibrary;
-    };
-
-}// namespace spla
-
-#endif//SPLA_SPLAVECTORSTORAGE_HPP
+spla::VectorCOO::VectorCOO(size_t nrows, size_t nvals,
+                           spla::RefPtr<spla::Svm<unsigned int>> rows,
+                           spla::RefPtr<spla::Svm<unsigned char>> vals)
+    : VectorBlock(nrows, nvals),
+      mRows(std::move(rows)),
+      mVals(std::move(vals)) {
+}

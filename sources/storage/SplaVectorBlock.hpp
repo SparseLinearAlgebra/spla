@@ -25,58 +25,40 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAVECTORSTORAGE_HPP
-#define SPLA_SPLAVECTORSTORAGE_HPP
+#ifndef SPLA_SPLAVECTORBLOCK_HPP
+#define SPLA_SPLAVECTORBLOCK_HPP
 
-#include <mutex>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <storage/SplaVectorBlock.hpp>
-#include <unordered_map>
-#include <vector>
+#include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {
 
-    class VectorStorage final : public RefCnt {
+    /**
+     * @class VectorBlock
+     *
+     * Base class for a vector block.
+     * Used in vector storage to represent block of the vector with specific sparse storage schema.
+     * Common vect blocks are COO and dense.
+     */
+    class VectorBlock : public RefCnt {
     public:
-        using Index = unsigned int;
-        using Entry = std::pair<Index, RefPtr<VectorBlock>>;
-        using EntryList = std::vector<Entry>;
+        VectorBlock(size_t nrows, size_t nvals) : mNrows(nrows), mNvals(nvals) {}
+        ~VectorBlock() override = default;
 
-        ~VectorStorage() override = default;
+        /** @return Number of rows of the block */
+        [[nodiscard]] size_t GetNrows() const noexcept {
+            return mNrows;
+        }
 
-        /** Set block at specified block index */
-        void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
+        /** @return Number of values in block */
+        [[nodiscard]] size_t GetNvals() const noexcept {
+            return mNvals;
+        }
 
-        /** Get list of non-null presented blocks in storage */
-        void GetBlocks(EntryList &entryList) const;
-
-        /** Get blocks grid (total number of blocks) */
-        void GetBlocksGrid(size_t &rows) const;
-
-        /** @return Block at specified index; may be null */
-        RefPtr<VectorBlock> GetBlock(const Index &index) const;
-
-        /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
-
-        /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
-
-        static RefPtr<VectorStorage> Make(size_t nrows, Library &library);
-
-    private:
-        VectorStorage(size_t nrows, Library &library);
-
-        std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
-        mutable std::mutex mMutex;
+    protected:
         size_t mNrows;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mBlockSize = 0;
-
-        Library &mLibrary;
+        size_t mNvals;
     };
 
 }// namespace spla
 
-#endif//SPLA_SPLAVECTORSTORAGE_HPP
+#endif//SPLA_SPLAVECTORBLOCK_HPP
