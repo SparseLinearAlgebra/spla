@@ -35,6 +35,8 @@ set(SPLA_STORAGE_SOURCES
         sources/storage/block/SplaMatrixCOO.hpp
         sources/storage/block/SplaVectorCOO.cpp
         sources/storage/block/SplaVectorCOO.hpp
+        sources/storage/block/SplaVectorDense.cpp
+        sources/storage/block/SplaVectorDense.hpp
         sources/storage/SplaMatrixBlock.hpp
         sources/storage/SplaVectorBlock.hpp
         sources/storage/SplaMatrixStorage.cpp
