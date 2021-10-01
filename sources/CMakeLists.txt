@@ -31,6 +31,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/SplaNodeProcessor.hpp)
 
 set(SPLA_STORAGE_SOURCES
+        sources/storage/block/SplaMatrixDense.cpp
+        sources/storage/block/SplaMatrixDense.hpp
         sources/storage/block/SplaMatrixCOO.cpp
         sources/storage/block/SplaMatrixCOO.hpp
         sources/storage/block/SplaMatrixCSR.cpp
