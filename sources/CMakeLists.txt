@@ -33,6 +33,8 @@ set(SPLA_EXPRESSION_SOURCES
 set(SPLA_STORAGE_SOURCES
         sources/storage/block/SplaMatrixCOO.cpp
         sources/storage/block/SplaMatrixCOO.hpp
+        sources/storage/block/SplaMatrixCSR.cpp
+        sources/storage/block/SplaMatrixCSR.hpp
         sources/storage/SplaMatrixBlock.hpp
         sources/storage/SplaMatrixStorage.cpp
         sources/storage/SplaMatrixStorage.hpp
