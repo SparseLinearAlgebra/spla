@@ -47,11 +47,9 @@ namespace spla {
 
         [[nodiscard]] const Values &GetVals() const noexcept;
 
-        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
-
-#ifdef SPLA_DEBUG
         [[nodiscard]] std::string ToString() const;
-#endif
+
+        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
 
     private:
         MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);

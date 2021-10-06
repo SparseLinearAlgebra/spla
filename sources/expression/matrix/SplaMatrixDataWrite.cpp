@@ -168,6 +168,8 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                 if (!desc->IsParamSet(Descriptor::Param::ValuesSorted)) {
                     SPDLOG_LOGGER_TRACE(logger, "Sort block ({},{}) entries", i, j);
 
+                    // Use permutation buffer to synchronize position of indices of the same
+                    // entries in all 3 buffers: rows, cols and vals.
                     compute::vector<unsigned int> permutation(blockNvals, ctx);
                     compute::copy(compute::counting_iterator<cl_uint>(0),
                                   compute::counting_iterator<cl_uint>(blockNvals),
@@ -195,9 +197,83 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                     }
                 }
 
-                if (!desc->IsParamSet(Descriptor::Param::NoDuplicates)) {
+                if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
                     SPDLOG_LOGGER_TRACE(logger, "Reduce duplicates block ({},{}) entries", i, j);
-                    // todo: reduce duplicates if present
+                    const unsigned int init[] = {1u};
+
+                    // Use this mask to find unique elements
+                    // NOTE: unique has 1, otherwise 0
+                    compute::vector<unsigned int> mask(blockNvals + 1, ctx);
+                    compute::copy_n(init, 1, mask.begin(), queue);
+
+                    BOOST_COMPUTE_CLOSURE(
+                            unsigned int, findUnique, (unsigned int i), (blockRows, blockCols), {
+                                unsigned int row = blockRows[i];
+                                unsigned int col = blockCols[i];
+                                unsigned int rowPrev = blockRows[i - 1];
+                                unsigned int colPrev = blockCols[i - 1];
+
+                                return rowPrev == row && colPrev == col ? 0 : 1;
+                            });
+
+                    // For each entry starting from 1 check if is unique, first is always unique
+                    compute::transform(compute::counting_iterator<unsigned int>(1),
+                                       compute::counting_iterator<unsigned int>(blockNvals),
+                                       mask.begin() + 1,
+                                       findUnique,
+                                       queue);
+
+                    // Define write offsets (where to write value in result buffer) for each unique value
+                    compute::vector<unsigned int> offsets(mask.size(), ctx);
+                    compute::exclusive_scan(mask.begin(), mask.end(), offsets.begin(), 0, queue);
+
+                    // Count number of unique values to allocate storage
+                    std::size_t resultNvals = offsets.back();
+
+                    // Allocate new buffers
+                    compute::vector<unsigned int> newRows(resultNvals, ctx);
+                    compute::vector<unsigned int> newCols(resultNvals, ctx);
+                    compute::vector<unsigned char> newVals(ctx);
+
+                    // Copy indices
+                    BOOST_COMPUTE_CLOSURE(
+                            void, copyIndices, (unsigned int i), (mask, offsets, newRows, newCols, blockRows, blockCols), {
+                                if (mask[i]) {
+                                    unsigned int offset = offsets[i];
+                                    newRows[offset] = blockRows[i];
+                                    newCols[offset] = blockCols[i];
+                                }
+                            });
+                    compute::for_each_n(compute::counting_iterator<unsigned int>(0),
+                                        blockNvals,
+                                        copyIndices,
+                                        queue);
+
+                    // Copy values
+                    if (typeHasValues) {
+                        newVals.resize(resultNvals * byteSize);
+
+                        BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mask, offsets, newVals, blockVals, byteSize), {
+                            if (mask[i]) {
+                                unsigned int offset = offsets[i];
+                                unsigned int dst = byteSize * offset;
+                                unsigned int src = byteSize * i;
+                                for (size_t k = 0; k < byteSize; k++) {
+                                    newVals[dst + k] = blockVals[src + k];
+                                }
+                            }
+                        });
+                        compute::for_each_n(compute::counting_iterator<unsigned int>(0),
+                                            blockNvals,
+                                            copyValues,
+                                            queue);
+                    }
+
+                    // Update block data
+                    blockNvals = resultNvals;
+                    std::swap(blockRows, newRows);
+                    std::swap(blockCols, newCols);
+                    std::swap(blockVals, newVals);
                 }
 
                 // Allocate result block and set in storage

@@ -48,10 +48,10 @@ namespace spla {
 
                 *this << "const uint i = get_global_id(0);\n"
                       << "unsigned int index = " << first[expr<boost::compute::uint_>("i")] << ";\n"
+                      << "unsigned int dst = i * " << elementsInSequence << ";\n"
+                      << "unsigned int src = index * " << elementsInSequence << ";\n"
                       << "for (unsigned int k = 0; k < " << elementsInSequence << "; k++) {\n"
-                      << "  unsigned int srcOffset = i + k;\n"
-                      << "  unsigned int dstOffset = index + k;\n"
-                      << result[expr<boost::compute::uint_>("srcOffset")] << "=" << input[expr<boost::compute::uint_>("dstOffset")] << ";\n"
+                      << result[expr<boost::compute::uint_>("dst + k")] << "=" << input[expr<boost::compute::uint_>("src + k")] << ";\n"
                       << "}";
             }
 

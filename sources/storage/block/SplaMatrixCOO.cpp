@@ -52,7 +52,6 @@ const spla::MatrixCOO::Values &spla::MatrixCOO::GetVals() const noexcept {
     return mVals;
 }
 
-#ifdef SPLA_DEBUG
 std::string spla::MatrixCOO::ToString() const {
     using namespace boost;
     compute::context context = mRows.get_buffer().get_context();
@@ -76,6 +75,8 @@ std::string spla::MatrixCOO::ToString() const {
 
     std::stringstream ss;
 
+    ss << "Matrix " << GetNrows() << "x" << GetNcols() << " vals=" << GetNvals() << std::endl;
+
     for (size_t k = 0; k < GetNvals(); k++) {
         auto i = rows[k];
         auto j = cols[k];
@@ -94,4 +95,3 @@ std::string spla::MatrixCOO::ToString() const {
 
     return ss.str();
 }
-#endif
