@@ -25,58 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAVECTORSTORAGE_HPP
-#define SPLA_SPLAVECTORSTORAGE_HPP
+#ifndef SPLA_SPLAMATRIXDATAREAD_HPP
+#define SPLA_SPLAMATRIXDATAREAD_HPP
 
-#include <mutex>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <storage/SplaVectorBlock.hpp>
-#include <unordered_map>
-#include <vector>
+#include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    class VectorStorage final : public RefCnt {
+    class MatrixDataRead final : public NodeProcessor {
     public:
-        using Index = unsigned int;
-        using Entry = std::pair<Index, RefPtr<VectorBlock>>;
-        using EntryList = std::vector<Entry>;
-
-        ~VectorStorage() override = default;
-
-        /** Set block at specified block index */
-        void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
-
-        /** Get list of non-null presented blocks in storage */
-        void GetBlocks(EntryList &entryList) const;
-
-        /** Get blocks grid (total number of blocks) */
-        void GetBlocksGrid(size_t &rows) const;
-
-        /** @return Block at specified index; may be null */
-        RefPtr<VectorBlock> GetBlock(const Index &index) const;
-
-        /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
-
-        /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
-
-        static RefPtr<VectorStorage> Make(size_t nrows, Library &library);
-
-    private:
-        VectorStorage(size_t nrows, Library &library);
-
-        std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
-        size_t mNrows;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mBlockSize = 0;
-
-        Library &mLibrary;
-        mutable std::mutex mMutex;
+        ~MatrixDataRead() override = default;
+        bool Select(size_t nodeIdx, ExpressionContext &context) override;
+        void Process(size_t nodeIdx, ExpressionContext &context) override;
+        ExpressionNode::Operation GetOperationType() const override;
     };
 
 }// namespace spla
 
-#endif//SPLA_SPLAVECTORSTORAGE_HPP
+#endif//SPLA_SPLAMATRIXDATAREAD_HPP

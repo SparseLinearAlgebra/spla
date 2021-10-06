@@ -145,9 +145,9 @@ namespace spla {
 // An error, in theory, can recover after this
 #define RAISE_ERROR(type, message)                                               \
     do {                                                                         \
-        ::std::stringstream __ws;                                                \
-        __ws << message;                                                         \
-        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, false); \
+        ::std::stringstream __ss;                                                \
+        __ss << message;                                                         \
+        throw ::spla::type(__ss.str(), __FUNCTION__, __FILE__, __LINE__, false); \
     } while (0);
 
 #define CHECK_RAISE_ERROR(condition, type, message) \
@@ -159,9 +159,9 @@ namespace spla {
 // Critical errors, cause library shutdown
 #define RAISE_CRITICAL_ERROR(type, message)                                     \
     do {                                                                        \
-        ::std::stringstream __ws;                                               \
-        __ws << message;                                                        \
-        throw ::spla::type(__ws.str(), __FUNCTION__, __FILE__, __LINE__, true); \
+        ::std::stringstream __ss;                                               \
+        __ss << message;                                                        \
+        throw ::spla::type(__ss.str(), __FUNCTION__, __FILE__, __LINE__, true); \
     } while (0);
 
 #define CHECK_RAISE_CRITICAL_ERROR(condition, type, message) \

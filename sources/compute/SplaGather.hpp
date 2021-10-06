@@ -47,10 +47,10 @@ namespace spla {
                 mCount = boost::compute::detail::iterator_range_size(first, last);
 
                 *this << "const uint i = get_global_id(0);\n"
-                      << "unsigned int index = " << first[expr<boost::compute::uint_>("i")] << ";\n"
-                      << "unsigned int dst = i * " << elementsInSequence << ";\n"
-                      << "unsigned int src = index * " << elementsInSequence << ";\n"
-                      << "for (unsigned int k = 0; k < " << elementsInSequence << "; k++) {\n"
+                      << "const uint index = " << first[expr<boost::compute::uint_>("i")] << ";\n"
+                      << "const uint dst = i * " << elementsInSequence << ";\n"
+                      << "const uint src = index * " << elementsInSequence << ";\n"
+                      << "for (uint k = 0; k < " << elementsInSequence << "; k++) {\n"
                       << result[expr<boost::compute::uint_>("dst + k")] << "=" << input[expr<boost::compute::uint_>("src + k")] << ";\n"
                       << "}";
             }

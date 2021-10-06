@@ -35,7 +35,12 @@ namespace spla {
 
     /**
      * @class Data
+     *
      * Generic data container to pass to/from CPU user host-data (with autorelease feature).
+     *
+     * @see DataMatrix
+     * @see DataVector
+     * @see DataScalar
      */
     class SPLA_API Data : public Object {
     public:
@@ -59,7 +64,8 @@ namespace spla {
 
     /**
      * @class DataMatrix
-     * Matrix ram coo data.
+     *
+     * @brief Matrix host coo data.
      */
     class SPLA_API DataMatrix final : public Data {
     public:
@@ -117,7 +123,8 @@ namespace spla {
 
     /**
      * @class DataVector
-     * Vector ram coo data.
+     *
+     * @brief Vector host coo data.
      */
     class SPLA_API DataVector final : public Data {
     public:
@@ -163,7 +170,8 @@ namespace spla {
 
     /**
      * @class DataScalar
-     * Scalar ram data
+     *
+     * @brief Scalar host data
      */
     class SPLA_API DataScalar final : public Data {
     public:

@@ -63,9 +63,9 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                 using namespace boost;
 
                 // todo: gpu and device queue management
-                boost::compute::device gpu = library->GetDevices()[0];
-                boost::compute::context ctx = library->GetContext();
-                boost::compute::command_queue queue(ctx, gpu);
+                compute::device gpu = library->GetDevices()[0];
+                compute::context ctx = library->GetContext();
+                compute::command_queue queue(ctx, gpu);
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);
@@ -198,7 +198,6 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                 }
 
                 if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
-                    SPDLOG_LOGGER_TRACE(logger, "Reduce duplicates block ({},{}) entries", i, j);
                     const unsigned int init[] = {1u};
 
                     // Use this mask to find unique elements
@@ -208,10 +207,10 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
 
                     BOOST_COMPUTE_CLOSURE(
                             unsigned int, findUnique, (unsigned int i), (blockRows, blockCols), {
-                                unsigned int row = blockRows[i];
-                                unsigned int col = blockCols[i];
-                                unsigned int rowPrev = blockRows[i - 1];
-                                unsigned int colPrev = blockCols[i - 1];
+                                const uint row = blockRows[i];
+                                const uint col = blockCols[i];
+                                const uint rowPrev = blockRows[i - 1];
+                                const uint colPrev = blockCols[i - 1];
 
                                 return rowPrev == row && colPrev == col ? 0 : 1;
                             });
@@ -239,7 +238,7 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                     BOOST_COMPUTE_CLOSURE(
                             void, copyIndices, (unsigned int i), (mask, offsets, newRows, newCols, blockRows, blockCols), {
                                 if (mask[i]) {
-                                    unsigned int offset = offsets[i];
+                                    const uint offset = offsets[i];
                                     newRows[offset] = blockRows[i];
                                     newCols[offset] = blockCols[i];
                                 }
@@ -255,9 +254,9 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
 
                         BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mask, offsets, newVals, blockVals, byteSize), {
                             if (mask[i]) {
-                                unsigned int offset = offsets[i];
-                                unsigned int dst = byteSize * offset;
-                                unsigned int src = byteSize * i;
+                                const uint offset = offsets[i];
+                                const uint dst = byteSize * offset;
+                                const uint src = byteSize * i;
                                 for (size_t k = 0; k < byteSize; k++) {
                                     newVals[dst + k] = blockVals[src + k];
                                 }
@@ -268,6 +267,9 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
                                             copyValues,
                                             queue);
                     }
+
+                    SPDLOG_LOGGER_TRACE(logger, "Reduce duplicates block ({},{}) entries old={} new={}",
+                                        i, j, blockNvals, resultNvals);
 
                     // Update block data
                     blockNvals = resultNvals;

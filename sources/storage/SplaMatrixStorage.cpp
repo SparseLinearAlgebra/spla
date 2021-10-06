@@ -58,6 +58,20 @@ void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryList &entryList) c
     entryList.insert(entryList.begin(), mBlocks.begin(), mBlocks.end());
 }
 
+void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryRowList &entryList) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    entryList.clear();
+    entryList.reserve(mNblockRows);
+    for (unsigned int i = 0; i < mNblockRows; i++) {
+        auto &list = entryList.emplace_back();
+        for (unsigned int j = 0; j < mNblockCols; j++) {
+            auto entry = mBlocks.find({i, j});
+            if (entry != mBlocks.end())
+                list.push_back(*entry);
+        }
+    }
+}
+
 void spla::MatrixStorage::GetBlocksGrid(size_t &rows, size_t &cols) const {
     rows = mNblockRows;
     cols = mNblockCols;

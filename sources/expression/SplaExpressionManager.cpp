@@ -31,12 +31,14 @@
 #include <numeric>
 #include <vector>
 
+#include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 
 spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(library) {
     // Here we can register built-in processors, one by on
     // NOTE: order of registration matters. First one has priority almond others for the same op.
+    Register(new MatrixDataRead());
     Register(new MatrixDataWrite());
     Register(new VectorDataWrite());
 }

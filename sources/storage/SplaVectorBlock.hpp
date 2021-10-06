@@ -37,7 +37,7 @@ namespace spla {
      *
      * Base class for a vector block.
      * Used in vector storage to represent block of the vector with specific sparse storage schema.
-     * Common vect blocks are COO and dense.
+     * Common vector blocks: COO and dense.
      */
     class VectorBlock : public RefCnt {
     public:

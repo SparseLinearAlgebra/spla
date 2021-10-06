@@ -11,7 +11,7 @@ set(SPLA_CPP_SOURCES
         sources/SplaType.cpp
         sources/SplaVector.cpp)
 
-set(
+set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp)
 
 set(SPLA_DETAIL_SOURCES
@@ -22,6 +22,8 @@ set(SPLA_DETAIL_SOURCES
         sources/detail/SplaMath.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
+        sources/expression/matrix/SplaMatrixDataRead.cpp
+        sources/expression/matrix/SplaMatrixDataRead.hpp
         sources/expression/matrix/SplaMatrixDataWrite.cpp
         sources/expression/matrix/SplaMatrixDataWrite.hpp
         sources/expression/vector/SplaVectorDataWrite.cpp
