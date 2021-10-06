@@ -28,34 +28,29 @@
 #ifndef SPLA_SPLAVECTORCOO_HPP
 #define SPLA_SPLAVECTORCOO_HPP
 
-#include <detail/SplaSvm.hpp>
+#include <boost/compute.hpp>
 #include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
 
     class VectorCOO final : public VectorBlock {
     public:
+        using Indices = boost::compute::vector<unsigned int>;
+        using Values = boost::compute::vector<unsigned char>;
+
         ~VectorCOO() override = default;
 
-        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetRows() const noexcept {
-            return mRows;
-        }
+        [[nodiscard]] const Indices &GetRows() const noexcept;
 
-        [[nodiscard]] const RefPtr<Svm<unsigned char>> &GetVals() const noexcept {
-            return mVals;
-        }
+        [[nodiscard]] const Values &GetVals() const noexcept;
 
-        static RefPtr<VectorCOO> Make(size_t nrows, size_t nvals,
-                                      RefPtr<Svm<unsigned int>> rows,
-                                      RefPtr<Svm<unsigned char>> vals);
+        static RefPtr<VectorCOO> Make(size_t nrows, size_t nvals, Indices rows, Values vals);
 
     private:
-        VectorCOO(size_t nrows, size_t nvals,
-                  RefPtr<Svm<unsigned int>> rows,
-                  RefPtr<Svm<unsigned char>> vals);
+        VectorCOO(size_t nrows, size_t nvals, Indices rows, Values vals);
 
-        RefPtr<Svm<unsigned int>> mRows;
-        RefPtr<Svm<unsigned char>> mVals;
+        Indices mRows;
+        Values mVals;
     };
 
 }// namespace spla

@@ -28,41 +28,37 @@
 #ifndef SPLA_SPLAMATRIXCOO_HPP
 #define SPLA_SPLAMATRIXCOO_HPP
 
-#include <detail/SplaSvm.hpp>
+#include <boost/compute.hpp>
 #include <storage/SplaMatrixBlock.hpp>
+#include <string>
 
 namespace spla {
 
     class MatrixCOO final : public MatrixBlock {
     public:
+        using Indices = boost::compute::vector<unsigned int>;
+        using Values = boost::compute::vector<unsigned char>;
+
         ~MatrixCOO() override = default;
 
-        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetRows() const noexcept {
-            return mRows;
-        }
+        [[nodiscard]] const Indices &GetRows() const noexcept;
 
-        [[nodiscard]] const RefPtr<Svm<unsigned int>> &GetCols() const noexcept {
-            return mCols;
-        }
+        [[nodiscard]] const Indices &GetCols() const noexcept;
 
-        [[nodiscard]] const RefPtr<Svm<unsigned char>> &GetVals() const noexcept {
-            return mVals;
-        }
+        [[nodiscard]] const Values &GetVals() const noexcept;
 
-        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals,
-                                      RefPtr<Svm<unsigned int>> rows,
-                                      RefPtr<Svm<unsigned int>> cols,
-                                      RefPtr<Svm<unsigned char>> vals);
+        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
+
+#ifdef SPLA_DEBUG
+        [[nodiscard]] std::string ToString() const;
+#endif
 
     private:
-        MatrixCOO(size_t nrows, size_t ncols, size_t nvals,
-                  RefPtr<Svm<unsigned int>> rows,
-                  RefPtr<Svm<unsigned int>> cols,
-                  RefPtr<Svm<unsigned char>> vals);
+        MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
 
-        RefPtr<Svm<unsigned int>> mRows;
-        RefPtr<Svm<unsigned int>> mCols;
-        RefPtr<Svm<unsigned char>> mVals;
+        Indices mRows;
+        Indices mCols;
+        Values mVals;
     };
 
 }// namespace spla

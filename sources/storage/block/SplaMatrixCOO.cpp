@@ -25,21 +25,73 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <sstream>
 #include <storage/block/SplaMatrixCOO.hpp>
+#include <vector>
 
-spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(size_t nrows, size_t ncols, size_t nvals,
-                                                    spla::RefPtr<spla::Svm<unsigned int>> rows,
-                                                    spla::RefPtr<spla::Svm<unsigned int>> cols,
-                                                    spla::RefPtr<spla::Svm<unsigned char>> vals) {
+spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals) {
     return spla::RefPtr<spla::MatrixCOO>(new MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)));
 }
 
-spla::MatrixCOO::MatrixCOO(size_t nrows, size_t ncols, size_t nvals,
-                           spla::RefPtr<spla::Svm<unsigned int>> rows,
-                           spla::RefPtr<spla::Svm<unsigned int>> cols,
-                           spla::RefPtr<spla::Svm<unsigned char>> vals)
+spla::MatrixCOO::MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals)
     : MatrixBlock(nrows, ncols, nvals),
       mRows(std::move(rows)),
       mCols(std::move(cols)),
       mVals(std::move(vals)) {
 }
+
+const spla::MatrixCOO::Indices &spla::MatrixCOO::GetRows() const noexcept {
+    return mRows;
+}
+
+const spla::MatrixCOO::Indices &spla::MatrixCOO::GetCols() const noexcept {
+    return mCols;
+}
+
+const spla::MatrixCOO::Values &spla::MatrixCOO::GetVals() const noexcept {
+    return mVals;
+}
+
+#ifdef SPLA_DEBUG
+std::string spla::MatrixCOO::ToString() const {
+    using namespace boost;
+    compute::context context = mRows.get_buffer().get_context();
+    compute::command_queue queue(context, context.get_device());
+
+    std::vector<unsigned int> rows(GetNvals());
+    std::vector<unsigned int> cols(GetNvals());
+    std::vector<unsigned char> vals;
+
+    compute::copy(mRows.begin(), mRows.end(), rows.begin(), queue);
+    compute::copy(mCols.begin(), mCols.end(), cols.begin(), queue);
+
+    auto hasValues = !mVals.empty();
+
+    if (hasValues) {
+        vals.resize(mVals.size());
+        compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
+    }
+
+    auto byteSize = mVals.size() / GetNvals();
+
+    std::stringstream ss;
+
+    for (size_t k = 0; k < GetNvals(); k++) {
+        auto i = rows[k];
+        auto j = cols[k];
+
+        ss << "[" << k << "] " << i << " " << j << " ";
+        ss << std::hex;
+
+        auto offset = k * byteSize;
+        for (size_t byte = 0; byte < byteSize; byte++) {
+            ss << static_cast<unsigned int>(vals[offset + byte]);
+        }
+
+        ss << std::endl
+           << std::dec;
+    }
+
+    return ss.str();
+}
+#endif

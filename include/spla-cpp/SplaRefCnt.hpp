@@ -187,7 +187,12 @@ namespace spla {
             return RefPtr<G>(mObject);
         }
 
-    private:
+        template<class G>
+        RefPtr<G> Cast() const {
+            return RefPtr<G>(dynamic_cast<G*>(mObject));
+        }
+
+        private:
         T *mObject = nullptr;
     };
 

@@ -87,6 +87,10 @@ static void test(size_t M, size_t N, size_t base, size_t step, size_t iter) {
     for (size_t i = 0; i < iter; i++) {
         size_t nvals = base + i * step;
         testCommon(library, M, N, nvals, i);
+    }
+
+    for (size_t i = 0; i < iter; i++) {
+        size_t nvals = base + i * step;
         testSortedNoDuplicates(library, M, N, nvals, i);
     }
 }

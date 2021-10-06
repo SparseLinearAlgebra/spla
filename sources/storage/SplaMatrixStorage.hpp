@@ -48,6 +48,9 @@ namespace spla {
         /** Set block at specified block index */
         void SetBlock(const Index &index, const RefPtr<MatrixBlock> &block);
 
+        /** Remove block at specified block index (if present) */
+        void RemoveBlock(const Index &index);
+
         /** Get list of non-null presented blocks in storage */
         void GetBlocks(EntryList &entryList) const;
 

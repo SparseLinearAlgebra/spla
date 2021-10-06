@@ -11,13 +11,15 @@ set(SPLA_CPP_SOURCES
         sources/SplaType.cpp
         sources/SplaVector.cpp)
 
+set(
+        sources/compute/SplaGather.hpp)
+
 set(SPLA_DETAIL_SOURCES
         sources/detail/SplaError.hpp
         sources/detail/SplaHash.hpp
         sources/detail/SplaLibraryPrivate.cpp
         sources/detail/SplaLibraryPrivate.hpp
-        sources/detail/SplaMath.hpp
-        sources/detail/SplaSvm.hpp)
+        sources/detail/SplaMath.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.cpp

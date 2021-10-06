@@ -44,6 +44,14 @@ void spla::MatrixStorage::SetBlock(const spla::MatrixStorage::Index &index, cons
     mNvals += block->GetNvals();
 }
 
+void spla::MatrixStorage::RemoveBlock(const spla::MatrixStorage::Index &index) {
+    assert(index.first < mNblockRows);
+    assert(index.second < mNblockCols);
+
+    std::lock_guard<std::mutex> lock(mMutex);
+    mBlocks.erase(index);
+}
+
 void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryList &entryList) const {
     std::lock_guard<std::mutex> lock(mMutex);
     entryList.clear();

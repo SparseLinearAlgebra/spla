@@ -33,6 +33,7 @@ underlying values types and parametrise operations using arbitrary user defined 
 
 - Windows 10
 - Linux (Ubuntu 20.04)
+- MacOS (coming soon)
 
 ## Building from sources
 
@@ -43,7 +44,7 @@ underlying values types and parametrise operations using arbitrary user defined 
     - CMake (the latest version)
     - Ninja (as build files generator)
     - Boost library (the latest version)
-    - OpenCL 2.0+ SDK
+    - OpenCL 1.2+ SDK
     - Python 3.7+
 - Windows 10: 
     - Microsoft Visual C++ compiler (MSVC) with C++ 17 support
