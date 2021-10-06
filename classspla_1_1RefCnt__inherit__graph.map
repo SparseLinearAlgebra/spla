@@ -11,7 +11,7 @@
 <area shape="rect" id="node13" href="$classspla_1_1Scalar.html" title=" " alt="" coords="313,411,402,437"/>
 <area shape="rect" id="node14" href="$classspla_1_1Type.html" title=" " alt="" coords="317,461,397,488"/>
 <area shape="rect" id="node15" href="$classspla_1_1Vector.html" title=" " alt="" coords="312,512,403,539"/>
-<area shape="rect" id="node4" href="$classspla_1_1DataMatrix.html" title=" " alt="" coords="480,5,595,32"/>
-<area shape="rect" id="node5" href="$classspla_1_1DataScalar.html" title=" " alt="" coords="479,56,595,83"/>
-<area shape="rect" id="node6" href="$classspla_1_1DataVector.html" title=" " alt="" coords="479,107,596,133"/>
+<area shape="rect" id="node4" href="$classspla_1_1DataMatrix.html" title="Matrix host coo data." alt="" coords="480,5,595,32"/>
+<area shape="rect" id="node5" href="$classspla_1_1DataScalar.html" title="Scalar host data." alt="" coords="479,56,595,83"/>
+<area shape="rect" id="node6" href="$classspla_1_1DataVector.html" title="Vector host coo data." alt="" coords="479,107,596,133"/>
 </map>
