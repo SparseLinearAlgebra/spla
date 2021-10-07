@@ -41,7 +41,16 @@ namespace spla {
      */
     class MatrixBlock : public RefCnt {
     public:
-        MatrixBlock(size_t nrows, size_t ncols, size_t nvals) : mNrows(nrows), mNcols(ncols), mNvals(nvals) {}
+        /** Sparse matrix formats */
+        enum class Format {
+            CSR,
+            COO,
+            Dense
+        };
+
+        MatrixBlock(size_t nrows, size_t ncols, size_t nvals, Format format)
+            : mNrows(nrows), mNcols(ncols), mNvals(nvals), mFormat(format) {}
+
         ~MatrixBlock() override = default;
 
         /** @return Number of rows of the block */
@@ -59,10 +68,16 @@ namespace spla {
             return mNvals;
         }
 
+        /** @return Sparse format name of this block */
+        [[nodiscard]] Format GetFormat() const noexcept {
+            return mFormat;
+        }
+
     protected:
         size_t mNrows;
         size_t mNcols;
         size_t mNvals;
+        Format mFormat;
     };
 
 }// namespace spla

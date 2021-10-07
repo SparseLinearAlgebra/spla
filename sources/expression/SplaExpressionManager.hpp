@@ -67,7 +67,7 @@ namespace spla {
         void DefineTraversalPath(ExpressionContext &context);
         void DefineTraversalPathImpl(size_t idx, size_t &t, std::vector<size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
 
-        RefPtr<NodeProcessor> SelectProcessor(size_t nodeIdx, ExpressionContext &context);
+        RefPtr<NodeProcessor> SelectProcessor(std::size_t nodeIdx, ExpressionContext &context);
 
     private:
         using ProcessorList = std::vector<RefPtr<NodeProcessor>>;

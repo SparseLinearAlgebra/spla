@@ -34,11 +34,11 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 #include <vector>
 
-bool spla::MatrixDataRead::Select(size_t nodeIdx, spla::ExpressionContext &context) {
+bool spla::MatrixDataRead::Select(std::size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
 }
 
-void spla::MatrixDataRead::Process(size_t nodeIdx, spla::ExpressionContext &context) {
+void spla::MatrixDataRead::Process(std::size_t nodeIdx, spla::ExpressionContext &context) {
     auto &taskflow = context.nodesTaskflow[nodeIdx];
     auto &nodes = context.expression->GetNodes();
     auto node = nodes[nodeIdx];

@@ -35,8 +35,8 @@ namespace spla {
     class VectorDataWrite final : public NodeProcessor {
     public:
         ~VectorDataWrite() override = default;
-        bool Select(size_t nodeIdx, ExpressionContext &context) override;
-        void Process(size_t nodeIdx, ExpressionContext &context) override;
+        bool Select(std::size_t nodeIdx, ExpressionContext &context) override;
+        void Process(std::size_t nodeIdx, ExpressionContext &context) override;
         ExpressionNode::Operation GetOperationType() const override;
     };
 

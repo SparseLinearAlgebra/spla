@@ -32,7 +32,7 @@ spla::RefPtr<spla::VectorCOO> spla::VectorCOO::Make(size_t nrows, size_t nvals, 
 }
 
 spla::VectorCOO::VectorCOO(size_t nrows, size_t nvals, Indices rows, Values vals)
-    : VectorBlock(nrows, nvals),
+    : VectorBlock(nrows, nvals, Format::COO),
       mRows(std::move(rows)),
       mVals(std::move(vals)) {
 }

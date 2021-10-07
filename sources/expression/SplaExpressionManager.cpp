@@ -229,7 +229,7 @@ void spla::ExpressionManager::DefineTraversalPathImpl(size_t idx, size_t &t, std
 }
 
 spla::RefPtr<spla::NodeProcessor>
-spla::ExpressionManager::SelectProcessor(size_t nodeIdx, spla::ExpressionContext &context) {
+spla::ExpressionManager::SelectProcessor(std::size_t nodeIdx, spla::ExpressionContext &context) {
     auto &nodes = context.expression->GetNodes();
     auto &node = nodes[nodeIdx];
     ExpressionNode::Operation op = node->GetNodeOp();

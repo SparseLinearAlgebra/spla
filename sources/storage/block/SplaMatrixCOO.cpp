@@ -34,7 +34,7 @@ spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(size_t nrows, size_t ncols, 
 }
 
 spla::MatrixCOO::MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals)
-    : MatrixBlock(nrows, ncols, nvals),
+    : MatrixBlock(nrows, ncols, nvals, Format::COO),
       mRows(std::move(rows)),
       mCols(std::move(cols)),
       mVals(std::move(vals)) {

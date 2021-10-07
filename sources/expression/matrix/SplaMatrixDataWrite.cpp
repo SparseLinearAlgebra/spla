@@ -34,11 +34,11 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 #include <vector>
 
-bool spla::MatrixDataWrite::Select(size_t nodeIdx, spla::ExpressionContext &context) {
+bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
 }
 
-void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &context) {
+void spla::MatrixDataWrite::Process(std::size_t nodeIdx, spla::ExpressionContext &context) {
     auto &taskflow = context.nodesTaskflow[nodeIdx];
     auto &nodes = context.expression->GetNodes();
     auto node = nodes[nodeIdx];
@@ -69,7 +69,7 @@ void spla::MatrixDataWrite::Process(size_t nodeIdx, spla::ExpressionContext &con
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);
-                auto blockNcols = math::GetBlockActualSize(i, ncols, blockSize);
+                auto blockNcols = math::GetBlockActualSize(j, ncols, blockSize);
 
                 auto firstRow = static_cast<unsigned int>(i * blockSize);
                 auto firstCol = static_cast<unsigned int>(j * blockSize);

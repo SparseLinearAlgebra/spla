@@ -41,7 +41,15 @@ namespace spla {
      */
     class VectorBlock : public RefCnt {
     public:
-        VectorBlock(size_t nrows, size_t nvals) : mNrows(nrows), mNvals(nvals) {}
+        /** Sparse vector formats */
+        enum class Format {
+            COO,
+            Dense
+        };
+
+        VectorBlock(size_t nrows, size_t nvals, Format format)
+            : mNrows(nrows), mNvals(nvals), mFormat(format) {}
+
         ~VectorBlock() override = default;
 
         /** @return Number of rows of the block */
@@ -54,9 +62,15 @@ namespace spla {
             return mNvals;
         }
 
+        /** @return Sparse format name of this block */
+        [[nodiscard]] Format GetFormat() const noexcept {
+            return mFormat;
+        }
+
     protected:
         size_t mNrows;
         size_t mNvals;
+        Format mFormat;
     };
 
 }// namespace spla

@@ -51,20 +51,38 @@ namespace spla {
     class NodeProcessor : public RefCnt {
     public:
         /**
+         * @brief Select this node processor for processing specified node in expression.
          *
-         * @param nodeIdx
-         * @param context
+         * If this processor can process specified node, it must return true.
+         * If this is the best selection, expression manager will choose this
+         * processor for node processor. Otherwise, other node processor will
+         * be used for processing this node (if more then one is available).
          *
-         * @return
+         * @note Node passed as index in the expression.
+         * @note Expression related info is stored in the context.
+         *
+         * @param nodeIdx Index of the node in expression
+         * @param context Expression context
+         *
+         * @return True if this node can process this node
          */
-        virtual bool Select(size_t nodeIdx, ExpressionContext &context) = 0;
+        virtual bool Select(std::size_t nodeIdx, ExpressionContext &context) = 0;
 
         /**
+         * @brief Process specified node in the expression.
          *
-         * @param nodeIdx
-         * @param context
+         * Node processor is supposed to construct execution task graph and store it
+         * in the context at specified node index. No actual computation must happen
+         * or be triggered within Process method call. Only when all nodes are processed,
+         * result task graph is submitted for the execution.
+         *
+         * @note Node passed as index in the expression.
+         * @note Expression related info is stored in the context.
+         *
+         * @param nodeIdx Index of the node in expression
+         * @param context Expression context
          */
-        virtual void Process(size_t nodeIdx, ExpressionContext &context) = 0;
+        virtual void Process(std::size_t nodeIdx, ExpressionContext &context) = 0;
 
         /** @return Type of the expression node operation, handled by this processor */
         virtual ExpressionNode::Operation GetOperationType() const = 0;
