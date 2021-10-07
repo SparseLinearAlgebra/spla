@@ -49,7 +49,7 @@ void spla::VectorStorage::GetBlocks(spla::VectorStorage::EntryList &entryList) c
     entryList.insert(entryList.begin(), mBlocks.begin(), mBlocks.end());
 }
 
-void spla::VectorStorage::GetBlocksGrid(size_t &rows) const {
+void spla::VectorStorage::GetBlocksGrid(std::size_t &rows) const {
     rows = mNblockRows;
 }
 
@@ -60,20 +60,20 @@ spla::RefPtr<spla::VectorBlock> spla::VectorStorage::GetBlock(const spla::Vector
     return entry != mBlocks.end() ? entry->second : nullptr;
 }
 
-size_t spla::VectorStorage::GetNrows() const noexcept {
+std::size_t spla::VectorStorage::GetNrows() const noexcept {
     return mNrows;
 }
 
-size_t spla::VectorStorage::GetNvals() const noexcept {
+std::size_t spla::VectorStorage::GetNvals() const noexcept {
     std::lock_guard<std::mutex> lock(mMutex);
     return mNvals;
 }
 
-spla::RefPtr<spla::VectorStorage> spla::VectorStorage::Make(size_t nrows, spla::Library &library) {
+spla::RefPtr<spla::VectorStorage> spla::VectorStorage::Make(std::size_t nrows, spla::Library &library) {
     return spla::RefPtr<spla::VectorStorage>(new VectorStorage(nrows, library));
 }
 
-spla::VectorStorage::VectorStorage(size_t nrows, spla::Library &library)
+spla::VectorStorage::VectorStorage(std::size_t nrows, spla::Library &library)
     : mNrows(nrows), mLibrary(library) {
     mBlockSize = mLibrary.GetPrivate().GetBlockSize();
     mNblockRows = math::GetBlocksCount(nrows, mBlockSize);

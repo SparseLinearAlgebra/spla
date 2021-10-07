@@ -51,27 +51,27 @@ namespace spla {
         void GetBlocks(EntryList &entryList) const;
 
         /** Get blocks grid (total number of blocks) */
-        void GetBlocksGrid(size_t &rows) const;
+        void GetBlocksGrid(std::size_t &rows) const;
 
         /** @return Block at specified index; may be null */
         RefPtr<VectorBlock> GetBlock(const Index &index) const;
 
         /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
+        [[nodiscard]] std::size_t GetNrows() const noexcept;
 
         /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
+        [[nodiscard]] std::size_t GetNvals() const noexcept;
 
-        static RefPtr<VectorStorage> Make(size_t nrows, Library &library);
+        static RefPtr<VectorStorage> Make(std::size_t nrows, Library &library);
 
     private:
-        VectorStorage(size_t nrows, Library &library);
+        VectorStorage(std::size_t nrows, Library &library);
 
         std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
-        size_t mNrows;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mBlockSize = 0;
+        std::size_t mNrows;
+        std::size_t mNvals = 0;
+        std::size_t mNblockRows = 0;
+        std::size_t mBlockSize = 0;
 
         Library &mLibrary;
         mutable std::mutex mMutex;

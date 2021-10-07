@@ -76,9 +76,6 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, spla::ExpressionContext
                 auto lastRow = firstRow + static_cast<unsigned int>(blockNrows);
                 auto lastCol = firstCol + static_cast<unsigned int>(blockNcols);
 
-                SPDLOG_LOGGER_TRACE(logger, "Process block ({},{}) size=({},{}) ranges=([{}..{}),[{}..{}))",
-                                    i, j, blockNrows, blockNcols, firstRow, lastRow, firstCol, lastCol);
-
                 auto rowsHost = matrixData->GetRows();
                 auto colsHost = matrixData->GetCols();
                 auto valsHost = reinterpret_cast<unsigned char *>(matrixData->GetVals());
@@ -99,7 +96,10 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, spla::ExpressionContext
                             blockNvals += 1;
                     }
                 }
-                SPDLOG_LOGGER_TRACE(logger, "Block ({},{}) nvals={}", i, j, blockNvals);
+
+                SPDLOG_LOGGER_TRACE(logger, "Process block ({},{}) size=({},{}) ranges=([{}..{}),[{}..{})) nvals={}",
+                                    i, j, blockNrows, blockNcols, firstRow, lastRow, firstCol, lastCol, blockNvals);
+
                 auto storage = matrix->GetStorage();
 
                 // If no values, leave block empty and exit

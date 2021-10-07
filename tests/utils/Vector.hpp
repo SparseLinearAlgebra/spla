@@ -108,9 +108,9 @@ namespace utils {
             if (readExpr->GetState() != spla::Expression::State::Evaluated)
                 return false;
 
-            if (!std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize))
+            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0)
                 return false;
-            if (!std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize))
+            if (std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize) != 0)
                 return false;
 
             return true;

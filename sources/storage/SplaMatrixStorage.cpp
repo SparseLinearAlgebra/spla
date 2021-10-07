@@ -58,6 +58,12 @@ void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryList &entryList) c
     entryList.insert(entryList.begin(), mBlocks.begin(), mBlocks.end());
 }
 
+void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryMap &entryMap) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    entryMap = mBlocks;
+}
+
+
 void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryRowList &entryList) const {
     std::lock_guard<std::mutex> lock(mMutex);
     entryList.clear();
@@ -72,7 +78,7 @@ void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryRowList &entryList
     }
 }
 
-void spla::MatrixStorage::GetBlocksGrid(size_t &rows, size_t &cols) const {
+void spla::MatrixStorage::GetBlocksGrid(std::size_t &rows, std::size_t &cols) const {
     rows = mNblockRows;
     cols = mNblockCols;
 }
@@ -85,26 +91,34 @@ spla::RefPtr<spla::MatrixBlock> spla::MatrixStorage::GetBlock(const spla::Matrix
     return entry != mBlocks.end() ? entry->second : nullptr;
 }
 
-size_t spla::MatrixStorage::GetNrows() const noexcept {
+std::size_t spla::MatrixStorage::GetNrows() const noexcept {
     return mNrows;
 }
 
-size_t spla::MatrixStorage::GetNcols() const noexcept {
+std::size_t spla::MatrixStorage::GetNcols() const noexcept {
     return mNcols;
 }
 
-size_t spla::MatrixStorage::GetNvals() const noexcept {
+std::size_t spla::MatrixStorage::GetNvals() const noexcept {
     std::lock_guard<std::mutex> lock(mMutex);
     return mNvals;
 }
 
-spla::RefPtr<spla::MatrixStorage> spla::MatrixStorage::Make(size_t nrows, size_t ncols, spla::Library &library) {
+std::size_t spla::MatrixStorage::GetNblockRows() const noexcept {
+    return mNblockRows;
+}
+
+std::size_t spla::MatrixStorage::GetNblockCols() const noexcept {
+    return mNblockCols;
+}
+
+spla::RefPtr<spla::MatrixStorage> spla::MatrixStorage::Make(std::size_t nrows, std::size_t ncols, spla::Library &library) {
     assert(nrows > 0);
     assert(ncols > 0);
     return spla::RefPtr<spla::MatrixStorage>(new MatrixStorage(nrows, ncols, library));
 }
 
-spla::MatrixStorage::MatrixStorage(size_t nrows, size_t ncols, spla::Library &library)
+spla::MatrixStorage::MatrixStorage(std::size_t nrows, std::size_t ncols, spla::Library &library)
     : mNrows(nrows), mNcols(ncols), mLibrary(library) {
     mBlockSize = mLibrary.GetPrivate().GetBlockSize();
     mNblockRows = math::GetBlocksCount(nrows, mBlockSize);

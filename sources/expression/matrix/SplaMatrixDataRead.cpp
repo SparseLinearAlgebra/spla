@@ -32,7 +32,19 @@
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
-#include <vector>
+
+namespace spla {
+    namespace {
+        struct MatrixDataReadShared {
+            /** Blocks entries */
+            MatrixStorage::EntryMap entries;
+            /** Number of nnz in each storage blocks' row */
+            std::vector<std::size_t> blockRowsNvals;
+            /** Offsets of each storage blocks' rows */
+            std::vector<std::size_t> blockRowsOffsets;
+        };
+    }// namespace
+}// namespace spla
 
 bool spla::MatrixDataRead::Select(std::size_t nodeIdx, spla::ExpressionContext &context) {
     return true;
@@ -53,66 +65,178 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, spla::ExpressionContext 
     assert(matrixData.IsNotNull());
     assert(desc.IsNotNull());
 
-    // 1. For each block compute nnz per row
-    // 2. For each row of blocks in storage compute offsets
-    // 3. Copy values of each block to final positions
-
-    struct Shared {
-        using Index = MatrixStorage::Index;
-        using EntryList = MatrixStorage::EntryList;
-        using NnzBuffer = boost::compute::vector<unsigned int>;
-
-        mutable std::mutex mutex;
-        EntryList blocks;
-        std::vector<size_t> blocksNnz;
-        std::unordered_map<Index, NnzBuffer, PairHash> blocksNnzPerRow;
-    };
-
     auto storage = matrix->GetStorage();
 
     CHECK_RAISE_ERROR(matrixData->GetNvals() >= storage->GetNvals(), InvalidArgument,
                       "Provided data arrays do not have enough space to store matrix data");
 
-    auto shared = std::make_shared<Shared>();
-    storage->GetBlocks(shared->blocks);
+    auto shared = std::make_shared<MatrixDataReadShared>();
+    storage->GetBlocks(shared->entries);
 
-    tf::Taskflow stage1;
+    for (const auto &entry : shared->entries) {
+        CHECK_RAISE_ERROR(entry.second->GetFormat() == MatrixBlock::Format::COO, NotImplemented,
+                          "Supported only COO matrix block format");
+    }
 
-    for (auto &entry : shared->blocks) {
-        stage1.emplace([=]() {
+    auto collectNnz = taskflow.emplace([=]() {
+        auto &blockRowsNvals = shared->blockRowsNvals;
+        auto &blockRowsOffsets = shared->blockRowsOffsets;
+
+        blockRowsNvals.resize(storage->GetNblockRows(), std::size_t(0));
+        blockRowsOffsets.resize(storage->GetNblockRows());
+
+        // Compute nnz in each row of blocks
+        for (const auto &entry : shared->entries) {
+            auto &index = entry.first;
+            auto row = index.first;
+            auto nnz = entry.second->GetNvals();
+            blockRowsNvals[row] += nnz;
+        }
+
+        // Compute offset to write rows of blocks
+        std::exclusive_scan(blockRowsNvals.begin(), blockRowsNvals.end(), blockRowsOffsets.begin(), std::size_t(0));
+    });
+
+    for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
+        auto copyBlocksInRow = taskflow.emplace([=]() {
             using namespace boost;
-
-            auto index = entry.first;
-            auto block = entry.second.Cast<MatrixCOO>();
-            CHECK_RAISE_ERROR(block.IsNotNull(), NotImplemented, "Supported only COO format blocks");
 
             // todo: gpu and device queue management
             compute::device gpu = library->GetDevices()[0];
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, gpu);
 
-            // Allocate buffer with counter for each row (initially is zero)
-            compute::vector<unsigned int> elementsPerRow(block->GetNrows(), ctx);
-            compute::fill(elementsPerRow.begin(), elementsPerRow.end(), 0, queue);
+            // Where to start copy process
+            std::size_t NblockCols = storage->GetNblockCols();
+            std::size_t nvals = shared->blockRowsNvals[i];
+            std::size_t offset = shared->blockRowsOffsets[i];
 
-            const auto &rows = block->GetRows();
+            // If no values - nothing to do
+            if (nvals == 0) {
+                return;
+            }
 
-            // Compute number of nnz per row
-            BOOST_COMPUTE_CLOSURE(void, countElements, (unsigned int i), (rows, elementsPerRow), {
-                atomic_inc(&elementsPerRow[rows[i]]);
-            });
+            auto &entries = shared->entries;
 
-            // Save results
-            {
-                std::lock_guard<std::mutex> lock(shared->mutex);
-                shared->blocksNnz[index.first] += block->GetNvals();
-                shared->blocksNnzPerRow.emplace(index, std::move(elementsPerRow));
+            // Blocks to copy
+            MatrixStorage::EntryList blocks;
+            std::vector<unsigned int> blockColIdx;
+
+            for (std::size_t j = 0; j < NblockCols; j++) {
+                MatrixStorage::Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                auto query = entries.find(index);
+
+                if (query != entries.end()) {
+                    blocks.push_back(*query);
+                    blockColIdx.push_back(static_cast<unsigned int>(j));
+                }
+            }
+
+            SPDLOG_LOGGER_TRACE(logger, "Copy matrix size=({},{}) storage row={} num of blocks={} total nvals={} offset={}",
+                                storage->GetNrows(), storage->GetNcols(), i, blocks.size(), nvals, offset);
+
+            auto rows = matrixData->GetRows();
+            auto cols = matrixData->GetCols();
+            auto vals = reinterpret_cast<unsigned char *>(matrixData->GetVals());
+            assert(rows || cols || vals);
+
+            auto blockSize = library->GetBlockSize();
+            auto blockNrows = blocks.front().second->GetNrows();
+            auto byteSize = matrix->GetType()->GetByteSize();
+            auto typeHasValues = byteSize != 0;
+
+            std::vector<std::vector<unsigned int>> blocksRows;
+            std::vector<std::vector<unsigned int>> blocksCols;
+            std::vector<std::vector<unsigned char>> blocksVals;
+
+            for (auto &k : blocks) {
+                auto block = k.second.Cast<MatrixCOO>();
+                auto &blockRowsDevice = block->GetRows();
+                std::vector<unsigned int> blockRowsHost(blockRowsDevice.size());
+                compute::copy(blockRowsDevice.begin(), blockRowsDevice.end(), blockRowsHost.begin(), queue);
+                blocksRows.push_back(std::move(blockRowsHost));
+            }
+
+            // Copy rows data
+            if (rows) {
+                std::size_t writeOffset = offset;
+                std::vector<std::size_t> readPositions(blocks.size(), 0);
+                auto blockFirstRow = static_cast<unsigned int>(i * blockSize);
+
+                for (unsigned int row = 0; row < blockNrows; row++) {
+                    for (std::size_t k = 0; k < blocks.size(); k++) {
+                        const auto &rowsBuffer = blocksRows[k];
+                        auto &readPos = readPositions[k];
+
+                        while (readPos < rowsBuffer.size() && rowsBuffer[readPos] == row) {
+                            rows[writeOffset] = row + blockFirstRow;
+                            readPos += 1;
+                            writeOffset += 1;
+                        }
+                    }
+                }
+            }
+
+            // Copy cols data
+            if (cols) {
+                for (auto &k : blocks) {
+                    auto block = k.second.Cast<MatrixCOO>();
+                    auto &blockColsDevice = block->GetCols();
+                    std::vector<unsigned int> blockColsHost(blockColsDevice.size());
+                    compute::copy(blockColsDevice.begin(), blockColsDevice.end(), blockColsHost.begin(), queue);
+                    blocksCols.push_back(std::move(blockColsHost));
+                }
+
+                std::size_t writeOffset = offset;
+                std::vector<std::size_t> readPositions(blocks.size(), 0);
+
+                for (unsigned int row = 0; row < blockNrows; row++) {
+                    for (std::size_t k = 0; k < blocks.size(); k++) {
+                        const auto &rowsBuffer = blocksRows[k];
+                        const auto &colsBuffer = blocksCols[k];
+                        auto &readPos = readPositions[k];
+                        auto blockFirstCol = static_cast<unsigned int>(blockColIdx[k] * blockSize);
+
+                        while (readPos < rowsBuffer.size() && rowsBuffer[readPos] == row) {
+                            cols[writeOffset] = colsBuffer[readPos] + blockFirstCol;
+                            readPos += 1;
+                            writeOffset += 1;
+                        }
+                    }
+                }
+            }
+
+            // Copy vals data
+            if (vals && typeHasValues) {
+                for (auto &k : blocks) {
+                    auto block = k.second.Cast<MatrixCOO>();
+                    auto &blockValsDevice = block->GetVals();
+                    std::vector<unsigned char> blockValsHost(blockValsDevice.size());
+                    compute::copy(blockValsDevice.begin(), blockValsDevice.end(), blockValsHost.begin(), queue);
+                    blocksVals.push_back(std::move(blockValsHost));
+                }
+
+                std::size_t writeOffset = offset;
+                std::vector<std::size_t> readPositions(blocks.size(), 0);
+
+                for (unsigned int row = 0; row < blockNrows; row++) {
+                    for (std::size_t k = 0; k < blocks.size(); k++) {
+                        const auto &rowsBuffer = blocksRows[k];
+                        const auto &valsBuffer = blocksVals[k];
+                        auto &readPos = readPositions[k];
+
+                        while (readPos < rowsBuffer.size() && rowsBuffer[readPos] == row) {
+                            std::memcpy(&vals[writeOffset * byteSize], &valsBuffer[readPos * byteSize], byteSize);
+                            readPos += 1;
+                            writeOffset += 1;
+                        }
+                    }
+                }
             }
         });
 
-        taskflow.composed_of(stage1);
-
-        tf::Taskflow stage2;
+        // Start copy as soon as nnz evaluated
+        collectNnz.precede(copyBlocksInRow);
     }
 }
 

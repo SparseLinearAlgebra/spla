@@ -37,7 +37,7 @@ namespace spla {
     /**
      * @class NodeProcessor
      *
-     * Interface to the expression node processor class.
+     * @brief Interface to the expression node processor class.
      *
      * Node processor allows to implement custom node processing logic and
      * select required processor automatically in runtime. Selection is based

@@ -76,7 +76,8 @@ namespace spla {
         using Index = std::pair<unsigned int, unsigned int>;
         using Entry = std::pair<Index, RefPtr<MatrixBlock>>;
         using EntryList = std::vector<Entry>;
-        using EntryRowList = std::vector<std::vector<Entry>>;
+        using EntryRowList = std::vector<EntryList>;
+        using EntryMap = std::unordered_map<Index, RefPtr<MatrixBlock>, PairHash>;
 
         ~MatrixStorage() override = default;
 
@@ -89,23 +90,32 @@ namespace spla {
         /** Get list of non-null presented blocks in storage */
         void GetBlocks(EntryList &entryList) const;
 
+        /** Get map of non-null presented blocks in storage */
+        void GetBlocks(EntryMap &entryMap) const;
+
         /** Get list of non-null presented blocks in storage per row */
         void GetBlocks(EntryRowList &entryList) const;
 
         /** Get blocks grid (number of blocks in each dimension) */
-        void GetBlocksGrid(size_t &rows, size_t &cols) const;
+        void GetBlocksGrid(std::size_t &rows, std::size_t &cols) const;
 
         /** @return Block at specified index; may be null */
         RefPtr<MatrixBlock> GetBlock(const Index &index) const;
 
         /** @return Number of rows of the storage */
-        [[nodiscard]] size_t GetNrows() const noexcept;
+        [[nodiscard]] std::size_t GetNrows() const noexcept;
 
         /** @return Number of columns of the storage */
-        [[nodiscard]] size_t GetNcols() const noexcept;
+        [[nodiscard]] std::size_t GetNcols() const noexcept;
 
         /** @return Number of values in storage */
-        [[nodiscard]] size_t GetNvals() const noexcept;
+        [[nodiscard]] std::size_t GetNvals() const noexcept;
+
+        /** @return Number of rows of blocks */
+        [[nodiscard]] std::size_t GetNblockRows() const noexcept;
+
+        /** @return Number of cols of blocks */
+        [[nodiscard]] std::size_t GetNblockCols() const noexcept;
 
         /**
          * Make new matrix storage.
@@ -116,18 +126,18 @@ namespace spla {
          *
          * @return New empty storage instance
          */
-        static RefPtr<MatrixStorage> Make(size_t nrows, size_t ncols, Library &library);
+        static RefPtr<MatrixStorage> Make(std::size_t nrows, std::size_t ncols, Library &library);
 
     private:
-        MatrixStorage(size_t nrows, size_t ncols, Library &library);
+        MatrixStorage(std::size_t nrows, std::size_t ncols, Library &library);
 
-        std::unordered_map<Index, RefPtr<MatrixBlock>, PairHash> mBlocks;
-        size_t mNrows;
-        size_t mNcols;
-        size_t mNvals = 0;
-        size_t mNblockRows = 0;
-        size_t mNblockCols = 0;
-        size_t mBlockSize = 0;
+        EntryMap mBlocks;
+        std::size_t mNrows;
+        std::size_t mNcols;
+        std::size_t mNvals = 0;
+        std::size_t mNblockRows = 0;
+        std::size_t mNblockCols = 0;
+        std::size_t mBlockSize = 0;
 
         Library &mLibrary;
         mutable std::mutex mMutex;
