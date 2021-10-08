@@ -17,7 +17,7 @@ set(SPLA_RELEASE NO)
 set(SPLA_TARGET_LINUX NO)
 set(SPLA_TARGET_WINDOWS NO)
 set(SPLA_TARGET_MACOSX NO)
-set(SPLA_TARGET_NAME)
+set(SPLA_ARCH)
 
 ####################################################################
 ## Define platform
@@ -25,39 +25,53 @@ set(SPLA_TARGET_NAME)
 ##  - MACOSX  = MacOS X
 ##  - LINUX   = Linux
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE) #?
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(SPLA_TARGET_WINDOWS YES)
-    set(SPLA_TARGET_NAME "spla.dll")
+    set(SPLA_ARCH "x64")
     list(APPEND SPLA_DEFINES SPLA_TARGET_WINDOWS)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(SPLA_TARGET_LINUX YES)
-    set(SPLA_TARGET_NAME "libspla.so")
+    set(SPLA_ARCH "x64")
     list(APPEND SPLA_DEFINES SPLA_TARGET_LINUX)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(SPLA_TARGET_MACOSX YES)
-    set(SPLA_TARGET_NAME "libspla.dylib")
+    if (NOT SPLA_ARCH)
+        if (NOT CMAKE_OSX_ARCHITECTURES)
+            if ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "arm64")
+                set(SPLA_ARCH "arm64")
+            else ()
+                set(SPLA_ARCH "x64")
+            endif ()
+        else ()
+            if ("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
+                set(SPLA_ARCH "arm64")
+            else ()
+                set(SPLA_ARCH "x64")
+            endif ()
+        endif ()
+    endif ()
+    message(STATUS "Build macos binaries for ${SPLA_ARCH} architecture")
     list(APPEND SPLA_DEFINES SPLA_TARGET_MACOSX)
-else()
+else ()
     message(FATAL_ERROR "Unsupported target platform")
-endif()
+endif ()
 
 ####################################################################
 ## Define Build type
 
-if(CMAKE_BUILD_TYPE MATCHES Debug)
+if (CMAKE_BUILD_TYPE MATCHES Debug)
     set(SPLA_DEBUG YES)
     list(APPEND SPLA_DEFINES SPLA_DEBUG)
     message(STATUS "Build spla in debug mode (specified)")
-elseif(CMAKE_BUILD_TYPE MATCHES Release)
+elseif (CMAKE_BUILD_TYPE MATCHES Release)
     set(SPLA_RELEASE YES)
     list(APPEND SPLA_DEFINES SPLA_RELEASE)
     message(STATUS "Build spla in release mode (specified)")
-else()
+else ()
     set(SPLA_RELEASE YES)
     list(APPEND SPLA_DEFINES SPLA_RELEASE)
     message(STATUS "Build spla in release mode (default, not specified)")
-endif()
+endif ()
 
 ##################################################################
 ## Compiler and language specifics
@@ -71,31 +85,31 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if (SPLA_TARGET_WINDOWS)
     if (MSVC)
         list(APPEND SPLA_DEFINES SPLA_MSVC)
-    else()
+    else ()
         message(FATAL_ERROR "Supported only MSVC compiler for Windows platform")
-    endif()
-endif()
+    endif ()
+endif ()
 
 ##################################################################
 ## Target options and defs functions
 ## (use this functions to configure build targets)
 
 function(spla_target_compile_definitions target)
-    foreach(DEFINITION ${SPLA_DEFINES})
+    foreach (DEFINITION ${SPLA_DEFINES})
         target_compile_definitions(${target} PUBLIC ${DEFINITION})
-    endforeach()
+    endforeach ()
 
     if (SPLA_DEBUG)
-        foreach(DEFINITION ${SPLA_DEFINES_DEBUG})
+        foreach (DEFINITION ${SPLA_DEFINES_DEBUG})
             target_compile_definitions(${target} PUBLIC ${DEFINITION})
-        endforeach()
-    endif()
+        endforeach ()
+    endif ()
 
     if (SPLA_RELEASE)
-        foreach(DEFINITION ${SPLA_DEFINES_RELEASE})
+        foreach (DEFINITION ${SPLA_DEFINES_RELEASE})
             target_compile_definitions(${target} PUBLIC ${DEFINITION})
-        endforeach()
-    endif()
+        endforeach ()
+    endif ()
 
     if (SPLA_TARGET_WINDOWS)
         target_compile_definitions(${target}
@@ -106,7 +120,7 @@ function(spla_target_compile_definitions target)
                 PUBLIC _UNICODE
                 PUBLIC _CRT_SECURE_NO_WARNINGS
                 PUBLIC _SCL_SECURE_NO_WARNINGS)
-    endif()
+    endif ()
 endfunction()
 
 function(spla_target_compile_options target)
@@ -117,7 +131,7 @@ function(spla_target_compile_options target)
         target_compile_options(${target}
                 PUBLIC /std:c++17
                 PUBLIC /source-charset:utf-8)
-    endif()
+    endif ()
 endfunction()
 
 function(spla_target_link_options target)
@@ -125,7 +139,7 @@ function(spla_target_link_options target)
         target_link_options(${target}
                 PUBLIC /INCREMENTAL:NO
                 PUBLIC /machine:X64)
-    endif()
+    endif ()
 endfunction()
 
 ######################################################################
@@ -136,7 +150,6 @@ set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_NO_WARN_NEW_VERSIONS OFF)
-set(Boost_ARCHITECTURE x64)
 set(Boost_DEBUG ON)
 find_package(Boost REQUIRED)
 list(APPEND SPLA_DEFINES BOOST_COMPUTE_HAVE_THREAD_LOCAL)
@@ -156,7 +169,7 @@ list(APPEND SPLA_DEFINES_RELEASE SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_ERROR)
 if (SPLA_TARGET_WINDOWS)
     list(APPEND SPLA_DEFINES SPDLOG_WCHAR_TO_UTF8_SUPPORT)
     list(APPEND SPLA_DEFINES SPDLOG_WCHAR_FILENAMES)
-endif()
+endif ()
 
 message(STATUS "Add Taskflow library")
 add_library(taskflow INTERFACE)
@@ -169,7 +182,7 @@ if (SPLA_BUILD_TESTS)
     set(gtest_force_shared_crt OFF CACHE BOOL "" FORCE)
     set(gtest_hide_internal_symbols ON CACHE BOOL "" FORCE)
     add_subdirectory(deps/gtest)
-endif()
+endif ()
 
 ######################################################################
 ## Source code configuration
@@ -183,8 +196,7 @@ add_library(spla SHARED
         ${SPLA_COMPUTE_SOURCES}
         ${SPLA_DETAIL_SOURCES}
         ${SPLA_EXPRESSION_SOURCES}
-        ${SPLA_STORAGE_SOURCES}
-        )
+        ${SPLA_STORAGE_SOURCES})
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/sources)
@@ -194,6 +206,7 @@ target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
 target_link_libraries(spla PRIVATE taskflow)
 target_link_libraries(spla PRIVATE spdlog)
 
+set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 
 spla_target_compile_definitions(spla)
@@ -208,10 +221,11 @@ if (SPLA_BUILD_TESTS)
     add_subdirectory(tests)
 
     if (SPLA_TARGET_WINDOWS)
-        file(GLOB TARGET_FILES "${CMAKE_BINARY_DIR}/spla*")
+        set(COMMON_NAME "${CMAKE_BINARY_DIR}/spla_${SPLA_ARCH}")
+        set(TARGET_FILES "${COMMON_NAME}.dll")
         message(STATUS "${TARGET_FILES}")
 
-        foreach(TARGET_FILE ${TARGET_FILES})
+        foreach (TARGET_FILE ${TARGET_FILES})
             add_custom_command(
                     TARGET spla POST_BUILD
                     COMMAND "${CMAKE_COMMAND}" -E
@@ -219,6 +233,6 @@ if (SPLA_BUILD_TESTS)
                     ${TARGET_FILE}
                     "${CMAKE_BINARY_DIR}/tests"
                     COMMENT "Copy ${TARGET_FILE} into test directory")
-        endforeach()
-    endif()
-endif()
+        endforeach ()
+    endif ()
+endif ()

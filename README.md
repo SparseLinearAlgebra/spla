@@ -6,9 +6,9 @@
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
-**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL` 
-and `Boost.Compute` technologies. It provides linear algebra primitives, such as matrices, 
-vectors and scalars, supports wide variety of operations, and gives an ability to customize 
+**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL`
+and `Boost.Compute` technologies. It provides linear algebra primitives, such as matrices,
+vectors and scalars, supports wide variety of operations, and gives an ability to customize
 underlying values types and parametrise operations using arbitrary user defined functions.
 
 > Note: project under heavy development! Not ready for usage.
@@ -18,7 +18,7 @@ underlying values types and parametrise operations using arbitrary user defined 
 - [ ] Library
 - [ ] Arbitrary type
 - [ ] Function unary
-- [ ] Function binary  
+- [ ] Function binary
 - [ ] Sparse matrix
 - [ ] Sparse vector
 - [ ] Sparse matrix-matrix multiplication
@@ -33,7 +33,7 @@ underlying values types and parametrise operations using arbitrary user defined 
 
 - Windows 10
 - Linux (Ubuntu 20.04)
-- MacOS (Big Sur 11)
+- MacOS (Catalina 10.15)
 
 ## Building from sources
 
@@ -46,17 +46,17 @@ underlying values types and parametrise operations using arbitrary user defined 
     - Boost library (the latest version)
     - OpenCL 1.2+ SDK
     - Python 3.7+
-- Windows 10: 
+- Windows 10:
     - Microsoft Visual C++ compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
 - Ubuntu 20.04:
     - GNU C++ Compiler with C++ 17 support
-- MaxOS Bug Sur 11:
-  - Clang with C++ 17 support
+- MaxOS Catalina 10.15:
+    - Clang with C++ 17 support
 
-### Get source code   
+### Get source code
 
-The following code snippet downloads project source code repository, enters project root folder 
+The following code snippet downloads project source code repository, enters project root folder
 and runs submodules init in order to get dependencies source code initialized.
 Must be executed from the folder where you want to locate project.
 
@@ -75,6 +75,16 @@ Must be executed from project root folder.
 
 ```shell
 $ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON
+$ cmake --build build --target all --verbose -j 4
+```
+
+On macOS, you can optionally specify target binaries architecture to build.
+Pass option `-DCMAKE_OSX_ARCHITECTURES` with `x86_64` or `arm64` respectively.
+By default, build falls back to `CMAKE_SYSTEM_PROCESSOR` specified architecture. 
+See example bellow, replace `<arch>` with desired architecture for your build.
+
+```shell
+$ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON -DCMAKE_OSX_ARCHITECTURES=<arch>
 $ cmake --build build --target all --verbose -j 4
 ```
 
