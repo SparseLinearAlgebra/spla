@@ -47,12 +47,12 @@ underlying values types and parametrise operations using arbitrary user defined 
     - OpenCL 1.2+ SDK
     - Python 3.7+
 - Windows 10:
-    - Microsoft Visual C++ compiler (MSVC) with C++ 17 support
+    - Microsoft Visual C++ Compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
 - Ubuntu 20.04:
     - GNU C++ Compiler with C++ 17 support
-- MaxOS Catalina 10.15:
-    - Clang with C++ 17 support
+- MaсOS Catalina 10.15:
+    - Clang Compiler with C++ 17 support
 
 ### Get source code
 
