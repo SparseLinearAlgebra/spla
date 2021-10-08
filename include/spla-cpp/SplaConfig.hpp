@@ -43,15 +43,40 @@
 #define SPLA_TEXT(text) u8##text
 
 namespace spla {
+
+    /**
+     * @defgroup API
+     *
+     * @brief Public library interface
+     *
+     * API module provides access to all common library primitives.
+     * Primitives are exposed as a number of Object reference-counted classes.
+     * Reference-counting is used to automate objects life-time checks and
+     * to pass around this objects as expressions params in a safe way.
+     *
+     * Implementation details are hidden in private Internal sources module.
+     * Header files has no other dependencies, except standard c++ library files.
+     *
+     * File Spla.hpp provides access to all API components.
+     */
+
 #if defined(SPLA_TARGET_WINDOWS)
+    /** String for universal file names representation */
     using Filename = std::wstring;
 #elif defined(SPLA_TARGET_LINUX)
+    /** String for universal file names representation */
     using Filename = std::string;
 #elif defined(SPLA_TARGET_MACOSX)
+    /** String for universal file names representation */
     using Filename = std::string;
 #else
     #error Unsupported platfrom
 #endif
+
+    /**
+     * @}
+     */
+
 }// namespace spla
 
 #endif//SPLA_SPLACONFIG_HPP

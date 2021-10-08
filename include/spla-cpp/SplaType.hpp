@@ -33,6 +33,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Type
      *
      * Represents predefined of user-defined type description.
@@ -75,7 +80,6 @@ namespace spla {
         Type(std::string id, size_t typeSize, bool builtIn, class Library &library);
 
         // Unique type name (id)
-        // Unix: utf-32, Windows: utf-16
         std::string mId;
 
         // Size of the type value in bytes
@@ -107,6 +111,10 @@ namespace spla {
     private:
         RefPtr<Type> mType;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

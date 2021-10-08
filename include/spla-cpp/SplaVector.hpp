@@ -34,7 +34,30 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Vector
+     *
+     * Vector object to represent a mathematical dim M vector
+     * with values of specified Type. Uses blocked storage schema internally.
+     *
+     * @note Can be used as mask (only indices without values) if Type has zero byteSize.
+     * @note Can be updated from the host using VectorDataWrite expression node.
+     * @note Vector content can be accessed from host using VectorDataRead expression node.
+     *
+     * @details
+     *  Uses sparse values storage schema, so actual values of the matrix has
+     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
+     *  and null values are not stored (`Nothing`). In expressions actual operations
+     *  are applied only to values `Just Value`. If provided binary function, it
+     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
+     *
+     * @see Expression
+     * @see FunctionUnary
+     * @see FunctionBinary
      */
     class SPLA_API Vector final : public Object, public TypedObject {
     public:
@@ -63,6 +86,10 @@ namespace spla {
         // Separate storage for private impl
         //RefPtr<class VectorStorage> mStorage;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

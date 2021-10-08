@@ -35,6 +35,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class RefCnt
      *
      * Inherit from this class to have shared-ref logic for your class objects.
@@ -195,6 +200,10 @@ namespace spla {
     private:
         T *mObject = nullptr;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

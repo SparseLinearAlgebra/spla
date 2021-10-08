@@ -36,6 +36,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class ExpressionNode
      *
      * Represents and operation in the expression.
@@ -125,6 +130,11 @@ namespace spla {
                 return "Unknown";
         }
     }
+
+    /**
+     * @}
+     */
+
 }// namespace spla
 
 #endif//SPLA_SPLAEXPRESSIONNODE_HPP

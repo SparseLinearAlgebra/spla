@@ -41,6 +41,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Expression
      *
      */
@@ -170,6 +175,10 @@ namespace spla {
         std::vector<RefPtr<class ExpressionNode>> mNodes;
         std::atomic_long mState;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

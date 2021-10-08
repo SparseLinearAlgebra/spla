@@ -34,11 +34,29 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Scalar
+     *
+     * Single scalar value of specified Type.
+     * Can be used in matrix and vector expressions as additional initial value or param.
+     *
+     * @note Can be empty, i.e. contain no value.
+     * @note Can be updated from the host using ScalarDataWrite expression node.
+     * @note Scalar content can be accessed from host using ScalarDataRead expression node.
+     *
+     * @see Expression
      */
     class SPLA_API Scalar final : public Object, public TypedObject {
     public:
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

@@ -34,6 +34,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Object
      *
      * Base class for any spla library object, which can be used in math operations.
@@ -119,6 +124,10 @@ namespace spla {
                 return "Unknown";
         }
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

@@ -32,9 +32,21 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
+     * @class FunctionBinary
+     */
     class SPLA_API FunctionBinary final : public Object {
     public:
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

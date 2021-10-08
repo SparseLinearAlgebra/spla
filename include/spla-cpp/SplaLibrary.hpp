@@ -38,6 +38,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Library
      *
      * Primary access point to the spla library operations.
@@ -185,6 +190,10 @@ namespace spla {
         // Private state
         std::shared_ptr<class LibraryPrivate> mPrivate;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

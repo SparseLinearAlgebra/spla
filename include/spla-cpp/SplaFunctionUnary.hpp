@@ -35,6 +35,14 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
+     * @class FunctionUnary
+     */
     class SPLA_API FunctionUnary final : public Object {
     public:
         ~FunctionUnary() override = default;
@@ -65,6 +73,10 @@ namespace spla {
         std::string mSource;
         std::bitset<static_cast<size_t>(Flags::Max)> mFlags;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

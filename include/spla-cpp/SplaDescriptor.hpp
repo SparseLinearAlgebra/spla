@@ -35,6 +35,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Descriptor
      *
      * Descriptor allows to tweak operation execution by specification
@@ -104,6 +109,10 @@ namespace spla {
         // Map of desc configurable params and its values
         std::unordered_map<Param, std::string> mParams;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

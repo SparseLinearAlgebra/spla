@@ -34,6 +34,11 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Data
      *
      * Generic data container to pass to/from CPU user host-data (with autorelease feature).
@@ -192,6 +197,10 @@ namespace spla {
     private:
         void *mValue = nullptr;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

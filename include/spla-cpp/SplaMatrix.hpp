@@ -34,7 +34,30 @@
 namespace spla {
 
     /**
+     * @addtogroup API
+     * @{
+     */
+
+    /**
      * @class Matrix
+     *
+     * Matrix object to represent a mathematical dim MxN matrix
+     * with values of specified Type. Uses blocked storage schema internally.
+     *
+     * @note Can be used as mask (only indices without values) if Type has zero byteSize.
+     * @note Can be updated from the host using MatrixDataWrite expression node.
+     * @note Matrix content can be accessed from host using MatrixDataRead expression node.
+     *
+     * @details
+     *  Uses sparse values storage schema, so actual values of the matrix has
+     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
+     *  and null values are not stored (`Nothing`). In expressions actual operations
+     *  are applied only to values `Just Value`. If provided binary function, it
+     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
+     *
+     * @see Expression
+     * @see FunctionUnary
+     * @see FunctionBinary
      */
     class SPLA_API Matrix final : public Object, public TypedObject {
     public:
@@ -70,6 +93,10 @@ namespace spla {
         // Separate storage for private impl
         RefPtr<class MatrixStorage> mStorage;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
