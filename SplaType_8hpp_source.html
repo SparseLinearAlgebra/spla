@@ -103,72 +103,72 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html">   44</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Type.html">Type</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        ~<a class="code" href="classspla_1_1Type.html">Type</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">   49</a></span>&#160;        <span class="keyword">const</span> std::string &amp;<a class="code" href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">GetId</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> mId;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html">   49</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Type.html">Type</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        ~<a class="code" href="classspla_1_1Type.html">Type</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">   54</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">GetByteSize</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> mByteSize;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">   54</a></span>&#160;        <span class="keyword">const</span> std::string &amp;<a class="code" href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">GetId</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> mId;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">   59</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">IsBuiltIn</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> mBuiltIn;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">   59</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">GetByteSize</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> mByteSize;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">   72</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> <a class="code" href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">Make</a>(std::string <span class="keywordtype">id</span>, <span class="keywordtype">size_t</span> typeSize, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classspla_1_1Type.html">Type</a>(std::string <span class="keywordtype">id</span>, <span class="keywordtype">size_t</span> typeSize, <span class="keywordtype">bool</span> builtIn, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// Unique type name (id)</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="comment">// Unix: utf-32, Windows: utf-16</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        std::string mId;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="comment">// Size of the type value in bytes</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// Note: if size is 0 =&gt; Object with this type have no values</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">size_t</span> mByteSize = 0;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">// True for built-in (predefined) types</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">bool</span> mBuiltIn = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html">   90</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">   93</a></span>&#160;        [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">IsCompatible</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> mType == other.mType;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">   98</a></span>&#160;        [[nodiscard]] <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> mType;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">   64</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">IsBuiltIn</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> mBuiltIn;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">   77</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> <a class="code" href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">Make</a>(std::string <span class="keywordtype">id</span>, <span class="keywordtype">size_t</span> typeSize, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="classspla_1_1Type.html">Type</a>(std::string <span class="keywordtype">id</span>, <span class="keywordtype">size_t</span> typeSize, <span class="keywordtype">bool</span> builtIn, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// Unique type name (id)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="comment">// Unix: utf-32, Windows: utf-16</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::string mId;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// Size of the type value in bytes</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment">// Note: if size is 0 =&gt; Object with this type have no values</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordtype">size_t</span> mByteSize = 0;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="comment">// True for built-in (predefined) types</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">bool</span> mBuiltIn = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html">   95</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">   98</a></span>&#160;        [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">IsCompatible</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> mType == other.mType;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">void</span> SetType(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            mType = type;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">  103</a></span>&#160;        [[nodiscard]] <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">return</span> mType;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        RefPtr&lt;Type&gt; mType;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    };</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLATYPE_HPP</span></div>
-<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
-<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
-<div class="ttc" id="aclassspla_1_1Type_html"><div class="ttname"><a href="classspla_1_1Type.html">spla::Type</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:44</div></div>
-<div class="ttc" id="aclassspla_1_1Type_html_a38d96a876141fb651a605eca3e84d67c"><div class="ttname"><a href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">spla::Type::GetByteSize</a></div><div class="ttdeci">size_t GetByteSize() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:54</div></div>
-<div class="ttc" id="aclassspla_1_1Type_html_ace0e29e1be8337743894f9cc62f340ef"><div class="ttname"><a href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">spla::Type::GetId</a></div><div class="ttdeci">const std::string &amp; GetId() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:49</div></div>
-<div class="ttc" id="aclassspla_1_1Type_html_ae5b6cedae476631a894826695b4dd254"><div class="ttname"><a href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">spla::Type::IsBuiltIn</a></div><div class="ttdeci">bool IsBuiltIn() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:59</div></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">void</span> SetType(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            mType = type;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        RefPtr&lt;Type&gt; mType;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLATYPE_HPP</span></div>
+<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
+<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:46</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
+<div class="ttc" id="aclassspla_1_1Type_html"><div class="ttname"><a href="classspla_1_1Type.html">spla::Type</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:49</div></div>
+<div class="ttc" id="aclassspla_1_1Type_html_a38d96a876141fb651a605eca3e84d67c"><div class="ttname"><a href="classspla_1_1Type.html#a38d96a876141fb651a605eca3e84d67c">spla::Type::GetByteSize</a></div><div class="ttdeci">size_t GetByteSize() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:59</div></div>
+<div class="ttc" id="aclassspla_1_1Type_html_ace0e29e1be8337743894f9cc62f340ef"><div class="ttname"><a href="classspla_1_1Type.html#ace0e29e1be8337743894f9cc62f340ef">spla::Type::GetId</a></div><div class="ttdeci">const std::string &amp; GetId() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:54</div></div>
+<div class="ttc" id="aclassspla_1_1Type_html_ae5b6cedae476631a894826695b4dd254"><div class="ttname"><a href="classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254">spla::Type::IsBuiltIn</a></div><div class="ttdeci">bool IsBuiltIn() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:64</div></div>
 <div class="ttc" id="aclassspla_1_1Type_html_aecac108e3a419781cba7c25281c9e35f"><div class="ttname"><a href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">spla::Type::Make</a></div><div class="ttdeci">static RefPtr&lt; Type &gt; Make(std::string id, size_t typeSize, class Library &amp;library)</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:90</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html_a53420ce73b7c96f7f07c4439ea1744d9"><div class="ttname"><a href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">spla::TypedObject::IsCompatible</a></div><div class="ttdeci">bool IsCompatible(const TypedObject &amp;other) const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:93</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html_afbede1902e7cedf7ddb796e4285b37f1"><div class="ttname"><a href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">spla::TypedObject::GetType</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetType() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:98</div></div>
+<div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:95</div></div>
+<div class="ttc" id="aclassspla_1_1TypedObject_html_a53420ce73b7c96f7f07c4439ea1744d9"><div class="ttname"><a href="classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9">spla::TypedObject::IsCompatible</a></div><div class="ttdeci">bool IsCompatible(const TypedObject &amp;other) const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:98</div></div>
+<div class="ttc" id="aclassspla_1_1TypedObject_html_afbede1902e7cedf7ddb796e4285b37f1"><div class="ttname"><a href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">spla::TypedObject::GetType</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetType() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:103</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

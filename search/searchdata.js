@@ -6,7 +6,8 @@ var indexSectionsWithContent =
   3: "d",
   4: "r",
   5: "dopst",
-  6: "ademnpstv"
+  6: "ademnpstv",
+  7: "a"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "variables",
   4: "typedefs",
   5: "enums",
-  6: "enumvalues"
+  6: "enumvalues",
+  7: "groups"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Variables",
   4: "Typedefs",
   5: "Enumerations",
-  6: "Enumerator"
+  6: "Enumerator",
+  7: "Modules"
 };
 

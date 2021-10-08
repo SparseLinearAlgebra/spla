@@ -104,31 +104,31 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>spla {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html">   39</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Vector.html">Vector</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a>, <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        ~<a class="code" href="classspla_1_1Vector.html">Vector</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">   44</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">GetNrows</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">   47</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">GetNvals</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903">   58</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Vector&gt;</a> <a class="code" href="classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903">Make</a>(<span class="keywordtype">size_t</span> nrows, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classspla_1_1Vector.html">Vector</a>(<span class="keywordtype">size_t</span> nrows, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">// Separate storage for private impl</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">//RefPtr&lt;class VectorStorage&gt; mStorage;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    };</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html">   62</a></span>&#160;    <span class="keyword">class </span>SPLA_API <a class="code" href="classspla_1_1Vector.html">Vector</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a>, <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        ~<a class="code" href="classspla_1_1Vector.html">Vector</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">   67</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">GetNrows</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAVECTOR_HPP</span></div>
-<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:47</div></div>
-<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:41</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:111</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:90</div></div>
-<div class="ttc" id="aclassspla_1_1Vector_html"><div class="ttname"><a href="classspla_1_1Vector.html">spla::Vector</a></div><div class="ttdef"><b>Definition:</b> SplaVector.hpp:39</div></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">   70</a></span>&#160;        <span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">GetNvals</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903">   81</a></span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Vector&gt;</a> <a class="code" href="classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903">Make</a>(<span class="keywordtype">size_t</span> nrows, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="classspla_1_1Vector.html">Vector</a>(<span class="keywordtype">size_t</span> nrows, <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// Separate storage for private impl</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment">//RefPtr&lt;class VectorStorage&gt; mStorage;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAVECTOR_HPP</span></div>
+<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
+<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:46</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
+<div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:95</div></div>
+<div class="ttc" id="aclassspla_1_1Vector_html"><div class="ttname"><a href="classspla_1_1Vector.html">spla::Vector</a></div><div class="ttdef"><b>Definition:</b> SplaVector.hpp:62</div></div>
 <div class="ttc" id="aclassspla_1_1Vector_html_a31ff4962e8e6fee1a9e04953b3cac903"><div class="ttname"><a href="classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903">spla::Vector::Make</a></div><div class="ttdeci">static RefPtr&lt; Vector &gt; Make(size_t nrows, const RefPtr&lt; Type &gt; &amp;type, class Library &amp;library)</div></div>
 <div class="ttc" id="aclassspla_1_1Vector_html_a5b9fe2b6f17fe26d09d7365213769b42"><div class="ttname"><a href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">spla::Vector::GetNvals</a></div><div class="ttdeci">size_t GetNvals() const</div></div>
 <div class="ttc" id="aclassspla_1_1Vector_html_a97bb84c6affa73b94e33ea6b93d866b6"><div class="ttname"><a href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">spla::Vector::GetNrows</a></div><div class="ttdeci">size_t GetNrows() const</div></div>
