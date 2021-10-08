@@ -116,3 +116,38 @@ jobs:
         with:
           name: ${{env.artifact}}
           path: ${{env.build_dir}}
+
+  macos:
+    runs-on: macos-11
+    env:
+      artifact: "spla-macos-x64"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install Homebrew
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      - name: Install OpenCL Info
+        run: brew install clinfo
+
+      - name: Install Boost
+        run: brew install boost
+
+      - name: Configure CMake
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=x86_64
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+
+      - name: Build library sources
+        run: cmake --build ${{ env.build_dir }} --verbose
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.artifact}}
+          path: ${{env.build_dir}}

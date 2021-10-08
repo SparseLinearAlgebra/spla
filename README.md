@@ -33,7 +33,7 @@ underlying values types and parametrise operations using arbitrary user defined 
 
 - Windows 10
 - Linux (Ubuntu 20.04)
-- MacOS (coming soon)
+- MacOS (Big Sur 11)
 
 ## Building from sources
 
@@ -51,6 +51,8 @@ underlying values types and parametrise operations using arbitrary user defined 
     - x64 Native Tools Command Prompt for VS
 - Ubuntu 20.04:
     - GNU C++ Compiler with C++ 17 support
+- MaxOS Bug Sur 11:
+  - Clang with C++ 17 support
 
 ### Get source code   
 

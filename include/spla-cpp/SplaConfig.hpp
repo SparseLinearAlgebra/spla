@@ -47,6 +47,8 @@ namespace spla {
     using Filename = std::wstring;
 #elif defined(SPLA_TARGET_LINUX)
     using Filename = std::string;
+#elif defined(SPLA_TARGET_MACOSX)
+    using Filename = std::string;
 #else
     #error Unsupported platfrom
 #endif
