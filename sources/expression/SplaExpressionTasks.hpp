@@ -41,6 +41,6 @@ namespace spla {
         std::vector<tf::Taskflow> nodesTaskflow;
     };
 
-}
+}// namespace spla
 
 #endif//SPLA_SPLAEXPRESSIONTASKS_HPP

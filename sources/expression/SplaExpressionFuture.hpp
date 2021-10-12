@@ -46,6 +46,7 @@ namespace spla {
     public:
         explicit ExpressionFuture(tf::Future<void> future) : mFuture(std::move(future)) {}
         tf::Future<void> &Get() { return mFuture; }
+
     private:
         tf::Future<void> mFuture;
     };
