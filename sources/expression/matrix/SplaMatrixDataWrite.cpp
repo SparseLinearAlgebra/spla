@@ -34,15 +34,14 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 #include <vector>
 
-bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, spla::ExpressionContext &context) {
+bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
 }
 
-void spla::MatrixDataWrite::Process(std::size_t nodeIdx, spla::ExpressionContext &context) {
-    auto &taskflow = context.nodesTaskflow[nodeIdx];
-    auto &nodes = context.expression->GetNodes();
+void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, tf::Taskflow &taskflow) {
+    auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
-    auto library = context.expression->GetLibrary().GetPrivatePtr();
+    auto library = expression.GetLibrary().GetPrivatePtr();
     auto logger = library->GetLogger();
 
     auto matrix = node->GetArg(0).Cast<Matrix>();

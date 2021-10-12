@@ -27,7 +27,18 @@
 
 #include <detail/SplaError.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
-#include <spla-cpp/SplaExpression.hpp>
+#include <expression/SplaExpressionFuture.hpp>
+#include <expression/SplaExpressionTasks.hpp>
+
+spla::Expression::~Expression() {
+    // Before destruction we must wait until it is executed
+    // NOTE: if was not submitted, nothing to do
+    if (GetState() != State::Default)
+        Wait();
+
+    mFuture.reset();
+    mTasks.reset();
+}
 
 spla::RefPtr<spla::Expression> spla::Expression::Make(spla::Library &library) {
     return spla::RefPtr<spla::Expression>(new Expression(library));
@@ -37,8 +48,18 @@ spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::
     SetState(State::Default);
 }
 
+void spla::Expression::Wait() {
+    CHECK_RAISE_ERROR(GetState() != State::Default, InvalidState, "Expression must be submitted for the execution");
+
+    // NOTE: Wait only if submitted
+    if (GetState() == State::Submitted)
+        mFuture->Get().wait();
+}
+
 void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred,
                                   const spla::RefPtr<spla::ExpressionNode> &succ) {
+    CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state");
+
     CHECK_RAISE_ERROR(pred.IsNotNull(), InvalidArgument, "Passed null arg");
     CHECK_RAISE_ERROR(succ.IsNotNull(), InvalidArgument, "Passed null arg");
 
@@ -65,6 +86,8 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
                            std::vector<RefPtr<Object>> &&args,
                            const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state");
+
     for (const auto &arg : args)
         CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, "Passed null argument to op=" << ExpressionNodeOpToStr(op));
 
@@ -129,5 +152,13 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
 }
 
 void spla::Expression::SetState(State state) {
-    mState.store(static_cast<long>(state));
+    mState.store(state);
+}
+
+void spla::Expression::SetFuture(std::unique_ptr<class ExpressionFuture> &&future) {
+    mFuture = std::move(future);
+}
+
+void spla::Expression::SetTasks(std::unique_ptr<class ExpressionTasks> &&tasks) {
+    mTasks = std::move(tasks);
 }

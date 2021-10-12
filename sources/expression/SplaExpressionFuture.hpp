@@ -25,4 +25,35 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "SplaExpressionContext.hpp"
+#ifndef SPLA_SPLAEXPRESSIONFUTURE_HPP
+#define SPLA_SPLAEXPRESSIONFUTURE_HPP
+
+#include <spla-cpp/SplaRefCnt.hpp>
+#include <taskflow/taskflow.hpp>
+
+namespace spla {
+
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
+     * @class ExpressionFuture
+     * @brief Wrapper for taskflow future.
+     */
+    class ExpressionFuture {
+    public:
+        explicit ExpressionFuture(tf::Future<void> future) : mFuture(std::move(future)) {}
+        tf::Future<void> &Get() { return mFuture; }
+    private:
+        tf::Future<void> mFuture;
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_SPLAEXPRESSIONFUTURE_HPP

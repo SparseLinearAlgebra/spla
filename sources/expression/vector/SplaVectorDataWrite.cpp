@@ -28,14 +28,13 @@
 #include <detail/SplaLibraryPrivate.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 
-bool spla::VectorDataWrite::Select(std::size_t nodeIdx, spla::ExpressionContext &context) {
+bool spla::VectorDataWrite::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
 }
 
-void spla::VectorDataWrite::Process(std::size_t nodeIdx, spla::ExpressionContext &context) {
+void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, tf::Taskflow &taskflow) {
     // todo: impl me!
-    auto &taskflow = context.nodesTaskflow[nodeIdx];
-    auto logger = context.expression->GetLibrary().GetPrivate().GetLogger();
+    auto logger = expression.GetLibrary().GetPrivate().GetLogger();
 
     // todo: remove it!
     taskflow.emplace([=]() {

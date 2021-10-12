@@ -47,11 +47,22 @@ namespace spla {
 
     /**
      * @class Expression
+     * @brief Computational expression for submission.
      *
+     * Represents single self-sufficient set of computational nodes with dependencies,
+     * which can be submitted for the execution at once and then asynchronously
+     * checked state of computation of waited (blocked) until completion.
+     *
+     * @warning Expression cannot be modified after submission.
+     * @warning Expression::Wait() is valid call only for submitted expressions.
+     *
+     * @note Call Expression::Wait() to ensure completion.
+     * @note Call Expression::GetState() to get current state to ensure, that expression is not running.
+     * @note If expression is released, it implicitly calls Expression::Wait() internally before destruction.
      */
     class SPLA_API Expression final : public Object {
     public:
-        ~Expression() override = default;
+        ~Expression() override;
 
         /** Current expression state */
         enum class State {
@@ -61,9 +72,20 @@ namespace spla {
             Submitted,
             /** Expression successfully evaluated after submission */
             Evaluated,
-            /** Expression evaluation aborted due error/exception */
+            /** Expression evaluation aborted due some error/exception */
             Aborted
         };
+
+        /**
+         * Wait for expression until it is computation is completed.
+         *
+         * @note Blocks current thread until evaluated or aborted.
+         * @note Must be called only after expression is submitted.
+         * @note Check expression state after completion to ensure correctness.
+         *
+         * @see Expression::GetState()
+         */
+        void Wait();
 
         /**
          * Makes dependency between provided expression nodes.
@@ -171,9 +193,13 @@ namespace spla {
                                         const RefPtr<Descriptor> &desc);
 
         void SetState(State state);
+        void SetFuture(std::unique_ptr<class ExpressionFuture> &&future);
+        void SetTasks(std::unique_ptr<class ExpressionTasks> &&tasks);
 
         std::vector<RefPtr<class ExpressionNode>> mNodes;
-        std::atomic_long mState;
+        std::unique_ptr<class ExpressionFuture> mFuture;
+        std::unique_ptr<class ExpressionTasks> mTasks;
+        std::atomic<State> mState;
     };
 
     /**

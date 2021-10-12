@@ -28,10 +28,10 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.hpp
         sources/expression/vector/SplaVectorDataWrite.cpp
         sources/expression/vector/SplaVectorDataWrite.hpp
-        sources/expression/SplaExpressionContext.cpp
-        sources/expression/SplaExpressionContext.hpp
+        sources/expression/SplaExpressionFuture.hpp
         sources/expression/SplaExpressionManager.cpp
         sources/expression/SplaExpressionManager.hpp
+        sources/expression/SplaExpressionTasks.hpp
         sources/expression/SplaNodeProcessor.hpp)
 
 set(SPLA_STORAGE_SOURCES
