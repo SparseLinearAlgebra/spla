@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['removeamountlimit_155',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9',1,'spla::Library::Config']]]
+  ['removeamountlimit_156',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9',1,'spla::Library::Config']]]
 ];
