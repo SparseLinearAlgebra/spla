@@ -28,7 +28,6 @@
 #ifndef SPLA_SPLAEXPRESSIONMANAGER_HPP
 #define SPLA_SPLAEXPRESSIONMANAGER_HPP
 
-#include <expression/SplaExpressionContext.hpp>
 #include <expression/SplaNodeProcessor.hpp>
 #include <spla-cpp/SplaExpression.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
@@ -36,6 +35,11 @@
 #include <unordered_map>
 
 namespace spla {
+
+    /**
+     * @addtogroup Internal
+     * @{
+     */
 
     /**
      * @brief ExpressionManager
@@ -53,6 +57,18 @@ namespace spla {
      */
     class ExpressionManager final : public RefCnt {
     public:
+        /** Expression DAG structure */
+        struct TraversalInfo {
+            /** Expression */
+            RefPtr<Expression> expression;
+            /** Nodes to start evaluation */
+            std::vector<size_t> startNodes;
+            /** Final nodes */
+            std::vector<size_t> endNodes;
+            /** Order of the expression traversal to submit computation */
+            std::vector<size_t> traversal;
+        };
+
         explicit ExpressionManager(Library &library);
         ~ExpressionManager() override = default;
 
@@ -60,22 +76,26 @@ namespace spla {
         void Register(const RefPtr<NodeProcessor> &processor);
 
     private:
-        void FindStartNodes(ExpressionContext &context);
-        void FindEndNodes(ExpressionContext &context);
-        void CheckCycles(ExpressionContext &context);
+        void FindStartNodes(TraversalInfo &context);
+        void FindEndNodes(TraversalInfo &context);
+        void CheckCycles(TraversalInfo &context);
         bool CheckCyclesImpl(size_t idx, std::vector<int> &visited, const std::vector<RefPtr<ExpressionNode>> &nodes);
-        void DefineTraversalPath(ExpressionContext &context);
+        void DefineTraversalPath(TraversalInfo &context);
         void DefineTraversalPathImpl(size_t idx, size_t &t, std::vector<size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
 
-        RefPtr<NodeProcessor> SelectProcessor(std::size_t nodeIdx, ExpressionContext &context);
+        RefPtr<NodeProcessor> SelectProcessor(std::size_t nodeIdx, const Expression &expression);
 
     private:
         using ProcessorList = std::vector<RefPtr<NodeProcessor>>;
         using ProcessorMap = std::unordered_map<ExpressionNode::Operation, ProcessorList>;
-        ProcessorMap mProcessors;
 
+        ProcessorMap mProcessors;
         Library &mLibrary;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

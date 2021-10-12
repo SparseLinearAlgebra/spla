@@ -122,6 +122,8 @@ namespace utils {
             readExpr->MakeDataRead(m, data);
             library.Submit(readExpr);
 
+            readExpr->Wait();
+
             if (readExpr->GetState() != spla::Expression::State::Evaluated)
                 return false;
 

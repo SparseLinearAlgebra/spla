@@ -35,8 +35,8 @@ namespace spla {
     class MatrixDataRead final : public NodeProcessor {
     public:
         ~MatrixDataRead() override = default;
-        bool Select(std::size_t nodeIdx, ExpressionContext &context) override;
-        void Process(std::size_t nodeIdx, ExpressionContext &context) override;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, tf::Taskflow &taskflow) override;
         ExpressionNode::Operation GetOperationType() const override;
     };
 

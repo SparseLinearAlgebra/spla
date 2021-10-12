@@ -27,7 +27,9 @@
 
 #include <detail/SplaError.hpp>
 #include <detail/SplaLibraryPrivate.hpp>
+#include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionManager.hpp>
+#include <expression/SplaExpressionTasks.hpp>
 #include <numeric>
 #include <vector>
 
@@ -57,7 +59,7 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
         return;
     }
 
-    ExpressionContext context;
+    TraversalInfo context;
     context.expression = expression;
 
     FindStartNodes(context);
@@ -74,17 +76,19 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
     DefineTraversalPath(context);
 
     auto &traversal = context.traversal;
-    auto &taskflow = context.taskflow;
-    auto &nodesTaskflow = context.nodesTaskflow;
     auto &nodes = expression->GetNodes();
+
+    auto expressionTasks = std::make_unique<ExpressionTasks>();
+    auto &taskflow = expressionTasks->taskflow;
+    auto &nodesTaskflow = expressionTasks->nodesTaskflow;
 
     nodesTaskflow.resize(nodes.size());
 
     for (auto idx : traversal) {
         // Select processor for node
-        auto processor = SelectProcessor(idx, context);
+        auto processor = SelectProcessor(idx, *expression);
         // Actually process node
-        processor->Process(idx, context);
+        processor->Process(idx, *expression, nodesTaskflow[idx]);
     }
 
     std::vector<tf::Task> modules;
@@ -108,12 +112,20 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
         }
     }
 
-    auto &executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
-    auto future = executor.run(taskflow);
+    // Dummy task to notify expression state
+    auto notification = taskflow.emplace([expression = expression.Get()]() {
+                                    expression->SetState(Expression::State::Evaluated);
+                                })
+                                .name("Notification");
 
-    // todo: check async completion
-    future.wait();
-    expression->SetState(Expression::State::Evaluated);
+    for (auto &module : modules)
+        module.precede(notification);
+
+    auto &executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
+    auto expressionFuture = std::make_unique<ExpressionFuture>(executor.run(taskflow));
+
+    expression->SetTasks(std::move(expressionTasks));
+    expression->SetFuture(std::move(expressionFuture));
 }
 
 void spla::ExpressionManager::Register(const spla::RefPtr<spla::NodeProcessor> &processor) {
@@ -128,7 +140,7 @@ void spla::ExpressionManager::Register(const spla::RefPtr<spla::NodeProcessor> &
     list->second.push_back(processor);
 }
 
-void spla::ExpressionManager::FindStartNodes(spla::ExpressionContext &context) {
+void spla::ExpressionManager::FindStartNodes(spla::ExpressionManager::TraversalInfo &context) {
     auto &expression = context.expression;
     auto &nodes = expression->GetNodes();
     auto &start = context.startNodes;
@@ -140,7 +152,7 @@ void spla::ExpressionManager::FindStartNodes(spla::ExpressionContext &context) {
     }
 }
 
-void spla::ExpressionManager::FindEndNodes(spla::ExpressionContext &context) {
+void spla::ExpressionManager::FindEndNodes(spla::ExpressionManager::TraversalInfo &context) {
     auto &expression = context.expression;
     auto &nodes = expression->GetNodes();
     auto &end = context.endNodes;
@@ -152,7 +164,7 @@ void spla::ExpressionManager::FindEndNodes(spla::ExpressionContext &context) {
     }
 }
 
-void spla::ExpressionManager::CheckCycles(spla::ExpressionContext &context) {
+void spla::ExpressionManager::CheckCycles(spla::ExpressionManager::TraversalInfo &context) {
     auto &expression = context.expression;
     auto &nodes = expression->GetNodes();
     auto &start = context.startNodes;
@@ -181,7 +193,7 @@ bool spla::ExpressionManager::CheckCyclesImpl(size_t idx, std::vector<int> &visi
     return false;
 }
 
-void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionContext &context) {
+void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionManager::TraversalInfo &context) {
     auto &expression = context.expression;
     auto &nodes = expression->GetNodes();
     auto &start = context.startNodes;
@@ -229,8 +241,8 @@ void spla::ExpressionManager::DefineTraversalPathImpl(size_t idx, size_t &t, std
 }
 
 spla::RefPtr<spla::NodeProcessor>
-spla::ExpressionManager::SelectProcessor(std::size_t nodeIdx, spla::ExpressionContext &context) {
-    auto &nodes = context.expression->GetNodes();
+spla::ExpressionManager::SelectProcessor(std::size_t nodeIdx, const spla::Expression &expression) {
+    auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
     ExpressionNode::Operation op = node->GetNodeOp();
 
@@ -244,9 +256,9 @@ spla::ExpressionManager::SelectProcessor(std::size_t nodeIdx, spla::ExpressionCo
     // NOTE: Iterate through all processors for this operation and
     // select the first one, which meets requirements
     for (auto &processor : processors)
-        if (processor->Select(nodeIdx, context))
+        if (processor->Select(nodeIdx, expression))
             return processor;
 
     RAISE_ERROR(InvalidState,
-                L"Failed to find suitable processor for the node op=" << ExpressionNodeOpToStr(op));
+                "Failed to find suitable processor for the node op=" << ExpressionNodeOpToStr(op));
 }

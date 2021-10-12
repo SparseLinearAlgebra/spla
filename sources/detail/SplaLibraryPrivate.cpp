@@ -72,7 +72,7 @@ namespace {
             sinks.push_back(fileSink);
         }
 
-        auto logger = std::make_shared<spdlog::logger>("spla-logger", sinks.begin(), sinks.end());
+        auto logger = std::make_shared<spdlog::logger>("spla", sinks.begin(), sinks.end());
         logger->set_level(static_cast<spdlog::level::level_enum>(SPDLOG_ACTIVE_LEVEL));
 
         return logger;

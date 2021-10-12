@@ -25,32 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAEXPRESSIONCONTEXT_HPP
-#define SPLA_SPLAEXPRESSIONCONTEXT_HPP
+#ifndef SPLA_SPLAEXPRESSIONTASKS_HPP
+#define SPLA_SPLAEXPRESSIONTASKS_HPP
 
-#include <spla-cpp/SplaExpression.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
 #include <taskflow/taskflow.hpp>
 #include <vector>
 
 namespace spla {
 
-    class ExpressionContext {
+    class ExpressionTasks {
     public:
-        /** Associated expression */
-        RefPtr<Expression> expression;
-        /** Nodes to start evaluation */
-        std::vector<size_t> startNodes;
-        /** Final nodes */
-        std::vector<size_t> endNodes;
-        /** Order of the expression traversal to submit computation */
-        std::vector<size_t> traversal;
         /** Expression taskflow graph */
         tf::Taskflow taskflow;
         /** Taskflows composed for each node */
         std::vector<tf::Taskflow> nodesTaskflow;
     };
 
-}// namespace spla
+}
 
-#endif//SPLA_SPLAEXPRESSIONCONTEXT_HPP
+#endif//SPLA_SPLAEXPRESSIONTASKS_HPP

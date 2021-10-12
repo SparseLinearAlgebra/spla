@@ -44,6 +44,7 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
 
     library.Submit(spExprWrite);
+    spExprWrite->Wait();
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector expected = source.SortReduceDuplicates();
@@ -72,6 +73,7 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
 
     library.Submit(spExprWrite);
+    spExprWrite->Wait();
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<float> &expected = source;

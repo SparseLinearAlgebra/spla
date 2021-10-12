@@ -65,7 +65,7 @@ namespace spla {
         }
 
         int32_t AddRef() const {
-            assert(GetRefs() > 0);
+            assert(GetRefs() >= 0);
             return mRefs.fetch_add(1);
         }
 
@@ -83,8 +83,8 @@ namespace spla {
         }
 
     private:
-        // This type of object after creation always has at least 1 reference
-        mutable std::atomic_int32_t mRefs{1};
+        // This type of object after creation always has no reference
+        mutable std::atomic_int32_t mRefs{0};
     };
 
     template<typename T>
