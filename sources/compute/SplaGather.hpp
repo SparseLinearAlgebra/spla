@@ -86,12 +86,12 @@ namespace spla {
      * @param queue Execution queue
      */
     template<class InputIterator, class MapIterator, class OutputIterator>
-    inline void Gather(MapIterator first,
-                       MapIterator last,
-                       InputIterator input,
-                       OutputIterator result,
-                       std::size_t elementsInSequence,
-                       boost::compute::command_queue &queue) {
+    inline boost::compute::event Gather(MapIterator first,
+                                        MapIterator last,
+                                        InputIterator input,
+                                        OutputIterator result,
+                                        std::size_t elementsInSequence,
+                                        boost::compute::command_queue &queue) {
         using namespace boost;
 
         BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator>::value);
@@ -101,7 +101,7 @@ namespace spla {
         GatherKernel<InputIterator, MapIterator, OutputIterator> kernel;
 
         kernel.SetRange(first, last, input, result, elementsInSequence);
-        kernel.Exec(queue);
+        return kernel.Exec(queue);
     }
 
 }// namespace spla

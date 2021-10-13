@@ -45,7 +45,6 @@ namespace spla {
      */
     class SPLA_API Types {
     public:
-
         /**
          * Get built-in library Void type.
          * @note Void type has 0 size (no actual values).
@@ -53,7 +52,7 @@ namespace spla {
          * @param library Library global instance
          * @return Built-in type instance
          */
-        static RefPtr<Type> Void(Library& library);
+        static RefPtr<Type> Void(Library &library);
 
         /**
          * Get built-in library Bool type.
@@ -156,7 +155,7 @@ namespace spla {
 
     private:
         friend class Library;
-        static void RegisterTypes(Library& library);
+        static void RegisterTypes(Library &library);
     };
 
     /**

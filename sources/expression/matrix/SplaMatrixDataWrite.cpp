@@ -161,6 +161,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                     if (typeHasValues)
                         compute::copy(blockValsHost.begin(), blockValsHost.end(), blockVals.begin(), queue);
+
+                    queue.finish();
                 }
 
                 // If entries are not sorted, we must sort it here in row-cols order
@@ -170,8 +172,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     // Use permutation buffer to synchronize position of indices of the same
                     // entries in all 3 buffers: rows, cols and vals.
                     compute::vector<unsigned int> permutation(blockNvals, ctx);
-                    compute::copy(compute::counting_iterator<cl_uint>(0),
-                                  compute::counting_iterator<cl_uint>(blockNvals),
+                    compute::copy(compute::counting_iterator<unsigned int>(0),
+                                  compute::counting_iterator<unsigned int>(blockNvals),
                                   permutation.begin(),
                                   queue);
 
@@ -191,18 +193,19 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     // Copy values, using permutation
                     if (typeHasValues) {
                         compute::vector<unsigned char> valsTmp(blockNvals * byteSize, ctx);
-                        Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue);
+                        Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue).wait();
+                        queue.finish();
                         std::swap(blockVals, valsTmp);
                     }
+
+                    queue.finish();
                 }
 
                 if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
-                    const unsigned int init[] = {1u};
-
                     // Use this mask to find unique elements
                     // NOTE: unique has 1, otherwise 0
                     compute::vector<unsigned int> mask(blockNvals + 1, ctx);
-                    compute::copy_n(init, 1, mask.begin(), queue);
+                    mask[0] = 1;
 
                     BOOST_COMPUTE_CLOSURE(
                             unsigned int, findUnique, (unsigned int i), (blockRows, blockCols), {
@@ -224,6 +227,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     // Define write offsets (where to write value in result buffer) for each unique value
                     compute::vector<unsigned int> offsets(mask.size(), ctx);
                     compute::exclusive_scan(mask.begin(), mask.end(), offsets.begin(), 0, queue);
+
+                    queue.finish();
 
                     // Count number of unique values to allocate storage
                     std::size_t resultNvals = offsets.back();
@@ -253,9 +258,9 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                         BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mask, offsets, newVals, blockVals, byteSize), {
                             if (mask[i]) {
-                                const uint offset = offsets[i];
-                                const uint dst = byteSize * offset;
-                                const uint src = byteSize * i;
+                                const size_t offset = offsets[i];
+                                const size_t dst = byteSize * offset;
+                                const size_t src = byteSize * i;
                                 for (size_t k = 0; k < byteSize; k++) {
                                     newVals[dst + k] = blockVals[src + k];
                                 }
@@ -269,6 +274,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                     SPDLOG_LOGGER_TRACE(logger, "Reduce duplicates block ({},{}) entries old={} new={}",
                                         i, j, blockNvals, resultNvals);
+
+                    queue.finish();
 
                     // Update block data
                     blockNvals = resultNvals;

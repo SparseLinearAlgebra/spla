@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <functional>
+#include <iostream>
 #include <random>
 #include <spla-cpp/Spla.hpp>
 #include <utility>
@@ -101,11 +102,20 @@ namespace utils {
         }
 
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m) const {
-            if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols() || m->GetNvals() != GetNvals())
+            if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols()) {
+                std::cout << "Size mismatched" << std::endl;
                 return false;
+            }
 
-            if (ElementSize != m->GetType()->GetByteSize())
+            if (m->GetNvals() != GetNvals()) {
+                std::cout << "Number of nnz mismatched" << std::endl;
                 return false;
+            }
+
+            if (ElementSize != m->GetType()->GetByteSize()) {
+                std::cout << "Type has incompatible size" << std::endl;
+                return false;
+            }
 
             std::vector<Index> spRows(GetNvals());
             std::vector<Index> spCols(GetNvals());
@@ -124,15 +134,25 @@ namespace utils {
 
             readExpr->Wait();
 
-            if (readExpr->GetState() != spla::Expression::State::Evaluated)
+            if (readExpr->GetState() != spla::Expression::State::Evaluated) {
+                std::cout << "Read expression is not evaluated" << std::endl;
                 return false;
+            }
 
-            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0)
+            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                std::cout << "Row indices not equal" << std::endl;
                 return false;
-            if (std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize) != 0)
+            }
+
+            if (std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize) != 0) {
+                std::cout << "Column indices not equal" << std::endl;
                 return false;
-            if (std::memcmp(mVals.data(), spVals.data(), GetNvals() * ElementSize) != 0)
+            }
+
+            if (std::memcmp(mVals.data(), spVals.data(), GetNvals() * ElementSize) != 0) {
+                std::cout << "Values not equal" << std::endl;
                 return false;
+            }
 
             return true;
         }
