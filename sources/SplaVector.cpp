@@ -43,9 +43,7 @@ spla::RefPtr<spla::Vector> spla::Vector::Make(size_t nrows,
 
 spla::Vector::Vector(size_t nrows,
                      const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Vector, library) {
-    SetType(type);
+                     spla::Library &library) : TypedObject(type, Object::TypeName::Vector, library) {
 }
 
-spla::Vector::~Vector() {
-}
+spla::Vector::~Vector() = default;

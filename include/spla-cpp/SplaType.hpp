@@ -29,6 +29,7 @@
 #define SPLA_SPLATYPE_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <utility>
 
 namespace spla {
 
@@ -68,15 +69,32 @@ namespace spla {
         /**
          * Makes new user-defined type.
          *
-         * @param id Unique name of the type
-         * @param typeSize Size of the type values in bytes
-         * @param library Library global instance
+         * @note Raise error if type with specified id already registered in the library.
          *
-         * @return New type instance
+         * @param id Unique name of the type.
+         * @param typeSize Size of the type values in bytes.
+         * @param library Library global instance.
+         *
+         * @return New type instance.
          */
         static RefPtr<Type> Make(std::string id, size_t typeSize, class Library &library);
 
+        /**
+         * Finds already register type in library by specified id.
+         *
+         * @note Returns null if type with specified id is not found.
+         *
+         * @param id Unique name of the type.
+         * @param library Library global instance.
+         *
+         * @return Type reference.
+         */
+        static RefPtr<Type> Find(std::string id, class Library &library);
+
     private:
+        friend class Types;
+        static RefPtr<Type> Make(std::string id, size_t typeSize, bool builtIn, class Library &library);
+
         Type(std::string id, size_t typeSize, bool builtIn, class Library &library);
 
         // Unique type name (id)
@@ -91,8 +109,10 @@ namespace spla {
     };
 
     /** Inherit from this class if your object must have type info */
-    class SPLA_API TypedObject {
+    class SPLA_API TypedObject : public Object {
     public:
+        ~TypedObject() override = default;
+
         /** @return True if this and other typed object has compatible types */
         [[nodiscard]] bool IsCompatible(const TypedObject &other) const {
             return mType == other.mType;
@@ -104,9 +124,7 @@ namespace spla {
         }
 
     protected:
-        void SetType(const RefPtr<Type> &type) {
-            mType = type;
-        }
+        explicit TypedObject(RefPtr<Type> type, TypeName typeName, class Library &library);
 
     private:
         RefPtr<Type> mType;

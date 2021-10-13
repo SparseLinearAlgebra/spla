@@ -59,7 +59,7 @@ namespace spla {
      * @see FunctionUnary
      * @see FunctionBinary
      */
-    class SPLA_API Matrix final : public Object, public TypedObject {
+    class SPLA_API Matrix final : public TypedObject {
     public:
         ~Matrix() override;
 

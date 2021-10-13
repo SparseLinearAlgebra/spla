@@ -31,14 +31,14 @@
 #include <detail/SplaLibraryPrivate.hpp>
 #include <memory>
 #include <spla-cpp/SplaLibrary.hpp>
+#include <spla-cpp/SplaTypes.hpp>
 #include <sstream>
 
-spla::Library::Library(Config config)
-    : mPrivate(std::make_shared<LibraryPrivate>(*this, std::move(config))) {
+spla::Library::Library(Config config) : mPrivate(std::make_shared<LibraryPrivate>(*this, std::move(config))) {
+    Types::RegisterTypes(*this);
 }
 
-spla::Library::Library()
-    : Library(Config()) {
+spla::Library::Library() : Library(Config()) {
 }
 
 spla::Library::~Library() = default;

@@ -52,10 +52,8 @@ spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
 
 spla::Matrix::Matrix(size_t nrows, size_t ncols,
                      const RefPtr<Type> &type,
-                     spla::Library &library) : Object(Object::TypeName::Matrix, library) {
-    SetType(type);
+                     spla::Library &library) : TypedObject(type, Object::TypeName::Matrix, library) {
     mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
 }
 
-spla::Matrix::~Matrix() {
-}
+spla::Matrix::~Matrix() = default;

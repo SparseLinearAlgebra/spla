@@ -34,7 +34,12 @@
 #include <spdlog/spdlog.h>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
+#include <spla-cpp/SplaType.hpp>
 #include <taskflow/taskflow.hpp>
+#include <unordered_map>
+#include <vector>
+#include <spla-cpp/SplaTypes.hpp>
+
 
 namespace spla {
     /**
@@ -45,7 +50,7 @@ namespace spla {
     public:
         explicit LibraryPrivate(Library &library, Library::Config config);
 
-        tf::Executor &GetTaskFlowExecutor();
+        tf::Executor &GetTaskFlowExecutor() noexcept;
 
         const RefPtr<Descriptor> &GetDefaultDesc() const noexcept;
 
@@ -61,6 +66,8 @@ namespace spla {
 
         const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
 
+        std::unordered_map<std::string, RefPtr<Type>> &GetTypeCache() noexcept;
+
         size_t GetBlockSize() const noexcept;
 
     private:
@@ -72,6 +79,7 @@ namespace spla {
         boost::compute::context mContext;
         Library::Config mContextConfig;
         std::shared_ptr<spdlog::logger> mLogger;
+        std::unordered_map<std::string, RefPtr<Type>> mTypeCache;
     };
 
 }// namespace spla

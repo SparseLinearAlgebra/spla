@@ -25,12 +25,34 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <detail/SplaError.hpp>
+#include <detail/SplaLibraryPrivate.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaType.hpp>
 
 spla::RefPtr<spla::Type> spla::Type::Make(std::string id, size_t typeSize, spla::Library &library) {
-    RefPtr<Type> type{new Type(std::move(id), typeSize, false, library)};
+    return Make(std::move(id), typeSize, false, library);
+}
+
+spla::RefPtr<spla::Type> spla::Type::Make(std::string id, size_t typeSize, bool builtIn, spla::Library &library) {
+    auto &libraryPrivate = library.GetPrivate();
+    auto &typeCache = libraryPrivate.GetTypeCache();
+
+    auto entry = typeCache.find(id);
+    CHECK_RAISE_ERROR(entry == typeCache.end(), Error, "An attempt to create new type with the same id");
+
+    RefPtr<Type> type{new Type(std::move(id), typeSize, builtIn, library)};
+    typeCache.emplace(type->GetId(), type);
+
     return type;
+}
+
+spla::RefPtr<spla::Type> spla::Type::Find(std::string id, spla::Library &library) {
+    auto &libraryPrivate = library.GetPrivate();
+    auto &typeCache = libraryPrivate.GetTypeCache();
+
+    auto entry = typeCache.find(id);
+    return entry != typeCache.end() ? entry->second : nullptr;
 }
 
 spla::Type::Type(std::string id,
@@ -41,4 +63,8 @@ spla::Type::Type(std::string id,
       mId(std::move(id)),
       mByteSize(typeSize),
       mBuiltIn(builtIn) {
+}
+
+spla::TypedObject::TypedObject(spla::RefPtr<spla::Type> type, spla::Object::TypeName typeName, spla::Library &library)
+    : Object(typeName, library), mType(std::move(type)) {
 }

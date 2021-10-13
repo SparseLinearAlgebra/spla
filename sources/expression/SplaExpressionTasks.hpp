@@ -33,6 +33,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     class ExpressionTasks {
     public:
         /** Expression taskflow graph */
@@ -40,6 +45,10 @@ namespace spla {
         /** Taskflows composed for each node */
         std::vector<tf::Taskflow> nodesTaskflow;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

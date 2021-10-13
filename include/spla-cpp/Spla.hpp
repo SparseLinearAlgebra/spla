@@ -41,6 +41,7 @@
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <spla-cpp/SplaScalar.hpp>
 #include <spla-cpp/SplaType.hpp>
+#include <spla-cpp/SplaTypes.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
 #endif//SPLA_SPLA_HPP

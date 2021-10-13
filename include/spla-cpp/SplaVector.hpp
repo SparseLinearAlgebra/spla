@@ -59,7 +59,7 @@ namespace spla {
      * @see FunctionUnary
      * @see FunctionBinary
      */
-    class SPLA_API Vector final : public Object, public TypedObject {
+    class SPLA_API Vector final : public TypedObject {
     public:
         ~Vector() override;
 

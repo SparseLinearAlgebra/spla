@@ -9,6 +9,7 @@ set(SPLA_CPP_SOURCES
         sources/SplaMatrix.cpp
         sources/SplaScalar.cpp
         sources/SplaType.cpp
+        sources/SplaTypes.cpp
         sources/SplaVector.cpp)
 
 set(SPLA_COMPUTE_SOURCES

@@ -91,7 +91,7 @@ spla::LibraryPrivate::LibraryPrivate(
     mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
 }
 
-tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() {
+tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() noexcept {
     return mExecutor;
 }
 
@@ -121,6 +121,10 @@ const spla::Library::Config &spla::LibraryPrivate::GetContextConfig() const noex
 
 const std::shared_ptr<spdlog::logger> &spla::LibraryPrivate::GetLogger() const noexcept {
     return mLogger;
+}
+
+std::unordered_map<std::string, spla::RefPtr<spla::Type>> &spla::LibraryPrivate::GetTypeCache() noexcept {
+    return mTypeCache;
 }
 
 size_t spla::LibraryPrivate::GetBlockSize() const noexcept {
