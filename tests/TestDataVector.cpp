@@ -48,8 +48,8 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector expected = source.SortReduceDuplicates();
-    // todo: uncomment later, since for now it won't pass
-    // EXPECT_TRUE(expected.Equals(spV));
+
+    EXPECT_TRUE(expected.Equals(spV));
 }
 
 static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
@@ -76,9 +76,8 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     spExprWrite->Wait();
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<float> &expected = source;
-    // todo: uncomment later, since for now it won't pass
-    // EXPECT_TRUE(expected.Equals(spV));
+    utils::Vector<float> expected = source;
+    EXPECT_TRUE(expected.Equals(spV));
 }
 
 static void test(size_t M, size_t base, size_t step, size_t iter) {
@@ -93,6 +92,11 @@ static void test(size_t M, size_t base, size_t step, size_t iter) {
         size_t nvals = base + i * step;
         testSortedNoDuplicates(library, M, nvals, i);
     }
+}
+
+TEST(DataVector, Tiny) {
+    spla::Library library;
+    testCommon(library, 5, 5);
 }
 
 TEST(DataVector, Small) {
