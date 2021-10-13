@@ -1,8 +1,21 @@
 var searchData=
 [
-  ['transposearg1_86',['TransposeArg1',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad081831e1542e4a49fe0180da3a99458',1,'spla::Descriptor']]],
-  ['transposearg2_87',['TransposeArg2',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78adafec008b26d69c6d78c7964d7c1f44f',1,'spla::Descriptor']]],
-  ['type_88',['Type',['../classspla_1_1Type.html',1,'spla']]],
-  ['typedobject_89',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla']]],
-  ['typename_90',['TypeName',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c',1,'spla::Object']]]
+  ['scalar_77',['Scalar',['../classspla_1_1Scalar.html',1,'spla']]],
+  ['scalardataread_78',['ScalarDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52',1,'spla::ExpressionNode']]],
+  ['scalardatawrite_79',['ScalarDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775',1,'spla::ExpressionNode']]],
+  ['setblocksize_80',['SetBlockSize',['../classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8',1,'spla::Library::Config']]],
+  ['setcols_81',['SetCols',['../classspla_1_1DataMatrix.html#aafe3d8da7f3aa0dcc601bc7fb0ea953b',1,'spla::DataMatrix']]],
+  ['setdevicetype_82',['SetDeviceType',['../classspla_1_1Library_1_1Config.html#a05889e1b474b50366a655371a8a637f2',1,'spla::Library::Config']]],
+  ['setlogfilename_83',['SetLogFilename',['../classspla_1_1Library_1_1Config.html#a96f01b0da8d48aed00b0209feba0321c',1,'spla::Library::Config']]],
+  ['setnvals_84',['SetNvals',['../classspla_1_1DataVector.html#ad7b924001b4b4470d942252ada24b6ef',1,'spla::DataVector::SetNvals()'],['../classspla_1_1DataMatrix.html#ab2387eb483f772c9dc899320a931056a',1,'spla::DataMatrix::SetNvals()']]],
+  ['setparam_85',['SetParam',['../classspla_1_1Descriptor.html#a4c91da29ebabd291a79062cb58bae16f',1,'spla::Descriptor']]],
+  ['setplatform_86',['SetPlatform',['../classspla_1_1Library_1_1Config.html#a081d751b684cc556ac160bf2c1009322',1,'spla::Library::Config']]],
+  ['setreleaseproc_87',['SetReleaseProc',['../classspla_1_1Data.html#ad489497c888ca712217666f49e57b72b',1,'spla::Data']]],
+  ['setrows_88',['SetRows',['../classspla_1_1DataMatrix.html#a87bca891db16db54e1f8b223d6c47445',1,'spla::DataMatrix::SetRows()'],['../classspla_1_1DataVector.html#a6e2d107c2bc2130acc76850ebf0331f7',1,'spla::DataVector::SetRows()']]],
+  ['setvals_89',['SetVals',['../classspla_1_1DataMatrix.html#a208089546b3c19dfd5a431fbf146bd6f',1,'spla::DataMatrix::SetVals()'],['../classspla_1_1DataVector.html#a16743ee771d91251e5d1a503b910ad75',1,'spla::DataVector::SetVals()']]],
+  ['setvalue_90',['SetValue',['../classspla_1_1DataScalar.html#af62f04cc91f6e0681517733e22b1f522',1,'spla::DataScalar']]],
+  ['splatypes_91',['SplaTypes',['../classSplaTypes.html',1,'']]],
+  ['state_92',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
+  ['submit_93',['Submit',['../classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4',1,'spla::Library']]],
+  ['submitted_94',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
 ];

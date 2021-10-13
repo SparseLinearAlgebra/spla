@@ -1,6 +1,6 @@
 <map id="spla::Vector" name="spla::Vector">
-<area shape="rect" id="node1" title=" " alt="" coords="71,155,162,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title=" " alt="" coords="6,80,97,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,5,97,32"/>
-<area shape="rect" id="node4" href="$classspla_1_1TypedObject.html" title=" " alt="" coords="121,80,246,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="23,229,113,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1TypedObject.html" title=" " alt="" coords="5,155,131,181"/>
+<area shape="rect" id="node3" href="$classspla_1_1Object.html" title=" " alt="" coords="23,80,113,107"/>
+<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="22,5,114,32"/>
 </map>

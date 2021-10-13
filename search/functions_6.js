@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['make_152',['Make',['../classspla_1_1Descriptor.html#a16260a969c6e93808f43eb4a34182db6',1,'spla::Descriptor::Make()'],['../classspla_1_1Expression.html#aa9ade658a152a6422cbb04f772da420b',1,'spla::Expression::Make()'],['../classspla_1_1Matrix.html#a4fb115dbada04c63584819df60fb309d',1,'spla::Matrix::Make()'],['../classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f',1,'spla::Type::Make()'],['../classspla_1_1Vector.html#a31ff4962e8e6fee1a9e04953b3cac903',1,'spla::Vector::Make()']]],
-  ['makedataread_153',['MakeDataRead',['../classspla_1_1Expression.html#ab5884d434dad2913085064b3ca6dedf7',1,'spla::Expression::MakeDataRead(const RefPtr&lt; Matrix &gt; &amp;matrix, const RefPtr&lt; DataMatrix &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)'],['../classspla_1_1Expression.html#a8a67203a65cbba0323cffd3be26db336',1,'spla::Expression::MakeDataRead(const RefPtr&lt; Vector &gt; &amp;vector, const RefPtr&lt; DataVector &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)']]],
-  ['makedatawrite_154',['MakeDataWrite',['../classspla_1_1Expression.html#a5eedeb504cff71d9f1a3badf7a42abbe',1,'spla::Expression::MakeDataWrite(const RefPtr&lt; Matrix &gt; &amp;matrix, const RefPtr&lt; DataMatrix &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)'],['../classspla_1_1Expression.html#a1d70fe7744b9b8c4b31ce3553bfc6245',1,'spla::Expression::MakeDataWrite(const RefPtr&lt; Vector &gt; &amp;vector, const RefPtr&lt; DataVector &gt; &amp;data, const RefPtr&lt; Descriptor &gt; &amp;desc=nullptr)']]]
+  ['int16_169',['Int16',['../classspla_1_1Types.html#acec49c72528c0cc4a4d63514c954c556',1,'spla::Types']]],
+  ['int32_170',['Int32',['../classspla_1_1Types.html#ad62f22b0ceccaa1e1b5fa294dc50ac56',1,'spla::Types']]],
+  ['int64_171',['Int64',['../classspla_1_1Types.html#a06d90d7f562e3c2dfb2a745f1a6dab55',1,'spla::Types']]],
+  ['int8_172',['Int8',['../classspla_1_1Types.html#ae5df946adebe17ae6693d90ed8bb0cb2',1,'spla::Types']]],
+  ['isbuiltin_173',['IsBuiltIn',['../classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254',1,'spla::Type']]],
+  ['iscompatible_174',['IsCompatible',['../classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9',1,'spla::TypedObject']]],
+  ['isparamset_175',['IsParamSet',['../classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6',1,'spla::Descriptor']]]
 ];

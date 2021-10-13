@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['type_115',['Type',['../classspla_1_1Type.html',1,'spla']]],
-  ['typedobject_116',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla']]]
+  ['type_131',['Type',['../classspla_1_1Type.html',1,'spla']]],
+  ['typedobject_132',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla']]],
+  ['types_133',['Types',['../classspla_1_1Types.html',1,'spla']]]
 ];

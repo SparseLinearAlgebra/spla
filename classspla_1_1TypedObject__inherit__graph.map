@@ -1,6 +1,8 @@
 <map id="spla::TypedObject" name="spla::TypedObject">
-<area shape="rect" id="node1" title=" " alt="" coords="98,5,223,32"/>
-<area shape="rect" id="node2" href="$classspla_1_1Matrix.html" title=" " alt="" coords="5,80,92,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1Scalar.html" title=" " alt="" coords="116,80,205,107"/>
-<area shape="rect" id="node4" href="$classspla_1_1Vector.html" title=" " alt="" coords="230,80,321,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="98,155,223,181"/>
+<area shape="rect" id="node4" href="$classspla_1_1Matrix.html" title=" " alt="" coords="5,229,92,256"/>
+<area shape="rect" id="node5" href="$classspla_1_1Scalar.html" title=" " alt="" coords="116,229,205,256"/>
+<area shape="rect" id="node6" href="$classspla_1_1Vector.html" title=" " alt="" coords="230,229,321,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title=" " alt="" coords="115,80,206,107"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="115,5,207,32"/>
 </map>

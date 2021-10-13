@@ -1,20 +1,10 @@
 var searchData=
 [
-  ['scalar_69',['Scalar',['../classspla_1_1Scalar.html',1,'spla']]],
-  ['scalardataread_70',['ScalarDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52',1,'spla::ExpressionNode']]],
-  ['scalardatawrite_71',['ScalarDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775',1,'spla::ExpressionNode']]],
-  ['setblocksize_72',['SetBlockSize',['../classspla_1_1Library_1_1Config.html#a24c79b99404014800313ec6adf7937a8',1,'spla::Library::Config']]],
-  ['setcols_73',['SetCols',['../classspla_1_1DataMatrix.html#aafe3d8da7f3aa0dcc601bc7fb0ea953b',1,'spla::DataMatrix']]],
-  ['setdevicetype_74',['SetDeviceType',['../classspla_1_1Library_1_1Config.html#a05889e1b474b50366a655371a8a637f2',1,'spla::Library::Config']]],
-  ['setlogfilename_75',['SetLogFilename',['../classspla_1_1Library_1_1Config.html#a96f01b0da8d48aed00b0209feba0321c',1,'spla::Library::Config']]],
-  ['setnvals_76',['SetNvals',['../classspla_1_1DataMatrix.html#ab2387eb483f772c9dc899320a931056a',1,'spla::DataMatrix::SetNvals()'],['../classspla_1_1DataVector.html#ad7b924001b4b4470d942252ada24b6ef',1,'spla::DataVector::SetNvals()']]],
-  ['setparam_77',['SetParam',['../classspla_1_1Descriptor.html#a4c91da29ebabd291a79062cb58bae16f',1,'spla::Descriptor']]],
-  ['setplatform_78',['SetPlatform',['../classspla_1_1Library_1_1Config.html#a081d751b684cc556ac160bf2c1009322',1,'spla::Library::Config']]],
-  ['setreleaseproc_79',['SetReleaseProc',['../classspla_1_1Data.html#ad489497c888ca712217666f49e57b72b',1,'spla::Data']]],
-  ['setrows_80',['SetRows',['../classspla_1_1DataMatrix.html#a87bca891db16db54e1f8b223d6c47445',1,'spla::DataMatrix::SetRows()'],['../classspla_1_1DataVector.html#a6e2d107c2bc2130acc76850ebf0331f7',1,'spla::DataVector::SetRows()']]],
-  ['setvals_81',['SetVals',['../classspla_1_1DataMatrix.html#a208089546b3c19dfd5a431fbf146bd6f',1,'spla::DataMatrix::SetVals()'],['../classspla_1_1DataVector.html#a16743ee771d91251e5d1a503b910ad75',1,'spla::DataVector::SetVals()']]],
-  ['setvalue_82',['SetValue',['../classspla_1_1DataScalar.html#af62f04cc91f6e0681517733e22b1f522',1,'spla::DataScalar']]],
-  ['state_83',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
-  ['submit_84',['Submit',['../classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4',1,'spla::Library']]],
-  ['submitted_85',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
+  ['refcnt_70',['RefCnt',['../classspla_1_1RefCnt.html',1,'spla']]],
+  ['refptr_71',['RefPtr',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20class_20matrixstorage_20_3e_72',['RefPtr&lt; class MatrixStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3adescriptor_20_3e_73',['RefPtr&lt; spla::Descriptor &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3atype_20_3e_74',['RefPtr&lt; spla::Type &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['releaseproc_75',['ReleaseProc',['../classspla_1_1Data.html#ab80e853b44b2a3c7bbf1a0b3c1eb9fe7',1,'spla::Data']]],
+  ['removeamountlimit_76',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9',1,'spla::Library::Config']]]
 ];

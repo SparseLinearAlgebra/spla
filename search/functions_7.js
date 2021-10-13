@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['printcontextconfig_155',['PrintContextConfig',['../classspla_1_1Library.html#a38fdd6082ccd96bb72312170af82e6cd',1,'spla::Library']]]
+  ['limitamount_176',['LimitAmount',['../classspla_1_1Library_1_1Config.html#a747d31dc9af6a726f3cc3637409cacf1',1,'spla::Library::Config']]]
 ];

@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['functionbinary_16',['FunctionBinary',['../classspla_1_1FunctionBinary.html',1,'spla']]],
-  ['functionunary_17',['FunctionUnary',['../classspla_1_1FunctionUnary.html',1,'spla']]]
+  ['empty_13',['Empty',['../classspla_1_1Expression.html#a4e3be412c4633ec34d2f869cf42f4f22',1,'spla::Expression']]],
+  ['evaluated_14',['Evaluated',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9ad603de8be2ed385509ef70a6c0099623',1,'spla::Expression']]],
+  ['expression_15',['Expression',['../classspla_1_1Expression.html',1,'spla']]],
+  ['expressionnode_16',['ExpressionNode',['../classspla_1_1ExpressionNode.html',1,'spla']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['param_59',['Param',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78',1,'spla::Descriptor']]],
-  ['printcontextconfig_60',['PrintContextConfig',['../classspla_1_1Library.html#a38fdd6082ccd96bb72312170af82e6cd',1,'spla::Library']]],
-  ['profiletime_61',['ProfileTime',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a1f153cd9846bcfbac6c349c1c2def217',1,'spla::Descriptor']]]
+  ['object_65',['Object',['../classspla_1_1Object.html',1,'spla']]],
+  ['operation_66',['Operation',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f',1,'spla::ExpressionNode']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wait_169',['Wait',['../classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec',1,'spla::Expression']]]
+  ['removeamountlimit_181',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9',1,'spla::Library::Config']]]
 ];

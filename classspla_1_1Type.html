@@ -68,6 +68,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classspla_1_1Type-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::Type Class Reference<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group__API.html">API</a></div></div>  </div>
@@ -132,6 +133,14 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>RelRef</b> () cons
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aecac108e3a419781cba7c25281c9e35f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Type.html#aecac108e3a419781cba7c25281c9e35f">Make</a> (std::string id, size_t typeSize, class <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
 <tr class="separator:aecac108e3a419781cba7c25281c9e35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f43926985ee11cb4d73c029c3364681"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Type.html#a6f43926985ee11cb4d73c029c3364681">Find</a> (std::string id, class <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:a6f43926985ee11cb4d73c029c3364681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ad7b39434bdbb846c888a2002554e1c84"><td class="memItemLeft" align="right" valign="top"><a id="ad7b39434bdbb846c888a2002554e1c84"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Types</b></td></tr>
+<tr class="separator:ad7b39434bdbb846c888a2002554e1c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -161,6 +170,52 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Represents predefined of user-defined type description.</p>
 <p>In the library values types is effectively a unique type string name, type annotations, size in bytes and etc. Value itself is bytes memory region, interpreted in the way defined by the user. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6f43926985ee11cb4d73c029c3364681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f43926985ee11cb4d73c029c3364681">&#9670;&nbsp;</a></span>Find()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt;<a class="el" href="classspla_1_1Type.html">Type</a>&gt; spla::Type::Find </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class <a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds already register type in library by specified id.</p>
+<dl class="section note"><dt>Note</dt><dd>Returns null if type with specified id is not found.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>Unique name of the type. </td></tr>
+    <tr><td class="paramname">library</td><td><a class="el" href="classspla_1_1Library.html">Library</a> global instance.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Type.html">Type</a> reference. </dd></dl>
+
+</div>
+</div>
 <a id="a38d96a876141fb651a605eca3e84d67c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38d96a876141fb651a605eca3e84d67c">&#9670;&nbsp;</a></span>GetByteSize()</h2>
 
@@ -279,15 +334,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Makes new user-defined type.</p>
+<dl class="section note"><dt>Note</dt><dd>Raise error if type with specified id already registered in the library.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>Unique name of the type </td></tr>
-    <tr><td class="paramname">typeSize</td><td>Size of the type values in bytes </td></tr>
-    <tr><td class="paramname">library</td><td><a class="el" href="classspla_1_1Library.html">Library</a> global instance</td></tr>
+    <tr><td class="paramname">id</td><td>Unique name of the type. </td></tr>
+    <tr><td class="paramname">typeSize</td><td>Size of the type values in bytes. </td></tr>
+    <tr><td class="paramname">library</td><td><a class="el" href="classspla_1_1Library.html">Library</a> global instance.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>New type instance </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>New type instance. </dd></dl>
 
 </div>
 </div>
