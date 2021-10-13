@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operation_203',['Operation',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f',1,'spla::ExpressionNode']]]
+  ['flags_327',['Flags',['../classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524',1,'spla::FunctionUnary']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['profiletime_213',['ProfileTime',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a1f153cd9846bcfbac6c349c1c2def217',1,'spla::Descriptor']]]
+  ['gpu_345',['GPU',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea7a115b50f4ec73a21643e47cd37a5f81',1,'spla::Library::Config']]]
 ];

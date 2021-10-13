@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['matrixdataread_210',['MatrixDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa8cd25a24b1a0cedd29e541f2b9d15ab',1,'spla::ExpressionNode']]],
-  ['matrixdatawrite_211',['MatrixDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faabae3f88d56bcbbf497cfa921c73817a',1,'spla::ExpressionNode']]]
+  ['evaluated_340',['Evaluated',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9ad603de8be2ed385509ef70a6c0099623',1,'spla::Expression']]],
+  ['expression_341',['Expression',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caa1a6657be79cc0fc1e9b23b9e108f043',1,'spla::Object']]],
+  ['expressionnode_342',['ExpressionNode',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca3e42679c3ef1078aa95a9a8ffa5f8abb',1,'spla::Object']]]
 ];

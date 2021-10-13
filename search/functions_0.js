@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['bool_135',['Bool',['../classspla_1_1Types.html#a65ceca897e4a771dcf424c5d7946f356',1,'spla::Types']]]
+  ['addref_215',['AddRef',['../classspla_1_1RefCnt.html#a4baf8cce74f6ba7900e7d7fbe03876aa',1,'spla::RefCnt']]],
+  ['as_216',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]]
 ];

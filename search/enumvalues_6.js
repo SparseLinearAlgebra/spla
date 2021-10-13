@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['scalardataread_214',['ScalarDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52',1,'spla::ExpressionNode']]],
-  ['scalardatawrite_215',['ScalarDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775',1,'spla::ExpressionNode']]],
-  ['submitted_216',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
+  ['matrix_346',['Matrix',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caf53df0293e169f562bc1d9a20e1d2589',1,'spla::Object']]],
+  ['matrixdataread_347',['MatrixDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa8cd25a24b1a0cedd29e541f2b9d15ab',1,'spla::ExpressionNode']]],
+  ['matrixdatawrite_348',['MatrixDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faabae3f88d56bcbbf497cfa921c73817a',1,'spla::ExpressionNode']]],
+  ['max_349',['Max',['../classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524a6a061313d22e51e0f25b7cd4dc065233',1,'spla::FunctionUnary']]]
 ];

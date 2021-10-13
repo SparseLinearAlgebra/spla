@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['uint16_194',['UInt16',['../classspla_1_1Types.html#aaba8670e466ed6f2bc20fd6f7016533d',1,'spla::Types']]],
-  ['uint32_195',['UInt32',['../classspla_1_1Types.html#acdf0688e43d7793cbf9fb88e621a8e33',1,'spla::Types']]],
-  ['uint64_196',['UInt64',['../classspla_1_1Types.html#ab7fb5a7d6cf95f0e3ac9a1dc1af7cf0f',1,'spla::Types']]],
-  ['uint8_197',['UInt8',['../classspla_1_1Types.html#add110048a7a3ab7bf420f5d861fc29dc',1,'spla::Types']]]
+  ['refptr_283',['RefPtr',['../classspla_1_1RefPtr.html#aea54601150c7b6ad2e39d943fee8f95a',1,'spla::RefPtr::RefPtr()=default'],['../classspla_1_1RefPtr.html#ab3dbb5aa51a9ae14ce559553d27ae694',1,'spla::RefPtr::RefPtr(T *object)'],['../classspla_1_1RefPtr.html#aac11d6ef2680cb7bd021c070ec7469fd',1,'spla::RefPtr::RefPtr(const RefPtr &amp;other)'],['../classspla_1_1RefPtr.html#a8870c8749c902d5dd4d5f9068349467a',1,'spla::RefPtr::RefPtr(RefPtr &amp;&amp;other) noexcept']]],
+  ['release_284',['Release',['../classspla_1_1RefPtr.html#a908434ae586011c572e7dd8b4dc722c6',1,'spla::RefPtr']]],
+  ['relref_285',['RelRef',['../classspla_1_1RefCnt.html#a84ff46c7a5600d0e386941c74795d502',1,'spla::RefCnt']]],
+  ['removeamountlimit_286',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#a2078856cd6a3a8e6ae8988347d848aa9',1,'spla::Library::Config']]],
+  ['reset_287',['Reset',['../classspla_1_1RefPtr.html#a44ffadea72c2275a0cb8ac18591010e2',1,'spla::RefPtr']]]
 ];
