@@ -96,7 +96,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     }
                 }
 
-                SPDLOG_LOGGER_TRACE(logger, "Process block ({},{}) size=({},{}) ranges=([{}..{}),[{}..{})) nvals={}",
+                SPDLOG_LOGGER_TRACE(logger, "Process matrix block ({},{}) size=({},{}) ranges=([{}..{}),[{}..{})) nvals={}",
                                     i, j, blockNrows, blockNcols, firstRow, lastRow, firstCol, lastCol, blockNvals);
 
                 auto storage = matrix->GetStorage();
@@ -164,7 +164,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 }
 
                 // If entries are not sorted, we must sort it here in row-cols order
-                if (!desc->IsParamSet(Descriptor::Param::ValuesSorted)) {
+                if (!desc->IsParamSet(Descriptor::Param::ValuesSorted) && blockNvals > 1) {
                     SPDLOG_LOGGER_TRACE(logger, "Sort block ({},{}) entries", i, j);
 
                     // Use permutation buffer to synchronize position of indices of the same

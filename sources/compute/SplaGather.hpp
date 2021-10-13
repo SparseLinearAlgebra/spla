@@ -29,6 +29,7 @@
 #define SPLA_SPLAGATHER_HPP
 
 #include <boost/compute.hpp>
+#include <boost/compute/iterator/zip_iterator.hpp>
 
 namespace spla {
 

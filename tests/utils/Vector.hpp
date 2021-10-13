@@ -112,8 +112,13 @@ namespace utils {
 
             if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0)
                 return false;
-            if (std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize) != 0)
+            if (std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize) != 0) {
+                for (size_t i = 0; i < GetNvals(); ++i) {
+                    std::cout << GetVals()[i] << " vs " << spVals[i] << std::endl;
+                }
+
                 return false;
+            }
 
             return true;
         }

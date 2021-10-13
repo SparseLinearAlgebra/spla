@@ -25,75 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAVECTOR_HPP
-#define SPLA_SPLAVECTOR_HPP
+#ifndef SPLA_SPLAVECTORDATAREAD_HPP
+#define SPLA_SPLAVECTORDATAREAD_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup API
-     * @{
-     */
-
-    /**
-     * @class Vector
-     *
-     * Vector object to represent a mathematical dim M vector
-     * with values of specified Type. Uses blocked storage schema internally.
-     *
-     * @note Can be used as mask (only indices without values) if Type has zero byteSize.
-     * @note Can be updated from the host using VectorDataWrite expression node.
-     * @note Vector content can be accessed from host using VectorDataRead expression node.
-     *
-     * @details
-     *  Uses sparse values storage schema, so actual values of the matrix has
-     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`. If provided binary function, it
-     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
-     *
-     * @see Expression
-     * @see FunctionUnary
-     * @see FunctionBinary
-     */
-    class SPLA_API Vector final : public TypedObject {
+    class VectorDataRead final : public NodeProcessor {
     public:
-        ~Vector() override;
-
-        /** @return Number of vector rows */
-        size_t GetNrows() const;
-
-        /** @return Number of vector values */
-        size_t GetNvals() const;
-
-        /** @return Internal vector storage (for private usage only) */
-        [[nodiscard]] const RefPtr<class VectorStorage> &GetStorage() const;
-
-        /**
-         * Make new vector with specified size
-         *
-         * @param nrows Number of vector rows
-         * @param type Type of stored values
-         * @param library Library global instance
-         *
-         * @return New vector instance
-         */
-        static RefPtr<Vector> Make(size_t nrows, const RefPtr<Type> &type, class Library &library);
-
-    private:
-        Vector(size_t nrows, const RefPtr<Type> &type, class Library &library);
-
-        // Separate storage for private impl
-        RefPtr<class VectorStorage> mStorage;
+        ~VectorDataRead() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, tf::Taskflow &taskflow) override;
+        ExpressionNode::Operation GetOperationType() const override;
     };
-
-    /**
-     * @}
-     */
 
 }// namespace spla
 
-#endif//SPLA_SPLAVECTOR_HPP
+#endif//SPLA_SPLAVECTORDATAREAD_HPP
