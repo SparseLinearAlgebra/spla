@@ -143,9 +143,7 @@ spla
 This project licensed under MIT License. License text can be found in the
 [license file](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md).
 
-## Acknowledgments
+## Acknowledgments <img align="right" width="15%" src="https://github.com/JetBrains-Research/spla/raw/main/docs/logos/jetbrains-logo.png?raw=true&sanitize=true">
 
 This is a research project of the Programming Languages and Tools Laboratory
 at JetBrains-Research. Laboratory website [link](https://research.jetbrains.org/groups/plt_lab/).
-
-![JetBrains](https://github.com/JetBrains-Research/spla/raw/main/docs/logos/jetbrains-logo.svg?raw=true&sanitize=true)
