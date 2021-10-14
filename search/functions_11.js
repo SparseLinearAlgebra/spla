@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wait_306',['Wait',['../classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec',1,'spla::Expression']]]
+  ['wait_314',['Wait',['../classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec',1,'spla::Expression']]]
 ];

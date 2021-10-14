@@ -8,5 +8,13 @@ var searchData=
   ['default_5fblock_5fsize_14',['DEFAULT_BLOCK_SIZE',['../classspla_1_1Library_1_1Config.html#a4d40fe4daa2526da47c57e6e17fae47b',1,'spla::Library::Config']]],
   ['dependency_15',['Dependency',['../classspla_1_1Expression.html#a65177dd4abd3f1a559f973cc235cdfb4',1,'spla::Expression']]],
   ['descriptor_16',['Descriptor',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca77b90cceaada15c2767933b3d5db0f8a',1,'spla::Object::Descriptor()'],['../classspla_1_1Descriptor.html',1,'spla::Descriptor']]],
-  ['devicetype_17',['DeviceType',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e',1,'spla::Library::Config']]]
+  ['deviceid0_17',['DeviceId0',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a694a171075383aec21114b3fc34af5f3',1,'spla::Descriptor']]],
+  ['deviceid1_18',['DeviceId1',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a3576013324bfdca7defecb1a7c89e4be',1,'spla::Descriptor']]],
+  ['deviceid2_19',['DeviceId2',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78af4508406d386c704a9015584fdb16039',1,'spla::Descriptor']]],
+  ['deviceid3_20',['DeviceId3',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78aadc79e361a4c2fc7215785e6bbbc3b58',1,'spla::Descriptor']]],
+  ['deviceid4_21',['DeviceId4',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a36d3cc900d3ee27ec144ee025b318637',1,'spla::Descriptor']]],
+  ['deviceid5_22',['DeviceId5',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad83f00532e86f8abd5230f1759a21e1d',1,'spla::Descriptor']]],
+  ['deviceid6_23',['DeviceId6',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a102adb9b3aad21fc6dd28d9d1a609953',1,'spla::Descriptor']]],
+  ['deviceid7_24',['DeviceId7',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a68c9d7427576144de114e1d8e72f7645',1,'spla::Descriptor']]],
+  ['devicetype_25',['DeviceType',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e',1,'spla::Library::Config']]]
 ];
