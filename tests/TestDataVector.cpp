@@ -48,8 +48,8 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector expected = source.SortReduceDuplicates();
-    // todo: uncomment later, since for now it won't pass
-    // EXPECT_TRUE(expected.Equals(spV));
+
+    EXPECT_TRUE(expected.Equals(spV));
 }
 
 static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
@@ -76,23 +76,31 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     spExprWrite->Wait();
     EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<float> &expected = source;
-    // todo: uncomment later, since for now it won't pass
-    // EXPECT_TRUE(expected.Equals(spV));
+    utils::Vector<float> expected = source;
+    EXPECT_TRUE(expected.Equals(spV));
 }
 
 static void test(size_t M, size_t base, size_t step, size_t iter) {
+    std::vector<size_t> blocksSizes{1, 3, 10, 1000, 100000};
+
+    for (size_t blockSize : blocksSizes) {
+        spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+
+        for (size_t i = 0; i < iter; i++) {
+            size_t nvals = base + i * step;
+            testCommon(library, M, nvals, i);
+        }
+
+        for (size_t i = 0; i < iter; i++) {
+            size_t nvals = base + i * step;
+            testSortedNoDuplicates(library, M, nvals, i);
+        }
+    }
+}
+
+TEST(DataVector, Tiny) {
     spla::Library library;
-
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testCommon(library, M, nvals, i);
-    }
-
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testSortedNoDuplicates(library, M, nvals, i);
-    }
+    testCommon(library, 5, 5);
 }
 
 TEST(DataVector, Small) {

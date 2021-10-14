@@ -41,11 +41,16 @@ namespace spla {
         using Index = unsigned int;
         using Entry = std::pair<Index, RefPtr<VectorBlock>>;
         using EntryList = std::vector<Entry>;
+        using EntryRowList = std::vector<EntryList>;
+        using EntryMap = std::unordered_map<Index, RefPtr<VectorBlock>>;
 
         ~VectorStorage() override = default;
 
         /** Set block at specified block index */
         void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
+
+        /** Remove block at specified block index (if present) */
+        void RemoveBlock(const Index &index);
 
         /** Get list of non-null presented blocks in storage */
         void GetBlocks(EntryList &entryList) const;
@@ -59,6 +64,9 @@ namespace spla {
         /** @return Number of rows of the storage */
         [[nodiscard]] std::size_t GetNrows() const noexcept;
 
+        /** @return Number of rows of blocks */
+        [[nodiscard]] std::size_t GetNblockRows() const noexcept;
+
         /** @return Number of values in storage */
         [[nodiscard]] std::size_t GetNvals() const noexcept;
 
@@ -67,7 +75,7 @@ namespace spla {
     private:
         VectorStorage(std::size_t nrows, Library &library);
 
-        std::unordered_map<Index, RefPtr<VectorBlock>> mBlocks;
+        EntryMap mBlocks;
         std::size_t mNrows;
         std::size_t mNvals = 0;
         std::size_t mNblockRows = 0;

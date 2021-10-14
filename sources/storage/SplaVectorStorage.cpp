@@ -70,11 +70,22 @@ std::size_t spla::VectorStorage::GetNvals() const noexcept {
 }
 
 spla::RefPtr<spla::VectorStorage> spla::VectorStorage::Make(std::size_t nrows, spla::Library &library) {
-    return spla::RefPtr<spla::VectorStorage>(new VectorStorage(nrows, library));
+    return {new VectorStorage(nrows, library)};
 }
 
 spla::VectorStorage::VectorStorage(std::size_t nrows, spla::Library &library)
     : mNrows(nrows), mLibrary(library) {
     mBlockSize = mLibrary.GetPrivate().GetBlockSize();
     mNblockRows = math::GetBlocksCount(nrows, mBlockSize);
+}
+
+void spla::VectorStorage::RemoveBlock(const spla::VectorStorage::Index &index) {
+    assert(index < mNblockRows);
+
+    std::lock_guard<std::mutex> lock(mMutex);
+    mBlocks.erase(index);
+}
+
+std::size_t spla::VectorStorage::GetNblockRows() const noexcept {
+    return mNblockRows;
 }

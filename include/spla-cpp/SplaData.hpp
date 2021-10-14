@@ -133,7 +133,6 @@ namespace spla {
      */
     class SPLA_API DataVector final : public Data {
     public:
-        explicit DataVector(class Library &library);
         ~DataVector() override;
 
         /**
@@ -168,6 +167,8 @@ namespace spla {
         static RefPtr<DataVector> Make(Library &library);
 
     private:
+        explicit DataVector(class Library &library);
+
         unsigned int *mRows = nullptr;
         void *mValues = nullptr;
         size_t mNvals = 0;
