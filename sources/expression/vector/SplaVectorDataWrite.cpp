@@ -166,6 +166,8 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue);
                     std::swap(blockVals, valsTmp);
                 }
+
+                queue.finish();
             }
 
             if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
@@ -196,7 +198,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     std::swap(blockVals, valsTmp);
                 }
 
-                queue.flush();
+                queue.finish();
             }
 
             // Allocate result block and set in storage
