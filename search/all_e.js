@@ -31,10 +31,9 @@ var searchData=
   ['splarefcnt_2ehpp_141',['SplaRefCnt.hpp',['../SplaRefCnt_8hpp.html',1,'']]],
   ['splascalar_2ehpp_142',['SplaScalar.hpp',['../SplaScalar_8hpp.html',1,'']]],
   ['splatype_2ehpp_143',['SplaType.hpp',['../SplaType_8hpp.html',1,'']]],
-  ['splatypes_144',['SplaTypes',['../classSplaTypes.html',1,'']]],
-  ['splatypes_2ehpp_145',['SplaTypes.hpp',['../SplaTypes_8hpp.html',1,'']]],
-  ['splavector_2ehpp_146',['SplaVector.hpp',['../SplaVector_8hpp.html',1,'']]],
-  ['state_147',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
-  ['submit_148',['Submit',['../classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4',1,'spla::Library']]],
-  ['submitted_149',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
+  ['splatypes_2ehpp_144',['SplaTypes.hpp',['../SplaTypes_8hpp.html',1,'']]],
+  ['splavector_2ehpp_145',['SplaVector.hpp',['../SplaVector_8hpp.html',1,'']]],
+  ['state_146',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
+  ['submit_147',['Submit',['../classspla_1_1Library.html#a3d6f8603c1273e65cd21051872c0d4e4',1,'spla::Library']]],
+  ['submitted_148',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
 ];
