@@ -89,7 +89,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
             auto &index = entry.first;
             auto row = index;
             auto nnz = entry.second->GetNvals();
-            blockRowsNvals[row] += nnz;
+            blockRowsNvals[row] = nnz;
         }
 
         // Compute offset to write rows of blocks
@@ -138,7 +138,6 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
 
             if (rows) {
                 auto &blockRowsDevice = block->GetRows();
-                assert(nvals == blockRowsDevice.size());
                 compute::copy(blockRowsDevice.begin(), blockRowsDevice.end(), &rows[offset], queue);
                 for (size_t rowRelInd = 0; rowRelInd < nvals; ++rowRelInd) {
                     rows[rowRelInd + offset] += blockFirstRow;

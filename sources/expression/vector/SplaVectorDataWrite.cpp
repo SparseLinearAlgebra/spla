@@ -56,7 +56,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto nrows = vector->GetNrows();
     auto blockSize = library->GetBlockSize();
 
-    for (size_t i = 0; i < math::GetBlocksCount(nrows, blockSize); i++) {
+    for (std::size_t i = 0; i < math::GetBlocksCount(nrows, blockSize); i++) {
         taskflow.emplace([=]() {
             using namespace boost;
 
@@ -78,7 +78,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             assert(rowsHost);
 
             // Count number of nnz values to store in this block
-            size_t blockNvals = 0;
+            std::size_t blockNvals = 0;
             {
                 for (size_t k = 0; k < nvalsHost; k++) {
                     auto rowIdx = rowsHost[k];
