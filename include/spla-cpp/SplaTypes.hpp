@@ -39,7 +39,7 @@ namespace spla {
      */
 
     /**
-     * @class SplaTypes
+     * @class Types
      * @brief Provider of built-in library types.
      * Allows to access built-in int, float, bool types by Library instance.
      */
