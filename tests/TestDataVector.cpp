@@ -81,16 +81,20 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
 }
 
 static void test(size_t M, size_t base, size_t step, size_t iter) {
-    spla::Library library;
+    std::vector<size_t> blocksSizes{1, 3, 10, 1000, 100000};
 
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testCommon(library, M, nvals, i);
-    }
+    for (size_t blockSize : blocksSizes) {
+        spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
 
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testSortedNoDuplicates(library, M, nvals, i);
+        for (size_t i = 0; i < iter; i++) {
+            size_t nvals = base + i * step;
+            testCommon(library, M, nvals, i);
+        }
+
+        for (size_t i = 0; i < iter; i++) {
+            size_t nvals = base + i * step;
+            testSortedNoDuplicates(library, M, nvals, i);
+        }
     }
 }
 

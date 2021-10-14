@@ -109,6 +109,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
             // Where to start copy process
             std::size_t nvals = shared->blockRowsNvals[i];
             std::size_t offset = shared->blockRowsOffsets[i];
+            std::size_t blockFirstRow = i * library->GetBlockSize();
 
             // If no values - nothing to do
             if (nvals == 0) {
@@ -135,20 +136,18 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
             auto byteSize = vector->GetType()->GetByteSize();
             auto typeHasValues = byteSize != 0;
 
-
-            auto &blockRowsDevice = block->GetRows();
-            auto &blockValsDevice = block->GetVals();
-
-            bool firstIndexCollapsed = index != 0 && rows[offset - 1] == blockRowsDevice.front();
-
             if (rows) {
-                ptrdiff_t skippedFirst = firstIndexCollapsed;
-                compute::copy(blockRowsDevice.begin() + skippedFirst, blockRowsDevice.end(), &rows[offset], queue);
+                auto &blockRowsDevice = block->GetRows();
+                assert(nvals == blockRowsDevice.size());
+                compute::copy(blockRowsDevice.begin(), blockRowsDevice.end(), &rows[offset], queue);
+                for (size_t rowRelInd = 0; rowRelInd < nvals; ++rowRelInd) {
+                    rows[rowRelInd + offset] += blockFirstRow;
+                }
             }
 
             if (vals && typeHasValues) {
-                auto skippedFirst = static_cast<long>(firstIndexCollapsed * byteSize);
-                compute::copy(blockValsDevice.begin() + skippedFirst, blockValsDevice.end(), &vals[offset * byteSize], queue);
+                auto &blockValsDevice = block->GetVals();
+                compute::copy(blockValsDevice.begin(), blockValsDevice.end(), &vals[offset * byteSize], queue);
             }
         });
 
