@@ -25,67 +25,78 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARYPRIVATE_HPP
-#define SPLA_SPLALIBRARYPRIVATE_HPP
+#ifndef SPLA_SPLADEVICEMANAGER_HPP
+#define SPLA_SPLADEVICEMANAGER_HPP
 
 #include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
-#include <detail/SplaDeviceManager.hpp>
-#include <expression/SplaExpressionManager.hpp>
-#include <spdlog/spdlog.h>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <taskflow/taskflow.hpp>
-#include <unordered_map>
-#include <vector>
-
+#include <cstddef>
+#include <spla-cpp/SplaExpressionNode.hpp>
 
 namespace spla {
+
     /**
-     * @class LibraryPrivate
-     * Private library state, accessible for all objects within library.
+     * @addtogroup Internal
+     * @{
      */
-    class LibraryPrivate {
+
+    /**
+     * @class DeviceManager
+     * @brief Computational devices management for expressions execution.
+     *
+     * Device manager allows to fetch single device id or a number of device ids
+     * for processing sequential or parallel equally complex parts of expression nodes.
+     */
+    class DeviceManager {
     public:
-        explicit LibraryPrivate(Library &library, Library::Config config);
+        using DeviceId = std::size_t;
+        using Device = boost::compute::device;
 
-        tf::Executor &GetTaskFlowExecutor() noexcept;
+        /**
+         * Fetch device id for execution for specified expression node.
+         * @note Uses node descriptor and expression settings to select device.
+         *
+         * @param node Expression node to process by device.
+         * @return Selected device id.
+         */
+        DeviceId FetchDevice(const RefPtr<ExpressionNode> &node);
 
-        const RefPtr<Descriptor> &GetDefaultDesc() const noexcept;
+        /**
+         * Fetch devices' ids for execution for specified expression node.
+         * Returns a list of devices to parallelize equally complex computations inside single node.
+         * @note Uses node descriptor and expression settings to select device.
+         *
+         * @param required Required amount of devices for processing.
+         * @param node Expression node to process by device.
+         * @return Selected devices' ids (vector size matches provided `required` value).
+         */
+        std::vector<DeviceId> FetchDevices(std::size_t required, const RefPtr<ExpressionNode> &node);
 
-        const RefPtr<ExpressionManager> &GetExprManager() const noexcept;
+        /**
+         * Get boost device by device id.
+         * @param id Device id returned by one of the `Fetch` functions.
+         * @return Boost device.
+         */
+        const Device &GetDevice(DeviceId id) const;
 
-        // todo: #44 remove this method
-        const std::vector<boost::compute::device> &GetDevices() const noexcept;
-
-        DeviceManager &GetDeviceManager() noexcept;
-
-        const boost::compute::platform &GetPlatform() const noexcept;
-
-        const boost::compute::context &GetContext() const noexcept;
-
-        const Library::Config &GetContextConfig() const noexcept;
-
-        const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
-
-        std::unordered_map<std::string, RefPtr<Type>> &GetTypeCache() noexcept;
-
-        std::size_t GetBlockSize() const noexcept;
+        /**
+         * Get boost devices.
+         * @return Boost devices list.
+         */
+        const std::vector<Device> &GetDevices() const;
 
     private:
-        tf::Executor mExecutor;
-        RefPtr<Descriptor> mDefaultDesc;
-        RefPtr<ExpressionManager> mExprManager;
-        DeviceManager mDeviceManager;
-        boost::compute::platform mPlatform;
-        boost::compute::context mContext;
-        Library::Config mContextConfig;
-        std::shared_ptr<spdlog::logger> mLogger;
-        std::unordered_map<std::string, RefPtr<Type>> mTypeCache;
+        friend class LibraryPrivate;
+        explicit DeviceManager(std::vector<Device> devices);
+        DeviceId NextDevice();
+
+        std::vector<Device> mDevices;
+        std::size_t mNextDevice = 0;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_SPLALIBRARYPRIVATE_HPP
+#endif//SPLA_SPLADEVICEMANAGER_HPP

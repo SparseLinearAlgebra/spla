@@ -63,6 +63,22 @@ namespace spla {
             TransposeArg1,
             /** Transpose operation arg 2 matrix before operation */
             TransposeArg2,
+            /** Force `device-0` for expression node computation */
+            DeviceId0,
+            /** Force `device-1` for expression node computation */
+            DeviceId1,
+            /** Force `device-2` for expression node computation */
+            DeviceId2,
+            /** Force `device-3` for expression node computation */
+            DeviceId3,
+            /** Force `device-4` for expression node computation */
+            DeviceId4,
+            /** Force `device-5` for expression node computation */
+            DeviceId5,
+            /** Force `device-6` for expression node computation */
+            DeviceId6,
+            /** Force `device-7` for expression node computation */
+            DeviceId7
         };
 
         /**

@@ -16,6 +16,8 @@ set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp)
 
 set(SPLA_DETAIL_SOURCES
+        sources/detail/SplaDeviceManager.hpp
+        sources/detail/SplaDeviceManager.cpp
         sources/detail/SplaError.hpp
         sources/detail/SplaHash.hpp
         sources/detail/SplaLibraryPrivate.cpp

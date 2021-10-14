@@ -56,15 +56,20 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto ncols = matrix->GetNcols();
     auto blockSize = library->GetBlockSize();
 
-    for (size_t i = 0; i < math::GetBlocksCount(nrows, blockSize); i++) {
-        for (size_t j = 0; j < math::GetBlocksCount(ncols, blockSize); j++) {
+    auto blocksCountInRow = math::GetBlocksCount(nrows, blockSize);
+    auto blocksCountInCol = math::GetBlocksCount(ncols, blockSize);
+    auto requiredDeviceCount = blocksCountInRow * blocksCountInCol;
+    auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
+
+    for (size_t i = 0; i < blocksCountInRow; i++) {
+        for (size_t j = 0; j < blocksCountInCol; j++) {
+            auto deviceId = devicesIds[i * blocksCountInCol + j];
             taskflow.emplace([=]() {
                 using namespace boost;
 
-                // todo: gpu and device queue management
-                compute::device gpu = library->GetDevices()[0];
                 compute::context ctx = library->GetContext();
-                compute::command_queue queue(ctx, gpu);
+                compute::device device = library->GetDeviceManager().GetDevice(deviceId);
+                compute::command_queue queue(ctx, device);
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

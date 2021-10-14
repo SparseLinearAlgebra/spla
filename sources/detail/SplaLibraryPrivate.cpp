@@ -82,9 +82,9 @@ namespace {
 spla::LibraryPrivate::LibraryPrivate(
         spla::Library &library,
         spla::Library::Config config)
-    : mDevices(FindAllDevices(config.GetDevicesNames())),
-      mPlatform(GetDevicesPlatform(mDevices)),
-      mContext(mDevices),
+    : mDeviceManager(FindAllDevices(config.GetDevicesNames())),
+      mPlatform(GetDevicesPlatform(mDeviceManager.GetDevices())),
+      mContext(mDeviceManager.GetDevices()),
       mContextConfig(std::move(config)) {
     mLogger = SetupLogger(mContextConfig);
     mDefaultDesc = Descriptor::Make(library);
@@ -104,7 +104,11 @@ const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManage
 }
 
 const std::vector<boost::compute::device> &spla::LibraryPrivate::GetDevices() const noexcept {
-    return mDevices;
+    return mDeviceManager.GetDevices();
+}
+
+spla::DeviceManager &spla::LibraryPrivate::GetDeviceManager() noexcept {
+    return mDeviceManager;
 }
 
 const boost::compute::platform &spla::LibraryPrivate::GetPlatform() const noexcept {
@@ -127,6 +131,6 @@ std::unordered_map<std::string, spla::RefPtr<spla::Type>> &spla::LibraryPrivate:
     return mTypeCache;
 }
 
-size_t spla::LibraryPrivate::GetBlockSize() const noexcept {
+std::size_t spla::LibraryPrivate::GetBlockSize() const noexcept {
     return mContextConfig.GetBlockSize();
 }
