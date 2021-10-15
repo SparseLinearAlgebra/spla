@@ -93,7 +93,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
         }
 
         // Compute offset to write rows of blocks
-        std::exclusive_scan(blockRowsNvals.begin(), blockRowsNvals.end(), blockRowsOffsets.begin(), 0);
+        std::exclusive_scan(blockRowsNvals.begin(), blockRowsNvals.end(), blockRowsOffsets.begin(), std::size_t{0});
     });
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {

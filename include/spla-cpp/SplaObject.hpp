@@ -92,38 +92,40 @@ namespace spla {
         class Library &mLibrary;
     };
 
-    /** @return Object type string name */
-    static inline const char *ObjectTypeToStr(Object::TypeName typeName) {
-        switch (typeName) {
-            case Object::TypeName::Type:
-                return "Type";
-            case Object::TypeName::Matrix:
-                return "Matrix";
-            case Object::TypeName::Vector:
-                return "Vector";
-            case Object::TypeName::Scalar:
-                return "Scalar";
-            case Object::TypeName::Descriptor:
-                return "Descriptor";
-            case Object::TypeName::FunctionUnary:
-                return "FunctionUnary";
-            case Object::TypeName::FunctionBinary:
-                return "FunctionBinary";
-            case Object::TypeName::Expression:
-                return "Expression";
-            case Object::TypeName::ExpressionNode:
-                return "ExpressionNode";
-            case Object::TypeName::DataMatrix:
-                return "DataMatrix";
-            case Object::TypeName::DataVector:
-                return "DataVector";
-            case Object::TypeName::DataScalar:
-                return "DataScalar";
+    namespace {
+        /** @return Object type string name */
+        inline const char *ObjectTypeToStr(Object::TypeName typeName) {
+            switch (typeName) {
+                case Object::TypeName::Type:
+                    return "Type";
+                case Object::TypeName::Matrix:
+                    return "Matrix";
+                case Object::TypeName::Vector:
+                    return "Vector";
+                case Object::TypeName::Scalar:
+                    return "Scalar";
+                case Object::TypeName::Descriptor:
+                    return "Descriptor";
+                case Object::TypeName::FunctionUnary:
+                    return "FunctionUnary";
+                case Object::TypeName::FunctionBinary:
+                    return "FunctionBinary";
+                case Object::TypeName::Expression:
+                    return "Expression";
+                case Object::TypeName::ExpressionNode:
+                    return "ExpressionNode";
+                case Object::TypeName::DataMatrix:
+                    return "DataMatrix";
+                case Object::TypeName::DataVector:
+                    return "DataVector";
+                case Object::TypeName::DataScalar:
+                    return "DataScalar";
 
-            default:
-                return "Unknown";
+                default:
+                    return "Unknown";
+            }
         }
-    }
+    }// namespace
 
     /**
      * @}

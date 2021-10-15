@@ -89,6 +89,7 @@ spla::LibraryPrivate::LibraryPrivate(
     mLogger = SetupLogger(mContextConfig);
     mDefaultDesc = Descriptor::Make(library);
     mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
+    mAlgoManager = RefPtr<AlgorithmManager>(new AlgorithmManager(library));
 }
 
 tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() noexcept {
@@ -101,6 +102,10 @@ const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() con
 
 const spla::RefPtr<spla::ExpressionManager> &spla::LibraryPrivate::GetExprManager() const noexcept {
     return mExprManager;
+}
+
+const spla::RefPtr<spla::AlgorithmManager> &spla::LibraryPrivate::GetAlgoManager() const noexcept {
+    return mAlgoManager;
 }
 
 const std::vector<boost::compute::device> &spla::LibraryPrivate::GetDevices() const noexcept {

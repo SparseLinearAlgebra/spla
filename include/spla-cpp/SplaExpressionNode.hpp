@@ -110,26 +110,28 @@ namespace spla {
         std::vector<ExpressionNode *> mNext;
     };
 
-    /** @return String name of the expression node operation */
-    static inline const char *ExpressionNodeOpToStr(ExpressionNode::Operation op) {
-        switch (op) {
-            case ExpressionNode::Operation::MatrixDataRead:
-                return "MatrixDataRead";
-            case ExpressionNode::Operation::MatrixDataWrite:
-                return "MatrixDataWrite";
-            case ExpressionNode::Operation::VectorDataRead:
-                return "VectorDataRead";
-            case ExpressionNode::Operation::VectorDataWrite:
-                return "VectorDataWrite";
-            case ExpressionNode::Operation::ScalarDataRead:
-                return "ScalarDataRead";
-            case ExpressionNode::Operation::ScalarDataWrite:
-                return "ScalarDataWrite";
+    namespace {
+        /** @return String name of the expression node operation */
+        inline const char *ExpressionNodeOpToStr(ExpressionNode::Operation op) {
+            switch (op) {
+                case ExpressionNode::Operation::MatrixDataRead:
+                    return "MatrixDataRead";
+                case ExpressionNode::Operation::MatrixDataWrite:
+                    return "MatrixDataWrite";
+                case ExpressionNode::Operation::VectorDataRead:
+                    return "VectorDataRead";
+                case ExpressionNode::Operation::VectorDataWrite:
+                    return "VectorDataWrite";
+                case ExpressionNode::Operation::ScalarDataRead:
+                    return "ScalarDataRead";
+                case ExpressionNode::Operation::ScalarDataWrite:
+                    return "ScalarDataWrite";
 
-            default:
-                return "Unknown";
+                default:
+                    return "Unknown";
+            }
         }
-    }
+    }// namespace
 
     /**
      * @}

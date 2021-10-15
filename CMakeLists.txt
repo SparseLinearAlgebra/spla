@@ -193,6 +193,7 @@ include(sources/CMakeLists.txt)
 add_library(spla SHARED
         ${SPLA_CPP_HEADERS}
         ${SPLA_CPP_SOURCES}
+        ${SPLA_ALGORITHM_SOURCES}
         ${SPLA_COMPUTE_SOURCES}
         ${SPLA_DETAIL_SOURCES}
         ${SPLA_EXPRESSION_SOURCES}

@@ -25,71 +25,40 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARYPRIVATE_HPP
-#define SPLA_SPLALIBRARYPRIVATE_HPP
+#ifndef SPLA_SPLAALGORITHMPARAMS_HPP
+#define SPLA_SPLAALGORITHMPARAMS_HPP
 
-#include <algo/SplaAlgorithmManager.hpp>
-#include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 #include <detail/SplaDeviceManager.hpp>
-#include <expression/SplaExpressionManager.hpp>
-#include <spdlog/spdlog.h>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <taskflow/taskflow.hpp>
-#include <unordered_map>
-#include <vector>
-
 
 namespace spla {
+
     /**
-     * @class LibraryPrivate
-     * Private library state, accessible for all objects within library.
+     * @addtogroup Internal
+     * @{
      */
-    class LibraryPrivate {
+
+    /**
+     * @class AlgorithmParams
+     * @brief Params passed as input to algorithm for execution.
+     *
+     * Base class used to pack algorithm input/output params to
+     * pass to algorithm manager for algorithm selection and execution.
+     * Inherit from this class to extend params set for custom algorithms implementation.
+     */
+    class AlgorithmParams : public RefCnt {
     public:
-        explicit LibraryPrivate(Library &library, Library::Config config);
+        ~AlgorithmParams() override = default;
 
-        tf::Executor &GetTaskFlowExecutor() noexcept;
-
-        const RefPtr<Descriptor> &GetDefaultDesc() const noexcept;
-
-        const RefPtr<ExpressionManager> &GetExprManager() const noexcept;
-
-        const RefPtr<AlgorithmManager> &GetAlgoManager() const noexcept;
-
-        // todo: #44 remove this method
-        const std::vector<boost::compute::device> &GetDevices() const noexcept;
-
-        DeviceManager &GetDeviceManager() noexcept;
-
-        const boost::compute::platform &GetPlatform() const noexcept;
-
-        const boost::compute::context &GetContext() const noexcept;
-
-        const Library::Config &GetContextConfig() const noexcept;
-
-        const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
-
-        std::unordered_map<std::string, RefPtr<Type>> &GetTypeCache() noexcept;
-
-        std::size_t GetBlockSize() const noexcept;
-
-    private:
-        tf::Executor mExecutor;
-        RefPtr<Descriptor> mDefaultDesc;
-        RefPtr<ExpressionManager> mExprManager;
-        RefPtr<AlgorithmManager> mAlgoManager;
-        DeviceManager mDeviceManager;
-        boost::compute::platform mPlatform;
-        boost::compute::context mContext;
-        Library::Config mContextConfig;
-        std::shared_ptr<spdlog::logger> mLogger;
-        std::unordered_map<std::string, RefPtr<Type>> mTypeCache;
+        /** Device id for execution */
+        DeviceManager::DeviceId deviceId;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_SPLALIBRARYPRIVATE_HPP
+
+#endif//SPLA_SPLAALGORITHMPARAMS_HPP
