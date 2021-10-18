@@ -2,7 +2,7 @@ var searchData=
 [
   ['emplace_43',['Emplace',['../classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50',1,'spla::TaskBuilder']]],
   ['empty_44',['Empty',['../classspla_1_1Expression.html#a4e3be412c4633ec34d2f869cf42f4f22',1,'spla::Expression']]],
-  ['endnodes_45',['endNodes',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html#adff235485711f72aeaa5bddcc74176d4',1,'spla::ExpressionManager::TraversalInfo']]],
+  ['endnodes_45',['endNodes',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html#aca0b93e4b80c6ba988e1102781e8174b',1,'spla::ExpressionManager::TraversalInfo']]],
   ['entries_46',['entries',['../SplaVectorDataRead_8cpp.html#a87375541ea00fa814f86fdf392f64209',1,'entries():&#160;SplaVectorDataRead.cpp'],['../SplaMatrixDataRead_8cpp.html#a233e13ba4756caf131a18ce1c4b3c075',1,'entries():&#160;SplaMatrixDataRead.cpp']]],
   ['entry_47',['Entry',['../classspla_1_1MatrixStorage.html#a1e3a442b7d9e097458cbf77bbd9abae1',1,'spla::MatrixStorage::Entry()'],['../classspla_1_1VectorStorage.html#adc2e80763589956beeddf11e3847c0bc',1,'spla::VectorStorage::Entry()']]],
   ['entrylist_48',['EntryList',['../classspla_1_1MatrixStorage.html#a69279793cd569ab9550c3d44cbb3d6be',1,'spla::MatrixStorage::EntryList()'],['../classspla_1_1VectorStorage.html#a1494a7a7d111b379fddba1b2811b9f08',1,'spla::VectorStorage::EntryList()']]],

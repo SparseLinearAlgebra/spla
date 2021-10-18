@@ -112,7 +112,7 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html">   61</a></span>&#160;        <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a4d40fe4daa2526da47c57e6e17fae47b">   67</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> DEFAULT_BLOCK_SIZE = 1000000;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#a512a0b1fcbf0fca69a3e4c783c7362ac">   67</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">const</span> std::size_t DEFAULT_BLOCK_SIZE = 1000000;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e">   72</a></span>&#160;            <span class="keyword">enum</span> <a class="code" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e">DeviceType</a> {</div>
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea7a115b50f4ec73a21643e47cd37a5f81">   73</a></span>&#160;                <a class="code" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea7a115b50f4ec73a21643e47cd37a5f81">GPU</a>,</div>
@@ -132,20 +132,20 @@ $(function() {
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;SetLogFilename(Filename filename);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;SetBlockSize(<span class="keywordtype">size_t</span> blockSize);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;SetBlockSize(std::size_t blockSize);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            [[nodiscard]] std::vector&lt;std::string&gt; GetDevicesNames() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            [[nodiscard]] <span class="keyword">const</span> std::optional&lt;Filename&gt; &amp;GetLogFilename() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            [[nodiscard]] <span class="keywordtype">size_t</span> GetBlockSize() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            [[nodiscard]] std::size_t GetBlockSize() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            std::optional&lt;std::string&gt; mPlatformName;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            std::optional&lt;DeviceType&gt; mDeviceType;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            std::optional&lt;std::size_t&gt; mDeviceAmount = std::optional{1U};</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            std::optional&lt;Filename&gt; mLogFilename;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">size_t</span> mBlockSize = DEFAULT_BLOCK_SIZE;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            std::size_t mBlockSize = DEFAULT_BLOCK_SIZE;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        };</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">public</span>:</div>

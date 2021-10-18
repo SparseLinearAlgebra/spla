@@ -102,10 +102,10 @@ Collaboration diagram for spla::Vector:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1740b718b0d540d956994b365803395"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#ac1740b718b0d540d956994b365803395">~Vector</a> () override</td></tr>
 <tr class="separator:ac1740b718b0d540d956994b365803395"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97bb84c6affa73b94e33ea6b93d866b6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a97bb84c6affa73b94e33ea6b93d866b6">GetNrows</a> () const</td></tr>
-<tr class="separator:a97bb84c6affa73b94e33ea6b93d866b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b9fe2b6f17fe26d09d7365213769b42"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a5b9fe2b6f17fe26d09d7365213769b42">GetNvals</a> () const</td></tr>
-<tr class="separator:a5b9fe2b6f17fe26d09d7365213769b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4523247c219d79fe703311a641d029"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a8d4523247c219d79fe703311a641d029">GetNrows</a> () const</td></tr>
+<tr class="separator:a8d4523247c219d79fe703311a641d029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47ac822223698a5587f214e63aebec2a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a47ac822223698a5587f214e63aebec2a">GetNvals</a> () const</td></tr>
+<tr class="separator:a47ac822223698a5587f214e63aebec2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8dc255a0d4426ad6e92789fb205c995"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; class <a class="el" href="classspla_1_1VectorStorage.html">VectorStorage</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#ab8dc255a0d4426ad6e92789fb205c995">GetStorage</a> () const</td></tr>
 <tr class="separator:ab8dc255a0d4426ad6e92789fb205c995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1TypedObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1TypedObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1TypedObject.html">spla::TypedObject</a></td></tr>
@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a608d7a6781fb3a755b24f6123a8064a1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a608d7a6781fb3a755b24f6123a8064a1">Make</a> (size_t nrows, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type, class <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
-<tr class="separator:a608d7a6781fb3a755b24f6123a8064a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3454a7f89679156d87f6d420be1cc3e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#aa3454a7f89679156d87f6d420be1cc3e">Make</a> (std::size_t nrows, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type, class <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:aa3454a7f89679156d87f6d420be1cc3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -210,14 +210,14 @@ Can be updated from the host using <a class="el" href="classspla_1_1VectorDataWr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a97bb84c6affa73b94e33ea6b93d866b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97bb84c6affa73b94e33ea6b93d866b6">&#9670;&nbsp;</a></span>GetNrows()</h2>
+<a id="a8d4523247c219d79fe703311a641d029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d4523247c219d79fe703311a641d029">&#9670;&nbsp;</a></span>GetNrows()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t spla::Vector::GetNrows </td>
+          <td class="memname">std::size_t spla::Vector::GetNrows </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -228,14 +228,14 @@ Can be updated from the host using <a class="el" href="classspla_1_1VectorDataWr
 
 </div>
 </div>
-<a id="a5b9fe2b6f17fe26d09d7365213769b42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b9fe2b6f17fe26d09d7365213769b42">&#9670;&nbsp;</a></span>GetNvals()</h2>
+<a id="a47ac822223698a5587f214e63aebec2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47ac822223698a5587f214e63aebec2a">&#9670;&nbsp;</a></span>GetNvals()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t spla::Vector::GetNvals </td>
+          <td class="memname">std::size_t spla::Vector::GetNvals </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -264,8 +264,8 @@ Can be updated from the host using <a class="el" href="classspla_1_1VectorDataWr
 
 </div>
 </div>
-<a id="a608d7a6781fb3a755b24f6123a8064a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a608d7a6781fb3a755b24f6123a8064a1">&#9670;&nbsp;</a></span>Make()</h2>
+<a id="aa3454a7f89679156d87f6d420be1cc3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3454a7f89679156d87f6d420be1cc3e">&#9670;&nbsp;</a></span>Make()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -276,7 +276,7 @@ Can be updated from the host using <a class="el" href="classspla_1_1VectorDataWr
         <tr>
           <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">spla::Vector</a> &gt; spla::Vector::Make </td>
           <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>nrows</em>, </td>
         </tr>
         <tr>

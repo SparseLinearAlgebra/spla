@@ -3,7 +3,7 @@ var searchData=
   ['values_315',['Values',['../classspla_1_1VectorCOO.html#a60fd13a85f7d71b5d72eff3409a50ebd',1,'spla::VectorCOO::Values()'],['../classspla_1_1MatrixCOO.html#a07f97ee90ab76db5f62d91709dd8b9fc',1,'spla::MatrixCOO::Values()']]],
   ['valuessorted_316',['ValuesSorted',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ac12cb636eccffa4fd3079bf528a18e87',1,'spla::Descriptor']]],
   ['vector_317',['Vector',['../classspla_1_1Vector.html',1,'spla::Vector'],['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca57dea6f5039281b7fee517fc43bf3110',1,'spla::Object::Vector()']]],
-  ['vectorblock_318',['VectorBlock',['../classspla_1_1VectorBlock.html',1,'spla::VectorBlock'],['../classspla_1_1VectorBlock.html#a0b718fd3290b331b0da9db444b24c7ba',1,'spla::VectorBlock::VectorBlock()']]],
+  ['vectorblock_318',['VectorBlock',['../classspla_1_1VectorBlock.html',1,'spla::VectorBlock'],['../classspla_1_1VectorBlock.html#ae9be661daa857a0002164c481346ef3b',1,'spla::VectorBlock::VectorBlock()']]],
   ['vectorcoo_319',['VectorCOO',['../classspla_1_1VectorCOO.html',1,'spla']]],
   ['vectordataread_320',['VectorDataRead',['../classspla_1_1VectorDataRead.html',1,'spla::VectorDataRead'],['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa65080258d7f53eb57f6aa25973362191',1,'spla::ExpressionNode::VectorDataRead()']]],
   ['vectordatawrite_321',['VectorDataWrite',['../classspla_1_1VectorDataWrite.html',1,'spla::VectorDataWrite'],['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fad619d6e980ecfd7b0b69050508b88a35',1,'spla::ExpressionNode::VectorDataWrite()']]],
