@@ -45,5 +45,4 @@ namespace spla {
 }// namespace spla
 
 
-
 #endif//SPLA_SPLASCALARSTORAGE_HPP
