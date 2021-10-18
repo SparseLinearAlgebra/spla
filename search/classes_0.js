@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['config_184',['Config',['../classspla_1_1Library_1_1Config.html',1,'spla::Library']]]
+  ['algorithm_361',['Algorithm',['../classspla_1_1Algorithm.html',1,'spla']]],
+  ['algorithmmanager_362',['AlgorithmManager',['../classspla_1_1AlgorithmManager.html',1,'spla']]],
+  ['algorithmparams_363',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]]
 ];

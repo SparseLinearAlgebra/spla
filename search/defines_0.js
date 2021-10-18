@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['spla_5fapi_387',['SPLA_API',['../SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc',1,'SplaConfig.hpp']]],
-  ['spla_5ftext_388',['SPLA_TEXT',['../SplaConfig_8hpp.html#a07554fd34302a3102a2b5a9febda965a',1,'SplaConfig.hpp']]]
+  ['check_5fraise_5fcritical_5ferror_758',['CHECK_RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#a896f7f65515ecc0d096f59a48eee8a20',1,'SplaError.hpp']]],
+  ['check_5fraise_5ferror_759',['CHECK_RAISE_ERROR',['../SplaError_8hpp.html#a937faea27f2b1e54da5b0d7c62640ee7',1,'SplaError.hpp']]]
 ];

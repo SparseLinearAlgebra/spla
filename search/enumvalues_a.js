@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['transposearg1_374',['TransposeArg1',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad081831e1542e4a49fe0180da3a99458',1,'spla::Descriptor']]],
-  ['transposearg2_375',['TransposeArg2',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78adafec008b26d69c6d78c7964d7c1f44f',1,'spla::Descriptor']]],
-  ['type_376',['Type',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caa1fa27779242b4902f7ae3bdd5c6d508',1,'spla::Object']]]
+  ['scalar_737',['Scalar',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caf60357a8d17e45793298323f1b372a74',1,'spla::Object']]],
+  ['scalardataread_738',['ScalarDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52',1,'spla::ExpressionNode']]],
+  ['scalardatawrite_739',['ScalarDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775',1,'spla::ExpressionNode']]],
+  ['submitted_740',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
 ];

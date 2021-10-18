@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['find_235',['Find',['../classspla_1_1Type.html#a6f43926985ee11cb4d73c029c3364681',1,'spla::Type']]],
-  ['float32_236',['Float32',['../classspla_1_1Types.html#a8dc0d1d1f65e4d5ec26455f37b62c66d',1,'spla::Types']]],
-  ['float64_237',['Float64',['../classspla_1_1Types.html#a45a1ebf13ffe37c159152606aa86c043',1,'spla::Types']]]
+  ['fetchdevice_498',['FetchDevice',['../classspla_1_1DeviceManager.html#ab251f1992eee82517ec92d3cc7d53d58',1,'spla::DeviceManager']]],
+  ['fetchdevices_499',['FetchDevices',['../classspla_1_1DeviceManager.html#ae4dec1d5e61e36bf07354bc2aba95529',1,'spla::DeviceManager']]],
+  ['find_500',['Find',['../classspla_1_1Type.html#adea476bbf339b4edfe714bdc9beb28d1',1,'spla::Type']]],
+  ['float32_501',['Float32',['../classspla_1_1Types.html#a28e879d51b498262edb2c8655fd10b33',1,'spla::Types']]],
+  ['float64_502',['Float64',['../classspla_1_1Types.html#ad00f9a7e9191412d3d488e658e126503',1,'spla::Types']]]
 ];

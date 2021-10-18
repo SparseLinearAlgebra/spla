@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['scalar_370',['Scalar',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caf60357a8d17e45793298323f1b372a74',1,'spla::Object']]],
-  ['scalardataread_371',['ScalarDataRead',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52',1,'spla::ExpressionNode']]],
-  ['scalardatawrite_372',['ScalarDataWrite',['../classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775',1,'spla::ExpressionNode']]],
-  ['submitted_373',['Submitted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a5c835c22429f25992b4371691ecde1a4',1,'spla::Expression']]]
+  ['platformnotpresent_735',['PlatformNotPresent',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962a59f6dbcc5566f54790f23d6368767a7e',1,'spla']]],
+  ['profiletime_736',['ProfileTime',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a1f153cd9846bcfbac6c349c1c2def217',1,'spla::Descriptor']]]
 ];

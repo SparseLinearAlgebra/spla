@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['spla_208',['spla',['../namespacespla.html',1,'']]]
+  ['math_413',['math',['../namespacespla_1_1math.html',1,'spla']]],
+  ['spla_414',['spla',['../namespacespla.html',1,'']]]
 ];
