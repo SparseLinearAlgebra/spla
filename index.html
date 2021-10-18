@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: Main Page</title>
+<title>spla: spla</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,11 +60,116 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">spla Documentation</div>  </div>
+<div class="title">spla </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://research.jetbrains.org/"><img src="https://jb.gg/badges/research-flat-square.svg" alt="JB Research" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/actions/workflows/build.yml"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main" alt="Build" style="pointer-events: none;" class="inline"/></a> <a href="https://jetbrains-research.github.io/spla/"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/docs.yml/badge.svg?branch=main" alt="Pages" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main" alt="Clang Format" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License" class="inline"/></a></p>
+<p><b>spla</b> is a sparse linear algebra framework for multi-GPU computations based on <code>OpenCL</code> and <code>Boost.Compute</code> technologies. It provides linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of operations, and gives an ability to customize underlying values types and parametrise operations using arbitrary user defined functions.</p>
+<blockquote class="doxtable">
+<p>Note: project under heavy development! Not ready for usage. </p>
+</blockquote>
+<h2>Features</h2>
+<ul>
+<li>[ ] Library</li>
+<li>[ ] Arbitrary type</li>
+<li>[ ] Function unary</li>
+<li>[ ] Function binary</li>
+<li>[ ] Sparse matrix</li>
+<li>[ ] Sparse vector</li>
+<li>[ ] Sparse matrix-matrix multiplication</li>
+<li>[ ] Sparse matrix-vector multiplication</li>
+<li>[ ] Kronecker product</li>
+<li>[ ] Element-wise matrix-matrix addition</li>
+<li>[ ] Element-wise vector-vector addition</li>
+<li>[ ] Sub-matrix extraction</li>
+<li>[ ] Sub-vector extraction</li>
+</ul>
+<h2>Platforms</h2>
+<ul>
+<li>Windows 10</li>
+<li>Linux (Ubuntu 20.04)</li>
+<li>MacOS (Catalina 10.15)</li>
+</ul>
+<h1>Building from sources</h1>
+<h2>Prerequisites</h2>
+<ul>
+<li>Common:<ul>
+<li>Git (to get source code)</li>
+<li>CMake (the latest version)</li>
+<li>Ninja (as build files generator)</li>
+<li>Boost library (the latest version)</li>
+<li>OpenCL 1.2+ SDK</li>
+<li>Python 3.7+</li>
+</ul>
+</li>
+<li>Windows 10:<ul>
+<li>Microsoft Visual C++ Compiler (MSVC) with C++ 17 support</li>
+<li>x64 Native Tools Command Prompt for VS</li>
+</ul>
+</li>
+<li>Ubuntu 20.04:<ul>
+<li>GNU C++ Compiler with C++ 17 support</li>
+</ul>
+</li>
+<li>MaсOS Catalina 10.15:<ul>
+<li>Clang Compiler with C++ 17 support</li>
+</ul>
+</li>
+</ul>
+<h2>Get source code</h2>
+<p>The following code snippet downloads project source code repository, enters project root folder and runs submodules init in order to get dependencies source code initialized. Must be executed from the folder where you want to locate project.</p>
+<div class="fragment"><div class="line">$ git clone https://github.com/JetBrains-Research/spla.git</div>
+<div class="line">$ cd spla</div>
+<div class="line">$ git submodule update --init --recursive</div>
+</div><!-- fragment --><h2>Configure and run build</h2>
+<p>The following code snippet runs cmake build configuration process with output into <code>build</code> directory, in <code>Release</code> mode with tests <code>SPLA_BUILD_TESTS=ON</code> enabled. Then runs build process for <code>build</code> directory in verbose mode with <code>-j 4</code> four system threads. Must be executed from project root folder.</p>
+<div class="fragment"><div class="line">$ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON</div>
+<div class="line">$ cmake --build build --target all --verbose -j 4</div>
+</div><!-- fragment --><p>On macOS, you can optionally specify target binaries architecture to build. Pass option <code>-DCMAKE_OSX_ARCHITECTURES</code> with <code>x86_64</code> or <code>arm64</code> respectively. By default, build falls back to <code>CMAKE_SYSTEM_PROCESSOR</code> specified architecture. See example bellow, replace <code>&lt;arch&gt;</code> with desired architecture for your build.</p>
+<div class="fragment"><div class="line">$ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON -DCMAKE_OSX_ARCHITECTURES=&lt;arch&gt;</div>
+<div class="line">$ cmake --build build --target all --verbose -j 4</div>
+</div><!-- fragment --><h2>Run unit-tests</h2>
+<p>The following code snippet executed python script, which allows to run all native C++ library unit-tests, located in build directory, specified in <code>--build-dir=build</code>. Must be executed from project root folder.</p>
+<div class="fragment"><div class="line">python ./scripts/run_tests.py --build-dir=build</div>
+</div><!-- fragment --><h1>Directory structure</h1>
+<div class="fragment"><div class="line">spla</div>
+<div class="line">├── .github - GitHub Actions CI/CD setup </div>
+<div class="line">├── docs - documents, text files and various helpful stuff</div>
+<div class="line">├── scripts - short utility programs </div>
+<div class="line">├── include </div>
+<div class="line">│   ├── spla-c - library public C API</div>
+<div class="line">│   └── spla-cpp - library public C++ API</div>
+<div class="line">├── sources - source code for library implementation</div>
+<div class="line">├── tests - gtest-based unit-tests collection</div>
+<div class="line">├── package - python-package files</div>
+<div class="line">│   ├── pyspla - library python wrapper source code</div>
+<div class="line">│   └── tests - python package regression tests   </div>
+<div class="line">├── deps - project dependencies</div>
+<div class="line">│   ├── gtest - google test framework for unit testing</div>
+<div class="line">│   ├── spdlog - spdlog library for debug/release loggging features</div>
+<div class="line">│   └── taskflow - taskflow library for parallel tasks execution</div>
+<div class="line">└── CMakeLists.txt - library cmake config, add this as sub-directory to your project</div>
+</div><!-- fragment --><h1>Contributors</h1>
+<ul>
+<li>Egor Orachyov (Github: <a href="https://github.com/EgorOrachyov">@EgorOrachyov</a>)</li>
+<li>Gleb Marin (Github: <a href="https://github.com/Glebanister">@Glebanister</a>)</li>
+<li>Semyon Grigorev (Github: <a href="https://github.com/gsvgit">@gsvgit</a>)</li>
+</ul>
+<h1>Citation</h1>
+<div class="fragment"><div class="line">@online{spla,</div>
+<div class="line">  author = {Orachyov, Egor and Marin, Gleb and Grigorev, Semyon},</div>
+<div class="line">  title = {spla: Generalized sparse linear algebra framework for multi-GPU computations},</div>
+<div class="line">  year = 2021,</div>
+<div class="line">  url = {https://github.com/JetBrains-Research/spla},</div>
+<div class="line">  note = {Version 0.0.0}</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1>License</h1>
+<p>This project licensed under MIT License. License text can be found in the <a href="https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md">license file</a>.</p>
+<h1>Acknowledgments <img src="https://github.com/JetBrains-Research/spla/raw/main/docs/logos/jetbrains-logo.png?raw=true&amp;sanitize=true" alt="" align="right" width="15%" class="inline"/></h1>
+<p>This is a research project of the Programming Languages and Tools Laboratory at JetBrains-Research. Laboratory website <a href="https://research.jetbrains.org/groups/plt_lab/">link</a>. </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
