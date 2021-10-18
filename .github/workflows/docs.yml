@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/**'
       - 'include/**'
+      - 'sources/**'
       - 'Doxyfile'
       - 'README.md'
 
