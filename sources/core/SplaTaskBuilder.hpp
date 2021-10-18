@@ -25,21 +25,51 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIXDATAWRITE_HPP
-#define SPLA_SPLAMATRIXDATAWRITE_HPP
+#ifndef SPLA_SPLATASKBUILDER_HPP
+#define SPLA_SPLATASKBUILDER_HPP
 
-#include <expression/SplaNodeProcessor.hpp>
+#include <functional>
+#include <spla-cpp/SplaExpression.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
+#include <taskflow/taskflow.hpp>
 
 namespace spla {
 
-    class MatrixDataWrite final : public NodeProcessor {
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
+     * @class TaskBuilder
+     * @brief Task builder for expression nodes.
+     *
+     * Allows to compose dynamically subflows inside expression node
+     * task flow graph. Automates exception handling, expression owner notification
+     * about errors, and cancellation of the computation if error occurs.
+     */
+    class TaskBuilder {
     public:
-        ~MatrixDataWrite() override = default;
-        bool Select(std::size_t nodeIdx, const Expression &expression) override;
-        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
-        ExpressionNode::Operation GetOperationType() const override;
+        /**
+         * Emplace work to the subflow.
+         *
+         * @param work Function to execute as work inside task.
+         * @return Taskflow task handle.
+         */
+        tf::Task Emplace(std::function<void()> work);
+
+    private:
+        friend class ExpressionManager;
+        TaskBuilder(Expression *expression, tf::Subflow &subflow);
+
+        Expression *mExpression;
+        tf::Subflow &mSubflow;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIXDATAWRITE_HPP
+#endif//SPLA_SPLATASKBUILDER_HPP

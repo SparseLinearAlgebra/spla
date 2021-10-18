@@ -50,10 +50,10 @@ void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::Re
     algorithm->Process(*params);
 }
 
-tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, tf::Taskflow &taskflow) {
+tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, TaskBuilder &builder) {
     assert(params.IsNotNull());
     auto algorithm = SelectAlgorithm(type, params);
-    return taskflow.emplace([=]() {
+    return builder.Emplace([=]() {
         algorithm->Process(*params);
     });
 }

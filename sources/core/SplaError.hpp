@@ -34,6 +34,7 @@
 
 namespace spla {
 
+    /** Possible error status */
     enum class Status {
         Error,
         DeviceError,
@@ -50,7 +51,7 @@ namespace spla {
      */
     class Exception : public std::exception {
     public:
-        Exception(std::string message, std::string function, std::string file, size_t line, Status status, bool critical)
+        Exception(std::string message, std::string function, std::string file, std::size_t line, Status status, bool critical)
             : std::exception(),
               mMessage(std::move(message)),
               mFunction(std::move(function)),
@@ -69,9 +70,10 @@ namespace spla {
                 mCached = true;
 
                 std::stringstream s;
-                s << "Exception in" << GetFile()
-                  << ": line: " << GetLine()
-                  << " function: " << GetFunction();
+                s << mMessage << " "
+                  << "in: " << GetFile() << " "
+                  << "line: " << GetLine() << " "
+                  << "function: " << GetFunction();
 
                 mWhatCached = s.str();
             }
@@ -91,7 +93,7 @@ namespace spla {
             return mFile;
         }
 
-        size_t GetLine() const {
+        std::size_t GetLine() const {
             return mLine;
         }
 
@@ -107,7 +109,7 @@ namespace spla {
         std::string mMessage;
         std::string mFunction;
         std::string mFile;
-        size_t mLine;
+        std::size_t mLine;
         Status mStatus;
         bool mCritical;
 
@@ -122,7 +124,7 @@ namespace spla {
     template<Status status>
     class TException : public Exception {
     public:
-        TException(std::string message, std::string &&function, std::string &&file, size_t line, bool critical)
+        TException(std::string message, std::string &&function, std::string &&file, std::size_t line, bool critical)
             : Exception(std::move(message), std::move(function), std::move(file), line, status, critical) {
         }
 

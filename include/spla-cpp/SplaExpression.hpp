@@ -186,6 +186,7 @@ namespace spla {
 
     private:
         friend class ExpressionManager;
+        friend class TaskBuilder;
         explicit Expression(class Library &library);
 
         RefPtr<ExpressionNode> MakeNode(ExpressionNode::Operation op,

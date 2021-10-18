@@ -30,23 +30,19 @@
 
 #include <cstddef>
 
-namespace spla {
-
-    namespace math {
-
-        static inline size_t GetBlocksCount(size_t dim, size_t blockSize) {
+namespace spla::math {
+    namespace {
+        inline std::size_t GetBlocksCount(std::size_t dim, std::size_t blockSize) {
             auto rest = dim % blockSize;
             return dim / blockSize + (rest ? 1 : 0);
         }
 
-        static inline size_t GetBlockActualSize(size_t blockIdx, size_t dim, size_t blockSize) {
+        inline std::size_t GetBlockActualSize(std::size_t blockIdx, std::size_t dim, std::size_t blockSize) {
             auto first = blockIdx * blockSize;
             auto size = dim - first;
             return size < blockSize ? size : blockSize;
         }
-
-    }// namespace math
-
-}// namespace spla
+    }// namespace
+}// namespace spla::math
 
 #endif//SPLA_SPLAMATH_HPP

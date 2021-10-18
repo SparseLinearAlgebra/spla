@@ -46,10 +46,10 @@ static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals,
 
     library.Submit(spExprWrite);
     spExprWrite->Wait();
-    EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
+    ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<float> expected = source.SortReduceDuplicates();
-    EXPECT_TRUE(expected.Equals(spM));
+    ASSERT_TRUE(expected.Equals(spM));
 }
 
 static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
@@ -75,10 +75,10 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, s
 
     library.Submit(spExprWrite);
     spExprWrite->Wait();
-    EXPECT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
+    ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<float> &expected = source;
-    EXPECT_TRUE(expected.Equals(spM));
+    ASSERT_TRUE(expected.Equals(spM));
 }
 
 static void test(size_t M, size_t N, size_t base, size_t step, size_t iter) {

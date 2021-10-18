@@ -29,8 +29,8 @@
 #define SPLA_SPLAALGORITHMMANAGER_HPP
 
 #include <algo/SplaAlgorithm.hpp>
+#include <core/SplaTaskBuilder.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
-#include <taskflow/taskflow.hpp>
 #include <unordered_map>
 #include <vector>
 
@@ -59,7 +59,7 @@ namespace spla {
 
         void Register(const RefPtr<Algorithm> &algo);
         void Dispatch(Algorithm::Type type, const RefPtr<AlgorithmParams> &params);
-        tf::Task Dispatch(Algorithm::Type type, const RefPtr<AlgorithmParams> &params, tf::Taskflow &taskflow);
+        tf::Task Dispatch(Algorithm::Type type, const RefPtr<AlgorithmParams> &params, TaskBuilder &builder);
 
     private:
         RefPtr<Algorithm> SelectAlgorithm(Algorithm::Type type, const RefPtr<AlgorithmParams> &params);

@@ -46,11 +46,11 @@ namespace spla {
     }// namespace
 }// namespace spla
 
-bool spla::VectorDataRead::Select(std::size_t nodeIdx, const Expression &expression) {
+bool spla::VectorDataRead::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
 }
 
-void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expression, tf::Taskflow &taskflow) {
+void spla::VectorDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
     auto library = expression.GetLibrary().GetPrivatePtr();
@@ -77,7 +77,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
                           "Supported only COO vector block format");
     }
 
-    auto collectNnz = taskflow.emplace([=]() {
+    auto collectNnz = builder.Emplace([=]() {
         auto &blockRowsNvals = shared->blockRowsNvals;
         auto &blockRowsOffsets = shared->blockRowsOffsets;
 
@@ -98,7 +98,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const Expression &expres
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
         tf::Task copyBlocksInRow;
-        copyBlocksInRow = taskflow.emplace([=]() {
+        copyBlocksInRow = builder.Emplace([=]() {
             using namespace boost;
 
             // todo: gpu and device queue management
