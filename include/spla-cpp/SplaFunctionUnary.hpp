@@ -71,7 +71,7 @@ namespace spla {
         RefPtr<Type> mArg1;
         RefPtr<Type> mResult;
         std::string mSource;
-        std::bitset<static_cast<size_t>(Flags::Max)> mFlags;
+        std::bitset<static_cast<std::size_t>(Flags::Max)> mFlags;
     };
 
     /**

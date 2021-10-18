@@ -44,7 +44,7 @@ namespace spla {
                           MapIterator last,
                           InputIterator input,
                           OutputIterator result,
-                          size_t elementsInSequence) {
+                          std::size_t elementsInSequence) {
                 mCount = boost::compute::detail::iterator_range_size(first, last);
 
                 *this << "const uint i = get_global_id(0);\n"
@@ -65,7 +65,7 @@ namespace spla {
             }
 
         private:
-            size_t mCount = 0;
+            std::size_t mCount = 0;
         };
 
     }// namespace

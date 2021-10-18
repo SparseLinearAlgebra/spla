@@ -57,7 +57,7 @@ namespace spla {
         }
 
         /** @return Size in bytes of the single value of this type */
-        size_t GetByteSize() const {
+        std::size_t GetByteSize() const {
             return mByteSize;
         }
 
@@ -77,7 +77,7 @@ namespace spla {
          *
          * @return New type instance.
          */
-        static RefPtr<Type> Make(std::string id, size_t typeSize, class Library &library);
+        static RefPtr<Type> Make(std::string id, std::size_t typeSize, class Library &library);
 
         /**
          * Finds already register type in library by specified id.
@@ -93,16 +93,16 @@ namespace spla {
 
     private:
         friend class Types;
-        static RefPtr<Type> Make(std::string id, size_t typeSize, bool builtIn, class Library &library);
+        static RefPtr<Type> Make(std::string id, std::size_t typeSize, bool builtIn, class Library &library);
 
-        Type(std::string id, size_t typeSize, bool builtIn, class Library &library);
+        Type(std::string id, std::size_t typeSize, bool builtIn, class Library &library);
 
         // Unique type name (id)
         std::string mId;
 
         // Size of the type value in bytes
         // Note: if size is 0 => Object with this type have no values
-        size_t mByteSize = 0;
+        std::size_t mByteSize = 0;
 
         // True for built-in (predefined) types
         bool mBuiltIn = false;

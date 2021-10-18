@@ -29,11 +29,11 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 #include <vector>
 
-spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals) {
+spla::RefPtr<spla::MatrixCOO> spla::MatrixCOO::Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals) {
     return spla::RefPtr<spla::MatrixCOO>(new MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)));
 }
 
-spla::MatrixCOO::MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals)
+spla::MatrixCOO::MatrixCOO(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals)
     : MatrixBlock(nrows, ncols, nvals, Format::COO),
       mRows(std::move(rows)),
       mCols(std::move(cols)),
@@ -77,7 +77,7 @@ std::string spla::MatrixCOO::ToString() const {
 
     ss << "Matrix " << GetNrows() << "x" << GetNcols() << " vals=" << GetNvals() << std::endl;
 
-    for (size_t k = 0; k < GetNvals(); k++) {
+    for (std::size_t k = 0; k < GetNvals(); k++) {
         auto i = rows[k];
         auto j = cols[k];
 
@@ -85,7 +85,7 @@ std::string spla::MatrixCOO::ToString() const {
         ss << std::hex;
 
         auto offset = k * byteSize;
-        for (size_t byte = 0; byte < byteSize; byte++) {
+        for (std::size_t byte = 0; byte < byteSize; byte++) {
             ss << static_cast<unsigned int>(vals[offset + byte]);
         }
 

@@ -159,7 +159,7 @@ void spla::ExpressionManager::FindStartNodes(spla::ExpressionManager::TraversalI
     auto &nodes = expression->GetNodes();
     auto &start = context.startNodes;
 
-    for (size_t idx = 0; idx < nodes.size(); idx++) {
+    for (std::size_t idx = 0; idx < nodes.size(); idx++) {
         // No incoming dependency
         if (nodes[idx]->GetPrev().empty())
             start.push_back(idx);
@@ -171,7 +171,7 @@ void spla::ExpressionManager::FindEndNodes(spla::ExpressionManager::TraversalInf
     auto &nodes = expression->GetNodes();
     auto &end = context.endNodes;
 
-    for (size_t idx = 0; idx < nodes.size(); idx++) {
+    for (std::size_t idx = 0; idx < nodes.size(); idx++) {
         // No incoming dependency
         if (nodes[idx]->GetNext().empty())
             end.push_back(idx);
@@ -191,7 +191,7 @@ void spla::ExpressionManager::CheckCycles(spla::ExpressionManager::TraversalInfo
     }
 }
 
-bool spla::ExpressionManager::CheckCyclesImpl(size_t idx, std::vector<int> &visited,
+bool spla::ExpressionManager::CheckCyclesImpl(std::size_t idx, std::vector<int> &visited,
                                               const std::vector<RefPtr<ExpressionNode>> &nodes) {
     if (visited[idx])
         return true;
@@ -213,17 +213,17 @@ void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionManager::Trave
     auto &start = context.startNodes;
     auto nodesCount = nodes.size();
 
-    size_t t = 0;
-    std::vector<size_t> out(nodesCount, t);
+    std::size_t t = 0;
+    std::vector<std::size_t> out(nodesCount, t);
 
     for (auto s : start)
         DefineTraversalPathImpl(s, t, out, nodes);
 
-    using Pair = std::pair<size_t, size_t>;
+    using Pair = std::pair<std::size_t, std::size_t>;
     std::vector<Pair> traversal;
 
     traversal.reserve(nodesCount);
-    for (size_t i = 0; i < nodesCount; i++)
+    for (std::size_t i = 0; i < nodesCount; i++)
         traversal.emplace_back(out[i], i);
 
     std::sort(traversal.begin(), traversal.end(), [](const Pair &a, const Pair &b) {
@@ -232,12 +232,12 @@ void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionManager::Trave
 
     context.traversal.resize(nodesCount);
 
-    std::transform(traversal.begin(), traversal.end(), context.traversal.begin(), [](const Pair &a) -> size_t {
+    std::transform(traversal.begin(), traversal.end(), context.traversal.begin(), [](const Pair &a) -> std::size_t {
         return a.second;
     });
 }
 
-void spla::ExpressionManager::DefineTraversalPathImpl(size_t idx, size_t &t, std::vector<size_t> &out,
+void spla::ExpressionManager::DefineTraversalPathImpl(std::size_t idx, std::size_t &t, std::vector<std::size_t> &out,
                                                       const std::vector<RefPtr<ExpressionNode>> &nodes) {
     if (!out[idx]) {
         t += 1;

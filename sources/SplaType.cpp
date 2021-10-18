@@ -30,11 +30,11 @@
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaType.hpp>
 
-spla::RefPtr<spla::Type> spla::Type::Make(std::string id, size_t typeSize, spla::Library &library) {
+spla::RefPtr<spla::Type> spla::Type::Make(std::string id, std::size_t typeSize, spla::Library &library) {
     return Make(std::move(id), typeSize, false, library);
 }
 
-spla::RefPtr<spla::Type> spla::Type::Make(std::string id, size_t typeSize, bool builtIn, spla::Library &library) {
+spla::RefPtr<spla::Type> spla::Type::Make(std::string id, std::size_t typeSize, bool builtIn, spla::Library &library) {
     auto &libraryPrivate = library.GetPrivate();
     auto &typeCache = libraryPrivate.GetTypeCache();
 
@@ -56,7 +56,7 @@ spla::RefPtr<spla::Type> spla::Type::Find(std::string id, spla::Library &library
 }
 
 spla::Type::Type(std::string id,
-                 size_t typeSize,
+                 std::size_t typeSize,
                  bool builtIn,
                  spla::Library &library)
     : Object(Object::TypeName::Type, library),

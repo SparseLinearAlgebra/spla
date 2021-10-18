@@ -61,8 +61,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto requiredDeviceCount = blocksCountInRow * blocksCountInCol;
     auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
 
-    for (size_t i = 0; i < blocksCountInRow; i++) {
-        for (size_t j = 0; j < blocksCountInCol; j++) {
+    for (std::size_t i = 0; i < blocksCountInRow; i++) {
+        for (std::size_t j = 0; j < blocksCountInCol; j++) {
             auto deviceId = devicesIds[i * blocksCountInCol + j];
             builder.Emplace([=]() {
                 using namespace boost;
@@ -89,9 +89,9 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 assert(colsHost);
 
                 // Count number of nnz values to store in this block
-                size_t blockNvals = 0;
+                std::size_t blockNvals = 0;
                 {
-                    for (size_t k = 0; k < nvalsHost; k++) {
+                    for (std::size_t k = 0; k < nvalsHost; k++) {
                         auto rowIdx = rowsHost[k];
                         auto colIdx = colsHost[k];
 
@@ -132,11 +132,11 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 }
 
                 // Copy data related to this block
-                size_t writeOffset = 0;
+                std::size_t writeOffset = 0;
                 {
                     using namespace boost;
 
-                    for (size_t k = 0; k < nvalsHost; k++) {
+                    for (std::size_t k = 0; k < nvalsHost; k++) {
                         auto rowIdx = rowsHost[k];
                         auto colIdx = colsHost[k];
 
@@ -263,10 +263,10 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                         BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mask, offsets, newVals, blockVals, byteSize), {
                             if (mask[i]) {
-                                const size_t offset = offsets[i];
-                                const size_t dst = byteSize * offset;
-                                const size_t src = byteSize * i;
-                                for (size_t k = 0; k < byteSize; k++) {
+                                const std::size_t offset = offsets[i];
+                                const std::size_t dst = byteSize * offset;
+                                const std::size_t src = byteSize * i;
+                                for (std::size_t k = 0; k < byteSize; k++) {
                                     newVals[dst + k] = blockVals[src + k];
                                 }
                             }

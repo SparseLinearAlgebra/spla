@@ -80,7 +80,7 @@ namespace spla {
         Operation GetNodeOp() const;
 
         /** @return Node index in the expression */
-        size_t GetIdx() const;
+        std::size_t GetIdx() const;
 
     private:
         friend class Expression;
@@ -89,7 +89,7 @@ namespace spla {
         ExpressionNode(Operation operation, class Expression &expression, class Library &library);
 
         void Link(ExpressionNode *next);
-        void SetIdx(size_t idx);
+        void SetIdx(std::size_t idx);
         bool Belongs(class Expression &expression) const;
         void SetArgs(std::vector<RefPtr<Object>> &&args);
         void SetDescriptor(const RefPtr<Descriptor> &desc);
@@ -102,7 +102,7 @@ namespace spla {
         std::vector<RefPtr<Object>> mArgs;
         RefPtr<Descriptor> mDescriptor;
         Operation mNodeOp;
-        size_t mIdx;
+        std::size_t mIdx;
 
         // Expression impl related
         class Expression &mParent;

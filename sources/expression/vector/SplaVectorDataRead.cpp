@@ -139,7 +139,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const spla::Expression &
             if (rows) {
                 auto &blockRowsDevice = block->GetRows();
                 compute::copy(blockRowsDevice.begin(), blockRowsDevice.end(), &rows[offset], queue);
-                for (size_t rowRelInd = 0; rowRelInd < nvals; ++rowRelInd) {
+                for (std::size_t rowRelInd = 0; rowRelInd < nvals; ++rowRelInd) {
                     rows[rowRelInd + offset] += blockFirstRow;
                 }
             }

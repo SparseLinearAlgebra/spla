@@ -27,11 +27,11 @@
 
 #include <storage/block/SplaVectorCOO.hpp>
 
-spla::RefPtr<spla::VectorCOO> spla::VectorCOO::Make(size_t nrows, size_t nvals, Indices rows, Values vals) {
+spla::RefPtr<spla::VectorCOO> spla::VectorCOO::Make(std::size_t nrows, std::size_t nvals, Indices rows, Values vals) {
     return spla::RefPtr<spla::VectorCOO>(new VectorCOO(nrows, nvals, std::move(rows), std::move(vals)));
 }
 
-spla::VectorCOO::VectorCOO(size_t nrows, size_t nvals, Indices rows, Values vals)
+spla::VectorCOO::VectorCOO(std::size_t nrows, std::size_t nvals, Indices rows, Values vals)
     : VectorBlock(nrows, nvals, Format::COO),
       mRows(std::move(rows)),
       mVals(std::move(vals)) {

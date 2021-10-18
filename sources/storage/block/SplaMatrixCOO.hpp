@@ -49,10 +49,10 @@ namespace spla {
 
         [[nodiscard]] std::string ToString() const;
 
-        static RefPtr<MatrixCOO> Make(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
+        static RefPtr<MatrixCOO> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals);
 
     private:
-        MatrixCOO(size_t nrows, size_t ncols, size_t nvals, Indices rows, Indices cols, Values vals);
+        MatrixCOO(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals);
 
         Indices mRows;
         Indices mCols;

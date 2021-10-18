@@ -48,23 +48,23 @@ namespace spla {
             Dense
         };
 
-        MatrixBlock(size_t nrows, size_t ncols, size_t nvals, Format format)
+        MatrixBlock(std::size_t nrows, std::size_t ncols, std::size_t nvals, Format format)
             : mNrows(nrows), mNcols(ncols), mNvals(nvals), mFormat(format) {}
 
         ~MatrixBlock() override = default;
 
         /** @return Number of rows of the block */
-        [[nodiscard]] size_t GetNrows() const noexcept {
+        [[nodiscard]] std::size_t GetNrows() const noexcept {
             return mNrows;
         }
 
         /** @return Number of columns of the block */
-        [[nodiscard]] size_t GetNcols() const noexcept {
+        [[nodiscard]] std::size_t GetNcols() const noexcept {
             return mNcols;
         }
 
         /** @return Number of values in block */
-        [[nodiscard]] size_t GetNvals() const noexcept {
+        [[nodiscard]] std::size_t GetNvals() const noexcept {
             return mNvals;
         }
 
@@ -74,9 +74,9 @@ namespace spla {
         }
 
     protected:
-        size_t mNrows;
-        size_t mNcols;
-        size_t mNvals;
+        std::size_t mNrows;
+        std::size_t mNcols;
+        std::size_t mNvals;
         Format mFormat;
     };
 

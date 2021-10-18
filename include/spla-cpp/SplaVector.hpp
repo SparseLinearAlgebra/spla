@@ -64,10 +64,10 @@ namespace spla {
         ~Vector() override;
 
         /** @return Number of vector rows */
-        size_t GetNrows() const;
+        std::size_t GetNrows() const;
 
         /** @return Number of vector values */
-        size_t GetNvals() const;
+        std::size_t GetNvals() const;
 
         /** @return Internal vector storage (for private usage only) */
         [[nodiscard]] const RefPtr<class VectorStorage> &GetStorage() const;
@@ -81,10 +81,10 @@ namespace spla {
          *
          * @return New vector instance
          */
-        static RefPtr<Vector> Make(size_t nrows, const RefPtr<Type> &type, class Library &library);
+        static RefPtr<Vector> Make(std::size_t nrows, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Vector(size_t nrows, const RefPtr<Type> &type, class Library &library);
+        Vector(std::size_t nrows, const RefPtr<Type> &type, class Library &library);
 
         // Separate storage for private impl
         RefPtr<class VectorStorage> mStorage;
