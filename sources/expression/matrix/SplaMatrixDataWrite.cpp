@@ -127,7 +127,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                 // If type has non-zero elements size, resize values storage
                 if (typeHasValues) {
-                    blockVals.resize(blockNvals * byteSize);
+                    blockVals.resize(blockNvals * byteSize, queue);
                     blockValsHost.resize(blockNvals * byteSize);
                 }
 
@@ -233,6 +233,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     compute::vector<unsigned int> offsets(mask.size(), ctx);
                     compute::exclusive_scan(mask.begin(), mask.end(), offsets.begin(), 0, queue);
 
+                    // Wait until completion to fetch result nvals count
                     queue.finish();
 
                     // Count number of unique values to allocate storage
@@ -259,14 +260,14 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                     // Copy values
                     if (typeHasValues) {
-                        newVals.resize(resultNvals * byteSize);
+                        newVals.resize(resultNvals * byteSize, queue);
 
                         BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mask, offsets, newVals, blockVals, byteSize), {
                             if (mask[i]) {
-                                const std::size_t offset = offsets[i];
-                                const std::size_t dst = byteSize * offset;
-                                const std::size_t src = byteSize * i;
-                                for (std::size_t k = 0; k < byteSize; k++) {
+                                const size_t offset = offsets[i];
+                                const size_t dst = byteSize * offset;
+                                const size_t src = byteSize * i;
+                                for (size_t k = 0; k < byteSize; k++) {
                                     newVals[dst + k] = blockVals[src + k];
                                 }
                             }

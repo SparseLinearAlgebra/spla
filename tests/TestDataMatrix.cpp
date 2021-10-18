@@ -27,7 +27,7 @@
 
 #include <Testing.hpp>
 
-static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
+void testCommon(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
     utils::Matrix source = utils::Matrix<float>::Generate(M, N, nvals, seed);
     source.Fill(utils::UniformRealGenerator<float>());
 
@@ -52,7 +52,7 @@ static void testCommon(spla::Library &library, size_t M, size_t N, size_t nvals,
     ASSERT_TRUE(expected.Equals(spM));
 }
 
-static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, size_t nvals, size_t seed = 0) {
+void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
     utils::Matrix source = utils::Matrix<float>::Generate(M, N, nvals, seed).SortReduceDuplicates();
     source.Fill(utils::UniformRealGenerator<float>());
 
@@ -81,32 +81,36 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t N, s
     ASSERT_TRUE(expected.Equals(spM));
 }
 
-static void test(size_t M, size_t N, size_t base, size_t step, size_t iter) {
-    spla::Library library;
+void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter) {
+    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
 
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testCommon(library, M, N, nvals, i);
-    }
+    for (std::size_t blockSize : blocksSizes) {
+        spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
 
-    for (size_t i = 0; i < iter; i++) {
-        size_t nvals = base + i * step;
-        testSortedNoDuplicates(library, M, N, nvals, i);
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon(library, M, N, nvals, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testSortedNoDuplicates(library, M, N, nvals, i);
+        }
     }
 }
 
 TEST(DataMatrix, Small) {
-    size_t M = 100, N = 200;
+    std::size_t M = 100, N = 200;
     test(M, N, M, M, 10);
 }
 
 TEST(DataMatrix, Medium) {
-    size_t M = 1000, N = 2000;
+    std::size_t M = 1000, N = 2000;
     test(M, N, M, M, 10);
 }
 
 TEST(DataMatrix, Large) {
-    size_t M = 10000, N = 20000;
+    std::size_t M = 10000, N = 20000;
     test(M, N, M, M, 5);
 }
 

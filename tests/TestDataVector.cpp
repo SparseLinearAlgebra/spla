@@ -27,7 +27,7 @@
 
 #include <Testing.hpp>
 
-static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
+void testCommon(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
     utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed);
     source.Fill(utils::UniformRealGenerator<float>());
 
@@ -52,7 +52,7 @@ static void testCommon(spla::Library &library, size_t M, size_t nvals, size_t se
     ASSERT_TRUE(expected.Equals(spV));
 }
 
-static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nvals, size_t seed = 0) {
+void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
     utils::Vector source = utils::Vector<float>::Generate(M, nvals, seed).SortReduceDuplicates();
     source.Fill(utils::UniformRealGenerator<float>());
 
@@ -80,41 +80,36 @@ static void testSortedNoDuplicates(spla::Library &library, size_t M, size_t nval
     ASSERT_TRUE(expected.Equals(spV));
 }
 
-static void test(size_t M, size_t base, size_t step, size_t iter) {
-    std::vector<size_t> blocksSizes{1, 3, 10, 1000, 100000};
+void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
+    std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
 
-    for (size_t blockSize : blocksSizes) {
+    for (std::size_t blockSize : blocksSizes) {
         spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
 
-        for (size_t i = 0; i < iter; i++) {
-            size_t nvals = base + i * step;
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
             testCommon(library, M, nvals, i);
         }
 
-        for (size_t i = 0; i < iter; i++) {
-            size_t nvals = base + i * step;
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
             testSortedNoDuplicates(library, M, nvals, i);
         }
     }
 }
 
-TEST(DataVector, Tiny) {
-    spla::Library library;
-    testCommon(library, 5, 5);
-}
-
 TEST(DataVector, Small) {
-    size_t M = 100;
+    std::size_t M = 100;
     test(M, M, M, 10);
 }
 
 TEST(DataVector, Medium) {
-    size_t M = 1000;
+    std::size_t M = 1000;
     test(M, M, M, 10);
 }
 
 TEST(DataVector, Large) {
-    size_t M = 10000;
+    std::size_t M = 10000;
     test(M, M, M, 5);
 }
 
