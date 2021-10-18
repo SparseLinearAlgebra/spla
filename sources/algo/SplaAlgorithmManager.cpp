@@ -26,8 +26,8 @@
 /**********************************************************************************/
 
 #include <algo/SplaAlgorithmManager.hpp>
-#include <detail/SplaError.hpp>
 #include <cassert>
+#include <detail/SplaError.hpp>
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
 }
@@ -53,8 +53,8 @@ void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::Re
 tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, tf::Taskflow &taskflow) {
     assert(params.IsNotNull());
     auto algorithm = SelectAlgorithm(type, params);
-    return taskflow.emplace([=](){
-       algorithm->Process(*params);
+    return taskflow.emplace([=]() {
+        algorithm->Process(*params);
     });
 }
 
