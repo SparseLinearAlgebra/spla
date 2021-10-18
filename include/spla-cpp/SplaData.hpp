@@ -101,7 +101,7 @@ namespace spla {
          * Set values count in this data storage.
          * @param nvals Number of values (tuples of data).
          */
-        void SetNvals(size_t nvals);
+        void SetNvals(std::size_t nvals);
 
         /** @return Row indices buffer */
         unsigned int *GetRows() const;
@@ -113,7 +113,7 @@ namespace spla {
         void *GetVals() const;
 
         /** @return Number of entries in data */
-        size_t GetNvals() const;
+        std::size_t GetNvals() const;
 
         static RefPtr<DataMatrix> Make(Library &library);
 
@@ -123,7 +123,7 @@ namespace spla {
         unsigned int *mRows = nullptr;
         unsigned int *mCols = nullptr;
         void *mValues = nullptr;
-        size_t mNvals = 0;
+        std::size_t mNvals = 0;
     };
 
     /**
@@ -153,7 +153,7 @@ namespace spla {
          * Set values count in this data storage.
          * @param nvals Number of values (tuples of data).
          */
-        void SetNvals(size_t nvals);
+        void SetNvals(std::size_t nvals);
 
         /** @return Row indices buffer */
         unsigned int *GetRows() const;
@@ -162,7 +162,7 @@ namespace spla {
         void *GetVals() const;
 
         /** @return Number of entries in data */
-        size_t GetNvals() const;
+        std::size_t GetNvals() const;
 
         static RefPtr<DataVector> Make(Library &library);
 
@@ -171,7 +171,7 @@ namespace spla {
 
         unsigned int *mRows = nullptr;
         void *mValues = nullptr;
-        size_t mNvals = 0;
+        std::size_t mNvals = 0;
     };
 
     /**

@@ -52,18 +52,18 @@ namespace spla {
             Dense
         };
 
-        VectorBlock(size_t nrows, size_t nvals, Format format)
+        VectorBlock(std::size_t nrows, std::size_t nvals, Format format)
             : mNrows(nrows), mNvals(nvals), mFormat(format) {}
 
         ~VectorBlock() override = default;
 
         /** @return Number of rows of the block */
-        [[nodiscard]] size_t GetNrows() const noexcept {
+        [[nodiscard]] std::size_t GetNrows() const noexcept {
             return mNrows;
         }
 
         /** @return Number of values in block */
-        [[nodiscard]] size_t GetNvals() const noexcept {
+        [[nodiscard]] std::size_t GetNvals() const noexcept {
             return mNvals;
         }
 
@@ -73,8 +73,8 @@ namespace spla {
         }
 
     protected:
-        size_t mNrows;
-        size_t mNvals;
+        std::size_t mNrows;
+        std::size_t mNvals;
         Format mFormat;
     };
 

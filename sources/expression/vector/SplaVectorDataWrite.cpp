@@ -80,7 +80,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             // Count number of nnz values to store in this block
             std::size_t blockNvals = 0;
             {
-                for (size_t k = 0; k < nvalsHost; k++) {
+                for (std::size_t k = 0; k < nvalsHost; k++) {
                     auto rowIdx = rowsHost[k];
 
                     if (firstRow <= rowIdx && rowIdx < lastRow)
@@ -117,11 +117,11 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             }
 
             // Copy data related to this block
-            size_t writeOffset = 0;
+            std::size_t writeOffset = 0;
             {
                 using namespace boost;
 
-                for (size_t k = 0; k < nvalsHost; k++) {
+                for (std::size_t k = 0; k < nvalsHost; k++) {
                     auto rowIdx = rowsHost[k];
 
                     if (firstRow <= rowIdx && rowIdx < lastRow) {

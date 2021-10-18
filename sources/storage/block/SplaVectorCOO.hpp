@@ -49,10 +49,10 @@ namespace spla {
 
         [[nodiscard]] const Values &GetVals() const noexcept;
 
-        static RefPtr<VectorCOO> Make(size_t nrows, size_t nvals, Indices rows, Values vals);
+        static RefPtr<VectorCOO> Make(std::size_t nrows, std::size_t nvals, Indices rows, Values vals);
 
     private:
-        VectorCOO(size_t nrows, size_t nvals, Indices rows, Values vals);
+        VectorCOO(std::size_t nrows, std::size_t nvals, Indices rows, Values vals);
 
         Indices mRows;
         Values mVals;

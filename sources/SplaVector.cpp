@@ -28,21 +28,21 @@
 #include <spla-cpp/SplaVector.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
-size_t spla::Vector::GetNrows() const {
+std::size_t spla::Vector::GetNrows() const {
     return mStorage->GetNrows();
 }
 
-size_t spla::Vector::GetNvals() const {
+std::size_t spla::Vector::GetNvals() const {
     return mStorage->GetNvals();
 }
 
-spla::RefPtr<spla::Vector> spla::Vector::Make(size_t nrows,
+spla::RefPtr<spla::Vector> spla::Vector::Make(std::size_t nrows,
                                               const RefPtr<Type> &type,
                                               spla::Library &library) {
     return {new Vector(nrows, type, library)};
 }
 
-spla::Vector::Vector(size_t nrows,
+spla::Vector::Vector(std::size_t nrows,
                      const RefPtr<Type> &type,
                      spla::Library &library) : TypedObject(type, Object::TypeName::Vector, library) {
     mStorage = VectorStorage::Make(nrows, GetLibrary());

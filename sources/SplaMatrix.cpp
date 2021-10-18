@@ -28,15 +28,15 @@
 #include <spla-cpp/SplaMatrix.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 
-size_t spla::Matrix::GetNrows() const {
+std::size_t spla::Matrix::GetNrows() const {
     return mStorage->GetNrows();
 }
 
-size_t spla::Matrix::GetNcols() const {
+std::size_t spla::Matrix::GetNcols() const {
     return mStorage->GetNcols();
 }
 
-size_t spla::Matrix::GetNvals() const {
+std::size_t spla::Matrix::GetNvals() const {
     return mStorage->GetNvals();
 }
 
@@ -44,13 +44,13 @@ const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
     return mStorage;
 }
 
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(size_t nrows, size_t ncols,
+spla::RefPtr<spla::Matrix> spla::Matrix::Make(std::size_t nrows, std::size_t ncols,
                                               const RefPtr<Type> &type,
                                               spla::Library &library) {
     return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
 }
 
-spla::Matrix::Matrix(size_t nrows, size_t ncols,
+spla::Matrix::Matrix(std::size_t nrows, std::size_t ncols,
                      const RefPtr<Type> &type,
                      spla::Library &library) : TypedObject(type, Object::TypeName::Matrix, library) {
     mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());

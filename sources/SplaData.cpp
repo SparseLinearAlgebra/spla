@@ -77,11 +77,11 @@ void *spla::DataMatrix::GetVals() const {
     return mValues;
 }
 
-void spla::DataMatrix::SetNvals(size_t nvals) {
+void spla::DataMatrix::SetNvals(std::size_t nvals) {
     mNvals = nvals;
 }
 
-size_t spla::DataMatrix::GetNvals() const {
+std::size_t spla::DataMatrix::GetNvals() const {
     return mNvals;
 }
 
@@ -121,11 +121,11 @@ void *spla::DataVector::GetVals() const {
     return mValues;
 }
 
-void spla::DataVector::SetNvals(size_t nvals) {
+void spla::DataVector::SetNvals(std::size_t nvals) {
     mNvals = nvals;
 }
 
-size_t spla::DataVector::GetNvals() const {
+std::size_t spla::DataVector::GetNvals() const {
     return mNvals;
 }
 

@@ -44,7 +44,7 @@ spla::ExpressionNode::Operation spla::ExpressionNode::GetNodeOp() const {
     return mNodeOp;
 }
 
-size_t spla::ExpressionNode::GetIdx() const {
+std::size_t spla::ExpressionNode::GetIdx() const {
     return mIdx;
 }
 
@@ -59,7 +59,7 @@ void spla::ExpressionNode::Link(spla::ExpressionNode *next) {
     mNext.push_back(next);
 }
 
-void spla::ExpressionNode::SetIdx(size_t idx) {
+void spla::ExpressionNode::SetIdx(std::size_t idx) {
     mIdx = idx;
 }
 

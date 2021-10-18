@@ -62,11 +62,11 @@ namespace spla {
             /** Expression */
             RefPtr<Expression> expression;
             /** Nodes to start evaluation */
-            std::vector<size_t> startNodes;
+            std::vector<std::size_t> startNodes;
             /** Final nodes */
-            std::vector<size_t> endNodes;
+            std::vector<std::size_t> endNodes;
             /** Order of the expression traversal to submit computation */
-            std::vector<size_t> traversal;
+            std::vector<std::size_t> traversal;
         };
 
         explicit ExpressionManager(Library &library);
@@ -79,9 +79,9 @@ namespace spla {
         void FindStartNodes(TraversalInfo &context);
         void FindEndNodes(TraversalInfo &context);
         void CheckCycles(TraversalInfo &context);
-        bool CheckCyclesImpl(size_t idx, std::vector<int> &visited, const std::vector<RefPtr<ExpressionNode>> &nodes);
+        bool CheckCyclesImpl(std::size_t idx, std::vector<int> &visited, const std::vector<RefPtr<ExpressionNode>> &nodes);
         void DefineTraversalPath(TraversalInfo &context);
-        void DefineTraversalPathImpl(size_t idx, size_t &t, std::vector<size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
+        void DefineTraversalPathImpl(std::size_t idx, std::size_t &t, std::vector<std::size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
 
         RefPtr<NodeProcessor> SelectProcessor(std::size_t nodeIdx, const Expression &expression);
 

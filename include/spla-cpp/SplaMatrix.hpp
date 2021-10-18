@@ -64,13 +64,13 @@ namespace spla {
         ~Matrix() override;
 
         /** @return Number of matrix rows */
-        size_t GetNrows() const;
+        std::size_t GetNrows() const;
 
         /** @return Number of matrix columns */
-        size_t GetNcols() const;
+        std::size_t GetNcols() const;
 
         /** @return Number of matrix values */
-        size_t GetNvals() const;
+        std::size_t GetNvals() const;
 
         /** @return Internal matrix storage (for private usage only) */
         [[nodiscard]] const RefPtr<class MatrixStorage> &GetStorage() const;
@@ -85,10 +85,10 @@ namespace spla {
          *
          * @return New matrix instance
          */
-        static RefPtr<Matrix> Make(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library &library);
+        static RefPtr<Matrix> Make(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Matrix(size_t nrows, size_t ncols, const RefPtr<Type> &type, class Library &library);
+        Matrix(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
 
         // Separate storage for private impl
         RefPtr<class MatrixStorage> mStorage;

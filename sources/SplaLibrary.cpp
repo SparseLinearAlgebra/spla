@@ -101,7 +101,7 @@ spla::Library::Config &spla::Library::Config::SetLogFilename(spla::Filename file
     return *this;
 }
 
-spla::Library::Config &spla::Library::Config::SetBlockSize(size_t blockSize) {
+spla::Library::Config &spla::Library::Config::SetBlockSize(std::size_t blockSize) {
     assert(blockSize > 0);
     mBlockSize = blockSize;
     return *this;
@@ -141,7 +141,7 @@ std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
     return devicesNames;
 }
 
-size_t spla::Library::Config::GetBlockSize() const {
+std::size_t spla::Library::Config::GetBlockSize() const {
     return mBlockSize;
 }
 
