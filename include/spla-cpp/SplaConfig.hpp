@@ -49,7 +49,7 @@ namespace spla {
      *
      * @brief Public library interface
      *
-     * API module provides access to all common library primitives.
+     * @details API module provides access to all common library primitives.
      * Primitives are exposed as a number of Object reference-counted classes.
      * Reference-counting is used to automate objects life-time checks and
      * to pass around this objects as expressions params in a safe way.
@@ -58,6 +58,16 @@ namespace spla {
      * Header files has no other dependencies, except standard c++ library files.
      *
      * File Spla.hpp provides access to all API components.
+     *
+     *
+     * @defgroup Internal
+     *
+     * @brief Implementation details
+     *
+     * @details The internal module implements the full functionality of the library.
+     * It is not anticipated that the user will ever need to work with
+     * the objects in this module, as it only contains details
+     * of the library's implementation.
      */
 
 #if defined(SPLA_TARGET_WINDOWS)

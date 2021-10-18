@@ -28,9 +28,22 @@
 #ifndef SPLA_SPLASCALARSTORAGE_HPP
 #define SPLA_SPLASCALARSTORAGE_HPP
 
+namespace spla {
 
-class SplaScalarStorage {
-};
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    class SplaScalarStorage {
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
 
 
 #endif//SPLA_SPLASCALARSTORAGE_HPP

@@ -34,6 +34,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     class MatrixCOO final : public MatrixBlock {
     public:
         using Indices = boost::compute::vector<unsigned int>;
@@ -58,6 +63,10 @@ namespace spla {
         Indices mCols;
         Values mVals;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

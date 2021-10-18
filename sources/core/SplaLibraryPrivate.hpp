@@ -44,6 +44,12 @@
 
 
 namespace spla {
+
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     /**
      * @class LibraryPrivate
      * Private library state, accessible for all objects within library.
@@ -89,6 +95,10 @@ namespace spla {
         std::shared_ptr<spdlog::logger> mLogger;
         std::unordered_map<std::string, RefPtr<Type>> mTypeCache;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

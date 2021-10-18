@@ -36,6 +36,11 @@
 namespace spla {
 
     /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
      * @class NodeProcessor
      *
      * @brief Interface to the expression node processor class.
@@ -88,6 +93,10 @@ namespace spla {
         /** @return Type of the expression node operation, handled by this processor */
         virtual ExpressionNode::Operation GetOperationType() const = 0;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

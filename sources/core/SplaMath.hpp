@@ -32,6 +32,11 @@
 
 namespace spla::math {
     namespace {
+        /**
+         * @addtogroup Internal
+         * @{
+         */
+      
         inline std::size_t GetBlocksCount(std::size_t dim, std::size_t blockSize) {
             auto rest = dim % blockSize;
             return dim / blockSize + (rest ? 1 : 0);
@@ -42,6 +47,11 @@ namespace spla::math {
             auto size = dim - first;
             return size < blockSize ? size : blockSize;
         }
+       
+        /**
+         * @}
+         */
+      
     }// namespace
 }// namespace spla::math
 

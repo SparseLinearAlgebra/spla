@@ -33,6 +33,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     namespace {
 
         template<class InputIterator, class MapIterator, class OutputIterator>
@@ -104,6 +109,10 @@ namespace spla {
         kernel.SetRange(first, last, input, result, elementsInSequence);
         return kernel.Exec(queue);
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

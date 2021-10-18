@@ -32,6 +32,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     struct PairHash {
     public:
         template<typename T, typename U>
@@ -39,6 +44,10 @@ namespace spla {
             return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
         }
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

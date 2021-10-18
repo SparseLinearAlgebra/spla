@@ -38,6 +38,11 @@
 namespace spla {
 
     /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
      * @class MatrixStorage
      *
      * Blocked matrix storage class. Stores matrix data as set of equally sized blocks,
@@ -142,6 +147,10 @@ namespace spla {
         Library &mLibrary;
         mutable std::mutex mMutex;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

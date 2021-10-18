@@ -33,6 +33,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     class VectorCOO final : public VectorBlock {
     public:
         using Indices = boost::compute::vector<unsigned int>;
@@ -52,6 +57,10 @@ namespace spla {
         Indices mRows;
         Values mVals;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
