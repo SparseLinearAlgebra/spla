@@ -39,7 +39,7 @@ bool spla::VectorDataWrite::Select(std::size_t nodeIdx, const spla::Expression &
     return true;
 }
 
-void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, tf::Taskflow &taskflow) {
+void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
     auto library = expression.GetLibrary().GetPrivatePtr();
@@ -57,7 +57,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto blockSize = library->GetBlockSize();
 
     for (std::size_t i = 0; i < math::GetBlocksCount(nrows, blockSize); i++) {
-        taskflow.emplace([=]() {
+        builder.Emplace([=]() {
             using namespace boost;
 
             // todo: gpu and device queue management

@@ -38,7 +38,7 @@ bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, const spla::Expression &
     return true;
 }
 
-void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, tf::Taskflow &taskflow) {
+void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
     auto library = expression.GetLibrary().GetPrivatePtr();
@@ -64,7 +64,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     for (size_t i = 0; i < blocksCountInRow; i++) {
         for (size_t j = 0; j < blocksCountInCol; j++) {
             auto deviceId = devicesIds[i * blocksCountInCol + j];
-            taskflow.emplace([=]() {
+            builder.Emplace([=]() {
                 using namespace boost;
 
                 compute::context ctx = library->GetContext();

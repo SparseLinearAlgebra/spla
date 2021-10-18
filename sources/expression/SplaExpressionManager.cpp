@@ -27,6 +27,7 @@
 
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaTaskBuilder.hpp>
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionManager.hpp>
 #include <expression/SplaExpressionTasks.hpp>
@@ -82,26 +83,35 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
 
     auto expressionTasks = std::make_unique<ExpressionTasks>();
     auto &taskflow = expressionTasks->taskflow;
-    auto &nodesTaskflow = expressionTasks->nodesTaskflow;
-
-    nodesTaskflow.resize(nodes.size());
-
-    for (auto idx : traversal) {
-        // Select processor for node
-        auto processor = SelectProcessor(idx, *expression);
-        // Actually process node
-        processor->Process(idx, *expression, nodesTaskflow[idx]);
-    }
 
     std::vector<tf::Task> modules;
     modules.reserve(nodes.size());
 
-    for (auto &nodeTaskflow : nodesTaskflow) {
-        // Build temporary modules to sync sub-flows
-        modules.push_back(taskflow.composed_of(nodeTaskflow));
+    for (auto idx : traversal) {
+        // Select processor for node
+        auto processor = SelectProcessor(idx, *expression);
+        // Wrap processor into task to handle dynamic changes of expression nodes params
+        auto task = [idx, expression = expression.Get(), processor = processor.Get()](tf::Subflow &subflow) {
+            // If aborted in previous tasks, candle run
+            if (expression->GetState() == Expression::State::Aborted)
+                return;
+
+            // Task build wraps error handling and abortion
+            TaskBuilder taskBuilder(expression, subflow);
+
+            try {
+                // Actual task graph composition
+                processor->Process(idx, *expression, taskBuilder);
+            } catch (std::exception &ex) {
+                expression->SetState(Expression::State::Aborted);
+                auto logger = expression->GetLibrary().GetPrivate().GetLogger();
+                SPDLOG_LOGGER_ERROR(logger, "Error inside expression node. {}", ex.what());
+            }
+        };
+        modules.push_back(taskflow.emplace(std::move(task)));
     }
 
-    for (size_t idx : traversal) {
+    for (std::size_t idx : traversal) {
         // Compose final taskflow graph
         auto &node = nodes[idx];
         auto &next = node->GetNext();
@@ -116,12 +126,14 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
 
     // Dummy task to notify expression state
     auto notification = taskflow.emplace([expression = expression.Get()]() {
-                                    expression->SetState(Expression::State::Evaluated);
+                                    if (expression->GetState() != Expression::State::Aborted)
+                                        expression->SetState(Expression::State::Evaluated);
                                 })
                                 .name("Notification");
 
-    for (auto &module : modules)
-        module.precede(notification);
+    // Add dependency for end nodes
+    for (auto end : context.endNodes)
+        modules[end].precede(notification);
 
     auto &executor = mLibrary.GetPrivate().GetTaskFlowExecutor();
     auto expressionFuture = std::make_unique<ExpressionFuture>(executor.run(taskflow));

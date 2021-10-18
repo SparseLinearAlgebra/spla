@@ -25,21 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIXDATAWRITE_HPP
-#define SPLA_SPLAMATRIXDATAWRITE_HPP
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaTaskBuilder.hpp>
+#include <spdlog/spdlog.h>
 
-#include <expression/SplaNodeProcessor.hpp>
+tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
+    auto task = [expression = mExpression, work = std::move(work)]() {
+        // If some error occurred earlier, no sense to continue
+        if (expression->GetState() == Expression::State::Aborted)
+            return;
 
-namespace spla {
-
-    class MatrixDataWrite final : public NodeProcessor {
-    public:
-        ~MatrixDataWrite() override = default;
-        bool Select(std::size_t nodeIdx, const Expression &expression) override;
-        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
-        ExpressionNode::Operation GetOperationType() const override;
+        try {
+            work();
+        } catch (std::exception &ex) {
+            expression->SetState(Expression::State::Aborted);
+            auto logger = expression->GetLibrary().GetPrivate().GetLogger();
+            SPDLOG_LOGGER_ERROR(logger, "Error inside expression node task. {}", ex.what());
+        }
     };
 
-}// namespace spla
+    return mSubflow.emplace(std::move(task));
+}
 
-#endif//SPLA_SPLAMATRIXDATAWRITE_HPP
+spla::TaskBuilder::TaskBuilder(spla::Expression *expression, tf::Subflow &subflow)
+    : mExpression(expression), mSubflow(subflow) {
+}

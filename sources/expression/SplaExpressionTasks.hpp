@@ -42,8 +42,6 @@ namespace spla {
     public:
         /** Expression taskflow graph */
         tf::Taskflow taskflow;
-        /** Taskflows composed for each node */
-        std::vector<tf::Taskflow> nodesTaskflow;
     };
 
     /**
