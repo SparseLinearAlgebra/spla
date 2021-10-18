@@ -27,8 +27,8 @@
 
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
-#include <detail/SplaError.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
 #include <memory>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaTypes.hpp>

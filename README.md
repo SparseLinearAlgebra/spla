@@ -109,6 +109,12 @@ spla
 │   ├── spla-c - library public C API
 │   └── spla-cpp - library public C++ API
 ├── sources - source code for library implementation
+│   ├── algo - algortihms implementation for math operations
+│   ├── bindings - c api bindings
+│   ├── compute - extension to boost compute
+│   ├── core - library foundation
+│   ├── expression - expression nodes processing
+│   └── storage - data storage 
 ├── tests - gtest-based unit-tests collection
 ├── package - python-package files
 │   ├── pyspla - library python wrapper source code

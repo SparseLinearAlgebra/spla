@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaError.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionTasks.hpp>
 

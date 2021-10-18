@@ -28,7 +28,7 @@
 #ifndef SPLA_SPLAMATRIXSTORAGE_HPP
 #define SPLA_SPLAMATRIXSTORAGE_HPP
 
-#include <detail/SplaHash.hpp>
+#include <core/SplaHash.hpp>
 #include <mutex>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <storage/SplaMatrixBlock.hpp>

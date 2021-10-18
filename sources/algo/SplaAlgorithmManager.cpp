@@ -27,7 +27,7 @@
 
 #include <algo/SplaAlgorithmManager.hpp>
 #include <cassert>
-#include <detail/SplaError.hpp>
+#include <core/SplaError.hpp>
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
 }

@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaError.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 

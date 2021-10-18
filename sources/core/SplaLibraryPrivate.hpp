@@ -31,7 +31,7 @@
 #include <algo/SplaAlgorithmManager.hpp>
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
-#include <detail/SplaDeviceManager.hpp>
+#include <core/SplaDeviceManager.hpp>
 #include <expression/SplaExpressionManager.hpp>
 #include <spdlog/spdlog.h>
 #include <spla-cpp/SplaDescriptor.hpp>

@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaLibraryPrivate.hpp>
-#include <detail/SplaMath.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaMath.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
 void spla::VectorStorage::SetBlock(const spla::VectorStorage::Index &index, const spla::RefPtr<spla::VectorBlock> &block) {

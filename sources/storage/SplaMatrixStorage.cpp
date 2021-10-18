@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaLibraryPrivate.hpp>
-#include <detail/SplaMath.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaMath.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 
 void spla::MatrixStorage::SetBlock(const spla::MatrixStorage::Index &index, const spla::RefPtr<spla::MatrixBlock> &block) {

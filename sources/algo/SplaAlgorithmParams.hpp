@@ -28,7 +28,7 @@
 #ifndef SPLA_SPLAALGORITHMPARAMS_HPP
 #define SPLA_SPLAALGORITHMPARAMS_HPP
 
-#include <detail/SplaDeviceManager.hpp>
+#include <core/SplaDeviceManager.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {

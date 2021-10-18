@@ -29,8 +29,8 @@
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/iterator.hpp>
 #include <compute/SplaGather.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
-#include <detail/SplaMath.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaMath.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <storage/SplaVectorStorage.hpp>
 #include <storage/block/SplaVectorCOO.hpp>

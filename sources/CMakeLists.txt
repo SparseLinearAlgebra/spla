@@ -21,14 +21,14 @@ set(SPLA_ALGORITHM_SOURCES
 set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp)
 
-set(SPLA_DETAIL_SOURCES
-        sources/detail/SplaDeviceManager.hpp
-        sources/detail/SplaDeviceManager.cpp
-        sources/detail/SplaError.hpp
-        sources/detail/SplaHash.hpp
-        sources/detail/SplaLibraryPrivate.cpp
-        sources/detail/SplaLibraryPrivate.hpp
-        sources/detail/SplaMath.hpp)
+set(SPLA_CORE_SOURCES
+        sources/core/SplaDeviceManager.hpp
+        sources/core/SplaDeviceManager.cpp
+        sources/core/SplaError.hpp
+        sources/core/SplaHash.hpp
+        sources/core/SplaLibraryPrivate.cpp
+        sources/core/SplaLibraryPrivate.hpp
+        sources/core/SplaMath.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataRead.cpp

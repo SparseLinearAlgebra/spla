@@ -26,9 +26,9 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <detail/SplaError.hpp>
-#include <detail/SplaLibraryPrivate.hpp>
-#include <detail/SplaMath.hpp>
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaMath.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <storage/SplaVectorStorage.hpp>
 #include <storage/block/SplaVectorCOO.hpp>

@@ -25,7 +25,7 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <detail/SplaDeviceManager.hpp>
+#include <core/SplaDeviceManager.hpp>
 
 namespace spla {
     namespace {
