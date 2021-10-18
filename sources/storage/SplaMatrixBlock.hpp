@@ -33,6 +33,11 @@
 namespace spla {
 
     /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
      * @class MatrixBlock
      *
      * Base class for a matrix block.
@@ -79,6 +84,10 @@ namespace spla {
         size_t mNvals;
         Format mFormat;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

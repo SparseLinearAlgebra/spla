@@ -33,6 +33,11 @@
 namespace spla {
 
     /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
      * @class VectorBlock
      *
      * Base class for a vector block.
@@ -72,6 +77,10 @@ namespace spla {
         size_t mNvals;
         Format mFormat;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

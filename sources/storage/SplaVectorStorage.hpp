@@ -36,6 +36,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     class VectorStorage final : public RefCnt {
     public:
         using Index = unsigned int;
@@ -84,6 +89,10 @@ namespace spla {
         Library &mLibrary;
         mutable std::mutex mMutex;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

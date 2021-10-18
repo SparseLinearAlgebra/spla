@@ -32,6 +32,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     namespace math {
 
         static inline size_t GetBlocksCount(size_t dim, size_t blockSize) {
@@ -46,6 +51,10 @@ namespace spla {
         }
 
     }// namespace math
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
