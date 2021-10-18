@@ -12,6 +12,12 @@ set(SPLA_CPP_SOURCES
         sources/SplaTypes.cpp
         sources/SplaVector.cpp)
 
+set(SPLA_ALGORITHM_SOURCES
+        sources/algo/SplaAlgorithm.hpp
+        sources/algo/SplaAlgorithmManager.cpp
+        sources/algo/SplaAlgorithmManager.hpp
+        sources/algo/SplaAlgorithmParams.hpp)
+
 set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp)
 

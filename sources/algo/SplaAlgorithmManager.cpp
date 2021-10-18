@@ -25,71 +25,53 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLALIBRARYPRIVATE_HPP
-#define SPLA_SPLALIBRARYPRIVATE_HPP
-
 #include <algo/SplaAlgorithmManager.hpp>
-#include <boost/compute/device.hpp>
-#include <boost/compute/system.hpp>
-#include <detail/SplaDeviceManager.hpp>
-#include <expression/SplaExpressionManager.hpp>
-#include <spdlog/spdlog.h>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <taskflow/taskflow.hpp>
-#include <unordered_map>
-#include <vector>
+#include <detail/SplaError.hpp>
+#include <cassert>
 
+spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
+}
 
-namespace spla {
-    /**
-     * @class LibraryPrivate
-     * Private library state, accessible for all objects within library.
-     */
-    class LibraryPrivate {
-    public:
-        explicit LibraryPrivate(Library &library, Library::Config config);
+void spla::AlgorithmManager::Register(const spla::RefPtr<spla::Algorithm> &algo) {
+    CHECK_RAISE_ERROR(algo.IsNotNull(), InvalidArgument, "Passed null processor");
 
-        tf::Executor &GetTaskFlowExecutor() noexcept;
+    Algorithm::Type type = algo->GetType();
+    auto list = mAlgorithms.find(type);
 
-        const RefPtr<Descriptor> &GetDefaultDesc() const noexcept;
+    if (list == mAlgorithms.end())
+        list = mAlgorithms.emplace(type, AlgorithmList()).first;
 
-        const RefPtr<ExpressionManager> &GetExprManager() const noexcept;
+    list->second.push_back(algo);
+}
 
-        const RefPtr<AlgorithmManager> &GetAlgoManager() const noexcept;
+void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
+    assert(params.IsNotNull());
+    auto algorithm = SelectAlgorithm(type, params);
+    algorithm->Process(*params);
+}
 
-        // todo: #44 remove this method
-        const std::vector<boost::compute::device> &GetDevices() const noexcept;
+tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, tf::Taskflow &taskflow) {
+    assert(params.IsNotNull());
+    auto algorithm = SelectAlgorithm(type, params);
+    return taskflow.emplace([=](){
+       algorithm->Process(*params);
+    });
+}
 
-        DeviceManager &GetDeviceManager() noexcept;
+spla::RefPtr<spla::Algorithm> spla::AlgorithmManager::SelectAlgorithm(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
+    auto iter = mAlgorithms.find(type);
 
-        const boost::compute::platform &GetPlatform() const noexcept;
+    CHECK_RAISE_ERROR(iter != mAlgorithms.end(), InvalidState,
+                      "No algorithms for such type=" << AlgorithmTypeToStr(type));
 
-        const boost::compute::context &GetContext() const noexcept;
+    const auto &algorithms = iter->second;
 
-        const Library::Config &GetContextConfig() const noexcept;
+    // NOTE: Iterate through all processors for this operation and
+    // select the first one, which meets requirements
+    for (auto &algorithm : algorithms)
+        if (algorithm->Select(*params))
+            return algorithm;
 
-        const std::shared_ptr<spdlog::logger> &GetLogger() const noexcept;
-
-        std::unordered_map<std::string, RefPtr<Type>> &GetTypeCache() noexcept;
-
-        std::size_t GetBlockSize() const noexcept;
-
-    private:
-        tf::Executor mExecutor;
-        RefPtr<Descriptor> mDefaultDesc;
-        RefPtr<ExpressionManager> mExprManager;
-        RefPtr<AlgorithmManager> mAlgoManager;
-        DeviceManager mDeviceManager;
-        boost::compute::platform mPlatform;
-        boost::compute::context mContext;
-        Library::Config mContextConfig;
-        std::shared_ptr<spdlog::logger> mLogger;
-        std::unordered_map<std::string, RefPtr<Type>> mTypeCache;
-    };
-
-}// namespace spla
-
-#endif//SPLA_SPLALIBRARYPRIVATE_HPP
+    RAISE_ERROR(InvalidState,
+                "Failed to find suitable algorithm for the type=" << AlgorithmTypeToStr(type));
+}
