@@ -28,7 +28,9 @@ set(SPLA_CORE_SOURCES
         sources/core/SplaHash.hpp
         sources/core/SplaLibraryPrivate.cpp
         sources/core/SplaLibraryPrivate.hpp
-        sources/core/SplaMath.hpp)
+        sources/core/SplaMath.hpp
+        sources/core/SplaTaskBuilder.cpp
+        sources/core/SplaTaskBuilder.hpp)
 
 set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataRead.cpp

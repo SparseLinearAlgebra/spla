@@ -36,7 +36,7 @@ namespace spla {
     public:
         ~VectorDataRead() override = default;
         bool Select(std::size_t nodeIdx, const Expression &expression) override;
-        void Process(std::size_t nodeIdx, const Expression &expression, tf::Taskflow &taskflow) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
         ExpressionNode::Operation GetOperationType() const override;
     };
 

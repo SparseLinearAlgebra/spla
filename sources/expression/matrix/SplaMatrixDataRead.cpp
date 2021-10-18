@@ -50,7 +50,7 @@ bool spla::MatrixDataRead::Select(std::size_t nodeIdx, const spla::Expression &e
     return true;
 }
 
-void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, tf::Taskflow &taskflow) {
+void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
     auto library = expression.GetLibrary().GetPrivatePtr();
@@ -77,7 +77,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
                           "Supported only COO matrix block format");
     }
 
-    auto collectNnz = taskflow.emplace([=]() {
+    auto collectNnz = builder.Emplace([=]() {
         auto &blockRowsNvals = shared->blockRowsNvals;
         auto &blockRowsOffsets = shared->blockRowsOffsets;
 
@@ -97,7 +97,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
     });
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
-        auto copyBlocksInRow = taskflow.emplace([=]() {
+        auto copyBlocksInRow = builder.Emplace([=]() {
             using namespace boost;
 
             // todo: gpu and device queue management

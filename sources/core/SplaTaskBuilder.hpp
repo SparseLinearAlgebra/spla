@@ -25,34 +25,51 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATH_HPP
-#define SPLA_SPLAMATH_HPP
+#ifndef SPLA_SPLATASKBUILDER_HPP
+#define SPLA_SPLATASKBUILDER_HPP
 
-#include <cstddef>
+#include <functional>
+#include <spla-cpp/SplaExpression.hpp>
+#include <spla-cpp/SplaExpressionNode.hpp>
+#include <taskflow/taskflow.hpp>
 
-namespace spla::math {
-    namespace {
+namespace spla {
+
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
+     * @class TaskBuilder
+     * @brief Task builder for expression nodes.
+     *
+     * Allows to compose dynamically subflows inside expression node
+     * task flow graph. Automates exception handling, expression owner notification
+     * about errors, and cancellation of the computation if error occurs.
+     */
+    class TaskBuilder {
+    public:
         /**
-         * @addtogroup Internal
-         * @{
+         * Emplace work to the subflow.
+         *
+         * @param work Function to execute as work inside task.
+         * @return Taskflow task handle.
          */
-      
-        inline std::size_t GetBlocksCount(std::size_t dim, std::size_t blockSize) {
-            auto rest = dim % blockSize;
-            return dim / blockSize + (rest ? 1 : 0);
-        }
+        tf::Task Emplace(std::function<void()> work);
 
-        inline std::size_t GetBlockActualSize(std::size_t blockIdx, std::size_t dim, std::size_t blockSize) {
-            auto first = blockIdx * blockSize;
-            auto size = dim - first;
-            return size < blockSize ? size : blockSize;
-        }
-       
-        /**
-         * @}
-         */
-      
-    }// namespace
-}// namespace spla::math
+    private:
+        friend class ExpressionManager;
+        TaskBuilder(Expression *expression, tf::Subflow &subflow);
 
-#endif//SPLA_SPLAMATH_HPP
+        Expression *mExpression;
+        tf::Subflow &mSubflow;
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_SPLATASKBUILDER_HPP

@@ -25,34 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATH_HPP
-#define SPLA_SPLAMATH_HPP
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaTaskBuilder.hpp>
+#include <spdlog/spdlog.h>
 
-#include <cstddef>
+tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
+    auto task = [expression = mExpression, work = std::move(work)]() {
+        // If some error occurred earlier, no sense to continue
+        if (expression->GetState() == Expression::State::Aborted)
+            return;
 
-namespace spla::math {
-    namespace {
-        /**
-         * @addtogroup Internal
-         * @{
-         */
-      
-        inline std::size_t GetBlocksCount(std::size_t dim, std::size_t blockSize) {
-            auto rest = dim % blockSize;
-            return dim / blockSize + (rest ? 1 : 0);
+        try {
+            work();
+        } catch (std::exception &ex) {
+            expression->SetState(Expression::State::Aborted);
+            auto logger = expression->GetLibrary().GetPrivate().GetLogger();
+            SPDLOG_LOGGER_ERROR(logger, "Error inside expression node task. {}", ex.what());
         }
+    };
 
-        inline std::size_t GetBlockActualSize(std::size_t blockIdx, std::size_t dim, std::size_t blockSize) {
-            auto first = blockIdx * blockSize;
-            auto size = dim - first;
-            return size < blockSize ? size : blockSize;
-        }
-       
-        /**
-         * @}
-         */
-      
-    }// namespace
-}// namespace spla::math
+    return mSubflow.emplace(std::move(task));
+}
 
-#endif//SPLA_SPLAMATH_HPP
+spla::TaskBuilder::TaskBuilder(spla::Expression *expression, tf::Subflow &subflow)
+    : mExpression(expression), mSubflow(subflow) {
+}

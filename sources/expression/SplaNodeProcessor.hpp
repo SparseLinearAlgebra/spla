@@ -28,10 +28,10 @@
 #ifndef SPLA_SPLANODEPROCESSOR_HPP
 #define SPLA_SPLANODEPROCESSOR_HPP
 
+#include <core/SplaTaskBuilder.hpp>
 #include <spla-cpp/SplaExpression.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
-#include <taskflow/taskflow.hpp>
 
 namespace spla {
 
@@ -86,9 +86,9 @@ namespace spla {
          *
          * @param nodeIdx Index of the node in expression
          * @param expression Expression being processed
-         * @param taskflow Taskflow graph of node nodeIdx
+         * @param builder TaskBuilder for node tasks
          */
-        virtual void Process(std::size_t nodeIdx, const Expression &expression, tf::Taskflow &taskflow) = 0;
+        virtual void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) = 0;
 
         /** @return Type of the expression node operation, handled by this processor */
         virtual ExpressionNode::Operation GetOperationType() const = 0;
