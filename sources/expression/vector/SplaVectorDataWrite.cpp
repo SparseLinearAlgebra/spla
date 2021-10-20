@@ -56,14 +56,19 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto nrows = vector->GetNrows();
     auto blockSize = library->GetBlockSize();
 
-    for (std::size_t i = 0; i < math::GetBlocksCount(nrows, blockSize); i++) {
+    std::size_t blockCountInRow = math::GetBlocksCount(nrows, blockSize);
+
+    auto requiredDeviceCount = blockCountInRow;
+    auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
+
+    for (std::size_t i = 0; i < blockCountInRow; i++) {
+        auto deviceId = devicesIds[i];
         builder.Emplace([=]() {
             using namespace boost;
 
-            // todo: gpu and device queue management
-            compute::device gpu = library->GetDevices()[0];
+            compute::device device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
-            compute::command_queue queue(ctx, gpu);
+            compute::command_queue queue(ctx, device);
 
             auto blockIndex = VectorStorage::Index{static_cast<unsigned int>(i)};
             auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

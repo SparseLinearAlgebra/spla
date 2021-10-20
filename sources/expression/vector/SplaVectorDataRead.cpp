@@ -96,15 +96,18 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const spla::Expression &
         std::exclusive_scan(blockRowsNvals.begin(), blockRowsNvals.end(), blockRowsOffsets.begin(), std::size_t{0});
     });
 
+    std::size_t requiredDeviceCount = storage->GetNblockRows();
+    auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
+
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
         tf::Task copyBlocksInRow;
+        auto deviceId = devicesIds[i];
         copyBlocksInRow = builder.Emplace([=]() {
             using namespace boost;
 
-            // todo: gpu and device queue management
-            compute::device gpu = library->GetDevices()[0];
+            auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
-            compute::command_queue queue(ctx, gpu);
+            compute::command_queue queue(ctx, device);
 
             // Where to start copy process
             std::size_t nvals = shared->blockRowsNvals[i];
