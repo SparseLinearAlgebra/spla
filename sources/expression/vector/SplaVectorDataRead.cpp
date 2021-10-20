@@ -101,10 +101,11 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const spla::Expression &
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
         tf::Task copyBlocksInRow;
+        auto deviceId = devicesIds[i];
         copyBlocksInRow = builder.Emplace([=]() {
             using namespace boost;
 
-            auto device = library->GetDeviceManager().GetDevice(devicesIds[i]);
+            auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
 

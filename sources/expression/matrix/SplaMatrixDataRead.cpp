@@ -100,10 +100,11 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
     auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
+        auto deviceId = devicesIds[i];
         auto copyBlocksInRow = builder.Emplace([=]() {
             using namespace boost;
 
-            auto device = library->GetDeviceManager().GetDevice(devicesIds[i]);
+            auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
 

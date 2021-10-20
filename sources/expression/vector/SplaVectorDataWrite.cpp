@@ -62,10 +62,11 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto devicesIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
 
     for (std::size_t i = 0; i < blockCountInRow; i++) {
+        auto deviceId = devicesIds[i];
         builder.Emplace([=]() {
             using namespace boost;
 
-            compute::device device = library->GetDeviceManager().GetDevice(devicesIds[i]);
+            compute::device device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
 
