@@ -71,7 +71,9 @@ namespace spla {
             /** Matrix-vector product */
             MxV,
             /** Vector-matrix product */
-            VxM
+            VxM,
+            /** Vector to vector assign */
+            VectorAssign
         };
 
         /**
@@ -119,6 +121,8 @@ namespace spla {
                     return "MxV";
                 case Algorithm::Type::VxM:
                     return "VxM";
+                case Algorithm::Type::VectorAssign:
+                    return "VectorAssign";
 
                 default:
                     return "Unknown";

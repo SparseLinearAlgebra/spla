@@ -25,56 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/SplaAlgorithmManager.hpp>
-#include <cassert>
-#include <core/SplaError.hpp>
+#ifndef SPLA_SPLAVECTORASSIGNCOO_HPP
+#define SPLA_SPLAVECTORASSIGNCOO_HPP
 
-#include <algo/vector/SplaVectorAssignCOO.hpp>
+#include <algo/SplaAlgorithm.hpp>
 
-spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
-    Register(new VectorAssignCOO());
-}
+namespace spla {
 
-void spla::AlgorithmManager::Register(const spla::RefPtr<spla::Algorithm> &algo) {
-    CHECK_RAISE_ERROR(algo.IsNotNull(), InvalidArgument, "Passed null processor");
+    class VectorAssignCOO final : public Algorithm {
+    public:
+        ~VectorAssignCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 
-    Algorithm::Type type = algo->GetType();
-    auto list = mAlgorithms.find(type);
+}// namespace spla
 
-    if (list == mAlgorithms.end())
-        list = mAlgorithms.emplace(type, AlgorithmList()).first;
-
-    list->second.push_back(algo);
-}
-
-void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
-    assert(params.IsNotNull());
-    auto algorithm = SelectAlgorithm(type, params);
-    algorithm->Process(*params);
-}
-
-tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, TaskBuilder &builder) {
-    assert(params.IsNotNull());
-    auto algorithm = SelectAlgorithm(type, params);
-    return builder.Emplace([=]() {
-        algorithm->Process(*params);
-    });
-}
-
-spla::RefPtr<spla::Algorithm> spla::AlgorithmManager::SelectAlgorithm(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
-    auto iter = mAlgorithms.find(type);
-
-    CHECK_RAISE_ERROR(iter != mAlgorithms.end(), InvalidState,
-                      "No algorithms for such type=" << AlgorithmTypeToStr(type));
-
-    const auto &algorithms = iter->second;
-
-    // NOTE: Iterate through all processors for this operation and
-    // select the first one, which meets requirements
-    for (auto &algorithm : algorithms)
-        if (algorithm->Select(*params))
-            return algorithm;
-
-    RAISE_ERROR(InvalidState,
-                "Failed to find suitable algorithm for the type=" << AlgorithmTypeToStr(type));
-}
+#endif//SPLA_SPLAVECTORASSIGNCOO_HPP

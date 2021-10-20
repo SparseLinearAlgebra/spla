@@ -30,6 +30,7 @@
 
 #include <core/SplaDeviceManager.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
+#include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
 
@@ -54,11 +55,24 @@ namespace spla {
         DeviceManager::DeviceId deviceId;
     };
 
+    class ParamsVectorAssign final : public AlgorithmParams {
+    public:
+        ~ParamsVectorAssign() override = default;
+
+        /** If has mask, it will be used, otherwise interpret as full mask */
+        bool hasMask = false;
+        /** Output block to assign result */
+        RefPtr<VectorBlock> output;
+        /** Used if hasMask, input & mask to set values */
+        RefPtr<VectorBlock> mask;
+        /** Input block to assign */
+        RefPtr<VectorBlock> input;
+    };
+
     /**
      * @}
      */
 
 }// namespace spla
-
 
 #endif//SPLA_SPLAALGORITHMPARAMS_HPP

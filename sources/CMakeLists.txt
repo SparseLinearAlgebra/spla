@@ -13,6 +13,8 @@ set(SPLA_CPP_SOURCES
         sources/SplaVector.cpp)
 
 set(SPLA_ALGORITHM_SOURCES
+        sources/algo/vector/SplaVectorAssignCOO.cpp
+        sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/SplaAlgorithm.hpp
         sources/algo/SplaAlgorithmManager.cpp
         sources/algo/SplaAlgorithmManager.hpp
