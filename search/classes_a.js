@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['refcnt_401',['RefCnt',['../classspla_1_1RefCnt.html',1,'spla']]],
-  ['refptr_402',['RefPtr',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20class_20spla_3a_3amatrixstorage_20_3e_403',['RefPtr&lt; class spla::MatrixStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20class_20spla_3a_3avectorstorage_20_3e_404',['RefPtr&lt; class spla::VectorStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20spla_3a_3aalgorithmmanager_20_3e_405',['RefPtr&lt; spla::AlgorithmManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20spla_3a_3adescriptor_20_3e_406',['RefPtr&lt; spla::Descriptor &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20spla_3a_3aexpression_20_3e_407',['RefPtr&lt; spla::Expression &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20spla_3a_3aexpressionmanager_20_3e_408',['RefPtr&lt; spla::ExpressionManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
-  ['refptr_3c_20spla_3a_3atype_20_3e_409',['RefPtr&lt; spla::Type &gt;',['../classspla_1_1RefPtr.html',1,'spla']]]
+  ['refcnt_405',['RefCnt',['../classspla_1_1RefCnt.html',1,'spla']]],
+  ['refptr_406',['RefPtr',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20class_20spla_3a_3amatrixstorage_20_3e_407',['RefPtr&lt; class spla::MatrixStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20class_20spla_3a_3avectorstorage_20_3e_408',['RefPtr&lt; class spla::VectorStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aalgorithmmanager_20_3e_409',['RefPtr&lt; spla::AlgorithmManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3adescriptor_20_3e_410',['RefPtr&lt; spla::Descriptor &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aexpression_20_3e_411',['RefPtr&lt; spla::Expression &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aexpressionmanager_20_3e_412',['RefPtr&lt; spla::ExpressionManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3atype_20_3e_413',['RefPtr&lt; spla::Type &gt;',['../classspla_1_1RefPtr.html',1,'spla']]]
 ];

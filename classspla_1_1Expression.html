@@ -147,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a54dcbe8a2ae3d4fe1d203e3219d5fe18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cae1e666fbfd2f2cc304b87b4446665"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a3cae1e666fbfd2f2cc304b87b4446665">MakeDataRead</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;vector, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataVector.html">DataVector</a> &gt; &amp;data, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
 <tr class="separator:a3cae1e666fbfd2f2cc304b87b4446665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe400a9b42dd89f48ae890026eb08786"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#afe400a9b42dd89f48ae890026eb08786">MakeEWiseAdd</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;w, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;mask, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;op, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;a, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;b, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
+<tr class="separator:afe400a9b42dd89f48ae890026eb08786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a28977cb6a8958b145f5ab1a0af206c2e">GetState</a> () const</td></tr>
 <tr class="separator:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e3be412c4633ec34d2f869cf42f4f22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a4e3be412c4633ec34d2f869cf42f4f22">Empty</a> () const</td></tr>
@@ -564,6 +566,71 @@ Use descriptor <code>NoDuplicates</code> hint if values already has no duplicate
   <table class="params">
     <tr><td class="paramname">vector</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> to write data </td></tr>
     <tr><td class="paramname">data</td><td>Raw host data to write </td></tr>
+    <tr><td class="paramname">desc</td><td>Operation descriptor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Created expression node </dd></dl>
+
+</div>
+</div>
+<a id="afe400a9b42dd89f48ae890026eb08786"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe400a9b42dd89f48ae890026eb08786">&#9670;&nbsp;</a></span>MakeEWiseAdd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">spla::ExpressionNode</a> &gt; spla::Expression::MakeEWiseAdd </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Make vector masked element-wise add expression node. Operation is evaluated as <code>w&lt;mask&gt; = a +(op) b</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">w</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> to store result </td></tr>
+    <tr><td class="paramname">mask</td><td>Mask to filter input vectors; may be null </td></tr>
+    <tr><td class="paramname">op</td><td>Binary op to sum elements of input vectors </td></tr>
+    <tr><td class="paramname">a</td><td>Input a vector </td></tr>
+    <tr><td class="paramname">b</td><td>Input b vector </td></tr>
     <tr><td class="paramname">desc</td><td>Operation descriptor</td></tr>
   </table>
   </dd>

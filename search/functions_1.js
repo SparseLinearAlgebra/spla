@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bool_499',['Bool',['../classspla_1_1Types.html#a29c48a81345842b6cb076a6cfa3e91e5',1,'spla::Types']]]
+  ['bool_506',['Bool',['../classspla_1_1Types.html#a29c48a81345842b6cb076a6cfa3e91e5',1,'spla::Types']]]
 ];
