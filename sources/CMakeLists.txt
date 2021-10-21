@@ -5,6 +5,7 @@ set(SPLA_CPP_SOURCES
         sources/SplaExpressionNode.cpp
         sources/SplaFunctionBinary.cpp
         sources/SplaFunctionUnary.cpp
+        sources/SplaFunctions.cpp
         sources/SplaLibrary.cpp
         sources/SplaMatrix.cpp
         sources/SplaScalar.cpp

@@ -25,11 +25,11 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIX_HPP
-#define SPLA_SPLAMATRIX_HPP
+#ifndef SPLA_SPLAFUNCTIONS_HPP
+#define SPLA_SPLAFUNCTIONS_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <spla-cpp/SplaFunctionUnary.hpp>
 
 namespace spla {
 
@@ -39,59 +39,27 @@ namespace spla {
      */
 
     /**
-     * @class Matrix
-     *
-     * Matrix object to represent a mathematical dim MxN matrix
-     * with values of specified Type. Uses blocked storage schema internally.
-     *
-     * @note Can be used as mask (only indices without values) if Type has zero byteSize.
-     * @note Can be updated from the host using MatrixDataWrite expression node.
-     * @note Matrix content can be accessed from host using MatrixDataRead expression node.
-     *
-     * @details
-     *  Uses sparse values storage schema, so actual values of the matrix has
-     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`. If provided binary function, it
-     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
-     *
-     * @see Expression
-     * @see FunctionUnary
-     * @see FunctionBinary
+     * @class Functions
+     * @brief Predefined functions for built-in types.
+     * Allows to access standard plus, minus, min, max function for built-in types.
      */
-    class SPLA_API Matrix final : public TypedObject {
+    class Functions {
     public:
-        ~Matrix() override;
-
-        /** @return Number of matrix rows */
-        std::size_t GetNrows() const;
-
-        /** @return Number of matrix columns */
-        std::size_t GetNcols() const;
-
-        /** @return Number of matrix values */
-        std::size_t GetNvals() const;
-
-        /** @return Internal matrix storage (for private usage only) */
-        [[nodiscard]] const RefPtr<class MatrixStorage> &GetStorage() const;
+        /**
+         * Function c = a + b for Float32 type.
+         * @return Plus function.
+         */
+        static RefPtr<FunctionBinary> PlusFloat32(Library &library);
 
         /**
-         * Make new matrix with specified size.
-         *
-         * @param nrows Number of matrix rows.
-         * @param ncols Number of matrix columns
-         * @param type Type of stored values.
-         * @param library Library global instance.
-         *
-         * @return New matrix instance.
+         * Function c = a + b for Float64 type.
+         * @return Plus function.
          */
-        static RefPtr<Matrix> Make(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
+        static RefPtr<FunctionBinary> PlusFloat64(Library &library);
 
     private:
-        Matrix(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
-
-        // Separate storage for private impl
-        RefPtr<class MatrixStorage> mStorage;
+        // friend class Library;
+        // todo: static void InitFunctions(Library &library);
     };
 
     /**
@@ -100,4 +68,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIX_HPP
+#endif//SPLA_SPLAFUNCTIONS_HPP

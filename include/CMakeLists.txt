@@ -7,6 +7,7 @@ set(SPLA_CPP_HEADERS
         include/spla-cpp/SplaExpressionNode.hpp
         include/spla-cpp/SplaFunctionBinary.hpp
         include/spla-cpp/SplaFunctionUnary.hpp
+        include/spla-cpp/SplaFunctions.hpp
         include/spla-cpp/SplaLibrary.hpp
         include/spla-cpp/SplaMatrix.hpp
         include/spla-cpp/SplaObject.hpp

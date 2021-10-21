@@ -29,6 +29,8 @@
 #define SPLA_SPLAFUNCTIONBINARY_HPP
 
 #include <spla-cpp/SplaObject.hpp>
+#include <spla-cpp/SplaType.hpp>
+#include <string>
 
 namespace spla {
 
@@ -39,9 +41,65 @@ namespace spla {
 
     /**
      * @class FunctionBinary
+     * @brief Binary Typed element function f: a x b -> c.
+     *
+     * Binary function accepts two values of typed input objects, with types
+     * `A` and `B` and return new value for typed object with type `C`.
+     * Can be used as binary op in element wise operations and as accum
+     * for matrices, vectors and scalars.
+     *
+     * Source code for the function must be provided in the string.
+     * Function signature is following `(const void* vp_a, const void* vp_b, void* vp_c)`,
+     * where a, b and c pointers to values, c must be written by the function.
+     * It is up to user to cast this pointers to appropriate types and check values sizes.
      */
     class SPLA_API FunctionBinary final : public Object {
     public:
+        ~FunctionBinary() override = default;
+
+        /** @return Input type a. */
+        const RefPtr<Type> &GetA() const;
+
+        /** @return Input type b. */
+        const RefPtr<Type> &GetB() const;
+
+        /** @return Result type c. */
+        const RefPtr<Type> &GetC() const;
+
+        /** @return OpenCL function body source code. */
+        const std::string &GetSource() const;
+
+        /**
+         * Check if can apply this function to provided objects.
+         *
+         * @param a Input typed a object.
+         * @param b Input typed b object.
+         * @param c Result typed c object.
+         *
+         * @return True if can apply.
+         */
+        bool CanApply(const TypedObject &a, const TypedObject &b, const TypedObject &c) const;
+
+        /**
+         * Makes new function binary instance.
+         *
+         * @param a Input type a
+         * @param b Input type b
+         * @param c Result type c
+         * @param source OpenCL function body source code
+         * @param library Library global state
+         *
+         * @return New function binary instance
+         */
+        static RefPtr<FunctionBinary> Make(RefPtr<Type> a, RefPtr<Type> b, RefPtr<Type> c, std::string source, Library &library);
+
+    private:
+        FunctionBinary(RefPtr<Type> a, RefPtr<Type> b, RefPtr<Type> c, std::string source, Library &library);
+
+        RefPtr<Type> mA;
+        RefPtr<Type> mB;
+        RefPtr<Type> mC;
+        std::string mSource;
     };
 
     /**

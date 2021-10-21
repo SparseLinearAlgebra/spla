@@ -25,34 +25,25 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <spla-cpp/SplaFunctions.hpp>
+#include <spla-cpp/SplaTypes.hpp>
 
-const spla::RefPtr<spla::Type> &spla::FunctionBinary::GetA() const {
-    return mA;
+spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
+    auto t = Types::Float32(library);
+    return FunctionBinary::Make(t, t, t,
+                                "float a = *((local const float*)vp_a);"
+                                "float b = *((local const float*)vp_b);"
+                                "local float* c = (local float*)vp_c;"
+                                "*c = a + b;",
+                                library);
 }
 
-const spla::RefPtr<spla::Type> &spla::FunctionBinary::GetB() const {
-    return mB;
-}
-
-const spla::RefPtr<spla::Type> &spla::FunctionBinary::GetC() const {
-    return mC;
-}
-
-const std::string &spla::FunctionBinary::GetSource() const {
-    return mSource;
-}
-
-bool spla::FunctionBinary::CanApply(const spla::TypedObject &a, const spla::TypedObject &b, const spla::TypedObject &c) const {
-    return a.GetType() == GetA() &&
-           b.GetType() == GetB() &&
-           c.GetType() == GetC();
-}
-
-spla::RefPtr<spla::FunctionBinary> spla::FunctionBinary::Make(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, spla::RefPtr<spla::Type> c, std::string source, spla::Library &library) {
-    return RefPtr<FunctionBinary>(new FunctionBinary(std::move(a), std::move(b), std::move(c), std::move(source), library));
-}
-
-spla::FunctionBinary::FunctionBinary(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, spla::RefPtr<spla::Type> c, std::string source, spla::Library &library)
-    : Object(TypeName::FunctionBinary, library), mA(std::move(a)), mB(std::move(b)), mC(std::move(c)), mSource(std::move(source)) {
+spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
+    auto t = Types::Float64(library);
+    return FunctionBinary::Make(t, t, t,
+                                "double a = *((local const double*)vp_a);"
+                                "double b = *((local const double*)vp_b);"
+                                "local double* c = (local double*)vp_c;"
+                                "*c = a + b;",
+                                library);
 }
