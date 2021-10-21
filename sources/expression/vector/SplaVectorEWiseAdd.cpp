@@ -25,24 +25,15 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#include <expression/vector/SplaVectorEWiseAdd.hpp>
 
-#include <spla-cpp/SplaConfig.hpp>
-#include <spla-cpp/SplaData.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaExpression.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
-#include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaMatrix.hpp>
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaScalar.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <spla-cpp/SplaVector.hpp>
+bool spla::VectorEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+    return true;
+}
 
-#endif//SPLA_SPLA_HPP
+void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+}
+
+spla::ExpressionNode::Operation spla::VectorEWiseAdd::GetOperationType() const {
+    return ExpressionNode::Operation::VectorEWiseAdd;
+}

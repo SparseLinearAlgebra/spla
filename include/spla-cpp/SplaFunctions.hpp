@@ -43,7 +43,7 @@ namespace spla {
      * @brief Predefined functions for built-in types.
      * Allows to access standard plus, minus, min, max function for built-in types.
      */
-    class Functions {
+    class SPLA_API Functions {
     public:
         /**
          * Function c = a + b for Float32 type.

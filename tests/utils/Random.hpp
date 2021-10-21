@@ -35,7 +35,7 @@ namespace utils {
     template<typename T>
     class UniformRealGenerator {
     public:
-        explicit UniformRealGenerator(size_t seed = 0)
+        explicit UniformRealGenerator(std::size_t seed = 0)
             : mEngine(seed) {
         }
 

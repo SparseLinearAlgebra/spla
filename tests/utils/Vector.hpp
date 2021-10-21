@@ -46,7 +46,7 @@ namespace utils {
         static constexpr std::size_t IndexSize = sizeof(Index);
         static constexpr std::size_t ElementSize = sizeof(T);
 
-        Vector(size_t nrows, std::vector<Index> rows, std::vector<T> vals)
+        Vector(std::size_t nrows, std::vector<Index> rows, std::vector<T> vals)
             : mRows(std::move(rows)),
               mVals(std::move(vals)),
               mNrows(nrows) {
@@ -83,6 +83,21 @@ namespace utils {
 
         [[nodiscard]] std::size_t GetNvals() const {
             return mVals.size();
+        }
+
+        [[nodiscard]] spla::RefPtr<spla::DataVector> GetData(spla::Library &library) {
+            auto data = spla::DataVector::Make(library);
+            data->SetRows(GetRows());
+            data->SetVals(GetVals());
+            data->SetNvals(GetNvals());
+            return data;
+        }
+
+        [[nodiscard]] spla::RefPtr<spla::DataVector> GetDataIndices(spla::Library &library) {
+            auto data = spla::DataVector::Make(library);
+            data->SetRows(GetRows());
+            data->SetVals(GetVals());
+            return data;
         }
 
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v) const {
@@ -151,6 +166,83 @@ namespace utils {
             }
 
             return Vector<T>(GetNrows(), std::move(rows), std::move(vals));
+        }
+
+        template<typename M>
+        [[nodiscard]] Vector Mask(const Vector<M> &mask) const {
+            assert(GetNrows() == mask.GetNrows());
+
+            std::vector<Index> rows;
+            std::vector<T> vals;
+
+            std::size_t a = 0;
+            std::size_t b = 0;
+            std::size_t endA = GetNvals();
+            std::size_t endB = mask.GetNvals();
+
+            while (a != endA && b != endB) {
+                if (GetRows()[a] == mask.GetRows()[b]) {
+                    a += 1;
+                    b += 1;
+                    rows.push_back(GetRows()[a]);
+                    vals.push_back(GetVals()[a]);
+                } else if (GetRows()[a] < mask.GetRows()[b]) {
+                    a += 1;
+                } else {
+                    b += 1;
+                }
+            }
+
+            return Vector<T>(GetNrows(), std::move(rows), std::move(vals));
+        }
+
+        template<typename BinaryOp>
+        [[nodiscard]] Vector EWiseAdd(const Vector<T> &other, BinaryOp op) const {
+            assert(GetNrows() == other.GetNrows());
+
+            std::vector<Index> rows;
+            std::vector<T> vals;
+
+            std::size_t a = 0;
+            std::size_t b = 0;
+            std::size_t endA = GetNvals();
+            std::size_t endB = other.GetNvals();
+
+            while (a != endA && b != endB) {
+                if (GetRows()[a] == other.GetRows()[b]) {
+                    a += 1;
+                    b += 1;
+                    rows.push_back(GetRows()[a]);
+                    vals.push_back(op(GetVals()[a], other.GetVals()[b]));
+                } else if (GetRows()[a] < other.GetRows()[b]) {
+                    a += 1;
+                    rows.push_back(GetRows()[a]);
+                    vals.push_back(GetVals()[a]);
+                } else {
+                    b += 1;
+                    rows.push_back(other.GetRows()[b]);
+                    vals.push_back(other.GetVals()[b]);
+                }
+            }
+
+            while (a != endA) {
+                a += 1;
+                rows.push_back(GetRows()[a]);
+                vals.push_back(GetVals()[a]);
+            }
+
+            while (b != endB) {
+                b += 1;
+                rows.push_back(other.GetRows()[b]);
+                vals.push_back(other.GetVals()[b]);
+            }
+
+            return Vector<T>(GetNrows(), std::move(rows), std::move(vals));
+        }
+
+        template<typename M, typename BinaryOp>
+        [[nodiscard]] Vector EWiseAdd(const Vector<M> &mask, const Vector<T> &other, BinaryOp op) const {
+            return Mask(mask).EWiseAdd(other.Mask(mask), op);
         }
 
         static Vector Generate(size_t nrows, size_t nvals, size_t seed = 0, const T &value = T()) {

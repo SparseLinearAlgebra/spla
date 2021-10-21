@@ -32,6 +32,7 @@
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
+#include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
@@ -164,6 +165,26 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataRead(const RefPtr<Vector> &vector,
                                             const RefPtr<DataVector> &data,
+                                            const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make vector masked element-wise add expression node.
+         * Operation is evaluated as `w<mask> = a +(op) b`.
+         *
+         * @param w Vector to store result
+         * @param mask Mask to filter input vectors; may be null
+         * @param op Binary op to sum elements of input vectors
+         * @param a Input a vector
+         * @param b Input b vector
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Vector> &w,
+                                            const RefPtr<Vector> &mask,
+                                            const RefPtr<FunctionBinary> &op,
+                                            const RefPtr<Vector> &a,
+                                            const RefPtr<Vector> &b,
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /** @return Current expression state */

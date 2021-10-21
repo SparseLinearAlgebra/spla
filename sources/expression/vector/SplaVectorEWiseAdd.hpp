@@ -25,24 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_SPLAVECTOREWISEADD_HPP
+#define SPLA_SPLAVECTOREWISEADD_HPP
 
-#include <spla-cpp/SplaConfig.hpp>
-#include <spla-cpp/SplaData.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaExpression.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
-#include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaMatrix.hpp>
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaScalar.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <spla-cpp/SplaVector.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 
-#endif//SPLA_SPLA_HPP
+namespace spla {
+
+    class VectorEWiseAdd final : public NodeProcessor {
+    public:
+        ~VectorEWiseAdd() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
+
+}// namespace spla
+
+#endif//SPLA_SPLAVECTOREWISEADD_HPP

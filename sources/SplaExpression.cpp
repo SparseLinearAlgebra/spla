@@ -29,6 +29,8 @@
 #include <core/SplaLibraryPrivate.hpp>
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionTasks.hpp>
+#include <spla-cpp/SplaExpression.hpp>
+
 
 spla::Expression::~Expression() {
     // Before destruction we must wait until it is executed
@@ -88,9 +90,6 @@ spla::Expression::MakeNode(spla::ExpressionNode::Operation op,
                            const spla::RefPtr<spla::Descriptor> &desc) {
     CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state");
 
-    for (const auto &arg : args)
-        CHECK_RAISE_ERROR(arg.IsNotNull(), InvalidArgument, "Passed null argument to op=" << ExpressionNodeOpToStr(op));
-
     RefPtr<ExpressionNode> node(new ExpressionNode(op, *this, GetLibrary()));
     node->SetIdx(mNodes.size());
     node->SetArgs(std::move(args));
@@ -147,6 +146,25 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
             data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::VectorDataRead,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
+                               const spla::RefPtr<spla::Vector> &mask,
+                               const spla::RefPtr<spla::FunctionBinary> &op,
+                               const spla::RefPtr<spla::Vector> &a,
+                               const spla::RefPtr<spla::Vector> &b,
+                               const spla::RefPtr<spla::Descriptor> &desc) {
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            op.As<Object>(),
+            a.As<Object>(),
+            b.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::VectorEWiseAdd,
                     std::move(args),
                     desc);
 }

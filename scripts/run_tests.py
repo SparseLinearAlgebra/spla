@@ -6,7 +6,8 @@ TESTS = [
     "TestBasic",
     "TestDataMatrix",
     "TestDataVector",
-    "TestExpression"
+    "TestExpression",
+    "TestVectorEWiseAdd"
 ]
 
 
