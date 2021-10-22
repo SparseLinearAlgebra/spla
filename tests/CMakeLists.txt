@@ -3,6 +3,7 @@ function(spla_test_target target)
     target_link_libraries(${target} PRIVATE spla)
     target_link_libraries(${target} PRIVATE gtest)
     target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+    target_include_directories(${target} PRIVATE ../sources)
 endfunction()
 
 spla_test_target(TestBasic)

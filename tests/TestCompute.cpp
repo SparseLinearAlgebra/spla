@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
+#include <compute/SplaMergeByKey.hpp>
 
 TEST(Compute, MergeByKey) {
     namespace compute = boost::compute;
@@ -73,3 +74,5 @@ TEST(Compute, MergeByKey) {
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
     }
 }
+
+SPLA_GTEST_MAIN
