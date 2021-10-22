@@ -25,7 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <boost/compute/algorithm.hpp>
+#include <boost/compute/container/vector.hpp>
+#include <boost/compute/iterator.hpp>
+#include <compute/SplaGather.hpp>
+#include <compute/SplaMaskByKey.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaMath.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
+#include <storage/SplaVectorStorage.hpp>
+#include <storage/block/SplaVectorCOO.hpp>
 
 bool spla::VectorEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
