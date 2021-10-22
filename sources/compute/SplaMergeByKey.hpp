@@ -136,6 +136,150 @@ namespace spla {
                 valuesResult + resultSize};
     }
 
+    template<
+            typename ItKeysABegin1,
+            typename ItKeysABegin2,
+            typename ItKeysAEnd1,
+            typename ItValuesA,
+            typename ItKeysBBegin1,
+            typename ItKeysBBegin2,
+            typename ItKeysBEnd1,
+            typename ItValuesB,
+            typename ItKeysResult1,
+            typename ItKeysResult2,
+            typename ItValuesResult>
+    auto MergeByPairKey(
+            ItKeysABegin1 keysABeginFirst,
+            ItKeysABegin2 keysABeginSecond,
+            ItKeysAEnd1 keysAEndFirst,
+            ItValuesA valuesA,
+            ItKeysBBegin1 keysBBeginFirst,
+            ItKeysBBegin2 keysBBeginSecond,
+            ItKeysBEnd1 keysBEndFirst,
+            ItValuesB valuesB,
+            ItKeysResult1 keysResultFirst,
+            ItKeysResult2 keysResultSecond,
+            ItValuesResult valuesResult,
+            boost::compute::command_queue &queue) {
+
+        namespace compute = boost::compute;
+
+        using Key1 = typename std::iterator_traits<ItKeysABegin1>::value_type;
+        using Key2 = typename std::iterator_traits<ItKeysABegin2>::value_type;
+        using Value = typename std::iterator_traits<ItValuesA>::value_type;
+
+        using KeyValue = boost::tuple<Key1, Key2, Value>;
+
+        const compute::context &ctx = queue.get_context();
+
+        const std::size_t aSize = std::distance(keysABeginFirst, keysAEndFirst);
+        const std::size_t bSize = std::distance(keysBBeginFirst, keysBEndFirst);
+
+        compute::vector<KeyValue> keyValuesA(aSize, ctx);
+        compute::vector<KeyValue> keyValuesB(bSize, ctx);
+        compute::vector<KeyValue> keyValuesRes(aSize + bSize, ctx);
+
+        using ::boost::compute::lambda::_1;
+        using ::boost::compute::lambda::_2;
+        using ::boost::compute::lambda::get;
+
+        // Copy A keys
+        compute::copy(
+                keysABeginFirst,
+                keysAEndFirst,
+                compute::make_transform_iterator(
+                        keyValuesA.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                keysABeginSecond,
+                keysABeginSecond + aSize,
+                compute::make_transform_iterator(
+                        keyValuesA.begin(),
+                        get<1>(_1)),
+                queue);
+
+        // Copy A values
+        compute::copy(
+                valuesA,
+                valuesA + aSize,
+                compute::make_transform_iterator(
+                        keyValuesA.begin(),
+                        get<2>(_1)),
+                queue);
+
+        // Copy B keys
+        compute::copy(
+                keysBBeginFirst,
+                keysBEndFirst,
+                compute::make_transform_iterator(
+                        keyValuesB.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                keysBBeginSecond,
+                keysBBeginSecond + bSize,
+                compute::make_transform_iterator(
+                        keyValuesB.begin(),
+                        get<1>(_1)),
+                queue);
+
+        // Copy B values
+        compute::copy(
+                valuesB,
+                valuesB + bSize,
+                compute::make_transform_iterator(
+                        keyValuesB.begin(),
+                        get<2>(_1)),
+                queue);
+
+
+        auto itResEnd = compute::merge(
+                keyValuesA.begin(), keyValuesA.end(),
+                keyValuesB.begin(), keyValuesB.end(),
+                keyValuesRes.begin(),
+                (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)) || get<0>(_1) < get<0>(_2),
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        keyValuesRes.begin(),
+                        get<0>(_1)),
+                compute::make_transform_iterator(
+                        itResEnd,
+                        get<0>(_1)),
+                keysResultFirst,
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        keyValuesRes.begin(),
+                        get<1>(_1)),
+                compute::make_transform_iterator(
+                        itResEnd,
+                        get<1>(_1)),
+                keysResultSecond,
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        keyValuesRes.begin(),
+                        get<2>(_1)),
+                compute::make_transform_iterator(
+                        itResEnd,
+                        get<2>(_1)),
+                valuesResult,
+                queue);
+
+        const std::size_t resultSize = std::distance(keyValuesRes.begin(), itResEnd);
+
+        return std::pair{
+                std::pair{keysResultFirst + resultSize, keysResultSecond + resultSize},
+                valuesResult + resultSize};
+    }
+
 }// namespace spla
 
 #endif//SPLA_SPLAMERGEBYKEY_HPP
