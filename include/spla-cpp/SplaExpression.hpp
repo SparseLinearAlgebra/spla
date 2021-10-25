@@ -38,6 +38,7 @@
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <spla-cpp/SplaVector.hpp>
 #include <vector>
+#include <memory>
 
 namespace spla {
 
