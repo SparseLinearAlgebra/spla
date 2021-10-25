@@ -9,6 +9,8 @@ on:
       - 'include/**'
       - 'tests/**'
       - '.clang-format'
+  pull_request:
+    branches: [ main ]
 
 jobs:
   formatting-check:
