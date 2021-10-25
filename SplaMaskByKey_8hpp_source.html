@@ -377,10 +377,125 @@ $(function() {
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keywordflow">return</span> (counts.end() - 1).read(queue);</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    }</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMASKBYKEY_HPP</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            <span class="keyword">class </span>InputIterator1,</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            <span class="keyword">class </span>InputIterator2,</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            <span class="keyword">class </span>InputIterator3,</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <span class="keyword">class </span>InputIterator4,</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            <span class="keyword">class </span>InputIterator5,</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            <span class="keyword">class </span>OutputIterator1,</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            <span class="keyword">class </span>OutputIterator2,</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            <span class="keyword">class </span>OutputIterator3&gt;</div>
+<div class="line"><a name="l00362"></a><span class="lineno"><a class="line" href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">  362</a></span>&#160;    <span class="keyword">inline</span> std::size_t <a class="code" href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">MaskByPairKey</a>(InputIterator1 mask1First,</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                                     InputIterator1 mask1Last,</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                                     InputIterator2 mask2First,</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                                     InputIterator3 key1Firsts,</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                                     InputIterator3 key1Last,</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                                     InputIterator4 key2Firsts,</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                                     InputIterator5 valueFirst,</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                                     OutputIterator1 resultKeys1,</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                                     OutputIterator2 resultKeys2,</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                                     OutputIterator3 resultValues,</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                                     boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;InputIterator1&gt;::value);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;InputIterator2&gt;::value);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;InputIterator3&gt;::value);</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;InputIterator4&gt;::value);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;InputIterator5&gt;::value);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;OutputIterator1&gt;::value);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;OutputIterator2&gt;::value);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        BOOST_STATIC_ASSERT(compute::is_device_iterator&lt;OutputIterator3&gt;::value);</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keyword">using</span> Key1 = <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator1&gt;::value_type;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        <span class="keyword">using</span> Key2 = <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator2&gt;::value_type;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <span class="keyword">using</span> Key = boost::tuple&lt;Key1, Key2&gt;;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="keyword">const</span> compute::context &amp;ctx = queue.get_context();</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keyword">const</span> std::size_t aSize = std::distance(mask1First, mask1Last);</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="keyword">const</span> std::size_t bSize = std::distance(key1Firsts, key1Last);</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        compute::vector&lt;Key&gt; mask(aSize, ctx);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        compute::vector&lt;Key&gt; keys(bSize, ctx);</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        using ::boost::compute::lambda::_1;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        using ::boost::compute::lambda::_2;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        using ::boost::compute::lambda::get;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="comment">// Copy A keys</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                mask1First,</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                mask1Last,</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                        mask.begin(),</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                        get&lt;0&gt;(_1)),</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                queue);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; </div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                mask2First,</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                mask2First + aSize,</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                        mask.begin(),</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                        get&lt;1&gt;(_1)),</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                queue);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        <span class="comment">// Copy B keys</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                key1Firsts,</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                key1Last,</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                        keys.begin(),</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                        get&lt;0&gt;(_1)),</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                queue);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; </div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                key2Firsts,</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                key2Firsts + bSize,</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                        keys.begin(),</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                        get&lt;1&gt;(_1)),</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;                queue);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160; </div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">auto</span> count = <a class="code" href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">MaskByKey</a>(mask.begin(), mask.end(),</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                               keys.begin(), keys.end(),</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;                               valueFirst,</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;                               keys.begin(),</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                               resultValues,</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                               (get&lt;0&gt;(_1) == get&lt;0&gt;(_2) &amp;&amp; get&lt;1&gt;(_1) &lt; get&lt;1&gt;(_2)) || get&lt;0&gt;(_1) &lt; get&lt;0&gt;(_2),</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                               get&lt;0&gt;(_1) == get&lt;0&gt;(_2) &amp;&amp; get&lt;1&gt;(_1) == get&lt;1&gt;(_2),</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                               queue);</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;                        keys.begin(),</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;                        get&lt;0&gt;(_1)),</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;                        keys.end(),</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;                        get&lt;0&gt;(_1)),</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                resultKeys1,</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                queue);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        compute::copy(</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                        keys.begin(),</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;                        get&lt;1&gt;(_1)),</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;                compute::make_transform_iterator(</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;                        keys.end(),</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;                        get&lt;1&gt;(_1)),</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                resultKeys2,</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                queue);</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160; </div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        <span class="keywordflow">return</span> count;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    }</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160; </div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMASKBYKEY_HPP</span></div>
 <div class="ttc" id="aSplaMaskByKey_8hpp_html_a065081a15e54d0b6d776e5f73a55f8ac"><div class="ttname"><a href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a></div><div class="ttdeci">unsigned int tile_size</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:45</div></div>
+<div class="ttc" id="agroup__Internal_html_ga2bf766e718d9fd6a36fa8f62e3edfaf2"><div class="ttname"><a href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">spla::MaskByPairKey</a></div><div class="ttdeci">std::size_t MaskByPairKey(InputIterator1 mask1First, InputIterator1 mask1Last, InputIterator2 mask2First, InputIterator3 key1Firsts, InputIterator3 key1Last, InputIterator4 key2Firsts, InputIterator5 valueFirst, OutputIterator1 resultKeys1, OutputIterator2 resultKeys2, OutputIterator3 resultValues, boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:362</div></div>
 <div class="ttc" id="agroup__Internal_html_gaf3f1d2f58e52c128ff595baf61e0597c"><div class="ttname"><a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a></div><div class="ttdeci">std::size_t MaskByKey(InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:278</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->

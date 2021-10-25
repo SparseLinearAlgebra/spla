@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['invalidargument_762',['InvalidArgument',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962a253ca7dd096ee0956cccee4d376cab8b',1,'spla']]],
-  ['invalidstate_763',['InvalidState',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120',1,'spla']]]
+  ['invalidargument_764',['InvalidArgument',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962a253ca7dd096ee0956cccee4d376cab8b',1,'spla']]],
+  ['invalidstate_765',['InvalidState',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120',1,'spla']]]
 ];

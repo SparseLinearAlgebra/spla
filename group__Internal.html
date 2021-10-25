@@ -128,6 +128,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a> (InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">More...</a><br /></td></tr>
 <tr class="separator:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class InputIterator5 , class OutputIterator1 , class OutputIterator2 , class OutputIterator3 &gt; </td></tr>
+<tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">spla::MaskByPairKey</a> (InputIterator1 mask1First, InputIterator1 mask1Last, InputIterator2 mask2First, InputIterator3 key1Firsts, InputIterator3 key1Last, InputIterator4 key2Firsts, InputIterator5 valueFirst, OutputIterator1 resultKeys1, OutputIterator2 resultKeys2, OutputIterator3 resultValues, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Implementation details. </p>
@@ -339,6 +342,98 @@ template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 ,
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Count of values in intersected region </dd></dl>
+
+</div>
+</div>
+<a id="ga2bf766e718d9fd6a36fa8f62e3edfaf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bf766e718d9fd6a36fa8f62e3edfaf2">&#9670;&nbsp;</a></span>MaskByPairKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class InputIterator5 , class OutputIterator1 , class OutputIterator2 , class OutputIterator3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::MaskByPairKey </td>
+          <td>(</td>
+          <td class="paramtype">InputIterator1&#160;</td>
+          <td class="paramname"><em>mask1First</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator1&#160;</td>
+          <td class="paramname"><em>mask1Last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator2&#160;</td>
+          <td class="paramname"><em>mask2First</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator3&#160;</td>
+          <td class="paramname"><em>key1Firsts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator3&#160;</td>
+          <td class="paramname"><em>key1Last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator4&#160;</td>
+          <td class="paramname"><em>key2Firsts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator5&#160;</td>
+          <td class="paramname"><em>valueFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator1&#160;</td>
+          <td class="paramname"><em>resultKeys1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator2&#160;</td>
+          <td class="paramname"><em>resultKeys2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator3&#160;</td>
+          <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
