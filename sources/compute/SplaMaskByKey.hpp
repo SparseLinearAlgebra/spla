@@ -350,6 +350,120 @@ namespace spla {
         return (counts.end() - 1).read(queue);
     }
 
+    template<
+            class InputIterator1,
+            class InputIterator2,
+            class InputIterator3,
+            class InputIterator4,
+            class InputIterator5,
+            class OutputIterator1,
+            class OutputIterator2,
+            class OutputIterator3>
+    inline std::size_t MaskByPairKey(InputIterator1 mask1First,
+                                     InputIterator1 mask1Last,
+                                     InputIterator2 mask2First,
+                                     InputIterator3 key1Firsts,
+                                     InputIterator3 key1Last,
+                                     InputIterator4 key2Firsts,
+                                     InputIterator5 valueFirst,
+                                     OutputIterator1 resultKeys1,
+                                     OutputIterator2 resultKeys2,
+                                     OutputIterator3 resultValues,
+                                     boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator1>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator2>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator3>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator4>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator5>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator1>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator2>::value);
+        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator3>::value);
+
+        using Key1 = typename std::iterator_traits<InputIterator1>::value_type;
+        using Key2 = typename std::iterator_traits<InputIterator2>::value_type;
+
+        using Key = boost::tuple<Key1, Key2>;
+
+        const compute::context &ctx = queue.get_context();
+
+        const std::size_t aSize = std::distance(mask1First, mask1Last);
+        const std::size_t bSize = std::distance(key1Firsts, key1Last);
+
+        compute::vector<Key> mask(aSize, ctx);
+        compute::vector<Key> keys(bSize, ctx);
+
+        using ::boost::compute::lambda::_1;
+        using ::boost::compute::lambda::_2;
+        using ::boost::compute::lambda::get;
+
+        // Copy A keys
+        compute::copy(
+                mask1First,
+                mask1Last,
+                compute::make_transform_iterator(
+                        mask.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                mask2First,
+                mask2First + aSize,
+                compute::make_transform_iterator(
+                        mask.begin(),
+                        get<1>(_1)),
+                queue);
+
+        // Copy B keys
+        compute::copy(
+                key1Firsts,
+                key1Last,
+                compute::make_transform_iterator(
+                        keys.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                key2Firsts,
+                key2Firsts + bSize,
+                compute::make_transform_iterator(
+                        keys.begin(),
+                        get<1>(_1)),
+                queue);
+
+        auto count = MaskByKey(mask.begin(), mask.end(),
+                               keys.begin(), keys.end(),
+                               valueFirst,
+                               keys.begin(),
+                               resultValues,
+                               (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)) || get<0>(_1) < get<0>(_2),
+                               get<0>(_1) == get<0>(_2) && get<1>(_1) == get<1>(_2),
+                               queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        keys.begin(),
+                        get<0>(_1)),
+                compute::make_transform_iterator(
+                        keys.end(),
+                        get<0>(_1)),
+                resultKeys1,
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        keys.begin(),
+                        get<1>(_1)),
+                compute::make_transform_iterator(
+                        keys.end(),
+                        get<1>(_1)),
+                resultKeys2,
+                queue);
+
+        return count;
+    }
+
     /**
      * @}
      */

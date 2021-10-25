@@ -186,7 +186,7 @@ TEST(Compute, MaskByKey) {
         EXPECT_EQ(expectedValues[i], deviceValues[i]);
 }
 
-TEST(Compute, MaskByPairKey) {
+TEST(Compute, MaskByKey2) {
     namespace compute = boost::compute;
 
     // get the default compute device
@@ -244,6 +244,63 @@ TEST(Compute, MaskByPairKey) {
     for (std::size_t i = 0; i < count; i++) {
         EXPECT_EQ(expectedKeys[i].get<0>(), ((Index) deviceKeys[i]).get<0>());
         EXPECT_EQ(expectedKeys[i].get<1>(), ((Index) deviceKeys[i]).get<1>());
+    }
+
+    for (std::size_t i = 0; i < count; i++) {
+        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+    }
+}
+
+TEST(Compute, MaskByPairKey) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<unsigned int> mask1 = {0, 1, 1, 8, 10, 27};
+    std::vector<unsigned int> mask2 = {10, 0, 2, 0, 0, 100};
+    std::vector<unsigned int> keys1 = {0, 0, 1, 7, 10, 15, 19, 27};
+    std::vector<unsigned int> keys2 = {10, 20, 2, 0, 0, 10, 40, 100};
+    std::vector<unsigned int> values = {66, 24, 13, 7, 1, 0, 1, 200};
+
+    std::vector<unsigned int> expectedKeys1 = {0, 1, 10, 27};
+    std::vector<unsigned int> expectedKeys2 = {10, 2, 0, 100};
+    std::vector<unsigned int> expectedValues = {66, 13, 1, 200};
+
+    compute::vector<unsigned int> deviceMask1(mask1.size(), ctx);
+    compute::vector<unsigned int> deviceMask2(mask2.size(), ctx);
+    compute::vector<unsigned int> deviceKeys1(keys1.size(), ctx);
+    compute::vector<unsigned int> deviceKeys2(keys2.size(), ctx);
+    compute::vector<unsigned int> deviceValues(values.size(), ctx);
+
+    compute::copy(mask1.begin(), mask1.end(), deviceMask1.begin(), queue);
+    compute::copy(mask2.begin(), mask2.end(), deviceMask2.begin(), queue);
+    compute::copy(keys1.begin(), keys1.end(), deviceKeys1.begin(), queue);
+    compute::copy(keys2.begin(), keys2.end(), deviceKeys2.begin(), queue);
+    compute::copy(values.begin(), values.end(), deviceValues.begin(), queue);
+
+    auto count = spla::MaskByPairKey(deviceMask1.begin(), deviceMask1.end(),
+                                     deviceMask2.begin(),
+                                     deviceKeys1.begin(), deviceKeys1.end(),
+                                     deviceKeys2.begin(),
+                                     deviceValues.begin(),
+                                     deviceKeys1.begin(),
+                                     deviceKeys2.begin(),
+                                     deviceValues.begin(),
+                                     queue);
+
+    ASSERT_EQ(count, expectedKeys1.size());
+    ASSERT_EQ(count, expectedKeys2.size());
+    ASSERT_EQ(count, expectedValues.size());
+
+    for (std::size_t i = 0; i < count; i++) {
+        EXPECT_EQ(expectedKeys1[i], deviceKeys1[i]);
+        EXPECT_EQ(expectedKeys2[i], deviceKeys2[i]);
     }
 
     for (std::size_t i = 0; i < count; i++) {
