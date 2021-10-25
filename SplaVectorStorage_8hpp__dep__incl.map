@@ -1,7 +1,8 @@
 <map id="sources/storage/SplaVectorStorage.hpp" name="sources/storage/SplaVectorStorage.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="358,5,541,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="491,5,674,47"/>
 <area shape="rect" id="node2" href="$SplaVectorDataRead_8cpp.html" title=" " alt="" coords="5,95,216,136"/>
 <area shape="rect" id="node3" href="$SplaVectorDataWrite_8cpp.html" title=" " alt="" coords="240,95,451,136"/>
-<area shape="rect" id="node4" href="$SplaVector_8cpp.html" title=" " alt="" coords="475,102,635,129"/>
-<area shape="rect" id="node5" href="$SplaVectorStorage_8cpp.html" title=" " alt="" coords="659,95,842,136"/>
+<area shape="rect" id="node4" href="$SplaVectorEWiseAdd_8cpp.html" title=" " alt="" coords="475,95,690,136"/>
+<area shape="rect" id="node5" href="$SplaVector_8cpp.html" title=" " alt="" coords="715,102,875,129"/>
+<area shape="rect" id="node6" href="$SplaVectorStorage_8cpp.html" title=" " alt="" coords="899,95,1082,136"/>
 </map>

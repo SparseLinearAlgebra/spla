@@ -124,6 +124,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class OutputIterator1 , class OutputIterator2 , class Compare , class Equals &gt; </td></tr>
+<tr class="memitem:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a> (InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">More...</a><br /></td></tr>
+<tr class="separator:gaf3f1d2f58e52c128ff595baf61e0597c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Implementation details. </p>
@@ -208,6 +212,133 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="gaf3f1d2f58e52c128ff595baf61e0597c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf3f1d2f58e52c128ff595baf61e0597c">&#9670;&nbsp;</a></span>MaskByKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class OutputIterator1 , class OutputIterator2 , class Compare , class Equals &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::MaskByKey </td>
+          <td>(</td>
+          <td class="paramtype">InputIterator1&#160;</td>
+          <td class="paramname"><em>maskFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator1&#160;</td>
+          <td class="paramname"><em>maskLast</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator2&#160;</td>
+          <td class="paramname"><em>keyFirsts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator2&#160;</td>
+          <td class="paramname"><em>keyLast</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator3&#160;</td>
+          <td class="paramname"><em>valueFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator1&#160;</td>
+          <td class="paramname"><em>resultKeys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator2&#160;</td>
+          <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Compare&#160;</td>
+          <td class="paramname"><em>compare</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Equals&#160;</td>
+          <td class="paramname"><em>equals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mask intersection algorithm. </p>
+<p>Finds the intersection of the sorted mask range [maskFirst, maskLast) with the sorted keys range [keyFirsts, keyLast) and stores it in range starting at resultKeys with values associated to key range.</p>
+<div class="fragment"><div class="line">vector&lt;uint&gt; mask = { 0, 3, 5, 10 };</div>
+<div class="line">vector&lt;uint&gt; keys = { 0, 1, 2, 3, 7, 10 };</div>
+<div class="line">vector&lt;uint&gt; values = { 10, 1, 2, 53, 4, 775 };</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">MaskByKey</a>(mask.begin(), mask.end(), key.begin(), key.end(), values.begin(),</div>
+<div class="line">          keys.begin(), values.begin(), queue);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// keys = { 0, 3, 10 }</span></div>
+<div class="line"><span class="comment">// values = {10, 2, 53, 775 }</span></div>
+<div class="ttc" id="agroup__Internal_html_gaf3f1d2f58e52c128ff595baf61e0597c"><div class="ttname"><a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a></div><div class="ttdeci">std::size_t MaskByKey(InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:278</div></div>
+</div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputIterator1</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of mask iterator </td></tr>
+    <tr><td class="paramname">InputIterator2</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of keys iterator </td></tr>
+    <tr><td class="paramname">InputIterator3</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of values iterator </td></tr>
+    <tr><td class="paramname">OutputIterator1</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of result keys iterator </td></tr>
+    <tr><td class="paramname">OutputIterator2</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of result values iterator </td></tr>
+    <tr><td class="paramname">Compare</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of mask/keys '&lt;' functor </td></tr>
+    <tr><td class="paramname">Equals</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of mask/keys '==' functor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maskFirst</td><td>Begin of the mask </td></tr>
+    <tr><td class="paramname">maskLast</td><td>End of the mask </td></tr>
+    <tr><td class="paramname">keyFirsts</td><td>Begin of keys </td></tr>
+    <tr><td class="paramname">keyLast</td><td>End of keys </td></tr>
+    <tr><td class="paramname">valueFirst</td><td>Begin of values (range the same as for keys) </td></tr>
+    <tr><td class="paramname">resultKeys</td><td>Keys result begin </td></tr>
+    <tr><td class="paramname">resultValues</td><td>Values result begin </td></tr>
+    <tr><td class="paramname">compare</td><td>Mask/keys compare function </td></tr>
+    <tr><td class="paramname">equals</td><td>Mask/keys compare function </td></tr>
+    <tr><td class="paramname">queue</td><td>Queue to execute</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Count of values in intersected region </dd></dl>
 
 </div>
 </div>
