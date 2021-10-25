@@ -154,10 +154,10 @@ namespace spla {
             }
 
         private:
-            size_t m_a_count;
-            size_t m_a_count_arg;
-            size_t m_b_count;
-            size_t m_b_count_arg;
+            std::size_t m_a_count;
+            std::size_t m_a_count_arg;
+            std::size_t m_b_count;
+            std::size_t m_b_count_arg;
         };
 
         class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
@@ -224,7 +224,7 @@ namespace spla {
             }
 
         private:
-            size_t m_count = 0;
+            std::size_t m_count = 0;
         };
     }// namespace
 
