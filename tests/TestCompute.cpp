@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
+#include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
 
 TEST(Compute, MergeByKey) {
@@ -85,12 +86,12 @@ TEST(Compute, MergeByPairKey) {
     compute::context ctx(gpu);
     compute::command_queue queue(ctx, gpu);
 
-    std::vector<int> hostKeysA1{1,    3,   5,   5};
-    std::vector<int> hostKeysA2{2,    5,   4,   6};
+    std::vector<int> hostKeysA1{1, 3, 5, 5};
+    std::vector<int> hostKeysA2{2, 5, 4, 6};
     std::vector<char> hostValsA{'o', 't', 'f', 'f'};
 
-    std::vector<int> hostKeysB1{3,    3,   5,   6};
-    std::vector<int> hostKeysB2{2,    6,   5,   0};
+    std::vector<int> hostKeysB1{3, 3, 5, 6};
+    std::vector<int> hostKeysB2{2, 6, 5, 0};
     std::vector<char> hostValsB{'t', 't', 'f', 's'};
 
     compute::vector<int> keysA1(hostKeysA1, queue);
@@ -130,6 +131,124 @@ TEST(Compute, MergeByPairKey) {
     for (auto it = valsRes.begin(); it < valsResEnd; ++it) {
         std::size_t ind = it - valsRes.begin();
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
+    }
+}
+
+TEST(Compute, MaskByKey) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<unsigned int> mask = {0, 1, 3, 8, 10, 27};
+    std::vector<unsigned int> keys = {0, 2, 3, 4, 7, 9, 10, 15, 19, 27};
+    std::vector<unsigned int> values = {66, 24, 13, 0, 7, 119, 1, 0, 1, 200};
+
+    std::vector<unsigned int> expectedKeys = {0, 3, 10, 27};
+    std::vector<unsigned int> expectedValues = {66, 13, 1, 200};
+
+    compute::vector<unsigned int> deviceMask(mask.size(), ctx);
+    compute::vector<unsigned int> deviceKeys(keys.size(), ctx);
+    compute::vector<unsigned int> deviceValues(values.size(), ctx);
+
+    compute::copy(mask.begin(), mask.end(), deviceMask.begin(), queue);
+    compute::copy(keys.begin(), keys.end(), deviceKeys.begin(), queue);
+    compute::copy(values.begin(), values.end(), deviceValues.begin(), queue);
+
+    BOOST_COMPUTE_FUNCTION(bool, equals, (unsigned int a, unsigned int b), {
+        return a == b;
+    });
+
+    BOOST_COMPUTE_FUNCTION(bool, compare, (unsigned int a, unsigned int b), {
+        return a < b;
+    });
+
+    auto count = spla::MaskByKey(deviceMask.begin(), deviceMask.end(),
+                                 deviceKeys.begin(), deviceKeys.end(),
+                                 deviceValues.begin(),
+                                 deviceKeys.begin(),
+                                 deviceValues.begin(),
+                                 compare,
+                                 equals,
+                                 queue);
+
+    ASSERT_EQ(count, expectedKeys.size());
+    ASSERT_EQ(count, expectedValues.size());
+
+    for (std::size_t i = 0; i < count; i++)
+        EXPECT_EQ(expectedKeys[i], deviceKeys[i]);
+
+    for (std::size_t i = 0; i < count; i++)
+        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+}
+
+TEST(Compute, MaskByPairKey) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    using Index = boost::tuple<unsigned int, unsigned int>;
+
+    std::vector<Index> mask = {Index(0, 10), Index(1, 0), Index(1, 2), Index(8, 0), Index(10, 0), Index(27, 0)};
+    std::vector<Index> keys = {Index(0, 10), Index(0, 20), Index(1, 2), Index(7, 0), Index(10, 0), Index(15, 10), Index(19, 40), Index(27, 0)};
+    std::vector<unsigned int> values = {66, 24, 13, 7, 1, 0, 1, 200};
+
+    std::vector<Index> expectedKeys = {Index(0, 10), Index(1, 2), Index(10, 0), Index(27, 0)};
+    std::vector<unsigned int> expectedValues = {66, 13, 1, 200};
+
+    compute::vector<Index> deviceMask(mask.size(), ctx);
+    compute::vector<Index> deviceKeys(keys.size(), ctx);
+    compute::vector<unsigned int> deviceValues(values.size(), ctx);
+
+    compute::copy(mask.begin(), mask.end(), deviceMask.begin(), queue);
+    compute::copy(keys.begin(), keys.end(), deviceKeys.begin(), queue);
+    compute::copy(values.begin(), values.end(), deviceValues.begin(), queue);
+
+    BOOST_COMPUTE_FUNCTION(bool, equals, (Index a, Index b), {
+        uint a1 = boost_tuple_get(a, 0);
+        uint a2 = boost_tuple_get(a, 1);
+        uint b1 = boost_tuple_get(b, 0);
+        uint b2 = boost_tuple_get(b, 1);
+        return a1 == b1 && a2 == b2;
+    });
+
+    BOOST_COMPUTE_FUNCTION(bool, compare, (Index a, Index b), {
+        uint a1 = boost_tuple_get(a, 0);
+        uint a2 = boost_tuple_get(a, 1);
+        uint b1 = boost_tuple_get(b, 0);
+        uint b2 = boost_tuple_get(b, 1);
+        return a1 < b1 || (a1 == b1 && a2 < b2);
+    });
+
+    auto count = spla::MaskByKey(deviceMask.begin(), deviceMask.end(),
+                                 deviceKeys.begin(), deviceKeys.end(),
+                                 deviceValues.begin(),
+                                 deviceKeys.begin(),
+                                 deviceValues.begin(),
+                                 compare,
+                                 equals,
+                                 queue);
+
+    ASSERT_EQ(count, expectedKeys.size());
+    ASSERT_EQ(count, expectedValues.size());
+
+    for (std::size_t i = 0; i < count; i++) {
+        EXPECT_EQ(expectedKeys[i].get<0>(), ((Index) deviceKeys[i]).get<0>());
+        EXPECT_EQ(expectedKeys[i].get<1>(), ((Index) deviceKeys[i]).get<1>());
+    }
+
+    for (std::size_t i = 0; i < count; i++) {
+        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+        EXPECT_EQ(expectedValues[i], deviceValues[i]);
     }
 }
 

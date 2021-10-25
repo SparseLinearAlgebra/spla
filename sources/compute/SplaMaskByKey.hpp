@@ -39,18 +39,145 @@ namespace spla {
      */
 
     namespace {
-        class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
+
+        class BalancedPathKernel : public boost::compute::detail::meta_kernel {
         public:
             unsigned int tile_size;
 
-            SerialIntersectionKernel() : meta_kernel("serial_intersection") {
+            BalancedPathKernel() : meta_kernel("__spla_balanced_path") {
                 tile_size = 4;
             }
 
             template<class InputIterator1, class InputIterator2,
-                     class InputIterator3, class InputIterator4,
-                     class InputIterator5, class OutputIterator1,
-                     class OutputIterator2, class OutputIterator3>
+                     class OutputIterator1, class OutputIterator2,
+                     class Compare>
+            void set_range(InputIterator1 first1,
+                           InputIterator1 last1,
+                           InputIterator2 first2,
+                           InputIterator2 last2,
+                           OutputIterator1 result_a,
+                           OutputIterator2 result_b,
+                           Compare comp) {
+                using namespace boost::compute;
+
+                typedef typename std::iterator_traits<InputIterator1>::value_type value_type;
+
+                m_a_count = detail::iterator_range_size(first1, last1);
+                m_a_count_arg = add_arg<uint_>("a_count");
+
+                m_b_count = detail::iterator_range_size(first2, last2);
+                m_b_count_arg = add_arg<uint_>("b_count");
+
+                *this << "uint i = get_global_id(0);\n"
+                      << "uint target = (i+1)*" << tile_size << ";\n"
+                      << "uint start = max(convert_int(0),convert_int(target)-convert_int(b_count));\n"
+                      << "uint end = min(target,a_count);\n"
+                      << "uint a_index, b_index;\n"
+                      << "while(start<end)\n"
+                      << "{\n"
+                      << "   a_index = (start + end)/2;\n"
+                      << "   b_index = target - a_index - 1;\n"
+                      << "   if(!(" << comp(first2[expr<uint_>("b_index")], first1[expr<uint_>("a_index")]) << "))\n"
+                      << "       start = a_index + 1;\n"
+                      << "   else end = a_index;\n"
+                      << "}\n"
+                      << "a_index = start;\n"
+                      << "b_index = target - start;\n"
+                      << "if(b_index < b_count)\n"
+                      << "{\n"
+                      << "   " << decl<const value_type>("x") << " = " << first2[expr<uint_>("b_index")] << ";\n"
+                      << "   uint a_start = 0, a_end = a_index, a_mid;\n"
+                      << "   uint b_start = 0, b_end = b_index, b_mid;\n"
+                      << "   while(a_start<a_end)\n"
+                      << "   {\n"
+                      << "       a_mid = (a_start + a_end)/2;\n"
+                      << "       if(" << comp(first1[expr<uint_>("a_mid")], expr<value_type>("x")) << ")\n"
+                      << "           a_start = a_mid+1;\n"
+                      << "       else a_end = a_mid;\n"
+                      << "   }\n"
+                      << "   while(b_start<b_end)\n"
+                      << "   {\n"
+                      << "       b_mid = (b_start + b_end)/2;\n"
+                      << "       if(" << comp(first2[expr<uint_>("b_mid")], expr<value_type>("x")) << ")\n"
+                      << "           b_start = b_mid+1;\n"
+                      << "       else b_end = b_mid;\n"
+                      << "   }\n"
+                      << "   uint a_run = a_index - a_start;\n"
+                      << "   uint b_run = b_index - b_start;\n"
+                      << "   uint x_count = a_run + b_run;\n"
+                      << "   uint b_advance = max(x_count / 2, x_count - a_run);\n"
+                      << "   b_end = min(b_count, b_start + b_advance + 1);\n"
+                      << "   uint temp_start = b_index, temp_end = b_end, temp_mid;"
+                      << "   while(temp_start < temp_end)\n"
+                      << "   {\n"
+                      << "       temp_mid = (temp_start + temp_end + 1)/2;\n"
+                      << "       if(" << comp(expr<value_type>("x"), first2[expr<uint_>("temp_mid")]) << ")\n"
+                      << "           temp_end = temp_mid-1;\n"
+                      << "       else temp_start = temp_mid;\n"
+                      << "   }\n"
+                      << "   b_run = temp_start - b_start + 1;\n"
+                      << "   b_advance = min(b_advance, b_run);\n"
+                      << "   uint a_advance = x_count - b_advance;\n"
+                      << "   uint star = convert_uint((a_advance == b_advance + 1) "
+                      << "&& (b_advance < b_run));\n"
+                      << "   a_index = a_start + a_advance;\n"
+                      << "   b_index = target - a_index + star;\n"
+                      << "}\n"
+                      << result_a[expr<uint_>("i")] << " = a_index;\n"
+                      << result_b[expr<uint_>("i")] << " = b_index;\n";
+            }
+
+            template<class InputIterator1, class InputIterator2,
+                     class OutputIterator1, class OutputIterator2>
+            void set_range(InputIterator1 first1,
+                           InputIterator1 last1,
+                           InputIterator2 first2,
+                           InputIterator2 last2,
+                           OutputIterator1 result_a,
+                           OutputIterator2 result_b) {
+                typedef typename std::iterator_traits<InputIterator1>::value_type value_type;
+                ::boost::compute::less<value_type> less_than;
+                set_range(first1, last1, first2, last2, result_a, result_b, less_than);
+            }
+
+            boost::compute::event exec(boost::compute::command_queue &queue) {
+                using namespace boost::compute;
+
+                if ((m_a_count + m_b_count) / tile_size == 0) {
+                    return boost::compute::event();
+                }
+
+                set_arg(m_a_count_arg, uint_(m_a_count));
+                set_arg(m_b_count_arg, uint_(m_b_count));
+
+                return exec_1d(queue, 0, (m_a_count + m_b_count) / tile_size);
+            }
+
+        private:
+            size_t m_a_count;
+            size_t m_a_count_arg;
+            size_t m_b_count;
+            size_t m_b_count_arg;
+        };
+
+        class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
+        public:
+            unsigned int tile_size;
+
+            SerialIntersectionKernel() : meta_kernel("__spla_serial_intersection") {
+                tile_size = 4;
+            }
+
+            template<class InputIterator1,
+                     class InputIterator2,
+                     class InputIterator3,
+                     class InputIterator4,
+                     class InputIterator5,
+                     class OutputIterator1,
+                     class OutputIterator2,
+                     class OutputIterator3,
+                     class Compare,
+                     class Equals>
             void set_range(InputIterator1 maskFirst,
                            InputIterator2 keyFirsts,
                            InputIterator3 tile_first1,
@@ -59,7 +186,9 @@ namespace spla {
                            InputIterator5 values,
                            OutputIterator1 resultKeys,
                            OutputIterator2 resultValues,
-                           OutputIterator3 counts) {
+                           OutputIterator3 counts,
+                           Compare compare,
+                           Equals equals) {
                 using uint_ = boost::compute::uint_;
                 m_count = boost::compute::detail::iterator_range_size(tile_first1, tile_last1) - 1;
 
@@ -72,14 +201,14 @@ namespace spla {
                       << "uint count = 0;\n"
                       << "while(start1<end1 && start2<end2)\n"
                       << "{\n"
-                      << "   if(" << maskFirst[expr<uint_>("start1")] << " == " << keyFirsts[expr<uint_>("start2")] << ")\n"
+                      << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
                       << "   {\n"
                       << "       " << resultKeys[expr<uint_>("index")] << " = " << keyFirsts[expr<uint_>("start2")] << ";\n"
                       << "       " << resultValues[expr<uint_>("index")] << " = " << values[expr<uint_>("start2")] << ";\n"
                       << "       index++; count++;\n"
                       << "       start1++; start2++;\n"
                       << "   }\n"
-                      << "   else if(" << maskFirst[expr<uint_>("start1")] << " < " << keyFirsts[expr<uint_>("start2")] << ")\n"
+                      << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
                       << "       start1++;\n"
                       << "   else start2++;\n"
                       << "}\n"
@@ -122,6 +251,8 @@ namespace spla {
      * @tparam InputIterator3 Type of values iterator
      * @tparam OutputIterator1 Type of result keys iterator
      * @tparam OutputIterator2 Type of result values iterator
+     * @tparam Compare Type of mask/keys '<' functor
+     * @tparam Equals Type of mask/keys '==' functor
      *
      * @param maskFirst Begin of the mask
      * @param maskLast End of the mask
@@ -130,11 +261,20 @@ namespace spla {
      * @param valueFirst Begin of values (range the same as for keys)
      * @param resultKeys Keys result begin
      * @param resultValues Values result begin
+     * @param compare Mask/keys compare function
+     * @param equals Mask/keys compare function
      * @param queue Queue to execute
      *
      * @return Count of values in intersected region
      */
-    template<class InputIterator1, class InputIterator2, class InputIterator3, class OutputIterator1, class OutputIterator2>
+    template<
+            class InputIterator1,
+            class InputIterator2,
+            class InputIterator3,
+            class OutputIterator1,
+            class OutputIterator2,
+            class Compare,
+            class Equals>
     inline std::size_t MaskByKey(InputIterator1 maskFirst,
                                  InputIterator1 maskLast,
                                  InputIterator2 keyFirsts,
@@ -142,6 +282,8 @@ namespace spla {
                                  InputIterator3 valueFirst,
                                  OutputIterator1 resultKeys,
                                  OutputIterator2 resultValues,
+                                 Compare compare,
+                                 Equals equals,
                                  boost::compute::command_queue &queue) {
         using namespace boost;
 
@@ -152,7 +294,7 @@ namespace spla {
         BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator2>::value);
 
         typedef typename std::iterator_traits<InputIterator1>::value_type key_type;
-        typedef typename std::iterator_traits<InputIterator2>::value_type value_type;
+        typedef typename std::iterator_traits<InputIterator3>::value_type value_type;
 
         int tile_size = 1024;
 
@@ -163,10 +305,10 @@ namespace spla {
         compute::vector<compute::uint_> tile_b((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
 
         // Tile the sets
-        compute::detail::balanced_path_kernel tiling_kernel;
+        BalancedPathKernel tiling_kernel;
         tiling_kernel.tile_size = tile_size;
         tiling_kernel.set_range(maskFirst, maskLast, keyFirsts, keyLast,
-                                tile_a.begin() + 1, tile_b.begin() + 1);
+                                tile_a.begin() + 1, tile_b.begin() + 1, compare);
         fill_n(tile_a.begin(), 1, 0, queue);
         fill_n(tile_b.begin(), 1, 0, queue);
         tiling_kernel.exec(queue);
@@ -184,7 +326,10 @@ namespace spla {
         intersection_kernel.tile_size = tile_size;
         intersection_kernel.set_range(maskFirst, keyFirsts, tile_a.begin(), tile_a.end(),
                                       tile_b.begin(), valueFirst,
-                                      temp_resultKeys.begin(), temp_resultValues.begin(), counts.begin());
+                                      temp_resultKeys.begin(),
+                                      temp_resultValues.begin(),
+                                      counts.begin(),
+                                      compare, equals);
 
         intersection_kernel.exec(queue);
 
