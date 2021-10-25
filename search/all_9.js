@@ -14,11 +14,13 @@ var searchData=
   ['matrixstorage_165',['MatrixStorage',['../classspla_1_1MatrixStorage.html',1,'spla']]],
   ['max_166',['Max',['../classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524a6a061313d22e51e0f25b7cd4dc065233',1,'spla::FunctionUnary']]],
   ['memopfailed_167',['MemOpFailed',['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962a8270b4aa6d8b1673d9512b05cb3b379b',1,'spla::MemOpFailed()'],['../namespacespla.html#afd4634b302c77cc636953331de02a81c',1,'spla::MemOpFailed()']]],
-  ['mformat_168',['mFormat',['../classspla_1_1VectorBlock.html#a7f7dab1770ee011cb7402548b1f94735',1,'spla::VectorBlock::mFormat()'],['../classspla_1_1MatrixBlock.html#a1889f7a9e1f99176b055bd8223e12832',1,'spla::MatrixBlock::mFormat()']]],
-  ['mncols_169',['mNcols',['../classspla_1_1MatrixBlock.html#a98eda8bdb00493365bbea5cab095f138',1,'spla::MatrixBlock']]],
-  ['mnrows_170',['mNrows',['../classspla_1_1MatrixBlock.html#a8629de4a49455ad892a3788bd8698bf8',1,'spla::MatrixBlock::mNrows()'],['../classspla_1_1VectorBlock.html#ac94ce68012232c638672524ccd40b37d',1,'spla::VectorBlock::mNrows()']]],
-  ['mnvals_171',['mNvals',['../classspla_1_1MatrixBlock.html#a5e282b39a9b0425fb146875b7e5125a1',1,'spla::MatrixBlock::mNvals()'],['../classspla_1_1VectorBlock.html#a05ed387e06f709ab5cb5c153d3a1340b',1,'spla::VectorBlock::mNvals()']]],
-  ['mreleaseproc_172',['mReleaseProc',['../classspla_1_1Data.html#afb52594ad782dd7f0803c54ff435b8db',1,'spla::Data']]],
-  ['mxm_173',['MxM',['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afabc428cdf0b4717f6e2dc35213b9e5ec4',1,'spla::Algorithm']]],
-  ['mxv_174',['MxV',['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afaf5419c7ad3580147f9a637339115ecc0',1,'spla::Algorithm']]]
+  ['mergebykey_168',['MergeByKey',['../namespacespla.html#a28c84afee9b4346f8b97634a9af2d28b',1,'spla']]],
+  ['mergebypairkey_169',['MergeByPairKey',['../namespacespla.html#a7e22d76dd720f5b89b97f67844bdfbf2',1,'spla']]],
+  ['mformat_170',['mFormat',['../classspla_1_1VectorBlock.html#a7f7dab1770ee011cb7402548b1f94735',1,'spla::VectorBlock::mFormat()'],['../classspla_1_1MatrixBlock.html#a1889f7a9e1f99176b055bd8223e12832',1,'spla::MatrixBlock::mFormat()']]],
+  ['mncols_171',['mNcols',['../classspla_1_1MatrixBlock.html#a98eda8bdb00493365bbea5cab095f138',1,'spla::MatrixBlock']]],
+  ['mnrows_172',['mNrows',['../classspla_1_1VectorBlock.html#ac94ce68012232c638672524ccd40b37d',1,'spla::VectorBlock::mNrows()'],['../classspla_1_1MatrixBlock.html#a8629de4a49455ad892a3788bd8698bf8',1,'spla::MatrixBlock::mNrows()']]],
+  ['mnvals_173',['mNvals',['../classspla_1_1MatrixBlock.html#a5e282b39a9b0425fb146875b7e5125a1',1,'spla::MatrixBlock::mNvals()'],['../classspla_1_1VectorBlock.html#a05ed387e06f709ab5cb5c153d3a1340b',1,'spla::VectorBlock::mNvals()']]],
+  ['mreleaseproc_174',['mReleaseProc',['../classspla_1_1Data.html#afb52594ad782dd7f0803c54ff435b8db',1,'spla::Data']]],
+  ['mxm_175',['MxM',['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afabc428cdf0b4717f6e2dc35213b9e5ec4',1,'spla::Algorithm']]],
+  ['mxv_176',['MxV',['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afaf5419c7ad3580147f9a637339115ecc0',1,'spla::Algorithm']]]
 ];

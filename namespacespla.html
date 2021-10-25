@@ -223,6 +223,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28c84afee9b4346f8b97634a9af2d28b"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </td></tr>
+<tr class="memitem:a28c84afee9b4346f8b97634a9af2d28b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a28c84afee9b4346f8b97634a9af2d28b">MergeByKey</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItValuesA valuesA, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItValuesB valuesB, ItKeysResult keysResult, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a28c84afee9b4346f8b97634a9af2d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEnd1 , typename ItValuesA , typename ItKeysBBegin1 , typename ItKeysBBegin2 , typename ItKeysBEnd1 , typename ItValuesB , typename ItKeysResult1 , typename ItKeysResult2 , typename ItValuesResult &gt; </td></tr>
+<tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7e22d76dd720f5b89b97f67844bdfbf2">MergeByPairKey</a> (ItKeysABegin1 keysABeginFirst, ItKeysABegin2 keysABeginSecond, ItKeysAEnd1 keysAEndFirst, ItValuesA valuesA, ItKeysBBegin1 keysBBeginFirst, ItKeysBBegin2 keysBBeginSecond, ItKeysBEnd1 keysBEndFirst, ItValuesB valuesB, ItKeysResult1 keysResultFirst, ItKeysResult2 keysResultSecond, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a93b50c45990a5db2417f40138767a72a"></a>
@@ -354,6 +360,169 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120"></a>InvalidState&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5251dcc549917ecb7b44ad073c479962a997ca4ce119685f40f03a9a8a6c5346e"></a>NotImplemented&#160;</td><td class="fielddoc"></td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a28c84afee9b4346f8b97634a9af2d28b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28c84afee9b4346f8b97634a9af2d28b">&#9670;&nbsp;</a></span>MergeByKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto spla::MergeByKey </td>
+          <td>(</td>
+          <td class="paramtype">ItKeysABegin&#160;</td>
+          <td class="paramname"><em>keysABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysAEnd&#160;</td>
+          <td class="paramname"><em>keysAEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesA&#160;</td>
+          <td class="paramname"><em>valuesA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBBegin&#160;</td>
+          <td class="paramname"><em>keysBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBEnd&#160;</td>
+          <td class="paramname"><em>keysBEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesB&#160;</td>
+          <td class="paramname"><em>valuesB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysResult&#160;</td>
+          <td class="paramname"><em>keysResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesResult&#160;</td>
+          <td class="paramname"><em>valuesResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e22d76dd720f5b89b97f67844bdfbf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e22d76dd720f5b89b97f67844bdfbf2">&#9670;&nbsp;</a></span>MergeByPairKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEnd1 , typename ItValuesA , typename ItKeysBBegin1 , typename ItKeysBBegin2 , typename ItKeysBEnd1 , typename ItValuesB , typename ItKeysResult1 , typename ItKeysResult2 , typename ItValuesResult &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto spla::MergeByPairKey </td>
+          <td>(</td>
+          <td class="paramtype">ItKeysABegin1&#160;</td>
+          <td class="paramname"><em>keysABeginFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysABegin2&#160;</td>
+          <td class="paramname"><em>keysABeginSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysAEnd1&#160;</td>
+          <td class="paramname"><em>keysAEndFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesA&#160;</td>
+          <td class="paramname"><em>valuesA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBBegin1&#160;</td>
+          <td class="paramname"><em>keysBBeginFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBBegin2&#160;</td>
+          <td class="paramname"><em>keysBBeginSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBEnd1&#160;</td>
+          <td class="paramname"><em>keysBEndFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesB&#160;</td>
+          <td class="paramname"><em>valuesB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysResult1&#160;</td>
+          <td class="paramname"><em>keysResultFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysResult2&#160;</td>
+          <td class="paramname"><em>keysResultSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesResult&#160;</td>
+          <td class="paramname"><em>valuesResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
