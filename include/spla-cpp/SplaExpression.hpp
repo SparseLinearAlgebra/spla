@@ -29,6 +29,7 @@
 #define SPLA_SPLAEXPRESSION_HPP
 
 #include <atomic>
+#include <memory>
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
@@ -38,7 +39,6 @@
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <spla-cpp/SplaVector.hpp>
 #include <vector>
-#include <memory>
 
 namespace spla {
 

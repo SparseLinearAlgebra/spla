@@ -21,6 +21,7 @@ set(SPLA_ALGORITHM_SOURCES
 
 set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp
+        sources/compute/SplaMaskByKey.hpp
         sources/compute/SplaMergeByKey.hpp)
 
 set(SPLA_CORE_SOURCES
