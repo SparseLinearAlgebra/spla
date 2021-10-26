@@ -28,6 +28,7 @@
 #include <Testing.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
+#include <compute/SplaReduceAlignedValuesByKey.hpp>
 
 TEST(Compute, MergeByKey) {
     namespace compute = boost::compute;
@@ -307,6 +308,70 @@ TEST(Compute, MaskByPairKey) {
         EXPECT_EQ(expectedValues[i], deviceValues[i]);
         EXPECT_EQ(expectedValues[i], deviceValues[i]);
     }
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    // clang-format off
+    std::vector<std::uint32_t> keys1 = {1,    2,    2,    4,    5,    5,    7,    8,    8,    8};
+    std::vector<std::uint32_t> keys2 = {0,    1,    4,    2,    2,    2,    2,    2,    2,    3};
+    std::vector<std::uint8_t> values = {0, 1, 6, 2, 6, 0, 2, 5, 2, 2, 6, 7, 9, 5, 7, 8, 3, 3, 7, 5};
+    //                                                          *     *           *     *
+    //                                  1      2     2     4    5           7     8           8
+    //                                  0      1     4     2    2           2     2           3
+    //                                  0  1   6  2  6  0  2  5 12 20       9  5  21 30       7 5
+    // clang-format on
+
+    compute::vector<std::uint32_t> dKeys1(keys1, queue);
+    compute::vector<std::uint32_t> dKeys2(keys2, queue);
+    compute::vector<std::uint8_t> dValues(values, queue);
+
+    using Key = std::pair<std::uint32_t, std::uint32_t>;
+
+    BOOST_COMPUTE_FUNCTION(bool, CompareKeys, (Key a, Key b),
+                           { return (a.first == b.first) && (a.second == b.second); });
+
+    auto ReduceValues =
+            boost::compute::make_function_from_source<void(std::uint32_t *, std::uint32_t *, std::uint32_t *)>(
+                    "ReduceValues",
+                    "void ReduceValues(__global uchar * ac, __global uchar *cur, uchar *res) { res[0] = ac[0] * cur[0]; res[1] = ac[1] * 3 + cur[1] * 2; }");
+
+    compute::vector<std::uint32_t> dKeysOut1(keys1.size(), ctx);
+    compute::vector<std::uint32_t> dKeysOut2(keys2.size(), ctx);
+    compute::vector<std::uint8_t> dValuesOut(values.size(), ctx);
+
+    auto [keys1EndIt, keys2EndIt, valuesEndIt] = spla::ReduceAlignedValuesByPairKey(
+            dKeys1.begin(), dKeys1.end(), dKeys2.begin(),
+            dValues.begin(), 2,
+            dKeysOut1.begin(), dKeysOut2.begin(),
+            dValuesOut.begin(),
+            ReduceValues,
+            CompareKeys,
+            queue);
+
+    std::vector<std::uint32_t> keys1Expected = {1, 2, 2, 4, 5, 7, 8, 8};
+    std::vector<std::uint32_t> keys2Expected = {0, 1, 4, 2, 2, 2, 2, 3};
+    std::vector<std::uint8_t> valuesExpected = {0, 1, 6, 2, 6, 0, 2, 5, 12, 20, 9, 5, 21, 30, 7, 5};
+
+    std::vector<std::uint32_t> keys1Actual(std::distance(dKeysOut1.begin(), keys1EndIt));
+    std::vector<std::uint32_t> keys2Actual(std::distance(dKeysOut2.begin(), keys2EndIt));
+    std::vector<std::uint8_t> valuesActual(std::distance(dValuesOut.begin(), valuesEndIt));
+
+    compute::copy(dKeysOut1.begin(), keys1EndIt, keys1Actual.begin(), queue);
+    compute::copy(dKeysOut2.begin(), keys2EndIt, keys2Actual.begin(), queue);
+    compute::copy(dValuesOut.begin(), valuesEndIt, valuesActual.begin(), queue);
+
+    EXPECT_EQ(keys1Expected, keys1Actual);
+    EXPECT_EQ(keys2Expected, keys2Actual);
+    EXPECT_EQ(valuesExpected, valuesActual);
 }
 
 SPLA_GTEST_MAIN
