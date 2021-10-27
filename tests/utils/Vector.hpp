@@ -96,7 +96,7 @@ namespace utils {
         [[nodiscard]] spla::RefPtr<spla::DataVector> GetDataIndices(spla::Library &library) {
             auto data = spla::DataVector::Make(library);
             data->SetRows(GetRows());
-            data->SetVals(GetVals());
+            data->SetNvals(GetNvals());
             return data;
         }
 
