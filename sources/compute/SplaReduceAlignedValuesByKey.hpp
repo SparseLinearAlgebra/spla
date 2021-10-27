@@ -30,6 +30,7 @@
 
 #include <boost/compute/detail/meta_kernel.hpp>
 #include <boost/compute/type_traits/is_device_iterator.hpp>
+#include <boost/compute/detail/iterator_range_size.hpp>
 
 #include <optional>
 
