@@ -210,7 +210,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     // Use this mask to find unique elements
                     // NOTE: unique has 1, otherwise 0
                     compute::vector<unsigned int> mask(blockNvals + 1, ctx);
-                    mask[0] = 1;
+                    mask.begin().write(1u, queue);
 
                     BOOST_COMPUTE_CLOSURE(
                             unsigned int, findUnique, (unsigned int i), (blockRows, blockCols), {
@@ -233,11 +233,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     compute::vector<unsigned int> offsets(mask.size(), ctx);
                     compute::exclusive_scan(mask.begin(), mask.end(), offsets.begin(), 0, queue);
 
-                    // Wait until completion to fetch result nvals count
-                    queue.finish();
-
                     // Count number of unique values to allocate storage
-                    std::size_t resultNvals = offsets.back();
+                    std::size_t resultNvals = (offsets.end() - 1).read(queue);
 
                     // Allocate new buffers
                     compute::vector<unsigned int> newRows(resultNvals, ctx);
