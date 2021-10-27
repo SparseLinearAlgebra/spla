@@ -78,7 +78,7 @@ namespace spla {
             const bool hasKeys2 = keys2.has_value();
 
             const compute::context &context = queue.get_context();
-            std::size_t count = compute::detail::iterator_range_size(keys1First, keys1Last);
+            std::size_t count = ::boost::compute::detail::iterator_range_size(keys1First, keys1Last);
 
             auto MakeOutputLastIterators = [&](std::size_t resultLen) {
                 return std::tuple{
