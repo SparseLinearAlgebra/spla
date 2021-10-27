@@ -30,6 +30,7 @@
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
+#include <compute/SplaReduceDuplicates.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
@@ -196,7 +197,44 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                        mergedRows.begin(), mergedPerm.begin(),
                        queue);
 
-            // todo: reduce
+            // Copy values to single buffer
+            compute::vector<unsigned char> mergedValues(mergeCount * byteSize, ctx);
+            {
+                auto &aVals = blockA->GetVals();
+                auto &bVals = blockB->GetVals();
+                auto offset = blockA->GetNvals();
+                BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mergedPerm, mergedValues, aVals, bVals, offset, byteSize), {
+                    const uint idx = mergedPerm[i];
+
+                    if (idx < offset) {
+                        const uint dst = i * byteSize;
+                        const uint src = idx * byteSize;
+                        for (uint k = 0; k < byteSize; k++)
+                            mergedValues[dst + k] = aVals[src + k];
+                    } else {
+                        const uint dst = i * byteSize;
+                        const uint src = (idx - offset) * byteSize;
+                        for (uint k = 0; k < byteSize; k++)
+                            mergedValues[dst + k] = bVals[src + k];
+                    }
+                });
+                compute::for_each_n(compute::counting_iterator<unsigned int>(0), mergedPerm.size(), copyValues, queue);
+            }
+
+            // Reduce duplicates
+            // NOTE: max 2 duplicated entries for each index
+            compute::vector<unsigned int> resultRows(ctx);
+            compute::vector<unsigned char> resultVals(ctx);
+            auto resultNvals = ReduceDuplicates(mergedRows, mergedValues,
+                                                resultRows, resultVals,
+                                                byteSize,
+                                                op->GetSource(),
+                                                queue);
+
+            auto result = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals));
+            w->GetStorage()->SetBlock(i, result.As<VectorBlock>());
+
+            SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, resultNvals);
         });
     }
 }

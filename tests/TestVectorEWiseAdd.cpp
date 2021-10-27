@@ -57,7 +57,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals, std::s
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<float> c = a.EWiseAdd(b, [](float x, float y) { return x + y; });
-    //    ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
 void testMasked(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
@@ -94,7 +94,7 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t nvals, std::s
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<float> c = a.EWiseAdd(mask, b, [](float x, float y) { return x + y; });
-    //    ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
