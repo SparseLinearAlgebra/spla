@@ -31,9 +31,9 @@
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
     auto t = Types::Float32(library);
     return FunctionBinary::Make(t, t, t,
-                                "float a = *((local const float*)vp_a);"
-                                "float b = *((local const float*)vp_b);"
-                                "local float* c = (local float*)vp_c;"
+                                "float a = *((const float*)bp_a);"
+                                "float b = *((const float*)bp_b);"
+                                "float* c = (float*)bp_c;"
                                 "*c = a + b;",
                                 library);
 }
@@ -41,9 +41,9 @@ spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
     auto t = Types::Float64(library);
     return FunctionBinary::Make(t, t, t,
-                                "double a = *((local const double*)vp_a);"
-                                "double b = *((local const double*)vp_b);"
-                                "local double* c = (local double*)vp_c;"
+                                "double a = *((const double*)bp_a);"
+                                "double b = *((const double*)bp_b);"
+                                "double* c = (double*)bp_c;"
                                 "*c = a + b;",
                                 library);
 }

@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <functional>
+#include <iostream>
 #include <random>
 #include <spla-cpp/Spla.hpp>
 #include <unordered_map>
@@ -96,16 +97,25 @@ namespace utils {
         [[nodiscard]] spla::RefPtr<spla::DataVector> GetDataIndices(spla::Library &library) {
             auto data = spla::DataVector::Make(library);
             data->SetRows(GetRows());
-            data->SetVals(GetVals());
+            data->SetNvals(GetNvals());
             return data;
         }
 
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v) const {
-            if (v->GetNrows() != GetNrows() || v->GetNvals() != GetNvals())
+            if (v->GetNrows() != GetNrows()) {
+                std::cout << "Size mismatched" << std::endl;
                 return false;
+            }
 
-            if (ElementSize != v->GetType()->GetByteSize())
+            if (v->GetNvals() != GetNvals()) {
+                std::cout << "Number of nnz mismatched" << std::endl;
                 return false;
+            }
+
+            if (ElementSize != v->GetType()->GetByteSize()) {
+                std::cout << "Type has incompatible size" << std::endl;
+                return false;
+            }
 
             std::vector<Index> spRows(GetNvals());
             std::vector<T> spVals(GetNvals());
@@ -122,13 +132,20 @@ namespace utils {
 
             readExpr->Wait();
 
-            if (readExpr->GetState() != spla::Expression::State::Evaluated)
+            if (readExpr->GetState() != spla::Expression::State::Evaluated) {
+                std::cout << "Read expression is not evaluated" << std::endl;
                 return false;
+            }
 
-            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0)
+            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                std::cout << "Row indices not equal" << std::endl;
                 return false;
-            if (std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize) != 0)
+            }
+
+            if (std::memcmp(GetVals(), spVals.data(), GetNvals() * ElementSize) != 0) {
+                std::cout << "Values not equal" << std::endl;
                 return false;
+            }
 
             return true;
         }
@@ -182,10 +199,10 @@ namespace utils {
 
             while (a != endA && b != endB) {
                 if (GetRows()[a] == mask.GetRows()[b]) {
-                    a += 1;
-                    b += 1;
                     rows.push_back(GetRows()[a]);
                     vals.push_back(GetVals()[a]);
+                    a += 1;
+                    b += 1;
                 } else if (GetRows()[a] < mask.GetRows()[b]) {
                     a += 1;
                 } else {
@@ -210,31 +227,31 @@ namespace utils {
 
             while (a != endA && b != endB) {
                 if (GetRows()[a] == other.GetRows()[b]) {
-                    a += 1;
-                    b += 1;
                     rows.push_back(GetRows()[a]);
                     vals.push_back(op(GetVals()[a], other.GetVals()[b]));
-                } else if (GetRows()[a] < other.GetRows()[b]) {
                     a += 1;
+                    b += 1;
+                } else if (GetRows()[a] < other.GetRows()[b]) {
                     rows.push_back(GetRows()[a]);
                     vals.push_back(GetVals()[a]);
+                    a += 1;
                 } else {
-                    b += 1;
                     rows.push_back(other.GetRows()[b]);
                     vals.push_back(other.GetVals()[b]);
+                    b += 1;
                 }
             }
 
             while (a != endA) {
-                a += 1;
                 rows.push_back(GetRows()[a]);
                 vals.push_back(GetVals()[a]);
+                a += 1;
             }
 
             while (b != endB) {
-                b += 1;
                 rows.push_back(other.GetRows()[b]);
                 vals.push_back(other.GetVals()[b]);
+                b += 1;
             }
 
             return Vector<T>(GetNrows(), std::move(rows), std::move(vals));
