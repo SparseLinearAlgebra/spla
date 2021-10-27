@@ -140,7 +140,10 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             applyMask(blockB, tmpRowsB, permB, rowsB);
 
             // Is some block is empty (or both, save result as is and finish without merge)
-            if (!rowsA || !rowsB) {
+            auto aEmpty = !rowsA || rowsA->empty();
+            auto bEmpty = !rowsB || rowsB->empty();
+
+            if (aEmpty || bEmpty) {
                 auto &storage = w->GetStorage();
 
                 // Remove old block in case if both a and b are null
@@ -163,17 +166,37 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 };
 
                 // Copy result of masking a block
-                if (rowsA)
+                if (!aEmpty)
                     setResult(blockA, rowsA, permA);
 
                 // Copy result of masking b block
-                if (rowsB)
+                if (!bEmpty)
                     setResult(blockB, rowsB, permB);
 
                 return;
             }
 
-            // todo: merge + reduce
+            // NOTE: offset b perm indices to preserve uniqueness
+            {
+                auto offset = static_cast<unsigned int>(blockA->GetNvals());
+                BOOST_COMPUTE_CLOSURE(void, offsetB, (unsigned int i), (permB, offset), {
+                    permB[i] = permB[i] + offset;
+                });
+
+                compute::for_each_n(compute::counting_iterator<unsigned int>(0), permB.size(), offsetB, queue);
+            }
+
+            // Merge a and b values
+            auto mergeCount = rowsA->size() + rowsB->size();
+            compute::vector<unsigned int> mergedRows(mergeCount, ctx);
+            compute::vector<unsigned int> mergedPerm(mergeCount, ctx);
+
+            MergeByKey(rowsA->begin(), rowsA->end(), permA.begin(),
+                       rowsB->begin(), rowsB->end(), permB.begin(),
+                       mergedRows.begin(), mergedPerm.begin(),
+                       queue);
+
+            // todo: reduce
         });
     }
 }
