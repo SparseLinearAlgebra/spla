@@ -310,7 +310,17 @@ TEST(Compute, MaskByPairKey) {
     }
 }
 
-TEST(Compute, ReduceAlignedValuesByPairKey) {
+void TestReduceAlignedValuesByPairKey(
+        std::vector<std::uint32_t> keys1,
+        std::vector<std::uint32_t> keys2,
+        std::vector<std::uint8_t> values,
+
+        std::vector<std::uint32_t> keys1Expected_2,
+        std::vector<std::uint32_t> keys2Expected_2,
+        std::vector<std::uint8_t> valuesExpected_2,
+
+        std::vector<std::uint32_t> keys1Expected_1,
+        std::vector<std::uint8_t> valuesExpected_1) {
     namespace compute = boost::compute;
 
     // get the default compute device
@@ -320,24 +330,9 @@ TEST(Compute, ReduceAlignedValuesByPairKey) {
     compute::context ctx(gpu);
     compute::command_queue queue(ctx, gpu);
 
-    // clang-format off
-    std::vector<std::uint32_t> keys1 = {1,    2,    2,    4,    5,    5,    7,    8,    8,    8};
-    std::vector<std::uint32_t> keys2 = {0,    1,    4,    2,    2,    2,    2,    2,    2,    3};
-    std::vector<std::uint8_t> values = {0, 1, 6, 2, 6, 0, 2, 5, 2, 2, 6, 7, 9, 5, 7, 8, 3, 3, 7, 5};
-    //                                                          *     *           *     *
-    //                                  1      2     2     4    5           7     8           8
-    //                                  0      1     4     2    2           2     2           3
-    //                                  0  1   6  2  6  0  2  5 12 20       9  5  21 30       7 5
-    // clang-format on
-
     compute::vector<std::uint32_t> dKeys1(keys1, queue);
     compute::vector<std::uint32_t> dKeys2(keys2, queue);
     compute::vector<std::uint8_t> dValues(values, queue);
-
-    using Key = std::pair<std::uint32_t, std::uint32_t>;
-
-    BOOST_COMPUTE_FUNCTION(bool, CompareKeys, (Key a, Key b),
-                           { return (a.first == b.first) && (a.second == b.second); });
 
     auto ReduceValues =
             boost::compute::make_function_from_source<void(std::uint32_t *, std::uint32_t *, std::uint32_t *)>(
@@ -348,30 +343,155 @@ TEST(Compute, ReduceAlignedValuesByPairKey) {
     compute::vector<std::uint32_t> dKeysOut2(keys2.size(), ctx);
     compute::vector<std::uint8_t> dValuesOut(values.size(), ctx);
 
-    auto [keys1EndIt, keys2EndIt, valuesEndIt] = spla::ReduceAlignedValuesByPairKey(
-            dKeys1.begin(), dKeys1.end(), dKeys2.begin(),
-            dValues.begin(), 2,
-            dKeysOut1.begin(), dKeysOut2.begin(),
-            dValuesOut.begin(),
-            ReduceValues,
-            CompareKeys,
-            queue);
+    {
+        using Key = std::pair<std::uint32_t, std::uint32_t>;
 
-    std::vector<std::uint32_t> keys1Expected = {1, 2, 2, 4, 5, 7, 8, 8};
-    std::vector<std::uint32_t> keys2Expected = {0, 1, 4, 2, 2, 2, 2, 3};
-    std::vector<std::uint8_t> valuesExpected = {0, 1, 6, 2, 6, 0, 2, 5, 12, 20, 9, 5, 21, 30, 7, 5};
+        BOOST_COMPUTE_FUNCTION(bool, CompareKeys, (Key a, Key b),
+                               { return (a.first == b.first) && (a.second == b.second); });
 
-    std::vector<std::uint32_t> keys1Actual(std::distance(dKeysOut1.begin(), keys1EndIt));
-    std::vector<std::uint32_t> keys2Actual(std::distance(dKeysOut2.begin(), keys2EndIt));
-    std::vector<std::uint8_t> valuesActual(std::distance(dValuesOut.begin(), valuesEndIt));
+        auto [keys1EndIt, keys2EndIt, valuesEndIt] = spla::ReduceAlignedValuesByPairKey(
+                dKeys1.begin(), dKeys1.end(), dKeys2.begin(),
+                dValues.begin(), 2,
+                dKeysOut1.begin(), dKeysOut2.begin(),
+                dValuesOut.begin(),
+                ReduceValues,
+                CompareKeys,
+                queue);
 
-    compute::copy(dKeysOut1.begin(), keys1EndIt, keys1Actual.begin(), queue);
-    compute::copy(dKeysOut2.begin(), keys2EndIt, keys2Actual.begin(), queue);
-    compute::copy(dValuesOut.begin(), valuesEndIt, valuesActual.begin(), queue);
+        std::vector<std::uint32_t> keys1Actual(std::distance(dKeysOut1.begin(), keys1EndIt));
+        std::vector<std::uint32_t> keys2Actual(std::distance(dKeysOut2.begin(), keys2EndIt));
+        std::vector<std::uint8_t> valuesActual(std::distance(dValuesOut.begin(), valuesEndIt));
 
-    EXPECT_EQ(keys1Expected, keys1Actual);
-    EXPECT_EQ(keys2Expected, keys2Actual);
-    EXPECT_EQ(valuesExpected, valuesActual);
+        compute::copy(dKeysOut1.begin(), keys1EndIt, keys1Actual.begin(), queue);
+        compute::copy(dKeysOut2.begin(), keys2EndIt, keys2Actual.begin(), queue);
+        compute::copy(dValuesOut.begin(), valuesEndIt, valuesActual.begin(), queue);
+
+        queue.flush();
+
+        EXPECT_EQ(keys1Expected_2, keys1Actual);
+        EXPECT_EQ(keys2Expected_2, keys2Actual);
+        EXPECT_EQ(valuesExpected_2, valuesActual);
+    }
+
+    {
+        using Key = std::uint32_t;
+
+        BOOST_COMPUTE_FUNCTION(bool, CompareKeys, (Key a, Key b),
+                               { return a == b; });
+
+        auto [keysEndIt, valuesEndIt] = spla::ReduceAlignedValuesByKey(
+                dKeys1.begin(), dKeys1.end(),
+                dValues.begin(), 2,
+                dKeysOut1.begin(),
+                dValuesOut.begin(),
+                ReduceValues,
+                CompareKeys,
+                queue);
+
+        std::vector<std::uint32_t> keysActual(std::distance(dKeysOut1.begin(), keysEndIt));
+        std::vector<std::uint8_t> valuesActual(std::distance(dValuesOut.begin(), valuesEndIt));
+
+        compute::copy(dKeysOut1.begin(), keysEndIt, keysActual.begin(), queue);
+        compute::copy(dValuesOut.begin(), valuesEndIt, valuesActual.begin(), queue);
+
+        queue.flush();
+
+        EXPECT_EQ(keys1Expected_1, keysActual);
+        EXPECT_EQ(valuesExpected_1, valuesActual);
+    }
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_Basic) {
+    // clang-format off
+    std::vector<std::uint32_t> keys1 = {1,    2,    2,    4,    5,    5,    7,    8,    8,    8};
+    std::vector<std::uint32_t> keys2 = {0,    1,    4,    2,    2,    2,    2,    2,    2,    3};
+    std::vector<std::uint8_t> values = {0, 1, 6, 2, 6, 0, 2, 5, 2, 2, 6, 7, 9, 5, 7, 8, 3, 3, 7, 5};
+    //                                                          *     *           *     *
+    //                                  1      2     2     4    5           7     8           8
+    //                                  0      1     4     2    2           2     2           3
+    //                                  0  1   6  2  6  0  2  5 12 20       9  5  21 30       7 5
+    //
+    //                                         *     *          *     *           *     *     *
+    //                                  1      2           4    5           7     8
+    //                                  0  1   36 6        2 5  12 20       9 5   147 100
+    // clang-format on
+
+    std::vector<std::uint32_t> keys1Expected_2 = {1, 2, 2, 4, 5, 7, 8, 8};
+    std::vector<std::uint32_t> keys2Expected_2 = {0, 1, 4, 2, 2, 2, 2, 3};
+    std::vector<std::uint8_t> valuesExpected_2 = {0, 1, 6, 2, 6, 0, 2, 5, 12, 20, 9, 5, 21, 30, 7, 5};
+
+    std::vector<std::uint32_t> keysExpected_1 = {1, 2, 4, 5, 7, 8};
+    std::vector<std::uint8_t> valuesExpected_1 = {0, 1, 36, 6, 2, 5, 12, 20, 9, 5, 147, 100};
+
+    TestReduceAlignedValuesByPairKey(
+            keys1,
+            keys2,
+            values,
+            keys1Expected_2,
+            keys2Expected_2,
+            valuesExpected_2,
+            keysExpected_1,
+            valuesExpected_1);
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_Empty) {
+    TestReduceAlignedValuesByPairKey(
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {});
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_One) {
+    TestReduceAlignedValuesByPairKey(
+            {1},
+            {2},
+            {1, 2},
+            {1},
+            {2},
+            {1, 2},
+            {1},
+            {1, 2});
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_Two) {
+    TestReduceAlignedValuesByPairKey(
+            {1, 1},
+            {2, 2},
+            {1, 2, 3, 4},
+            {1},
+            {2},
+            {3, 14},
+            {1},
+            {3, 14});
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_TwoNotReduceOneKey) {
+    TestReduceAlignedValuesByPairKey(
+            {1, 1},
+            {2, 0},
+            {1, 2, 3, 4},
+            {1, 1},
+            {2, 0},
+            {1, 2, 3, 4},
+            {1},
+            {3, 14});
+}
+
+TEST(Compute, ReduceAlignedValuesByPairKey_SeveralSimilar) {
+    TestReduceAlignedValuesByPairKey(
+            {1, 1, 1, 1},
+            {2, 2, 3, 3},
+            {1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1},
+            {2, 3},
+            {1, 5, 1, 5},
+            {1},
+            {1, 53});
 }
 
 SPLA_GTEST_MAIN
