@@ -1,20 +1,4 @@
 var searchData=
 [
-  ['index_133',['Index',['../classspla_1_1VectorStorage.html#a4de8187fe6b6b30d0307a4a90802e3a0',1,'spla::VectorStorage::Index()'],['../classspla_1_1MatrixStorage.html#a0090baf8ee9817e281acdf4a1e662418',1,'spla::MatrixStorage::Index()']]],
-  ['indices_134',['Indices',['../classspla_1_1MatrixCOO.html#a1fb2c82b2b4f104ca051eeba2d415e43',1,'spla::MatrixCOO::Indices()'],['../classspla_1_1VectorCOO.html#a030f0b144aa59b2e66916b670f89f9ee',1,'spla::VectorCOO::Indices()']]],
-  ['int16_135',['Int16',['../classspla_1_1Types.html#a5fa8556918cf4eae2d71532d581209c9',1,'spla::Types']]],
-  ['int32_136',['Int32',['../classspla_1_1Types.html#a28046483ba5e166518f126db19bb0f44',1,'spla::Types']]],
-  ['int64_137',['Int64',['../classspla_1_1Types.html#af9877085056bd605e5a2fb41f06e1fcb',1,'spla::Types']]],
-  ['int8_138',['Int8',['../classspla_1_1Types.html#abc1ee39c5a95adae8f88f5291bca9b43',1,'spla::Types']]],
-  ['internal_139',['Internal',['../group__Internal.html',1,'']]],
-  ['invalidargument_140',['InvalidArgument',['../namespacespla.html#a06715d178091c293c2ec3564827fd9c7',1,'spla::InvalidArgument()'],['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962a253ca7dd096ee0956cccee4d376cab8b',1,'spla::InvalidArgument()']]],
-  ['invalidstate_141',['InvalidState',['../namespacespla.html#a613ae237941a9d20dfaae339d631c775',1,'spla::InvalidState()'],['../namespacespla.html#a5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120',1,'spla::InvalidState()']]],
-  ['isapplicable_142',['IsApplicable',['../classspla_1_1FunctionUnary.html#affbb38980ff12cb2f7e45cf6764117f1',1,'spla::FunctionUnary']]],
-  ['isbuiltin_143',['IsBuiltIn',['../classspla_1_1Type.html#ae5b6cedae476631a894826695b4dd254',1,'spla::Type']]],
-  ['iscompatible_144',['IsCompatible',['../classspla_1_1TypedObject.html#a53420ce73b7c96f7f07c4439ea1744d9',1,'spla::TypedObject']]],
-  ['iscritical_145',['IsCritical',['../classspla_1_1Exception.html#a4a0a3b07b5216e1dd6b90ff0d521bd3b',1,'spla::Exception']]],
-  ['isnotnull_146',['IsNotNull',['../classspla_1_1RefPtr.html#a60ea71588c50664c9cf65309bb97b9c1',1,'spla::RefPtr']]],
-  ['isnull_147',['IsNull',['../classspla_1_1RefPtr.html#aeeea6759ba35f65031695265cf841986',1,'spla::RefPtr']]],
-  ['isparamset_148',['IsParamSet',['../classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6',1,'spla::Descriptor']]],
-  ['isunique_149',['IsUnique',['../classspla_1_1RefCnt.html#a901c416778aea67e20c105e4dacebf52',1,'spla::RefCnt']]]
+  ['hasvalues_134',['HasValues',['../classspla_1_1Type.html#a1e06d2e6d261f790d25520ed326a7c2d',1,'spla::Type']]]
 ];

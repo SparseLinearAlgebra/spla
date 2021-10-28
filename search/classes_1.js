@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['config_386',['Config',['../classspla_1_1Library_1_1Config.html',1,'spla::Library']]]
+  ['config_390',['Config',['../classspla_1_1Library_1_1Config.html',1,'spla::Library']]]
 ];

@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['reduceduplicates_631',['ReduceDuplicates',['../namespacespla.html#abd2c85fd86f63b4e398320400dc66c3a',1,'spla']]],
-  ['refptr_632',['RefPtr',['../classspla_1_1RefPtr.html#aea54601150c7b6ad2e39d943fee8f95a',1,'spla::RefPtr::RefPtr()=default'],['../classspla_1_1RefPtr.html#ab3dbb5aa51a9ae14ce559553d27ae694',1,'spla::RefPtr::RefPtr(T *object)'],['../classspla_1_1RefPtr.html#aac11d6ef2680cb7bd021c070ec7469fd',1,'spla::RefPtr::RefPtr(const RefPtr &amp;other)'],['../classspla_1_1RefPtr.html#a8870c8749c902d5dd4d5f9068349467a',1,'spla::RefPtr::RefPtr(RefPtr &amp;&amp;other) noexcept']]],
-  ['register_633',['Register',['../classspla_1_1AlgorithmManager.html#a3126fbfb76a0f17b89d7ead18052b845',1,'spla::AlgorithmManager::Register()'],['../classspla_1_1ExpressionManager.html#ab09e6bdf6b5b76355ecd5354a28cb75c',1,'spla::ExpressionManager::Register()']]],
-  ['release_634',['Release',['../classspla_1_1RefPtr.html#a908434ae586011c572e7dd8b4dc722c6',1,'spla::RefPtr']]],
-  ['relref_635',['RelRef',['../classspla_1_1RefCnt.html#a84ff46c7a5600d0e386941c74795d502',1,'spla::RefCnt']]],
-  ['removeamountlimit_636',['RemoveAmountLimit',['../classspla_1_1Library_1_1Config.html#aa45e54af947c06525bce4e17be3b1d1e',1,'spla::Library::Config']]],
-  ['removeblock_637',['RemoveBlock',['../classspla_1_1MatrixStorage.html#a0b0248c35bb6202a443e6ef71210b755',1,'spla::MatrixStorage::RemoveBlock()'],['../classspla_1_1VectorStorage.html#a263b9d5181b5c88cade9a6f1325be8c1',1,'spla::VectorStorage::RemoveBlock()']]],
-  ['reset_638',['Reset',['../classspla_1_1RefPtr.html#a44ffadea72c2275a0cb8ac18591010e2',1,'spla::RefPtr']]]
+  ['plusfloat32_633',['PlusFloat32',['../classspla_1_1Functions.html#a3f81222a1f5ee99efd89004ba7c17b43',1,'spla::Functions']]],
+  ['plusfloat64_634',['PlusFloat64',['../classspla_1_1Functions.html#a55774f0c14e20a34e0d11374ed564794',1,'spla::Functions']]],
+  ['plusint32_635',['PlusInt32',['../classspla_1_1Functions.html#a76f40fe279757853847ad4182d3a13c6',1,'spla::Functions']]],
+  ['plusint64_636',['PlusInt64',['../classspla_1_1Functions.html#a30b015eca880f81ace23e5bc0fb4f710',1,'spla::Functions']]],
+  ['printcontextconfig_637',['PrintContextConfig',['../classspla_1_1Library.html#a38fdd6082ccd96bb72312170af82e6cd',1,'spla::Library']]],
+  ['process_638',['Process',['../classspla_1_1Algorithm.html#a2edbbe4bff77d4c61e8e1ffc4d557aba',1,'spla::Algorithm::Process()'],['../classspla_1_1MatrixDataRead.html#ab00e2490c5272599e15731f4728c7730',1,'spla::MatrixDataRead::Process()'],['../classspla_1_1MatrixDataWrite.html#ac8bc2070e65248a6d7213d0b65df8066',1,'spla::MatrixDataWrite::Process()'],['../classspla_1_1NodeProcessor.html#a459850f428de6030d2d1799c353e6472',1,'spla::NodeProcessor::Process()'],['../classspla_1_1VectorDataRead.html#a76c5a13f038bb1bcb08b90f5e042ff98',1,'spla::VectorDataRead::Process()'],['../classspla_1_1VectorDataWrite.html#ad83ea2ab7e87816053f359c5cef35978',1,'spla::VectorDataWrite::Process()'],['../classspla_1_1VectorEWiseAdd.html#a089087c71b0d7d4576e41693065742a6',1,'spla::VectorEWiseAdd::Process()']]]
 ];

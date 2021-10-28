@@ -125,7 +125,7 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                mCount = count;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                std::stringstream _spla_reduce_op;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                _spla_reduce_op &lt;&lt; <span class="stringliteral">&quot;void _spla_reduce_op(__global uchar* bp_a, __global uchar* bp_b, __global uchar* bp_c) {\n&quot;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                _spla_reduce_op &lt;&lt; <span class="stringliteral">&quot;void _spla_reduce_op(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n&quot;</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;   &quot;</span> &lt;&lt; reduceOp &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot;}&quot;</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
@@ -226,12 +226,13 @@ $(function() {
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                                      reduceOp);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        copyReduceDuplicates.Exec(queue);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">return</span> resultNvals;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAREDUCEDUPLICATES_HPP</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        queue.finish();</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">return</span> resultNvals;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAREDUCEDUPLICATES_HPP</span></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 <div class="ttc" id="anamespacespla_html_abd2c85fd86f63b4e398320400dc66c3a"><div class="ttname"><a href="namespacespla.html#abd2c85fd86f63b4e398320400dc66c3a">spla::ReduceDuplicates</a></div><div class="ttdeci">std::size_t ReduceDuplicates(const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaReduceDuplicates.hpp:95</div></div>
 </div><!-- fragment --></div><!-- contents -->
