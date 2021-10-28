@@ -28,6 +28,10 @@
 #include <spla-cpp/SplaMatrix.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 
+std::pair<std::size_t, std::size_t> spla::Matrix::GetDim() const {
+    return {GetNrows(), GetNcols()};
+}
+
 std::size_t spla::Matrix::GetNrows() const {
     return mStorage->GetNrows();
 }

@@ -30,6 +30,7 @@
 
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
+#include <utility>
 
 namespace spla {
 
@@ -62,6 +63,9 @@ namespace spla {
     class SPLA_API Matrix final : public TypedObject {
     public:
         ~Matrix() override;
+
+        /** @return Number of matrix (rows, columns) */
+        std::pair<std::size_t, std::size_t> GetDim() const;
 
         /** @return Number of matrix rows */
         std::size_t GetNrows() const;
