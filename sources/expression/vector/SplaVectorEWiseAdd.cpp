@@ -95,7 +95,7 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             compute::vector<unsigned int> permB(ctx);
 
             // Fill b values permutation indices
-            if (blockA.IsNotNull() /* todo: && typeHasValues */) {
+            if (blockB.IsNotNull() /* todo: && typeHasValues */) {
                 auto nnz = blockB->GetNvals();
                 permB.resize(nnz, queue);
                 compute::copy_n(compute::make_counting_iterator(0), nnz, permB.begin(), queue);
@@ -231,10 +231,10 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                                                 op->GetSource(),
                                                 queue);
 
+            SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, resultNvals);
+
             auto result = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals));
             w->GetStorage()->SetBlock(i, result.As<VectorBlock>());
-
-            SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, resultNvals);
         });
     }
 }

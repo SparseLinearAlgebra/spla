@@ -48,6 +48,31 @@ namespace utils {
         std::uniform_real_distribution<T> mDist;
     };
 
+    template<typename T>
+    class UniformIntGenerator {
+    public:
+        explicit UniformIntGenerator(std::size_t seed = 0)
+            : mEngine(seed) {
+        }
+
+        T operator()() {
+            return mDist(mEngine);
+        }
+
+    private:
+        std::default_random_engine mEngine;
+        std::uniform_int_distribution<T> mDist;
+    };
+
+    template<typename T>
+    class UniformGenerator;
+
+    template<>
+    class UniformGenerator<float> : public UniformRealGenerator<float> {};
+
+    template<>
+    class UniformGenerator<std::int32_t> : public UniformRealGenerator<float> {};
+
 }// namespace utils
 
 #endif//SPLA_RANDOM_HPP

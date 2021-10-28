@@ -151,12 +151,12 @@ namespace utils {
         }
 
         [[nodiscard]] Vector SortReduceDuplicates() const {
-            using Pair = std::pair<Index, size_t>;
+            using Pair = std::pair<Index, std::size_t>;
 
             std::vector<Pair> indices;
             indices.reserve(GetNvals());
 
-            for (size_t i = 0; i < GetNvals(); i++) {
+            for (std::size_t i = 0; i < GetNvals(); i++) {
                 auto row = mRows[i];
                 indices.emplace_back(row, i);
             }
@@ -262,7 +262,7 @@ namespace utils {
             return Mask(mask).EWiseAdd(other.Mask(mask), op);
         }
 
-        static Vector Generate(size_t nrows, size_t nvals, size_t seed = 0, const T &value = T()) {
+        static Vector Generate(std::size_t nrows, std::size_t nvals, std::size_t seed = 0, const T &value = T()) {
             std::vector<Index> rows;
             std::vector<T> vals(nvals, value);
 
@@ -271,13 +271,17 @@ namespace utils {
             std::default_random_engine engine(seed);
             auto distRows = std::uniform_int_distribution<Index>(0, nrows > 0 ? nrows - 1 : nrows);
 
-            for (size_t i = 0; i < nvals; i++) {
+            for (std::size_t i = 0; i < nvals; i++) {
                 auto row = distRows(engine);
                 assert(row < nrows);
                 rows.push_back(row);
             }
 
             return Vector<T>(nrows, std::move(rows), std::move(vals));
+        }
+
+        static Vector Empty(std::size_t nrows) {
+            return Vector(nrows, std::vector<Index>{}, std::vector<T>{});
         }
 
     private:

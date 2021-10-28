@@ -31,6 +31,7 @@
 #include <gtest/gtest.h>
 #include <utils/Matrix.hpp>
 #include <utils/Random.hpp>
+#include <utils/Setup.hpp>
 #include <utils/Vector.hpp>
 
 // Put in the end of the unit test file

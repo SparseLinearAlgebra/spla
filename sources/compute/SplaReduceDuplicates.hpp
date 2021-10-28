@@ -54,7 +54,7 @@ namespace spla {
                 mCount = count;
 
                 std::stringstream _spla_reduce_op;
-                _spla_reduce_op << "void _spla_reduce_op(__global uchar* bp_a, __global uchar* bp_b, __global uchar* bp_c) {\n"
+                _spla_reduce_op << "void _spla_reduce_op(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n"
                                 << "   " << reduceOp << "\n"
                                 << "}";
 
@@ -155,6 +155,7 @@ namespace spla {
                                       reduceOp);
         copyReduceDuplicates.Exec(queue);
 
+        queue.finish();
         return resultNvals;
     }
 

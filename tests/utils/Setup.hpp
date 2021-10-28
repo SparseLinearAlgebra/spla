@@ -25,59 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAFUNCTIONS_HPP
-#define SPLA_SPLAFUNCTIONS_HPP
+#ifndef SPLA_SETUP_HPP
+#define SPLA_SETUP_HPP
 
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
+#include <cstddef>
+#include <vector>
 
-namespace spla {
+namespace utils {
 
-    /**
-     * @addtogroup API
-     * @{
-     */
+    template<typename Callable>
+    void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
+        for (std::size_t blockSize : blocksSizes) {
+            spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+            callable(library);
+        }
+    }
 
-    /**
-     * @class Functions
-     * @brief Predefined functions for built-in types.
-     * Allows to access standard plus, minus, min, max function for built-in types.
-     */
-    class SPLA_API Functions {
-    public:
-        /**
-         * Function c = a + b for Int32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt32(Library &library);
+}// namespace utils
 
-        /**
-         * Function c = a + b for Int64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt64(Library &library);
-
-        /**
-         * Function c = a + b for Float32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat32(Library &library);
-
-        /**
-         * Function c = a + b for Float64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat64(Library &library);
-
-    private:
-        // friend class Library;
-        // todo: static void InitFunctions(Library &library);
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLAFUNCTIONS_HPP
+#endif//SPLA_SETUP_HPP

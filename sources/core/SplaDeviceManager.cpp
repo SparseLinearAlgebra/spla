@@ -55,6 +55,8 @@ namespace spla {
 }// namespace spla
 
 spla::DeviceManager::DeviceId spla::DeviceManager::FetchDevice(const spla::RefPtr<spla::ExpressionNode> &node) {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+
     assert(node);
     auto desc = node->GetDescriptor();
     assert(desc);
@@ -72,6 +74,8 @@ spla::DeviceManager::DeviceId spla::DeviceManager::FetchDevice(const spla::RefPt
 }
 
 std::vector<spla::DeviceManager::DeviceId> spla::DeviceManager::FetchDevices(std::size_t required, const spla::RefPtr<spla::ExpressionNode> &node) {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+
     if (!required)
         return std::vector<DeviceId>();
 

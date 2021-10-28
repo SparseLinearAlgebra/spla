@@ -27,15 +27,17 @@
 
 #include <Testing.hpp>
 
-void testCommon(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
-    utils::Vector a = utils::Vector<float>::Generate(M, nvals, seed).SortReduceDuplicates();
-    utils::Vector b = utils::Vector<float>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
+template<typename Type, typename BinaryOp>
+void testCommon(spla::Library &library, std::size_t M, std::size_t nvals,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spOp,
+                BinaryOp op, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector b = utils::Vector<Type>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
 
-    a.Fill(utils::UniformRealGenerator<float>());
-    b.Fill(utils::UniformRealGenerator<float>());
+    a.Fill(utils::UniformGenerator<Type>());
+    b.Fill(utils::UniformGenerator<Type>());
 
-    auto spT = spla::Types::Float32(library);
-    auto spOp = spla::Functions::PlusFloat32(library);
     auto spA = spla::Vector::Make(M, spT, library);
     auto spB = spla::Vector::Make(M, spT, library);
     auto spW = spla::Vector::Make(M, spT, library);
@@ -56,20 +58,22 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals, std::s
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<float> c = a.EWiseAdd(b, [](float x, float y) { return x + y; });
+    utils::Vector<Type> c = a.EWiseAdd(b, op);
     ASSERT_TRUE(c.Equals(spW));
 }
 
-void testMasked(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
-    utils::Vector a = utils::Vector<float>::Generate(M, nvals, seed).SortReduceDuplicates();
-    utils::Vector b = utils::Vector<float>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
+template<typename Type, typename BinaryOp>
+void testMasked(spla::Library &library, std::size_t M, std::size_t nvals,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spOp,
+                BinaryOp op, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector b = utils::Vector<Type>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
     utils::Vector mask = utils::Vector<unsigned short>::Generate(M, nvals, seed + 2).SortReduceDuplicates();
 
-    a.Fill(utils::UniformRealGenerator<float>());
-    b.Fill(utils::UniformRealGenerator<float>());
+    a.Fill(utils::UniformGenerator<Type>());
+    b.Fill(utils::UniformGenerator<Type>());
 
-    auto spT = spla::Types::Float32(library);
-    auto spOp = spla::Functions::PlusFloat32(library);
     auto spA = spla::Vector::Make(M, spT, library);
     auto spB = spla::Vector::Make(M, spT, library);
     auto spW = spla::Vector::Make(M, spT, library);
@@ -93,26 +97,95 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t nvals, std::s
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<float> c = a.EWiseAdd(mask, b, [](float x, float y) { return x + y; });
+    utils::Vector<Type> c = a.EWiseAdd(mask, b, op);
     ASSERT_TRUE(c.Equals(spW));
+}
+
+template<typename Type, typename BinaryOp>
+void testOneIsEmpty(spla::Library &library, std::size_t M, std::size_t nvals,
+                    const spla::RefPtr<spla::Type> &spT,
+                    const spla::RefPtr<spla::FunctionBinary> &spOp,
+                    BinaryOp op, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector b = utils::Vector<Type>::Empty(M);
+    utils::Vector mask = utils::Vector<unsigned short>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
+
+    a.Fill(utils::UniformGenerator<Type>());
+
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Vector::Make(M, spT, library);
+    auto spW1 = spla::Vector::Make(M, spT, library);
+    auto spW2 = spla::Vector::Make(M, spT, library);
+    auto spMask = spla::Vector::Make(M, spla::Types::Void(library), library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetData(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spEAddAB1 = spExpr->MakeEWiseAdd(spW1, spMask, spOp, spA, spB);
+    auto spEAddAB2 = spExpr->MakeEWiseAdd(spW2, spMask, spOp, spB, spA);
+    spExpr->Dependency(spWriteA, spEAddAB1);
+    spExpr->Dependency(spWriteMask, spEAddAB1);
+    spExpr->Dependency(spWriteA, spEAddAB2);
+    spExpr->Dependency(spWriteMask, spEAddAB2);
+
+    library.Submit(spExpr);
+    spExpr->Wait();
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    utils::Vector<Type> c = a.EWiseAdd(mask, b, op);
+    ASSERT_TRUE(c.Equals(spW1));
+    ASSERT_TRUE(c.Equals(spW2));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
     std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
 
-    for (std::size_t blockSize : blocksSizes) {
-        spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        auto spT = spla::Types::Float32(library);
+        auto spOp = spla::Functions::PlusFloat32(library);
+        auto op = [](float x, float y) { return x + y; };
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon(library, M, nvals, i);
+            testCommon<float>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked(library, M, nvals, i);
+            testMasked<float>(library, M, nvals, spT, spOp, op, i);
         }
-    }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testOneIsEmpty<float>(library, M, nvals, spT, spOp, op, i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        auto spT = spla::Types::Int32(library);
+        auto spOp = spla::Functions::PlusInt32(library);
+        auto op = [](std::int32_t x, std::int32_t y) { return x + y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testOneIsEmpty<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+        }
+    });
 }
 
 TEST(VectorEWiseAdd, Small) {
