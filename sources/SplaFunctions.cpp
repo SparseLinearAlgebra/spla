@@ -28,12 +28,32 @@
 #include <spla-cpp/SplaFunctions.hpp>
 #include <spla-cpp/SplaTypes.hpp>
 
+spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &library) {
+    auto t = Types::Int32(library);
+    return FunctionBinary::Make(t, t, t,
+                                "int a = *((const int*)vp_a);"
+                                "int b = *((const int*)vp_b);"
+                                "int* c = (int*)vp_c;"
+                                "*c = a + b;",
+                                library);
+}
+
+spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &library) {
+    auto t = Types::Int64(library);
+    return FunctionBinary::Make(t, t, t,
+                                "long a = *((const long*)vp_a);"
+                                "long b = *((const long*)vp_b);"
+                                "long* c = (long*)vp_c;"
+                                "*c = a + b;",
+                                library);
+}
+
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
     auto t = Types::Float32(library);
     return FunctionBinary::Make(t, t, t,
-                                "float a = *((const float*)bp_a);"
-                                "float b = *((const float*)bp_b);"
-                                "float* c = (float*)bp_c;"
+                                "float a = *((const float*)vp_a);"
+                                "float b = *((const float*)vp_b);"
+                                "float* c = (float*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }
@@ -41,9 +61,9 @@ spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
     auto t = Types::Float64(library);
     return FunctionBinary::Make(t, t, t,
-                                "double a = *((const double*)bp_a);"
-                                "double b = *((const double*)bp_b);"
-                                "double* c = (double*)bp_c;"
+                                "double a = *((const double*)vp_a);"
+                                "double b = *((const double*)vp_b);"
+                                "double* c = (double*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }

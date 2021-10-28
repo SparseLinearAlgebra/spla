@@ -66,6 +66,11 @@ namespace spla {
             return mBuiltIn;
         }
 
+        /** @return True if type has actual values, otherwise it is type without values */
+        bool HasValues() const {
+            return GetByteSize() != 0;
+        }
+
         /**
          * Makes new user-defined type.
          *

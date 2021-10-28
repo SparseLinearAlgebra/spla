@@ -25,39 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaMatrix.hpp>
-#include <storage/SplaMatrixStorage.hpp>
+#ifndef SPLA_SETUP_HPP
+#define SPLA_SETUP_HPP
 
-std::pair<std::size_t, std::size_t> spla::Matrix::GetDim() const {
-    return {GetNrows(), GetNcols()};
-}
+#include <cstddef>
+#include <vector>
 
-std::size_t spla::Matrix::GetNrows() const {
-    return mStorage->GetNrows();
-}
+namespace utils {
 
-std::size_t spla::Matrix::GetNcols() const {
-    return mStorage->GetNcols();
-}
+    template<typename Callable>
+    void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
+        for (std::size_t blockSize : blocksSizes) {
+            spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+            callable(library);
+        }
+    }
 
-std::size_t spla::Matrix::GetNvals() const {
-    return mStorage->GetNvals();
-}
+}// namespace utils
 
-const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
-    return mStorage;
-}
-
-spla::RefPtr<spla::Matrix> spla::Matrix::Make(std::size_t nrows, std::size_t ncols,
-                                              const RefPtr<Type> &type,
-                                              spla::Library &library) {
-    return spla::RefPtr<spla::Matrix>(new Matrix(nrows, ncols, type, library));
-}
-
-spla::Matrix::Matrix(std::size_t nrows, std::size_t ncols,
-                     const RefPtr<Type> &type,
-                     spla::Library &library) : TypedObject(type, Object::TypeName::Matrix, library) {
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
-}
-
-spla::Matrix::~Matrix() = default;
+#endif//SPLA_SETUP_HPP

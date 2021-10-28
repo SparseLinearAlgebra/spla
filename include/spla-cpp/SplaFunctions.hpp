@@ -46,6 +46,18 @@ namespace spla {
     class SPLA_API Functions {
     public:
         /**
+         * Function c = a + b for Int32 type.
+         * @return Plus function.
+         */
+        static RefPtr<FunctionBinary> PlusInt32(Library &library);
+
+        /**
+         * Function c = a + b for Int64 type.
+         * @return Plus function.
+         */
+        static RefPtr<FunctionBinary> PlusInt64(Library &library);
+
+        /**
          * Function c = a + b for Float32 type.
          * @return Plus function.
          */

@@ -30,6 +30,7 @@
 
 #include <boost/compute/device.hpp>
 #include <cstddef>
+#include <mutex>
 #include <spla-cpp/SplaExpressionNode.hpp>
 
 namespace spla {
@@ -91,6 +92,8 @@ namespace spla {
 
         std::vector<Device> mDevices;
         std::size_t mNextDevice = 0;
+
+        mutable std::mutex mMutex;
     };
 
     /**
