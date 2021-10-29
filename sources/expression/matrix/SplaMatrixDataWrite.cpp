@@ -27,6 +27,7 @@
 
 #include <boost/compute.hpp>
 #include <compute/SplaGather.hpp>
+#include <compute/SplaCommandQueueFinisher.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
@@ -70,6 +71,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 compute::context ctx = library->GetContext();
                 compute::device device = library->GetDeviceManager().GetDevice(deviceId);
                 compute::command_queue queue(ctx, device);
+                CommandQueueFinisher commandQueueFinisher(queue);
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);
@@ -166,8 +168,6 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                     if (typeHasValues)
                         compute::copy(blockValsHost.begin(), blockValsHost.end(), blockVals.begin(), queue);
-
-                    queue.finish();
                 }
 
                 // If entries are not sorted, we must sort it here in row-cols order
@@ -199,11 +199,8 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     if (typeHasValues) {
                         compute::vector<unsigned char> valsTmp(blockNvals * byteSize, ctx);
                         Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue).wait();
-                        queue.finish();
                         std::swap(blockVals, valsTmp);
                     }
-
-                    queue.finish();
                 }
 
                 if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
@@ -277,8 +274,6 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                     SPDLOG_LOGGER_TRACE(logger, "Reduce duplicates block ({},{}) entries old={} new={}",
                                         i, j, blockNvals, resultNvals);
-
-                    queue.finish();
 
                     // Update block data
                     blockNvals = resultNvals;
