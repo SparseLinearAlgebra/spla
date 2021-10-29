@@ -347,7 +347,7 @@ namespace utils {
         size_t mNcols = 0;
     };
 
-    template <typename T>
+    template<typename T>
     std::ostream &operator<<(std::ostream &os, const Matrix<T> &m) {
         os << "  rows: ";
         for (auto x : m.mRows) {

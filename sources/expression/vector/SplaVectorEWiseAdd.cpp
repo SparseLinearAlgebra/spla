@@ -193,9 +193,9 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             compute::vector<unsigned int> mergedPerm(mergeCount, ctx);
 
             auto [mergedRowsEnd, mergedPermEnd] = MergeByKey(rowsA->begin(), rowsA->end(), permA.begin(),
-                       rowsB->begin(), rowsB->end(), permB.begin(),
-                       mergedRows.begin(), mergedPerm.begin(),
-                       queue);
+                                                             rowsB->begin(), rowsB->end(), permB.begin(),
+                                                             mergedRows.begin(), mergedPerm.begin(),
+                                                             queue);
 
             mergedRows.erase(mergedRowsEnd, mergedRows.end(), queue);
             mergedPerm.erase(mergedPermEnd, mergedPerm.end(), queue);
