@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
-#include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
 
 TEST(Compute, MergeByKey) {

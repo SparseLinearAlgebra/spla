@@ -90,8 +90,158 @@ namespace spla {
             std::size_t mCount = 0;
         };
 
+        inline std::size_t ReduceDuplicatesImpl(const boost::compute::vector<unsigned int> &inputIndices1,
+                                                const boost::compute::vector<unsigned int> &inputIndices2,
+                                                const boost::compute::vector<unsigned char> &inputValues,
+                                                boost::compute::vector<unsigned int> &resultIndices1,
+                                                boost::compute::vector<unsigned int> &resultIndices2,
+                                                boost::compute::vector<unsigned char> &resultValues,
+                                                std::size_t elementsInSequence,
+                                                const std::string &reduceOp,
+                                                boost::compute::command_queue &queue) {
+
+            using namespace boost;
+            auto ctx = queue.get_context();
+            auto count = inputIndices1.size();
+            auto bothIndices = !inputIndices1.empty() && !inputIndices2.empty();
+
+            if (!count)
+                return 0;
+
+            // Store 1 for unique entry, and 0 for duplicated
+            compute::vector<unsigned int> unique(count + 1, ctx);
+            unique.begin().write(1u, queue);
+
+            // For each entry starting from 1 check if is unique, first is always unique
+            if (bothIndices) {
+                BOOST_COMPUTE_CLOSURE(
+                        unsigned int, findUnique, (unsigned int i), (inputIndices1, inputIndices2), {
+                            const uint row = inputIndices1[i];
+                            const uint col = inputIndices2[i];
+                            const uint rowPrev = inputIndices1[i - 1];
+                            const uint colPrev = inputIndices2[i - 1];
+                            return rowPrev == row && colPrev == col ? 0 : 1;
+                        });
+
+                compute::transform(compute::counting_iterator<unsigned int>(1),
+                                   compute::counting_iterator<unsigned int>(count),
+                                   unique.begin() + 1,
+                                   findUnique,
+                                   queue);
+            } else {
+                BOOST_COMPUTE_CLOSURE(
+                        unsigned int, findUnique, (unsigned int i), (inputIndices1), {
+                            const uint row = inputIndices1[i];
+                            const uint rowPrev = inputIndices1[i - 1];
+                            return rowPrev == row ? 0 : 1;
+                        });
+
+                compute::transform(compute::counting_iterator<unsigned int>(1),
+                                   compute::counting_iterator<unsigned int>(count),
+                                   unique.begin() + 1,
+                                   findUnique,
+                                   queue);
+            }
+
+            // Define write offsets (where to write value in result buffer) for each unique value
+            compute::vector<unsigned int> offsets(unique.size(), ctx);
+            compute::exclusive_scan(unique.begin(), unique.end(), offsets.begin(), 0, queue);
+
+            // Count number of unique values to allocate storage
+            std::size_t resultNvals = (offsets.end() - 1).read(queue);
+
+            if (!inputIndices1.empty())
+                resultIndices1.resize(resultNvals, queue);
+            if (!inputIndices2.empty())
+                resultIndices2.resize(resultNvals, queue);
+
+            // Copy indices
+            if (bothIndices) {
+                BOOST_COMPUTE_CLOSURE(
+                        void, copyIndices, (unsigned int i), (unique, offsets, resultIndices1, inputIndices1, resultIndices2, inputIndices2), {
+                            if (unique[i]) {
+                                const uint offset = offsets[i];
+                                resultIndices1[offset] = inputIndices1[i];
+                                resultIndices2[offset] = inputIndices2[i];
+                            }
+                        });
+
+                compute::for_each_n(compute::counting_iterator<unsigned int>(0),
+                                    count,
+                                    copyIndices,
+                                    queue);
+            } else {
+                BOOST_COMPUTE_CLOSURE(
+                        void, copyIndices, (unsigned int i), (unique, offsets, resultIndices1, inputIndices1), {
+                            if (unique[i]) {
+                                const uint offset = offsets[i];
+                                resultIndices1[offset] = inputIndices1[i];
+                            }
+                        });
+
+                compute::for_each_n(compute::counting_iterator<unsigned int>(0),
+                                    count,
+                                    copyIndices,
+                                    queue);
+            }
+
+            // Copy values
+            if (!inputValues.empty()) {
+                resultValues.resize(resultNvals * elementsInSequence, queue);
+
+                CopyReduceDuplicates kernel;
+                kernel.SetRange(unique.begin(),
+                                offsets.begin(),
+                                inputValues.begin(),
+                                resultValues.begin(),
+                                elementsInSequence,
+                                count,
+                                reduceOp);
+                kernel.Exec(queue);
+            }
+
+            queue.finish();
+            return resultNvals;
+        }
+
     }// namespace
 
+    inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
+                                        const boost::compute::vector<unsigned int> &inputIndices2,
+                                        const boost::compute::vector<unsigned char> &inputValues,
+                                        boost::compute::vector<unsigned int> &resultIndices1,
+                                        boost::compute::vector<unsigned int> &resultIndices2,
+                                        boost::compute::vector<unsigned char> &resultValues,
+                                        std::size_t elementsInSequence,
+                                        const std::string &reduceOp,
+                                        boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        return ReduceDuplicatesImpl(inputIndices1, inputIndices2, inputValues,
+                                    resultIndices1, resultIndices2, resultValues,
+                                    elementsInSequence,
+                                    reduceOp,
+                                    queue);
+    }
+
+    inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
+                                        const boost::compute::vector<unsigned int> &inputIndices2,
+                                        boost::compute::vector<unsigned int> &resultIndices1,
+                                        boost::compute::vector<unsigned int> &resultIndices2,
+                                        std::size_t elementsInSequence,
+                                        const std::string &reduceOp,
+                                        boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        compute::vector<unsigned char> dummyInputValues;
+        compute::vector<unsigned char> dummyResultValues;
+
+        return ReduceDuplicatesImpl(inputIndices1, inputIndices2, dummyInputValues,
+                                    resultIndices1, resultIndices2, dummyResultValues,
+                                    elementsInSequence,
+                                    reduceOp,
+                                    queue);
+    }
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
                                         const boost::compute::vector<unsigned char> &inputValues,
                                         boost::compute::vector<unsigned int> &resultIndices,
@@ -100,63 +250,34 @@ namespace spla {
                                         const std::string &reduceOp,
                                         boost::compute::command_queue &queue) {
         using namespace boost;
-        auto ctx = queue.get_context();
-        auto count = inputIndices.size();
 
-        compute::vector<unsigned int> unique(count + 1, ctx);
-        unique.begin().write(1u, queue);
+        compute::vector<unsigned int> dummyInputIndices;
+        compute::vector<unsigned int> dummyResultIndices;
 
-        BOOST_COMPUTE_CLOSURE(
-                unsigned int, findUnique, (unsigned int i), (inputIndices), {
-                    const uint row = inputIndices[i];
-                    const uint rowPrev = inputIndices[i - 1];
-                    return rowPrev == row ? 0 : 1;
-                });
+        return ReduceDuplicatesImpl(inputIndices, dummyInputIndices, inputValues,
+                                    resultIndices, dummyResultIndices, resultValues,
+                                    elementsInSequence,
+                                    reduceOp,
+                                    queue);
+    }
 
-        // For each entry starting from 1 check if is unique, first is always unique
-        compute::transform(compute::counting_iterator<unsigned int>(1),
-                           compute::counting_iterator<unsigned int>(count),
-                           unique.begin() + 1,
-                           findUnique,
-                           queue);
+    inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
+                                        boost::compute::vector<unsigned int> &resultIndices,
+                                        std::size_t elementsInSequence,
+                                        const std::string &reduceOp,
+                                        boost::compute::command_queue &queue) {
+        using namespace boost;
 
-        // Define write offsets (where to write value in result buffer) for each unique value
-        compute::vector<unsigned int> offsets(unique.size(), ctx);
-        compute::exclusive_scan(unique.begin(), unique.end(), offsets.begin(), 0, queue);
+        compute::vector<unsigned int> dummyInputIndices;
+        compute::vector<unsigned int> dummyResultIndices;
+        compute::vector<unsigned char> dummyInputValues;
+        compute::vector<unsigned char> dummyResultValues;
 
-        // Count number of unique values to allocate storage
-        std::size_t resultNvals = (offsets.end() - 1).read(queue);
-
-        resultIndices.resize(resultNvals, queue);
-
-        // Copy indices
-        BOOST_COMPUTE_CLOSURE(
-                void, copyIndices, (unsigned int i), (unique, offsets, resultIndices, inputIndices), {
-                    if (unique[i]) {
-                        const uint offset = offsets[i];
-                        resultIndices[offset] = inputIndices[i];
-                    }
-                });
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0),
-                            count,
-                            copyIndices,
-                            queue);
-
-        resultValues.resize(resultNvals * elementsInSequence, queue);
-
-        // Copy values
-        CopyReduceDuplicates copyReduceDuplicates;
-        copyReduceDuplicates.SetRange(unique.begin(),
-                                      offsets.begin(),
-                                      inputValues.begin(),
-                                      resultValues.begin(),
-                                      elementsInSequence,
-                                      count,
-                                      reduceOp);
-        copyReduceDuplicates.Exec(queue);
-
-        queue.finish();
-        return resultNvals;
+        return ReduceDuplicatesImpl(inputIndices, dummyInputIndices, dummyInputValues,
+                                    resultIndices, dummyResultIndices, dummyResultValues,
+                                    elementsInSequence,
+                                    reduceOp,
+                                    queue);
     }
 
 }// namespace spla
