@@ -163,6 +163,34 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
 }
 
 spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
+                               const spla::RefPtr<spla::Matrix> &mask,
+                               const spla::RefPtr<spla::FunctionBinary> &op,
+                               const spla::RefPtr<spla::Matrix> &a,
+                               const spla::RefPtr<spla::Matrix> &b,
+                               const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), InvalidArgument, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), InvalidArgument, "a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), InvalidArgument, "b can't be null");
+    CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidArgument, "w, a, b must have the same type");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), InvalidArgument, "If type is has values then `op` must be provided");
+    CHECK_RAISE_ERROR(w->GetDim() == a->GetDim(), InvalidArgument, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetDim() == b->GetDim(), InvalidArgument, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetDim() == mask->GetDim(), InvalidArgument, "Incompatible mask size");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            op.As<Object>(),
+            a.As<Object>(),
+            b.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::MatrixEWiseAdd,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
                                const spla::RefPtr<spla::Vector> &mask,
                                const spla::RefPtr<spla::FunctionBinary> &op,

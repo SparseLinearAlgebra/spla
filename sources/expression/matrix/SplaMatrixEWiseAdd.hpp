@@ -24,46 +24,22 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLAMATRIXEWISEADD_HPP
+#define SPLA_SPLAMATRIXEWISEADD_HPP
 
-#include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaTypes.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &library) {
-    auto t = Types::Int32(library);
-    return FunctionBinary::Make(t, t, t,
-                                "int a = *((const __global int*)vp_a);"
-                                "int b = *((const __global int*)vp_b);"
-                                "__global int* c = (__global int*)vp_c;"
-                                "*c = a + b;",
-                                library);
-}
+namespace spla {
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &library) {
-    auto t = Types::Int64(library);
-    return FunctionBinary::Make(t, t, t,
-                                "long a = *((const __global long*)vp_a);"
-                                "long b = *((const __global long*)vp_b);"
-                                "__global long* c = (__global long*)vp_c;"
-                                "*c = a + b;",
-                                library);
-}
+    class MatrixEWiseAdd final : public NodeProcessor {
+    public:
+        ~MatrixEWiseAdd() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
-    auto t = Types::Float32(library);
-    return FunctionBinary::Make(t, t, t,
-                                "float a = *((const __global float*)vp_a);"
-                                "float b = *((const __global float*)vp_b);"
-                                "__global float* c = (__global float*)vp_c;"
-                                "*c = a + b;",
-                                library);
-}
+}// namespace spla
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
-    auto t = Types::Float64(library);
-    return FunctionBinary::Make(t, t, t,
-                                "double a = *((const __global double*)vp_a);"
-                                "double b = *((const __global double*)vp_b);"
-                                "__global double* c = (double*)vp_c;"
-                                "*c = a + b;",
-                                library);
-}
+
+#endif//SPLA_SPLAMATRIXEWISEADD_HPP

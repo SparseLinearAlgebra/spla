@@ -7,7 +7,8 @@ TESTS = [
     "TestDataMatrix",
     "TestDataVector",
     "TestExpression",
-    "TestVectorEWiseAdd"
+    "TestVectorEWiseAdd",
+    "TestMatrixEWiseAdd"
 ]
 
 

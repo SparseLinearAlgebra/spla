@@ -169,6 +169,26 @@ namespace spla {
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * Make matrix masked element-wise add expression node.
+         * Operation is evaluated as `w<mask> = a +(op) b`.
+         *
+         * @param w Matrix to store result
+         * @param mask Mask to filter input matrices; may be null
+         * @param op Binary op to sum elements of input matrices
+         * @param a Input a matrix
+         * @param b Input b matrix
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Vector> &w,
+                                            const RefPtr<Vector> &mask,
+                                            const RefPtr<FunctionBinary> &op,
+                                            const RefPtr<Vector> &a,
+                                            const RefPtr<Vector> &b,
+                                            const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make vector masked element-wise add expression node.
          * Operation is evaluated as `w<mask> = a +(op) b`.
          *
@@ -181,11 +201,11 @@ namespace spla {
          *
          * @return Created expression node
          */
-        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Vector> &w,
-                                            const RefPtr<Vector> &mask,
+        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Matrix> &w,
+                                            const RefPtr<Matrix> &mask,
                                             const RefPtr<FunctionBinary> &op,
-                                            const RefPtr<Vector> &a,
-                                            const RefPtr<Vector> &b,
+                                            const RefPtr<Matrix> &a,
+                                            const RefPtr<Matrix> &b,
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /** @return Current expression state */
