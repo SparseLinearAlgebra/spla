@@ -31,9 +31,8 @@
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
 #include <compute/SplaReduceDuplicates.hpp>
-#include <core/SplaError.hpp>
+#include <compute/SplaCommandQueueFinisher.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaMath.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <storage/SplaVectorStorage.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
@@ -73,6 +72,7 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
+            CommandQueueFinisher commandQueueFinisher(queue);
 
             auto type = w->GetType();
             auto byteSize = type->GetByteSize();

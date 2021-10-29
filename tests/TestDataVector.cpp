@@ -83,19 +83,19 @@ void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t n
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
     std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
 
-    for (std::size_t blockSize : blocksSizes) {
-        spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+    utils::testBlocks({100, 1000, 10000, 100000}, [=](spla::Library &library) {
+        for (std::size_t blockSize : blocksSizes) {
+            for (std::size_t i = 0; i < iter; i++) {
+                std::size_t nvals = base + i * step;
+                testCommon(library, M, nvals, i);
+            }
 
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCommon(library, M, nvals, i);
+            for (std::size_t i = 0; i < iter; i++) {
+                std::size_t nvals = base + i * step;
+                testSortedNoDuplicates(library, M, nvals, i);
+            }
         }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testSortedNoDuplicates(library, M, nvals, i);
-        }
-    }
+    });
 }
 
 TEST(DataVector, Small) {
