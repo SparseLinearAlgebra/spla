@@ -236,8 +236,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEnd1 , typename ItValuesA , typename ItKeysBBegin1 , typename ItKeysBBegin2 , typename ItKeysBEnd1 , typename ItValuesB , typename ItKeysResult1 , typename ItKeysResult2 , typename ItValuesResult &gt; </td></tr>
 <tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7e22d76dd720f5b89b97f67844bdfbf2">MergeByPairKey</a> (ItKeysABegin1 keysABeginFirst, ItKeysABegin2 keysABeginSecond, ItKeysAEnd1 keysAEndFirst, ItValuesA valuesA, ItKeysBBegin1 keysBBeginFirst, ItKeysBBegin2 keysBBeginSecond, ItKeysBEnd1 keysBEndFirst, ItValuesB valuesB, ItKeysResult1 keysResultFirst, ItKeysResult2 keysResultSecond, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a06e32a4a916ee651cbbd0c2dabe38f6a">ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e973ea800af47a29fc2625eb74cf50"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ac1e973ea800af47a29fc2625eb74cf50">ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ac1e973ea800af47a29fc2625eb74cf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd2c85fd86f63b4e398320400dc66c3a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#abd2c85fd86f63b4e398320400dc66c3a">ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:abd2c85fd86f63b4e398320400dc66c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a987738a746d84c1abcf41ca3684f8266"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a987738a746d84c1abcf41ca3684f8266">ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a987738a746d84c1abcf41ca3684f8266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a93b50c45990a5db2417f40138767a72a"></a>
@@ -535,8 +541,62 @@ template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEn
 
 </div>
 </div>
+<a id="a987738a746d84c1abcf41ca3684f8266"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a987738a746d84c1abcf41ca3684f8266">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abd2c85fd86f63b4e398320400dc66c3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd2c85fd86f63b4e398320400dc66c3a">&#9670;&nbsp;</a></span>ReduceDuplicates()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2c85fd86f63b4e398320400dc66c3a">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -561,6 +621,150 @@ template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEn
           <td></td>
           <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
           <td class="paramname"><em>resultIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac1e973ea800af47a29fc2625eb74cf50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1e973ea800af47a29fc2625eb74cf50">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a06e32a4a916ee651cbbd0c2dabe38f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06e32a4a916ee651cbbd0c2dabe38f6a">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices2</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
