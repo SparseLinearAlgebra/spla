@@ -464,7 +464,7 @@ namespace spla {
         const std::size_t resultSize = std::distance(compKeysRes.begin(), itResEnd);
 
         return std::pair{keysResultFirst + resultSize,
-                          keysResultSecond + resultSize};
+                         keysResultSecond + resultSize};
     }
 
 }// namespace spla
