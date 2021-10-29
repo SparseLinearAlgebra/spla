@@ -28,8 +28,8 @@
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/iterator.hpp>
-#include <compute/SplaGather.hpp>
 #include <compute/SplaCommandQueueFinisher.hpp>
+#include <compute/SplaGather.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
