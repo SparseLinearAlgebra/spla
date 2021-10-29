@@ -26,8 +26,8 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <compute/SplaGather.hpp>
 #include <compute/SplaCommandQueueFinisher.hpp>
+#include <compute/SplaGather.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
