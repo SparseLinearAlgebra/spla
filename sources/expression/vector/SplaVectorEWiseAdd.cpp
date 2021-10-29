@@ -197,9 +197,6 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                                                              mergedRows.begin(), mergedPerm.begin(),
                                                              queue);
 
-            mergedRows.erase(mergedRowsEnd, mergedRows.end(), queue);
-            mergedPerm.erase(mergedPermEnd, mergedPerm.end(), queue);
-
             // Copy values to single buffer
             compute::vector<unsigned char> mergedValues(mergeCount * byteSize, ctx);
             {

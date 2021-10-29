@@ -220,10 +220,6 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                         mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
                         queue);
 
-                mergedRows.erase(mergedRowsEnd, mergedRows.end(), queue);
-                mergedCols.erase(mergedColsEnd, mergedCols.end(), queue);
-                mergedPerm.erase(mergedPermEnd, mergedPerm.end(), queue);
-
                 queue.finish();
 
                 // Copy values to single buffer
