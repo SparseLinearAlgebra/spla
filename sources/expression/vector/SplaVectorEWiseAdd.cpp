@@ -27,11 +27,11 @@
 
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/iterator.hpp>
+#include <compute/SplaCommandQueueFinisher.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
 #include <compute/SplaReduceDuplicates.hpp>
-#include <compute/SplaCommandQueueFinisher.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <storage/SplaVectorStorage.hpp>
