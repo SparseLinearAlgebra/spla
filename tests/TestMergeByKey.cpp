@@ -133,4 +133,79 @@ TEST(Compute, MergeByPairKey) {
     }
 }
 
+TEST(Compute, MergeKeys) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<int> hostKeysA{1, 2, 3, 4, 5};
+    std::vector<int> hostKeysB{2, 2, 6, 6, 7};
+    compute::vector<int> keysA(hostKeysA, queue);
+    compute::vector<int> keysB(hostKeysB, queue);
+
+    compute::vector<int> keysRes(10, ctx);
+
+    auto keysResEnd = spla::MergeKeys(
+            keysA.begin(), keysA.end(),
+            keysB.begin(), keysB.end(),
+            keysRes.begin(),
+            queue);
+
+    std::vector<int> keysExpected{1, 2, 2, 2, 3, 4, 5, 6, 6, 7};
+
+    for (auto it = keysRes.begin(); it < keysResEnd; ++it) {
+        std::size_t ind = it - keysRes.begin();
+        EXPECT_EQ(it.read(queue), keysExpected[ind]);
+    }
+}
+
+TEST(Compute, MergePairKeys) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<int> hostKeysA1{1, 3, 5, 5, 7, 7, 7, 7, 9};
+    std::vector<int> hostKeysA2{2, 5, 4, 6, 3, 3, 4, 6, 0};
+
+    std::vector<int> hostKeysB1{3, 3, 5, 6, 6, 6, 6, 7, 10};
+    std::vector<int> hostKeysB2{2, 6, 5, 0, 1, 2, 3, 5, 5};
+
+    compute::vector<int> keysA1(hostKeysA1, queue);
+    compute::vector<int> keysA2(hostKeysA2, queue);
+    compute::vector<int> keysB1(hostKeysB1, queue);
+    compute::vector<int> keysB2(hostKeysB2, queue);
+
+    compute::vector<int> keysRes1(hostKeysA1.size() + hostKeysB1.size(), ctx);
+    compute::vector<int> keysRes2(hostKeysA2.size() + hostKeysB2.size(), ctx);
+
+    auto [keysResEndFirst, keysResEndSecond] = spla::MergePairKeys(
+            keysA1.begin(), keysA2.begin(), keysA1.end(),
+            keysB1.begin(), keysB2.begin(), keysB1.end(),
+            keysRes1.begin(), keysRes2.begin(),
+            queue);
+
+    std::vector<int> keys1Expected{1, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 9, 10};
+    std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0, 1, 2, 3, 3, 3, 4, 5, 6, 0, 5};
+
+    for (auto it = keysRes1.begin(); it < keysResEndFirst; ++it) {
+        std::size_t ind = it - keysRes1.begin();
+        EXPECT_EQ(it.read(queue), keys1Expected[ind]);
+    }
+
+    for (auto it = keysRes2.begin(); it < keysResEndSecond; ++it) {
+        std::size_t ind = it - keysRes2.begin();
+        EXPECT_EQ(it.read(queue), keys2Expected[ind]);
+    }
+}
+
 SPLA_GTEST_MAIN

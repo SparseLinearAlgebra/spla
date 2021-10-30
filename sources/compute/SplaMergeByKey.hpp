@@ -28,12 +28,25 @@
 #ifndef SPLA_SPLAMERGEBYKEY_HPP
 #define SPLA_SPLAMERGEBYKEY_HPP
 
-#include <tuple>
-
 #include <boost/compute.hpp>
 
 namespace spla {
 
+    /**
+     * @brief Merge value sequences by the given key
+     *
+     * @param keysABegin First keys begin iterator
+     * @param keysAEnd First keys end iterator
+     * @param valuesA First values begin iterator
+     * @param keysBBegin Second keys begin iterator
+     * @param keysBEnd Second keys end iterator
+     * @param valuesB Second values end iterator
+     * @param keysResult Merged keys begin iterator
+     * @param valuesResult Merged values begin iterator
+     * @param queue OpenCL command queue @p boost::compute::command_queue where operations will be executed
+     * @return Pair of iterators. First points at the end of merged keys and
+     * the second one at merged values.
+     */
     template<
             typename ItKeysABegin,
             typename ItKeysAEnd,
@@ -43,7 +56,7 @@ namespace spla {
             typename ItValuesB,
             typename ItKeysResult,
             typename ItValuesResult>
-    auto MergeByKey(
+    std::pair<ItKeysResult, ItValuesResult> MergeByKey(
             ItKeysABegin keysABegin,
             ItKeysAEnd keysAEnd,
             ItValuesA valuesA,
@@ -138,6 +151,59 @@ namespace spla {
                 valuesResult + resultSize};
     }
 
+    /**
+     * @brief Merge two sorted key sequences
+     *
+     * @param keysABegin First keys begin iterator
+     * @param keysAEnd First keys end iterator
+     * @param keysBBegin Second keys begin iterator
+     * @param keysBEnd Second keys end iterator
+     * @param keysResult Merged keys begin iterator
+     * @param queue OpenCL command queue @p boost::compute::command_queue where operations will be executed
+     * @return Iterator which points at the end of merged keys sequence
+     */
+    template<
+            typename ItKeysABegin,
+            typename ItKeysAEnd,
+            typename ItKeysBBegin,
+            typename ItKeysBEnd,
+            typename ItKeysResult>
+    ItKeysResult MergeKeys(
+            ItKeysABegin keysABegin,
+            ItKeysAEnd keysAEnd,
+            ItKeysBBegin keysBBegin,
+            ItKeysBEnd keysBEnd,
+            ItKeysResult keysResult,
+            boost::compute::command_queue &queue) {
+
+        using boost::compute::lambda::_1;
+        using boost::compute::lambda::_2;
+
+        return boost::compute::merge(
+                keysABegin, keysAEnd,
+                keysBBegin, keysBEnd,
+                keysResult,
+                _1 < _2,
+                queue);
+    }
+
+    /**
+     * @brief Merge values by composite key
+     *
+     * @param keysABeginFirst First set's first keys begin iterator
+     * @param keysABeginSecond First set's second keys end iterator
+     * @param keysAEndFirst First set's first keys end iterator
+     * @param valuesA First set's values begin iterator
+     * @param keysBBeginFirst Second set's first keys begin iterator
+     * @param keysBBeginSecond Second set's second keys begin iterator
+     * @param keysBEndFirst Second set's first keys end iterator
+     * @param valuesB Second set's values begin iterator
+     * @param keysResultFirst First merged keys begin iterator
+     * @param keysResultSecond Second merged keys begin iterator
+     * @param valuesResult Merged values begin iterator
+     * @param queue OpenCL command queue @p boost::compute::command_queue where operations will be executed
+     * @return Tuple of end iterators: {first_keys, second_keys, values}
+     */
     template<
             typename ItKeysABegin1,
             typename ItKeysABegin2,
@@ -150,7 +216,7 @@ namespace spla {
             typename ItKeysResult1,
             typename ItKeysResult2,
             typename ItValuesResult>
-    auto MergeByPairKey(
+    std::tuple<ItKeysResult1, ItKeysResult2, ItValuesResult> MergeByPairKey(
             ItKeysABegin1 keysABeginFirst,
             ItKeysABegin2 keysABeginSecond,
             ItKeysAEnd1 keysAEndFirst,
@@ -277,10 +343,130 @@ namespace spla {
 
         const std::size_t resultSize = std::distance(keyValuesRes.begin(), itResEnd);
 
-        return std::tuple{
-                keysResultFirst + resultSize,
-                keysResultSecond + resultSize,
-                valuesResult + resultSize};
+        return std::tuple{keysResultFirst + resultSize,
+                          keysResultSecond + resultSize,
+                          valuesResult + resultSize};
+    }
+
+    /**
+     * @brief Merge two composite keys sequences
+     *
+     * @param keysABeginFirst First set's first keys begin iterator
+     * @param keysABeginSecond First set's second keys end iterator
+     * @param keysAEndFirst First set's first keys end iterator
+     * @param keysBBeginFirst Second set's first keys begin iterator
+     * @param keysBBeginSecond Second set's second keys begin iterator
+     * @param keysBEndFirst Second set's first keys end iterator
+     * @param keysResultFirst First merged keys begin iterator
+     * @param keysResultSecond Second merged keys begin iterator
+     * @param queue OpenCL command queue @p boost::compute::command_queue where operations will be executed
+     * @return Pair of end iterators: {first_keys, second_keys}
+     */
+    template<
+            typename ItKeysABegin1,
+            typename ItKeysABegin2,
+            typename ItKeysAEnd1,
+            typename ItKeysBBegin1,
+            typename ItKeysBBegin2,
+            typename ItKeysBEnd1,
+            typename ItKeysResult1,
+            typename ItKeysResult2>
+    std::pair<ItKeysResult1, ItKeysResult2> MergePairKeys(
+            ItKeysABegin1 keysABeginFirst,
+            ItKeysABegin2 keysABeginSecond,
+            ItKeysAEnd1 keysAEndFirst,
+            ItKeysBBegin1 keysBBeginFirst,
+            ItKeysBBegin2 keysBBeginSecond,
+            ItKeysBEnd1 keysBEndFirst,
+            ItKeysResult1 keysResultFirst,
+            ItKeysResult2 keysResultSecond,
+            boost::compute::command_queue &queue) {
+
+        namespace compute = boost::compute;
+
+        using Key1 = typename std::iterator_traits<ItKeysABegin1>::value_type;
+        using Key2 = typename std::iterator_traits<ItKeysABegin2>::value_type;
+
+        using CompKey = std::pair<Key1, Key2>;
+
+        const compute::context &ctx = queue.get_context();
+
+        const std::size_t aSize = std::distance(keysABeginFirst, keysAEndFirst);
+        const std::size_t bSize = std::distance(keysBBeginFirst, keysBEndFirst);
+
+        compute::vector<CompKey> compKeysA(aSize, ctx);
+        compute::vector<CompKey> compKeysB(bSize, ctx);
+        compute::vector<CompKey> compKeysRes(aSize + bSize, ctx);
+
+        using ::boost::compute::lambda::_1;
+        using ::boost::compute::lambda::_2;
+        using ::boost::compute::lambda::get;
+
+        // Copy A keys
+        compute::copy(
+                keysABeginFirst,
+                keysAEndFirst,
+                compute::make_transform_iterator(
+                        compKeysA.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                keysABeginSecond,
+                keysABeginSecond + aSize,
+                compute::make_transform_iterator(
+                        compKeysA.begin(),
+                        get<1>(_1)),
+                queue);
+
+        // Copy B keys
+        compute::copy(
+                keysBBeginFirst,
+                keysBEndFirst,
+                compute::make_transform_iterator(
+                        compKeysB.begin(),
+                        get<0>(_1)),
+                queue);
+
+        compute::copy(
+                keysBBeginSecond,
+                keysBBeginSecond + bSize,
+                compute::make_transform_iterator(
+                        compKeysB.begin(),
+                        get<1>(_1)),
+                queue);
+
+        auto itResEnd = compute::merge(
+                compKeysA.begin(), compKeysA.end(),
+                compKeysB.begin(), compKeysB.end(),
+                compKeysRes.begin(),
+                (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)) || get<0>(_1) < get<0>(_2),
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        compKeysRes.begin(),
+                        get<0>(_1)),
+                compute::make_transform_iterator(
+                        itResEnd,
+                        get<0>(_1)),
+                keysResultFirst,
+                queue);
+
+        compute::copy(
+                compute::make_transform_iterator(
+                        compKeysRes.begin(),
+                        get<1>(_1)),
+                compute::make_transform_iterator(
+                        itResEnd,
+                        get<1>(_1)),
+                keysResultSecond,
+                queue);
+
+        const std::size_t resultSize = std::distance(compKeysRes.begin(), itResEnd);
+
+        return std::pair{keysResultFirst + resultSize,
+                          keysResultSecond + resultSize};
     }
 
 }// namespace spla
