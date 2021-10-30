@@ -152,7 +152,7 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
 
                 auto setResult = [&](RefPtr<VectorCOO> &block, const compute::vector<unsigned int> *rows, compute::vector<unsigned int> &perm) {
                     auto nnz = rows->size();
-                    compute::vector<unsigned int> newRows = *rows;
+                    compute::vector<unsigned int> newRows(*rows, queue);
                     compute::vector<unsigned char> newVals(ctx);
 
                     // Copy masked values if presented

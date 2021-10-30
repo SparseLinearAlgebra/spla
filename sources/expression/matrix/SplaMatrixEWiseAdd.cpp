@@ -168,8 +168,8 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                                              compute::vector<unsigned int> &perm) {
                         auto nnz = rows->size();
                         assert(nnz == cols->size());
-                        compute::vector<unsigned int> newRows = *rows;
-                        compute::vector<unsigned int> newCols = *cols;
+                        compute::vector<unsigned int> newRows(*rows, queue);
+                        compute::vector<unsigned int> newCols(*cols, queue);
                         compute::vector<unsigned char> newVals(ctx);
 
                         // Copy masked values if presented
