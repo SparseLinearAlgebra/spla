@@ -28,6 +28,7 @@
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/iterator.hpp>
+#include <compute/SplaCommandQueueFinisher.hpp>
 #include <compute/SplaGather.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
@@ -69,6 +70,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             compute::device device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
+            CommandQueueFinisher commandQueueFinisher(queue);
 
             auto blockIndex = VectorStorage::Index{static_cast<unsigned int>(i)};
             auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);
@@ -171,8 +173,6 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue);
                     std::swap(blockVals, valsTmp);
                 }
-
-                queue.finish();
             }
 
             if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
@@ -202,8 +202,6 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                     Gather(reducedPermutation.begin(), permResEnd, blockVals.begin(), valsTmp.begin(), byteSize, queue);
                     std::swap(blockVals, valsTmp);
                 }
-
-                queue.finish();
             }
 
             // Allocate result block and set in storage
