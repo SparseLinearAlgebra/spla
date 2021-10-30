@@ -31,6 +31,7 @@
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
 #include <compute/SplaReduceDuplicates.hpp>
+#include <compute/SplaCommandQueueFinisher.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
 #include <storage/SplaMatrixStorage.hpp>
@@ -75,6 +76,7 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 auto device = library->GetDeviceManager().GetDevice(deviceId);
                 compute::context ctx = library->GetContext();
                 compute::command_queue queue(ctx, device);
+                CommandQueueFinisher commandQueueFinisher(queue);
 
                 auto type = w->GetType();
                 auto byteSize = type->GetByteSize();
@@ -108,8 +110,6 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 compute::vector<unsigned int> tmpRowsB(ctx);
                 compute::vector<unsigned int> tmpColsA(ctx);
                 compute::vector<unsigned int> tmpColsB(ctx);
-
-                queue.finish();
 
                 auto maskBlock = mask.IsNotNull() ? mask->GetStorage()->GetBlock({i, j}).Cast<MatrixCOO>() : RefPtr<MatrixCOO>();
                 auto applyMask = [&](
@@ -191,8 +191,6 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                     if (!bEmpty)
                         setResult(blockB, rowsB, colsB, permB);
 
-                    queue.finish();
-
                     return;
                 }
 
@@ -219,8 +217,6 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                         permB.begin(),
                         mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
                         queue);
-
-                queue.finish();
 
                 // Copy values to single buffer
                 compute::vector<unsigned char> mergedValues(mergeCount * byteSize, ctx);
@@ -263,8 +259,6 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
 
                 auto result = MatrixCOO::Make(blockA->GetNrows(), blockA->GetNcols(), resultNvals, std::move(resultRows), std::move(resultCols), std::move(resultVals));
                 w->GetStorage()->SetBlock({i, j}, result.As<MatrixBlock>());
-
-                queue.finish();
             });
         }
     }
