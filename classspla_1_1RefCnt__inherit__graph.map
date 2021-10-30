@@ -7,28 +7,29 @@
 <area shape="rect" id="node6" href="$classspla_1_1MatrixBlock.html" title=" " alt="" coords="168,208,288,235"/>
 <area shape="rect" id="node8" href="$classspla_1_1MatrixStorage.html" title=" " alt="" coords="162,259,294,285"/>
 <area shape="rect" id="node9" href="$classspla_1_1NodeProcessor.html" title="Interface to the expression node processor class." alt="" coords="157,309,299,336"/>
-<area shape="rect" id="node15" href="$classspla_1_1Object.html" title=" " alt="" coords="183,537,273,564"/>
-<area shape="rect" id="node30" href="$classspla_1_1VectorBlock.html" title=" " alt="" coords="167,588,289,615"/>
-<area shape="rect" id="node32" href="$classspla_1_1VectorStorage.html" title=" " alt="" coords="161,639,295,665"/>
-<area shape="rect" id="node7" href="$classspla_1_1MatrixCOO.html" title=" " alt="" coords="376,107,492,133"/>
-<area shape="rect" id="node10" href="$classspla_1_1MatrixDataRead.html" title=" " alt="" coords="362,157,506,184"/>
-<area shape="rect" id="node11" href="$classspla_1_1MatrixDataWrite.html" title=" " alt="" coords="362,208,506,235"/>
-<area shape="rect" id="node12" href="$classspla_1_1VectorDataRead.html" title=" " alt="" coords="361,259,507,285"/>
-<area shape="rect" id="node13" href="$classspla_1_1VectorDataWrite.html" title=" " alt="" coords="361,309,507,336"/>
-<area shape="rect" id="node14" href="$classspla_1_1VectorEWiseAdd.html" title=" " alt="" coords="359,360,509,387"/>
-<area shape="rect" id="node16" href="$classspla_1_1Data.html" title=" " alt="" coords="395,411,473,437"/>
-<area shape="rect" id="node20" href="$classspla_1_1Descriptor.html" title=" " alt="" coords="379,461,489,488"/>
-<area shape="rect" id="node21" href="$classspla_1_1Expression.html" title="Computational expression for submission." alt="" coords="377,512,491,539"/>
-<area shape="rect" id="node22" href="$classspla_1_1ExpressionNode.html" title=" " alt="" coords="361,563,507,589"/>
-<area shape="rect" id="node23" href="$classspla_1_1FunctionBinary.html" title="Binary Typed element function f: a x b &#45;&gt; c." alt="" coords="365,613,503,640"/>
-<area shape="rect" id="node24" href="$classspla_1_1FunctionUnary.html" title=" " alt="" coords="366,664,502,691"/>
-<area shape="rect" id="node25" href="$classspla_1_1Type.html" title=" " alt="" coords="394,715,474,741"/>
-<area shape="rect" id="node26" href="$classspla_1_1TypedObject.html" title=" " alt="" coords="371,765,497,792"/>
-<area shape="rect" id="node17" href="$classspla_1_1DataMatrix.html" title="Matrix host coo data." alt="" coords="559,360,673,387"/>
-<area shape="rect" id="node18" href="$classspla_1_1DataScalar.html" title="Scalar host data." alt="" coords="558,411,674,437"/>
-<area shape="rect" id="node19" href="$classspla_1_1DataVector.html" title="Vector host coo data." alt="" coords="557,461,675,488"/>
-<area shape="rect" id="node27" href="$classspla_1_1Matrix.html" title=" " alt="" coords="573,715,659,741"/>
-<area shape="rect" id="node28" href="$classspla_1_1Scalar.html" title=" " alt="" coords="571,765,661,792"/>
-<area shape="rect" id="node29" href="$classspla_1_1Vector.html" title=" " alt="" coords="571,816,661,843"/>
-<area shape="rect" id="node31" href="$classspla_1_1VectorCOO.html" title=" " alt="" coords="375,816,493,843"/>
+<area shape="rect" id="node16" href="$classspla_1_1Object.html" title=" " alt="" coords="183,563,273,589"/>
+<area shape="rect" id="node31" href="$classspla_1_1VectorBlock.html" title=" " alt="" coords="167,613,289,640"/>
+<area shape="rect" id="node33" href="$classspla_1_1VectorStorage.html" title=" " alt="" coords="161,664,295,691"/>
+<area shape="rect" id="node7" href="$classspla_1_1MatrixCOO.html" title=" " alt="" coords="376,81,492,108"/>
+<area shape="rect" id="node10" href="$classspla_1_1MatrixDataRead.html" title=" " alt="" coords="362,132,506,159"/>
+<area shape="rect" id="node11" href="$classspla_1_1MatrixDataWrite.html" title=" " alt="" coords="362,183,506,209"/>
+<area shape="rect" id="node12" href="$classspla_1_1MatrixEWiseAdd.html" title=" " alt="" coords="361,233,507,260"/>
+<area shape="rect" id="node13" href="$classspla_1_1VectorDataRead.html" title=" " alt="" coords="361,284,507,311"/>
+<area shape="rect" id="node14" href="$classspla_1_1VectorDataWrite.html" title=" " alt="" coords="361,335,507,361"/>
+<area shape="rect" id="node15" href="$classspla_1_1VectorEWiseAdd.html" title=" " alt="" coords="359,385,509,412"/>
+<area shape="rect" id="node17" href="$classspla_1_1Data.html" title=" " alt="" coords="395,436,473,463"/>
+<area shape="rect" id="node21" href="$classspla_1_1Descriptor.html" title=" " alt="" coords="379,487,489,513"/>
+<area shape="rect" id="node22" href="$classspla_1_1Expression.html" title="Computational expression for submission." alt="" coords="377,537,491,564"/>
+<area shape="rect" id="node23" href="$classspla_1_1ExpressionNode.html" title=" " alt="" coords="361,588,507,615"/>
+<area shape="rect" id="node24" href="$classspla_1_1FunctionBinary.html" title="Binary Typed element function f: a x b &#45;&gt; c." alt="" coords="365,639,503,665"/>
+<area shape="rect" id="node25" href="$classspla_1_1FunctionUnary.html" title=" " alt="" coords="366,689,502,716"/>
+<area shape="rect" id="node26" href="$classspla_1_1Type.html" title=" " alt="" coords="394,740,474,767"/>
+<area shape="rect" id="node27" href="$classspla_1_1TypedObject.html" title=" " alt="" coords="371,791,497,817"/>
+<area shape="rect" id="node18" href="$classspla_1_1DataMatrix.html" title="Matrix host coo data." alt="" coords="559,385,673,412"/>
+<area shape="rect" id="node19" href="$classspla_1_1DataScalar.html" title="Scalar host data." alt="" coords="558,436,674,463"/>
+<area shape="rect" id="node20" href="$classspla_1_1DataVector.html" title="Vector host coo data." alt="" coords="557,487,675,513"/>
+<area shape="rect" id="node28" href="$classspla_1_1Matrix.html" title=" " alt="" coords="573,740,659,767"/>
+<area shape="rect" id="node29" href="$classspla_1_1Scalar.html" title=" " alt="" coords="571,791,661,817"/>
+<area shape="rect" id="node30" href="$classspla_1_1Vector.html" title=" " alt="" coords="571,841,661,868"/>
+<area shape="rect" id="node32" href="$classspla_1_1VectorCOO.html" title=" " alt="" coords="375,841,493,868"/>
 </map>
