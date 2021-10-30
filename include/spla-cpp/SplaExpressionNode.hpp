@@ -66,7 +66,9 @@ namespace spla {
             /** Write scalar data from the host buffers */
             ScalarDataWrite,
             /** Vector element-wise addition */
-            VectorEWiseAdd
+            VectorEWiseAdd,
+            /** Matrix element-wise addition */
+            MatrixEWiseAdd
         };
 
         /** @return Node arguments array */
@@ -130,6 +132,8 @@ namespace spla {
                     return "ScalarDataWrite";
                 case ExpressionNode::Operation::VectorEWiseAdd:
                     return "VectorEWiseAdd";
+                case ExpressionNode::Operation::MatrixEWiseAdd:
+                    return "MatrixEWiseAdd";
 
                 default:
                     return "Unknown";

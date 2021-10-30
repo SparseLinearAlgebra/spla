@@ -104,7 +104,7 @@ TEST(Compute, MergeByPairKey) {
     compute::vector<int> keysRes2(8, ctx);
     compute::vector<char> valsRes(8, ctx);
 
-    auto [keysResEnd, valsResEnd] = spla::MergeByPairKey(
+    auto [keysResEndFirst, keysResEndSecond, valsResEnd] = spla::MergeByPairKey(
             keysA1.begin(), keysA2.begin(), keysA1.end(),
             valsA.begin(),
             keysB1.begin(), keysB2.begin(), keysB1.end(),
@@ -117,12 +117,12 @@ TEST(Compute, MergeByPairKey) {
     std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0};
     std::vector<char> valsExpected{'o', 't', 't', 't', 'f', 'f', 'f', 's'};
 
-    for (auto it = keysRes1.begin(); it < keysResEnd.first; ++it) {
+    for (auto it = keysRes1.begin(); it < keysResEndFirst; ++it) {
         std::size_t ind = it - keysRes1.begin();
         EXPECT_EQ(it.read(queue), keys1Expected[ind]);
     }
 
-    for (auto it = keysRes2.begin(); it < keysResEnd.second; ++it) {
+    for (auto it = keysRes2.begin(); it < keysResEndSecond; ++it) {
         std::size_t ind = it - keysRes2.begin();
         EXPECT_EQ(it.read(queue), keys2Expected[ind]);
     }

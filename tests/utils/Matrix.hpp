@@ -46,7 +46,7 @@ namespace utils {
         static constexpr std::size_t IndexSize = sizeof(Index);
         static constexpr std::size_t ElementSize = sizeof(T);
 
-        Matrix(size_t nrows, size_t ncols, std::vector<Index> rows, std::vector<Index> cols, std::vector<T> vals)
+        Matrix(std::size_t nrows, std::size_t ncols, std::vector<Index> rows, std::vector<Index> cols, std::vector<T> vals)
             : mRows(std::move(rows)),
               mCols(std::move(cols)),
               mVals(std::move(vals)),
@@ -225,13 +225,144 @@ namespace utils {
             return Matrix<T>(nrows, ncols, std::move(rows), std::move(cols), std::move(vals));
         }
 
-    private:
+        [[nodiscard]] spla::RefPtr<spla::DataMatrix> GetDataIndices(spla::Library &library) {
+            auto data = spla::DataMatrix::Make(library);
+            data->SetRows(GetRows());
+            data->SetCols(GetCols());
+            data->SetNvals(GetNvals());
+            return data;
+        }
+
+        [[nodiscard]] spla::RefPtr<spla::DataMatrix> GetData(spla::Library &library) {
+            auto data = spla::DataMatrix::Make(library);
+            data->SetRows(GetRows());
+            data->SetCols(GetCols());
+            data->SetVals(GetVals());
+            data->SetNvals(GetNvals());
+            return data;
+        }
+
+        template<typename M>
+        [[nodiscard]] Matrix Mask(const Matrix<M> &mask) const {
+            assert(GetNrows() == mask.GetNrows());
+            assert(GetNcols() == mask.GetNcols());
+
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<T> vals;
+
+            std::size_t a = 0;
+            std::size_t b = 0;
+            std::size_t endA = GetNvals();
+            std::size_t endB = mask.GetNvals();
+
+            while (a != endA && b != endB) {
+                auto thisCrd = std::pair{GetRows()[a], GetCols()[a]};
+                auto maskCrd = std::pair{mask.GetRows()[b], mask.GetCols()[b]};
+
+                if (thisCrd == maskCrd) {
+                    rows.push_back(GetRows()[a]);
+                    cols.push_back(GetCols()[a]);
+                    vals.push_back(GetVals()[a]);
+                    a += 1;
+                    b += 1;
+                } else if (thisCrd < maskCrd) {
+                    a += 1;
+                } else {
+                    b += 1;
+                }
+            }
+
+            return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
+        }
+
+        template<typename BinaryOp>
+        [[nodiscard]] Matrix EWiseAdd(const Matrix<T> &other, BinaryOp op) const {
+            assert(GetNrows() == other.GetNrows());
+            assert(GetNcols() == other.GetNcols());
+
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<T> vals;
+
+            std::size_t a = 0;
+            std::size_t b = 0;
+            std::size_t endA = GetNvals();
+            std::size_t endB = other.GetNvals();
+
+            while (a != endA && b != endB) {
+                auto thisCrd = std::pair{GetRows()[a], GetCols()[a]};
+                auto otherCrd = std::pair{other.GetRows()[b], other.GetCols()[b]};
+
+                if (thisCrd == otherCrd) {
+                    rows.push_back(GetRows()[a]);
+                    cols.push_back(GetCols()[a]);
+                    vals.push_back(op(GetVals()[a], other.GetVals()[b]));
+                    a += 1;
+                    b += 1;
+                } else if (thisCrd < otherCrd) {
+                    rows.push_back(GetRows()[a]);
+                    cols.push_back(GetCols()[a]);
+                    vals.push_back(GetVals()[a]);
+                    a += 1;
+                } else {
+                    rows.push_back(other.GetRows()[b]);
+                    cols.push_back(other.GetCols()[b]);
+                    vals.push_back(other.GetVals()[b]);
+                    b += 1;
+                }
+            }
+
+            while (a != endA) {
+                rows.push_back(GetRows()[a]);
+                vals.push_back(GetVals()[a]);
+                cols.push_back(GetCols()[a]);
+                a += 1;
+            }
+
+            while (b != endB) {
+                rows.push_back(other.GetRows()[b]);
+                vals.push_back(other.GetVals()[b]);
+                cols.push_back(other.GetCols()[b]);
+                b += 1;
+            }
+
+            return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
+        }
+
+        template<typename M, typename BinaryOp>
+        [[nodiscard]] Matrix EWiseAdd(const Matrix<M> &mask, const Matrix<T> &other, BinaryOp op) const {
+            return Mask(mask).EWiseAdd(other.Mask(mask), op);
+        }
+
+        static Matrix Empty(std::size_t nrows, std::size_t ncols) {
+            return Matrix(nrows, ncols, std::vector<Index>{}, std::vector<Index>{}, std::vector<T>{});
+        }
+
+    public:
         std::vector<Index> mRows;
         std::vector<Index> mCols;
         std::vector<T> mVals;
         size_t mNrows = 0;
         size_t mNcols = 0;
     };
+
+    template<typename T>
+    std::ostream &operator<<(std::ostream &os, const Matrix<T> &m) {
+        os << "  rows: ";
+        for (auto x : m.mRows) {
+            os << x << ' ';
+        }
+        os << "\n  cols: ";
+        for (auto x : m.mCols) {
+            os << x << ' ';
+        }
+        os << "\n  vals: ";
+        for (auto x : m.mVals) {
+            os << x << ' ';
+        }
+        return os;
+    }
 
 }// namespace utils
 

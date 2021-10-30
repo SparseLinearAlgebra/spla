@@ -28,6 +28,8 @@
 #ifndef SPLA_SPLAMERGEBYKEY_HPP
 #define SPLA_SPLAMERGEBYKEY_HPP
 
+#include <tuple>
+
 #include <boost/compute.hpp>
 
 namespace spla {
@@ -275,8 +277,9 @@ namespace spla {
 
         const std::size_t resultSize = std::distance(keyValuesRes.begin(), itResEnd);
 
-        return std::pair{
-                std::pair{keysResultFirst + resultSize, keysResultSecond + resultSize},
+        return std::tuple{
+                keysResultFirst + resultSize,
+                keysResultSecond + resultSize,
                 valuesResult + resultSize};
     }
 
