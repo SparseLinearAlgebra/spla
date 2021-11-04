@@ -443,7 +443,7 @@ namespace spla {
                              const compute::detail::meta_kernel_variable<uint_> &iSnd) {
             k << keysFirstABegin[iFst] << " > " << keysFirstBBegin[iSnd] << " || "
               << "("
-              << keysFirstABegin[iFst] << " <= " << keysFirstBBegin[iSnd] << " && "
+              << "!(" << keysFirstABegin[iFst] << " > " << keysFirstBBegin[iSnd] << ") && "
               << keysSecondABegin[iFst] << " > " << keysSecondBBegin[iSnd]
               << ")";
         };
