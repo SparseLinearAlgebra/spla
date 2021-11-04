@@ -219,6 +219,11 @@ namespace spla {
     }// namespace detail
 
     /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
      * @brief Merges two sorted (by key) sequences of values by given keys.
      *
      * @param keysABegin Begin of the first key sequence
@@ -470,6 +475,10 @@ namespace spla {
                 assignResultToSecond,
                 queue);
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

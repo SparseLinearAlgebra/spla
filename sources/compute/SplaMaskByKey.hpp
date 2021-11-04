@@ -30,6 +30,7 @@
 
 #include <boost/compute.hpp>
 #include <boost/compute/iterator/zip_iterator.hpp>
+#include <boost/compute/detail/iterator_range_size.hpp>
 
 namespace spla {
 
@@ -62,10 +63,10 @@ namespace spla {
 
                 typedef typename std::iterator_traits<InputIterator1>::value_type value_type;
 
-                m_a_count = detail::iterator_range_size(first1, last1);
+                m_a_count = ::boost::compute::detail::iterator_range_size(first1, last1);
                 m_a_count_arg = add_arg<uint_>("a_count");
 
-                m_b_count = detail::iterator_range_size(first2, last2);
+                m_b_count = ::boost::compute::detail::iterator_range_size(first2, last2);
                 m_b_count_arg = add_arg<uint_>("b_count");
 
                 *this << "uint i = get_global_id(0);\n"
