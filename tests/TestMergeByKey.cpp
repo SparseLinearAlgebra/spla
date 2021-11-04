@@ -208,4 +208,109 @@ TEST(Compute, MergePairKeys) {
     }
 }
 
+std::pair<std::vector<int>, std::vector<int>> MergeByKeyCpu(
+        const std::vector<int> &k1,
+        const std::vector<int> &v1,
+        const std::vector<int> &k2,
+        const std::vector<int> &v2) {
+    EXPECT_EQ(k1.size(), v1.size());
+    EXPECT_EQ(k2.size(), v2.size());
+
+    const std::size_t mergedSize = k1.size() + k2.size();
+
+    std::vector<int> kRes(mergedSize), vRes(mergedSize);
+
+    std::vector<std::pair<int, int>> zipped1(k1.size());
+    for (std::size_t i = 0; i < k1.size(); ++i) {
+        zipped1[i] = {k1[i], v1[i]};
+    }
+
+    std::vector<std::pair<int, int>> zipped2(k2.size());
+    for (std::size_t i = 0; i < k2.size(); ++i) {
+        zipped2[i] = {k2[i], v2[i]};
+    }
+
+    std::vector<std::pair<int, int>> zippedR(mergedSize);
+    std::merge(zipped1.begin(), zipped1.end(), zipped2.begin(), zipped2.end(), zippedR.begin());
+
+    for (std::size_t i = 0; i < mergedSize; ++i) {
+        kRes[i] = zippedR[i].first;
+        vRes[i] = zippedR[i].second;
+    }
+    return {kRes, vRes};
+}
+
+void MergeByKeyStress(
+        std::size_t iterations,
+        std::size_t aSize,
+        std::size_t bSize) {
+    namespace compute = boost::compute;
+
+    for (std::size_t testIt = 0; testIt < iterations; ++testIt) {
+        // get the default compute device
+        compute::device gpu = compute::system::default_device();
+
+        // create a compute context and command queue
+        compute::context ctx(gpu);
+        compute::command_queue queue(ctx, gpu);
+
+        std::vector<int> k1 = utils::GenerateIntVector<int>(aSize, testIt * 4);
+        std::vector<int> v1 = utils::GenerateIntVector<int>(aSize, testIt * 4 + 1);
+        std::vector<int> k2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 2);
+        std::vector<int> v2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 3);
+
+        std::sort(k1.begin(), k1.end());
+        std::sort(k2.begin(), k2.end());
+
+        auto [expectedKeyRes, expectedValRes] = MergeByKeyCpu(k1, v1, k2, v2);
+
+        compute::vector<int> keysA(k1, queue);
+        compute::vector<int> valsA(v1, queue);
+        compute::vector<int> keysB(k2, queue);
+        compute::vector<int> valsB(v2, queue);
+
+        const std::size_t sizeSum = aSize + bSize;
+        compute::vector<int> keysRes(sizeSum, ctx);
+        compute::vector<int> valsRes(sizeSum, ctx);
+
+        const std::ptrdiff_t mergedSize = spla::MergeByKey(
+                keysA.begin(), keysA.end(),
+                valsA.begin(),
+                keysB.begin(), keysB.end(),
+                valsB.begin(),
+                keysRes.begin(),
+                valsRes.begin(),
+                queue);
+
+        for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - keysRes.begin();
+            EXPECT_EQ(it.read(queue), expectedKeyRes[ind]);
+        }
+
+        for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - valsRes.begin();
+            EXPECT_EQ(it.read(queue), expectedValRes[ind]);
+        }
+    }
+}
+
+TEST(MergeByKeyCpu, Shallow) {
+    std::vector<int> k1 = {1, 2, 3, 4};
+    std::vector<int> v1 = {2, 4, 6, 8};
+
+    std::vector<int> k2 = {2, 2, 5, 7};
+    std::vector<int> v2 = {4, 4, 10, 14};
+
+    std::vector<int> kResExp = {1, 2, 2, 2, 3, 4, 5, 7};
+    std::vector<int> kValExp = {2, 4, 4, 4, 6, 8, 10, 14};
+}
+
+TEST(MergeByKey, StressSmall) {
+    MergeByKeyStress(100, 55, 34);
+}
+
+TEST(MergeByKey, StressMedium) {
+    MergeByKeyStress(5, 5000, 4000);
+}
+
 SPLA_GTEST_MAIN
