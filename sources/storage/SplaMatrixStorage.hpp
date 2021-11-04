@@ -122,6 +122,9 @@ namespace spla {
         /** @return Number of cols of blocks */
         [[nodiscard]] std::size_t GetNblockCols() const noexcept;
 
+        /** Dump matrix content to provided stream */
+        void Dump(std::ostream &stream) const;
+
         /**
          * Make new matrix storage.
          *

@@ -26,10 +26,10 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <compute/SplaCommandQueueFinisher.hpp>
 #include <compute/SplaGather.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
+#include <core/SplaQueueFinisher.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
@@ -71,7 +71,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 compute::context ctx = library->GetContext();
                 compute::device device = library->GetDeviceManager().GetDevice(deviceId);
                 compute::command_queue queue(ctx, device);
-                CommandQueueFinisher commandQueueFinisher(queue);
+                QueueFinisher finisher(queue);
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

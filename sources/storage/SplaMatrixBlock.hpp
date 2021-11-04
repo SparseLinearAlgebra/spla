@@ -78,6 +78,9 @@ namespace spla {
             return mFormat;
         }
 
+        /** Dump block content to provided stream */
+        virtual void Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const = 0;
+
     protected:
         std::size_t mNrows;
         std::size_t mNcols;

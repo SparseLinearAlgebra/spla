@@ -43,7 +43,7 @@ namespace spla {
         template<class InputIterator, class MapIterator, class OutputIterator>
         class GatherKernel : public boost::compute::detail::meta_kernel {
         public:
-            GatherKernel() : meta_kernel("gather_byteSize") {}
+            GatherKernel() : meta_kernel("__spla_gather_byte_size") {}
 
             void SetRange(MapIterator first,
                           MapIterator last,
@@ -57,7 +57,7 @@ namespace spla {
                       << "const uint dst = i * " << elementsInSequence << ";\n"
                       << "const uint src = index * " << elementsInSequence << ";\n"
                       << "for (uint k = 0; k < " << elementsInSequence << "; k++) {\n"
-                      << result[expr<boost::compute::uint_>("dst + k")] << "=" << input[expr<boost::compute::uint_>("src + k")] << ";\n"
+                      << "  " << result[expr<boost::compute::uint_>("dst + k")] << "=" << input[expr<boost::compute::uint_>("src + k")] << ";\n"
                       << "}";
             }
 

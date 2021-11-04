@@ -127,19 +127,6 @@ namespace spla {
                       << result_b[expr<uint_>("i")] << " = b_index;\n";
             }
 
-            template<class InputIterator1, class InputIterator2,
-                     class OutputIterator1, class OutputIterator2>
-            void set_range(InputIterator1 first1,
-                           InputIterator1 last1,
-                           InputIterator2 first2,
-                           InputIterator2 last2,
-                           OutputIterator1 result_a,
-                           OutputIterator2 result_b) {
-                typedef typename std::iterator_traits<InputIterator1>::value_type value_type;
-                ::boost::compute::less<value_type> less_than;
-                set_range(first1, last1, first2, last2, result_a, result_b, less_than);
-            }
-
             boost::compute::event exec(boost::compute::command_queue &queue) {
                 using namespace boost::compute;
 
@@ -296,10 +283,10 @@ namespace spla {
         typedef typename std::iterator_traits<InputIterator1>::value_type key_type;
         typedef typename std::iterator_traits<InputIterator3>::value_type value_type;
 
-        int tile_size = 1024;
+        std::size_t tile_size = 1024;
 
-        int count1 = compute::detail::iterator_range_size(maskFirst, maskLast);
-        int count2 = compute::detail::iterator_range_size(keyFirsts, keyLast);
+        std::size_t count1 = compute::detail::iterator_range_size(maskFirst, maskLast);
+        std::size_t count2 = compute::detail::iterator_range_size(keyFirsts, keyLast);
 
         compute::vector<compute::uint_> tile_a((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
         compute::vector<compute::uint_> tile_b((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
@@ -330,7 +317,6 @@ namespace spla {
                                       temp_resultValues.begin(),
                                       counts.begin(),
                                       compare, equals);
-
         intersection_kernel.exec(queue);
 
         exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);
@@ -394,9 +380,9 @@ namespace spla {
         compute::vector<Key> mask(aSize, ctx);
         compute::vector<Key> keys(bSize, ctx);
 
-        using ::boost::compute::lambda::_1;
-        using ::boost::compute::lambda::_2;
-        using ::boost::compute::lambda::get;
+        using compute::lambda::_1;
+        using compute::lambda::_2;
+        using compute::lambda::get;
 
         // Copy A keys
         compute::copy(
@@ -437,7 +423,7 @@ namespace spla {
                                valueFirst,
                                keys.begin(),
                                resultValues,
-                               (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)) || get<0>(_1) < get<0>(_2),
+                               get<0>(_1) < get<0>(_2) || (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)),
                                get<0>(_1) == get<0>(_2) && get<1>(_1) == get<1>(_2),
                                queue);
 

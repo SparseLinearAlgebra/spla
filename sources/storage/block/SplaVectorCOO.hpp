@@ -49,6 +49,8 @@ namespace spla {
 
         [[nodiscard]] const Values &GetVals() const noexcept;
 
+        void Dump(std::ostream &stream, unsigned int baseI) const override;
+
         static RefPtr<VectorCOO> Make(std::size_t nrows, std::size_t nvals, Indices rows, Values vals);
 
     private:

@@ -33,6 +33,7 @@ set(SPLA_CORE_SOURCES
         sources/core/SplaLibraryPrivate.cpp
         sources/core/SplaLibraryPrivate.hpp
         sources/core/SplaMath.hpp
+        sources/core/SplaQueueFinisher.hpp
         sources/core/SplaTaskBuilder.cpp
         sources/core/SplaTaskBuilder.hpp)
 

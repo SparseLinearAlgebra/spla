@@ -200,7 +200,6 @@ namespace spla {
                 kernel.Exec(queue);
             }
 
-            queue.finish();
             return resultNvals;
         }
 

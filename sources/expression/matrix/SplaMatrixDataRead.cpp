@@ -29,6 +29,7 @@
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
+#include <core/SplaQueueFinisher.hpp>
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
@@ -107,6 +108,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
             auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
+            QueueFinisher finisher(queue);
 
             // Where to start copy process
             std::size_t NblockCols = storage->GetNblockCols();

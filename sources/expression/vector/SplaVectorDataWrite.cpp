@@ -28,10 +28,10 @@
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/iterator.hpp>
-#include <compute/SplaCommandQueueFinisher.hpp>
 #include <compute/SplaGather.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
+#include <core/SplaQueueFinisher.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <storage/SplaVectorStorage.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
@@ -70,7 +70,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             compute::device device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
-            CommandQueueFinisher commandQueueFinisher(queue);
+            QueueFinisher finisher(queue);
 
             auto blockIndex = VectorStorage::Index{static_cast<unsigned int>(i)};
             auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

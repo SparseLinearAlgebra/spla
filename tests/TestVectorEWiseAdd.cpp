@@ -142,9 +142,7 @@ void testOneIsEmpty(spla::Library &library, std::size_t M, std::size_t nvals,
     ASSERT_TRUE(c.Equals(spW2));
 }
 
-void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
-    std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
-
+void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Float32(library);
         auto spOp = spla::Functions::PlusFloat32(library);
@@ -189,18 +187,21 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
 }
 
 TEST(VectorEWiseAdd, Small) {
+    std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 100;
-    test(M, M, M, 10);
+    test(M, M / 2, M / 10, 10, blocksSizes);
 }
 
 TEST(VectorEWiseAdd, Medium) {
-    std::size_t M = 1000;
-    test(M, M, M, 10);
+    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
+    std::size_t M = 1100;
+    test(M, M / 2, M / 10, 10, blocksSizes);
 }
 
 TEST(VectorEWiseAdd, Large) {
-    std::size_t M = 10000;
-    test(M, M, M, 5);
+    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
+    std::size_t M = 10300;
+    test(M, M / 2, M / 10, 5, blocksSizes);
 }
 
 SPLA_GTEST_MAIN

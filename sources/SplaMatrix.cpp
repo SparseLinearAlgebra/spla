@@ -48,6 +48,10 @@ const spla::RefPtr<spla::MatrixStorage> &spla::Matrix::GetStorage() const {
     return mStorage;
 }
 
+void spla::Matrix::Dump(std::ostream &stream) const {
+    mStorage->Dump(stream);
+}
+
 spla::RefPtr<spla::Matrix> spla::Matrix::Make(std::size_t nrows, std::size_t ncols,
                                               const RefPtr<Type> &type,
                                               spla::Library &library) {

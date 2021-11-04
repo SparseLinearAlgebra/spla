@@ -52,7 +52,7 @@ const spla::MatrixCOO::Values &spla::MatrixCOO::GetVals() const noexcept {
     return mVals;
 }
 
-std::string spla::MatrixCOO::ToString() const {
+void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const {
     using namespace boost;
     compute::context context = mRows.get_buffer().get_context();
     compute::command_queue queue(context, context.get_device());
@@ -73,25 +73,24 @@ std::string spla::MatrixCOO::ToString() const {
 
     auto byteSize = mVals.size() / GetNvals();
 
-    std::stringstream ss;
-
-    ss << "Matrix " << GetNrows() << "x" << GetNcols() << " vals=" << GetNvals() << std::endl;
+    stream << "Matrix " << GetNrows() << "x" << GetNcols()
+           << " nvals=" << GetNvals()
+           << " bsize=" << byteSize
+           << " format=coo" << std::endl;
 
     for (std::size_t k = 0; k < GetNvals(); k++) {
-        auto i = rows[k];
-        auto j = cols[k];
+        auto i = rows[k] + baseI;
+        auto j = cols[k] + baseJ;
 
-        ss << "[" << k << "] " << i << " " << j << " ";
-        ss << std::hex;
+        stream << "[" << k << "] " << i << " " << j << " ";
+        stream << std::hex;
 
         auto offset = k * byteSize;
         for (std::size_t byte = 0; byte < byteSize; byte++) {
-            ss << static_cast<unsigned int>(vals[offset + byte]);
+            stream << static_cast<unsigned int>(vals[offset + byte]);
         }
 
-        ss << std::endl
-           << std::dec;
+        stream << std::endl
+               << std::dec;
     }
-
-    return ss.str();
 }

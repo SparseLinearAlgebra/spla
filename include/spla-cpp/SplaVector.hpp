@@ -72,6 +72,9 @@ namespace spla {
         /** @return Internal vector storage (for private usage only) */
         [[nodiscard]] const RefPtr<class VectorStorage> &GetStorage() const;
 
+        /** Dump vector content to provided stream */
+        void Dump(std::ostream &stream) const;
+
         /**
          * Make new vector with specified size
          *

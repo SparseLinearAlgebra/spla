@@ -28,6 +28,7 @@
 #ifndef SPLA_SPLAMATRIX_HPP
 #define SPLA_SPLAMATRIX_HPP
 
+#include <ostream>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
 #include <utility>
@@ -78,6 +79,9 @@ namespace spla {
 
         /** @return Internal matrix storage (for private usage only) */
         [[nodiscard]] const RefPtr<class MatrixStorage> &GetStorage() const;
+
+        /** Dump matrix content to provided stream */
+        void Dump(std::ostream &stream) const;
 
         /**
          * Make new matrix with specified size.

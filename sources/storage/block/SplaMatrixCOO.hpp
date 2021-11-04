@@ -52,7 +52,7 @@ namespace spla {
 
         [[nodiscard]] const Values &GetVals() const noexcept;
 
-        [[nodiscard]] std::string ToString() const;
+        void Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const override;
 
         static RefPtr<MatrixCOO> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals);
 

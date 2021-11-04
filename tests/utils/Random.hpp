@@ -71,7 +71,7 @@ namespace utils {
     class UniformGenerator<float> : public UniformRealGenerator<float> {};
 
     template<>
-    class UniformGenerator<std::int32_t> : public UniformRealGenerator<float> {};
+    class UniformGenerator<std::int32_t> : public UniformIntGenerator<std::int32_t> {};
 
 }// namespace utils
 

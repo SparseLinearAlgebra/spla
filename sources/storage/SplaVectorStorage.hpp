@@ -75,6 +75,9 @@ namespace spla {
         /** @return Number of values in storage */
         [[nodiscard]] std::size_t GetNvals() const noexcept;
 
+        /** Dump vector content to provided stream */
+        void Dump(std::ostream &stream) const;
+
         static RefPtr<VectorStorage> Make(std::size_t nrows, Library &library);
 
     private:

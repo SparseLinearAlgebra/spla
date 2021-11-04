@@ -163,7 +163,6 @@ namespace spla {
             ItKeysResult2 keysResultSecond,
             ItValuesResult valuesResult,
             boost::compute::command_queue &queue) {
-
         namespace compute = boost::compute;
 
         using Key1 = typename std::iterator_traits<ItKeysABegin1>::value_type;
@@ -181,9 +180,9 @@ namespace spla {
         compute::vector<KeyValue> keyValuesB(bSize, ctx);
         compute::vector<KeyValue> keyValuesRes(aSize + bSize, ctx);
 
-        using ::boost::compute::lambda::_1;
-        using ::boost::compute::lambda::_2;
-        using ::boost::compute::lambda::get;
+        using compute::lambda::_1;
+        using compute::lambda::_2;
+        using compute::lambda::get;
 
         // Copy A keys
         compute::copy(
@@ -237,12 +236,11 @@ namespace spla {
                         get<2>(_1)),
                 queue);
 
-
         auto itResEnd = compute::merge(
                 keyValuesA.begin(), keyValuesA.end(),
                 keyValuesB.begin(), keyValuesB.end(),
                 keyValuesRes.begin(),
-                (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)) || get<0>(_1) < get<0>(_2),
+                get<0>(_1) < get<0>(_2) || (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)),
                 queue);
 
         compute::copy(

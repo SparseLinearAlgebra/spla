@@ -138,6 +138,11 @@ namespace utils {
             }
 
             if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << " " << (GetRows()[i] == spRows[i] ? "eq" : "neq") << std::endl;
+
+                Dump(v);
+
                 std::cout << "Row indices not equal" << std::endl;
                 return false;
             }
@@ -282,6 +287,12 @@ namespace utils {
 
         static Vector Empty(std::size_t nrows) {
             return Vector(nrows, std::vector<Index>{}, std::vector<T>{});
+        }
+
+        static void Dump(const spla::RefPtr<spla::Vector> &v) {
+            std::stringstream ss;
+            v->Dump(ss);
+            std::cout << ss.str();
         }
 
     private:

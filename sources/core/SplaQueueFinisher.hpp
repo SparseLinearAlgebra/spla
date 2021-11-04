@@ -32,17 +32,17 @@
 
 namespace spla {
 
-    class CommandQueueFinisher {
+    class QueueFinisher {
     public:
-        explicit CommandQueueFinisher(boost::compute::command_queue &queue)
+        explicit QueueFinisher(boost::compute::command_queue &queue)
             : mQueue(queue) {}
 
-        CommandQueueFinisher(const CommandQueueFinisher &) = delete;
-        CommandQueueFinisher(CommandQueueFinisher &&) = delete;
-        CommandQueueFinisher &operator=(const CommandQueueFinisher &) = delete;
-        CommandQueueFinisher &operator=(CommandQueueFinisher &&) = delete;
+        QueueFinisher(const QueueFinisher &) = delete;
+        QueueFinisher(QueueFinisher &&) = delete;
+        QueueFinisher &operator=(const QueueFinisher &) = delete;
+        QueueFinisher &operator=(QueueFinisher &&) = delete;
 
-        ~CommandQueueFinisher() {
+        ~QueueFinisher() {
             mQueue.finish();
         }
 

@@ -52,4 +52,8 @@ const spla::RefPtr<spla::VectorStorage> &spla::Vector::GetStorage() const {
     return mStorage;
 }
 
+void spla::Vector::Dump(std::ostream &stream) const {
+    mStorage->Dump(stream);
+}
+
 spla::Vector::~Vector() = default;

@@ -89,3 +89,22 @@ void spla::VectorStorage::RemoveBlock(const spla::VectorStorage::Index &index) {
 std::size_t spla::VectorStorage::GetNblockRows() const noexcept {
     return mNblockRows;
 }
+
+void spla::VectorStorage::Dump(std::ostream &stream) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+
+    stream << "VectorStorage:"
+           << " nrows=" << mNrows
+           << " nvals=" << mNvals
+           << " bcount=" << mBlocks.size()
+           << " bsize=" << mBlockSize << std::endl;
+
+    auto bsize = static_cast<unsigned int>(mBlockSize);
+
+    for (auto &entry : mBlocks) {
+        auto index = entry.first;
+        auto &block = entry.second;
+        stream << "Block (" << index << ") ";
+        block->Dump(stream, index * bsize);
+    }
+}

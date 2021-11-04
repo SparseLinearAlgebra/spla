@@ -44,3 +44,43 @@ const spla::VectorCOO::Indices &spla::VectorCOO::GetRows() const noexcept {
 const spla::VectorCOO::Values &spla::VectorCOO::GetVals() const noexcept {
     return mVals;
 }
+
+void spla::VectorCOO::Dump(std::ostream &stream, unsigned int baseI) const {
+    using namespace boost;
+    compute::context context = mRows.get_buffer().get_context();
+    compute::command_queue queue(context, context.get_device());
+
+    std::vector<unsigned int> rows(GetNvals());
+    std::vector<unsigned char> vals;
+
+    compute::copy(mRows.begin(), mRows.end(), rows.begin(), queue);
+
+    auto hasValues = !mVals.empty();
+
+    if (hasValues) {
+        vals.resize(mVals.size());
+        compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
+    }
+
+    auto byteSize = mVals.size() / GetNvals();
+
+    stream << "Vector " << GetNrows()
+           << " nvals=" << GetNvals()
+           << " bsize=" << byteSize
+           << " format=coo" << std::endl;
+
+    for (std::size_t k = 0; k < GetNvals(); k++) {
+        auto i = rows[k] + baseI;
+
+        stream << "[" << k << "] " << i << " ";
+        stream << std::hex;
+
+        auto offset = k * byteSize;
+        for (std::size_t byte = 0; byte < byteSize; byte++) {
+            stream << static_cast<unsigned int>(vals[offset + byte]);
+        }
+
+        stream << std::endl
+               << std::dec;
+    }
+}

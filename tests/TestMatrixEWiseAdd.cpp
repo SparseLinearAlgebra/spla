@@ -145,9 +145,7 @@ void testOneIsEmpty(spla::Library &library, std::size_t M, std::size_t N, std::s
     ASSERT_TRUE(c.Equals(spW2));
 }
 
-void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter) {
-    std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
-
+void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Float32(library);
         auto spOp = spla::Functions::PlusFloat32(library);
@@ -192,21 +190,24 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
 }
 
 TEST(MatrixEWiseAdd, Small) {
+    std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 100;
     std::size_t N = 120;
-    test(M, N, M, M, 10);
+    test(M, N, M, M, 10, blocksSizes);
 }
 
 TEST(MatrixEWiseAdd, Medium) {
+    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
     std::size_t M = 1000;
     std::size_t N = 900;
-    test(M, N, M, M, 10);
+    test(M, N, M, M, 10, blocksSizes);
 }
 
 TEST(MatrixEWiseAdd, Large) {
+    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
     std::size_t M = 10000;
     std::size_t N = 12300;
-    test(M, N, M, M, 5);
+    test(M, N, M, M, 5, blocksSizes);
 }
 
 SPLA_GTEST_MAIN

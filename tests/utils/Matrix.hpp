@@ -101,6 +101,58 @@ namespace utils {
             return mVals.size();
         }
 
+        [[nodiscard]] bool EqualsStructure(const spla::RefPtr<spla::Matrix> &m) const {
+            if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols()) {
+                std::cout << "Size mismatched" << std::endl;
+                return false;
+            }
+
+            if (m->GetNvals() != GetNvals()) {
+                std::cout << "Number of nnz mismatched "
+                          << "expected=" << GetNvals() << " "
+                          << "actual=" << m->GetNvals() << std::endl;
+                return false;
+            }
+
+            std::vector<Index> spRows(GetNvals());
+            std::vector<Index> spCols(GetNvals());
+
+            auto &library = m->GetLibrary();
+            auto data = spla::DataMatrix::Make(library);
+            data->SetRows(spRows.data());
+            data->SetCols(spCols.data());
+            data->SetNvals(GetNvals());
+
+            auto readExpr = spla::Expression::Make(library);
+            readExpr->MakeDataRead(m, data);
+            library.Submit(readExpr);
+
+            readExpr->Wait();
+
+            if (readExpr->GetState() != spla::Expression::State::Evaluated) {
+                std::cout << "Read expression is not evaluated" << std::endl;
+                return false;
+            }
+
+            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                std::cout << "Row indices not equal" << std::endl;
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    if (GetRows()[i] != spRows[i])
+                        std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << std::endl;
+                return false;
+            }
+
+            if (std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize) != 0) {
+                std::cout << "Column indices not equal" << std::endl;
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    if (GetCols()[i] != spCols[i])
+                        std::cout << "expected=" << GetCols()[i] << " actual=" << spCols[i] << std::endl;
+                return false;
+            }
+
+            return true;
+        }
+
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m) const {
             if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols()) {
                 std::cout << "Size mismatched" << std::endl;
@@ -108,7 +160,9 @@ namespace utils {
             }
 
             if (m->GetNvals() != GetNvals()) {
-                std::cout << "Number of nnz mismatched" << std::endl;
+                std::cout << "Number of nnz mismatched "
+                          << "expected=" << GetNvals() << " "
+                          << "actual=" << m->GetNvals() << std::endl;
                 return false;
             }
 
@@ -140,11 +194,21 @@ namespace utils {
             }
 
             if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << " " << (GetRows()[i] == spRows[i] ? "eq" : "neq") << std::endl;
+
+                Dump(m);
+
                 std::cout << "Row indices not equal" << std::endl;
                 return false;
             }
 
             if (std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize) != 0) {
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    std::cout << "expected=" << GetCols()[i] << " actual=" << spCols[i] << " " << (GetCols()[i] == spCols[i] ? "eq" : "neq") << std::endl;
+
+                Dump(m);
+
                 std::cout << "Column indices not equal" << std::endl;
                 return false;
             }
@@ -337,6 +401,12 @@ namespace utils {
 
         static Matrix Empty(std::size_t nrows, std::size_t ncols) {
             return Matrix(nrows, ncols, std::vector<Index>{}, std::vector<Index>{}, std::vector<T>{});
+        }
+
+        static void Dump(const spla::RefPtr<spla::Matrix> &m) {
+            std::stringstream ss;
+            m->Dump(ss);
+            std::cout << ss.str();
         }
 
     public:

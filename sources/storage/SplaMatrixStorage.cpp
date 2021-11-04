@@ -112,6 +112,26 @@ std::size_t spla::MatrixStorage::GetNblockCols() const noexcept {
     return mNblockCols;
 }
 
+void spla::MatrixStorage::Dump(std::ostream &stream) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+
+    stream << "MatrixStorage:"
+           << " nrows=" << mNrows
+           << " ncols=" << mNcols
+           << " nvals=" << mNvals
+           << " bcount=" << mBlocks.size()
+           << " bsize=" << mBlockSize << std::endl;
+
+    auto bsize = static_cast<unsigned int>(mBlockSize);
+
+    for (auto &entry : mBlocks) {
+        auto &index = entry.first;
+        auto &block = entry.second;
+        stream << "Block (" << index.first << "," << index.second << ") ";
+        block->Dump(stream, index.first * bsize, index.second * bsize);
+    }
+}
+
 spla::RefPtr<spla::MatrixStorage> spla::MatrixStorage::Make(std::size_t nrows, std::size_t ncols, spla::Library &library) {
     assert(nrows > 0);
     assert(ncols > 0);
