@@ -52,7 +52,7 @@ TEST(Compute, MergeByKey) {
     compute::vector<int> keysRes(10, ctx);
     compute::vector<char> valsRes(10, ctx);
 
-    auto [keysResEnd, valsResEnd] = spla::MergeByKey(
+    std::ptrdiff_t mergedSize = spla::MergeByKey(
             keysA.begin(), keysA.end(),
             valsA.begin(),
             keysB.begin(), keysB.end(),
@@ -64,12 +64,12 @@ TEST(Compute, MergeByKey) {
     std::vector<int> keysExpected{1, 2, 2, 2, 3, 4, 5, 6, 6, 7};
     std::vector<char> valsExpected{'o', 't', 't', 't', 't', 'f', 'f', 's', 's', 's'};
 
-    for (auto it = keysRes.begin(); it < keysResEnd; ++it) {
+    for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes.begin();
         EXPECT_EQ(it.read(queue), keysExpected[ind]);
     }
 
-    for (auto it = valsRes.begin(); it < valsResEnd; ++it) {
+    for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - valsRes.begin();
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
     }
@@ -104,7 +104,7 @@ TEST(Compute, MergeByPairKey) {
     compute::vector<int> keysRes2(8, ctx);
     compute::vector<char> valsRes(8, ctx);
 
-    auto [keysResEndFirst, keysResEndSecond, valsResEnd] = spla::MergeByPairKey(
+    std::ptrdiff_t mergedSize = spla::MergeByPairKey(
             keysA1.begin(), keysA2.begin(), keysA1.end(),
             valsA.begin(),
             keysB1.begin(), keysB2.begin(), keysB1.end(),
@@ -117,17 +117,17 @@ TEST(Compute, MergeByPairKey) {
     std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0};
     std::vector<char> valsExpected{'o', 't', 't', 't', 'f', 'f', 'f', 's'};
 
-    for (auto it = keysRes1.begin(); it < keysResEndFirst; ++it) {
+    for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes1.begin();
         EXPECT_EQ(it.read(queue), keys1Expected[ind]);
     }
 
-    for (auto it = keysRes2.begin(); it < keysResEndSecond; ++it) {
+    for (auto it = keysRes2.begin(); it < keysRes2.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes2.begin();
         EXPECT_EQ(it.read(queue), keys2Expected[ind]);
     }
 
-    for (auto it = valsRes.begin(); it < valsResEnd; ++it) {
+    for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - valsRes.begin();
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
     }
@@ -150,7 +150,7 @@ TEST(Compute, MergeKeys) {
 
     compute::vector<int> keysRes(10, ctx);
 
-    auto keysResEnd = spla::MergeKeys(
+    std::ptrdiff_t mergedSize = spla::MergeKeys(
             keysA.begin(), keysA.end(),
             keysB.begin(), keysB.end(),
             keysRes.begin(),
@@ -158,7 +158,7 @@ TEST(Compute, MergeKeys) {
 
     std::vector<int> keysExpected{1, 2, 2, 2, 3, 4, 5, 6, 6, 7};
 
-    for (auto it = keysRes.begin(); it < keysResEnd; ++it) {
+    for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes.begin();
         EXPECT_EQ(it.read(queue), keysExpected[ind]);
     }
@@ -188,7 +188,7 @@ TEST(Compute, MergePairKeys) {
     compute::vector<int> keysRes1(hostKeysA1.size() + hostKeysB1.size(), ctx);
     compute::vector<int> keysRes2(hostKeysA2.size() + hostKeysB2.size(), ctx);
 
-    auto [keysResEndFirst, keysResEndSecond] = spla::MergePairKeys(
+    std::ptrdiff_t mergedSize = spla::MergePairKeys(
             keysA1.begin(), keysA2.begin(), keysA1.end(),
             keysB1.begin(), keysB2.begin(), keysB1.end(),
             keysRes1.begin(), keysRes2.begin(),
@@ -197,12 +197,12 @@ TEST(Compute, MergePairKeys) {
     std::vector<int> keys1Expected{1, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 9, 10};
     std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0, 1, 2, 3, 3, 3, 4, 5, 6, 0, 5};
 
-    for (auto it = keysRes1.begin(); it < keysResEndFirst; ++it) {
+    for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes1.begin();
         EXPECT_EQ(it.read(queue), keys1Expected[ind]);
     }
 
-    for (auto it = keysRes2.begin(); it < keysResEndSecond; ++it) {
+    for (auto it = keysRes2.begin(); it < keysRes2.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes2.begin();
         EXPECT_EQ(it.read(queue), keys2Expected[ind]);
     }
