@@ -73,14 +73,14 @@ namespace utils {
     template<>
     class UniformGenerator<std::int32_t> : public UniformIntGenerator<std::int32_t> {};
 
-    template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+    template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
     std::vector<T> GenerateIntVector(const std::size_t size, std::size_t seed = 0) {
         std::vector<T> vec(size);
         std::generate_n(vec.begin(), size, UniformIntGenerator<T>{seed});
         return vec;
     }
 
-    template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+    template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
     std::vector<T> GenerateFloatVector(const std::size_t size, std::size_t seed = 0) {
         std::vector<T> vec(size);
         std::generate_n(vec.begin(), size, UniformRealGenerator<T>{seed});
