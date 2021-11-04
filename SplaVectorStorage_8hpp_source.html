@@ -133,24 +133,26 @@ $(function() {
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        [[nodiscard]] std::<span class="keywordtype">size_t</span> <a class="code" href="classspla_1_1VectorStorage.html#a2c8f7923b09e369b08481210e8920ea3">GetNvals</a>() const noexcept;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        static <a class="code" href="classspla_1_1RefPtr.html">RefPtr</a>&lt;<a class="code" href="classspla_1_1VectorStorage.html">VectorStorage</a>&gt; <a class="code" href="classspla_1_1VectorStorage.html#a0842c848bc622a23aa51323e68b1e976">Make</a>(std::<span class="keywordtype">size_t</span> nrows, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    private:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classspla_1_1VectorStorage.html">VectorStorage</a>(std::<span class="keywordtype">size_t</span> nrows, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1VectorStorage.html#a250770139df06f89ab2a17a0169a4838">Dump</a>(std::ostream &amp;stream) const;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        static <a class="code" href="classspla_1_1RefPtr.html">RefPtr</a>&lt;<a class="code" href="classspla_1_1VectorStorage.html">VectorStorage</a>&gt; <a class="code" href="classspla_1_1VectorStorage.html#a0842c848bc622a23aa51323e68b1e976">Make</a>(std::<span class="keywordtype">size_t</span> nrows, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="classspla_1_1VectorStorage.html#ad69311921c0c1f57295ef1d0dd64df29">EntryMap</a> mBlocks;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::<span class="keywordtype">size_t</span> mNrows;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::<span class="keywordtype">size_t</span> mNvals = 0;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        std::<span class="keywordtype">size_t</span> mNblockRows = 0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        std::<span class="keywordtype">size_t</span> mBlockSize = 0;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a> &amp;mLibrary;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        mutable std::mutex mMutex;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    };</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAVECTORSTORAGE_HPP</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    private:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="classspla_1_1VectorStorage.html">VectorStorage</a>(std::<span class="keywordtype">size_t</span> nrows, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <a class="code" href="classspla_1_1VectorStorage.html#ad69311921c0c1f57295ef1d0dd64df29">EntryMap</a> mBlocks;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        std::<span class="keywordtype">size_t</span> mNrows;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::<span class="keywordtype">size_t</span> mNvals = 0;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        std::<span class="keywordtype">size_t</span> mNblockRows = 0;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::<span class="keywordtype">size_t</span> mBlockSize = 0;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="classspla_1_1Library.html">Library</a> &amp;mLibrary;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        mutable std::mutex mMutex;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    };</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAVECTORSTORAGE_HPP</span></div>
 <div class="ttc" id="aSplaLibrary_8hpp_html"><div class="ttname"><a href="SplaLibrary_8hpp.html">SplaLibrary.hpp</a></div></div>
 <div class="ttc" id="aSplaVectorBlock_8hpp_html"><div class="ttname"><a href="SplaVectorBlock_8hpp.html">SplaVectorBlock.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
@@ -161,6 +163,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a0ed4c453bdfdf83b81a561a447997288"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a0ed4c453bdfdf83b81a561a447997288">spla::VectorStorage::GetBlocksGrid</a></div><div class="ttdeci">void GetBlocksGrid(std::size_t &amp;rows) const</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a1494a7a7d111b379fddba1b2811b9f08"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a1494a7a7d111b379fddba1b2811b9f08">spla::VectorStorage::EntryList</a></div><div class="ttdeci">std::vector&lt; Entry &gt; EntryList</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.hpp:48</div></div>
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a23309f51ea0a90f4f72a00ecb270a650"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a23309f51ea0a90f4f72a00ecb270a650">spla::VectorStorage::GetBlocks</a></div><div class="ttdeci">void GetBlocks(EntryList &amp;entryList) const</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:46</div></div>
+<div class="ttc" id="aclassspla_1_1VectorStorage_html_a250770139df06f89ab2a17a0169a4838"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a250770139df06f89ab2a17a0169a4838">spla::VectorStorage::Dump</a></div><div class="ttdeci">void Dump(std::ostream &amp;stream) const</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:93</div></div>
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a263b9d5181b5c88cade9a6f1325be8c1"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a263b9d5181b5c88cade9a6f1325be8c1">spla::VectorStorage::RemoveBlock</a></div><div class="ttdeci">void RemoveBlock(const Index &amp;index)</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:82</div></div>
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a2c0431a9c6d830ce825ef3b3d2b912e1"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a2c0431a9c6d830ce825ef3b3d2b912e1">spla::VectorStorage::SetBlock</a></div><div class="ttdeci">void SetBlock(const Index &amp;index, const RefPtr&lt; VectorBlock &gt; &amp;block)</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:32</div></div>
 <div class="ttc" id="aclassspla_1_1VectorStorage_html_a2c8f7923b09e369b08481210e8920ea3"><div class="ttname"><a href="classspla_1_1VectorStorage.html#a2c8f7923b09e369b08481210e8920ea3">spla::VectorStorage::GetNvals</a></div><div class="ttdeci">std::size_t GetNvals() const noexcept</div><div class="ttdef"><b>Definition:</b> SplaVectorStorage.cpp:67</div></div>

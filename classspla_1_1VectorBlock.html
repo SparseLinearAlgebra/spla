@@ -71,7 +71,7 @@ $(function() {
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classspla_1_1VectorBlock-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">spla::VectorBlock Class Reference<div class="ingroups"><a class="el" href="group__Internal.html">Internal</a></div></div>  </div>
+<div class="title">spla::VectorBlock Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__Internal.html">Internal</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -115,6 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a658e9213d371b83ee4e713c4a59d1cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad823659c82e6cb61635287129d2d7278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1VectorBlock.html#ae9348ed0e40b4f94cb1650ce2eee0d5e">Format</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorBlock.html#ad823659c82e6cb61635287129d2d7278">GetFormat</a> () const noexcept</td></tr>
 <tr class="separator:ad823659c82e6cb61635287129d2d7278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a203b9bdbf59e3c0e5bd57d38ba3af59d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorBlock.html#a203b9bdbf59e3c0e5bd57d38ba3af59d">Dump</a> (std::ostream &amp;stream, unsigned int baseI) const =0</td></tr>
+<tr class="separator:a203b9bdbf59e3c0e5bd57d38ba3af59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
 <tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,6 +237,45 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a203b9bdbf59e3c0e5bd57d38ba3af59d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a203b9bdbf59e3c0e5bd57d38ba3af59d">&#9670;&nbsp;</a></span>Dump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void spla::VectorBlock::Dump </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>baseI</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Dump vector content to provided stream </p>
+
+<p>Implemented in <a class="el" href="classspla_1_1VectorCOO.html#ab368f6ba976728779bc8c8682cf80ae5">spla::VectorCOO</a>.</p>
+
+</div>
+</div>
 <a id="ad823659c82e6cb61635287129d2d7278"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad823659c82e6cb61635287129d2d7278">&#9670;&nbsp;</a></span>GetFormat()</h2>
 

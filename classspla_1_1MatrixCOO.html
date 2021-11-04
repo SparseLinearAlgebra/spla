@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8e6d57c4e38f95de61ecdcb6f11eaffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e0e6429ccb2e2fe14ebcc00137a4645"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classspla_1_1MatrixCOO.html#a07f97ee90ab76db5f62d91709dd8b9fc">Values</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCOO.html#a1e0e6429ccb2e2fe14ebcc00137a4645">GetVals</a> () const noexcept</td></tr>
 <tr class="separator:a1e0e6429ccb2e2fe14ebcc00137a4645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae33475c712f460de5a54151af27c135e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCOO.html#ae33475c712f460de5a54151af27c135e">ToString</a> () const</td></tr>
-<tr class="separator:ae33475c712f460de5a54151af27c135e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa450b997dcfc00ebf41aa2bc414681ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCOO.html#aa450b997dcfc00ebf41aa2bc414681ed">Dump</a> (std::ostream &amp;stream, unsigned int baseI, unsigned int baseJ) const override</td></tr>
+<tr class="separator:aa450b997dcfc00ebf41aa2bc414681ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1MatrixBlock"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1MatrixBlock')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1MatrixBlock.html">spla::MatrixBlock</a></td></tr>
 <tr class="memitem:a17f4a472ada79c7f2426c2daebf6e102 inherit pub_methods_classspla_1_1MatrixBlock"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixBlock.html#a17f4a472ada79c7f2426c2daebf6e102">MatrixBlock</a> (std::size_t nrows, std::size_t ncols, std::size_t nvals, <a class="el" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1">Format</a> format)</td></tr>
 <tr class="separator:a17f4a472ada79c7f2426c2daebf6e102 inherit pub_methods_classspla_1_1MatrixBlock"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +220,51 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa450b997dcfc00ebf41aa2bc414681ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa450b997dcfc00ebf41aa2bc414681ed">&#9670;&nbsp;</a></span>Dump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::MatrixCOO::Dump </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>baseI</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>baseJ</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Dump block content to provided stream </p>
+
+<p>Implements <a class="el" href="classspla_1_1MatrixBlock.html#ac55371dd8c63cd4d17214a56a5f4abe8">spla::MatrixBlock</a>.</p>
+
+</div>
+</div>
 <a id="a8e6d57c4e38f95de61ecdcb6f11eaffe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e6d57c4e38f95de61ecdcb6f11eaffe">&#9670;&nbsp;</a></span>GetCols()</h2>
 
@@ -351,23 +396,6 @@ Additional Inherited Members</h2></td></tr>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae33475c712f460de5a54151af27c135e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae33475c712f460de5a54151af27c135e">&#9670;&nbsp;</a></span>ToString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string spla::MatrixCOO::ToString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 
 </div>

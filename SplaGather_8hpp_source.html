@@ -109,7 +109,7 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">class</span> InputIterator, <span class="keyword">class</span> MapIterator, <span class="keyword">class</span> OutputIterator&gt;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">class </span>GatherKernel : <span class="keyword">public</span> boost::compute::detail::meta_kernel {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            GatherKernel() : meta_kernel(<span class="stringliteral">&quot;gather_byteSize&quot;</span>) {}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            GatherKernel() : meta_kernel(<span class="stringliteral">&quot;__spla_gather_byte_size&quot;</span>) {}</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">void</span> SetRange(MapIterator first,</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                          MapIterator last,</div>
@@ -123,7 +123,7 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;const uint dst = i * &quot;</span> &lt;&lt; elementsInSequence &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;const uint src = index * &quot;</span> &lt;&lt; elementsInSequence &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;for (uint k = 0; k &lt; &quot;</span> &lt;&lt; elementsInSequence &lt;&lt; <span class="stringliteral">&quot;; k++) {\n&quot;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                      &lt;&lt; result[expr&lt;boost::compute::uint_&gt;(<span class="stringliteral">&quot;dst + k&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;=&quot;</span> &lt;&lt; input[expr&lt;boost::compute::uint_&gt;(<span class="stringliteral">&quot;src + k&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; result[expr&lt;boost::compute::uint_&gt;(<span class="stringliteral">&quot;dst + k&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;=&quot;</span> &lt;&lt; input[expr&lt;boost::compute::uint_&gt;(<span class="stringliteral">&quot;src + k&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;}&quot;</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
