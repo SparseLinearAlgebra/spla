@@ -13,7 +13,7 @@ def test_names(test_root_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--build-dir", default="cmake-build-debug")
+    parser.add_argument("--build-dir", default="build")
     args = parser.parse_args()
 
     tests_dir = shared.ROOT / args.build_dir / "tests"
