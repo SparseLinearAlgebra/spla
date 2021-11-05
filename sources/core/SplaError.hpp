@@ -43,6 +43,9 @@ namespace spla {
         MemOpFailed,
         InvalidArgument,
         InvalidState,
+        InvalidType,
+        NullPointer,
+        DimensionMismatch,
         NotImplemented
     };
 
@@ -140,6 +143,9 @@ namespace spla {
     using MemOpFailed = TException<Status::MemOpFailed>;
     using InvalidArgument = TException<Status::InvalidArgument>;
     using InvalidState = TException<Status::InvalidState>;
+    using InvalidType = TException<Status::InvalidType>;
+    using NullPointer = TException<Status::NullPointer>;
+    using DimensionMismatch = TException<Status::DimensionMismatch>;
     using NotImplemented = TException<Status::NotImplemented>;
 
 }// namespace spla

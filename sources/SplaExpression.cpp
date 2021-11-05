@@ -62,8 +62,8 @@ void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred
                                   const spla::RefPtr<spla::ExpressionNode> &succ) {
     CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state");
 
-    CHECK_RAISE_ERROR(pred.IsNotNull(), InvalidArgument, "Passed null arg");
-    CHECK_RAISE_ERROR(succ.IsNotNull(), InvalidArgument, "Passed null arg");
+    CHECK_RAISE_ERROR(pred.IsNotNull(), NullPointer, "Passed null arg");
+    CHECK_RAISE_ERROR(succ.IsNotNull(), NullPointer, "Passed null arg");
 
     CHECK_RAISE_ERROR(pred->Belongs(*this), InvalidArgument, "Node must be part of expression");
     CHECK_RAISE_ERROR(succ->Belongs(*this), InvalidArgument, "Node must be part of expression");
@@ -102,8 +102,8 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeDataWrite(const spla::RefPtr<spla::Matrix> &matrix,
                                 const spla::RefPtr<spla::DataMatrix> &data,
                                 const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(matrix.IsNotNull(), InvalidArgument, "matrix can't be null");
-    CHECK_RAISE_ERROR(data.IsNotNull(), InvalidArgument, "data can't be null");
+    CHECK_RAISE_ERROR(matrix.IsNotNull(), NullPointer, "matrix can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
 
     std::vector<RefPtr<Object>> args = {
             matrix.As<Object>(),
@@ -118,8 +118,8 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeDataWrite(const spla::RefPtr<spla::Vector> &vector,
                                 const spla::RefPtr<spla::DataVector> &data,
                                 const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(vector.IsNotNull(), InvalidArgument, "vector can't be null");
-    CHECK_RAISE_ERROR(data.IsNotNull(), InvalidArgument, "data can't be null");
+    CHECK_RAISE_ERROR(vector.IsNotNull(), NullPointer, "vector can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
 
     std::vector<RefPtr<Object>> args = {
             vector.As<Object>(),
@@ -134,8 +134,8 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeDataRead(const spla::RefPtr<spla::Matrix> &matrix,
                                const spla::RefPtr<spla::DataMatrix> &data,
                                const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(matrix.IsNotNull(), InvalidArgument, "matrix can't be null");
-    CHECK_RAISE_ERROR(data.IsNotNull(), InvalidArgument, "data can't be null");
+    CHECK_RAISE_ERROR(matrix.IsNotNull(), NullPointer, "matrix can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
 
     std::vector<RefPtr<Object>> args = {
             matrix.As<Object>(),
@@ -150,8 +150,8 @@ spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
                                const spla::RefPtr<spla::DataVector> &data,
                                const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(vector.IsNotNull(), InvalidArgument, "vector can't be null");
-    CHECK_RAISE_ERROR(data.IsNotNull(), InvalidArgument, "data can't be null");
+    CHECK_RAISE_ERROR(vector.IsNotNull(), NullPointer, "vector can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
 
     std::vector<RefPtr<Object>> args = {
             vector.As<Object>(),
@@ -169,14 +169,15 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
                                const spla::RefPtr<spla::Matrix> &a,
                                const spla::RefPtr<spla::Matrix> &b,
                                const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(w.IsNotNull(), InvalidArgument, "w can't be null");
-    CHECK_RAISE_ERROR(a.IsNotNull(), InvalidArgument, "a can't be null");
-    CHECK_RAISE_ERROR(b.IsNotNull(), InvalidArgument, "b can't be null");
-    CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidArgument, "w, a, b must have the same type");
-    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), InvalidArgument, "If type is has values then `op` must be provided");
-    CHECK_RAISE_ERROR(w->GetDim() == a->GetDim(), InvalidArgument, "Incompatible size");
-    CHECK_RAISE_ERROR(w->GetDim() == b->GetDim(), InvalidArgument, "Incompatible size");
-    CHECK_RAISE_ERROR(mask.IsNull() || w->GetDim() == mask->GetDim(), InvalidArgument, "Incompatible mask size");
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
+    CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type is has values then `op` must be provided");
+    CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
+    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), DimensionMismatch, "Incompatible size");
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),
@@ -197,14 +198,15 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
                                const spla::RefPtr<spla::Vector> &a,
                                const spla::RefPtr<spla::Vector> &b,
                                const spla::RefPtr<spla::Descriptor> &desc) {
-    CHECK_RAISE_ERROR(w.IsNotNull(), InvalidArgument, "w can't be null");
-    CHECK_RAISE_ERROR(a.IsNotNull(), InvalidArgument, "a can't be null");
-    CHECK_RAISE_ERROR(b.IsNotNull(), InvalidArgument, "b can't be null");
-    CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidArgument, "w, a, b must have the same type");
-    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), InvalidArgument, "If type is has values then `op` must be provided");
-    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), InvalidArgument, "Incompatible size");
-    CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), InvalidArgument, "Incompatible size");
-    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), InvalidArgument, "Incompatible size");
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
+    CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type is has values then `op` must be provided");
+    CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
+    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), DimensionMismatch, "Incompatible size");
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),

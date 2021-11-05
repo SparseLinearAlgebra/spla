@@ -6,9 +6,11 @@ TESTS = [
     "TestBasic",
     "TestDataMatrix",
     "TestDataVector",
-    "TestExpression",
+    "TestMatrixEWiseAdd",
     "TestVectorEWiseAdd",
-    "TestMatrixEWiseAdd"
+    "TestMaskByKey",
+    "TestMergeByKey",
+    "TestReduceDuplicates"
 ]
 
 
