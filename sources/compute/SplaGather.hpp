@@ -38,7 +38,7 @@ namespace spla {
      * @{
      */
 
-    namespace {
+    namespace detail {
 
         template<class InputIterator, class MapIterator, class OutputIterator>
         class GatherKernel : public boost::compute::detail::meta_kernel {
@@ -73,7 +73,7 @@ namespace spla {
             std::size_t mCount = 0;
         };
 
-    }// namespace
+    }// namespace detail
 
     /**
      * Custom gather function. Allows to collect input values using permutation.
@@ -104,7 +104,7 @@ namespace spla {
         BOOST_STATIC_ASSERT(compute::is_device_iterator<MapIterator>::value);
         BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator>::value);
 
-        GatherKernel<InputIterator, MapIterator, OutputIterator> kernel;
+        detail::GatherKernel<InputIterator, MapIterator, OutputIterator> kernel;
 
         kernel.SetRange(first, last, input, result, elementsInSequence);
         return kernel.Exec(queue);

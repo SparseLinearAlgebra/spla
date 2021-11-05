@@ -34,6 +34,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     /** Possible error status */
     enum class Status {
         Error,
@@ -147,6 +152,10 @@ namespace spla {
     using NullPointer = TException<Status::NullPointer>;
     using DimensionMismatch = TException<Status::DimensionMismatch>;
     using NotImplemented = TException<Status::NotImplemented>;
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

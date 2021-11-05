@@ -38,7 +38,7 @@ namespace spla {
      * @{
      */
 
-    namespace {
+    namespace detail {
 
         class BalancedPathKernel : public boost::compute::detail::meta_kernel {
         public:
@@ -62,10 +62,10 @@ namespace spla {
 
                 typedef typename std::iterator_traits<InputIterator1>::value_type value_type;
 
-                m_a_count = detail::iterator_range_size(first1, last1);
+                m_a_count = boost::compute::detail::iterator_range_size(first1, last1);
                 m_a_count_arg = add_arg<uint_>("a_count");
 
-                m_b_count = detail::iterator_range_size(first2, last2);
+                m_b_count = boost::compute::detail::iterator_range_size(first2, last2);
                 m_b_count_arg = add_arg<uint_>("b_count");
 
                 *this << "uint i = get_global_id(0);\n"
@@ -213,7 +213,7 @@ namespace spla {
         private:
             std::size_t m_count = 0;
         };
-    }// namespace
+    }// namespace detail
 
     /**
      * @brief Mask intersection algorithm
@@ -292,7 +292,7 @@ namespace spla {
         compute::vector<compute::uint_> tile_b((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
 
         // Tile the sets
-        BalancedPathKernel tiling_kernel;
+        detail::BalancedPathKernel tiling_kernel;
         tiling_kernel.tile_size = tile_size;
         tiling_kernel.set_range(maskFirst, maskLast, keyFirsts, keyLast,
                                 tile_a.begin() + 1, tile_b.begin() + 1, compare);
@@ -309,7 +309,7 @@ namespace spla {
         compute::fill_n(counts.end() - 1, 1, 0, queue);
 
         // Find individual intersections
-        SerialIntersectionKernel intersection_kernel;
+        detail::SerialIntersectionKernel intersection_kernel;
         intersection_kernel.tile_size = tile_size;
         intersection_kernel.set_range(maskFirst, keyFirsts, tile_a.begin(), tile_a.end(),
                                       tile_b.begin(), valueFirst,
