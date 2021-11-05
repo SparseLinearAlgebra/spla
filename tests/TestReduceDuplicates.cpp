@@ -74,9 +74,9 @@ TEST(Compute, ReduceDuplicates_KKV) {
     ASSERT_EQ(nnz, resultValues.size());
 
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices1[i], drI1[i]);
+        EXPECT_EQ(resultIndices1[i], (drI1.begin() + i).read(queue));
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices2[i], drI2[i]);
+        EXPECT_EQ(resultIndices2[i], (drI2.begin() + i).read(queue));
 
     std::vector<int> result(nnz);
     compute::copy(drV.begin(), drV.end(), (unsigned char *) result.data(), queue);
@@ -120,9 +120,9 @@ TEST(Compute, ReduceDuplicates_KK) {
     ASSERT_EQ(nnz, resultIndices2.size());
 
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices1[i], drI1[i]);
+        EXPECT_EQ(resultIndices1[i], (drI1.begin() + i).read(queue));
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices2[i], drI2[i]);
+        EXPECT_EQ(resultIndices2[i], (drI2.begin() + i).read(queue));
 }
 
 TEST(Compute, ReduceDuplicates_KV) {
@@ -165,7 +165,7 @@ TEST(Compute, ReduceDuplicates_KV) {
     ASSERT_EQ(nnz, resultValues.size());
 
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices[i], drI[i]);
+        EXPECT_EQ(resultIndices[i], (drI.begin() + i).read(queue));
 
     std::vector<int> result(nnz);
     compute::copy(drV.begin(), drV.end(), (unsigned char *) result.data(), queue);
@@ -201,7 +201,7 @@ TEST(Compute, ReduceDuplicates_K) {
     ASSERT_EQ(nnz, resultIndices.size());
 
     for (std::size_t i = 0; i < nnz; i++)
-        EXPECT_EQ(resultIndices[i], drI[i]);
+        EXPECT_EQ(resultIndices[i], (drI.begin() + i).read(queue));
 }
 
 SPLA_GTEST_MAIN
