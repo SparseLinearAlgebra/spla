@@ -117,8 +117,8 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1VectorDataWrite.html">VectorDataWrite</a>,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            ScalarDataRead,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            ScalarDataWrite,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classspla_1_1VectorEWiseAdd.html">VectorEWiseAdd</a>,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="classspla_1_1MatrixEWiseAdd.html">MatrixEWiseAdd</a></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classspla_1_1MatrixEWiseAdd.html">MatrixEWiseAdd</a>,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="classspla_1_1VectorEWiseAdd.html">VectorEWiseAdd</a></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        };</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;Object&gt;&gt; &amp;GetArgs() <span class="keyword">const</span>;</div>
@@ -174,10 +174,10 @@ $(function() {
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataRead&quot;</span>;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775">ExpressionNode::Operation::ScalarDataWrite</a>:</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataWrite&quot;</span>;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">ExpressionNode::Operation::VectorEWiseAdd</a>:</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorEWiseAdd&quot;</span>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">ExpressionNode::Operation::MatrixEWiseAdd</a>:</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixEWiseAdd&quot;</span>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">ExpressionNode::Operation::MatrixEWiseAdd</a>:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixEWiseAdd&quot;</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">ExpressionNode::Operation::VectorEWiseAdd</a>:</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorEWiseAdd&quot;</span>;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keywordflow">default</span>:</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
