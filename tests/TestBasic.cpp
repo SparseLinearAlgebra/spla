@@ -69,7 +69,7 @@ TEST(Basic, BoostExample) {
     }
 }
 
-TEST(Basic, PriceCost) {
+TEST(Basic, DISABLED_PriceCost) {
     namespace compute = boost::compute;
 
     // get default device and setup context
