@@ -74,10 +74,10 @@ TEST(Compute, MaskByKey) {
     ASSERT_EQ(count, expectedValues.size());
 
     for (std::size_t i = 0; i < count; i++)
-        EXPECT_EQ(expectedKeys[i], deviceKeys[i]);
+        EXPECT_EQ(expectedKeys[i], (deviceKeys.begin() + i).read(queue));
 
     for (std::size_t i = 0; i < count; i++)
-        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+        EXPECT_EQ(expectedValues[i], (deviceValues.begin() + i).read(queue));
 }
 
 TEST(Compute, MaskByKey2) {
@@ -136,13 +136,13 @@ TEST(Compute, MaskByKey2) {
     ASSERT_EQ(count, expectedValues.size());
 
     for (std::size_t i = 0; i < count; i++) {
-        EXPECT_EQ(expectedKeys[i].get<0>(), ((Index) deviceKeys[i]).get<0>());
-        EXPECT_EQ(expectedKeys[i].get<1>(), ((Index) deviceKeys[i]).get<1>());
+        EXPECT_EQ(expectedKeys[i].get<0>(), ((deviceKeys.begin() + i).read(queue)).get<0>());
+        EXPECT_EQ(expectedKeys[i].get<1>(), ((deviceKeys.begin() + i).read(queue)).get<1>());
     }
 
     for (std::size_t i = 0; i < count; i++) {
-        EXPECT_EQ(expectedValues[i], deviceValues[i]);
-        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+        EXPECT_EQ(expectedValues[i], (deviceValues.begin() + i).read(queue));
+        EXPECT_EQ(expectedValues[i], (deviceValues.begin() + i).read(queue));
     }
 }
 
@@ -193,13 +193,13 @@ TEST(Compute, MaskByPairKey) {
     ASSERT_EQ(count, expectedValues.size());
 
     for (std::size_t i = 0; i < count; i++) {
-        EXPECT_EQ(expectedKeys1[i], deviceKeys1[i]);
-        EXPECT_EQ(expectedKeys2[i], deviceKeys2[i]);
+        EXPECT_EQ(expectedKeys1[i], (deviceKeys1.begin() + i).read(queue));
+        EXPECT_EQ(expectedKeys2[i], (deviceKeys2.begin() + i).read(queue));
     }
 
     for (std::size_t i = 0; i < count; i++) {
-        EXPECT_EQ(expectedValues[i], deviceValues[i]);
-        EXPECT_EQ(expectedValues[i], deviceValues[i]);
+        EXPECT_EQ(expectedValues[i], (deviceValues.begin() + i).read(queue));
+        EXPECT_EQ(expectedValues[i], (deviceValues.begin() + i).read(queue));
     }
 }
 
