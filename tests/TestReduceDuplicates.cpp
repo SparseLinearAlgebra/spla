@@ -58,9 +58,9 @@ TEST(Compute, ReduceDuplicates_KKV) {
     compute::vector<unsigned int> drI2(count, ctx);
     compute::vector<unsigned char> drV(count * size, ctx);
 
-    std::string op = "int a = *((const int*)vp_a);"
-                     "int b = *((const int*)vp_b);"
-                     "int* c = (int*)vp_c;"
+    std::string op = "int a = *((_ACCESS_A const int*)vp_a);"
+                     "int b = *((_ACCESS_B const int*)vp_b);"
+                     "_ACCESS_C int* c = (_ACCESS_C int*)vp_c;"
                      "*c = a + b;";
 
     auto nnz = spla::ReduceDuplicates(diI1, diI2, diV,
@@ -150,9 +150,9 @@ TEST(Compute, ReduceDuplicates_KV) {
     compute::vector<unsigned int> drI(count, ctx);
     compute::vector<unsigned char> drV(count * size, ctx);
 
-    std::string op = "int a = *((const int*)vp_a);"
-                     "int b = *((const int*)vp_b);"
-                     "int* c = (int*)vp_c;"
+    std::string op = "int a = *((_ACCESS_A const int*)vp_a);"
+                     "int b = *((_ACCESS_B const int*)vp_b);"
+                     "_ACCESS_C int* c = (_ACCESS_C int*)vp_c;"
                      "*c = a + b;";
 
     auto nnz = spla::ReduceDuplicates(diI, diV,

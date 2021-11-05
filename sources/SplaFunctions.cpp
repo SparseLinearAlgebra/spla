@@ -31,9 +31,9 @@
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &library) {
     auto t = Types::Int32(library);
     return FunctionBinary::Make(t, t, t,
-                                "int a = *((const __global int*)vp_a);"
-                                "int b = *((const __global int*)vp_b);"
-                                "__global int* c = (__global int*)vp_c;"
+                                "int a = *((_ACCESS_A const int*)vp_a);"
+                                "int b = *((_ACCESS_B const int*)vp_b);"
+                                "_ACCESS_C int* c = (_ACCESS_C int*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }
@@ -41,9 +41,9 @@ spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &lib
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &library) {
     auto t = Types::Int64(library);
     return FunctionBinary::Make(t, t, t,
-                                "long a = *((const __global long*)vp_a);"
-                                "long b = *((const __global long*)vp_b);"
-                                "__global long* c = (__global long*)vp_c;"
+                                "long a = *((_ACCESS_A const long*)vp_a);"
+                                "long b = *((_ACCESS_B const long*)vp_b);"
+                                "_ACCESS_C long* c = (_ACCESS_C long*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }
@@ -51,9 +51,9 @@ spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &lib
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
     auto t = Types::Float32(library);
     return FunctionBinary::Make(t, t, t,
-                                "float a = *((const __global float*)vp_a);"
-                                "float b = *((const __global float*)vp_b);"
-                                "__global float* c = (__global float*)vp_c;"
+                                "float a = *((_ACCESS_A const float*)vp_a);"
+                                "float b = *((_ACCESS_B const float*)vp_b);"
+                                "_ACCESS_C float* c = (_ACCESS_C float*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }
@@ -61,9 +61,9 @@ spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
     auto t = Types::Float64(library);
     return FunctionBinary::Make(t, t, t,
-                                "double a = *((const __global double*)vp_a);"
-                                "double b = *((const __global double*)vp_b);"
-                                "__global double* c = (double*)vp_c;"
+                                "double a = *((_ACCESS_A const double*)vp_a);"
+                                "double b = *((_ACCESS_B const double*)vp_b);"
+                                "_ACCESS_C double* c = (_ACCESS_C double*)vp_c;"
                                 "*c = a + b;",
                                 library);
 }

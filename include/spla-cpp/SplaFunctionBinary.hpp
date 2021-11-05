@@ -49,7 +49,7 @@ namespace spla {
      * for matrices, vectors and scalars.
      *
      * Source code for the function must be provided in the string.
-     * Function signature is following `(const void* vp_a, const void* vp_b, void* vp_c)`,
+     * Function signature is following `(_ACCESS_A const void* vp_a, _ACCESS_B const void* vp_b, _ACCESS_C void* vp_c)`,
      * where a, b and c pointers to values, c must be written by the function.
      * It is up to user to cast this pointers to appropriate types and check values sizes.
      */

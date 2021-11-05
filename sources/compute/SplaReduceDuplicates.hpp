@@ -55,7 +55,13 @@ namespace spla {
 
                 std::stringstream _spla_reduce_op;
                 _spla_reduce_op << "void _spla_reduce_op(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n"
+                                << "#define _ACCESS_A __global\n"
+                                << "#define _ACCESS_B __global\n"
+                                << "#define _ACCESS_C __global\n"
                                 << "   " << reduceOp << "\n"
+                                << "#undef _ACCESS_A\n"
+                                << "#undef _ACCESS_B\n"
+                                << "#undef _ACCESS_C\n"
                                 << "}";
 
                 add_function("_spla_reduce_op", _spla_reduce_op.str());
