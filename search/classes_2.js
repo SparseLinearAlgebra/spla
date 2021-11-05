@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['data_401',['Data',['../classspla_1_1Data.html',1,'spla']]],
-  ['datamatrix_402',['DataMatrix',['../classspla_1_1DataMatrix.html',1,'spla']]],
-  ['datascalar_403',['DataScalar',['../classspla_1_1DataScalar.html',1,'spla']]],
-  ['datavector_404',['DataVector',['../classspla_1_1DataVector.html',1,'spla']]],
-  ['descriptor_405',['Descriptor',['../classspla_1_1Descriptor.html',1,'spla']]],
-  ['devicemanager_406',['DeviceManager',['../classspla_1_1DeviceManager.html',1,'spla']]]
+  ['config_411',['Config',['../classspla_1_1Library_1_1Config.html',1,'spla::Library']]],
+  ['copyreduceduplicates_412',['CopyReduceDuplicates',['../classspla_1_1detail_1_1CopyReduceDuplicates.html',1,'spla::detail']]]
 ];

@@ -104,20 +104,20 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">namespace </span>{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">namespace </span>detail {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">class </span>BalancedPathKernel : <span class="keyword">public</span> boost::compute::detail::meta_kernel {</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1BalancedPathKernel.html">   43</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html">BalancedPathKernel</a> : <span class="keyword">public</span> boost::compute::detail::meta_kernel {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">   45</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">   45</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            BalancedPathKernel() : meta_kernel(<span class="stringliteral">&quot;__spla_balanced_path&quot;</span>) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> = 4;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1BalancedPathKernel.html#a6054e8cc8918f728c9e5649e4d75f241">   47</a></span>&#160;            <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a6054e8cc8918f728c9e5649e4d75f241">BalancedPathKernel</a>() : meta_kernel(<span class="stringliteral">&quot;__spla_balanced_path&quot;</span>) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> = 4;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">class </span>InputIterator1, <span class="keyword">class </span>InputIterator2,</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                     <span class="keyword">class </span>OutputIterator1, <span class="keyword">class </span>OutputIterator2,</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                     <span class="keyword">class </span>Compare&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">void</span> set_range(InputIterator1 first1,</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1BalancedPathKernel.html#a9756489f64216c5b5bdd4b97683b8a72">   54</a></span>&#160;            <span class="keywordtype">void</span> <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a9756489f64216c5b5bdd4b97683b8a72">set_range</a>(InputIterator1 first1,</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                           InputIterator1 last1,</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                           InputIterator2 first2,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                           InputIterator2 last2,</div>
@@ -128,14 +128,14 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keyword">typedef</span> <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator1&gt;::value_type value_type;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                m_a_count = detail::iterator_range_size(first1, last1);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                m_a_count = boost::compute::detail::iterator_range_size(first1, last1);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                m_a_count_arg = add_arg&lt;uint_&gt;(<span class="stringliteral">&quot;a_count&quot;</span>);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                m_b_count = detail::iterator_range_size(first2, last2);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                m_b_count = boost::compute::detail::iterator_range_size(first2, last2);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                m_b_count_arg = add_arg&lt;uint_&gt;(<span class="stringliteral">&quot;b_count&quot;</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                *<span class="keyword">this</span> &lt;&lt; <span class="stringliteral">&quot;uint i = get_global_id(0);\n&quot;</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint target = (i+1)*&quot;</span> &lt;&lt; <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint target = (i+1)*&quot;</span> &lt;&lt; <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint start = max(convert_int(0),convert_int(target)-convert_int(b_count));\n&quot;</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint end = min(target,a_count);\n&quot;</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint a_index, b_index;\n&quot;</span></div>
@@ -193,17 +193,17 @@ $(function() {
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                      &lt;&lt; result_b[expr&lt;uint_&gt;(<span class="stringliteral">&quot;i&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot; = b_index;\n&quot;</span>;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            }</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            boost::compute::event exec(boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1BalancedPathKernel.html#af77262c70ea9245ffd92d260518e46a6">  130</a></span>&#160;            boost::compute::event <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#af77262c70ea9245ffd92d260518e46a6">exec</a>(boost::compute::command_queue &amp;queue) {</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                <span class="keyword">using namespace </span>boost::compute;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                <span class="keywordflow">if</span> ((m_a_count + m_b_count) / <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> == 0) {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                <span class="keywordflow">if</span> ((m_a_count + m_b_count) / <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> == 0) {</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    <span class="keywordflow">return</span> boost::compute::event();</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                }</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                set_arg(m_a_count_arg, uint_(m_a_count));</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                set_arg(m_b_count_arg, uint_(m_b_count));</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                <span class="keywordflow">return</span> exec_1d(queue, 0, (m_a_count + m_b_count) / <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                <span class="keywordflow">return</span> exec_1d(queue, 0, (m_a_count + m_b_count) / <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>);</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            }</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keyword">private</span>:</div>
@@ -213,12 +213,12 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            std::size_t m_b_count_arg;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        };</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">class </span>SerialIntersectionKernel : boost::compute::detail::meta_kernel {</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1SerialIntersectionKernel.html">  150</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html">SerialIntersectionKernel</a> : boost::compute::detail::meta_kernel {</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a30ae553abfdad65b0c76d74b2f1fb613">  152</a></span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a30ae553abfdad65b0c76d74b2f1fb613">tile_size</a>;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            SerialIntersectionKernel() : meta_kernel(<span class="stringliteral">&quot;__spla_serial_intersection&quot;</span>) {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> = 4;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a0bf3c91e29e9bdf38ea912bd2de09195">  154</a></span>&#160;            <a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a0bf3c91e29e9bdf38ea912bd2de09195">SerialIntersectionKernel</a>() : meta_kernel(<span class="stringliteral">&quot;__spla_serial_intersection&quot;</span>) {</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> = 4;</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            }</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">class </span>InputIterator1,</div>
@@ -231,7 +231,7 @@ $(function() {
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                     <span class="keyword">class </span>OutputIterator3,</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                     <span class="keyword">class </span>Compare,</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                     <span class="keyword">class </span>Equals&gt;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="keywordtype">void</span> set_range(InputIterator1 maskFirst,</div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#ada5c43ca225a220cf6744f1b3be6e86b">  168</a></span>&#160;            <span class="keywordtype">void</span> <a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#ada5c43ca225a220cf6744f1b3be6e86b">set_range</a>(InputIterator1 maskFirst,</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                           InputIterator2 keyFirsts,</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                           InputIterator3 tile_first1,</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                           InputIterator3 tile_last1,</div>
@@ -250,7 +250,7 @@ $(function() {
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint end1 = &quot;</span> &lt;&lt; tile_first1[expr&lt;uint_&gt;(<span class="stringliteral">&quot;i+1&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint start2 = &quot;</span> &lt;&lt; tile_first2[expr&lt;uint_&gt;(<span class="stringliteral">&quot;i&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint end2 = &quot;</span> &lt;&lt; tile_first2[expr&lt;uint_&gt;(<span class="stringliteral">&quot;i+1&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint index = i*&quot;</span> &lt;&lt; <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint index = i*&quot;</span> &lt;&lt; <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span></div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;uint count = 0;\n&quot;</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;while(start1&lt;end1 &amp;&amp; start2&lt;end2)\n&quot;</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                      &lt;&lt; <span class="stringliteral">&quot;{\n&quot;</span></div>
@@ -268,7 +268,7 @@ $(function() {
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                      &lt;&lt; counts[expr&lt;uint_&gt;(<span class="stringliteral">&quot;i&quot;</span>)] &lt;&lt; <span class="stringliteral">&quot; = count;\n&quot;</span>;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            boost::compute::event exec(boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a094ac3dc095e82110d2e95e73eed3eda">  205</a></span>&#160;            boost::compute::event <a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a094ac3dc095e82110d2e95e73eed3eda">exec</a>(boost::compute::command_queue &amp;queue) {</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                <span class="keywordflow">if</span> (m_count == 0) {</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                    <span class="keywordflow">return</span> boost::compute::event();</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                }</div>
@@ -279,7 +279,7 @@ $(function() {
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            std::size_t m_count = 0;</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        };</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }<span class="comment">// namespace</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }<span class="comment">// namespace detail</span></div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">template</span>&lt;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keyword">class </span>InputIterator1,</div>
@@ -310,53 +310,53 @@ $(function() {
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator1&gt;::value_type key_type;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keyword">typedef</span> <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator3&gt;::value_type value_type;</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        std::size_t <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> = 1024;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        std::size_t <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> = 1024;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        std::size_t count1 = compute::detail::iterator_range_size(maskFirst, maskLast);</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        std::size_t count2 = compute::detail::iterator_range_size(keyFirsts, keyLast);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        compute::vector&lt;compute::uint_&gt; tile_a((count1 + count2 + <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> - 1) / <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> + 1, queue.get_context());</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        compute::vector&lt;compute::uint_&gt; tile_b((count1 + count2 + <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> - 1) / <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> + 1, queue.get_context());</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        compute::vector&lt;compute::uint_&gt; tile_a((count1 + count2 + <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> - 1) / <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> + 1, queue.get_context());</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        compute::vector&lt;compute::uint_&gt; tile_b((count1 + count2 + <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> - 1) / <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> + 1, queue.get_context());</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="comment">// Tile the sets</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        BalancedPathKernel tiling_kernel;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        tiling_kernel.tile_size = <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        tiling_kernel.set_range(maskFirst, maskLast, keyFirsts, keyLast,</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html">detail::BalancedPathKernel</a> tiling_kernel;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        tiling_kernel.<a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> = <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        tiling_kernel.<a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a9756489f64216c5b5bdd4b97683b8a72">set_range</a>(maskFirst, maskLast, keyFirsts, keyLast,</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                                tile_a.begin() + 1, tile_b.begin() + 1, compare);</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        fill_n(tile_a.begin(), 1, 0, queue);</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        fill_n(tile_b.begin(), 1, 0, queue);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        tiling_kernel.exec(queue);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        tiling_kernel.<a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#af77262c70ea9245ffd92d260518e46a6">exec</a>(queue);</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        fill_n(tile_a.end() - 1, 1, count1, queue);</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        fill_n(tile_b.end() - 1, 1, count2, queue);</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        compute::vector&lt;key_type&gt; temp_resultKeys(count1 + count2, queue.get_context());</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        compute::vector&lt;value_type&gt; temp_resultValues(count1 + count2, queue.get_context());</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        compute::vector&lt;compute::uint_&gt; counts((count1 + count2 + <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> - 1) / <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a> + 1, queue.get_context());</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        compute::vector&lt;compute::uint_&gt; counts((count1 + count2 + <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> - 1) / <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a> + 1, queue.get_context());</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        compute::fill_n(counts.end() - 1, 1, 0, queue);</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="comment">// Find individual intersections</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        SerialIntersectionKernel intersection_kernel;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        intersection_kernel.tile_size = <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        intersection_kernel.set_range(maskFirst, keyFirsts, tile_a.begin(), tile_a.end(),</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html">detail::SerialIntersectionKernel</a> intersection_kernel;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        intersection_kernel.<a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a30ae553abfdad65b0c76d74b2f1fb613">tile_size</a> = <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        intersection_kernel.<a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#ada5c43ca225a220cf6744f1b3be6e86b">set_range</a>(maskFirst, keyFirsts, tile_a.begin(), tile_a.end(),</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                                      tile_b.begin(), valueFirst,</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                                      temp_resultKeys.begin(),</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                                      temp_resultValues.begin(),</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                                      counts.begin(),</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                                      compare, equals);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        intersection_kernel.exec(queue);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        intersection_kernel.<a class="code" href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a094ac3dc095e82110d2e95e73eed3eda">exec</a>(queue);</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="comment">// Compact the results keys</span></div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        compute::detail::compact_kernel compactKey_kernel;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        compactKey_kernel.tile_size = <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        compactKey_kernel.tile_size = <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>;</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        compactKey_kernel.set_range(temp_resultKeys.begin(), counts.begin(), counts.end(), resultKeys);</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        compactKey_kernel.exec(queue);</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="comment">// Compact the results values</span></div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        compute::detail::compact_kernel compactValues_kernel;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        compactValues_kernel.tile_size = <a class="code" href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a>;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        compactValues_kernel.tile_size = <a class="code" href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">tile_size</a>;</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        compactValues_kernel.set_range(temp_resultValues.begin(), counts.begin(), counts.end(), resultValues);</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        compactValues_kernel.exec(queue);</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
@@ -480,7 +480,16 @@ $(function() {
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMASKBYKEY_HPP</span></div>
-<div class="ttc" id="aSplaMaskByKey_8hpp_html_a065081a15e54d0b6d776e5f73a55f8ac"><div class="ttname"><a href="SplaMaskByKey_8hpp.html#a065081a15e54d0b6d776e5f73a55f8ac">tile_size</a></div><div class="ttdeci">unsigned int tile_size</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:45</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1BalancedPathKernel_html"><div class="ttname"><a href="classspla_1_1detail_1_1BalancedPathKernel.html">spla::detail::BalancedPathKernel</a></div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:43</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1BalancedPathKernel_html_a4dc6e59db274119983bdae31bdf71cca"><div class="ttname"><a href="classspla_1_1detail_1_1BalancedPathKernel.html#a4dc6e59db274119983bdae31bdf71cca">spla::detail::BalancedPathKernel::tile_size</a></div><div class="ttdeci">unsigned int tile_size</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:45</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1BalancedPathKernel_html_a6054e8cc8918f728c9e5649e4d75f241"><div class="ttname"><a href="classspla_1_1detail_1_1BalancedPathKernel.html#a6054e8cc8918f728c9e5649e4d75f241">spla::detail::BalancedPathKernel::BalancedPathKernel</a></div><div class="ttdeci">BalancedPathKernel()</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:47</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1BalancedPathKernel_html_a9756489f64216c5b5bdd4b97683b8a72"><div class="ttname"><a href="classspla_1_1detail_1_1BalancedPathKernel.html#a9756489f64216c5b5bdd4b97683b8a72">spla::detail::BalancedPathKernel::set_range</a></div><div class="ttdeci">void set_range(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator1 result_a, OutputIterator2 result_b, Compare comp)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:54</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1BalancedPathKernel_html_af77262c70ea9245ffd92d260518e46a6"><div class="ttname"><a href="classspla_1_1detail_1_1BalancedPathKernel.html#af77262c70ea9245ffd92d260518e46a6">spla::detail::BalancedPathKernel::exec</a></div><div class="ttdeci">boost::compute::event exec(boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:130</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1SerialIntersectionKernel_html"><div class="ttname"><a href="classspla_1_1detail_1_1SerialIntersectionKernel.html">spla::detail::SerialIntersectionKernel</a></div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:150</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1SerialIntersectionKernel_html_a094ac3dc095e82110d2e95e73eed3eda"><div class="ttname"><a href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a094ac3dc095e82110d2e95e73eed3eda">spla::detail::SerialIntersectionKernel::exec</a></div><div class="ttdeci">boost::compute::event exec(boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:205</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1SerialIntersectionKernel_html_a0bf3c91e29e9bdf38ea912bd2de09195"><div class="ttname"><a href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a0bf3c91e29e9bdf38ea912bd2de09195">spla::detail::SerialIntersectionKernel::SerialIntersectionKernel</a></div><div class="ttdeci">SerialIntersectionKernel()</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:154</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1SerialIntersectionKernel_html_a30ae553abfdad65b0c76d74b2f1fb613"><div class="ttname"><a href="classspla_1_1detail_1_1SerialIntersectionKernel.html#a30ae553abfdad65b0c76d74b2f1fb613">spla::detail::SerialIntersectionKernel::tile_size</a></div><div class="ttdeci">unsigned int tile_size</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:152</div></div>
+<div class="ttc" id="aclassspla_1_1detail_1_1SerialIntersectionKernel_html_ada5c43ca225a220cf6744f1b3be6e86b"><div class="ttname"><a href="classspla_1_1detail_1_1SerialIntersectionKernel.html#ada5c43ca225a220cf6744f1b3be6e86b">spla::detail::SerialIntersectionKernel::set_range</a></div><div class="ttdeci">void set_range(InputIterator1 maskFirst, InputIterator2 keyFirsts, InputIterator3 tile_first1, InputIterator3 tile_last1, InputIterator4 tile_first2, InputIterator5 values, OutputIterator1 resultKeys, OutputIterator2 resultValues, OutputIterator3 counts, Compare compare, Equals equals)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:168</div></div>
 <div class="ttc" id="agroup__Internal_html_ga2bf766e718d9fd6a36fa8f62e3edfaf2"><div class="ttname"><a href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">spla::MaskByPairKey</a></div><div class="ttdeci">std::size_t MaskByPairKey(InputIterator1 mask1First, InputIterator1 mask1Last, InputIterator2 mask2First, InputIterator3 key1Firsts, InputIterator3 key1Last, InputIterator4 key2Firsts, InputIterator5 valueFirst, OutputIterator1 resultKeys1, OutputIterator2 resultKeys2, OutputIterator3 resultValues, boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:348</div></div>
 <div class="ttc" id="agroup__Internal_html_gaf3f1d2f58e52c128ff595baf61e0597c"><div class="ttname"><a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a></div><div class="ttdeci">std::size_t MaskByKey(InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:265</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>

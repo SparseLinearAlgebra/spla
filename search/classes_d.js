@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['taskbuilder_440',['TaskBuilder',['../classspla_1_1TaskBuilder.html',1,'spla']]],
-  ['texception_441',['TException',['../classspla_1_1TException.html',1,'spla']]],
-  ['traversalinfo_442',['TraversalInfo',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html',1,'spla::ExpressionManager']]],
-  ['type_443',['Type',['../classspla_1_1Type.html',1,'spla']]],
-  ['typedobject_444',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla']]],
-  ['types_445',['Types',['../classspla_1_1Types.html',1,'spla']]]
+  ['refcnt_442',['RefCnt',['../classspla_1_1RefCnt.html',1,'spla']]],
+  ['refptr_443',['RefPtr',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20class_20spla_3a_3amatrixstorage_20_3e_444',['RefPtr&lt; class spla::MatrixStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20class_20spla_3a_3avectorstorage_20_3e_445',['RefPtr&lt; class spla::VectorStorage &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aalgorithmmanager_20_3e_446',['RefPtr&lt; spla::AlgorithmManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3adescriptor_20_3e_447',['RefPtr&lt; spla::Descriptor &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aexpression_20_3e_448',['RefPtr&lt; spla::Expression &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3aexpressionmanager_20_3e_449',['RefPtr&lt; spla::ExpressionManager &gt;',['../classspla_1_1RefPtr.html',1,'spla']]],
+  ['refptr_3c_20spla_3a_3atype_20_3e_450',['RefPtr&lt; spla::Type &gt;',['../classspla_1_1RefPtr.html',1,'spla']]]
 ];

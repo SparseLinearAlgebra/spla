@@ -63,6 +63,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Internal</div>  </div>
@@ -86,9 +88,16 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DeviceManager.html">spla::DeviceManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computational devices management for expressions execution.  <a href="classspla_1_1DeviceManager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Exception.html">spla::Exception</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TException.html">spla::TException&lt; status &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspla_1_1PairHash.html">spla::PairHash</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1LibraryPrivate.html">spla::LibraryPrivate</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1QueueFinisher.html">spla::QueueFinisher</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue wrapper to automate <code>queue.finish()</code> call.  <a href="classspla_1_1QueueFinisher.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TaskBuilder.html">spla::TaskBuilder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task builder for expression nodes.  <a href="classspla_1_1TaskBuilder.html#details">More...</a><br /></td></tr>
@@ -119,6 +128,49 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html">spla::VectorStorage</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga45d873dd1e17d078c56647d26f0e65ec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga45d873dd1e17d078c56647d26f0e65ec">spla::Error</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::Error &gt;</td></tr>
+<tr class="separator:ga45d873dd1e17d078c56647d26f0e65ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga93b50c45990a5db2417f40138767a72a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga93b50c45990a5db2417f40138767a72a">spla::DeviceError</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::DeviceError &gt;</td></tr>
+<tr class="separator:ga93b50c45990a5db2417f40138767a72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga30fcb67db14febcd2559ac50748f59d2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga30fcb67db14febcd2559ac50748f59d2">spla::DeviceNotPresent</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::DeviceNotPresent &gt;</td></tr>
+<tr class="separator:ga30fcb67db14febcd2559ac50748f59d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafd4634b302c77cc636953331de02a81c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gafd4634b302c77cc636953331de02a81c">spla::MemOpFailed</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::MemOpFailed &gt;</td></tr>
+<tr class="separator:gafd4634b302c77cc636953331de02a81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06715d178091c293c2ec3564827fd9c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga06715d178091c293c2ec3564827fd9c7">spla::InvalidArgument</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::InvalidArgument &gt;</td></tr>
+<tr class="separator:ga06715d178091c293c2ec3564827fd9c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga613ae237941a9d20dfaae339d631c775"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga613ae237941a9d20dfaae339d631c775">spla::InvalidState</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::InvalidState &gt;</td></tr>
+<tr class="separator:ga613ae237941a9d20dfaae339d631c775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb50a533fa5a48aab0f1dbc73b1f4c35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gafb50a533fa5a48aab0f1dbc73b1f4c35">spla::InvalidType</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::InvalidType &gt;</td></tr>
+<tr class="separator:gafb50a533fa5a48aab0f1dbc73b1f4c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga424ab0cd09fe4315b95b4e1d2c3a8064"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga424ab0cd09fe4315b95b4e1d2c3a8064">spla::NullPointer</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::NullPointer &gt;</td></tr>
+<tr class="separator:ga424ab0cd09fe4315b95b4e1d2c3a8064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad996df5657793abf71dd4380f1a15e4d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gad996df5657793abf71dd4380f1a15e4d">spla::DimensionMismatch</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::DimensionMismatch &gt;</td></tr>
+<tr class="separator:gad996df5657793abf71dd4380f1a15e4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabcd969f389137654ed73708fd9450197"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gabcd969f389137654ed73708fd9450197">spla::NotImplemented</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::NotImplemented &gt;</td></tr>
+<tr class="separator:gabcd969f389137654ed73708fd9450197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga5251dcc549917ecb7b44ad073c479962"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga5251dcc549917ecb7b44ad073c479962">spla::Status</a> { <br />
+&#160;&#160;<a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a902b0d55fddef6f8d651fe1035b7d4bd">spla::Error</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962abe252e5b290c865b4d033fe4c4f88e9a">spla::DeviceError</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a7521f6b5a7670dff6bb1d35275d757b3">spla::DeviceNotPresent</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a59f6dbcc5566f54790f23d6368767a7e">spla::PlatformNotPresent</a>
+, <br />
+&#160;&#160;<a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a8270b4aa6d8b1673d9512b05cb3b379b">spla::MemOpFailed</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a253ca7dd096ee0956cccee4d376cab8b">spla::InvalidArgument</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120">spla::InvalidState</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962ac85f85f7c13ed006eed130ec183aa810">spla::InvalidType</a>
+, <br />
+&#160;&#160;<a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a260d92b2beff2bf345911077edcd3f3c">spla::NullPointer</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a2664c241558d7674e8ed4d5f63d2e463">spla::DimensionMismatch</a>
+, <a class="el" href="group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a997ca4ce119685f40f03a9a8a6c5346e">spla::NotImplemented</a>
+<br />
+ }</td></tr>
+<tr class="separator:ga5251dcc549917ecb7b44ad073c479962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
@@ -131,10 +183,196 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class InputIterator5 , class OutputIterator1 , class OutputIterator2 , class OutputIterator3 &gt; </td></tr>
 <tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">spla::MaskByPairKey</a> (InputIterator1 mask1First, InputIterator1 mask1Last, InputIterator2 mask2First, InputIterator3 key1Firsts, InputIterator3 key1Last, InputIterator4 key2Firsts, InputIterator5 valueFirst, OutputIterator1 resultKeys1, OutputIterator2 resultKeys2, OutputIterator3 resultValues, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga06e32a4a916ee651cbbd0c2dabe38f6a">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1e973ea800af47a29fc2625eb74cf50"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac1e973ea800af47a29fc2625eb74cf50">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:gac1e973ea800af47a29fc2625eb74cf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd2c85fd86f63b4e398320400dc66c3a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gabd2c85fd86f63b4e398320400dc66c3a">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:gabd2c85fd86f63b4e398320400dc66c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga987738a746d84c1abcf41ca3684f8266"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga987738a746d84c1abcf41ca3684f8266">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga987738a746d84c1abcf41ca3684f8266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Implementation details. </p>
 <p>The internal module implements the full functionality of the library. It is not anticipated that the user will ever need to work with the objects in this module, as it only contains details of the library's implementation. </p>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga93b50c45990a5db2417f40138767a72a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga93b50c45990a5db2417f40138767a72a">&#9670;&nbsp;</a></span>DeviceError</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga93b50c45990a5db2417f40138767a72a">spla::DeviceError</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::DeviceError&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga30fcb67db14febcd2559ac50748f59d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30fcb67db14febcd2559ac50748f59d2">&#9670;&nbsp;</a></span>DeviceNotPresent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga30fcb67db14febcd2559ac50748f59d2">spla::DeviceNotPresent</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::DeviceNotPresent&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad996df5657793abf71dd4380f1a15e4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad996df5657793abf71dd4380f1a15e4d">&#9670;&nbsp;</a></span>DimensionMismatch</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#gad996df5657793abf71dd4380f1a15e4d">spla::DimensionMismatch</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::DimensionMismatch&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga45d873dd1e17d078c56647d26f0e65ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga45d873dd1e17d078c56647d26f0e65ec">&#9670;&nbsp;</a></span>Error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga45d873dd1e17d078c56647d26f0e65ec">spla::Error</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::Error&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga06715d178091c293c2ec3564827fd9c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06715d178091c293c2ec3564827fd9c7">&#9670;&nbsp;</a></span>InvalidArgument</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga06715d178091c293c2ec3564827fd9c7">spla::InvalidArgument</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::InvalidArgument&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga613ae237941a9d20dfaae339d631c775"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga613ae237941a9d20dfaae339d631c775">&#9670;&nbsp;</a></span>InvalidState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga613ae237941a9d20dfaae339d631c775">spla::InvalidState</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::InvalidState&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafb50a533fa5a48aab0f1dbc73b1f4c35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafb50a533fa5a48aab0f1dbc73b1f4c35">&#9670;&nbsp;</a></span>InvalidType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#gafb50a533fa5a48aab0f1dbc73b1f4c35">spla::InvalidType</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::InvalidType&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafd4634b302c77cc636953331de02a81c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafd4634b302c77cc636953331de02a81c">&#9670;&nbsp;</a></span>MemOpFailed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#gafd4634b302c77cc636953331de02a81c">spla::MemOpFailed</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::MemOpFailed&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gabcd969f389137654ed73708fd9450197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabcd969f389137654ed73708fd9450197">&#9670;&nbsp;</a></span>NotImplemented</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#gabcd969f389137654ed73708fd9450197">spla::NotImplemented</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::NotImplemented&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga424ab0cd09fe4315b95b4e1d2c3a8064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga424ab0cd09fe4315b95b4e1d2c3a8064">&#9670;&nbsp;</a></span>NullPointer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__Internal.html#ga424ab0cd09fe4315b95b4e1d2c3a8064">spla::NullPointer</a> = typedef <a class="el" href="classspla_1_1TException.html">TException</a>&lt;Status::NullPointer&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga5251dcc549917ecb7b44ad073c479962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5251dcc549917ecb7b44ad073c479962">&#9670;&nbsp;</a></span>Status</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__Internal.html#ga5251dcc549917ecb7b44ad073c479962">spla::Status</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Possible error status </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962abe252e5b290c865b4d033fe4c4f88e9a"></a>DeviceError&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a7521f6b5a7670dff6bb1d35275d757b3"></a>DeviceNotPresent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a59f6dbcc5566f54790f23d6368767a7e"></a>PlatformNotPresent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a8270b4aa6d8b1673d9512b05cb3b379b"></a>MemOpFailed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a253ca7dd096ee0956cccee4d376cab8b"></a>InvalidArgument&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962aedf260198e4d75d1cb3c7588f7380120"></a>InvalidState&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962ac85f85f7c13ed006eed130ec183aa810"></a>InvalidType&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a260d92b2beff2bf345911077edcd3f3c"></a>NullPointer&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a2664c241558d7674e8ed4d5f63d2e463"></a>DimensionMismatch&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga5251dcc549917ecb7b44ad073c479962a997ca4ce119685f40f03a9a8a6c5346e"></a>NotImplemented&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga0d5127217f33cc7dec534efb6417496e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0d5127217f33cc7dec534efb6417496e">&#9670;&nbsp;</a></span>Gather()</h2>
@@ -415,6 +653,270 @@ template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 ,
           <td></td>
           <td class="paramtype">OutputIterator3&#160;</td>
           <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga987738a746d84c1abcf41ca3684f8266"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga987738a746d84c1abcf41ca3684f8266">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gabd2c85fd86f63b4e398320400dc66c3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabd2c85fd86f63b4e398320400dc66c3a">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac1e973ea800af47a29fc2625eb74cf50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac1e973ea800af47a29fc2625eb74cf50">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga06e32a4a916ee651cbbd0c2dabe38f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06e32a4a916ee651cbbd0c2dabe38f6a">&#9670;&nbsp;</a></span>ReduceDuplicates() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReduceDuplicates </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>resultValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

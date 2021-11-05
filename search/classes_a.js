@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queuefinisher_428',['QueueFinisher',['../classspla_1_1QueueFinisher.html',1,'spla']]]
+  ['object_439',['Object',['../classspla_1_1Object.html',1,'spla']]]
 ];
