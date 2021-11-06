@@ -151,15 +151,15 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
         auto spOp = spla::Functions::PlusFloat32(library);
         auto op = [](float x, float y) { return x + y; };
 
-//        for (std::size_t i = 0; i < iter; i++) {
-//            std::size_t nvals = base + i * step;
-//            testCommon<float>(library, M, N, nvals, spT, spOp, op, i);
-//        }
-//
-//        for (std::size_t i = 0; i < iter; i++) {
-//            std::size_t nvals = base + i * step;
-//            testMasked<float>(library, M, N, nvals, spT, spOp, op, i);
-//        }
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon<float>(library, M, N, nvals, spT, spOp, op, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<float>(library, M, N, nvals, spT, spOp, op, i);
+        }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
@@ -177,10 +177,10 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
             testCommon<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
         }
 
-//        for (std::size_t i = 0; i < iter; i++) {
-//            std::size_t nvals = base + i * step;
-//            testMasked<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
-//        }
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
+        }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
@@ -196,18 +196,18 @@ TEST(MatrixEWiseAdd, Small) {
     test(M, N, M, M, 10, blocksSizes);
 }
 
-//TEST(MatrixEWiseAdd, Medium) {
-//    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
-//    std::size_t M = 1000;
-//    std::size_t N = 900;
-//    test(M, N, M, M, 10, blocksSizes);
-//}
-//
-//TEST(MatrixEWiseAdd, Large) {
-//    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
-//    std::size_t M = 10000;
-//    std::size_t N = 12300;
-//    test(M, N, M, M, 5, blocksSizes);
-//}
+TEST(MatrixEWiseAdd, Medium) {
+    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
+    std::size_t M = 1000;
+    std::size_t N = 900;
+    test(M, N, M, M, 10, blocksSizes);
+}
+
+TEST(MatrixEWiseAdd, Large) {
+    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
+    std::size_t M = 10000;
+    std::size_t N = 12300;
+    test(M, N, M, M, 5, blocksSizes);
+}
 
 SPLA_GTEST_MAIN
