@@ -23,7 +23,7 @@ var searchData=
   ['setvals_255',['SetVals',['../classspla_1_1DataMatrix.html#a208089546b3c19dfd5a431fbf146bd6f',1,'spla::DataMatrix::SetVals()'],['../classspla_1_1DataVector.html#a16743ee771d91251e5d1a503b910ad75',1,'spla::DataVector::SetVals()']]],
   ['setvalue_256',['SetValue',['../classspla_1_1DataScalar.html#af62f04cc91f6e0681517733e22b1f522',1,'spla::DataScalar']]],
   ['spla_257',['spla',['../namespacespla.html',1,'']]],
-  ['spla_20_3cimg_20align_3d_22right_22_20width_3d_2215_25_22_20src_3d_22https_3a_2f_2fgithub_2ecom_2fjetbrains_2dresearch_2fspla_2fraw_2fmain_2fdocs_2flogos_2fspla_2dlogo_2epng_3fraw_3dtrue_26sanitize_3dtrue_22_3e_258',['spla &lt;img align=&quot;right&quot; width=&quot;15%&quot; src=&quot;https://github.com/JetBrains-Research/spla/raw/main/docs/logos/spla-logo.png?raw=true&amp;sanitize=true&quot;&gt;',['../index.html',1,'']]],
+  ['spla_20_3cimg_20align_3d_22right_22_20width_3d_2225_25_22_20src_3d_22https_3a_2f_2fgithub_2ecom_2fjetbrains_2dresearch_2fspla_2fraw_2fmain_2fdocs_2flogos_2fspla_2dlogo_2epng_3fraw_3dtrue_26sanitize_3dtrue_22_3e_258',['spla &lt;img align=&quot;right&quot; width=&quot;25%&quot; src=&quot;https://github.com/JetBrains-Research/spla/raw/main/docs/logos/spla-logo.png?raw=true&amp;sanitize=true&quot;&gt;',['../index.html',1,'']]],
   ['spla_2ehpp_259',['Spla.hpp',['../Spla_8hpp.html',1,'']]],
   ['spla_5fapi_260',['SPLA_API',['../SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc',1,'SplaConfig.hpp']]],
   ['spla_5ftext_261',['SPLA_TEXT',['../SplaConfig_8hpp.html#a07554fd34302a3102a2b5a9febda965a',1,'SplaConfig.hpp']]],
