@@ -294,17 +294,6 @@ void MergeByKeyStress(
     }
 }
 
-TEST(MergeByKeyCpu, Shallow) {
-    std::vector<int> k1 = {1, 2, 3, 4};
-    std::vector<int> v1 = {2, 4, 6, 8};
-
-    std::vector<int> k2 = {2, 2, 5, 7};
-    std::vector<int> v2 = {4, 4, 10, 14};
-
-    std::vector<int> kResExp = {1, 2, 2, 2, 3, 4, 5, 7};
-    std::vector<int> kValExp = {2, 4, 4, 4, 6, 8, 10, 14};
-}
-
 TEST(MergeByKey, StressSmall) {
     MergeByKeyStress(100, 55, 34);
 }
