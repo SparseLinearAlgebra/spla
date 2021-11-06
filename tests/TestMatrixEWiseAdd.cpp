@@ -196,18 +196,18 @@ TEST(MatrixEWiseAdd, Small) {
     test(M, N, M, M, 10, blocksSizes);
 }
 
-TEST(MatrixEWiseAdd, Medium) {
-    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
-    std::size_t M = 1000;
-    std::size_t N = 900;
-    test(M, N, M, M, 10, blocksSizes);
-}
-
-TEST(MatrixEWiseAdd, Large) {
-    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
-    std::size_t M = 10000;
-    std::size_t N = 12300;
-    test(M, N, M, M, 5, blocksSizes);
-}
+//TEST(MatrixEWiseAdd, Medium) {
+//    std::vector<std::size_t> blocksSizes{100, 1000, 10000};
+//    std::size_t M = 1000;
+//    std::size_t N = 900;
+//    test(M, N, M, M, 10, blocksSizes);
+//}
+//
+//TEST(MatrixEWiseAdd, Large) {
+//    std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
+//    std::size_t M = 10000;
+//    std::size_t N = 12300;
+//    test(M, N, M, M, 5, blocksSizes);
+//}
 
 SPLA_GTEST_MAIN

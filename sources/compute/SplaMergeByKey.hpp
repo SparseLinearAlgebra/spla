@@ -49,7 +49,7 @@ namespace spla {
                           const std::size_t bCount,
                           OutputIterator1 resultA,
                           OutputIterator2 resultB,
-                          BinaryIndicesOperator isFirstGt) {
+                          BinaryIndicesOperator isFirstLeq) {
                 namespace compute = boost::compute;
                 using compute::uint_;
 
@@ -68,9 +68,9 @@ namespace spla {
                       << "{\n"
                       << "   a_index = (start + end)/2;\n"
                       << "   b_index = target - a_index - 1;\n"
-                      << "   if(!(";
-                isFirstGt(*this, expr<uint_>("a_index"), expr<uint_>("b_index"));
-                *this << "))\n"
+                      << "   if(";
+                isFirstLeq(*this, expr<uint_>("a_index"), expr<uint_>("b_index"));
+                *this << ")\n"
                       << "       start = a_index + 1;\n"
                       << "   else end = a_index;\n"
                       << "}\n"
@@ -82,7 +82,7 @@ namespace spla {
                 namespace compute = boost::compute;
 
                 if ((mACount + mBCount) / tileSize == 0) {
-                    return compute::event();
+                    return {};
                 }
 
                 set_arg(mACountArg, compute::uint_(mACount));
@@ -115,7 +115,7 @@ namespace spla {
             void SetRange(InputIterator1 tile_first1,
                           InputIterator1 tile_last1,
                           InputIterator2 tile_first2,
-                          Operator1 writeIsFirstGt,
+                          Operator1 writeIsFirstLeq,
                           Operator2 writeAssignResultToFirst,
                           Operator3 writeAssignResultToSecond) {
                 namespace compute = boost::compute;
@@ -131,9 +131,9 @@ namespace spla {
                       << "uint index = i*" << tileSize << ";\n"
                       << "while(start1<end1 && start2<end2)\n"
                       << "{\n"
-                      << "   if(!(";
-                writeIsFirstGt(*this, expr<uint_>("start1"), expr<uint_>("start2"));
-                *this << "))\n"
+                      << "   if(";
+                writeIsFirstLeq(*this, expr<uint_>("start1"), expr<uint_>("start2"));
+                *this << ")\n"
                       << "   {\n";
                 writeAssignResultToFirst(*this, expr<uint_>("index"), expr<uint_>("start1"));
                 *this << ";\n"
@@ -230,7 +230,7 @@ namespace spla {
                 explicit IsFirstGt(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
-                    k << a[iFst] << " > " << b[iSnd];
+                    k << a[iFst] << " <= " << b[iSnd];
                 }
             };
 
@@ -246,10 +246,10 @@ namespace spla {
                     : aFst(std::move(itAFst)), aSnd(std::move(itASnd)), bFst(std::move(itBFst)), bSnd(std::move(itBSnd)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
-                    k << aFst[iFst] << " > " << bFst[iSnd] << " || "
+                    k << aFst[iFst] << " < " << bFst[iSnd] << " || "
                       << "("
                       << aFst[iFst] << " == " << bFst[iSnd] << " && "
-                      << aSnd[iFst] << " > " << bSnd[iSnd]
+                      << aSnd[iFst] << " <= " << bSnd[iSnd]
                       << ")";
                 }
             };
