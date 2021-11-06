@@ -242,7 +242,7 @@ std::pair<std::vector<int>, std::vector<int>> MergeByKeyCpu(
     return {kRes, vRes};
 }
 
-std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> MergeByKeyPairCpu(
+std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> MergeByPairKeyCpu(
         const std::vector<int> &k1f,
         const std::vector<int> &k1s,
         const std::vector<int> &v1,
@@ -333,7 +333,7 @@ void MergeByKeyStress(
     }
 }
 
-void MergeByKeyPairStress(
+void MergeByPairKeyStress(
         std::size_t iterations,
         std::size_t aSize,
         std::size_t bSize) {
@@ -376,7 +376,7 @@ void MergeByKeyPairStress(
             }
         }
 
-        auto [expectedKeyFRes, expectedKeySRes, expectedValRes] = MergeByKeyPairCpu(k1f, k1s, v1, k2f, k2s, v2);
+        auto [expectedKeyFRes, expectedKeySRes, expectedValRes] = MergeByPairKeyCpu(k1f, k1s, v1, k2f, k2s, v2);
 
         compute::vector<int> keysAf(k1f, queue);
         compute::vector<int> keysAs(k1s, queue);
@@ -414,14 +414,43 @@ void MergeByKeyPairStress(
     }
 }
 
+TEST(MergeByKeyCpu, Shallow) {
+    std::vector<int> k1 = {1, 2, 2, 3, 5, 5, 6};
+    std::vector<int> v1 = {2, 4, 4, 6, 10, 12, 12};
+
+    std::vector<int> k2 = {2, 4, 4, 5, 5, 6};
+    std::vector<int> v2 = {4, 8, 8, 9, 10, 12};
+
+    auto [k, v] = MergeByKeyCpu(k1, v1, k2, v2);
+
+    EXPECT_EQ(k, (std::vector<int>{1, 2, 2, 2, 3, 4, 4, 5, 5, 5, 5, 6, 6}));
+    EXPECT_EQ(v, (std::vector<int>{2, 4, 4, 4, 6, 8, 8, 9, 10, 10, 12, 12, 12}));
+}
+
+TEST(MergeByPairKeyCpu, Shallow) {
+    std::vector<int> k1f = {1, 2, 2, 3, 5, 5, 6};
+    std::vector<int> k1s = {0, 1, 3, 0, 5, 6, 0};
+    std::vector<int> v1 = {2, 4, 4, 6, 10, 12, 12};
+
+    std::vector<int> k2f = {2, 4, 4, 5, 5, 6};
+    std::vector<int> k2s = {1, 2, 5, 5, 6, 6};
+    std::vector<int> v2 = {1, 8, 8, 9, 10, 12};
+
+    auto [kf, ks, v] = MergeByPairKeyCpu(k1f, k1s, v1, k2f, k2s, v2);
+
+    EXPECT_EQ(kf, (std::vector<int>{1, 2, 2, 2, 3, 4, 4, 5, 5, 5, 5, 6, 6}));
+    EXPECT_EQ(ks, (std::vector<int>{0, 1, 1, 3, 0, 2, 5, 5, 5, 6, 6, 0, 6}));
+    EXPECT_EQ(v, (std::vector<int>{2, 1, 4, 4, 6, 8, 8, 9, 10, 10, 12, 12, 12}));
+}
+
 TEST(MergeByKey, StressSmall) {
     MergeByKeyStress(100, 55, 34);
-    MergeByKeyPairStress(100, 55, 34);
+    MergeByPairKeyStress(100, 55, 34);
 }
 
 TEST(MergeByKey, StressMedium) {
     MergeByKeyStress(5, 5000, 4000);
-    MergeByKeyPairStress(5, 5000, 4000);
+    MergeByPairKeyStress(5, 5000, 4000);
 }
 
 SPLA_GTEST_MAIN
