@@ -222,12 +222,12 @@ namespace spla {
             using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
             template<typename ItA, typename ItB>
-            class IsFirstGt {
+            class IsFirstLeq {
                 ItA a;
                 ItB b;
 
             public:
-                explicit IsFirstGt(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
+                explicit IsFirstLeq(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
                     k << a[iFst] << " <= " << b[iSnd];
@@ -235,14 +235,14 @@ namespace spla {
             };
 
             template<typename ItA, typename ItB, typename ItC, typename ItD>
-            class IsFirstPairGt {
+            class IsFirstPairLeq {
                 ItA aFst;
                 ItB aSnd;
                 ItC bFst;
                 ItD bSnd;
 
             public:
-                explicit IsFirstPairGt(ItA itAFst, ItB itASnd, ItC itBFst, ItD itBSnd)
+                explicit IsFirstPairLeq(ItA itAFst, ItB itASnd, ItC itBFst, ItD itBSnd)
                     : aFst(std::move(itAFst)), aSnd(std::move(itASnd)), bFst(std::move(itBFst)), bSnd(std::move(itBSnd)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
@@ -354,7 +354,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                detail::binop::IsFirstGt{keysABegin, keysBBegin},
+                detail::binop::IsFirstLeq{keysABegin, keysBBegin},
                 detail::binop::Assign2{keysResult, keysABegin, valuesResult, valuesA},
                 detail::binop::Assign2{keysResult, keysBBegin, valuesResult, valuesB},
                 queue);
@@ -388,7 +388,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                detail::binop::IsFirstGt{keysABegin, keysBBegin},
+                detail::binop::IsFirstLeq{keysABegin, keysBBegin},
                 detail::binop::Assign1{keysResult, keysABegin},
                 detail::binop::Assign1{keysResult, keysBBegin},
                 queue);
@@ -429,7 +429,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
                 detail::binop::Assign3{
                         keysFirstOut, keysFirstABegin,
                         keysSecondOut, keysSecondABegin,
@@ -473,7 +473,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
                 detail::binop::Assign2{keysFirstOut, keysFirstABegin, keysSecondOut, keysSecondABegin},
                 detail::binop::Assign2{keysFirstOut, keysFirstBBegin, keysSecondOut, keysSecondBBegin},
                 queue);

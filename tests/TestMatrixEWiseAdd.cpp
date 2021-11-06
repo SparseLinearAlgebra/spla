@@ -151,15 +151,15 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
         auto spOp = spla::Functions::PlusFloat32(library);
         auto op = [](float x, float y) { return x + y; };
 
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCommon<float>(library, M, N, nvals, spT, spOp, op, i);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<float>(library, M, N, nvals, spT, spOp, op, i);
-        }
+//        for (std::size_t i = 0; i < iter; i++) {
+//            std::size_t nvals = base + i * step;
+//            testCommon<float>(library, M, N, nvals, spT, spOp, op, i);
+//        }
+//
+//        for (std::size_t i = 0; i < iter; i++) {
+//            std::size_t nvals = base + i * step;
+//            testMasked<float>(library, M, N, nvals, spT, spOp, op, i);
+//        }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
@@ -177,10 +177,10 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
             testCommon<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
         }
 
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
-        }
+//        for (std::size_t i = 0; i < iter; i++) {
+//            std::size_t nvals = base + i * step;
+//            testMasked<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
+//        }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
