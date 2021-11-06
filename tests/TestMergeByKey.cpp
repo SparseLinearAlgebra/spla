@@ -52,7 +52,7 @@ TEST(Compute, MergeByKey) {
     compute::vector<int> keysRes(10, ctx);
     compute::vector<char> valsRes(10, ctx);
 
-    auto [keysResEnd, valsResEnd] = spla::MergeByKey(
+    std::ptrdiff_t mergedSize = spla::MergeByKey(
             keysA.begin(), keysA.end(),
             valsA.begin(),
             keysB.begin(), keysB.end(),
@@ -64,12 +64,12 @@ TEST(Compute, MergeByKey) {
     std::vector<int> keysExpected{1, 2, 2, 2, 3, 4, 5, 6, 6, 7};
     std::vector<char> valsExpected{'o', 't', 't', 't', 't', 'f', 'f', 's', 's', 's'};
 
-    for (auto it = keysRes.begin(); it < keysResEnd; ++it) {
+    for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes.begin();
         EXPECT_EQ(it.read(queue), keysExpected[ind]);
     }
 
-    for (auto it = valsRes.begin(); it < valsResEnd; ++it) {
+    for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - valsRes.begin();
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
     }
@@ -104,7 +104,7 @@ TEST(Compute, MergeByPairKey) {
     compute::vector<int> keysRes2(8, ctx);
     compute::vector<char> valsRes(8, ctx);
 
-    auto [keysResEndFirst, keysResEndSecond, valsResEnd] = spla::MergeByPairKey(
+    std::ptrdiff_t mergedSize = spla::MergeByPairKey(
             keysA1.begin(), keysA2.begin(), keysA1.end(),
             valsA.begin(),
             keysB1.begin(), keysB2.begin(), keysB1.end(),
@@ -117,20 +117,189 @@ TEST(Compute, MergeByPairKey) {
     std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0};
     std::vector<char> valsExpected{'o', 't', 't', 't', 'f', 'f', 'f', 's'};
 
-    for (auto it = keysRes1.begin(); it < keysResEndFirst; ++it) {
+    for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes1.begin();
         EXPECT_EQ(it.read(queue), keys1Expected[ind]);
     }
 
-    for (auto it = keysRes2.begin(); it < keysResEndSecond; ++it) {
+    for (auto it = keysRes2.begin(); it < keysRes2.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes2.begin();
         EXPECT_EQ(it.read(queue), keys2Expected[ind]);
     }
 
-    for (auto it = valsRes.begin(); it < valsResEnd; ++it) {
+    for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
         std::size_t ind = it - valsRes.begin();
         EXPECT_EQ(it.read(queue), valsExpected[ind]);
     }
+}
+
+TEST(Compute, MergeKeys) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<int> hostKeysA{1, 2, 3, 4, 5};
+    std::vector<int> hostKeysB{2, 2, 6, 6, 7};
+    compute::vector<int> keysA(hostKeysA, queue);
+    compute::vector<int> keysB(hostKeysB, queue);
+
+    compute::vector<int> keysRes(10, ctx);
+
+    std::ptrdiff_t mergedSize = spla::MergeKeys(
+            keysA.begin(), keysA.end(),
+            keysB.begin(), keysB.end(),
+            keysRes.begin(),
+            queue);
+
+    std::vector<int> keysExpected{1, 2, 2, 2, 3, 4, 5, 6, 6, 7};
+
+    for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
+        std::size_t ind = it - keysRes.begin();
+        EXPECT_EQ(it.read(queue), keysExpected[ind]);
+    }
+}
+
+TEST(Compute, MergePairKeys) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    std::vector<int> hostKeysA1{1, 3, 5, 5, 7, 7, 7, 7, 9};
+    std::vector<int> hostKeysA2{2, 5, 4, 6, 3, 3, 4, 6, 0};
+
+    std::vector<int> hostKeysB1{3, 3, 5, 6, 6, 6, 6, 7, 10};
+    std::vector<int> hostKeysB2{2, 6, 5, 0, 1, 2, 3, 5, 5};
+
+    compute::vector<int> keysA1(hostKeysA1, queue);
+    compute::vector<int> keysA2(hostKeysA2, queue);
+    compute::vector<int> keysB1(hostKeysB1, queue);
+    compute::vector<int> keysB2(hostKeysB2, queue);
+
+    compute::vector<int> keysRes1(hostKeysA1.size() + hostKeysB1.size(), ctx);
+    compute::vector<int> keysRes2(hostKeysA2.size() + hostKeysB2.size(), ctx);
+
+    std::ptrdiff_t mergedSize = spla::MergePairKeys(
+            keysA1.begin(), keysA2.begin(), keysA1.end(),
+            keysB1.begin(), keysB2.begin(), keysB1.end(),
+            keysRes1.begin(), keysRes2.begin(),
+            queue);
+
+    std::vector<int> keys1Expected{1, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 9, 10};
+    std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0, 1, 2, 3, 3, 3, 4, 5, 6, 0, 5};
+
+    for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
+        std::size_t ind = it - keysRes1.begin();
+        EXPECT_EQ(it.read(queue), keys1Expected[ind]);
+    }
+
+    for (auto it = keysRes2.begin(); it < keysRes2.begin() + mergedSize; ++it) {
+        std::size_t ind = it - keysRes2.begin();
+        EXPECT_EQ(it.read(queue), keys2Expected[ind]);
+    }
+}
+
+std::pair<std::vector<int>, std::vector<int>> MergeByKeyCpu(
+        const std::vector<int> &k1,
+        const std::vector<int> &v1,
+        const std::vector<int> &k2,
+        const std::vector<int> &v2) {
+    EXPECT_EQ(k1.size(), v1.size());
+    EXPECT_EQ(k2.size(), v2.size());
+
+    const std::size_t mergedSize = k1.size() + k2.size();
+
+    std::vector<int> kRes(mergedSize), vRes(mergedSize);
+
+    std::vector<std::pair<int, int>> zipped1(k1.size());
+    for (std::size_t i = 0; i < k1.size(); ++i) {
+        zipped1[i] = {k1[i], v1[i]};
+    }
+
+    std::vector<std::pair<int, int>> zipped2(k2.size());
+    for (std::size_t i = 0; i < k2.size(); ++i) {
+        zipped2[i] = {k2[i], v2[i]};
+    }
+
+    std::vector<std::pair<int, int>> zippedR(mergedSize);
+    std::merge(zipped1.begin(), zipped1.end(), zipped2.begin(), zipped2.end(), zippedR.begin());
+
+    for (std::size_t i = 0; i < mergedSize; ++i) {
+        kRes[i] = zippedR[i].first;
+        vRes[i] = zippedR[i].second;
+    }
+    return {kRes, vRes};
+}
+
+void MergeByKeyStress(
+        std::size_t iterations,
+        std::size_t aSize,
+        std::size_t bSize) {
+    namespace compute = boost::compute;
+
+    for (std::size_t testIt = 0; testIt < iterations; ++testIt) {
+        // get the default compute device
+        compute::device gpu = compute::system::default_device();
+
+        // create a compute context and command queue
+        compute::context ctx(gpu);
+        compute::command_queue queue(ctx, gpu);
+
+        std::vector<int> k1 = utils::GenerateIntVector<int>(aSize, testIt * 4);
+        std::vector<int> v1 = utils::GenerateIntVector<int>(aSize, testIt * 4 + 1);
+        std::vector<int> k2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 2);
+        std::vector<int> v2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 3);
+
+        std::sort(k1.begin(), k1.end());
+        std::sort(k2.begin(), k2.end());
+
+        auto [expectedKeyRes, expectedValRes] = MergeByKeyCpu(k1, v1, k2, v2);
+
+        compute::vector<int> keysA(k1, queue);
+        compute::vector<int> valsA(v1, queue);
+        compute::vector<int> keysB(k2, queue);
+        compute::vector<int> valsB(v2, queue);
+
+        const std::size_t sizeSum = aSize + bSize;
+        compute::vector<int> keysRes(sizeSum, ctx);
+        compute::vector<int> valsRes(sizeSum, ctx);
+
+        const std::ptrdiff_t mergedSize = spla::MergeByKey(
+                keysA.begin(), keysA.end(),
+                valsA.begin(),
+                keysB.begin(), keysB.end(),
+                valsB.begin(),
+                keysRes.begin(),
+                valsRes.begin(),
+                queue);
+
+        for (auto it = keysRes.begin(); it < keysRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - keysRes.begin();
+            EXPECT_EQ(it.read(queue), expectedKeyRes[ind]);
+        }
+
+        for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - valsRes.begin();
+            EXPECT_EQ(it.read(queue), expectedValRes[ind]);
+        }
+    }
+}
+
+TEST(MergeByKey, StressSmall) {
+    MergeByKeyStress(100, 55, 34);
+}
+
+TEST(MergeByKey, StressMedium) {
+    MergeByKeyStress(5, 5000, 4000);
 }
 
 SPLA_GTEST_MAIN

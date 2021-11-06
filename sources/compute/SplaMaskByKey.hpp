@@ -29,6 +29,7 @@
 #define SPLA_SPLAMASKBYKEY_HPP
 
 #include <boost/compute.hpp>
+#include <boost/compute/detail/iterator_range_size.hpp>
 #include <boost/compute/iterator/zip_iterator.hpp>
 
 namespace spla {
