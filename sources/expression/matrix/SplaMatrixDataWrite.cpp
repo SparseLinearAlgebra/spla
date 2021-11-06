@@ -27,6 +27,7 @@
 
 #include <boost/compute.hpp>
 #include <compute/SplaGather.hpp>
+#include <compute/SplaSortByRowColumn.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <core/SplaQueueFinisher.hpp>
@@ -173,34 +174,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 // If entries are not sorted, we must sort it here in row-cols order
                 if (!desc->IsParamSet(Descriptor::Param::ValuesSorted) && blockNvals > 1) {
                     SPDLOG_LOGGER_TRACE(logger, "Sort block ({},{}) entries", i, j);
-
-                    // Use permutation buffer to synchronize position of indices of the same
-                    // entries in all 3 buffers: rows, cols and vals.
-                    compute::vector<unsigned int> permutation(blockNvals, ctx);
-                    compute::copy(compute::counting_iterator<unsigned int>(0),
-                                  compute::counting_iterator<unsigned int>(blockNvals),
-                                  permutation.begin(),
-                                  queue);
-
-                    compute::vector<unsigned int> tmp(blockNvals, ctx);
-                    compute::copy(blockCols.begin(), blockCols.end(), tmp.begin(), queue);
-
-                    // Sort in column order and then, using permutation, shuffle row indices
-                    compute::sort_by_key(tmp.begin(), tmp.end(), permutation.begin(), queue);
-                    compute::gather(permutation.begin(), permutation.end(), blockRows.begin(), tmp.begin(), queue);
-
-                    // Sort in row order and then, using permutation, shuffle column indices
-                    compute::sort_by_key(tmp.begin(), tmp.end(), permutation.begin(), queue);
-                    compute::copy(tmp.begin(), tmp.end(), blockRows.begin(), queue);
-                    compute::copy(blockCols.begin(), blockCols.end(), tmp.begin(), queue);
-                    compute::gather(permutation.begin(), permutation.end(), tmp.begin(), blockCols.begin(), queue);
-
-                    // Copy values, using permutation
-                    if (typeHasValues) {
-                        compute::vector<unsigned char> valsTmp(blockNvals * byteSize, ctx);
-                        Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue).wait();
-                        std::swap(blockVals, valsTmp);
-                    }
+                    SortByRowColumn(blockRows, blockCols, blockVals, byteSize, queue);
                 }
 
                 if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {
