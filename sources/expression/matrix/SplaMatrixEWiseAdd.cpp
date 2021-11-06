@@ -207,9 +207,9 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 compute::vector<unsigned int> mergedCols(mergeCount, ctx);
                 compute::vector<unsigned int> mergedPerm(mergeCount, ctx);
 
-                MergeByPairKey(rowsA->begin(), colsA->begin(), rowsA->end(),
+                MergeByPairKey(rowsA->begin(), rowsA->end(), colsA->begin(),
                                permA.begin(),
-                               rowsB->begin(), colsB->begin(), rowsB->end(),
+                               rowsB->begin(), rowsB->end(), colsB->begin(),
                                permB.begin(),
                                mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
                                queue);
