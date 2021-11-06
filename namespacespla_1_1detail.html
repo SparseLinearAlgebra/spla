@@ -81,15 +81,76 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialIntersectionKernel.html">SerialIntersectionKernel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1MergeByKeyPathKernel.html">MergeByKeyPathKernel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html">SerialMergeByKeyKernel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1CopyReduceDuplicates.html">CopyReduceDuplicates</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplParams" colspan="2">template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </td></tr>
+<tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#ad76279f1103a911fbec0b10a208e3976">MergeByKey</a> (const std::size_t count1, const std::size_t count2, Operator1 compareFirstToSecond, Operator2 assignResultToFirst, Operator3 assignResultToSecond, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ad76279f1103a911fbec0b10a208e3976"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83567963739f6975624b0ca4065bed1a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a83567963739f6975624b0ca4065bed1a">ReduceDuplicatesImpl</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a83567963739f6975624b0ca4065bed1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad76279f1103a911fbec0b10a208e3976"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad76279f1103a911fbec0b10a208e3976">&#9670;&nbsp;</a></span>MergeByKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ptrdiff_t spla::detail::MergeByKey </td>
+          <td>(</td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>count1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>count2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Operator1&#160;</td>
+          <td class="paramname"><em>compareFirstToSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Operator2&#160;</td>
+          <td class="paramname"><em>assignResultToFirst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Operator3&#160;</td>
+          <td class="paramname"><em>assignResultToSecond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a83567963739f6975624b0ca4065bed1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83567963739f6975624b0ca4065bed1a">&#9670;&nbsp;</a></span>ReduceDuplicatesImpl()</h2>
 

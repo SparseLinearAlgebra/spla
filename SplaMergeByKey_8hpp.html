@@ -66,22 +66,25 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">SplaMergeByKey.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;tuple&gt;</code><br />
-<code>#include &lt;boost/compute.hpp&gt;</code><br />
+<div class="textblock"><code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;boost/compute/container/vector.hpp&gt;</code><br />
+<code>#include &lt;boost/compute/detail/meta_kernel.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaMergeByKey.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaMergeByKey_8hpp__incl.png" border="0" usemap="#asources_2compute_2SplaMergeByKey_8hpp" alt=""/></div>
 <map name="asources_2compute_2SplaMergeByKey_8hpp" id="asources_2compute_2SplaMergeByKey_8hpp">
-<area shape="rect" title=" " alt="" coords="5,5,193,47"/>
-<area shape="rect" title=" " alt="" coords="17,95,67,121"/>
-<area shape="rect" title=" " alt="" coords="92,95,224,121"/>
+<area shape="rect" title=" " alt="" coords="97,5,285,47"/>
+<area shape="rect" title=" " alt="" coords="5,102,84,129"/>
+<area shape="rect" title=" " alt="" coords="109,95,274,136"/>
+<area shape="rect" title=" " alt="" coords="299,95,441,136"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -97,19 +100,41 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="SplaMergeByKey_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1MergeByKeyPathKernel.html">spla::detail::MergeByKeyPathKernel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html">spla::detail::SerialMergeByKeyKernel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacespla_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html">spla::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a28c84afee9b4346f8b97634a9af2d28b"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </td></tr>
-<tr class="memitem:a28c84afee9b4346f8b97634a9af2d28b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a28c84afee9b4346f8b97634a9af2d28b">spla::MergeByKey</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItValuesA valuesA, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItValuesB valuesB, ItKeysResult keysResult, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a28c84afee9b4346f8b97634a9af2d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin1 , typename ItKeysABegin2 , typename ItKeysAEnd1 , typename ItValuesA , typename ItKeysBBegin1 , typename ItKeysBBegin2 , typename ItKeysBEnd1 , typename ItValuesB , typename ItKeysResult1 , typename ItKeysResult2 , typename ItValuesResult &gt; </td></tr>
-<tr class="memitem:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7e22d76dd720f5b89b97f67844bdfbf2">spla::MergeByPairKey</a> (ItKeysABegin1 keysABeginFirst, ItKeysABegin2 keysABeginSecond, ItKeysAEnd1 keysAEndFirst, ItValuesA valuesA, ItKeysBBegin1 keysBBeginFirst, ItKeysBBegin2 keysBBeginSecond, ItKeysBEnd1 keysBEndFirst, ItValuesB valuesB, ItKeysResult1 keysResultFirst, ItKeysResult2 keysResultSecond, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a7e22d76dd720f5b89b97f67844bdfbf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplParams" colspan="2">template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </td></tr>
+<tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#ad76279f1103a911fbec0b10a208e3976">spla::detail::MergeByKey</a> (const std::size_t count1, const std::size_t count2, Operator1 compareFirstToSecond, Operator2 assignResultToFirst, Operator3 assignResultToSecond, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ad76279f1103a911fbec0b10a208e3976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </td></tr>
+<tr class="memitem:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac8f6de4b598cdd6386bb6cc0d942622d">spla::MergeByKey</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItValuesA valuesA, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItValuesB valuesB, ItKeysResult keysResult, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by key) sequences of values by given keys.  <a href="group__Internal.html#gac8f6de4b598cdd6386bb6cc0d942622d">More...</a><br /></td></tr>
+<tr class="separator:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin , typename ItKeysBEnd , typename ItKeysResult &gt; </td></tr>
+<tr class="memitem:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga606997493cbc46fb9832185c8cdcd9e8">spla::MergeKeys</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItKeysResult keysResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga606997493cbc46fb9832185c8cdcd9e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted sequences.  <a href="group__Internal.html#ga606997493cbc46fb9832185c8cdcd9e8">More...</a><br /></td></tr>
+<tr class="separator:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1b067a5143a861a0e263a7d743867878"><td class="memTemplParams" colspan="2">template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename ItInput4 , typename ItInput5 , typename ItInput6 , typename ItOutput1 , typename ItOutput2 , typename ItOutput3 &gt; </td></tr>
+<tr class="memitem:ga1b067a5143a861a0e263a7d743867878"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga1b067a5143a861a0e263a7d743867878">spla::MergeByPairKey</a> (ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput3 valuesA, ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItInput6 valuesB, ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, ItOutput3 valuesOut, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga1b067a5143a861a0e263a7d743867878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by pair key)  <a href="group__Internal.html#ga1b067a5143a861a0e263a7d743867878">More...</a><br /></td></tr>
+<tr class="separator:ga1b067a5143a861a0e263a7d743867878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memTemplParams" colspan="2">template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename ItInput5 , typename ItOutput1 , typename ItOutput2 &gt; </td></tr>
+<tr class="memitem:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga5c492598b8acdfa5f9a2f5d49cb6aa72">spla::MergePairKeys</a> (ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by pair key)  <a href="group__Internal.html#ga5c492598b8acdfa5f9a2f5d49cb6aa72">More...</a><br /></td></tr>
+<tr class="separator:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

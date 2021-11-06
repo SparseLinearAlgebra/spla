@@ -183,6 +183,22 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class InputIterator5 , class OutputIterator1 , class OutputIterator2 , class OutputIterator3 &gt; </td></tr>
 <tr class="memitem:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga2bf766e718d9fd6a36fa8f62e3edfaf2">spla::MaskByPairKey</a> (InputIterator1 mask1First, InputIterator1 mask1Last, InputIterator2 mask2First, InputIterator3 key1Firsts, InputIterator3 key1Last, InputIterator4 key2Firsts, InputIterator5 valueFirst, OutputIterator1 resultKeys1, OutputIterator2 resultKeys2, OutputIterator3 resultValues, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga2bf766e718d9fd6a36fa8f62e3edfaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </td></tr>
+<tr class="memitem:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac8f6de4b598cdd6386bb6cc0d942622d">spla::MergeByKey</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItValuesA valuesA, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItValuesB valuesB, ItKeysResult keysResult, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by key) sequences of values by given keys.  <a href="group__Internal.html#gac8f6de4b598cdd6386bb6cc0d942622d">More...</a><br /></td></tr>
+<tr class="separator:gac8f6de4b598cdd6386bb6cc0d942622d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin , typename ItKeysBEnd , typename ItKeysResult &gt; </td></tr>
+<tr class="memitem:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga606997493cbc46fb9832185c8cdcd9e8">spla::MergeKeys</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItKeysResult keysResult, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga606997493cbc46fb9832185c8cdcd9e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted sequences.  <a href="group__Internal.html#ga606997493cbc46fb9832185c8cdcd9e8">More...</a><br /></td></tr>
+<tr class="separator:ga606997493cbc46fb9832185c8cdcd9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1b067a5143a861a0e263a7d743867878"><td class="memTemplParams" colspan="2">template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename ItInput4 , typename ItInput5 , typename ItInput6 , typename ItOutput1 , typename ItOutput2 , typename ItOutput3 &gt; </td></tr>
+<tr class="memitem:ga1b067a5143a861a0e263a7d743867878"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga1b067a5143a861a0e263a7d743867878">spla::MergeByPairKey</a> (ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput3 valuesA, ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItInput6 valuesB, ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, ItOutput3 valuesOut, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga1b067a5143a861a0e263a7d743867878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by pair key)  <a href="group__Internal.html#ga1b067a5143a861a0e263a7d743867878">More...</a><br /></td></tr>
+<tr class="separator:ga1b067a5143a861a0e263a7d743867878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memTemplParams" colspan="2">template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename ItInput5 , typename ItOutput1 , typename ItOutput2 &gt; </td></tr>
+<tr class="memitem:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga5c492598b8acdfa5f9a2f5d49cb6aa72">spla::MergePairKeys</a> (ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by pair key)  <a href="group__Internal.html#ga5c492598b8acdfa5f9a2f5d49cb6aa72">More...</a><br /></td></tr>
+<tr class="separator:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga06e32a4a916ee651cbbd0c2dabe38f6a">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac1e973ea800af47a29fc2625eb74cf50"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac1e973ea800af47a29fc2625eb74cf50">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
@@ -551,7 +567,7 @@ template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 ,
 <div class="line"> </div>
 <div class="line"><span class="comment">// keys = { 0, 3, 10 }</span></div>
 <div class="line"><span class="comment">// values = {10, 2, 53, 775 }</span></div>
-<div class="ttc" id="agroup__Internal_html_gaf3f1d2f58e52c128ff595baf61e0597c"><div class="ttname"><a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a></div><div class="ttdeci">std::size_t MaskByKey(InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:265</div></div>
+<div class="ttc" id="agroup__Internal_html_gaf3f1d2f58e52c128ff595baf61e0597c"><div class="ttname"><a href="group__Internal.html#gaf3f1d2f58e52c128ff595baf61e0597c">spla::MaskByKey</a></div><div class="ttdeci">std::size_t MaskByKey(InputIterator1 maskFirst, InputIterator1 maskLast, InputIterator2 keyFirsts, InputIterator2 keyLast, InputIterator3 valueFirst, OutputIterator1 resultKeys, OutputIterator2 resultValues, Compare compare, Equals equals, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:266</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">InputIterator1</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of mask iterator </td></tr>
@@ -672,6 +688,335 @@ template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 ,
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac8f6de4b598cdd6386bb6cc0d942622d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac8f6de4b598cdd6386bb6cc0d942622d">&#9670;&nbsp;</a></span>MergeByKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ptrdiff_t spla::MergeByKey </td>
+          <td>(</td>
+          <td class="paramtype">ItKeysABegin&#160;</td>
+          <td class="paramname"><em>keysABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysAEnd&#160;</td>
+          <td class="paramname"><em>keysAEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesA&#160;</td>
+          <td class="paramname"><em>valuesA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBBegin&#160;</td>
+          <td class="paramname"><em>keysBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBEnd&#160;</td>
+          <td class="paramname"><em>keysBEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesB&#160;</td>
+          <td class="paramname"><em>valuesB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysResult&#160;</td>
+          <td class="paramname"><em>keysResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItValuesResult&#160;</td>
+          <td class="paramname"><em>valuesResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges two sorted (by key) sequences of values by given keys. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keysABegin</td><td>Begin of the first key sequence </td></tr>
+    <tr><td class="paramname">keysAEnd</td><td>End of the first key sequence </td></tr>
+    <tr><td class="paramname">valuesA</td><td>Begin of the first value sequence </td></tr>
+    <tr><td class="paramname">keysBBegin</td><td>Begin of the second key sequence </td></tr>
+    <tr><td class="paramname">keysBEnd</td><td>End of the second key sequence </td></tr>
+    <tr><td class="paramname">valuesB</td><td>Begin of the second value sequence </td></tr>
+    <tr><td class="paramname">keysResult</td><td>Begin of the keys result </td></tr>
+    <tr><td class="paramname">valuesResult</td><td>Begin of the values result </td></tr>
+    <tr><td class="paramname">queue</td><td>OpenCL Command queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the merged sequence </dd></dl>
+
+</div>
+</div>
+<a id="ga1b067a5143a861a0e263a7d743867878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1b067a5143a861a0e263a7d743867878">&#9670;&nbsp;</a></span>MergeByPairKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename ItInput4 , typename ItInput5 , typename ItInput6 , typename ItOutput1 , typename ItOutput2 , typename ItOutput3 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ptrdiff_t spla::MergeByPairKey </td>
+          <td>(</td>
+          <td class="paramtype">ItInput1&#160;</td>
+          <td class="paramname"><em>keysFirstABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput1&#160;</td>
+          <td class="paramname"><em>keysFirstAEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput2&#160;</td>
+          <td class="paramname"><em>keysSecondABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput3&#160;</td>
+          <td class="paramname"><em>valuesA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput4&#160;</td>
+          <td class="paramname"><em>keysFirstBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput4&#160;</td>
+          <td class="paramname"><em>keysFirstBEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput5&#160;</td>
+          <td class="paramname"><em>keysSecondBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput6&#160;</td>
+          <td class="paramname"><em>valuesB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItOutput1&#160;</td>
+          <td class="paramname"><em>keysFirstOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItOutput2&#160;</td>
+          <td class="paramname"><em>keysSecondOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItOutput3&#160;</td>
+          <td class="paramname"><em>valuesOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges two sorted (by pair key) </p>
+<p>@desc In this function, key pair sequence is actually two sequences of keys. Hence, nth key of the first sequence is {<code>keysFirstABegin</code>[n], <code>keysSecondABegin</code>[n]}, and of the second second is {<code>keysFirstBBegin</code>[n], <code>keysSecondBBegin</code>[n]}.</p>
+<dl class="section return"><dt>Returns</dt><dd>Size of the merged sequence.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Pair key - a key, which consists of two keys. It is compared lexicographically: first it compares by the first element, and then by the second. </dd></dl>
+
+</div>
+</div>
+<a id="ga606997493cbc46fb9832185c8cdcd9e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga606997493cbc46fb9832185c8cdcd9e8">&#9670;&nbsp;</a></span>MergeKeys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin , typename ItKeysBEnd , typename ItKeysResult &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ptrdiff_t spla::MergeKeys </td>
+          <td>(</td>
+          <td class="paramtype">ItKeysABegin&#160;</td>
+          <td class="paramname"><em>keysABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysAEnd&#160;</td>
+          <td class="paramname"><em>keysAEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBBegin&#160;</td>
+          <td class="paramname"><em>keysBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysBEnd&#160;</td>
+          <td class="paramname"><em>keysBEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItKeysResult&#160;</td>
+          <td class="paramname"><em>keysResult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges two sorted sequences. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keysABegin</td><td>Begin of the first sequence </td></tr>
+    <tr><td class="paramname">keysAEnd</td><td>End of the first sequence </td></tr>
+    <tr><td class="paramname">keysBBegin</td><td>Begin of the second sequence </td></tr>
+    <tr><td class="paramname">keysBEnd</td><td>End of the second sequence </td></tr>
+    <tr><td class="paramname">keysResult</td><td>Begin of the result </td></tr>
+    <tr><td class="paramname">queue</td><td>OpenCL Command queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the merged sequence </dd></dl>
+
+</div>
+</div>
+<a id="ga5c492598b8acdfa5f9a2f5d49cb6aa72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c492598b8acdfa5f9a2f5d49cb6aa72">&#9670;&nbsp;</a></span>MergePairKeys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename ItInput5 , typename ItOutput1 , typename ItOutput2 &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ptrdiff_t spla::MergePairKeys </td>
+          <td>(</td>
+          <td class="paramtype">ItInput1&#160;</td>
+          <td class="paramname"><em>keysFirstABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput1&#160;</td>
+          <td class="paramname"><em>keysFirstAEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput2&#160;</td>
+          <td class="paramname"><em>keysSecondABegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput4&#160;</td>
+          <td class="paramname"><em>keysFirstBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput4&#160;</td>
+          <td class="paramname"><em>keysFirstBEnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItInput5&#160;</td>
+          <td class="paramname"><em>keysSecondBBegin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItOutput1&#160;</td>
+          <td class="paramname"><em>keysFirstOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ItOutput2&#160;</td>
+          <td class="paramname"><em>keysSecondOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges two sorted (by pair key) </p>
+<p>@desc In this function, key pair sequence is actually two sequences of keys. Hence, nth key of the first sequence is {<code>keysFirstABegin</code>[n], <code>keysSecondABegin</code>[n]}, and of the second second is {<code>keysFirstBBegin</code>[n], <code>keysSecondBBegin</code>[n]}.</p>
+<dl class="section return"><dt>Returns</dt><dd>Size of the merged sequence.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Pair key - a key, which consists of two keys. It is compared lexicographically: first it compares by the first element, and then by the second. </dd></dl>
 
 </div>
 </div>
