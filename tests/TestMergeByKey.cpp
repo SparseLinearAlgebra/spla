@@ -89,9 +89,9 @@ TEST(Compute, MergeByPairKey) {
     std::vector<int> hostKeysA2{2, 5, 4, 6};
     std::vector<char> hostValsA{'o', 't', 'f', 'f'};
 
-    std::vector<int> hostKeysB1{3, 3, 5, 6};
-    std::vector<int> hostKeysB2{2, 6, 5, 0};
-    std::vector<char> hostValsB{'t', 't', 'f', 's'};
+    std::vector<int> hostKeysB1{1, 3, 3, 5, 6};
+    std::vector<int> hostKeysB2{2, 2, 6, 5, 0};
+    std::vector<char> hostValsB{'k', 't', 't', 'f', 's'};
 
     compute::vector<int> keysA1(hostKeysA1, queue);
     compute::vector<int> keysA2(hostKeysA2, queue);
@@ -100,22 +100,24 @@ TEST(Compute, MergeByPairKey) {
     compute::vector<int> keysB2(hostKeysB2, queue);
     compute::vector<char> valsB(hostValsB, queue);
 
-    compute::vector<int> keysRes1(8, ctx);
-    compute::vector<int> keysRes2(8, ctx);
-    compute::vector<char> valsRes(8, ctx);
+    auto resCount = hostKeysA1.size() + hostKeysB1.size();
+
+    compute::vector<int> keysRes1(resCount, ctx);
+    compute::vector<int> keysRes2(resCount, ctx);
+    compute::vector<char> valsRes(resCount, ctx);
 
     std::ptrdiff_t mergedSize = spla::MergeByPairKey(
-            keysA1.begin(), keysA2.begin(), keysA1.end(),
+            keysA1.begin(), keysA1.end(), keysA2.begin(),
             valsA.begin(),
-            keysB1.begin(), keysB2.begin(), keysB1.end(),
+            keysB1.begin(), keysB1.end(), keysB2.begin(),
             valsB.begin(),
             keysRes1.begin(), keysRes2.begin(),
             valsRes.begin(),
             queue);
 
-    std::vector<int> keys1Expected{1, 3, 3, 3, 5, 5, 5, 6};
-    std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0};
-    std::vector<char> valsExpected{'o', 't', 't', 't', 'f', 'f', 'f', 's'};
+    std::vector<int> keys1Expected{1, 1, 3, 3, 3, 5, 5, 5, 6};
+    std::vector<int> keys2Expected{2, 2, 2, 5, 6, 4, 5, 6, 0};
+    std::vector<char> valsExpected{'o', 'k', 't', 't', 't', 'f', 'f', 'f', 's'};
 
     for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes1.begin();
@@ -177,8 +179,8 @@ TEST(Compute, MergePairKeys) {
     std::vector<int> hostKeysA1{1, 3, 5, 5, 7, 7, 7, 7, 9};
     std::vector<int> hostKeysA2{2, 5, 4, 6, 3, 3, 4, 6, 0};
 
-    std::vector<int> hostKeysB1{3, 3, 5, 6, 6, 6, 6, 7, 10};
-    std::vector<int> hostKeysB2{2, 6, 5, 0, 1, 2, 3, 5, 5};
+    std::vector<int> hostKeysB1{1, 3, 3, 5, 6, 6, 6, 6, 7, 10};
+    std::vector<int> hostKeysB2{2, 2, 6, 5, 0, 1, 2, 3, 5, 5};
 
     compute::vector<int> keysA1(hostKeysA1, queue);
     compute::vector<int> keysA2(hostKeysA2, queue);
@@ -189,13 +191,13 @@ TEST(Compute, MergePairKeys) {
     compute::vector<int> keysRes2(hostKeysA2.size() + hostKeysB2.size(), ctx);
 
     std::ptrdiff_t mergedSize = spla::MergePairKeys(
-            keysA1.begin(), keysA2.begin(), keysA1.end(),
-            keysB1.begin(), keysB2.begin(), keysB1.end(),
+            keysA1.begin(), keysA1.end(), keysA2.begin(),
+            keysB1.begin(), keysB1.end(), keysB2.begin(),
             keysRes1.begin(), keysRes2.begin(),
             queue);
 
-    std::vector<int> keys1Expected{1, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 9, 10};
-    std::vector<int> keys2Expected{2, 2, 5, 6, 4, 5, 6, 0, 1, 2, 3, 3, 3, 4, 5, 6, 0, 5};
+    std::vector<int> keys1Expected{1, 1, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 9, 10};
+    std::vector<int> keys2Expected{2, 2, 2, 5, 6, 4, 5, 6, 0, 1, 2, 3, 3, 3, 4, 5, 6, 0, 5};
 
     for (auto it = keysRes1.begin(); it < keysRes1.begin() + mergedSize; ++it) {
         std::size_t ind = it - keysRes1.begin();

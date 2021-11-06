@@ -173,7 +173,7 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                         if (typeHasValues) {
                             auto &vals = block->GetVals();
                             newVals.resize(nnz * byteSize, queue);
-                            Gather(perm.begin(), perm.end(), vals.begin(), newVals.begin(), byteSize, queue).wait();
+                            Gather(perm.begin(), perm.end(), vals.begin(), newVals.begin(), byteSize, queue);
                         }
 
                         auto result = MatrixCOO::Make(block->GetNrows(), block->GetNcols(), nnz, std::move(newRows), std::move(newCols), std::move(newVals));
