@@ -216,6 +216,100 @@ namespace spla {
 
             return static_cast<std::ptrdiff_t>(count1 + count2);
         }
+
+        namespace binop {
+            using MetaKernel = boost::compute::detail::meta_kernel;
+            using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
+
+            template<typename ItA, typename ItB>
+            class IsFirstGt {
+                ItA a;
+                ItB b;
+
+            public:
+                explicit IsFirstGt(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
+
+                void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
+                    k << a[iFst] << " > " << b[iSnd];
+                }
+            };
+
+            template<typename ItA, typename ItB, typename ItC, typename ItD>
+            class IsFirstPairGt {
+                ItA aFst;
+                ItB aSnd;
+                ItC bFst;
+                ItD bSnd;
+
+            public:
+                explicit IsFirstPairGt(ItA itAFst, ItB itASnd, ItC itBFst, ItD itBSnd)
+                    : aFst(std::move(itAFst)), aSnd(std::move(itASnd)), bFst(std::move(itBFst)), bSnd(std::move(itBSnd)) {}
+
+                void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
+                    k << aFst[iFst] << " > " << bFst[iSnd] << " || "
+                      << "("
+                      << aFst[iFst] << " == " << bFst[iSnd] << " && "
+                      << aSnd[iFst] << " > " << bSnd[iSnd]
+                      << ")";
+                }
+            };
+
+            template<typename ItA, typename ItB, typename ItC, typename ItD, typename ItE, typename ItF>
+            class Assign3 {
+                ItA l1;
+                ItB r1;
+                ItC l2;
+                ItD r2;
+                ItE l3;
+                ItF r3;
+
+            public:
+                explicit Assign3(ItA itL1, ItB itR1, ItC itL2, ItD itR2, ItE itL3, ItF itR3)
+                    : l1(std::move(itL1)), r1(std::move(itR1)),
+                      l2(std::move(itL2)), r2(std::move(itR2)),
+                      l3(std::move(itL3)), r3(std::move(itR3)) {}
+
+                void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
+                    k << l1[iRes] << " = " << r1[i] << ";"
+                      << l2[iRes] << " = " << r2[i] << ";"
+                      << l3[iRes] << " = " << r3[i];
+                }
+            };
+
+            template<typename ItA, typename ItB, typename ItC, typename ItD>
+            class Assign2 {
+                ItA l1;
+                ItB r1;
+                ItC l2;
+                ItD r2;
+
+            public:
+                explicit Assign2(ItA itL1, ItB itR1, ItC itL2, ItD itR2)
+                    : l1(std::move(itL1)), r1(std::move(itR1)),
+                      l2(std::move(itL2)), r2(std::move(itR2)) {}
+
+                void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
+                    k << l1[iRes] << " = " << r1[i] << ";";
+                    k << l2[iRes] << " = " << r2[i];
+                }
+            };
+
+            template<typename ItA, typename ItB>
+            class Assign1 {
+                ItA l;
+                ItB r;
+
+            public:
+                explicit Assign1(ItA itL1, ItB itR1)
+                    : l(std::move(itL1)), r(std::move(itR1)) {}
+
+                void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
+                    k << l[iRes] << " = " << r[i];
+                }
+            };
+        }// namespace binop
+
+
     }// namespace detail
 
     /**
@@ -256,35 +350,13 @@ namespace spla {
             ItKeysResult keysResult,
             ItValuesResult valuesResult,
             boost::compute::command_queue &queue) {
-        namespace compute = boost::compute;
-        using compute::uint_;
-
-        auto isFirstGt = [&](compute::detail::meta_kernel &k,
-                             const compute::detail::meta_kernel_variable<uint_> &iFst,
-                             const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysABegin[iFst] << " > " << keysBBegin[iSnd];
-        };
-
-        auto assignResultToFirst = [&](compute::detail::meta_kernel &k,
-                                       const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                       const compute::detail::meta_kernel_variable<uint_> &iFst) {
-            k << keysResult[iRes] << " = " << keysABegin[iFst] << ";";
-            k << valuesResult[iRes] << " = " << valuesA[iFst];
-        };
-
-        auto assignResultToSecond = [&](compute::detail::meta_kernel &k,
-                                        const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                        const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysResult[iRes] << " = " << keysBBegin[iSnd] << ";";
-            k << valuesResult[iRes] << " = " << valuesB[iSnd];
-        };
 
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                isFirstGt,
-                assignResultToFirst,
-                assignResultToSecond,
+                detail::binop::IsFirstGt{keysABegin, keysBBegin},
+                detail::binop::Assign2{keysResult, keysABegin, valuesResult, valuesA},
+                detail::binop::Assign2{keysResult, keysBBegin, valuesResult, valuesB},
                 queue);
     }
 
@@ -312,33 +384,13 @@ namespace spla {
             ItKeysBEnd keysBEnd,
             ItKeysResult keysResult,
             boost::compute::command_queue &queue) {
-        namespace compute = boost::compute;
-        using compute::uint_;
-
-        auto isFirstGt = [&](compute::detail::meta_kernel &k,
-                             const compute::detail::meta_kernel_variable<uint_> &iFst,
-                             const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysABegin[iFst] << " > " << keysBBegin[iSnd];
-        };
-
-        auto assignResultToFirst = [&](compute::detail::meta_kernel &k,
-                                       const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                       const compute::detail::meta_kernel_variable<uint_> &iFst) {
-            k << keysResult[iRes] << " = " << keysABegin[iFst];
-        };
-
-        auto assignResultToSecond = [&](compute::detail::meta_kernel &k,
-                                        const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                        const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysResult[iRes] << " = " << keysBBegin[iSnd];
-        };
 
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                isFirstGt,
-                assignResultToFirst,
-                assignResultToSecond,
+                detail::binop::IsFirstGt{keysABegin, keysBBegin},
+                detail::binop::Assign1{keysResult, keysABegin},
+                detail::binop::Assign1{keysResult, keysBBegin},
                 queue);
     }
 
@@ -373,44 +425,21 @@ namespace spla {
             ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItInput6 valuesB,
             ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, ItOutput3 valuesOut,
             boost::compute::command_queue &queue) {
-        namespace compute = boost::compute;
-        using compute::uint_;
-
-        auto isFirstGt = [&](compute::detail::meta_kernel &k,
-                             const compute::detail::meta_kernel_variable<uint_> &iFst,
-                             const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysFirstABegin[iFst] << " > " << keysFirstBBegin[iSnd] << " || "
-              << "("
-              << keysFirstABegin[iFst] << " <= " << keysFirstBBegin[iSnd] << " && "
-              << keysSecondABegin[iFst] << " > " << keysSecondBBegin[iSnd]
-              << ")";
-        };
-
-        auto assignResultToFirst = [&](compute::detail::meta_kernel &k,
-                                       const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                       const compute::detail::meta_kernel_variable<uint_> &iFst) {
-            k << keysFirstOut[iRes] << " = " << keysFirstABegin[iFst] << ";";
-            k << keysSecondOut[iRes] << " = " << keysSecondABegin[iFst] << ";";
-            k << valuesOut[iRes] << " = " << valuesA[iFst];
-        };
-
-        auto assignResultToSecond = [&](compute::detail::meta_kernel &k,
-                                        const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                        const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysFirstOut[iRes] << " = " << keysFirstBBegin[iSnd] << ";";
-            k << keysSecondOut[iRes] << " = " << keysSecondBBegin[iSnd] << ";";
-            k << valuesOut[iRes] << " = " << valuesB[iSnd];
-        };
 
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                isFirstGt,
-                assignResultToFirst,
-                assignResultToSecond,
+                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::Assign3{
+                        keysFirstOut, keysFirstABegin,
+                        keysSecondOut, keysSecondABegin,
+                        valuesOut, valuesA},
+                detail::binop::Assign3{
+                        keysFirstOut, keysFirstBBegin,
+                        keysSecondOut, keysSecondBBegin,
+                        valuesOut, valuesB},
                 queue);
     }
-
 
     /**
      * @brief Merges two sorted (by pair key)
@@ -440,39 +469,13 @@ namespace spla {
             ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin,
             ItOutput1 keysFirstOut, ItOutput2 keysSecondOut,
             boost::compute::command_queue &queue) {
-        namespace compute = boost::compute;
-        using compute::uint_;
-
-        auto isFirstGt = [&](compute::detail::meta_kernel &k,
-                             const compute::detail::meta_kernel_variable<uint_> &iFst,
-                             const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysFirstABegin[iFst] << " > " << keysFirstBBegin[iSnd] << " || "
-              << "("
-              << "!(" << keysFirstABegin[iFst] << " > " << keysFirstBBegin[iSnd] << ") && "
-              << keysSecondABegin[iFst] << " > " << keysSecondBBegin[iSnd]
-              << ")";
-        };
-
-        auto assignResultToFirst = [&](compute::detail::meta_kernel &k,
-                                       const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                       const compute::detail::meta_kernel_variable<uint_> &iFst) {
-            k << keysFirstOut[iRes] << " = " << keysFirstABegin[iFst] << ";";
-            k << keysSecondOut[iRes] << " = " << keysSecondABegin[iFst];
-        };
-
-        auto assignResultToSecond = [&](compute::detail::meta_kernel &k,
-                                        const compute::detail::meta_kernel_variable<uint_> &iRes,
-                                        const compute::detail::meta_kernel_variable<uint_> &iSnd) {
-            k << keysFirstOut[iRes] << " = " << keysFirstBBegin[iSnd] << ";";
-            k << keysSecondOut[iRes] << " = " << keysSecondBBegin[iSnd];
-        };
 
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                isFirstGt,
-                assignResultToFirst,
-                assignResultToSecond,
+                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::Assign2{keysFirstOut, keysFirstABegin, keysSecondOut, keysSecondABegin},
+                detail::binop::Assign2{keysFirstOut, keysFirstBBegin, keysSecondOut, keysSecondBBegin},
                 queue);
     }
 
