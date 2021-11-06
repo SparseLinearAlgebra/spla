@@ -207,6 +207,9 @@ Functions</h2></td></tr>
 <tr class="separator:gabd2c85fd86f63b4e398320400dc66c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga987738a746d84c1abcf41ca3684f8266"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga987738a746d84c1abcf41ca3684f8266">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga987738a746d84c1abcf41ca3684f8266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b363e3578d72cb1311091ed22d0f84b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">spla::SortByRowColumn</a> (boost::compute::vector&lt; unsigned int &gt; &amp;rows, boost::compute::vector&lt; unsigned int &gt; &amp;cols, boost::compute::vector&lt; unsigned char &gt; &amp;vals, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga3b363e3578d72cb1311091ed22d0f84b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort matrix data in coo format in row-column order.  <a href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">More...</a><br /></td></tr>
+<tr class="separator:ga3b363e3578d72cb1311091ed22d0f84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Implementation details. </p>
@@ -1281,6 +1284,65 @@ template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga3b363e3578d72cb1311091ed22d0f84b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b363e3578d72cb1311091ed22d0f84b">&#9670;&nbsp;</a></span>SortByRowColumn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::SortByRowColumn </td>
+          <td>(</td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sort matrix data in coo format in row-column order. </p>
+<dl class="section note"><dt>Note</dt><dd>If elementsInSequence is 0 and vals is empty, sorts only matrix indices.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rows</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> with row indices to sort </td></tr>
+    <tr><td class="paramname">cols</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> with column indices to sort </td></tr>
+    <tr><td class="paramname">vals</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> with values byte data </td></tr>
+    <tr><td class="paramname">elementsInSequence</td><td>Size in bytes of values in vals vector </td></tr>
+    <tr><td class="paramname">queue</td><td>Queue to perform sort operation </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
