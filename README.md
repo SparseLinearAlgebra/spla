@@ -1,4 +1,4 @@
-# spla
+# spla <img align="right" width="20%" src="https://github.com/JetBrains-Research/spla/raw/main/docs/logos/spla-logo.png?raw=true&sanitize=true">
 
 [![JB Research](https://jb.gg/badges/research-flat-square.svg)](https://research.jetbrains.org/)
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
