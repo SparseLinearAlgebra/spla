@@ -32,7 +32,12 @@
 
 namespace spla {
 
-    namespace {
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    namespace detail {
 
         class CopyReduceDuplicates : public boost::compute::detail::meta_kernel {
         public:
@@ -55,7 +60,13 @@ namespace spla {
 
                 std::stringstream _spla_reduce_op;
                 _spla_reduce_op << "void _spla_reduce_op(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n"
+                                << "#define _ACCESS_A __global\n"
+                                << "#define _ACCESS_B __global\n"
+                                << "#define _ACCESS_C __global\n"
                                 << "   " << reduceOp << "\n"
+                                << "#undef _ACCESS_A\n"
+                                << "#undef _ACCESS_B\n"
+                                << "#undef _ACCESS_C\n"
                                 << "}";
 
                 add_function("_spla_reduce_op", _spla_reduce_op.str());
@@ -203,7 +214,7 @@ namespace spla {
             return resultNvals;
         }
 
-    }// namespace
+    }// namespace detail
 
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
                                         const boost::compute::vector<unsigned int> &inputIndices2,
@@ -216,11 +227,11 @@ namespace spla {
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
-        return ReduceDuplicatesImpl(inputIndices1, inputIndices2, inputValues,
-                                    resultIndices1, resultIndices2, resultValues,
-                                    elementsInSequence,
-                                    reduceOp,
-                                    queue);
+        return detail::ReduceDuplicatesImpl(inputIndices1, inputIndices2, inputValues,
+                                            resultIndices1, resultIndices2, resultValues,
+                                            elementsInSequence,
+                                            reduceOp,
+                                            queue);
     }
 
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
@@ -235,11 +246,11 @@ namespace spla {
         compute::vector<unsigned char> dummyInputValues;
         compute::vector<unsigned char> dummyResultValues;
 
-        return ReduceDuplicatesImpl(inputIndices1, inputIndices2, dummyInputValues,
-                                    resultIndices1, resultIndices2, dummyResultValues,
-                                    elementsInSequence,
-                                    reduceOp,
-                                    queue);
+        return detail::ReduceDuplicatesImpl(inputIndices1, inputIndices2, dummyInputValues,
+                                            resultIndices1, resultIndices2, dummyResultValues,
+                                            elementsInSequence,
+                                            reduceOp,
+                                            queue);
     }
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
                                         const boost::compute::vector<unsigned char> &inputValues,
@@ -253,11 +264,11 @@ namespace spla {
         compute::vector<unsigned int> dummyInputIndices;
         compute::vector<unsigned int> dummyResultIndices;
 
-        return ReduceDuplicatesImpl(inputIndices, dummyInputIndices, inputValues,
-                                    resultIndices, dummyResultIndices, resultValues,
-                                    elementsInSequence,
-                                    reduceOp,
-                                    queue);
+        return detail::ReduceDuplicatesImpl(inputIndices, dummyInputIndices, inputValues,
+                                            resultIndices, dummyResultIndices, resultValues,
+                                            elementsInSequence,
+                                            reduceOp,
+                                            queue);
     }
 
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
@@ -272,12 +283,16 @@ namespace spla {
         compute::vector<unsigned char> dummyInputValues;
         compute::vector<unsigned char> dummyResultValues;
 
-        return ReduceDuplicatesImpl(inputIndices, dummyInputIndices, dummyInputValues,
-                                    resultIndices, dummyResultIndices, dummyResultValues,
-                                    elementsInSequence,
-                                    reduceOp,
-                                    queue);
+        return detail::ReduceDuplicatesImpl(inputIndices, dummyInputIndices, dummyInputValues,
+                                            resultIndices, dummyResultIndices, dummyResultValues,
+                                            elementsInSequence,
+                                            reduceOp,
+                                            queue);
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

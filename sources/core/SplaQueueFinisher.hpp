@@ -32,6 +32,18 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
+     * @class QueueFinisher
+     * @brief Queue wrapper to automate `queue.finish()` call
+     *
+     * Automatically calls queue finish on provided queue, when
+     * the flow leaves the scope, where this QueueFinisher is created.
+     */
     class QueueFinisher {
     public:
         explicit QueueFinisher(boost::compute::command_queue &queue)
@@ -49,6 +61,10 @@ namespace spla {
     private:
         boost::compute::command_queue &mQueue;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

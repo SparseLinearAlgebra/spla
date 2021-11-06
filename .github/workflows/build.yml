@@ -65,10 +65,6 @@ jobs:
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
 
-      - name: Run unit-tests
-        shell: bash
-        run: python3 scripts/run_tests.py --build-dir=${{ env.build_dir }}
-
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
