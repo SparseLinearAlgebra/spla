@@ -68,6 +68,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">SplaMergeByKey.hpp File Reference</div>  </div>
@@ -76,15 +77,17 @@ $(function() {
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;boost/compute/container/vector.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/detail/meta_kernel.hpp&gt;</code><br />
+<code>#include &lt;boost/hana.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaMergeByKey.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaMergeByKey_8hpp__incl.png" border="0" usemap="#asources_2compute_2SplaMergeByKey_8hpp" alt=""/></div>
 <map name="asources_2compute_2SplaMergeByKey_8hpp" id="asources_2compute_2SplaMergeByKey_8hpp">
-<area shape="rect" title=" " alt="" coords="97,5,285,47"/>
+<area shape="rect" title=" " alt="" coords="187,5,375,47"/>
 <area shape="rect" title=" " alt="" coords="5,102,84,129"/>
 <area shape="rect" title=" " alt="" coords="109,95,274,136"/>
 <area shape="rect" title=" " alt="" coords="299,95,441,136"/>
+<area shape="rect" title=" " alt="" coords="465,102,576,129"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -106,6 +109,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html">spla::detail::SerialMergeByKeyKernel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1binop_1_1IsFirstGt.html">spla::detail::binop::IsFirstGt&lt; ItA, ItB &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1binop_1_1IsFirstPairGt.html">spla::detail::binop::IsFirstPairGt&lt; ItA, ItB, ItC, ItD &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1binop_1_1Assign.html">spla::detail::binop::Assign&lt; Assignees &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -113,6 +122,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacespla_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html">spla::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacespla_1_1detail_1_1binop"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail_1_1binop.html">spla::detail::binop</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:af588679554ef9c7346ae86c122eae574"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail_1_1binop.html#af588679554ef9c7346ae86c122eae574">spla::detail::binop::MetaKernel</a> = boost::compute::detail::meta_kernel</td></tr>
+<tr class="separator:af588679554ef9c7346ae86c122eae574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98239747aa396d6d775b35898da8073"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail_1_1binop.html#ad98239747aa396d6d775b35898da8073">spla::detail::binop::MetaIdx</a> = boost::compute::detail::meta_kernel_variable&lt; boost::compute::uint_ &gt;</td></tr>
+<tr class="separator:ad98239747aa396d6d775b35898da8073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>

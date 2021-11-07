@@ -98,9 +98,9 @@ Collaboration diagram for spla::detail::SerialMergeByKeyKernel:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a793de05479c87d5e84bf6d2944425d74"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html#a793de05479c87d5e84bf6d2944425d74">SerialMergeByKeyKernel</a> ()</td></tr>
 <tr class="separator:a793de05479c87d5e84bf6d2944425d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9777d17a6b4768b86c118eb9ecf72677"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator1 , typename InputIterator2 , typename Operator1 , typename Operator2 , typename Operator3 &gt; </td></tr>
-<tr class="memitem:a9777d17a6b4768b86c118eb9ecf72677"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html#a9777d17a6b4768b86c118eb9ecf72677">SetRange</a> (InputIterator1 tile_first1, InputIterator1 tile_last1, InputIterator2 tile_first2, Operator1 writeIsFirstGt, Operator2 writeAssignResultToFirst, Operator3 writeAssignResultToSecond)</td></tr>
-<tr class="separator:a9777d17a6b4768b86c118eb9ecf72677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae64e9bb5b00697966e3ec2e5120a8863"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator1 , typename InputIterator2 , typename Operator1 , typename Operator2 , typename Operator3 &gt; </td></tr>
+<tr class="memitem:ae64e9bb5b00697966e3ec2e5120a8863"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html#ae64e9bb5b00697966e3ec2e5120a8863">SetRange</a> (InputIterator1 tile_first1, InputIterator1 tile_last1, InputIterator2 tile_first2, Operator1 writeIsSecondGt, Operator2 writeAssignResultToFirst, Operator3 writeAssignResultToSecond)</td></tr>
+<tr class="separator:ae64e9bb5b00697966e3ec2e5120a8863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7256e34e0926e9947b7a225b01c615e8"><td class="memItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialMergeByKeyKernel.html#a7256e34e0926e9947b7a225b01c615e8">exec</a> (boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a7256e34e0926e9947b7a225b01c615e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -162,8 +162,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9777d17a6b4768b86c118eb9ecf72677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9777d17a6b4768b86c118eb9ecf72677">&#9670;&nbsp;</a></span>SetRange()</h2>
+<a id="ae64e9bb5b00697966e3ec2e5120a8863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae64e9bb5b00697966e3ec2e5120a8863">&#9670;&nbsp;</a></span>SetRange()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +195,7 @@ template&lt;typename InputIterator1 , typename InputIterator2 , typename Operato
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Operator1&#160;</td>
-          <td class="paramname"><em>writeIsFirstGt</em>, </td>
+          <td class="paramname"><em>writeIsSecondGt</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

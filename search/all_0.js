@@ -7,5 +7,6 @@ var searchData=
   ['algorithmmanager_4',['AlgorithmManager',['../classspla_1_1AlgorithmManager.html#a5200de80f5e2dd907c4f73f43d0a6398',1,'spla::AlgorithmManager::AlgorithmManager()'],['../classspla_1_1AlgorithmManager.html',1,'spla::AlgorithmManager']]],
   ['algorithmparams_5',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]],
   ['api_6',['API',['../group__API.html',1,'']]],
-  ['as_7',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]]
+  ['as_7',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
+  ['assign_8',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]]
 ];

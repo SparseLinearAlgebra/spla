@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['taskbuilder_463',['TaskBuilder',['../classspla_1_1TaskBuilder.html',1,'spla']]],
-  ['texception_464',['TException',['../classspla_1_1TException.html',1,'spla']]],
-  ['traversalinfo_465',['TraversalInfo',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html',1,'spla::ExpressionManager']]],
-  ['type_466',['Type',['../classspla_1_1Type.html',1,'spla']]],
-  ['typedobject_467',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla']]],
-  ['types_468',['Types',['../classspla_1_1Types.html',1,'spla']]]
+  ['scalar_468',['Scalar',['../classspla_1_1Scalar.html',1,'spla']]],
+  ['serialintersectionkernel_469',['SerialIntersectionKernel',['../classspla_1_1detail_1_1SerialIntersectionKernel.html',1,'spla::detail']]],
+  ['serialmergebykeykernel_470',['SerialMergeByKeyKernel',['../classspla_1_1detail_1_1SerialMergeByKeyKernel.html',1,'spla::detail']]],
+  ['splascalarstorage_471',['SplaScalarStorage',['../classspla_1_1SplaScalarStorage.html',1,'spla']]]
 ];
