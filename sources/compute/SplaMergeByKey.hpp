@@ -35,6 +35,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     namespace detail {
         class MergeByKeyPathKernel : public boost::compute::detail::meta_kernel {
         public:
@@ -275,11 +280,6 @@ namespace spla {
     }// namespace detail
 
     /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    /**
      * @brief Merges two sorted (by key) sequences of values by given keys.
      *
      * @param keysABegin Begin of the first key sequence
@@ -291,6 +291,7 @@ namespace spla {
      * @param keysResult Begin of the keys result
      * @param valuesResult Begin of the values result
      * @param queue OpenCL Command queue
+     *
      * @return Size of the merged sequence
      */
     template<
@@ -302,7 +303,7 @@ namespace spla {
             typename ItValuesB,
             typename ItKeysResult,
             typename ItValuesResult>
-    std::ptrdiff_t MergeByKey(
+    std::ptrdiff_t MergeByKeys(
             ItKeysABegin keysABegin,
             ItKeysAEnd keysAEnd,
             ItValuesA valuesA,
@@ -331,6 +332,7 @@ namespace spla {
      * @param keysBEnd End of the second sequence
      * @param keysResult Begin of the result
      * @param queue OpenCL Command queue
+     *
      * @return Size of the merged sequence
      */
     template<
@@ -369,8 +371,8 @@ namespace spla {
      * @return Size of the merged sequence.
      *
      * @note Pair key - a key, which consists of two keys.
-     * It is compared lexicographically: first it compares
-     * by the first element, and then by the second.
+     *       It is compared lexicographically: first it compares
+     *       by the first element, and then by the second.
      */
     template<
             typename ItInput1,
@@ -382,7 +384,7 @@ namespace spla {
             typename ItOutput1,
             typename ItOutput2,
             typename ItOutput3>
-    std::ptrdiff_t MergeByPairKey(
+    std::ptrdiff_t MergeByPairKeys(
             ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput3 valuesA,
             ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItInput6 valuesB,
             ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, ItOutput3 valuesOut,
@@ -416,8 +418,8 @@ namespace spla {
      * @return Size of the merged sequence.
      *
      * @note Pair key - a key, which consists of two keys.
-     * It is compared lexicographically: first it compares
-     * by the first element, and then by the second.
+     *       It is compared lexicographically: first it compares
+     *       by the first element, and then by the second.
      */
     template<
             typename ItInput1,

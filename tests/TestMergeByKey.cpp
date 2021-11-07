@@ -28,7 +28,7 @@
 #include <Testing.hpp>
 #include <compute/SplaMergeByKey.hpp>
 
-TEST(Compute, MergeByKey) {
+TEST(Compute, MergeByKeys) {
     namespace compute = boost::compute;
 
     // get the default compute device
@@ -52,7 +52,7 @@ TEST(Compute, MergeByKey) {
     compute::vector<int> keysRes(10, ctx);
     compute::vector<char> valsRes(10, ctx);
 
-    std::ptrdiff_t mergedSize = spla::MergeByKey(
+    std::ptrdiff_t mergedSize = spla::MergeByKeys(
             keysA.begin(), keysA.end(),
             valsA.begin(),
             keysB.begin(), keysB.end(),
@@ -75,7 +75,7 @@ TEST(Compute, MergeByKey) {
     }
 }
 
-TEST(Compute, MergeByPairKey) {
+TEST(Compute, MergeByPairKeys) {
     namespace compute = boost::compute;
 
     // get the default compute device
@@ -106,7 +106,7 @@ TEST(Compute, MergeByPairKey) {
     compute::vector<int> keysRes2(resCount, ctx);
     compute::vector<char> valsRes(resCount, ctx);
 
-    std::ptrdiff_t mergedSize = spla::MergeByPairKey(
+    std::ptrdiff_t mergedSize = spla::MergeByPairKeys(
             keysA1.begin(), keysA1.end(), keysA2.begin(),
             valsA.begin(),
             keysB1.begin(), keysB1.end(), keysB2.begin(),
@@ -325,7 +325,7 @@ void MergeByKeyStress(
         compute::vector<int> keysRes(sizeSum, ctx);
         compute::vector<int> valsRes(sizeSum, ctx);
 
-        const std::ptrdiff_t mergedSize = spla::MergeByKey(
+        const std::ptrdiff_t mergedSize = spla::MergeByKeys(
                 keysA.begin(), keysA.end(),
                 valsA.begin(),
                 keysB.begin(), keysB.end(),
@@ -410,7 +410,7 @@ void MergeByPairKeyStress(
         compute::vector<int> keysSRes(sizeSum, ctx);
         compute::vector<int> valsRes(sizeSum, ctx);
 
-        const std::ptrdiff_t mergedSize = spla::MergeByPairKey(
+        const std::ptrdiff_t mergedSize = spla::MergeByPairKeys(
                 keysAf.begin(), keysAf.end(), keysAs.begin(), valsA.begin(),
                 keysBf.begin(), keysBf.end(), keysBs.begin(), valsB.begin(),
                 keysFRes.begin(), keysSRes.begin(),
@@ -463,14 +463,14 @@ TEST(MergeByPairKeyCpu, Shallow) {
     EXPECT_EQ(v, (std::vector<int>{2, 4, 1, 4, 6, 8, 8, 10, 9, 12, 10, 12, 12}));
 }
 
-TEST(MergeByKey, StressSmall) {
+TEST(MergeByKeys, StressSmall) {
     MergeByKeyStress(100, 55, 34, 1, 5);
     MergeByKeyStress(100, 55, 34, 1, 1000);
     MergeByPairKeyStress(100, 55, 34, 1, 5);
     MergeByPairKeyStress(100, 55, 34, 1, 1000);
 }
 
-TEST(MergeByKey, StressMedium) {
+TEST(MergeByKeys, StressMedium) {
     MergeByKeyStress(5, 500, 400, 1, 5);
     MergeByKeyStress(5, 500, 400, 1, 1000);
     MergeByPairKeyStress(5, 500, 400, 1, 5);
