@@ -50,7 +50,7 @@ namespace spla {
                           const std::size_t bCount,
                           OutputIterator1 resultA,
                           OutputIterator2 resultB,
-                          BinaryIndicesOperator isFirstLeq) {
+                          BinaryIndicesOperator isFirstGt) {
                 namespace compute = boost::compute;
                 using compute::uint_;
 
@@ -69,9 +69,9 @@ namespace spla {
                       << "{\n"
                       << "   a_index = (start + end)/2;\n"
                       << "   b_index = target - a_index - 1;\n"
-                      << "   if(";
-                isFirstLeq(*this, expr<uint_>("a_index"), expr<uint_>("b_index"));
-                *this << ")\n"
+                      << "   if(!(";
+                isFirstGt(*this, expr<uint_>("a_index"), expr<uint_>("b_index"));
+                *this << "))\n"
                       << "       start = a_index + 1;\n"
                       << "   else end = a_index;\n"
                       << "}\n"
@@ -116,7 +116,7 @@ namespace spla {
             void SetRange(InputIterator1 tile_first1,
                           InputIterator1 tile_last1,
                           InputIterator2 tile_first2,
-                          Operator1 writeIsFirstLeq,
+                          Operator1 writeIsSecondGt,
                           Operator2 writeAssignResultToFirst,
                           Operator3 writeAssignResultToSecond) {
                 namespace compute = boost::compute;
@@ -132,9 +132,9 @@ namespace spla {
                       << "uint index = i*" << tileSize << ";\n"
                       << "while(start1<end1 && start2<end2)\n"
                       << "{\n"
-                      << "   if(";
-                writeIsFirstLeq(*this, expr<uint_>("start1"), expr<uint_>("start2"));
-                *this << ")\n"
+                      << "   if(!(";
+                writeIsSecondGt(*this, expr<uint_>("start1"), expr<uint_>("start2"));
+                *this << "))\n"
                       << "   {\n";
                 writeAssignResultToFirst(*this, expr<uint_>("index"), expr<uint_>("start1"));
                 *this << ";\n"
@@ -223,34 +223,34 @@ namespace spla {
             using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
             template<typename ItA, typename ItB>
-            class IsFirstLeq {
+            class IsFirstGt {
                 ItA a;
                 ItB b;
 
             public:
-                explicit IsFirstLeq(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
+                explicit IsFirstGt(ItA itA, ItB itB) : a(std::move(itA)), b(std::move(itB)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
-                    k << a[iFst] << " <= " << b[iSnd];
+                    k << a[iFst] << " > " << b[iSnd];
                 }
             };
 
             template<typename ItA, typename ItB, typename ItC, typename ItD>
-            class IsFirstPairLeq {
+            class IsFirstPairGt {
                 ItA aFst;
                 ItB aSnd;
                 ItC bFst;
                 ItD bSnd;
 
             public:
-                explicit IsFirstPairLeq(ItA itAFst, ItB itASnd, ItC itBFst, ItD itBSnd)
+                explicit IsFirstPairGt(ItA itAFst, ItB itASnd, ItC itBFst, ItD itBSnd)
                     : aFst(std::move(itAFst)), aSnd(std::move(itASnd)), bFst(std::move(itBFst)), bSnd(std::move(itBSnd)) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iFst, const MetaIdx &iSnd) {
-                    k << aFst[iFst] << " < " << bFst[iSnd] << " || "
+                    k << aFst[iFst] << " > " << bFst[iSnd] << " || "
                       << "("
                       << aFst[iFst] << " == " << bFst[iSnd] << " && "
-                      << aSnd[iFst] << " <= " << bSnd[iSnd]
+                      << aSnd[iFst] << " > " << bSnd[iSnd]
                       << ")";
                 }
             };
@@ -316,7 +316,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                detail::binop::IsFirstLeq{keysABegin, keysBBegin},
+                detail::binop::IsFirstGt{keysABegin, keysBBegin},
                 detail::binop::Assign{std::pair{keysResult, keysABegin}, std::pair{valuesResult, valuesA}},
                 detail::binop::Assign{std::pair{keysResult, keysBBegin}, std::pair{valuesResult, valuesB}},
                 queue);
@@ -350,7 +350,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
-                detail::binop::IsFirstLeq{keysABegin, keysBBegin},
+                detail::binop::IsFirstGt{keysABegin, keysBBegin},
                 detail::binop::Assign{std::pair{keysResult, keysABegin}},
                 detail::binop::Assign{std::pair{keysResult, keysBBegin}},
                 queue);
@@ -391,7 +391,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
                 detail::binop::Assign{
                         std::pair{keysFirstOut, keysFirstABegin},
                         std::pair{keysSecondOut, keysSecondABegin},
@@ -435,7 +435,7 @@ namespace spla {
         return detail::MergeByKey(
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
-                detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
+                detail::binop::IsFirstPairGt{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
                 detail::binop::Assign{std::pair{keysFirstOut, keysFirstABegin}, std::pair{keysSecondOut, keysSecondABegin}},
                 detail::binop::Assign{std::pair{keysFirstOut, keysFirstBBegin}, std::pair{keysSecondOut, keysSecondBBegin}},
                 queue);
