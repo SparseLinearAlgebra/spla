@@ -31,6 +31,7 @@
 
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/detail/meta_kernel.hpp>
+#include <boost/hana.hpp>
 
 namespace spla {
 
@@ -254,57 +255,18 @@ namespace spla {
                 }
             };
 
-            template<typename ItA, typename ItB, typename ItC, typename ItD, typename ItE, typename ItF>
-            class Assign3 {
-                ItA l1;
-                ItB r1;
-                ItC l2;
-                ItD r2;
-                ItE l3;
-                ItF r3;
+            template<typename... Assignees>
+            class Assign {
+                boost::hana::tuple<Assignees...> mToAssign;
 
             public:
-                explicit Assign3(ItA itL1, ItB itR1, ItC itL2, ItD itR2, ItE itL3, ItF itR3)
-                    : l1(std::move(itL1)), r1(std::move(itR1)),
-                      l2(std::move(itL2)), r2(std::move(itR2)),
-                      l3(std::move(itL3)), r3(std::move(itR3)) {}
+                explicit Assign(Assignees... toAssign)
+                    : mToAssign(toAssign...) {}
 
                 void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
-                    k << l1[iRes] << " = " << r1[i] << ";"
-                      << l2[iRes] << " = " << r2[i] << ";"
-                      << l3[iRes] << " = " << r3[i];
-                }
-            };
-
-            template<typename ItA, typename ItB, typename ItC, typename ItD>
-            class Assign2 {
-                ItA l1;
-                ItB r1;
-                ItC l2;
-                ItD r2;
-
-            public:
-                explicit Assign2(ItA itL1, ItB itR1, ItC itL2, ItD itR2)
-                    : l1(std::move(itL1)), r1(std::move(itR1)),
-                      l2(std::move(itL2)), r2(std::move(itR2)) {}
-
-                void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
-                    k << l1[iRes] << " = " << r1[i] << ";";
-                    k << l2[iRes] << " = " << r2[i];
-                }
-            };
-
-            template<typename ItA, typename ItB>
-            class Assign1 {
-                ItA l;
-                ItB r;
-
-            public:
-                explicit Assign1(ItA itL1, ItB itR1)
-                    : l(std::move(itL1)), r(std::move(itR1)) {}
-
-                void operator()(MetaKernel &k, const MetaIdx &iRes, const MetaIdx &i) {
-                    k << l[iRes] << " = " << r[i];
+                    boost::hana::for_each(mToAssign, [&](auto &p) {
+                        k << p.first[iRes] << " = " << p.second[i] << ";";
+                    });
                 }
             };
         }// namespace binop
@@ -355,8 +317,8 @@ namespace spla {
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
                 detail::binop::IsFirstLeq{keysABegin, keysBBegin},
-                detail::binop::Assign2{keysResult, keysABegin, valuesResult, valuesA},
-                detail::binop::Assign2{keysResult, keysBBegin, valuesResult, valuesB},
+                detail::binop::Assign{std::pair{keysResult, keysABegin}, std::pair{valuesResult, valuesA}},
+                detail::binop::Assign{std::pair{keysResult, keysBBegin}, std::pair{valuesResult, valuesB}},
                 queue);
     }
 
@@ -389,8 +351,8 @@ namespace spla {
                 std::distance(keysABegin, keysAEnd),
                 std::distance(keysBBegin, keysBEnd),
                 detail::binop::IsFirstLeq{keysABegin, keysBBegin},
-                detail::binop::Assign1{keysResult, keysABegin},
-                detail::binop::Assign1{keysResult, keysBBegin},
+                detail::binop::Assign{std::pair{keysResult, keysABegin}},
+                detail::binop::Assign{std::pair{keysResult, keysBBegin}},
                 queue);
     }
 
@@ -430,14 +392,14 @@ namespace spla {
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
                 detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
-                detail::binop::Assign3{
-                        keysFirstOut, keysFirstABegin,
-                        keysSecondOut, keysSecondABegin,
-                        valuesOut, valuesA},
-                detail::binop::Assign3{
-                        keysFirstOut, keysFirstBBegin,
-                        keysSecondOut, keysSecondBBegin,
-                        valuesOut, valuesB},
+                detail::binop::Assign{
+                        std::pair{keysFirstOut, keysFirstABegin},
+                        std::pair{keysSecondOut, keysSecondABegin},
+                        std::pair{valuesOut, valuesA}},
+                detail::binop::Assign{
+                        std::pair{keysFirstOut, keysFirstBBegin},
+                        std::pair{keysSecondOut, keysSecondBBegin},
+                        std::pair{valuesOut, valuesB}},
                 queue);
     }
 
@@ -474,8 +436,8 @@ namespace spla {
                 std::distance(keysFirstABegin, keysFirstAEnd),
                 std::distance(keysFirstBBegin, keysFirstBEnd),
                 detail::binop::IsFirstPairLeq{keysFirstABegin, keysSecondABegin, keysFirstBBegin, keysSecondBBegin},
-                detail::binop::Assign2{keysFirstOut, keysFirstABegin, keysSecondOut, keysSecondABegin},
-                detail::binop::Assign2{keysFirstOut, keysFirstBBegin, keysSecondOut, keysSecondBBegin},
+                detail::binop::Assign{std::pair{keysFirstOut, keysFirstABegin}, std::pair{keysSecondOut, keysSecondABegin}},
+                detail::binop::Assign{std::pair{keysFirstOut, keysFirstBBegin}, std::pair{keysSecondOut, keysSecondBBegin}},
                 queue);
     }
 

@@ -471,10 +471,10 @@ TEST(MergeByKey, StressSmall) {
 }
 
 TEST(MergeByKey, StressMedium) {
-    MergeByKeyStress(5, 5000, 4000, 1, 5);
-    MergeByKeyStress(5, 5000, 4000, 1, 1000);
-    MergeByPairKeyStress(5, 5000, 4000, 1, 5);
-    MergeByPairKeyStress(5, 5000, 4000, 1, 1000);
+    MergeByKeyStress(5, 500, 400, 1, 5);
+    MergeByKeyStress(5, 500, 400, 1, 1000);
+    MergeByPairKeyStress(5, 500, 400, 1, 5);
+    MergeByPairKeyStress(5, 500, 400, 1, 1000);
 }
 
 SPLA_GTEST_MAIN
