@@ -51,17 +51,27 @@ namespace utils {
     template<typename T>
     class UniformIntGenerator {
     public:
-        explicit UniformIntGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
+        explicit UniformIntGenerator(std::size_t seed = 0,
+                                     T min = std::numeric_limits<T>::min(),
+                                     T max = std::numeric_limits<T>::max())
+            : mEngine(seed),
+              mMin(min),
+              mMax(max) {
         }
 
         T operator()() {
-            return mDist(mEngine);
+            T generated = mDist(mEngine);
+            if (mMin == std::numeric_limits<T>::min() && mMax == std::numeric_limits<T>::max()) {
+                return generated;
+            }
+            return generated % (mMin - mMax + 1) + mMin;
         }
 
     private:
         std::default_random_engine mEngine;
         std::uniform_int_distribution<T> mDist;
+        T mMin;
+        T mMax;
     };
 
     template<typename T>
@@ -73,17 +83,10 @@ namespace utils {
     template<>
     class UniformGenerator<std::int32_t> : public UniformIntGenerator<std::int32_t> {};
 
-    template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateIntVector(const std::size_t size, std::size_t seed = 0) {
+    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
+    std::vector<T> GenerateVector(const std::size_t size, G generator) {
         std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, UniformIntGenerator<T>{seed});
-        return vec;
-    }
-
-    template<typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
-    std::vector<T> GenerateFloatVector(const std::size_t size, std::size_t seed = 0) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, UniformRealGenerator<T>{seed});
+        std::generate_n(vec.begin(), size, generator);
         return vec;
     }
 }// namespace utils

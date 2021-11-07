@@ -233,7 +233,10 @@ std::pair<std::vector<int>, std::vector<int>> MergeByKeyCpu(
     }
 
     std::vector<std::pair<int, int>> zippedR(mergedSize);
-    std::merge(zipped1.begin(), zipped1.end(), zipped2.begin(), zipped2.end(), zippedR.begin());
+    std::merge(zipped1.begin(), zipped1.end(),
+               zipped2.begin(), zipped2.end(),
+               zippedR.begin(),
+               [](const auto &a, const auto &b) { return a.first < b.first; });
 
     for (std::size_t i = 0; i < mergedSize; ++i) {
         kRes[i] = zippedR[i].first;
@@ -242,11 +245,58 @@ std::pair<std::vector<int>, std::vector<int>> MergeByKeyCpu(
     return {kRes, vRes};
 }
 
+std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> MergeByPairKeyCpu(
+        const std::vector<int> &k1f,
+        const std::vector<int> &k1s,
+        const std::vector<int> &v1,
+        const std::vector<int> &k2f,
+        const std::vector<int> &k2s,
+        const std::vector<int> &v2) {
+    EXPECT_EQ(k1f.size(), v1.size());
+    EXPECT_EQ(k1s.size(), v1.size());
+    EXPECT_EQ(k2f.size(), v2.size());
+    EXPECT_EQ(k2s.size(), v2.size());
+
+    const std::size_t mergedSize = k1f.size() + k2f.size();
+
+    std::vector<int> kfRes(mergedSize), ksRes(mergedSize), vRes(mergedSize);
+
+    std::vector<std::tuple<int, int, int>> zipped1(k1f.size());
+    for (std::size_t i = 0; i < k1f.size(); ++i) {
+        zipped1[i] = {k1f[i], k1s[i], v1[i]};
+    }
+
+    std::vector<std::tuple<int, int, int>> zipped2(k2f.size());
+    for (std::size_t i = 0; i < k2f.size(); ++i) {
+        zipped2[i] = {k2f[i], k2s[i], v2[i]};
+    }
+
+    std::vector<std::tuple<int, int, int>> zippedR(mergedSize);
+    std::merge(zipped1.begin(), zipped1.end(),
+               zipped2.begin(), zipped2.end(),
+               zippedR.begin(),
+               [](const auto &a, const auto &b) { return std::pair{std::get<0>(a), std::get<1>(a)} < std::pair{std::get<0>(b), std::get<1>(b)}; });
+
+    for (std::size_t i = 0; i < mergedSize; ++i) {
+        kfRes[i] = std::get<0>(zippedR[i]);
+        ksRes[i] = std::get<1>(zippedR[i]);
+        vRes[i] = std::get<2>(zippedR[i]);
+    }
+    return {kfRes, ksRes, vRes};
+}
+
 void MergeByKeyStress(
         std::size_t iterations,
         std::size_t aSize,
-        std::size_t bSize) {
+        std::size_t bSize,
+        int min,
+        int max) {
     namespace compute = boost::compute;
+
+    int seed = 0;
+    auto getIntGenerator = [&]() {
+        return utils::UniformIntGenerator<int>(seed++, min, max);
+    };
 
     for (std::size_t testIt = 0; testIt < iterations; ++testIt) {
         // get the default compute device
@@ -256,10 +306,10 @@ void MergeByKeyStress(
         compute::context ctx(gpu);
         compute::command_queue queue(ctx, gpu);
 
-        std::vector<int> k1 = utils::GenerateIntVector<int>(aSize, testIt * 4);
-        std::vector<int> v1 = utils::GenerateIntVector<int>(aSize, testIt * 4 + 1);
-        std::vector<int> k2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 2);
-        std::vector<int> v2 = utils::GenerateIntVector<int>(bSize, testIt * 4 + 3);
+        std::vector<int> k1 = utils::GenerateVector<int>(aSize, getIntGenerator());
+        std::vector<int> v1 = utils::GenerateVector<int>(aSize, getIntGenerator());
+        std::vector<int> k2 = utils::GenerateVector<int>(bSize, getIntGenerator());
+        std::vector<int> v2 = utils::GenerateVector<int>(bSize, getIntGenerator());
 
         std::sort(k1.begin(), k1.end());
         std::sort(k2.begin(), k2.end());
@@ -296,12 +346,135 @@ void MergeByKeyStress(
     }
 }
 
+void MergeByPairKeyStress(
+        std::size_t iterations,
+        std::size_t aSize,
+        std::size_t bSize,
+        int min,
+        int max) {
+    namespace compute = boost::compute;
+
+    int seed = 0;
+    auto getIntGenerator = [&]() {
+        return utils::UniformIntGenerator<int>(seed++, min, max);
+    };
+
+    for (std::size_t testIt = 0; testIt < iterations; ++testIt) {
+        // get the default compute device
+        compute::device gpu = compute::system::default_device();
+
+        // create a compute context and command queue
+        compute::context ctx(gpu);
+        compute::command_queue queue(ctx, gpu);
+
+        std::vector<int> k1f = utils::GenerateVector<int>(aSize, getIntGenerator());
+        std::vector<int> k1s = utils::GenerateVector<int>(aSize, getIntGenerator());
+        std::vector<int> v1 = utils::GenerateVector<int>(aSize, getIntGenerator());
+        std::vector<int> k2f = utils::GenerateVector<int>(bSize, getIntGenerator());
+        std::vector<int> k2s = utils::GenerateVector<int>(bSize, getIntGenerator());
+        std::vector<int> v2 = utils::GenerateVector<int>(bSize, getIntGenerator());
+
+        {
+            std::vector<std::pair<int, int>> k1(aSize);
+            std::vector<std::pair<int, int>> k2(bSize);
+
+            for (std::size_t i = 0; i < aSize; ++i) {
+                k1[i] = {k1f[i], k1s[i]};
+            }
+            for (std::size_t i = 0; i < bSize; ++i) {
+                k2[i] = {k2f[i], k2s[i]};
+            }
+
+            std::sort(k1.begin(), k1.end());
+            std::sort(k2.begin(), k2.end());
+
+            for (std::size_t i = 0; i < aSize; ++i) {
+                std::tie(k1f[i], k1s[i]) = k1[i];
+            }
+            for (std::size_t i = 0; i < bSize; ++i) {
+                std::tie(k2f[i], k2s[i]) = k2[i];
+            }
+        }
+
+        auto [expectedKeyFRes, expectedKeySRes, expectedValRes] = MergeByPairKeyCpu(k1f, k1s, v1, k2f, k2s, v2);
+
+        compute::vector<int> keysAf(k1f, queue);
+        compute::vector<int> keysAs(k1s, queue);
+        compute::vector<int> valsA(v1, queue);
+        compute::vector<int> keysBf(k2f, queue);
+        compute::vector<int> keysBs(k2s, queue);
+        compute::vector<int> valsB(v2, queue);
+
+        const std::size_t sizeSum = aSize + bSize;
+        compute::vector<int> keysFRes(sizeSum, ctx);
+        compute::vector<int> keysSRes(sizeSum, ctx);
+        compute::vector<int> valsRes(sizeSum, ctx);
+
+        const std::ptrdiff_t mergedSize = spla::MergeByPairKey(
+                keysAf.begin(), keysAf.end(), keysAs.begin(), valsA.begin(),
+                keysBf.begin(), keysBf.end(), keysBs.begin(), valsB.begin(),
+                keysFRes.begin(), keysSRes.begin(),
+                valsRes.begin(),
+                queue);
+
+        for (auto it = keysFRes.begin(); it < keysFRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - keysFRes.begin();
+            EXPECT_EQ(it.read(queue), expectedKeyFRes[ind]);
+        }
+
+        for (auto it = keysSRes.begin(); it < keysSRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - keysSRes.begin();
+            EXPECT_EQ(it.read(queue), expectedKeySRes[ind]);
+        }
+
+        for (auto it = valsRes.begin(); it < valsRes.begin() + mergedSize; ++it) {
+            std::size_t ind = it - valsRes.begin();
+            EXPECT_EQ(it.read(queue), expectedValRes[ind]);
+        }
+    }
+}
+
+TEST(MergeByKeyCpu, Shallow) {
+    std::vector<int> k1 = {1, 2, 2, 3, 5, 5, 6};
+    std::vector<int> v1 = {2, 4, 4, 6, 10, 12, 12};
+
+    std::vector<int> k2 = {2, 4, 4, 5, 5, 6};
+    std::vector<int> v2 = {4, 8, 8, 9, 10, 12};
+
+    auto [k, v] = MergeByKeyCpu(k1, v1, k2, v2);
+
+    EXPECT_EQ(k, (std::vector<int>{1, 2, 2, 2, 3, 4, 4, 5, 5, 5, 5, 6, 6}));
+    EXPECT_EQ(v, (std::vector<int>{2, 4, 4, 4, 6, 8, 8, 10, 12, 9, 10, 12, 12}));
+}
+
+TEST(MergeByPairKeyCpu, Shallow) {
+    std::vector<int> k1f = {1, 2, 2, 3, 5, 5, 6};
+    std::vector<int> k1s = {0, 1, 3, 0, 5, 6, 0};
+    std::vector<int> v1 = {2, 4, 4, 6, 10, 12, 12};
+
+    std::vector<int> k2f = {2, 4, 4, 5, 5, 6};
+    std::vector<int> k2s = {1, 2, 5, 5, 6, 6};
+    std::vector<int> v2 = {1, 8, 8, 9, 10, 12};
+
+    auto [kf, ks, v] = MergeByPairKeyCpu(k1f, k1s, v1, k2f, k2s, v2);
+
+    EXPECT_EQ(kf, (std::vector<int>{1, 2, 2, 2, 3, 4, 4, 5, 5, 5, 5, 6, 6}));
+    EXPECT_EQ(ks, (std::vector<int>{0, 1, 1, 3, 0, 2, 5, 5, 5, 6, 6, 0, 6}));
+    EXPECT_EQ(v, (std::vector<int>{2, 4, 1, 4, 6, 8, 8, 10, 9, 12, 10, 12, 12}));
+}
+
 TEST(MergeByKey, StressSmall) {
-    MergeByKeyStress(100, 55, 34);
+    MergeByKeyStress(100, 55, 34, 1, 5);
+    MergeByKeyStress(100, 55, 34, 1, 1000);
+    MergeByPairKeyStress(100, 55, 34, 1, 5);
+    MergeByPairKeyStress(100, 55, 34, 1, 1000);
 }
 
 TEST(MergeByKey, StressMedium) {
-    MergeByKeyStress(5, 5000, 4000);
+    MergeByKeyStress(5, 500, 400, 1, 5);
+    MergeByKeyStress(5, 500, 400, 1, 1000);
+    MergeByPairKeyStress(5, 500, 400, 1, 5);
+    MergeByPairKeyStress(5, 500, 400, 1, 1000);
 }
 
 SPLA_GTEST_MAIN
