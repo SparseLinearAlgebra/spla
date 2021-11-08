@@ -148,11 +148,12 @@ namespace spla {
             std::size_t m_b_count_arg;
         };
 
-        class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
+        /** Serial pre-process intersection kernel to count actual results count (but do not intersect) */
+        class SerialIntersectionCountKernel : boost::compute::detail::meta_kernel {
         public:
             unsigned int tile_size;
 
-            SerialIntersectionKernel() : meta_kernel("__spla_serial_intersection") {
+            SerialIntersectionCountKernel() : meta_kernel("__spla_serial_intersection_count") {
                 tile_size = 4;
             }
 
@@ -160,10 +161,7 @@ namespace spla {
                      class InputIterator2,
                      class InputIterator3,
                      class InputIterator4,
-                     class InputIterator5,
-                     class OutputIterator1,
-                     class OutputIterator2,
-                     class OutputIterator3,
+                     class OutputIterator,
                      class Compare,
                      class Equals>
             void set_range(InputIterator1 maskFirst,
@@ -171,10 +169,7 @@ namespace spla {
                            InputIterator3 tile_first1,
                            InputIterator3 tile_last1,
                            InputIterator4 tile_first2,
-                           InputIterator5 values,
-                           OutputIterator1 resultKeys,
-                           OutputIterator2 resultValues,
-                           OutputIterator3 counts,
+                           OutputIterator counts,
                            Compare compare,
                            Equals equals) {
                 using uint_ = boost::compute::uint_;
@@ -185,15 +180,12 @@ namespace spla {
                       << "uint end1 = " << tile_first1[expr<uint_>("i+1")] << ";\n"
                       << "uint start2 = " << tile_first2[expr<uint_>("i")] << ";\n"
                       << "uint end2 = " << tile_first2[expr<uint_>("i+1")] << ";\n"
-                      << "uint index = i*" << tile_size << ";\n"
                       << "uint count = 0;\n"
                       << "while(start1<end1 && start2<end2)\n"
                       << "{\n"
                       << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
                       << "   {\n"
-                      << "       " << resultKeys[expr<uint_>("index")] << " = " << keyFirsts[expr<uint_>("start2")] << ";\n"
-                      << "       " << resultValues[expr<uint_>("index")] << " = " << values[expr<uint_>("start2")] << ";\n"
-                      << "       index++; count++;\n"
+                      << "       count++;\n"
                       << "       start1++; start2++;\n"
                       << "   }\n"
                       << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
@@ -214,241 +206,383 @@ namespace spla {
         private:
             std::size_t m_count = 0;
         };
+
+        class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
+        public:
+            unsigned int tile_size;
+
+            SerialIntersectionKernel() : meta_kernel("__spla_serial_intersection") {
+                tile_size = 4;
+            }
+
+            template<class InputIterator1,
+                     class InputIterator2,
+                     class InputIterator3,
+                     class InputIterator4,
+                     class InputIterator5,
+                     class Compare,
+                     class Equals,
+                     class AssignResult>
+            void set_range(InputIterator1 maskFirst,
+                           InputIterator2 keyFirsts,
+                           InputIterator3 tile_first1,
+                           InputIterator3 tile_last1,
+                           InputIterator4 tile_first2,
+                           InputIterator5 counts,
+                           Compare compare,
+                           Equals equals,
+                           AssignResult assignResult) {
+                using uint_ = boost::compute::uint_;
+                m_count = boost::compute::detail::iterator_range_size(tile_first1, tile_last1) - 1;
+
+                *this << "uint i = get_global_id(0);\n"
+                      << "uint start1 = " << tile_first1[expr<uint_>("i")] << ";\n"
+                      << "uint end1 = " << tile_first1[expr<uint_>("i+1")] << ";\n"
+                      << "uint start2 = " << tile_first2[expr<uint_>("i")] << ";\n"
+                      << "uint end2 = " << tile_first2[expr<uint_>("i+1")] << ";\n"
+                      << "uint count = " << counts[expr<uint_>("i")] << ";\n"
+                      << "while(start1<end1 && start2<end2)\n"
+                      << "{\n"
+                      << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                      << "   {\n";
+                assignResult(*this, expr<uint_>("count"), expr<uint_>("start2"));
+                *this << "       count++;\n"
+                      << "       start1++; start2++;\n"
+                      << "   }\n"
+                      << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                      << "       start1++;\n"
+                      << "   else start2++;\n"
+                      << "}\n";
+            }
+
+            boost::compute::event exec(boost::compute::command_queue &queue) {
+                if (m_count == 0) {
+                    return boost::compute::event();
+                }
+
+                return exec_1d(queue, 0, m_count);
+            }
+
+        private:
+            std::size_t m_count = 0;
+        };
+
+        template<
+                typename InputMask,
+                typename InputKey,
+                typename Compare,
+                typename Equals,
+                typename ResizeResult,
+                typename AssignResult>
+        std::size_t MaskByKey(InputMask maskFirst,
+                              InputKey keyFirst,
+                              Compare compare,
+                              Equals equals,
+                              ResizeResult resizeResult,
+                              AssignResult assignResult,
+                              std::size_t maskCount,
+                              std::size_t keyCount,
+                              boost::compute::command_queue &queue) {
+            using namespace boost;
+            typedef typename std::iterator_traits<InputMask>::value_type key_type;
+
+            std::size_t tileSize = 1024;
+
+            compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
+            compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
+
+            // Tile the sets
+            detail::BalancedPathKernel balancedPathKernel;
+            balancedPathKernel.tile_size = tileSize;
+            balancedPathKernel.set_range(maskFirst, maskFirst + maskCount,
+                                         keyFirst, keyFirst + keyCount,
+                                         tileA.begin() + 1, tileB.begin() + 1,
+                                         compare);
+            fill_n(tileA.begin(), 1, 0, queue);
+            fill_n(tileB.begin(), 1, 0, queue);
+            balancedPathKernel.exec(queue);
+
+            fill_n(tileA.end() - 1, 1, maskCount, queue);
+            fill_n(tileB.end() - 1, 1, keyCount, queue);
+
+            compute::vector<compute::uint_> counts((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
+            compute::fill_n(counts.end() - 1, 1, 0, queue);
+
+            // Find result intersections count and offsets to write result of each tile
+            detail::SerialIntersectionCountKernel intersectionCountKernel;
+            intersectionCountKernel.tile_size = tileSize;
+            intersectionCountKernel.set_range(maskFirst, keyFirst,
+                                              tileA.begin(), tileA.end(),
+                                              tileB.begin(),
+                                              counts.begin(),
+                                              compare, equals);
+            intersectionCountKernel.exec(queue);
+
+            // Compute actual counts offsets
+            exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);
+
+            // Get result count and resize buffers
+            std::size_t resultCount = (counts.end() - 1).read(queue);
+            resizeResult(resultCount);
+
+            // Find result intersections
+            detail::SerialIntersectionKernel intersectionKernel;
+            intersectionKernel.tile_size = tileSize;
+            intersectionKernel.set_range(maskFirst, keyFirst, tileA.begin(), tileA.end(),
+                                         tileB.begin(),
+                                         counts.begin(),
+                                         compare, equals, assignResult);
+            intersectionKernel.exec(queue);
+
+            return resultCount;
+        }
+
     }// namespace detail
 
     /**
-     * @brief Mask intersection algorithm
+     * @brief Mask intersection algorithm.
      *
-     * Finds the intersection of the sorted mask range [maskFirst, maskLast) with the sorted
-     * keys range [keyFirsts, keyLast) and stores it in range starting at resultKeys with values associated to key range.
+     * Finds the intersection of the sorted mask range with the sorted
+     * keys range and stores it in range starting at resultKeys.
      *
-     * @code
-     *      vector<uint> mask = { 0, 3, 5, 10 };
-     *      vector<uint> keys = { 0, 1, 2, 3, 7, 10 };
-     *      vector<uint> values = { 10, 1, 2, 53, 4, 775 };
+     * @note Automatically resizes result containers to result count size.
      *
-     *      MaskByKey(mask.begin(), mask.end(), key.begin(), key.end(), values.begin(),
-     *                keys.begin(), values.begin(), queue);
-     *
-     *      // keys = { 0, 3, 10 }
-     *      // values = {10, 2, 53, 775 }
-     * @endcode
-     *
-     * @tparam InputIterator1 Type of mask iterator
-     * @tparam InputIterator2 Type of keys iterator
-     * @tparam InputIterator3 Type of values iterator
-     * @tparam OutputIterator1 Type of result keys iterator
-     * @tparam OutputIterator2 Type of result values iterator
-     * @tparam Compare Type of mask/keys '<' functor
-     * @tparam Equals Type of mask/keys '==' functor
-     *
-     * @param maskFirst Begin of the mask
-     * @param maskLast End of the mask
-     * @param keyFirsts Begin of keys
-     * @param keyLast End of keys
-     * @param valueFirst Begin of values (range the same as for keys)
-     * @param resultKeys Keys result begin
-     * @param resultValues Values result begin
-     * @param compare Mask/keys compare function
-     * @param equals Mask/keys compare function
-     * @param queue Queue to execute
+     * @param mask Mask elements
+     * @param keys Keys elements
+     * @param resultKeys Result keys elements
+     * @param queue Command queue to perform operations on
      *
      * @return Count of values in intersected region
      */
-    template<
-            class InputIterator1,
-            class InputIterator2,
-            class InputIterator3,
-            class OutputIterator1,
-            class OutputIterator2,
-            class Compare,
-            class Equals>
-    inline std::size_t MaskByKey(InputIterator1 maskFirst,
-                                 InputIterator1 maskLast,
-                                 InputIterator2 keyFirsts,
-                                 InputIterator2 keyLast,
-                                 InputIterator3 valueFirst,
-                                 OutputIterator1 resultKeys,
-                                 OutputIterator2 resultValues,
-                                 Compare compare,
-                                 Equals equals,
-                                 boost::compute::command_queue &queue) {
+    inline std::size_t MaskKeys(const boost::compute::vector<unsigned int> &mask,
+                                const boost::compute::vector<unsigned int> &keys,
+                                boost::compute::vector<unsigned int> &resultKeys,
+                                boost::compute::command_queue &queue) {
         using namespace boost;
+        using MetaKernel = boost::compute::detail::meta_kernel;
+        using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator1>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator2>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator3>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator1>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator2>::value);
+        assert(keys.size() == values.size());
 
-        typedef typename std::iterator_traits<InputIterator1>::value_type key_type;
-        typedef typename std::iterator_traits<InputIterator3>::value_type value_type;
+        auto resizeResult = [&](std::size_t size) {
+            resultKeys.resize(size);
+        };
 
-        std::size_t tile_size = 1024;
+        auto assignResult = [&](MetaKernel &kernel, const MetaIdx &dst, const MetaIdx &src) {
+            kernel << resultKeys.begin()[dst] << " = " << keys.begin()[src] << ";\n";
+        };
 
-        std::size_t count1 = compute::detail::iterator_range_size(maskFirst, maskLast);
-        std::size_t count2 = compute::detail::iterator_range_size(keyFirsts, keyLast);
+        if (mask.empty() || keys.empty()) {
+            resizeResult(0);
+            return 0;
+        }
 
-        compute::vector<compute::uint_> tile_a((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
-        compute::vector<compute::uint_> tile_b((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
+        using compute::lambda::_1;
+        using compute::lambda::_2;
 
-        // Tile the sets
-        detail::BalancedPathKernel tiling_kernel;
-        tiling_kernel.tile_size = tile_size;
-        tiling_kernel.set_range(maskFirst, maskLast, keyFirsts, keyLast,
-                                tile_a.begin() + 1, tile_b.begin() + 1, compare);
-        fill_n(tile_a.begin(), 1, 0, queue);
-        fill_n(tile_b.begin(), 1, 0, queue);
-        tiling_kernel.exec(queue);
-
-        fill_n(tile_a.end() - 1, 1, count1, queue);
-        fill_n(tile_b.end() - 1, 1, count2, queue);
-
-        compute::vector<key_type> temp_resultKeys(count1 + count2, queue.get_context());
-        compute::vector<value_type> temp_resultValues(count1 + count2, queue.get_context());
-        compute::vector<compute::uint_> counts((count1 + count2 + tile_size - 1) / tile_size + 1, queue.get_context());
-        compute::fill_n(counts.end() - 1, 1, 0, queue);
-
-        // Find individual intersections
-        detail::SerialIntersectionKernel intersection_kernel;
-        intersection_kernel.tile_size = tile_size;
-        intersection_kernel.set_range(maskFirst, keyFirsts, tile_a.begin(), tile_a.end(),
-                                      tile_b.begin(), valueFirst,
-                                      temp_resultKeys.begin(),
-                                      temp_resultValues.begin(),
-                                      counts.begin(),
-                                      compare, equals);
-        intersection_kernel.exec(queue);
-
-        exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);
-
-        // Compact the results keys
-        compute::detail::compact_kernel compactKey_kernel;
-        compactKey_kernel.tile_size = tile_size;
-        compactKey_kernel.set_range(temp_resultKeys.begin(), counts.begin(), counts.end(), resultKeys);
-        compactKey_kernel.exec(queue);
-
-        // Compact the results values
-        compute::detail::compact_kernel compactValues_kernel;
-        compactValues_kernel.tile_size = tile_size;
-        compactValues_kernel.set_range(temp_resultValues.begin(), counts.begin(), counts.end(), resultValues);
-        compactValues_kernel.exec(queue);
-
-        return (counts.end() - 1).read(queue);
+        return detail::MaskByKey(mask.begin(),
+                                 keys.begin(),
+                                 _1 < _2,
+                                 _1 == _2,
+                                 resizeResult,
+                                 assignResult,
+                                 mask.size(),
+                                 keys.size(),
+                                 queue);
     }
 
-    template<
-            class InputIterator1,
-            class InputIterator2,
-            class InputIterator3,
-            class InputIterator4,
-            class InputIterator5,
-            class OutputIterator1,
-            class OutputIterator2,
-            class OutputIterator3>
-    inline std::size_t MaskByPairKey(InputIterator1 mask1First,
-                                     InputIterator1 mask1Last,
-                                     InputIterator2 mask2First,
-                                     InputIterator3 key1Firsts,
-                                     InputIterator3 key1Last,
-                                     InputIterator4 key2Firsts,
-                                     InputIterator5 valueFirst,
-                                     OutputIterator1 resultKeys1,
-                                     OutputIterator2 resultKeys2,
-                                     OutputIterator3 resultValues,
-                                     boost::compute::command_queue &queue) {
+    /**
+     * @brief Mask intersection algorithm.
+     *
+     * Finds the intersection of the sorted mask range with the sorted
+     * keys range and stores it in range starting at resultKeys.
+     *
+     * @note Manages associated values with keys.
+     * @note Automatically resizes result containers to result count size.
+     *
+     * @param mask Mask elements
+     * @param keys Keys elements
+     * @param values Associated with keys values
+     * @param resultKeys Result keys elements
+     * @param resultValues Result values associated with result keys.
+     * @param queue Command queue to perform operations on
+     *
+     * @return Count of values in intersected region
+     */
+    inline std::size_t MaskByKeys(const boost::compute::vector<unsigned int> &mask,
+                                  const boost::compute::vector<unsigned int> &keys,
+                                  const boost::compute::vector<unsigned int> &values,
+                                  boost::compute::vector<unsigned int> &resultKeys,
+                                  boost::compute::vector<unsigned int> &resultValues,
+                                  boost::compute::command_queue &queue) {
         using namespace boost;
+        using MetaKernel = boost::compute::detail::meta_kernel;
+        using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator1>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator2>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator3>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator4>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator5>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator1>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator2>::value);
-        BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator3>::value);
+        assert(keys.size() == values.size());
 
-        using Key1 = typename std::iterator_traits<InputIterator1>::value_type;
-        using Key2 = typename std::iterator_traits<InputIterator2>::value_type;
+        auto resizeResult = [&](std::size_t size) {
+            resultKeys.resize(size);
+            resultValues.resize(size);
+        };
 
-        using Key = boost::tuple<Key1, Key2>;
+        auto assignResult = [&](MetaKernel &kernel, const MetaIdx &dst, const MetaIdx &src) {
+            kernel << resultKeys.begin()[dst] << " = " << keys.begin()[src] << ";\n"
+                   << resultValues.begin()[dst] << " = " << values.begin()[src] << ";\n";
+        };
 
-        const compute::context &ctx = queue.get_context();
+        if (mask.empty() || keys.empty()) {
+            resizeResult(0);
+            return 0;
+        }
 
-        const std::size_t aSize = std::distance(mask1First, mask1Last);
-        const std::size_t bSize = std::distance(key1Firsts, key1Last);
+        using compute::lambda::_1;
+        using compute::lambda::_2;
 
-        compute::vector<Key> mask(aSize, ctx);
-        compute::vector<Key> keys(bSize, ctx);
+        return detail::MaskByKey(mask.begin(),
+                                 keys.begin(),
+                                 _1 < _2,
+                                 _1 == _2,
+                                 resizeResult,
+                                 assignResult,
+                                 mask.size(),
+                                 keys.size(),
+                                 queue);
+    }
+
+    /**
+     * @brief Mask intersection algorithm.
+     *
+     * Finds the intersection of the sorted pair mask range with the sorted
+     * pair keys range and stores it in range starting at resultKeys.
+     *
+     * @note Interprets keys as pairs, where first and second elements stored in separate arrays.
+     * @note Automatically resizes result containers to result count size.
+     *
+     * @param mask1 Mask first elements
+     * @param mask2 Mask second elements
+     * @param keys1 Keys first elements
+     * @param keys2 Keys second elements
+     * @param resultKeys1 Result keys first elements
+     * @param resultKeys2 Result keys second elements
+     * @param queue Command queue to perform operations on
+     *
+     * @return Count of values in intersected region
+     */
+    inline std::size_t MaskPairKeys(const boost::compute::vector<unsigned int> &mask1,
+                                    const boost::compute::vector<unsigned int> &mask2,
+                                    const boost::compute::vector<unsigned int> &keys1,
+                                    const boost::compute::vector<unsigned int> &keys2,
+                                    boost::compute::vector<unsigned int> &resultKeys1,
+                                    boost::compute::vector<unsigned int> &resultKeys2,
+                                    boost::compute::command_queue &queue) {
+        using namespace boost;
+        using MetaKernel = boost::compute::detail::meta_kernel;
+        using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
+
+        assert(mask1.size() == mask2.size());
+        assert(keys1.size() == keys2.size());
+        assert(keys1.size() == values.size());
+
+        auto resizeResult = [&](std::size_t size) {
+            resultKeys1.resize(size);
+            resultKeys2.resize(size);
+        };
+
+        auto assignResult = [&](MetaKernel &kernel, const MetaIdx &dst, const MetaIdx &src) {
+            kernel << resultKeys1.begin()[dst] << " = " << keys1.begin()[src] << ";\n"
+                   << resultKeys2.begin()[dst] << " = " << keys2.begin()[src] << ";\n";
+        };
+
+        if (mask1.empty() || keys1.empty()) {
+            resizeResult(0);
+            return 0;
+        }
 
         using compute::lambda::_1;
         using compute::lambda::_2;
         using compute::lambda::get;
 
-        // Copy A keys
-        compute::copy(
-                mask1First,
-                mask1Last,
-                compute::make_transform_iterator(
-                        mask.begin(),
-                        get<0>(_1)),
-                queue);
+        return detail::MaskByKey(compute::make_zip_iterator(boost::make_tuple(mask1.begin(), mask2.begin())),
+                                 compute::make_zip_iterator(boost::make_tuple(keys1.begin(), keys2.begin())),
+                                 get<0>(_1) < get<0>(_2) || (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)),
+                                 get<0>(_1) == get<0>(_2) && get<1>(_1) == get<1>(_2),
+                                 resizeResult,
+                                 assignResult,
+                                 mask1.size(),
+                                 keys1.size(),
+                                 queue);
+    }
 
-        compute::copy(
-                mask2First,
-                mask2First + aSize,
-                compute::make_transform_iterator(
-                        mask.begin(),
-                        get<1>(_1)),
-                queue);
+    /**
+     * @brief Mask intersection algorithm.
+     *
+     * Finds the intersection of the sorted pair mask range with the sorted
+     * pair keys range and stores it in range starting at resultKeys.
+     *
+     * @note Manages associated values with keys.
+     * @note Interprets keys as pairs, where first and second elements stored in separate arrays.
+     * @note Automatically resizes result containers to result count size.
+     *
+     * @param mask1 Mask first elements
+     * @param mask2 Mask second elements
+     * @param keys1 Keys first elements
+     * @param keys2 Keys second elements
+     * @param values Associated with keys values
+     * @param resultKeys1 Result keys first elements
+     * @param resultKeys2 Result keys second elements
+     * @param resultValues Result values associated with result keys.
+     * @param queue Command queue to perform operations on
+     *
+     * @return Count of values in intersected region
+     */
+    inline std::size_t MaskByPairKeys(const boost::compute::vector<unsigned int> &mask1,
+                                      const boost::compute::vector<unsigned int> &mask2,
+                                      const boost::compute::vector<unsigned int> &keys1,
+                                      const boost::compute::vector<unsigned int> &keys2,
+                                      const boost::compute::vector<unsigned int> &values,
+                                      boost::compute::vector<unsigned int> &resultKeys1,
+                                      boost::compute::vector<unsigned int> &resultKeys2,
+                                      boost::compute::vector<unsigned int> &resultValues,
+                                      boost::compute::command_queue &queue) {
+        using namespace boost;
+        using MetaKernel = boost::compute::detail::meta_kernel;
+        using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
-        // Copy B keys
-        compute::copy(
-                key1Firsts,
-                key1Last,
-                compute::make_transform_iterator(
-                        keys.begin(),
-                        get<0>(_1)),
-                queue);
+        assert(mask1.size() == mask2.size());
+        assert(keys1.size() == keys2.size());
+        assert(keys1.size() == values.size());
 
-        compute::copy(
-                key2Firsts,
-                key2Firsts + bSize,
-                compute::make_transform_iterator(
-                        keys.begin(),
-                        get<1>(_1)),
-                queue);
+        auto resizeResult = [&](std::size_t size) {
+            resultKeys1.resize(size);
+            resultKeys2.resize(size);
+            resultValues.resize(size);
+        };
 
-        auto count = MaskByKey(mask.begin(), mask.end(),
-                               keys.begin(), keys.end(),
-                               valueFirst,
-                               keys.begin(),
-                               resultValues,
-                               get<0>(_1) < get<0>(_2) || (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)),
-                               get<0>(_1) == get<0>(_2) && get<1>(_1) == get<1>(_2),
-                               queue);
+        auto assignResult = [&](MetaKernel &kernel, const MetaIdx &dst, const MetaIdx &src) {
+            kernel << resultKeys1.begin()[dst] << " = " << keys1.begin()[src] << ";\n"
+                   << resultKeys2.begin()[dst] << " = " << keys2.begin()[src] << ";\n"
+                   << resultValues.begin()[dst] << " = " << values.begin()[src] << ";\n";
+        };
 
-        compute::copy(
-                compute::make_transform_iterator(
-                        keys.begin(),
-                        get<0>(_1)),
-                compute::make_transform_iterator(
-                        keys.end(),
-                        get<0>(_1)),
-                resultKeys1,
-                queue);
+        if (mask1.empty() || keys1.empty()) {
+            resizeResult(0);
+            return 0;
+        }
 
-        compute::copy(
-                compute::make_transform_iterator(
-                        keys.begin(),
-                        get<1>(_1)),
-                compute::make_transform_iterator(
-                        keys.end(),
-                        get<1>(_1)),
-                resultKeys2,
-                queue);
+        using compute::lambda::_1;
+        using compute::lambda::_2;
+        using compute::lambda::get;
 
-        return count;
+        return detail::MaskByKey(compute::make_zip_iterator(boost::make_tuple(mask1.begin(), mask2.begin())),
+                                 compute::make_zip_iterator(boost::make_tuple(keys1.begin(), keys2.begin())),
+                                 get<0>(_1) < get<0>(_2) || (get<0>(_1) == get<0>(_2) && get<1>(_1) < get<1>(_2)),
+                                 get<0>(_1) == get<0>(_2) && get<1>(_1) == get<1>(_2),
+                                 resizeResult,
+                                 assignResult,
+                                 mask1.size(),
+                                 keys1.size(),
+                                 queue);
     }
 
     /**

@@ -126,24 +126,15 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                     if (maskBlock.IsNull())
                         return;
 
-                    auto maxResultCount = std::min(maskBlock->GetNvals(), block->GetNvals());
-                    tmpRows.resize(maxResultCount, queue);
-                    tmpCols.resize(maxResultCount, queue);
+                    compute::vector<unsigned int> tmpPerm(ctx);
+                    MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
+                                   block->GetRows(), block->GetCols(), perm,
+                                   tmpRows, tmpCols, tmpPerm,
+                                   queue);
 
-                    auto count = MaskByPairKey(maskBlock->GetRows().begin(), maskBlock->GetRows().end(), maskBlock->GetCols().begin(),
-                                               block->GetRows().begin(), block->GetRows().end(), block->GetCols().begin(),
-                                               perm.begin(),
-                                               tmpRows.begin(),
-                                               tmpCols.begin(),
-                                               perm.begin(),
-                                               queue);
-
-                    // NOTE: remember to shrink size of each buffer after masking to match actual count size
-                    tmpRows.resize(count, queue);
-                    tmpCols.resize(count, queue);
-                    perm.resize(count, queue);
                     outRows = &tmpRows;
                     outCols = &tmpCols;
+                    std::swap(perm, tmpPerm);
                 };
 
                 applyMask(blockA, tmpRowsA, tmpColsA, permA, rowsA, colsA);

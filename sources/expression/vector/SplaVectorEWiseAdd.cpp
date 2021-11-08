@@ -113,28 +113,14 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 if (maskBlock.IsNull())
                     return;
 
-                auto maxResultCount = std::min(maskBlock->GetNvals(), block->GetNvals());
-                tmpRows.resize(maxResultCount, queue);
+                compute::vector<unsigned int> tmpPerm(ctx);
+                MaskByKeys(maskBlock->GetRows(),
+                           block->GetRows(), perm,
+                           tmpRows, tmpPerm,
+                           queue);
 
-                using ::boost::compute::lambda::_1;
-                using ::boost::compute::lambda::_2;
-
-                auto &maskRows = maskBlock->GetRows();
-                auto &blockRows = block->GetRows();
-
-                auto count = MaskByKey(maskRows.begin(), maskRows.end(),
-                                       blockRows.begin(), blockRows.end(),
-                                       perm.begin(),
-                                       tmpRows.begin(),
-                                       perm.begin(),
-                                       _1 < _2,
-                                       _1 == _2,
-                                       queue);
-
-                // NOTE: remember to shrink size of each buffer after masking to match actual count size
-                tmpRows.resize(count, queue);
-                perm.resize(count, queue);
                 out = &tmpRows;
+                std::swap(perm, tmpPerm);
             };
 
             applyMask(blockA, tmpRowsA, permA, rowsA);

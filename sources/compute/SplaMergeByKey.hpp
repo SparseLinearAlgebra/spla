@@ -46,7 +46,7 @@ namespace spla {
             unsigned int tileSize;
 
             MergeByKeyPathKernel()
-                : meta_kernel("merge_path"), tileSize(4) {}
+                : meta_kernel("__spla_merge_path"), tileSize(4) {}
 
             template<
                     typename OutputIterator1, typename OutputIterator2,
@@ -109,7 +109,7 @@ namespace spla {
             unsigned int tileSize;
 
             SerialMergeByKeyKernel()
-                : meta_kernel("merge"),
+                : meta_kernel("__spla_serial_merge"),
                   tileSize(4) {}
 
             template<
