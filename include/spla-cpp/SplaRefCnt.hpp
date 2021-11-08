@@ -47,7 +47,7 @@ namespace spla {
      *
      * @see RefPtr
      */
-    class RefCnt {
+    class SPLA_API RefCnt {
     public:
         virtual ~RefCnt() {
 #ifdef SPLA_DEBUG

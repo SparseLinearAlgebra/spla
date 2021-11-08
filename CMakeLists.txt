@@ -88,7 +88,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (SPLA_TARGET_WINDOWS)
-    if (MSVC)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         list(APPEND SPLA_DEFINES SPLA_MSVC)
     else ()
         message(FATAL_ERROR "Supported only MSVC compiler for Windows platform")
@@ -129,18 +129,30 @@ function(spla_target_compile_definitions target)
 endfunction()
 
 function(spla_target_compile_options target)
-    if (MSVC)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(CMAKE_CXX_FLAGS_RELEASE "/MT")
         set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
 
         target_compile_options(${target}
+                PUBLIC /W1
                 PUBLIC /std:c++17
                 PUBLIC /source-charset:utf-8)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(${target}
+                PUBLIC -Wall
+                PUBLIC -Wextra
+                PUBLIC -Wpedantic)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(${target}
+                PUBLIC -Wall
+                PUBLIC -Wextra
+                PUBLIC -Wpedantic
+                PUBLIC -Wno-inconsistent-missing-override)
     endif ()
 endfunction()
 
 function(spla_target_link_options target)
-    if (MSVC)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_link_options(${target}
                 PUBLIC /INCREMENTAL:NO
                 PUBLIC /machine:X64)
