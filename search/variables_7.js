@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['op_847',['op',['../classspla_1_1ParamsVectorEWiseAdd.html#ab7ba509f8aac36da6b9b660a4f91270b',1,'spla::ParamsVectorEWiseAdd::op()'],['../classspla_1_1ParamsMatrixEWiseAdd.html#a788f86de090346cd324d0e0242caaf71',1,'spla::ParamsMatrixEWiseAdd::op()']]]
+  ['startnodes_845',['startNodes',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html#af51433b1e9743233ca0f2af6762413d4',1,'spla::ExpressionManager::TraversalInfo']]]
 ];

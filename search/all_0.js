@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a_0',['a',['../classspla_1_1ParamsVectorEWiseAdd.html#abd3f9f201d48af326d9a4e4806dcdcdf',1,'spla::ParamsVectorEWiseAdd::a()'],['../classspla_1_1ParamsMatrixEWiseAdd.html#aa84687b476b125bfd026b465ab525c22',1,'spla::ParamsMatrixEWiseAdd::a()']]],
+  ['a_0',['a',['../classspla_1_1ParamsMatrixEWiseAdd.html#aa84687b476b125bfd026b465ab525c22',1,'spla::ParamsMatrixEWiseAdd::a()'],['../classspla_1_1ParamsVectorEWiseAdd.html#abd3f9f201d48af326d9a4e4806dcdcdf',1,'spla::ParamsVectorEWiseAdd::a()']]],
   ['aborted_1',['Aborted',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a721c28f4c74928cc9e0bb3fef345e408',1,'spla::Expression']]],
   ['accelerator_2',['Accelerator',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea74b089e262d13d95a6731b3b47379e3c',1,'spla::Library::Config']]],
   ['addref_3',['AddRef',['../classspla_1_1RefCnt.html#a4baf8cce74f6ba7900e7d7fbe03876aa',1,'spla::RefCnt']]],
