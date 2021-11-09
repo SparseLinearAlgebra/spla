@@ -26,11 +26,13 @@
 /**********************************************************************************/
 
 #include <algo/SplaAlgorithmManager.hpp>
+#include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
 #include <cassert>
 #include <core/SplaError.hpp>
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
+    Register(new MatrixEWiseAddCOO());
     Register(new VectorEWiseAddCOO());
 }
 

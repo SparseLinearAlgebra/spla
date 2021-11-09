@@ -25,8 +25,7 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/SplaAlgorithmParams.hpp>
-#include <algo/vector/SplaVectorEWiseAddCOO.hpp>
+#include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <boost/compute/algorithm.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
@@ -34,21 +33,22 @@
 #include <compute/SplaReduceDuplicates.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <storage/block/SplaVectorCOO.hpp>
+#include <storage/SplaMatrixStorage.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
 
-bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsVectorEWiseAdd *>(&params);
+bool spla::MatrixEWiseAddCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsMatrixEWiseAdd *>(&params);
 
     return p &&
-           p->mask.Is<VectorCOO>() &&
-           p->a.Is<VectorCOO>() &&
-           p->b.Is<VectorCOO>();
+           p->mask.Is<MatrixCOO>() &&
+           p->a.Is<MatrixCOO>() &&
+           p->b.Is<MatrixCOO>();
 }
 
-void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
+void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
+    auto p = dynamic_cast<ParamsMatrixEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
 
@@ -61,7 +61,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto byteSize = type->GetByteSize();
     auto typeHasValues = type->HasValues();
 
-    auto fillValuesPermutationIndices = [&](RefPtr<VectorCOO> &block, compute::vector<unsigned int> &perm) {
+    auto fillValuesPermutationIndices = [&](RefPtr<MatrixCOO> &block, compute::vector<unsigned int> &perm) {
         if (block.IsNotNull() && typeHasValues) {
             auto nnz = block->GetNvals();
             perm.resize(nnz, queue);
@@ -69,14 +69,16 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
-    auto blockA = p->a.Cast<VectorCOO>();
+    auto blockA = p->a.Cast<MatrixCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;
+    const compute::vector<unsigned int> *colsA = nullptr;
     compute::vector<unsigned int> permA(ctx);
 
     fillValuesPermutationIndices(blockA, permA);
 
-    auto blockB = p->b.Cast<VectorCOO>();
+    auto blockB = p->b.Cast<MatrixCOO>();
     const compute::vector<unsigned int> *rowsB = nullptr;
+    const compute::vector<unsigned int> *colsB = nullptr;
     compute::vector<unsigned int> permB(ctx);
 
     fillValuesPermutationIndices(blockB, permB);
@@ -84,14 +86,22 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     // If mask is present, apply it to a and b blocks
     compute::vector<unsigned int> tmpRowsA(ctx);
     compute::vector<unsigned int> tmpRowsB(ctx);
+    compute::vector<unsigned int> tmpColsA(ctx);
+    compute::vector<unsigned int> tmpColsB(ctx);
 
-    auto maskBlock = p->mask.Cast<VectorCOO>();
-    auto applyMask = [&](RefPtr<VectorCOO> &block, compute::vector<unsigned int> &tmpRows, compute::vector<unsigned int> &perm, const compute::vector<unsigned int> *&out) {
+    auto maskBlock = p->mask.Cast<MatrixCOO>();
+    auto applyMask = [&](RefPtr<MatrixCOO> &block,
+                         compute::vector<unsigned int> &tmpRows,
+                         compute::vector<unsigned int> &tmpCols,
+                         compute::vector<unsigned int> &perm,
+                         const compute::vector<unsigned int> *&outRows,
+                         const compute::vector<unsigned int> *&outCols) {
         if (block.IsNull())
             return;
 
         if (!p->hasMask) {
-            out = &block->GetRows();
+            outRows = &block->GetRows();
+            outCols = &block->GetCols();
             return;
         }
 
@@ -100,31 +110,37 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
 
         if (typeHasValues) {
             compute::vector<unsigned int> tmpPerm(ctx);
-            MaskByKeys(maskBlock->GetRows(),
-                       block->GetRows(), perm,
-                       tmpRows, tmpPerm,
-                       queue);
+            MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
+                           block->GetRows(), block->GetCols(), perm,
+                           tmpRows, tmpCols, tmpPerm,
+                           queue);
             std::swap(perm, tmpPerm);
         } else
-            MaskKeys(maskBlock->GetRows(),
-                     block->GetRows(),
-                     tmpRows,
-                     queue);
+            MaskPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
+                         block->GetRows(), block->GetCols(),
+                         tmpRows, tmpCols,
+                         queue);
 
-        out = &tmpRows;
+        outRows = &tmpRows;
+        outCols = &tmpCols;
     };
 
-    applyMask(blockA, tmpRowsA, permA, rowsA);
-    applyMask(blockB, tmpRowsB, permB, rowsB);
+    applyMask(blockA, tmpRowsA, tmpColsA, permA, rowsA, colsA);
+    applyMask(blockB, tmpRowsB, tmpColsB, permB, rowsB, colsB);
 
     // If some block is empty (or both, save result as is and finish without merge)
     auto aEmpty = !rowsA || rowsA->empty();
     auto bEmpty = !rowsB || rowsB->empty();
 
     if (aEmpty || bEmpty) {
-        auto setResult = [&](RefPtr<VectorCOO> &block, const compute::vector<unsigned int> *rows, compute::vector<unsigned int> &perm) {
+        auto setResult = [&](RefPtr<MatrixCOO> &block,
+                             const compute::vector<unsigned int> *rows,
+                             const compute::vector<unsigned int> *cols,
+                             compute::vector<unsigned int> &perm) {
             auto nnz = rows->size();
+            assert(nnz == cols->size());
             compute::vector<unsigned int> newRows(*rows, queue);
+            compute::vector<unsigned int> newCols(*cols, queue);
             compute::vector<unsigned char> newVals(ctx);
 
             // Copy masked values if presented
@@ -134,16 +150,16 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                 Gather(perm.begin(), perm.end(), vals.begin(), newVals.begin(), byteSize, queue);
             }
 
-            p->w = VectorCOO::Make(block->GetNrows(), nnz, std::move(newRows), std::move(newVals)).As<VectorBlock>();
+            p->w = MatrixCOO::Make(block->GetNrows(), block->GetNcols(), nnz, std::move(newRows), std::move(newCols), std::move(newVals)).As<MatrixBlock>();
         };
 
         // Copy result of masking a block
         if (!aEmpty)
-            setResult(blockA, rowsA, permA);
+            setResult(blockA, rowsA, colsA, permA);
 
         // Copy result of masking b block
         if (!bEmpty)
-            setResult(blockB, rowsB, permB);
+            setResult(blockB, rowsB, colsB, permB);
 
         return;
     }
@@ -161,19 +177,22 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     // Merge a and b values
     auto mergeCount = rowsA->size() + rowsB->size();
     compute::vector<unsigned int> mergedRows(mergeCount, ctx);
+    compute::vector<unsigned int> mergedCols(mergeCount, ctx);
     compute::vector<unsigned int> mergedPerm(ctx);
 
     if (typeHasValues) {
         mergedPerm.resize(mergeCount, queue);
-        MergeByKeys(rowsA->begin(), rowsA->end(), permA.begin(),
-                    rowsB->begin(), rowsB->end(), permB.begin(),
-                    mergedRows.begin(), mergedPerm.begin(),
-                    queue);
+        MergeByPairKeys(rowsA->begin(), rowsA->end(), colsA->begin(),
+                        permA.begin(),
+                        rowsB->begin(), rowsB->end(), colsB->begin(),
+                        permB.begin(),
+                        mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
+                        queue);
     } else
-        MergeKeys(rowsA->begin(), rowsA->end(),
-                  rowsB->begin(), rowsB->end(),
-                  mergedRows.begin(),
-                  queue);
+        MergePairKeys(rowsA->begin(), rowsA->end(), colsA->begin(),
+                      rowsB->begin(), rowsB->end(), colsB->begin(),
+                      mergedRows.begin(), mergedCols.begin(),
+                      queue);
 
     // Copy values to single buffer
     compute::vector<unsigned char> mergedValues(ctx);
@@ -203,27 +222,28 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     // Reduce duplicates
     // NOTE: max 2 duplicated entries for each index
     compute::vector<unsigned int> resultRows(ctx);
+    compute::vector<unsigned int> resultCols(ctx);
     compute::vector<unsigned char> resultVals(ctx);
     std::size_t resultNvals;
 
     if (typeHasValues)
-        resultNvals = ReduceDuplicates(mergedRows, mergedValues,
-                                       resultRows, resultVals,
+        resultNvals = ReduceDuplicates(mergedRows, mergedCols, mergedValues,
+                                       resultRows, resultCols, resultVals,
                                        byteSize,
                                        p->op->GetSource(),
                                        queue);
     else
-        resultNvals = ReduceDuplicates(mergedRows,
-                                       resultRows,
+        resultNvals = ReduceDuplicates(mergedRows, mergedCols,
+                                       resultRows, resultCols,
                                        queue);
 
-    p->w = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals)).As<VectorBlock>();
+    p->w = MatrixCOO::Make(blockA->GetNrows(), blockA->GetNcols(), resultNvals, std::move(resultRows), std::move(resultCols), std::move(resultVals)).As<MatrixBlock>();
 }
 
-spla::Algorithm::Type spla::VectorEWiseAddCOO::GetType() const {
-    return Type::VectorEWiseAdd;
+spla::Algorithm::Type spla::MatrixEWiseAddCOO::GetType() const {
+    return Type::MatrixEWiseAdd;
 }
 
-std::string spla::VectorEWiseAddCOO::GetName() const {
-    return "VectorEWiseAddCOO";
+std::string spla::MatrixEWiseAddCOO::GetName() const {
+    return "MatrixEWiseAddCOO";
 }

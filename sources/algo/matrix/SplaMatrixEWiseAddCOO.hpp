@@ -25,74 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAALGORITHMPARAMS_HPP
-#define SPLA_SPLAALGORITHMPARAMS_HPP
+#ifndef SPLA_SPLAMATRIXEWISEADDCOO_HPP
+#define SPLA_SPLAMATRIXEWISEADDCOO_HPP
 
-#include <core/SplaDeviceManager.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <storage/SplaMatrixBlock.hpp>
-#include <storage/SplaVectorBlock.hpp>
+#include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
-    /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    /**
-     * @class AlgorithmParams
-     * @brief Params passed as input to algorithm for execution.
-     *
-     * Base class used to pack algorithm input/output params to
-     * pass to algorithm manager for algorithm selection and execution.
-     * Inherit from this class to extend params set for custom algorithms implementation.
-     */
-    class AlgorithmParams : public RefCnt {
+    class MatrixEWiseAddCOO final : public Algorithm {
     public:
-        ~AlgorithmParams() override = default;
-
-        /** Node desc */
-        RefPtr<Descriptor> desc;
-        /** Device id for execution */
-        DeviceManager::DeviceId deviceId;
+        ~MatrixEWiseAddCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
     };
-
-    /** Blocked element-wise matrix addition params */
-    class ParamsMatrixEWiseAdd final : public AlgorithmParams {
-    public:
-        ~ParamsMatrixEWiseAdd() override = default;
-
-        bool hasMask;
-        RefPtr<MatrixBlock> w;
-        RefPtr<MatrixBlock> mask;
-        RefPtr<FunctionBinary> op;
-        RefPtr<MatrixBlock> a;
-        RefPtr<MatrixBlock> b;
-        RefPtr<Type> type;
-    };
-
-    /** Blocked element-wise vector addition params */
-    class ParamsVectorEWiseAdd final : public AlgorithmParams {
-    public:
-        ~ParamsVectorEWiseAdd() override = default;
-
-        bool hasMask;
-        RefPtr<VectorBlock> w;
-        RefPtr<VectorBlock> mask;
-        RefPtr<FunctionBinary> op;
-        RefPtr<VectorBlock> a;
-        RefPtr<VectorBlock> b;
-        RefPtr<Type> type;
-    };
-
-    /**
-     * @}
-     */
-
 }// namespace spla
 
-
-#endif//SPLA_SPLAALGORITHMPARAMS_HPP
+#endif//SPLA_SPLAMATRIXEWISEADDCOO_HPP

@@ -31,7 +31,6 @@
 #include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
     class VectorEWiseAddCOO final : public Algorithm {
     public:
         ~VectorEWiseAddCOO() override = default;

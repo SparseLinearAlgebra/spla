@@ -14,6 +14,8 @@ set(SPLA_CPP_SOURCES
         sources/SplaVector.cpp)
 
 set(SPLA_ALGORITHM_SOURCES
+        sources/algo/matrix/SplaMatrixEWiseAddCOO.cpp
+        sources/algo/matrix/SplaMatrixEWiseAddCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
         sources/algo/SplaAlgorithm.hpp

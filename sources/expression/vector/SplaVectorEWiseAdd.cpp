@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <algo/SplaAlgorithmManager.hpp>
-#include <algo/SplaAlgorithmParams.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <storage/SplaVectorStorage.hpp>
@@ -61,7 +60,6 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
         auto deviceId = deviceIds[i];
         builder.Emplace([=]() {
             auto params = RefPtr<ParamsVectorEWiseAdd>(new ParamsVectorEWiseAdd());
-            params->library = library;
             params->desc = desc;
             params->deviceId = deviceId;
             params->hasMask = mask.IsNotNull();
@@ -71,8 +69,12 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             params->b = b->GetStorage()->GetBlock(i);
             params->type = w->GetType();
             library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params.As<AlgorithmParams>());
-            w->GetStorage()->SetBlock(i, params->w);
-            SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, params->w.IsNotNull() ? params->w->GetNvals() : 0);
+
+            if (params->w.IsNotNull()) {
+                w->GetStorage()->SetBlock(i, params->w);
+                SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, params->w->GetNvals());
+            } else
+                w->GetStorage()->RemoveBlock(i);
         });
     }
 }
