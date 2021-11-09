@@ -101,6 +101,48 @@ namespace utils {
             return data;
         }
 
+        [[nodiscard]] bool EqualsStructure(const spla::RefPtr<spla::Vector> &v) const {
+            if (v->GetNrows() != GetNrows()) {
+                std::cout << "Size mismatched" << std::endl;
+                return false;
+            }
+
+            if (v->GetNvals() != GetNvals()) {
+                std::cout << "Number of nnz mismatched" << std::endl;
+                return false;
+            }
+
+            std::vector<Index> spRows(GetNvals());
+
+            auto &library = v->GetLibrary();
+            auto data = spla::DataVector::Make(library);
+            data->SetRows(spRows.data());
+            data->SetNvals(GetNvals());
+
+            auto readExpr = spla::Expression::Make(library);
+            readExpr->MakeDataRead(v, data);
+            library.Submit(readExpr);
+
+            readExpr->Wait();
+
+            if (readExpr->GetState() != spla::Expression::State::Evaluated) {
+                std::cout << "Read expression is not evaluated" << std::endl;
+                return false;
+            }
+
+            if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
+                for (std::size_t i = 0; i < GetNvals(); i++)
+                    std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << " " << (GetRows()[i] == spRows[i] ? "eq" : "neq") << std::endl;
+
+                Dump(v);
+
+                std::cout << "Row indices not equal" << std::endl;
+                return false;
+            }
+
+            return true;
+        }
+
         [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v) const {
             if (v->GetNrows() != GetNrows()) {
                 std::cout << "Size mismatched" << std::endl;
