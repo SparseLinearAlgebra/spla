@@ -29,7 +29,9 @@
 #define SPLA_SPLAALGORITHMPARAMS_HPP
 
 #include <core/SplaDeviceManager.hpp>
+#include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
+#include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
 
@@ -50,8 +52,25 @@ namespace spla {
     public:
         ~AlgorithmParams() override = default;
 
+        /** Library instance */
+        std::shared_ptr<LibraryPrivate> library;
+        /** Node desc */
+        RefPtr<Descriptor> desc;
         /** Device id for execution */
         DeviceManager::DeviceId deviceId;
+    };
+
+    class ParamsVectorEWiseAdd final : public AlgorithmParams {
+    public:
+        ~ParamsVectorEWiseAdd() override = default;
+
+        bool hasMask;
+        RefPtr<VectorBlock> w;
+        RefPtr<VectorBlock> mask;
+        RefPtr<FunctionBinary> op;
+        RefPtr<VectorBlock> a;
+        RefPtr<VectorBlock> b;
+        RefPtr<Type> type;
     };
 
     /**

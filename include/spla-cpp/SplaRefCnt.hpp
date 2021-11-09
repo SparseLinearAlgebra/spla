@@ -187,6 +187,11 @@ namespace spla {
             return mObject;
         }
 
+        template<typename G>
+        [[nodiscard]] bool Is() const {
+            return !mObject || dynamic_cast<G *>(mObject);
+        }
+
         template<class G>
         RefPtr<G> As() const {
             return RefPtr<G>(mObject);
