@@ -362,8 +362,6 @@ namespace spla {
         using MetaKernel = boost::compute::detail::meta_kernel;
         using MetaIdx = boost::compute::detail::meta_kernel_variable<boost::compute::uint_>;
 
-        assert(keys.size() == values.size());
-
         auto resizeResult = [&](std::size_t size) {
             resultKeys.resize(size);
         };
@@ -482,7 +480,6 @@ namespace spla {
 
         assert(mask1.size() == mask2.size());
         assert(keys1.size() == keys2.size());
-        assert(keys1.size() == values.size());
 
         auto resizeResult = [&](std::size_t size) {
             resultKeys1.resize(size);
