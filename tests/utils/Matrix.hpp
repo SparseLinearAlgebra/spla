@@ -135,18 +135,22 @@ namespace utils {
             }
 
             if (std::memcmp(GetRows(), spRows.data(), GetNvals() * IndexSize) != 0) {
-                std::cout << "Row indices not equal" << std::endl;
                 for (std::size_t i = 0; i < GetNvals(); i++)
-                    if (GetRows()[i] != spRows[i])
-                        std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << std::endl;
+                    std::cout << "expected=" << GetRows()[i] << " actual=" << spRows[i] << " " << (GetRows()[i] == spRows[i] ? "eq" : "neq") << std::endl;
+
+                Dump(m);
+
+                std::cout << "Row indices not equal" << std::endl;
                 return false;
             }
 
             if (std::memcmp(GetCols(), spCols.data(), GetNvals() * IndexSize) != 0) {
-                std::cout << "Column indices not equal" << std::endl;
                 for (std::size_t i = 0; i < GetNvals(); i++)
-                    if (GetCols()[i] != spCols[i])
-                        std::cout << "expected=" << GetCols()[i] << " actual=" << spCols[i] << std::endl;
+                    std::cout << "expected=" << GetCols()[i] << " actual=" << spCols[i] << " " << (GetCols()[i] == spCols[i] ? "eq" : "neq") << std::endl;
+
+                Dump(m);
+
+                std::cout << "Column indices not equal" << std::endl;
                 return false;
             }
 

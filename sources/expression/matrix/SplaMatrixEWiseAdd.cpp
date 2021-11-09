@@ -79,10 +79,9 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 auto type = w->GetType();
                 auto byteSize = type->GetByteSize();
                 auto typeHasValues = type->HasValues();
-                assert(typeHasValues);
 
                 auto fillValuesPermutationIndices = [&](RefPtr<MatrixCOO> &block, compute::vector<unsigned int> &perm) {
-                    if (block.IsNotNull() /* todo: && typeHasValues */) {
+                    if (block.IsNotNull() && typeHasValues) {
                         auto nnz = block->GetNvals();
                         perm.resize(nnz, queue);
                         compute::copy_n(compute::make_counting_iterator(0), nnz, perm.begin(), queue);
@@ -118,23 +117,31 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                                      const compute::vector<unsigned int> *&outCols) {
                     if (block.IsNull())
                         return;
+
                     if (mask.IsNull()) {
                         outRows = &block->GetRows();
                         outCols = &block->GetCols();
                         return;
                     }
+
                     if (maskBlock.IsNull())
                         return;
 
-                    compute::vector<unsigned int> tmpPerm(ctx);
-                    MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
-                                   block->GetRows(), block->GetCols(), perm,
-                                   tmpRows, tmpCols, tmpPerm,
-                                   queue);
+                    if (typeHasValues) {
+                        compute::vector<unsigned int> tmpPerm(ctx);
+                        MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
+                                       block->GetRows(), block->GetCols(), perm,
+                                       tmpRows, tmpCols, tmpPerm,
+                                       queue);
+                        std::swap(perm, tmpPerm);
+                    } else
+                        MaskPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
+                                     block->GetRows(), block->GetCols(),
+                                     tmpRows, tmpCols,
+                                     queue);
 
                     outRows = &tmpRows;
                     outCols = &tmpCols;
-                    std::swap(perm, tmpPerm);
                 };
 
                 applyMask(blockA, tmpRowsA, tmpColsA, permA, rowsA, colsA);
@@ -183,7 +190,7 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 }
 
                 // NOTE: offset b perm indices to preserve uniqueness
-                {
+                if (typeHasValues) {
                     auto offset = static_cast<unsigned int>(blockA->GetNvals());
                     BOOST_COMPUTE_CLOSURE(void, offsetB, (unsigned int i), (permB, offset), {
                         permB[i] = permB[i] + offset;
@@ -196,18 +203,26 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 auto mergeCount = rowsA->size() + rowsB->size();
                 compute::vector<unsigned int> mergedRows(mergeCount, ctx);
                 compute::vector<unsigned int> mergedCols(mergeCount, ctx);
-                compute::vector<unsigned int> mergedPerm(mergeCount, ctx);
+                compute::vector<unsigned int> mergedPerm(ctx);
 
-                MergeByPairKeys(rowsA->begin(), rowsA->end(), colsA->begin(),
-                                permA.begin(),
-                                rowsB->begin(), rowsB->end(), colsB->begin(),
-                                permB.begin(),
-                                mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
-                                queue);
+                if (typeHasValues) {
+                    mergedPerm.resize(mergeCount, queue);
+                    MergeByPairKeys(rowsA->begin(), rowsA->end(), colsA->begin(),
+                                    permA.begin(),
+                                    rowsB->begin(), rowsB->end(), colsB->begin(),
+                                    permB.begin(),
+                                    mergedRows.begin(), mergedCols.begin(), mergedPerm.begin(),
+                                    queue);
+                } else
+                    MergePairKeys(rowsA->begin(), rowsA->end(), colsA->begin(),
+                                  rowsB->begin(), rowsB->end(), colsB->begin(),
+                                  mergedRows.begin(), mergedCols.begin(),
+                                  queue);
 
                 // Copy values to single buffer
-                compute::vector<unsigned char> mergedValues(mergeCount * byteSize, ctx);
-                {
+                compute::vector<unsigned char> mergedValues(ctx);
+                if (typeHasValues) {
+                    mergedValues.resize(mergeCount * byteSize, queue);
                     auto &aVals = blockA->GetVals();
                     auto &bVals = blockB->GetVals();
                     auto offset = blockA->GetNvals();
@@ -234,11 +249,18 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
                 compute::vector<unsigned int> resultRows(ctx);
                 compute::vector<unsigned int> resultCols(ctx);
                 compute::vector<unsigned char> resultVals(ctx);
-                auto resultNvals = ReduceDuplicates(mergedRows, mergedCols, mergedValues,
-                                                    resultRows, resultCols, resultVals,
-                                                    byteSize,
-                                                    op->GetSource(),
-                                                    queue);
+                std::size_t resultNvals;
+
+                if (typeHasValues)
+                    resultNvals = ReduceDuplicates(mergedRows, mergedCols, mergedValues,
+                                                   resultRows, resultCols, resultVals,
+                                                   byteSize,
+                                                   op->GetSource(),
+                                                   queue);
+                else
+                    resultNvals = ReduceDuplicates(mergedRows, mergedCols,
+                                                   resultRows, resultCols,
+                                                   queue);
 
                 SPDLOG_LOGGER_TRACE(logger, "Merge block (i={}; j={}) nnz={}", i, j, resultNvals);
 

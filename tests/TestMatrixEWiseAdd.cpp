@@ -145,6 +145,39 @@ void testOneIsEmpty(spla::Library &library, std::size_t M, std::size_t N, std::s
     ASSERT_TRUE(c.Equals(spW2));
 }
 
+void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+    utils::Matrix a = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Matrix::Make(M, N, spT, library);
+    auto spB = spla::Matrix::Make(M, N, spT, library);
+    auto spW = spla::Matrix::Make(M, N, spT, library);
+    auto spMask = spla::Matrix::Make(M, N, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spEAddAB = spExpr->MakeEWiseAdd(spW, spMask, nullptr, spA, spB);
+    spExpr->Dependency(spWriteA, spEAddAB);
+    spExpr->Dependency(spWriteB, spEAddAB);
+    spExpr->Dependency(spWriteMask, spEAddAB);
+
+    library.Submit(spExpr);
+    spExpr->Wait();
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    utils::Matrix<unsigned char> c = a.EWiseAdd(mask, b, [](unsigned char a, unsigned char b) { return 0; });
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
 void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Float32(library);
@@ -185,6 +218,13 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
             testOneIsEmpty<std::int32_t>(library, M, N, nvals, spT, spOp, op, i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, N, nvals, i);
         }
     });
 }
