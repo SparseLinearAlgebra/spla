@@ -83,8 +83,10 @@ Inheritance diagram for spla::AlgorithmParams:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1AlgorithmParams__inherit__graph.png" border="0" usemap="#aspla_1_1AlgorithmParams_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1AlgorithmParams_inherit__map" id="aspla_1_1AlgorithmParams_inherit__map">
-<area shape="rect" title="Params passed as input to algorithm for execution." alt="" coords="5,80,157,107"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="35,5,127,32"/>
+<area shape="rect" title="Params passed as input to algorithm for execution." alt="" coords="133,80,285,107"/>
+<area shape="rect" href="classspla_1_1ParamsMatrixEWiseAdd.html" title=" " alt="" coords="5,155,197,181"/>
+<area shape="rect" href="classspla_1_1ParamsVectorEWiseAdd.html" title=" " alt="" coords="221,155,416,181"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="163,5,255,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -92,8 +94,9 @@ Collaboration diagram for spla::AlgorithmParams:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1AlgorithmParams__coll__graph.png" border="0" usemap="#aspla_1_1AlgorithmParams_coll__map" alt="Collaboration graph"/></div>
 <map name="aspla_1_1AlgorithmParams_coll__map" id="aspla_1_1AlgorithmParams_coll__map">
-<area shape="rect" title="Params passed as input to algorithm for execution." alt="" coords="5,80,157,107"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="35,5,127,32"/>
+<area shape="rect" title="Params passed as input to algorithm for execution." alt="" coords="41,109,193,136"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="5,13,97,39"/>
+<area shape="rect" href="classspla_1_1RefPtr.html" title=" " alt="" coords="121,5,245,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -115,6 +118,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:abf8adef778c7e44ca525b23aeef24d81"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1AlgorithmParams.html#abf8adef778c7e44ca525b23aeef24d81">library</a></td></tr>
+<tr class="separator:abf8adef778c7e44ca525b23aeef24d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d378b43b0235fda54edc8003384bf54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1AlgorithmParams.html#a2d378b43b0235fda54edc8003384bf54">desc</a></td></tr>
+<tr class="separator:a2d378b43b0235fda54edc8003384bf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c717399e29840e904efc8e031e8d5a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1DeviceManager.html#a463d7afa3008aec424751d845d4b04b2">DeviceManager::DeviceId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1AlgorithmParams.html#a3c717399e29840e904efc8e031e8d5a6">deviceId</a></td></tr>
 <tr class="separator:a3c717399e29840e904efc8e031e8d5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -148,6 +155,21 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2d378b43b0235fda54edc8003384bf54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d378b43b0235fda54edc8003384bf54">&#9670;&nbsp;</a></span>desc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt; spla::AlgorithmParams::desc</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Node desc </p>
+
+</div>
+</div>
 <a id="a3c717399e29840e904efc8e031e8d5a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c717399e29840e904efc8e031e8d5a6">&#9670;&nbsp;</a></span>deviceId</h2>
 
@@ -160,6 +182,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Device id for execution </p>
+
+</div>
+</div>
+<a id="abf8adef778c7e44ca525b23aeef24d81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf8adef778c7e44ca525b23aeef24d81">&#9670;&nbsp;</a></span>library</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a>&gt; spla::AlgorithmParams::library</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="classspla_1_1Library.html">Library</a> instance </p>
 
 </div>
 </div>

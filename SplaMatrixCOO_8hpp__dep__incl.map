@@ -1,7 +1,7 @@
 <map id="sources/storage/block/SplaMatrixCOO.hpp" name="sources/storage/block/SplaMatrixCOO.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="380,5,531,47"/>
-<area shape="rect" id="node2" href="$SplaMatrixDataRead_8cpp.html" title=" " alt="" coords="5,95,212,136"/>
-<area shape="rect" id="node3" href="$SplaMatrixDataWrite_8cpp.html" title=" " alt="" coords="236,95,443,136"/>
-<area shape="rect" id="node4" href="$SplaMatrixEWiseAdd_8cpp.html" title=" " alt="" coords="467,95,678,136"/>
-<area shape="rect" id="node5" href="$SplaMatrixCOO_8cpp.html" title=" " alt="" coords="703,95,853,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="373,5,523,47"/>
+<area shape="rect" id="node2" href="$SplaMatrixEWiseAddCOO_8cpp.html" title=" " alt="" coords="5,95,205,136"/>
+<area shape="rect" id="node3" href="$SplaMatrixDataRead_8cpp.html" title=" " alt="" coords="230,95,437,136"/>
+<area shape="rect" id="node4" href="$SplaMatrixDataWrite_8cpp.html" title=" " alt="" coords="461,95,667,136"/>
+<area shape="rect" id="node5" href="$SplaMatrixCOO_8cpp.html" title=" " alt="" coords="691,95,842,136"/>
 </map>

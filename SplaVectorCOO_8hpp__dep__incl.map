@@ -1,7 +1,7 @@
 <map id="sources/storage/block/SplaVectorCOO.hpp" name="sources/storage/block/SplaVectorCOO.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="389,5,539,47"/>
-<area shape="rect" id="node2" href="$SplaVectorDataRead_8cpp.html" title=" " alt="" coords="5,95,216,136"/>
-<area shape="rect" id="node3" href="$SplaVectorDataWrite_8cpp.html" title=" " alt="" coords="240,95,451,136"/>
-<area shape="rect" id="node4" href="$SplaVectorEWiseAdd_8cpp.html" title=" " alt="" coords="475,95,690,136"/>
-<area shape="rect" id="node5" href="$SplaVectorCOO_8cpp.html" title=" " alt="" coords="714,95,865,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="379,5,530,47"/>
+<area shape="rect" id="node2" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="5,95,208,136"/>
+<area shape="rect" id="node3" href="$SplaVectorDataRead_8cpp.html" title=" " alt="" coords="232,95,443,136"/>
+<area shape="rect" id="node4" href="$SplaVectorDataWrite_8cpp.html" title=" " alt="" coords="467,95,677,136"/>
+<area shape="rect" id="node5" href="$SplaVectorCOO_8cpp.html" title=" " alt="" coords="702,95,853,136"/>
 </map>

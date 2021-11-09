@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['blockrowsnvals_787',['blockRowsNvals',['../SplaMatrixDataRead_8cpp.html#af19baee78cf0e3d215fec6124a52a8cb',1,'blockRowsNvals():&#160;SplaMatrixDataRead.cpp'],['../SplaVectorDataRead_8cpp.html#af19baee78cf0e3d215fec6124a52a8cb',1,'blockRowsNvals():&#160;SplaVectorDataRead.cpp']]],
-  ['blockrowsoffsets_788',['blockRowsOffsets',['../SplaMatrixDataRead_8cpp.html#a7a1178dbe2cd3bbf19bc5cc246a16d77',1,'blockRowsOffsets():&#160;SplaMatrixDataRead.cpp'],['../SplaVectorDataRead_8cpp.html#a7a1178dbe2cd3bbf19bc5cc246a16d77',1,'blockRowsOffsets():&#160;SplaVectorDataRead.cpp']]]
+  ['a_829',['a',['../classspla_1_1ParamsVectorEWiseAdd.html#abd3f9f201d48af326d9a4e4806dcdcdf',1,'spla::ParamsVectorEWiseAdd::a()'],['../classspla_1_1ParamsMatrixEWiseAdd.html#aa84687b476b125bfd026b465ab525c22',1,'spla::ParamsMatrixEWiseAdd::a()']]]
 ];

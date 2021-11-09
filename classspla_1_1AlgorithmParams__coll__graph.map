@@ -1,4 +1,5 @@
 <map id="spla::AlgorithmParams" name="spla::AlgorithmParams">
-<area shape="rect" id="node1" title="Params passed as input to algorithm for execution." alt="" coords="5,80,157,107"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="35,5,127,32"/>
+<area shape="rect" id="node1" title="Params passed as input to algorithm for execution." alt="" coords="41,109,193,136"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,13,97,39"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefPtr.html" title=" " alt="" coords="121,5,245,47"/>
 </map>

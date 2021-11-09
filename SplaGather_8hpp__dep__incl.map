@@ -1,8 +1,8 @@
 <map id="sources/compute/SplaGather.hpp" name="sources/compute/SplaGather.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="254,5,469,32"/>
-<area shape="rect" id="node2" href="$SplaSortByRowColumn_8hpp.html" title=" " alt="" coords="5,80,181,121"/>
-<area shape="rect" id="node3" href="$SplaMatrixDataWrite_8cpp.html" title=" " alt="" coords="53,169,259,211"/>
-<area shape="rect" id="node4" href="$SplaMatrixEWiseAdd_8cpp.html" title=" " alt="" coords="256,80,467,121"/>
-<area shape="rect" id="node5" href="$SplaVectorDataWrite_8cpp.html" title=" " alt="" coords="491,80,701,121"/>
-<area shape="rect" id="node6" href="$SplaVectorEWiseAdd_8cpp.html" title=" " alt="" coords="726,80,941,121"/>
+<area shape="rect" id="node1" title=" " alt="" coords="437,5,651,32"/>
+<area shape="rect" id="node2" href="$SplaMatrixEWiseAddCOO_8cpp.html" title=" " alt="" coords="5,80,205,121"/>
+<area shape="rect" id="node3" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="229,80,432,121"/>
+<area shape="rect" id="node4" href="$SplaSortByRowColumn_8hpp.html" title=" " alt="" coords="456,80,632,121"/>
+<area shape="rect" id="node5" href="$SplaMatrixDataWrite_8cpp.html" title=" " alt="" coords="503,169,710,211"/>
+<area shape="rect" id="node6" href="$SplaVectorDataWrite_8cpp.html" title=" " alt="" coords="707,80,917,121"/>
 </map>
