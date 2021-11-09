@@ -99,7 +99,6 @@ TEST(Compute, ReduceDuplicates_KK) {
     std::vector<unsigned int> resultIndices2 = {0, 1, 1, 3, 3, 4, 5};
 
     auto count = indices1.size();
-    auto size = 0;
 
     compute::vector<unsigned int> diI1(count, ctx);
     compute::vector<unsigned int> diI2(count, ctx);
@@ -112,8 +111,6 @@ TEST(Compute, ReduceDuplicates_KK) {
 
     auto nnz = spla::ReduceDuplicates(diI1, diI2,
                                       drI1, drI2,
-                                      size,
-                                      "",
                                       queue);
 
     ASSERT_EQ(nnz, resultIndices1.size());
@@ -185,7 +182,6 @@ TEST(Compute, ReduceDuplicates_K) {
     std::vector<unsigned int> resultIndices = {0, 1, 2, 3, 4, 5};
 
     auto count = indices.size();
-    auto size = 0;
 
     compute::vector<unsigned int> diI(count, ctx);
     compute::copy_n(indices.begin(), count, diI.begin(), queue);
@@ -194,8 +190,6 @@ TEST(Compute, ReduceDuplicates_K) {
 
     auto nnz = spla::ReduceDuplicates(diI,
                                       drI,
-                                      size,
-                                      "",
                                       queue);
 
     ASSERT_EQ(nnz, resultIndices.size());

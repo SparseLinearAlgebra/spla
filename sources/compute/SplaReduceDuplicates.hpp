@@ -216,6 +216,27 @@ namespace spla {
 
     }// namespace detail
 
+    /**
+     * @brief Reduce duplicates in sorted sequence of elements
+     * Reduces duplicated values in sorted sequence of key elements,
+     * where one or two duplicated keys are presented.
+     *
+     * @note Keys interpreted as pairs stored in separate containers.
+     * @note Reduces values associated with keys using provided reduceOp.
+     * @note Result containers automatically resized to store result count values.
+     *
+     * @param inputIndices1 Keys first elements
+     * @param inputIndices2 Keys second elements
+     * @param inputValues Input values associated with keys
+     * @param resultIndices1 Result keys first elements
+     * @param resultIndices2 Result keys second elements
+     * @param resultValues Result reduced values
+     * @param elementsInSequence Size in byte of single value in raw values buffer
+     * @param reduceOp Binary operation used to reduce duplicated values
+     * @param queue Queue to perform operation on
+     *
+     * @return Count of elements in the result
+     */
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
                                         const boost::compute::vector<unsigned int> &inputIndices2,
                                         const boost::compute::vector<unsigned char> &inputValues,
@@ -225,8 +246,6 @@ namespace spla {
                                         std::size_t elementsInSequence,
                                         const std::string &reduceOp,
                                         boost::compute::command_queue &queue) {
-        using namespace boost;
-
         return detail::ReduceDuplicatesImpl(inputIndices1, inputIndices2, inputValues,
                                             resultIndices1, resultIndices2, resultValues,
                                             elementsInSequence,
@@ -234,12 +253,26 @@ namespace spla {
                                             queue);
     }
 
+    /**
+     * @brief Reduce duplicates in sorted sequence of elements
+     * Reduces duplicated values in sorted sequence of key elements,
+     * where one or two duplicated keys are presented.
+     *
+     * @note Keys interpreted as pairs stored in separate containers.
+     * @note Result containers automatically resized to store result count values.
+     *
+     * @param inputIndices1 Keys first elements
+     * @param inputIndices2 Keys second elements
+     * @param resultIndices1 Result keys first elements
+     * @param resultIndices2 Result keys second elements
+     * @param queue Queue to perform operation on
+     *
+     * @return Count of elements in the result
+     */
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices1,
                                         const boost::compute::vector<unsigned int> &inputIndices2,
                                         boost::compute::vector<unsigned int> &resultIndices1,
                                         boost::compute::vector<unsigned int> &resultIndices2,
-                                        std::size_t elementsInSequence,
-                                        const std::string &reduceOp,
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
@@ -248,10 +281,29 @@ namespace spla {
 
         return detail::ReduceDuplicatesImpl(inputIndices1, inputIndices2, dummyInputValues,
                                             resultIndices1, resultIndices2, dummyResultValues,
-                                            elementsInSequence,
-                                            reduceOp,
+                                            0,
+                                            "",
                                             queue);
     }
+
+    /**
+     * @brief Reduce duplicates in sorted sequence of elements
+     * Reduces duplicated values in sorted sequence of key elements,
+     * where one or two duplicated keys are presented.
+     *
+     * @note Reduces values associated with keys using provided reduceOp.
+     * @note Result containers automatically resized to store result count values.
+     *
+     * @param inputIndices Keys elements
+     * @param inputValues Input values associated with keys
+     * @param resultIndices Result keys elements
+     * @param resultValues Result reduced values
+     * @param elementsInSequence Size in byte of single value in raw values buffer
+     * @param reduceOp Binary operation used to reduce duplicated values
+     * @param queue Queue to perform operation on
+     *
+     * @return Count of elements in the result
+     */
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
                                         const boost::compute::vector<unsigned char> &inputValues,
                                         boost::compute::vector<unsigned int> &resultIndices,
@@ -271,10 +323,21 @@ namespace spla {
                                             queue);
     }
 
+    /**
+     * @brief Reduce duplicates in sorted sequence of elements
+     * Reduces duplicated values in sorted sequence of key elements,
+     * where one or two duplicated keys are presented.
+     *
+     * @note Result containers automatically resized to store result count values.
+     *
+     * @param inputIndices Keys elements
+     * @param resultIndices Result keys elements
+     * @param queue Queue to perform operation on
+     *
+     * @return Count of elements in the result
+     */
     inline std::size_t ReduceDuplicates(const boost::compute::vector<unsigned int> &inputIndices,
                                         boost::compute::vector<unsigned int> &resultIndices,
-                                        std::size_t elementsInSequence,
-                                        const std::string &reduceOp,
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
@@ -285,8 +348,8 @@ namespace spla {
 
         return detail::ReduceDuplicatesImpl(inputIndices, dummyInputIndices, dummyInputValues,
                                             resultIndices, dummyResultIndices, dummyResultValues,
-                                            elementsInSequence,
-                                            reduceOp,
+                                            0,
+                                            "",
                                             queue);
     }
 
