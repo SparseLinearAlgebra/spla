@@ -175,9 +175,9 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
     CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
     CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type is has values then `op` must be provided");
     CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
-    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
-    CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
-    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetDim() == a->GetDim(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetDim() == b->GetDim(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetDim() == mask->GetDim(), DimensionMismatch, "Incompatible size");
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),
@@ -202,7 +202,7 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
     CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
     CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
     CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
-    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type is has values then `op` must be provided");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type has values then `op` must be provided");
     CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
     CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
     CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
@@ -216,6 +216,38 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
             b.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::VectorEWiseAdd,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeMxM(const spla::RefPtr<spla::Matrix> &w,
+                          const spla::RefPtr<spla::Matrix> &mask,
+                          const spla::RefPtr<spla::FunctionBinary> &mult,
+                          const spla::RefPtr<spla::FunctionBinary> &add,
+                          const spla::RefPtr<spla::Matrix> &a,
+                          const spla::RefPtr<spla::Matrix> &b,
+                          const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
+    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(w->GetNcols() == b->GetNcols(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(a->GetNcols() == b->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetDim() == mask->GetDim(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mult.IsNull() || mult->CanApply(*a, *b, *w), InvalidType, "Cannot apply `mult` op to provided objects");
+    CHECK_RAISE_ERROR(add.IsNull() || add->CanApply(*w, *w, *w), InvalidType, "Cannot apply `add` op to provided objects");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || (mult.IsNotNull() && add.IsNotNull()), NullPointer, "If type has values, `mult` and `add` op must be provided");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            mult.As<Object>(),
+            add.As<Object>(),
+            a.As<Object>(),
+            b.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::MxM,
                     std::move(args),
                     desc);
 }

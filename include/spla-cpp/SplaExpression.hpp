@@ -169,26 +169,6 @@ namespace spla {
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
-         * Make vector masked element-wise add expression node.
-         * Operation is evaluated as `w<mask> = a +(op) b`.
-         *
-         * @param w Vector to store result
-         * @param mask Mask to filter input vectors; may be null
-         * @param op Binary op to sum elements of input vectors
-         * @param a Input a vector
-         * @param b Input b vector
-         * @param desc Operation descriptor
-         *
-         * @return Created expression node
-         */
-        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Matrix> &w,
-                                            const RefPtr<Matrix> &mask,
-                                            const RefPtr<FunctionBinary> &op,
-                                            const RefPtr<Matrix> &a,
-                                            const RefPtr<Matrix> &b,
-                                            const RefPtr<Descriptor> &desc = nullptr);
-
-        /**
          * Make matrix masked element-wise add expression node.
          * Operation is evaluated as `w<mask> = a +(op) b`.
          *
@@ -201,12 +181,58 @@ namespace spla {
          *
          * @return Created expression node
          */
+        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Matrix> &w,
+                                            const RefPtr<Matrix> &mask,
+                                            const RefPtr<FunctionBinary> &op,
+                                            const RefPtr<Matrix> &a,
+                                            const RefPtr<Matrix> &b,
+                                            const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make vector masked element-wise add expression node.
+         * Operation is evaluated as `w<mask> = a +(op) b`.
+         *
+         * @param w Vector to store result
+         * @param mask Mask to filter input vectors; may be null
+         * @param op Binary op to sum elements of input vectors
+         * @param a Input a vector
+         * @param b Input b vector
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
         RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Vector> &w,
                                             const RefPtr<Vector> &mask,
                                             const RefPtr<FunctionBinary> &op,
                                             const RefPtr<Vector> &a,
                                             const RefPtr<Vector> &b,
                                             const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make masked matrix-matrix multiplication expression node.
+         * Operation is evaluated as `w<mask> = a x(mult, add) b`.
+         * 
+         * @note If mask is null, the whole result is saved
+         * @note Mult must have signature `f: ta x tb -> tw`
+         * @note Add must have signature `f: tw x tw -> tw`
+         *
+         * @param w Matrix to store result
+         * @param mask Mask to filter input matrices; may be null
+         * @param mult Binary function used to multiply a and b values
+         * @param add Binary function used to accumulate multiplication results
+         * @param a Input a matrix
+         * @param b Input b matrix
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeMxM(const RefPtr<Matrix> &w,
+                                       const RefPtr<Matrix> &mask,
+                                       const RefPtr<FunctionBinary> &mult,
+                                       const RefPtr<FunctionBinary> &add,
+                                       const RefPtr<Matrix> &a,
+                                       const RefPtr<Matrix> &b,
+                                       const RefPtr<Descriptor> &desc = nullptr);
 
         /** @return Current expression state */
         State GetState() const;

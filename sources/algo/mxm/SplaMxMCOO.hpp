@@ -25,41 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#ifndef SPLA_SPLAMXMCOO_HPP
+#define SPLA_SPLAMXMCOO_HPP
 
-spla::ScalarStorage::~ScalarStorage() = default;
+#include <algo/SplaAlgorithm.hpp>
 
-void spla::ScalarStorage::SetValue(const RefPtr<ScalarValue> &value) {
-    assert(value.IsNotNull());
+namespace spla {
 
-    std::lock_guard<std::mutex> lock(mMutex);
-    mValue = value;
-}
+    class MxMCOO final : public Algorithm {
+    public:
+        ~MxMCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 
-void spla::ScalarStorage::RemoveValue() {
-    std::lock_guard<std::mutex> lock(mMutex);
-    mValue.Reset();
-}
+}// namespace spla
 
-bool spla::ScalarStorage::HasValue() const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    return mValue.IsNotNull();
-}
-
-spla::RefPtr<spla::ScalarValue> spla::ScalarStorage::GetValue() const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    return mValue;
-}
-
-void spla::ScalarStorage::Dump(std::ostream &stream) const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    if (mValue.IsNotNull()) mValue->Dump(stream);
-}
-
-spla::RefPtr<spla::ScalarStorage> spla::ScalarStorage::Make(spla::Library &library) {
-    return spla::RefPtr<spla::ScalarStorage>(new ScalarStorage(library));
-}
-
-spla::ScalarStorage::ScalarStorage(spla::Library &library) : mLibrary(library) {
-}
+#endif//SPLA_SPLAMXMCOO_HPP

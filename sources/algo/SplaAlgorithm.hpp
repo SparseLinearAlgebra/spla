@@ -66,11 +66,11 @@ namespace spla {
             VectorEWiseAdd,
             /** Vector-vector element wise multiplication */
             VectorEWiseMult,
-            /** Matrix-matrix product */
+            /** Matrix-matrix multiplication */
             MxM,
-            /** Matrix-vector product */
+            /** Matrix-vector multiplication */
             MxV,
-            /** Vector-matrix product */
+            /** Vector-matrix multiplication */
             VxM
         };
 

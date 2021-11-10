@@ -88,6 +88,21 @@ namespace spla {
         RefPtr<Type> type;
     };
 
+    /** Blocked matrix-matrix multiply params */
+    class ParamsMxM final : public AlgorithmParams {
+    public:
+        ~ParamsMxM() override = default;
+
+        RefPtr<MatrixBlock> w;
+        RefPtr<FunctionBinary> mult;
+        RefPtr<FunctionBinary> add;
+        RefPtr<MatrixBlock> a;
+        RefPtr<MatrixBlock> b;
+        RefPtr<Type> ta;
+        RefPtr<Type> tb;
+        RefPtr<Type> tw;
+    };
+
     /**
      * @}
      */

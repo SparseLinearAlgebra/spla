@@ -25,41 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#include <algo/mxm/SplaMxMCOO.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
 
-spla::ScalarStorage::~ScalarStorage() = default;
+bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsMxM *>(&params);
 
-void spla::ScalarStorage::SetValue(const RefPtr<ScalarValue> &value) {
-    assert(value.IsNotNull());
-
-    std::lock_guard<std::mutex> lock(mMutex);
-    mValue = value;
+    return p &&
+           p->w.Is<MatrixCOO>() &&
+           p->a.Is<MatrixCOO>() &&
+           p->b.Is<MatrixCOO>();
 }
 
-void spla::ScalarStorage::RemoveValue() {
-    std::lock_guard<std::mutex> lock(mMutex);
-    mValue.Reset();
+void spla::MxMCOO::Process(spla::AlgorithmParams &params) {
+    // todo: impl me
 }
 
-bool spla::ScalarStorage::HasValue() const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    return mValue.IsNotNull();
+spla::Algorithm::Type spla::MxMCOO::GetType() const {
+    return Type::MxM;
 }
 
-spla::RefPtr<spla::ScalarValue> spla::ScalarStorage::GetValue() const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    return mValue;
-}
-
-void spla::ScalarStorage::Dump(std::ostream &stream) const {
-    std::lock_guard<std::mutex> lock(mMutex);
-    if (mValue.IsNotNull()) mValue->Dump(stream);
-}
-
-spla::RefPtr<spla::ScalarStorage> spla::ScalarStorage::Make(spla::Library &library) {
-    return spla::RefPtr<spla::ScalarStorage>(new ScalarStorage(library));
-}
-
-spla::ScalarStorage::ScalarStorage(spla::Library &library) : mLibrary(library) {
+std::string spla::MxMCOO::GetName() const {
+    return "MxMCOO";
 }
