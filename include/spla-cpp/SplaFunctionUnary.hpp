@@ -42,36 +42,58 @@ namespace spla {
 
     /**
      * @class FunctionUnary
+     * @brief Unary Typed element function f: a -> b.
+     *
+     * Unary function accepts value of typed input object, with type
+     * `A` and returns new value for typed object with type `B`.
+     * Can be used as unary op in transform operations for matrices, vectors and scalars.
+     *
+     * Source code for the function must be provided in the string.
+     * Function signature is following `void(_ACCESS_A const void* vp_a, _ACCESS_B void* vp_b)`,
+     * where a, and b pointers to values, b must be written by the function.
+     * It is up to user to cast this pointers to appropriate types and check values sizes.
      */
     class SPLA_API FunctionUnary final : public Object {
     public:
         ~FunctionUnary() override = default;
 
-        enum class Flags {
-            Max = 1
-        };
+        /** @return Input type a. */
+        const RefPtr<Type> &GetA() const;
 
-        const RefPtr<Type> &GetArg1() const {
-            return mArg1;
-        }
+        /** @return Result type b. */
+        const RefPtr<Type> &GetB() const;
 
-        const RefPtr<Type> &GetResult() const {
-            return mResult;
-        }
+        /** @return OpenCL function body source code. */
+        const std::string &GetSource() const;
 
-        const std::string &GetSource() const {
-            return mSource;
-        }
+        /**
+         * Check if can apply this function to provided objects.
+         *
+         * @param a Input typed a object.
+         * @param b Result typed b object.
+         *
+         * @return True if can apply.
+         */
+        bool CanApply(const TypedObject &a, const TypedObject &b) const;
 
-        bool IsApplicable(const TypedObject &arg1, const TypedObject &result) const {
-            return arg1.GetType() == mArg1 && result.GetType() == mResult;
-        }
+        /**
+         * Makes new function unary instance.
+         *
+         * @param a Input type a
+         * @param b Result type b
+         * @param source OpenCL function body source code
+         * @param library Library global state
+         *
+         * @return New function binary instance
+         */
+        static RefPtr<FunctionUnary> Make(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
 
     private:
-        RefPtr<Type> mArg1;
-        RefPtr<Type> mResult;
+        FunctionUnary(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
+
+        RefPtr<Type> mA;
+        RefPtr<Type> mB;
         std::string mSource;
-        std::bitset<static_cast<std::size_t>(Flags::Max)> mFlags;
     };
 
     /**

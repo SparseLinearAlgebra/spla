@@ -44,12 +44,12 @@ namespace spla {
      * @brief Binary Typed element function f: a x b -> c.
      *
      * Binary function accepts two values of typed input objects, with types
-     * `A` and `B` and return new value for typed object with type `C`.
+     * `A` and `B` and returns new value for typed object with type `C`.
      * Can be used as binary op in element wise operations and as accum
      * for matrices, vectors and scalars.
      *
      * Source code for the function must be provided in the string.
-     * Function signature is following `(_ACCESS_A const void* vp_a, _ACCESS_B const void* vp_b, _ACCESS_C void* vp_c)`,
+     * Function signature is following `void(_ACCESS_A const void* vp_a, _ACCESS_B const void* vp_b, _ACCESS_C void* vp_c)`,
      * where a, b and c pointers to values, c must be written by the function.
      * It is up to user to cast this pointers to appropriate types and check values sizes.
      */

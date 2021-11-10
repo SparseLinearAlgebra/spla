@@ -26,3 +26,28 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaFunctionUnary.hpp>
+
+const spla::RefPtr<spla::Type> &spla::FunctionUnary::GetA() const {
+    return mA;
+}
+
+const spla::RefPtr<spla::Type> &spla::FunctionUnary::GetB() const {
+    return mB;
+}
+
+const std::string &spla::FunctionUnary::GetSource() const {
+    return mSource;
+}
+
+bool spla::FunctionUnary::CanApply(const spla::TypedObject &a, const spla::TypedObject &b) const {
+    return a.GetType() == GetA() &&
+           b.GetType() == GetB();
+}
+
+spla::RefPtr<spla::FunctionUnary> spla::FunctionUnary::Make(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, std::string source, spla::Library &library) {
+    return RefPtr<FunctionUnary>(new FunctionUnary(std::move(a), std::move(b), std::move(source), library));
+}
+
+spla::FunctionUnary::FunctionUnary(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, std::string source, spla::Library &library)
+        : Object(TypeName::FunctionUnary, library), mA(std::move(a)), mB(std::move(b)), mSource(std::move(source)) {
+}
