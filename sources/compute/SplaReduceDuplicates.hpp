@@ -276,8 +276,9 @@ namespace spla {
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
-        compute::vector<unsigned char> dummyInputValues;
-        compute::vector<unsigned char> dummyResultValues;
+        compute::context ctx = queue.get_context();
+        compute::vector<unsigned char> dummyInputValues(ctx);
+        compute::vector<unsigned char> dummyResultValues(ctx);
 
         return detail::ReduceDuplicatesImpl(inputIndices1, inputIndices2, dummyInputValues,
                                             resultIndices1, resultIndices2, dummyResultValues,
@@ -313,8 +314,9 @@ namespace spla {
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
-        compute::vector<unsigned int> dummyInputIndices;
-        compute::vector<unsigned int> dummyResultIndices;
+        compute::context ctx = queue.get_context();
+        compute::vector<unsigned int> dummyInputIndices(ctx);
+        compute::vector<unsigned int> dummyResultIndices(ctx);
 
         return detail::ReduceDuplicatesImpl(inputIndices, dummyInputIndices, inputValues,
                                             resultIndices, dummyResultIndices, resultValues,
@@ -341,10 +343,11 @@ namespace spla {
                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
-        compute::vector<unsigned int> dummyInputIndices;
-        compute::vector<unsigned int> dummyResultIndices;
-        compute::vector<unsigned char> dummyInputValues;
-        compute::vector<unsigned char> dummyResultValues;
+        compute::context ctx = queue.get_context();
+        compute::vector<unsigned int> dummyInputIndices(ctx);
+        compute::vector<unsigned int> dummyResultIndices(ctx);
+        compute::vector<unsigned char> dummyInputValues(ctx);
+        compute::vector<unsigned char> dummyResultValues(ctx);
 
         return detail::ReduceDuplicatesImpl(inputIndices, dummyInputIndices, dummyInputValues,
                                             resultIndices, dummyResultIndices, dummyResultValues,
