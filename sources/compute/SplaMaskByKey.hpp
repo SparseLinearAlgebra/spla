@@ -151,10 +151,7 @@ namespace spla {
         /** Serial pre-process intersection kernel to count actual results count (but do not intersect) */
         class SerialIntersectionCountKernel : boost::compute::detail::meta_kernel {
         public:
-            unsigned int tile_size;
-
             SerialIntersectionCountKernel() : meta_kernel("__spla_serial_intersection_count") {
-                tile_size = 4;
             }
 
             template<class InputIterator1,
@@ -209,10 +206,7 @@ namespace spla {
 
         class SerialIntersectionKernel : boost::compute::detail::meta_kernel {
         public:
-            unsigned int tile_size;
-
             SerialIntersectionKernel() : meta_kernel("__spla_serial_intersection") {
-                tile_size = 4;
             }
 
             template<class InputIterator1,
@@ -310,7 +304,6 @@ namespace spla {
 
             // Find result intersections count and offsets to write result of each tile
             detail::SerialIntersectionCountKernel intersectionCountKernel;
-            intersectionCountKernel.tile_size = tileSize;
             intersectionCountKernel.set_range(maskFirst, keyFirst,
                                               tileA.begin(), tileA.end(),
                                               tileB.begin(),
@@ -327,7 +320,6 @@ namespace spla {
 
             // Find result intersections
             detail::SerialIntersectionKernel intersectionKernel;
-            intersectionKernel.tile_size = tileSize;
             intersectionKernel.set_range(maskFirst, keyFirst, tileA.begin(), tileA.end(),
                                          tileB.begin(),
                                          counts.begin(),
