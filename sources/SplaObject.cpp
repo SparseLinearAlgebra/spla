@@ -25,80 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAFUNCTIONUNARY_HPP
-#define SPLA_SPLAFUNCTIONUNARY_HPP
-
 #include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <string>
 
-namespace spla {
+spla::Object::Object(spla::Object::TypeName typeName, struct Library &library)
+    : mTypeName(typeName), mLibrary(library) {
+}
 
-    /**
-     * @addtogroup API
-     * @{
-     */
+const std::string &spla::Object::GetLabel() const {
+    return mLabel;
+}
 
-    /**
-     * @class FunctionUnary
-     * @brief Unary Typed element function `f: a -> b`.
-     *
-     * Unary function accepts value of typed input object, with type
-     * `A` and returns new value for typed object with type `B`.
-     * Can be used as unary op in transform operations for matrices, vectors and scalars.
-     *
-     * Source code for the function must be provided in the string.
-     * Function signature is following `void(_ACCESS_A const void* vp_a, _ACCESS_B void* vp_b)`,
-     * where a, and b pointers to values, b must be written by the function.
-     * It is up to user to cast these pointers to appropriate types and check values sizes.
-     */
-    class SPLA_API FunctionUnary final : public Object {
-    public:
-        ~FunctionUnary() override = default;
+spla::Object::TypeName spla::Object::GetTypeName() const {
+    return mTypeName;
+}
 
-        /** @return Input type a. */
-        const RefPtr<Type> &GetA() const;
-
-        /** @return Result type b. */
-        const RefPtr<Type> &GetB() const;
-
-        /** @return OpenCL function body source code. */
-        const std::string &GetSource() const;
-
-        /**
-         * Check if can apply this function to provided objects.
-         *
-         * @param a Input typed a object.
-         * @param b Result typed b object.
-         *
-         * @return True if can apply.
-         */
-        bool CanApply(const TypedObject &a, const TypedObject &b) const;
-
-        /**
-         * Makes new function unary instance.
-         *
-         * @param a Input type a
-         * @param b Result type b
-         * @param source OpenCL function body source code
-         * @param library Library global state
-         *
-         * @return New function binary instance
-         */
-        static RefPtr<FunctionUnary> Make(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
-
-    private:
-        FunctionUnary(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
-
-        RefPtr<Type> mA;
-        RefPtr<Type> mB;
-        std::string mSource;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLAFUNCTIONUNARY_HPP
+spla::Library &spla::Object::GetLibrary() const {
+    return mLibrary;
+}

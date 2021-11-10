@@ -56,6 +56,7 @@ namespace spla {
             Descriptor,
             FunctionUnary,
             FunctionBinary,
+            FunctionSelect,
             Expression,
             ExpressionNode,
             DataMatrix,
@@ -64,30 +65,22 @@ namespace spla {
             Unknown
         };
 
-        explicit Object(TypeName typeName, class Library &library) : mTypeName(typeName), mLibrary(library) {}
+        explicit Object(TypeName typeName, class Library &library);
 
         /** @return Object string text label for debugging */
-        const std::string &GetLabel() const {
-            return mLabel;
-        }
+        const std::string &GetLabel() const;
 
         /** @return Type specification of the object */
-        TypeName GetTypeName() const {
-            return mTypeName;
-        }
+        TypeName GetTypeName() const;
 
         /** @return Library instance that this object is associated with */
-        class Library &GetLibrary() const {
-            return mLibrary;
-        }
+        class Library &GetLibrary() const;
 
     private:
         // User defined text label (for profiling/debugging)
         std::string mLabel;
-
         // Type of the object
         TypeName mTypeName = TypeName::Unknown;
-
         // Global library instance
         class Library &mLibrary;
     };
@@ -110,6 +103,8 @@ namespace spla {
                     return "FunctionUnary";
                 case Object::TypeName::FunctionBinary:
                     return "FunctionBinary";
+                case Object::TypeName::FunctionSelect:
+                    return "FunctionSelect";
                 case Object::TypeName::Expression:
                     return "Expression";
                 case Object::TypeName::ExpressionNode:

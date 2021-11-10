@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAFUNCTIONUNARY_HPP
-#define SPLA_SPLAFUNCTIONUNARY_HPP
+#ifndef SPLA_SPLAFUNCTIONSELECT_HPP
+#define SPLA_SPLAFUNCTIONSELECT_HPP
 
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
@@ -40,58 +40,52 @@ namespace spla {
      */
 
     /**
-     * @class FunctionUnary
-     * @brief Unary Typed element function `f: a -> b`.
+     * @class FunctionSelect
+     * @brief Typed element function `f: a -> bool`.
      *
-     * Unary function accepts value of typed input object, with type
-     * `A` and returns new value for typed object with type `B`.
-     * Can be used as unary op in transform operations for matrices, vectors and scalars.
+     * Select function accepts value of typed input object, with type
+     * `A` and returns boolean value (true or false) based on input value.
+     * Can be used as select op in select operations for matrices, vectors and scalars.
      *
      * Source code for the function must be provided in the string.
-     * Function signature is following `void(_ACCESS_A const void* vp_a, _ACCESS_B void* vp_b)`,
-     * where a, and b pointers to values, b must be written by the function.
-     * It is up to user to cast these pointers to appropriate types and check values sizes.
+     * Function signature is following `bool(_ACCESS_A const void* vp_a)`,
+     * where a pointer to value, result must be returned by the function as boolean value.
+     * It is up to user to cast this pointer to appropriate types and check value size.
      */
-    class SPLA_API FunctionUnary final : public Object {
+    class SPLA_API FunctionSelect final : public Object {
     public:
-        ~FunctionUnary() override = default;
+        ~FunctionSelect() override = default;
 
         /** @return Input type a. */
         const RefPtr<Type> &GetA() const;
-
-        /** @return Result type b. */
-        const RefPtr<Type> &GetB() const;
 
         /** @return OpenCL function body source code. */
         const std::string &GetSource() const;
 
         /**
-         * Check if can apply this function to provided objects.
+         * Check if can apply this function to provided object.
          *
          * @param a Input typed a object.
-         * @param b Result typed b object.
          *
          * @return True if can apply.
          */
-        bool CanApply(const TypedObject &a, const TypedObject &b) const;
+        bool CanApply(const TypedObject &a) const;
 
         /**
-         * Makes new function unary instance.
+         * Makes new function select instance.
          *
          * @param a Input type a
-         * @param b Result type b
          * @param source OpenCL function body source code
          * @param library Library global state
          *
          * @return New function binary instance
          */
-        static RefPtr<FunctionUnary> Make(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
+        static RefPtr<FunctionSelect> Make(RefPtr<Type> a, std::string source, Library &library);
 
     private:
-        FunctionUnary(RefPtr<Type> a, RefPtr<Type> b, std::string source, Library &library);
+        FunctionSelect(RefPtr<Type> a, std::string source, Library &library);
 
         RefPtr<Type> mA;
-        RefPtr<Type> mB;
         std::string mSource;
     };
 
@@ -101,4 +95,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAFUNCTIONUNARY_HPP
+#endif//SPLA_SPLAFUNCTIONSELECT_HPP

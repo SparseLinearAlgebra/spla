@@ -25,29 +25,24 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaFunctionUnary.hpp>
+#include <spla-cpp/SplaFunctionSelect.hpp>
 
-const spla::RefPtr<spla::Type> &spla::FunctionUnary::GetA() const {
+const spla::RefPtr<spla::Type> &spla::FunctionSelect::GetA() const {
     return mA;
 }
 
-const spla::RefPtr<spla::Type> &spla::FunctionUnary::GetB() const {
-    return mB;
-}
-
-const std::string &spla::FunctionUnary::GetSource() const {
+const std::string &spla::FunctionSelect::GetSource() const {
     return mSource;
 }
 
-bool spla::FunctionUnary::CanApply(const spla::TypedObject &a, const spla::TypedObject &b) const {
-    return a.GetType() == GetA() &&
-           b.GetType() == GetB();
+bool spla::FunctionSelect::CanApply(const spla::TypedObject &a) const {
+    return a.GetType() == GetA();
 }
 
-spla::RefPtr<spla::FunctionUnary> spla::FunctionUnary::Make(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, std::string source, spla::Library &library) {
-    return RefPtr<FunctionUnary>(new FunctionUnary(std::move(a), std::move(b), std::move(source), library));
+spla::RefPtr<spla::FunctionSelect> spla::FunctionSelect::Make(spla::RefPtr<spla::Type> a, std::string source, spla::Library &library) {
+    return RefPtr<FunctionSelect>(new FunctionSelect(std::move(a), std::move(source), library));
 }
 
-spla::FunctionUnary::FunctionUnary(spla::RefPtr<spla::Type> a, spla::RefPtr<spla::Type> b, std::string source, spla::Library &library)
-    : Object(TypeName::FunctionUnary, library), mA(std::move(a)), mB(std::move(b)), mSource(std::move(source)) {
+spla::FunctionSelect::FunctionSelect(spla::RefPtr<spla::Type> a, std::string source, spla::Library &library)
+    : Object(TypeName::FunctionSelect, library), mA(std::move(a)), mSource(std::move(source)) {
 }

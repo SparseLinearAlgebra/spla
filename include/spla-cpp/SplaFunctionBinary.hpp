@@ -41,7 +41,7 @@ namespace spla {
 
     /**
      * @class FunctionBinary
-     * @brief Binary Typed element function f: a x b -> c.
+     * @brief Binary Typed element function `f: a x b -> c`.
      *
      * Binary function accepts two values of typed input objects, with types
      * `A` and `B` and returns new value for typed object with type `C`.
@@ -51,7 +51,7 @@ namespace spla {
      * Source code for the function must be provided in the string.
      * Function signature is following `void(_ACCESS_A const void* vp_a, _ACCESS_B const void* vp_b, _ACCESS_C void* vp_c)`,
      * where a, b and c pointers to values, c must be written by the function.
-     * It is up to user to cast this pointers to appropriate types and check values sizes.
+     * It is up to user to cast these pointers to appropriate types and check values sizes.
      */
     class SPLA_API FunctionBinary final : public Object {
     public:
