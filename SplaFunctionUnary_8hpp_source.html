@@ -99,61 +99,46 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;bitset&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaObject_8hpp.html">spla-cpp/SplaObject.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaType_8hpp.html">spla-cpp/SplaType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html">   46</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#a6293a4e7dbcace8b8dbb9317e5cdc862">   48</a></span>&#160;        <a class="code" href="classspla_1_1FunctionUnary.html#a6293a4e7dbcace8b8dbb9317e5cdc862">~FunctionUnary</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524">   50</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524">Flags</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            Max = 1</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        };</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#a27f36ab5705b583ceae51301a0e19441">   54</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;<a class="code" href="classspla_1_1FunctionUnary.html#a27f36ab5705b583ceae51301a0e19441">GetArg1</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> mArg1;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#a0c89484437ef5a8183a3830747878ae9">   58</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;<a class="code" href="classspla_1_1FunctionUnary.html#a0c89484437ef5a8183a3830747878ae9">GetResult</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> mResult;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaObject_8hpp.html">spla-cpp/SplaObject.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaType_8hpp.html">spla-cpp/SplaType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html">   55</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#a6293a4e7dbcace8b8dbb9317e5cdc862">   57</a></span>&#160;        <a class="code" href="classspla_1_1FunctionUnary.html#a6293a4e7dbcace8b8dbb9317e5cdc862">~FunctionUnary</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;GetA() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#ae7a51d758e2677c05d8cb68ff3f59a50">   62</a></span>&#160;        <span class="keyword">const</span> std::string &amp;<a class="code" href="classspla_1_1FunctionUnary.html#ae7a51d758e2677c05d8cb68ff3f59a50">GetSource</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> mSource;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classspla_1_1FunctionUnary.html#affbb38980ff12cb2f7e45cf6764117f1">   66</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1FunctionUnary.html#affbb38980ff12cb2f7e45cf6764117f1">IsApplicable</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;arg1, <span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;result)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> arg1.<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>() == mArg1 &amp;&amp; result.<a class="code" href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">GetType</a>() == mResult;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> mArg1;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> mResult;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::string mSource;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::bitset&lt;static_cast&lt;std::size_t&gt;(Flags::Max)&gt; mFlags;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;GetB() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">const</span> std::string &amp;GetSource() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">bool</span> CanApply(<span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;a, <span class="keyword">const</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> &amp;b) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;FunctionUnary&gt;</a> Make(<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> a, <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> b, std::string source, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a>(<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> a, <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> b, std::string source, <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> mA;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> mB;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        std::string mSource;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    };</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAFUNCTIONUNARY_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaObject_8hpp_html"><div class="ttname"><a href="SplaObject_8hpp.html">SplaObject.hpp</a></div></div>
 <div class="ttc" id="aSplaType_8hpp_html"><div class="ttname"><a href="SplaType_8hpp.html">SplaType.hpp</a></div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html"><div class="ttname"><a href="classspla_1_1FunctionUnary.html">spla::FunctionUnary</a></div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:46</div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html_a0c89484437ef5a8183a3830747878ae9"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#a0c89484437ef5a8183a3830747878ae9">spla::FunctionUnary::GetResult</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetResult() const</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:58</div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html_a27f36ab5705b583ceae51301a0e19441"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#a27f36ab5705b583ceae51301a0e19441">spla::FunctionUnary::GetArg1</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetArg1() const</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:54</div></div>
+<div class="ttc" id="aclassspla_1_1FunctionUnary_html"><div class="ttname"><a href="classspla_1_1FunctionUnary.html">spla::FunctionUnary</a></div><div class="ttdoc">Unary Typed element function f: a -&gt; b.</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:55</div></div>
 <div class="ttc" id="aclassspla_1_1FunctionUnary_html_a6293a4e7dbcace8b8dbb9317e5cdc862"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#a6293a4e7dbcace8b8dbb9317e5cdc862">spla::FunctionUnary::~FunctionUnary</a></div><div class="ttdeci">~FunctionUnary() override=default</div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html_ac7240ced9c6a2b71a8a1832b71e46524"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#ac7240ced9c6a2b71a8a1832b71e46524">spla::FunctionUnary::Flags</a></div><div class="ttdeci">Flags</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:50</div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html_ae7a51d758e2677c05d8cb68ff3f59a50"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#ae7a51d758e2677c05d8cb68ff3f59a50">spla::FunctionUnary::GetSource</a></div><div class="ttdeci">const std::string &amp; GetSource() const</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:62</div></div>
-<div class="ttc" id="aclassspla_1_1FunctionUnary_html_affbb38980ff12cb2f7e45cf6764117f1"><div class="ttname"><a href="classspla_1_1FunctionUnary.html#affbb38980ff12cb2f7e45cf6764117f1">spla::FunctionUnary::IsApplicable</a></div><div class="ttdeci">bool IsApplicable(const TypedObject &amp;arg1, const TypedObject &amp;result) const</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:66</div></div>
+<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:46</div></div>
 <div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
 <div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:117</div></div>
-<div class="ttc" id="aclassspla_1_1TypedObject_html_afbede1902e7cedf7ddb796e4285b37f1"><div class="ttname"><a href="classspla_1_1TypedObject.html#afbede1902e7cedf7ddb796e4285b37f1">spla::TypedObject::GetType</a></div><div class="ttdeci">const RefPtr&lt; Type &gt; &amp; GetType() const</div><div class="ttdef"><b>Definition:</b> SplaType.hpp:127</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

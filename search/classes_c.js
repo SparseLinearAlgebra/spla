@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['pairhash_487',['PairHash',['../structspla_1_1PairHash.html',1,'spla']]],
-  ['paramsmatrixewiseadd_488',['ParamsMatrixEWiseAdd',['../classspla_1_1ParamsMatrixEWiseAdd.html',1,'spla']]],
-  ['paramsvectorewiseadd_489',['ParamsVectorEWiseAdd',['../classspla_1_1ParamsVectorEWiseAdd.html',1,'spla']]]
+  ['pairhash_488',['PairHash',['../structspla_1_1PairHash.html',1,'spla']]],
+  ['paramsmatrixewiseadd_489',['ParamsMatrixEWiseAdd',['../classspla_1_1ParamsMatrixEWiseAdd.html',1,'spla']]],
+  ['paramsvectorewiseadd_490',['ParamsVectorEWiseAdd',['../classspla_1_1ParamsVectorEWiseAdd.html',1,'spla']]]
 ];

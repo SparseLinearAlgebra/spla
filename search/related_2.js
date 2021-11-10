@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['taskbuilder_948',['TaskBuilder',['../classspla_1_1Expression.html#a88a29778c78dfbfd8bdb4ed69abe7fa7',1,'spla::Expression']]],
-  ['types_949',['Types',['../classspla_1_1Type.html#ad7b39434bdbb846c888a2002554e1c84',1,'spla::Type']]]
+  ['taskbuilder_949',['TaskBuilder',['../classspla_1_1Expression.html#a88a29778c78dfbfd8bdb4ed69abe7fa7',1,'spla::Expression']]],
+  ['types_950',['Types',['../classspla_1_1Type.html#ad7b39434bdbb846c888a2002554e1c84',1,'spla::Type']]]
 ];

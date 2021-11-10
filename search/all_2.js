@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['canapply_15',['CanApply',['../classspla_1_1FunctionBinary.html#aa064750f2c8cb6d5fe1610e982a4dd19',1,'spla::FunctionBinary']]],
+  ['canapply_15',['CanApply',['../classspla_1_1FunctionBinary.html#aa064750f2c8cb6d5fe1610e982a4dd19',1,'spla::FunctionBinary::CanApply()'],['../classspla_1_1FunctionSelect.html#a7489093fc6f2076e5834d645d05dd5ec',1,'spla::FunctionSelect::CanApply()'],['../classspla_1_1FunctionUnary.html#aa9e75bacd639b503db606c5b9d2fc67b',1,'spla::FunctionUnary::CanApply()']]],
   ['cast_16',['Cast',['../classspla_1_1RefPtr.html#ad68c609baa5345b71e3bb547cbfe214e',1,'spla::RefPtr']]],
   ['check_5fraise_5fcritical_5ferror_17',['CHECK_RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#a896f7f65515ecc0d096f59a48eee8a20',1,'SplaError.hpp']]],
   ['check_5fraise_5ferror_18',['CHECK_RAISE_ERROR',['../SplaError_8hpp.html#a937faea27f2b1e54da5b0d7c62640ee7',1,'SplaError.hpp']]],
