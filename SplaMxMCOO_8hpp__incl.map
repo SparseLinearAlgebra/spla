@@ -1,0 +1,24 @@
+<map id="sources/algo/mxm/SplaMxMCOO.hpp" name="sources/algo/mxm/SplaMxMCOO.hpp">
+<area shape="rect" id="node1" title=" " alt="" coords="347,5,586,32"/>
+<area shape="rect" id="node2" href="$SplaAlgorithm_8hpp.html" title=" " alt="" coords="389,80,544,107"/>
+<area shape="rect" id="node3" href="$SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="367,155,567,181"/>
+<area shape="rect" id="node11" href="$SplaRefCnt_8hpp.html" title=" " alt="" coords="141,528,307,555"/>
+<area shape="rect" id="node15" title=" " alt="" coords="785,677,839,704"/>
+<area shape="rect" id="node4" href="$SplaDeviceManager_8hpp.html" title=" " alt="" coords="571,229,762,256"/>
+<area shape="rect" id="node9" href="$SplaDescriptor_8hpp.html" title=" " alt="" coords="437,379,621,405"/>
+<area shape="rect" id="node18" href="$SplaFunctionBinary_8hpp.html" title=" " alt="" coords="967,304,1177,331"/>
+<area shape="rect" id="node21" href="$SplaMatrixBlock_8hpp.html" title=" " alt="" coords="93,229,280,256"/>
+<area shape="rect" id="node22" href="$SplaVectorBlock_8hpp.html" title=" " alt="" coords="305,229,495,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="354,304,529,331"/>
+<area shape="rect" id="node6" title=" " alt="" coords="797,304,862,331"/>
+<area shape="rect" id="node7" title=" " alt="" coords="886,304,943,331"/>
+<area shape="rect" id="node8" href="$SplaExpressionNode_8hpp.html" title=" " alt="" coords="553,304,772,331"/>
+<area shape="rect" id="node10" href="$SplaObject_8hpp.html" title=" " alt="" coords="643,453,805,480"/>
+<area shape="rect" id="node17" title=" " alt="" coords="696,379,755,405"/>
+<area shape="rect" id="node16" title=" " alt="" coords="507,453,618,480"/>
+<area shape="rect" id="node12" title=" " alt="" coords="321,603,383,629"/>
+<area shape="rect" id="node13" title=" " alt="" coords="231,603,297,629"/>
+<area shape="rect" id="node14" href="$SplaConfig_8hpp.html" title=" " alt="" coords="46,603,207,629"/>
+<area shape="rect" id="node19" href="$SplaType_8hpp.html" title=" " alt="" coords="881,379,1034,405"/>
+<area shape="rect" id="node20" title=" " alt="" coords="931,453,983,480"/>
+</map>

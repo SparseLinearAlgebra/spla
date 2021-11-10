@@ -104,17 +104,35 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1Scalar.html">   53</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Scalar.html">Scalar</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLASCALAR_HPP</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classspla_1_1Scalar.html">   60</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Scalar.html">Scalar</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1TypedObject.html">TypedObject</a> {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1Scalar.html#a34be2db8b38c672047882440709b9877">   62</a></span>&#160;        <a class="code" href="classspla_1_1Scalar.html#a34be2db8b38c672047882440709b9877">~Scalar</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">bool</span> HasValue() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        [[nodiscard]] <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;class ScalarStorage&gt;</a> &amp;GetStorage() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">void</span> Dump(std::ostream &amp;stream) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Scalar&gt;</a> Make(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="classspla_1_1Scalar.html">Scalar</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;type, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// Separate storage for private impl</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;class ScalarStorage&gt;</a> mStorage;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLASCALAR_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaObject_8hpp_html"><div class="ttname"><a href="SplaObject_8hpp.html">SplaObject.hpp</a></div></div>
 <div class="ttc" id="aSplaType_8hpp_html"><div class="ttname"><a href="SplaType_8hpp.html">SplaType.hpp</a></div></div>
-<div class="ttc" id="aclassspla_1_1Scalar_html"><div class="ttname"><a href="classspla_1_1Scalar.html">spla::Scalar</a></div><div class="ttdef"><b>Definition:</b> SplaScalar.hpp:53</div></div>
+<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
+<div class="ttc" id="aclassspla_1_1Scalar_html"><div class="ttname"><a href="classspla_1_1Scalar.html">spla::Scalar</a></div><div class="ttdef"><b>Definition:</b> SplaScalar.hpp:60</div></div>
+<div class="ttc" id="aclassspla_1_1Scalar_html_a34be2db8b38c672047882440709b9877"><div class="ttname"><a href="classspla_1_1Scalar.html#a34be2db8b38c672047882440709b9877">spla::Scalar::~Scalar</a></div><div class="ttdeci">~Scalar() override</div></div>
 <div class="ttc" id="aclassspla_1_1TypedObject_html"><div class="ttname"><a href="classspla_1_1TypedObject.html">spla::TypedObject</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:117</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->

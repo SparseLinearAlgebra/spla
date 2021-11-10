@@ -158,36 +158,44 @@ $(function() {
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                                            <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Vector&gt;</a> &amp;b,</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                                            <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        State GetState() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordtype">bool</span> Empty() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;class ExpressionNode&gt;&gt; &amp;GetNodes() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Expression&gt;</a> Make(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#a30ef2d6bcac108f42e6493e88bfe1fcb">  230</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
-<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#a88a29778c78dfbfd8bdb4ed69abe7fa7">  231</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1TaskBuilder.html">TaskBuilder</a>;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Expression.html">Expression</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;ExpressionNode&gt;</a> MakeNode(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">ExpressionNode::Operation</a> op,</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                                        std::vector&lt;<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a>&gt; &amp;&amp;args,</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                                        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="keywordtype">void</span> SetState(<a class="code" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9">State</a> state);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordtype">void</span> SetFuture(std::unique_ptr&lt;class ExpressionFuture&gt; &amp;&amp;future);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="keywordtype">void</span> SetTasks(std::unique_ptr&lt;class ExpressionTasks&gt; &amp;&amp;tasks);</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        std::vector&lt;RefPtr&lt;class ExpressionNode&gt;&gt; mNodes;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        std::unique_ptr&lt;class ExpressionFuture&gt; mFuture;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        std::unique_ptr&lt;class ExpressionTasks&gt; mTasks;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        std::atomic&lt;State&gt; mState;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    };</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAEXPRESSION_HPP</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;ExpressionNode&gt;</a> MakeMxM(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> &amp;w,</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> &amp;mask,</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;FunctionBinary&gt;</a> &amp;mult,</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;FunctionBinary&gt;</a> &amp;add,</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> &amp;a,</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Matrix&gt;</a> &amp;b,</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        State GetState() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordtype">bool</span> Empty() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;class ExpressionNode&gt;&gt; &amp;GetNodes() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Expression&gt;</a> Make(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#a30ef2d6bcac108f42e6493e88bfe1fcb">  256</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="classspla_1_1Expression.html#a88a29778c78dfbfd8bdb4ed69abe7fa7">  257</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1TaskBuilder.html">TaskBuilder</a>;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Expression.html">Expression</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;ExpressionNode&gt;</a> MakeNode(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">ExpressionNode::Operation</a> op,</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                                        std::vector&lt;<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a>&gt; &amp;&amp;args,</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                                        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordtype">void</span> SetState(<a class="code" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9">State</a> state);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordtype">void</span> SetFuture(std::unique_ptr&lt;class ExpressionFuture&gt; &amp;&amp;future);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordtype">void</span> SetTasks(std::unique_ptr&lt;class ExpressionTasks&gt; &amp;&amp;tasks);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        std::vector&lt;RefPtr&lt;class ExpressionNode&gt;&gt; mNodes;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        std::unique_ptr&lt;class ExpressionFuture&gt; mFuture;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        std::unique_ptr&lt;class ExpressionTasks&gt; mTasks;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        std::atomic&lt;State&gt; mState;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    };</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAEXPRESSION_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaData_8hpp_html"><div class="ttname"><a href="SplaData_8hpp.html">SplaData.hpp</a></div></div>
 <div class="ttc" id="aSplaDescriptor_8hpp_html"><div class="ttname"><a href="SplaDescriptor_8hpp.html">SplaDescriptor.hpp</a></div></div>
