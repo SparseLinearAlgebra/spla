@@ -25,27 +25,36 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaScalar.hpp>
-#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
 
-spla::Scalar::~Scalar() = default;
-
-bool spla::Scalar::HasValue() const {
-    return mStorage->HasValue();
+const spla::ScalarValue::Value &spla::ScalarValue::GetVal() const noexcept {
+    return mValue;
 }
 
-const spla::RefPtr<spla::ScalarStorage> &spla::Scalar::GetStorage() const {
-    return mStorage;
+void spla::ScalarValue::Dump(std::ostream &stream) const {
+    using namespace boost;
+    compute::context context = mValue.get_buffer().get_context();
+    compute::command_queue queue(context, context.get_device());
+
+    std::vector<unsigned char> value;
+    compute::copy(mValue.begin(), mValue.end(), value.begin(), queue);
+
+    auto byteSize = value.size();
+
+    stream << "Scalar bsize=" << byteSize << " val=";
+    stream << std::hex;
+
+    for (std::size_t byte = 0; byte < byteSize; byte++) {
+        stream << static_cast<unsigned int>(value[byte]);
+    }
+
+    stream << std::endl
+           << std::dec;
 }
 
-void spla::Scalar::Dump(std::ostream &stream) const {
-    mStorage->Dump(stream);
+spla::RefPtr<spla::ScalarValue> spla::ScalarValue::Make(spla::ScalarValue::Value val) {
+    return spla::RefPtr<spla::ScalarValue>(new ScalarValue(std::move(val)));
 }
 
-spla::RefPtr<spla::Scalar> spla::Scalar::Make(const spla::RefPtr<spla::Type> &type, spla::Library &library) {
-    return RefPtr<spla::Scalar>(new Scalar(type, library));
-}
-
-spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &library)
-    : TypedObject(type, TypeName::Scalar, library) {
+spla::ScalarValue::ScalarValue(spla::ScalarValue::Value val) : mValue(std::move(val)) {
 }

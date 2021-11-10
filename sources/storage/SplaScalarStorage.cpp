@@ -25,4 +25,42 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "SplaScalarStorage.hpp"
+#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
+
+spla::ScalarStorage::~ScalarStorage() = default;
+
+void spla::ScalarStorage::SetValue(const RefPtr<ScalarValue> &value) {
+    assert(value.IsNotNull());
+
+    std::lock_guard<std::mutex> lock(mMutex);
+    mValue = value;
+}
+
+void spla::ScalarStorage::RemoveValue() {
+    std::lock_guard<std::mutex> lock(mMutex);
+    mValue.Reset();
+}
+
+bool spla::ScalarStorage::HasValue() const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    return mValue.IsNotNull();
+}
+
+spla::RefPtr<spla::ScalarValue> spla::ScalarStorage::GetValue() const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    return mValue;
+}
+
+void spla::ScalarStorage::Dump(std::ostream &stream) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    if (mValue.IsNotNull()) mValue->Dump(stream);
+}
+
+spla::RefPtr<spla::ScalarStorage> spla::ScalarStorage::Make(spla::Library &library) {
+    return spla::RefPtr<spla::ScalarStorage>(new ScalarStorage(library));
+}
+
+spla::ScalarStorage::ScalarStorage(spla::Library &library) : mLibrary(library) {
+
+}

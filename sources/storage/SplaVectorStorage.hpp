@@ -41,6 +41,9 @@ namespace spla {
      * @{
      */
 
+    /**
+     * @class VectorStorage
+     */
     class VectorStorage final : public RefCnt {
     public:
         using Index = unsigned int;
@@ -64,7 +67,7 @@ namespace spla {
         void GetBlocksGrid(std::size_t &rows) const;
 
         /** @return Block at specified index; may be null */
-        RefPtr<VectorBlock> GetBlock(const Index &index) const;
+        [[nodiscard]] RefPtr<VectorBlock> GetBlock(const Index &index) const;
 
         /** @return Number of rows of the storage */
         [[nodiscard]] std::size_t GetNrows() const noexcept;

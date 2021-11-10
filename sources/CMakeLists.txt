@@ -77,4 +77,7 @@ set(SPLA_STORAGE_SOURCES
         sources/storage/SplaVectorStorage.cpp
         sources/storage/SplaVectorStorage.hpp
         sources/storage/SplaScalarStorage.cpp
-        sources/storage/SplaScalarStorage.hpp)
+        sources/storage/SplaScalarStorage.hpp
+        sources/storage/SplaScalarValue.cpp
+        sources/storage/SplaScalarValue.hpp
+        )

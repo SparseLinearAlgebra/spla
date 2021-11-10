@@ -25,27 +25,32 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaScalar.hpp>
-#include <storage/SplaScalarStorage.hpp>
+#ifndef SPLA_SPLASCALARVALUE_HPP
+#define SPLA_SPLASCALARVALUE_HPP
 
-spla::Scalar::~Scalar() = default;
+#include <boost/compute/container/vector.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 
-bool spla::Scalar::HasValue() const {
-    return mStorage->HasValue();
-}
+namespace spla {
 
-const spla::RefPtr<spla::ScalarStorage> &spla::Scalar::GetStorage() const {
-    return mStorage;
-}
+    class ScalarValue final : public RefCnt {
+    public:
+        using Value = boost::compute::vector<unsigned char>;
 
-void spla::Scalar::Dump(std::ostream &stream) const {
-    mStorage->Dump(stream);
-}
+        ~ScalarValue() override = default;
 
-spla::RefPtr<spla::Scalar> spla::Scalar::Make(const spla::RefPtr<spla::Type> &type, spla::Library &library) {
-    return RefPtr<spla::Scalar>(new Scalar(type, library));
-}
+        [[nodiscard]] const Value &GetVal() const noexcept;
 
-spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &library)
-    : TypedObject(type, TypeName::Scalar, library) {
-}
+        void Dump(std::ostream &stream) const;
+
+        static RefPtr<ScalarValue> Make(Value val);
+
+    private:
+        explicit ScalarValue(Value val);
+
+        Value mValue;
+    };
+
+}// namespace spla
+
+#endif//SPLA_SPLASCALARVALUE_HPP

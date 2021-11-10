@@ -28,6 +28,9 @@
 #ifndef SPLA_SPLASCALARSTORAGE_HPP
 #define SPLA_SPLASCALARSTORAGE_HPP
 
+#include <mutex>
+#include <spla-cpp/SplaLibrary.hpp>
+
 namespace spla {
 
     /**
@@ -35,7 +38,37 @@ namespace spla {
      * @{
      */
 
-    class SplaScalarStorage {
+    /**
+     * @class ScalarStorage
+     */
+    class ScalarStorage final : public RefCnt {
+    public:
+        ~ScalarStorage() override;
+
+        /** Set scalar value */
+        void SetValue(const RefPtr<class ScalarValue> &value);
+
+        /** Removes scalar value if present */
+        void RemoveValue();
+
+        /** @return True if stores value */
+        bool HasValue() const;
+
+        /** @return Returns scalar value; may be null if not presented */
+        RefPtr<class ScalarValue> GetValue() const;
+
+        /** Dump scalar content to provided stream */
+        void Dump(std::ostream &stream) const;
+
+        static RefPtr<ScalarStorage> Make(Library &library);
+
+    private:
+        explicit ScalarStorage(Library &library);
+
+        RefPtr<class ScalarValue> mValue;
+
+        Library &mLibrary;
+        mutable std::mutex mMutex;
     };
 
     /**
