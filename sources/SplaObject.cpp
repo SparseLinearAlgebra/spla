@@ -27,7 +27,7 @@
 
 #include <spla-cpp/SplaObject.hpp>
 
-spla::Object::Object(spla::Object::TypeName typeName, struct Library &library)
+spla::Object::Object(spla::Object::TypeName typeName, class Library &library)
     : mTypeName(typeName), mLibrary(library) {
 }
 
