@@ -8,6 +8,7 @@ endfunction()
 
 spla_test_target(TestBasic)
 spla_test_target(TestDataMatrix)
+spla_test_target(TestDataScalar)
 spla_test_target(TestDataVector)
 spla_test_target(TestMatrixEWiseAdd)
 spla_test_target(TestMaskByKey)
