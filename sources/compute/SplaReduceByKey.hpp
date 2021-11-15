@@ -28,7 +28,12 @@
 #ifndef SPLA_SPLAREDUCEBYKEY_HPP
 #define SPLA_SPLAREDUCEBYKEY_HPP
 
-#include <boost/compute/algorithm/reduce_by_key.hpp>
+#include <functional>
+
+#include <boost/compute/algorithm/inclusive_scan.hpp>
+#include <boost/compute/container/vector.hpp>
+#include <boost/compute/detail/meta_kernel.hpp>
+#include <boost/compute/memory/local_buffer.hpp>
 
 namespace spla {
 
@@ -64,6 +69,8 @@ namespace spla {
         class VMultiKey {
         public:
             [[nodiscard]] virtual std::string GetKeyByN(std::size_t n) const = 0;
+
+            virtual ~VMultiKey() = default;
         };
 
         class KeyVar : public VMultiKey {
@@ -105,6 +112,17 @@ namespace spla {
             }
 
             explicit KeyVec(
+                    const std::vector<std::reference_wrapper<compute::vector<uint_>>> &vectors,
+                    std::string idx,
+                    MetaKernel &k)
+                : mIdx(std::move(idx)) {
+                mBuffersNames.reserve(vectors.size());
+                for (const compute::vector<uint_> &v : vectors) {
+                    mBuffersNames.push_back(k.template get_buffer_identifier<uint_>(v.get_buffer()));
+                }
+            }
+
+            explicit KeyVec(
                     const std::vector<compute::vector<uint_>::iterator> &iterators,
                     std::string idx,
                     MetaKernel &k)
@@ -129,6 +147,8 @@ namespace spla {
             [[nodiscard]] virtual std::string GetByteByN(const std::string &n) const = 0;
 
             [[nodiscard]] virtual std::string GetPointer() const = 0;
+
+            virtual ~VAlignedValue() = default;
         };
 
         class ValVar : public VAlignedValue {
@@ -140,7 +160,7 @@ namespace spla {
             }
 
             [[nodiscard]] std::string GetPointer() const override {
-                return std::string("&") + mName;
+                return mName;
             }
 
         private:
@@ -158,7 +178,7 @@ namespace spla {
 
             [[nodiscard]] std::string GetByteByN(const std::string &n) const override {
                 std::stringstream ss;
-                ss << mArr << '[' << mIdx << " * " << mVBytes << " + (" << n << ")]";
+                ss << mArr << "[(" << mIdx << ") * " << mVBytes << " + (" << n << ")]";
                 return ss.str();
             }
 
@@ -225,6 +245,8 @@ namespace spla {
 
             virtual void Print(MetaKernel &) const = 0;
 
+            virtual ~ReduceApplication() = default;
+
         protected:
             const std::string mOpName;
             const VAlignedValue &mA, &mB, &mC;
@@ -277,10 +299,10 @@ namespace spla {
                 : mReduceOpName(std::move(reduceOpName)),
                   mVBytes(vBytes) {
                 std::stringstream spla_reduce_op;
-                spla_reduce_op << "void " << mReduceOpName << "(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n"
-                               << "#define _ACCESS_A __global\n"
-                               << "#define _ACCESS_B __global\n"
-                               << "#define _ACCESS_C __global\n"
+                spla_reduce_op << "void " << mReduceOpName << "(const void* vp_a, const void* vp_b, void* vp_c) {\n"
+                               << "#define _ACCESS_A\n"
+                               << "#define _ACCESS_B\n"
+                               << "#define _ACCESS_C\n"
                                << "   " << body << "\n"
                                << "#undef _ACCESS_A\n"
                                << "#undef _ACCESS_B\n"
@@ -311,8 +333,9 @@ namespace spla {
                                      std::size_t preferredWorkGroupSize,
                                      compute::command_queue &queue) {
             compute::detail::meta_kernel k("spla_reduce_by_key_new_key_flags");
-            const std::size_t nKeys = keysFirst.at(0).size();
-            k.add_set_arg<const uint_>("count", uint_(nKeys));
+            const std::size_t count = keysFirst.at(0).size();
+            const std::size_t nKeys = keysFirst.size();
+            k.add_set_arg<const uint_>("count", static_cast<uint_>(count));
 
             k << k.decl<const uint_>("gid") << " = get_global_id(0);\n"
               << k.decl<uint_>("value") << " = 0;\n"
@@ -332,14 +355,14 @@ namespace spla {
             compute::kernel kernel = k.compile(context);
 
             auto workGroupsNo = static_cast<std::size_t>(
-                    std::ceil(static_cast<float>(nKeys) / static_cast<float>(preferredWorkGroupSize)));
+                    std::ceil(static_cast<float>(count) / static_cast<float>(preferredWorkGroupSize)));
 
             queue.enqueue_1d_range_kernel(kernel,
                                           0,
                                           workGroupsNo * preferredWorkGroupSize,
                                           preferredWorkGroupSize);
 
-            inclusive_scan(newKeysFirst, newKeysFirst + static_cast<std::ptrdiff_t>(nKeys),
+            inclusive_scan(newKeysFirst, newKeysFirst + static_cast<std::ptrdiff_t>(count),
                            newKeysFirst, queue);
         }
 
@@ -356,7 +379,7 @@ namespace spla {
             compute::detail::meta_kernel k("spla_reduce_by_key_with_scan_carry_outs");
             k.add_set_arg<const uint_>("count", static_cast<uint_>(keys.size()));
             size_t localKeysArg = k.add_arg<uint_ *>(compute::memory_object::local_memory, "lkeys");
-            size_t localVarsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
+            size_t localValsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
 
             ReduceOp reduceOp(k, "spla_reduce", reduceBody, vBytes);
 
@@ -368,7 +391,7 @@ namespace spla {
               << DeclareVal{"value", vBytes} << ";\n"
               << "if(gid < count){\n"
               << k.var<uint_>("key") << " = " << keysFirst[k.var<const uint_>("gid")] << ";\n"
-              << AssignVal{ValVar("Value"), ValArrItem(valuesFirst, "gid", vBytes, k), vBytes} << ";\n"
+              << AssignVal{ValVar("value"), ValArrItem(valuesFirst, "gid", vBytes, k), vBytes} << ";\n"
               << "lkeys[lid] = key;\n"
               << AssignVal{ValArrItem("lvals", "lid", vBytes), ValVar("value"), vBytes} << ";\n"
               << "}\n"
@@ -381,7 +404,7 @@ namespace spla {
               << "    if (lid >= offset){\n"
               << "        other_key = lkeys[lid - offset];\n"
               << "        if(other_key == key){\n"
-              << "            other_value = lvals[lid - offset];\n"
+              << AssignVal{ValVar("other_value"), ValArrItem("lvals", "lid - offset", vBytes), vBytes} << ";\n"
               << reduceOp.Apply(ValVar("result"), ValVar("other_value"), ValVar("result")) << ";\n"
               << "        }\n"
               << "    }\n"
@@ -393,13 +416,14 @@ namespace spla {
               << AssignVal{ValArrItem(carryOutValuesFirst, "group_id", vBytes, k), ValVar("result"), vBytes} << ";\n"
               << "}\n";
 
+
             auto workGroupsNo = static_cast<std::size_t>(
                     std::ceil(static_cast<float>(keys.size()) / static_cast<float>(workGroupSize)));
 
             const compute::context &context = queue.get_context();
             compute::kernel kernel = k.compile(context);
             kernel.set_arg(localKeysArg, compute::local_buffer<uint_>(workGroupSize));
-            kernel.set_arg(localVarsArg, compute::local_buffer<unsigned char>(workGroupSize));
+            kernel.set_arg(localValsArg, compute::local_buffer<unsigned char>(workGroupSize * vBytes));
 
             queue.enqueue_1d_range_kernel(kernel,
                                           0,
@@ -454,7 +478,7 @@ namespace spla {
               << "    previous_key = key;\n"
                  "}\n"
               << "lkeys[lid] = previous_key;\n"
-              << "lvals[lid] = result;\n"
+              << AssignVal{ValArrItem("lvals", "lid", vBytes), ValVar("result"), vBytes} << ";\n"
               << "for (" << k.decl<uint_>("offset") << " = 1; "
               << "offset < wg_size; offset *= 2){\n"
                  "    barrier(CLK_LOCAL_MEM_FENCE);\n"
@@ -488,7 +512,7 @@ namespace spla {
             const compute::context &context = queue.get_context();
             compute::kernel kernel = k.compile(context);
             kernel.set_arg(localKeysArg, compute::local_buffer<uint_>(workGroupSize));
-            kernel.set_arg(localValsArg, compute::local_buffer<unsigned char>(workGroupSize));
+            kernel.set_arg(localValsArg, compute::local_buffer<unsigned char>(workGroupSize * vBytes));
 
             queue.enqueue_1d_range_kernel(kernel,
                                           0,
@@ -498,7 +522,7 @@ namespace spla {
 
         inline void FinalReduction(const std::vector<compute::vector<uint_>> &keys,
                                    const compute::vector<unsigned char>::iterator &valuesFirst,
-                                   const std::vector<compute::vector<uint_>::iterator> &keysResult,
+                                   const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
                                    const compute::vector<unsigned char>::iterator &valuesResult,
                                    std::size_t count,
                                    const compute::vector<uint_>::iterator &newKeysFirst,
@@ -509,7 +533,7 @@ namespace spla {
                                    const std::string &reduceBody,
                                    compute::command_queue &queue) {
             compute::detail::meta_kernel k("spla_reduce_by_key_with_scan_final_reduction");
-            k.add_set_arg<const uint_>("count", uint_(count));
+            k.add_set_arg<const uint_>("count", static_cast<uint_>(count));
             const std::size_t localKeysArg = k.add_arg<uint_ *>(compute::memory_object::local_memory, "lkeys");
             const std::size_t localValsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
             const std::size_t nKeys = keys.size();
@@ -526,7 +550,6 @@ namespace spla {
               << k.var<uint_>("key") << " = " << newKeysFirst[k.var<const uint_>("gid")] << ";\n"
               << AssignVal{ValVar("value"), ValArrItem(valuesFirst, "gid", vBytes, k), vBytes} << ";\n"
               << "lkeys[lid] = key;\n"
-              << "lvals[lid] = value;\n"
               << AssignVal{ValArrItem("lvals", "lid", vBytes), ValVar("value"), vBytes} << ";\n"
               << "}\n"
               << DeclareVal{"result", vBytes} << ";\n"
@@ -547,8 +570,7 @@ namespace spla {
               << "}\n"
               << "if (gid >= count) {\n return;\n};\n"
               << k.decl<const bool>("save") << " = (gid < (count - 1)) ?"
-              << newKeysFirst[k.var<const uint_>("gid + 1")] << " != key"
-              << ": true;\n"
+              << newKeysFirst[k.var<const uint_>("gid + 1")] << " != key : true;\n"
               << k.decl<uint_>("carry_in_key") << ";\n"
               << "if(group_id > 0 && save) {\n"
               << "    carry_in_key = " << carryInKeysFirst[k.var<const uint_>("group_id - 1")] << ";\n"
@@ -568,7 +590,7 @@ namespace spla {
             const compute::context &context = queue.get_context();
             compute::kernel kernel = k.compile(context);
             kernel.set_arg(localKeysArg, compute::local_buffer<uint_>(workGroupSize));
-            kernel.set_arg(localValsArg, compute::local_buffer<unsigned char>(workGroupSize));
+            kernel.set_arg(localValsArg, compute::local_buffer<unsigned char>(workGroupSize * vBytes));
 
             queue.enqueue_1d_range_kernel(kernel,
                                           0,
@@ -576,16 +598,15 @@ namespace spla {
                                           workGroupSize);
         }
 
-        inline std::size_t ReduceByKeyWithScanImpl(const std::vector<compute::vector<uint_>> &keys,
-                                                   const compute::vector<unsigned char> &values,
-                                                   const std::vector<compute::vector<uint_>::iterator> &keysResult,
-                                                   const compute::vector<unsigned char> &valuesResult,
-                                                   std::size_t valueByteSize,
-                                                   const std::string &reduceBody,
-                                                   compute::command_queue &queue) {
+        inline std::size_t ReduceByKeyWithScan(const std::vector<compute::vector<uint_>> &keys,
+                                               const compute::vector<unsigned char> &values,
+                                               const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
+                                               compute::vector<unsigned char> &valuesResult,
+                                               std::size_t valueByteSize,
+                                               const std::string &reduceBody,
+                                               compute::command_queue &queue) {
             const compute::context &context = queue.get_context();
             const std::size_t count = keys.at(0).size();
-            const std::size_t nKeys = keys.size();
 
             if (count == 0) {
                 return 0;
@@ -596,7 +617,6 @@ namespace spla {
             compute::vector<uint_> newKeys(count, context);
             GenerateUintKeys(keys, newKeys.begin(), workGroupSize, queue);
 
-            // Calculate carry-out and carry-in vectors size
             const auto carryOutSize = static_cast<std::size_t>(
                     std::ceil(static_cast<float>(count) / static_cast<float>(workGroupSize)));
             compute::vector<uint_> carryOutKeys(carryOutSize, context);
@@ -610,7 +630,7 @@ namespace spla {
                       reduceBody,
                       queue);
 
-            compute::vector<unsigned char> carryInValues(carryOutSize, context);
+            compute::vector<unsigned char> carryInValues(carryOutSize * valueByteSize, context);
             CarryIns(carryOutKeys.begin(),
                      carryOutValues.begin(),
                      carryInValues.begin(),
@@ -619,6 +639,13 @@ namespace spla {
                      valueByteSize,
                      reduceBody,
                      queue);
+
+            const std::size_t resultSize = compute::detail::read_single_value<uint_>(newKeys.get_buffer(), count - 1, queue) + 1;
+
+            for (compute::vector<uint_> &kRes : keysResult) {
+                kRes.resize(resultSize, queue);
+            }
+            valuesResult.resize(resultSize * valueByteSize, queue);
 
             FinalReduction(keys,
                            values.begin(),
@@ -633,33 +660,45 @@ namespace spla {
                            reduceBody,
                            queue);
 
-            const size_t result = compute::detail::read_single_value<uint_>(newKeys.get_buffer(),
-                                                                            count - 1, queue);
-            return result + 1;
+            return resultSize;
         }
 
     }// namespace detail
 
-    std::ptrdiff_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices1,
-                               const boost::compute::vector<unsigned int> &inputIndices2,
-                               const boost::compute::vector<unsigned char> &inputValues,
-                               boost::compute::vector<unsigned int> &outputIndices1,
-                               boost::compute::vector<unsigned int> &outputIndices2,
-                               boost::compute::vector<unsigned char> &outputValues,
-                               std::size_t elementsInSequence,
-                               const std::string &reduceOp,
-                               boost::compute::command_queue &queue) {
-        return 0;
+    std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices1,
+                            const boost::compute::vector<unsigned int> &inputIndices2,
+                            const boost::compute::vector<unsigned char> &inputValues,
+                            boost::compute::vector<unsigned int> &outputIndices1,
+                            boost::compute::vector<unsigned int> &outputIndices2,
+                            boost::compute::vector<unsigned char> &outputValues,
+                            std::size_t valueByteSize,
+                            const std::string &reduceOp,
+                            boost::compute::command_queue &queue) {
+        return detail::ReduceByKeyWithScan(
+                std::vector{inputIndices1, inputIndices2},
+                inputValues,
+                std::vector{std::ref(outputIndices1), std::ref(outputIndices2)},
+                outputValues,
+                valueByteSize,
+                reduceOp,
+                queue);
     }
 
-    std::ptrdiff_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
-                               const boost::compute::vector<unsigned char> &inputValues,
-                               boost::compute::vector<unsigned int> &outputIndices,
-                               boost::compute::vector<unsigned char> &outputValues,
-                               std::size_t elementsInSequence,
-                               const std::string &reduceOp,
-                               boost::compute::command_queue &queue) {
-        return 0;
+    std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
+                            const boost::compute::vector<unsigned char> &inputValues,
+                            boost::compute::vector<unsigned int> &outputIndices,
+                            boost::compute::vector<unsigned char> &outputValues,
+                            std::size_t valueByteSize,
+                            const std::string &reduceOp,
+                            boost::compute::command_queue &queue) {
+        return detail::ReduceByKeyWithScan(
+                std::vector{inputIndices},
+                inputValues,
+                std::vector{std::ref(outputIndices)},
+                outputValues,
+                valueByteSize,
+                reduceOp,
+                queue);
     }
 
 }// namespace spla
