@@ -43,10 +43,6 @@ spla::Library::Library() : Library(Config()) {
 
 spla::Library::~Library() = default;
 
-void spla::Library::Submit(const spla::RefPtr<spla::Expression> &expression) const {
-    GetPrivate().GetExprManager()->Submit(expression);
-}
-
 class spla::LibraryPrivate &spla::Library::GetPrivate() const noexcept {
     return *mPrivate;
 }

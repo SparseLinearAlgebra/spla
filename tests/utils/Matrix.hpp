@@ -125,8 +125,7 @@ namespace utils {
 
             auto readExpr = spla::Expression::Make(library);
             readExpr->MakeDataRead(m, data);
-            library.Submit(readExpr);
-
+            readExpr->Submit();
             readExpr->Wait();
 
             if (readExpr->GetState() != spla::Expression::State::Evaluated) {
@@ -188,8 +187,7 @@ namespace utils {
 
             auto readExpr = spla::Expression::Make(library);
             readExpr->MakeDataRead(m, data);
-            library.Submit(readExpr);
-
+            readExpr->Submit();
             readExpr->Wait();
 
             if (readExpr->GetState() != spla::Expression::State::Evaluated) {

@@ -167,12 +167,6 @@ namespace spla {
 
         ~Library();
 
-        /**
-         * Submit expression for the execution.
-         * @param expression Expression for execution
-         */
-        void Submit(const RefPtr<class Expression> &expression) const;
-
         /** @return Private state (for internal usage only) */
         [[nodiscard]] class LibraryPrivate &GetPrivate() const noexcept;
 

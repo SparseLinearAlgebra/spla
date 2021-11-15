@@ -48,9 +48,7 @@ void test(std::size_t iterations, std::size_t seed, const spla::RefPtr<spla::Typ
         auto spWrite = spExpr->MakeDataWrite(spScalar, spDataWrite);
         auto spRead = spExpr->MakeDataRead(spScalar, spDataRead);
         spExpr->Dependency(spWrite, spRead);
-
-        library.Submit(spExpr);
-
+        spExpr->Submit();
         spExpr->Wait();
 
         ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);

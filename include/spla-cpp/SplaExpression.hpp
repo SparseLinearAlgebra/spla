@@ -80,6 +80,19 @@ namespace spla {
         };
 
         /**
+         * Submit expression for the execution.
+         *
+         * @note Expression asynchronously submitted for execution
+         * @note Expression cannot be modified after submission
+         * @note Call wait to block until expression is evaluated
+         * @note Call state query to check current state of the expression
+         *
+         * @see Expression::Wait()
+         * @see Expression::GetState()
+         */
+        void Submit();
+
+        /**
          * Wait for expression until it is computation is completed.
          *
          * @note Blocks current thread until evaluated or aborted.

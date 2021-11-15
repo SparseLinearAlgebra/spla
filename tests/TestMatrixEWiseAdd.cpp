@@ -55,8 +55,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t N, std::size_
     auto spEAddAB = spExpr->MakeEWiseAdd(spW, nullptr, spOp, spA, spB);
     spExpr->Dependency(spWriteA, spEAddAB);
     spExpr->Dependency(spWriteB, spEAddAB);
-
-    library.Submit(spExpr);
+    spExpr->Submit();
     spExpr->Wait();
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
@@ -95,8 +94,7 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t N, std::size_
     spExpr->Dependency(spWriteA, spEAddAB);
     spExpr->Dependency(spWriteB, spEAddAB);
     spExpr->Dependency(spWriteMask, spEAddAB);
-
-    library.Submit(spExpr);
+    spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
@@ -135,8 +133,7 @@ void testOneIsEmpty(spla::Library &library, std::size_t M, std::size_t N, std::s
     spExpr->Dependency(spWriteMask, spEAddAB1);
     spExpr->Dependency(spWriteA, spEAddAB2);
     spExpr->Dependency(spWriteMask, spEAddAB2);
-
-    library.Submit(spExpr);
+    spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
@@ -169,8 +166,7 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::siz
     spExpr->Dependency(spWriteA, spEAddAB);
     spExpr->Dependency(spWriteB, spEAddAB);
     spExpr->Dependency(spWriteMask, spEAddAB);
-
-    library.Submit(spExpr);
+    spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 

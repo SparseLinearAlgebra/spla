@@ -40,6 +40,6 @@ namespace spla {
         ExpressionNode::Operation GetOperationType() const override;
     };
 
-}
+}// namespace spla
 
 #endif//SPLA_SPLASCALARDATAREAD_HPP

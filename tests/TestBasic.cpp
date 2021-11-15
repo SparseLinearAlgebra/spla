@@ -61,6 +61,8 @@ TEST(Basic, BoostExample) {
     // copy data back to the host
     compute::copy(device_vector.begin(), device_vector.end(), host_vector.begin(), queue);
 
+    queue.finish();
+
     // Ensure, that data is sorted
     float prev = -1;
     for (auto v : host_vector) {
@@ -170,6 +172,8 @@ TEST(Basic, SortIndices) {
 
     compute::copy(deviceI.begin(), deviceI.end(), I.begin(), queue);
     compute::copy(deviceJ.begin(), deviceJ.end(), J.begin(), queue);
+
+    queue.finish();
 
     int i = -1, j = -1;
     for (auto k = 0; k < indicesCount; k++) {

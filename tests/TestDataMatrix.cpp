@@ -43,8 +43,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t N, std::size_
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spM, spDataSrc, spDesc);
-
-    library.Submit(spExprWrite);
+    spExprWrite->Submit();
     spExprWrite->Wait();
     ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
@@ -72,8 +71,7 @@ void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t N
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spM, spDataSrc, spDesc);
-
-    library.Submit(spExprWrite);
+    spExprWrite->Submit();
     spExprWrite->Wait();
     ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
@@ -101,12 +99,12 @@ TEST(DataMatrix, Small) {
 }
 
 TEST(DataMatrix, Medium) {
-    std::size_t M = 1000, N = 2000;
+    std::size_t M = 1300, N = 2100;
     test(M, N, M, M, 10);
 }
 
 TEST(DataMatrix, Large) {
-    std::size_t M = 10000, N = 20000;
+    std::size_t M = 10300, N = 18000;
     test(M, N, M, M, 5);
 }
 

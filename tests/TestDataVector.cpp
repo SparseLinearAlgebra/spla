@@ -42,8 +42,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals, std::s
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
-
-    library.Submit(spExprWrite);
+    spExprWrite->Submit();
     spExprWrite->Wait();
     ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
@@ -71,8 +70,7 @@ void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t n
 
     auto spExprWrite = spla::Expression::Make(library);
     auto spWrite = spExprWrite->MakeDataWrite(spV, spDataSrc, spDesc);
-
-    library.Submit(spExprWrite);
+    spExprWrite->Submit();
     spExprWrite->Wait();
     ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
 
@@ -81,19 +79,15 @@ void testSortedNoDuplicates(spla::Library &library, std::size_t M, std::size_t n
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter) {
-    std::vector<std::size_t> blocksSizes{100, 1000, 10000, 100000};
-
     utils::testBlocks({100, 1000, 10000, 100000}, [=](spla::Library &library) {
-        for (std::size_t blockSize : blocksSizes) {
-            for (std::size_t i = 0; i < iter; i++) {
-                std::size_t nvals = base + i * step;
-                testCommon(library, M, nvals, i);
-            }
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon(library, M, nvals, i);
+        }
 
-            for (std::size_t i = 0; i < iter; i++) {
-                std::size_t nvals = base + i * step;
-                testSortedNoDuplicates(library, M, nvals, i);
-            }
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testSortedNoDuplicates(library, M, nvals, i);
         }
     });
 }
@@ -104,12 +98,12 @@ TEST(DataVector, Small) {
 }
 
 TEST(DataVector, Medium) {
-    std::size_t M = 1000;
+    std::size_t M = 1030;
     test(M, M, M, 10);
 }
 
 TEST(DataVector, Large) {
-    std::size_t M = 10000;
+    std::size_t M = 11300;
     test(M, M, M, 5);
 }
 

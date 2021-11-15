@@ -50,6 +50,11 @@ spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::
     SetState(State::Default);
 }
 
+void spla::Expression::Submit() {
+    CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state before submission");
+    GetLibrary().GetPrivate().GetExprManager()->Submit(this);
+}
+
 void spla::Expression::Wait() {
     CHECK_RAISE_ERROR(GetState() != State::Default, InvalidState, "Expression must be submitted for the execution");
 
