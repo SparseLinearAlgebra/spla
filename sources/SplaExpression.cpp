@@ -136,6 +136,7 @@ spla::Expression::MakeDataWrite(const RefPtr<Scalar> &scalar,
                                 const RefPtr<Descriptor> &desc) {
     CHECK_RAISE_ERROR(scalar.IsNotNull(), NullPointer, "scalar can't be null");
     CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
+    CHECK_RAISE_ERROR(scalar->GetType()->HasValues(), InvalidState, "can't write type with no value");
 
     std::vector<RefPtr<Object>> args = {
             scalar.As<Object>(),
@@ -184,6 +185,7 @@ spla::Expression::MakeDataRead(const RefPtr<Scalar> &scalar,
                                const RefPtr<Descriptor> &desc) {
     CHECK_RAISE_ERROR(scalar.IsNotNull(), NullPointer, "scalar can't be null");
     CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
+    CHECK_RAISE_ERROR(scalar->GetType()->HasValues(), InvalidState, "can't read type with no value");
 
     std::vector<RefPtr<Object>> args = {
             scalar.As<Object>(),

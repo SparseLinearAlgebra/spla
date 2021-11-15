@@ -37,6 +37,8 @@
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
+#include <expression/scalar/SplaScalarDataRead.hpp>
+#include <expression/scalar/SplaScalarDataWrite.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
@@ -46,10 +48,12 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     // NOTE: order of registration matters. First one has priority among others for the same op.
     Register(new MatrixDataRead());
     Register(new MatrixDataWrite());
+    Register(new MatrixEWiseAdd());
+    Register(new ScalarDataRead());
+    Register(new ScalarDataWrite());
     Register(new VectorDataWrite());
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
-    Register(new MatrixEWiseAdd());
 }
 
 void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expression) {

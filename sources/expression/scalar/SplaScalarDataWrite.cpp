@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <expression/scalar/SplaScalarDataWrite.hpp>
@@ -38,6 +37,38 @@ bool spla::ScalarDataWrite::Select(std::size_t nodeIdx, const spla::Expression &
 }
 
 void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto &node = nodes[nodeIdx];
+    auto &library = node->GetLibrary().GetPrivate();
+
+    auto scalar = node->GetArg(0).Cast<Scalar>();
+    auto data = node->GetArg(1).Cast<DataScalar>();
+    auto desc = node->GetDescriptor();
+    auto &type = scalar->GetType();
+    auto byteSize = type->GetByteSize();
+    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
+
+    assert(scalar);
+    assert(data);
+    assert(desc);
+    assert(type->HasValues());
+    assert(hostValue);
+
+    using namespace boost;
+
+    auto &deviceMan = library.GetDeviceManager();
+    auto deviceId = deviceMan.FetchDevice(node);
+
+    compute::device device = deviceMan.GetDevice(deviceId);
+    compute::context ctx = library.GetContext();
+    compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
+
+    compute::vector<unsigned char> deviceValue(byteSize, ctx);
+    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
+
+    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
+    scalar->GetStorage()->SetValue(scalarValue);
 }
 
 spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {

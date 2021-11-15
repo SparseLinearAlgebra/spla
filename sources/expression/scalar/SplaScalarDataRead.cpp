@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
@@ -38,6 +37,35 @@ bool spla::ScalarDataRead::Select(std::size_t nodeIdx, const spla::Expression &e
 }
 
 void spla::ScalarDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto &node = nodes[nodeIdx];
+    auto &library = node->GetLibrary().GetPrivate();
+
+    auto scalar = node->GetArg(0).Cast<Scalar>();
+    auto data = node->GetArg(1).Cast<DataScalar>();
+    auto desc = node->GetDescriptor();
+    auto hostValue = reinterpret_cast<unsigned char *>(data->GetValue());
+
+    assert(scalar);
+    assert(data);
+    assert(desc);
+    assert(hostValue);
+
+    auto deviceValue = scalar->GetStorage()->GetValue();
+
+    if (deviceValue.IsNotNull()) {
+        using namespace boost;
+
+        auto &deviceMan = library.GetDeviceManager();
+        auto deviceId = deviceMan.FetchDevice(node);
+
+        compute::device device = deviceMan.GetDevice(deviceId);
+        compute::context ctx = library.GetContext();
+        compute::command_queue queue(ctx, device);
+        QueueFinisher finisher(queue);
+
+        compute::copy(deviceValue->GetVal().begin(), deviceValue->GetVal().end(), hostValue, queue);
+    }
 }
 
 spla::ExpressionNode::Operation spla::ScalarDataRead::GetOperationType() const {
