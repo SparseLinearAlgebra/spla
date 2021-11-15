@@ -155,22 +155,20 @@ $(function() {
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
 <div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classspla_1_1Library.html#a42679028a71790dadb8b29eb89a8f36a">  168</a></span>&#160;        <a class="code" href="classspla_1_1Library.html#a42679028a71790dadb8b29eb89a8f36a">~Library</a>();</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordtype">void</span> Submit(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;class Expression&gt;</a> &amp;expression) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        [[nodiscard]] <span class="keyword">class </span><a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a> &amp;GetPrivate() const noexcept;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        [[nodiscard]] const std::shared_ptr&lt;class <a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a>&gt; &amp;GetPrivatePtr() const noexcept;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        [[nodiscard]] <span class="keyword">class </span><a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a> &amp;GetPrivate() const noexcept;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        [[nodiscard]] const std::shared_ptr&lt;class <a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a>&gt; &amp;GetPrivatePtr() const noexcept;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        [[nodiscard]] std::<span class="keywordtype">string</span> PrintContextConfig() const noexcept;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    private:</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">// Private state</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        std::shared_ptr&lt;class <a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a>&gt; mPrivate;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    };</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        [[nodiscard]] std::<span class="keywordtype">string</span> PrintContextConfig() const noexcept;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    private:</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="comment">// Private state</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        std::shared_ptr&lt;class <a class="code" href="classspla_1_1LibraryPrivate.html">LibraryPrivate</a>&gt; mPrivate;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    };</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLALIBRARY_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html"><div class="ttname"><a href="SplaConfig_8hpp.html">SplaConfig.hpp</a></div></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaRefCnt_8hpp_html"><div class="ttname"><a href="SplaRefCnt_8hpp.html">SplaRefCnt.hpp</a></div></div>
@@ -183,7 +181,6 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1Library_1_1Config_html_ae9c06614083b2661687a75a60e226a2ea7a115b50f4ec73a21643e47cd37a5f81"><div class="ttname"><a href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea7a115b50f4ec73a21643e47cd37a5f81">spla::Library::Config::GPU</a></div><div class="ttdeci">@ GPU</div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:73</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html_a42679028a71790dadb8b29eb89a8f36a"><div class="ttname"><a href="classspla_1_1Library.html#a42679028a71790dadb8b29eb89a8f36a">spla::Library::~Library</a></div><div class="ttdeci">~Library()</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
