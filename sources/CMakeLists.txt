@@ -53,6 +53,10 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.hpp
         sources/expression/matrix/SplaMatrixEWiseAdd.cpp
         sources/expression/matrix/SplaMatrixEWiseAdd.hpp
+        sources/expression/scalar/SplaScalarDataWrite.cpp
+        sources/expression/scalar/SplaScalarDataWrite.hpp
+        sources/expression/scalar/SplaScalarDataRead.cpp
+        sources/expression/scalar/SplaScalarDataRead.hpp
         sources/expression/vector/SplaVectorDataWrite.cpp
         sources/expression/vector/SplaVectorDataWrite.hpp
         sources/expression/vector/SplaVectorDataRead.cpp

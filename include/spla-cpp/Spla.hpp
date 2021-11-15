@@ -34,6 +34,7 @@
 #include <spla-cpp/SplaExpression.hpp>
 #include <spla-cpp/SplaExpressionNode.hpp>
 #include <spla-cpp/SplaFunctionBinary.hpp>
+#include <spla-cpp/SplaFunctionSelect.hpp>
 #include <spla-cpp/SplaFunctionUnary.hpp>
 #include <spla-cpp/SplaFunctions.hpp>
 #include <spla-cpp/SplaLibrary.hpp>

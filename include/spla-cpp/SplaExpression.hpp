@@ -37,6 +37,7 @@
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
+#include <spla-cpp/SplaScalar.hpp>
 #include <spla-cpp/SplaVector.hpp>
 #include <vector>
 
@@ -135,6 +136,19 @@ namespace spla {
                                              const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * Make user scalar data write to the provided scalar object.
+         *
+         * @param scalar Scalar to write data
+         * @param data Raw host data to write
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeDataWrite(const RefPtr<Scalar> &scalar,
+                                             const RefPtr<DataScalar> &data,
+                                             const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make matrix data read from the provided matrix object.
          * Matrix data is will be stored as array of (i, j, values) pairs.
          *
@@ -166,6 +180,22 @@ namespace spla {
          */
         RefPtr<ExpressionNode> MakeDataRead(const RefPtr<Vector> &vector,
                                             const RefPtr<DataVector> &data,
+                                            const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make scalar data read from the provided scalar object.
+         *
+         * The data buffer must be provided by the user and the size of this buffer
+         * must be greater or equal to the size of scalar.
+         *
+         * @param scalar Scalar to write data
+         * @param data Raw host data to write
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeDataRead(const RefPtr<Scalar> &scalar,
+                                            const RefPtr<DataScalar> &data,
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**

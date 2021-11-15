@@ -25,27 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/mxm/SplaMxMCOO.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
+#include <boost/compute.hpp>
+#include <core/SplaError.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <expression/scalar/SplaScalarDataRead.hpp>
+#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
 
-bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsMxM *>(&params);
-
-    return p &&
-           p->w.Is<MatrixCOO>() &&
-           p->mask.Is<MatrixCOO>() &&
-           p->a.Is<MatrixCOO>() &&
-           p->b.Is<MatrixCOO>();
+bool spla::ScalarDataRead::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+    return true;
 }
 
-void spla::MxMCOO::Process(spla::AlgorithmParams &params) {
-    // todo: impl me (issue #80)
+void spla::ScalarDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
 }
 
-spla::Algorithm::Type spla::MxMCOO::GetType() const {
-    return Type::MxM;
-}
-
-std::string spla::MxMCOO::GetName() const {
-    return "MxMCOO";
+spla::ExpressionNode::Operation spla::ScalarDataRead::GetOperationType() const {
+    return ExpressionNode::Operation::ScalarDataRead;
 }

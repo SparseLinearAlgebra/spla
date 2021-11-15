@@ -28,8 +28,6 @@
 #include <spla-cpp/SplaScalar.hpp>
 #include <storage/SplaScalarStorage.hpp>
 
-spla::Scalar::~Scalar() = default;
-
 bool spla::Scalar::HasValue() const {
     return mStorage->HasValue();
 }
@@ -48,4 +46,7 @@ spla::RefPtr<spla::Scalar> spla::Scalar::Make(const spla::RefPtr<spla::Type> &ty
 
 spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &library)
     : TypedObject(type, TypeName::Scalar, library) {
+    mStorage = ScalarStorage::Make(GetLibrary());
 }
+
+spla::Scalar::~Scalar() = default;

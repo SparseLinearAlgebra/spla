@@ -25,27 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/mxm/SplaMxMCOO.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
+#ifndef SPLA_SPLASCALARDATAWRITE_HPP
+#define SPLA_SPLASCALARDATAWRITE_HPP
 
-bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsMxM *>(&params);
+#include <expression/SplaNodeProcessor.hpp>
 
-    return p &&
-           p->w.Is<MatrixCOO>() &&
-           p->mask.Is<MatrixCOO>() &&
-           p->a.Is<MatrixCOO>() &&
-           p->b.Is<MatrixCOO>();
-}
+namespace spla {
 
-void spla::MxMCOO::Process(spla::AlgorithmParams &params) {
-    // todo: impl me (issue #80)
-}
+    class ScalarDataWrite final : public NodeProcessor {
+    public:
+        ~ScalarDataWrite() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
-spla::Algorithm::Type spla::MxMCOO::GetType() const {
-    return Type::MxM;
-}
+}// namespace spla
 
-std::string spla::MxMCOO::GetName() const {
-    return "MxMCOO";
-}
+#endif//SPLA_SPLASCALARDATAWRITE_HPP

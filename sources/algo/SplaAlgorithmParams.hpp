@@ -94,6 +94,7 @@ namespace spla {
         ~ParamsMxM() override = default;
 
         RefPtr<MatrixBlock> w;
+        RefPtr<MatrixBlock> mask;
         RefPtr<FunctionBinary> mult;
         RefPtr<FunctionBinary> add;
         RefPtr<MatrixBlock> a;

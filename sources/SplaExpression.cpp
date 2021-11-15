@@ -131,6 +131,22 @@ spla::Expression::MakeDataWrite(const spla::RefPtr<spla::Vector> &vector,
 }
 
 spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeDataWrite(const RefPtr<Scalar> &scalar,
+                                const RefPtr<DataScalar> &data,
+                                const RefPtr<Descriptor> &desc) {
+    CHECK_RAISE_ERROR(scalar.IsNotNull(), NullPointer, "scalar can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
+
+    std::vector<RefPtr<Object>> args = {
+            scalar.As<Object>(),
+            data.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::ScalarDataWrite,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeDataRead(const spla::RefPtr<spla::Matrix> &matrix,
                                const spla::RefPtr<spla::DataMatrix> &data,
                                const spla::RefPtr<spla::Descriptor> &desc) {
@@ -158,6 +174,22 @@ spla::Expression::MakeDataRead(const spla::RefPtr<spla::Vector> &vector,
             data.As<Object>()};
 
     return MakeNode(ExpressionNode::Operation::VectorDataRead,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeDataRead(const RefPtr<Scalar> &scalar,
+                               const RefPtr<DataScalar> &data,
+                               const RefPtr<Descriptor> &desc) {
+    CHECK_RAISE_ERROR(scalar.IsNotNull(), NullPointer, "scalar can't be null");
+    CHECK_RAISE_ERROR(data.IsNotNull(), NullPointer, "data can't be null");
+
+    std::vector<RefPtr<Object>> args = {
+            scalar.As<Object>(),
+            data.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::ScalarDataRead,
                     std::move(args),
                     desc);
 }
