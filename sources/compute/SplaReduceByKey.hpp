@@ -718,14 +718,14 @@ namespace spla {
      * @relatesalso Look the @p ReduceByKeyWithScan for the implementation details
      */
     inline std::size_t ReduceByPairKey(const boost::compute::vector<unsigned int> &inputIndices1,
-                                const boost::compute::vector<unsigned int> &inputIndices2,
-                                const boost::compute::vector<unsigned char> &inputValues,
-                                boost::compute::vector<unsigned int> &outputIndices1,
-                                boost::compute::vector<unsigned int> &outputIndices2,
-                                boost::compute::vector<unsigned char> &outputValues,
-                                std::size_t valueByteSize,
-                                const std::string &reduceOp,
-                                boost::compute::command_queue &queue) {
+                                       const boost::compute::vector<unsigned int> &inputIndices2,
+                                       const boost::compute::vector<unsigned char> &inputValues,
+                                       boost::compute::vector<unsigned int> &outputIndices1,
+                                       boost::compute::vector<unsigned int> &outputIndices2,
+                                       boost::compute::vector<unsigned char> &outputValues,
+                                       std::size_t valueByteSize,
+                                       const std::string &reduceOp,
+                                       boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
                 std::vector{inputIndices1, inputIndices2},
                 inputValues,
@@ -762,12 +762,12 @@ namespace spla {
      * @relatesalso Look the @p ReduceByKeyWithScan for the implementation details
      */
     inline std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
-                            const boost::compute::vector<unsigned char> &inputValues,
-                            boost::compute::vector<unsigned int> &outputIndices,
-                            boost::compute::vector<unsigned char> &outputValues,
-                            std::size_t valueByteSize,
-                            const std::string &reduceOp,
-                            boost::compute::command_queue &queue) {
+                                   const boost::compute::vector<unsigned char> &inputValues,
+                                   boost::compute::vector<unsigned int> &outputIndices,
+                                   boost::compute::vector<unsigned char> &outputValues,
+                                   std::size_t valueByteSize,
+                                   const std::string &reduceOp,
+                                   boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
                 std::vector{inputIndices},
                 inputValues,
