@@ -63,7 +63,7 @@ void TestReduceAlignedValuesByPairKey(
         compute::vector<std::uint32_t> dKeysOut2(ctx);
         compute::vector<std::uint8_t> dValuesOut(ctx);
 
-        std::size_t reducedSize = spla::ReduceByKey(
+        std::size_t reducedSize = spla::ReduceByPairKey(
                 dKeys1, dKeys2, dValues,
                 dKeysOut1, dKeysOut2, dValuesOut,
                 2, op, queue);

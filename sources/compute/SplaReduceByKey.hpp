@@ -603,6 +603,23 @@ namespace spla {
                                           workGroupSize);
         }
 
+        /**
+         * @details
+         * 1. Keys are recalculated with @p GenerateUintKeys. It is done by
+         *  comparison of each two adjustment keys and inclusive scan is performed
+         *  on the resulting vector. As a bonus, we already know size of the resulting
+         *  keys vector: it is the value of the last key + 1. @n
+         * 2. For each work group carry-out value is calculated (it's done by key-oriented
+         *  Hillis/Steele scan), where @n
+         *      - Carry-out is a pair of the last key processed by work
+         *       group and sum of all values under this key in work group. @n
+         *      - Carry-in is a pair of the first key processed by work
+         *       group and sum of all values under this key in work group. @n
+         * 3. From every carry-out carry-in is calculated by performing inclusive scan
+         *  by key. @n
+         * 4. Final reduction by key is performed (key-oriented Hillis/Steele scan),
+         *  carry-in values are added where needed.
+         */
         inline std::size_t ReduceByKeyWithScan(const std::vector<compute::vector<uint_>> &keys,
                                                const compute::vector<unsigned char> &values,
                                                const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
@@ -672,10 +689,10 @@ namespace spla {
 
     /**
      * @brief The algorithm performs reduction for each contiguous
-     * subsequence of aligned values determinate by equivalent keys.
+     * subsequence of aligned values determinate by equivalent keys. @n
      *
      * Aligned value - a sequence of bytes of size @p valueByteSize. Values must
-     * be packed without offsets and paddings.
+     * be packed without offsets and paddings. @n
      *
      * Two keys are assumed to be equal if and only if two keys from
      * key sequences are match.
@@ -697,8 +714,10 @@ namespace spla {
      * @param reduceOp Body of the reduce function
      * @param queue OpenCL command queue
      * @return Size of the resulting keys sequence
+     *
+     * @relatesalso Look the @p ReduceByKeyWithScan for the implementation details
      */
-    std::size_t ReduceByPairKey(const boost::compute::vector<unsigned int> &inputIndices1,
+    inline std::size_t ReduceByPairKey(const boost::compute::vector<unsigned int> &inputIndices1,
                                 const boost::compute::vector<unsigned int> &inputIndices2,
                                 const boost::compute::vector<unsigned char> &inputValues,
                                 boost::compute::vector<unsigned int> &outputIndices1,
@@ -719,7 +738,7 @@ namespace spla {
 
     /**
      * @brief The algorithm performs reduction for each contiguous
-     * subsequence of aligned values determinate by equivalent keys.
+     * subsequence of aligned values determinate by equivalent keys. @n
      *
      * Aligned value - a sequence of bytes of size @p valueByteSize. Values must
      * be packed without offsets and paddings.
@@ -739,8 +758,10 @@ namespace spla {
      * @param reduceOp Body of the reduce function
      * @param queue OpenCL command queue
      * @return Size of the resulting key sequence
+     *
+     * @relatesalso Look the @p ReduceByKeyWithScan for the implementation details
      */
-    std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
+    inline std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
                             const boost::compute::vector<unsigned char> &inputValues,
                             boost::compute::vector<unsigned int> &outputIndices,
                             boost::compute::vector<unsigned char> &outputValues,
