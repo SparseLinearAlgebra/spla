@@ -37,6 +37,11 @@
 
 namespace spla {
 
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     namespace detail {
 
         using namespace boost;
@@ -665,15 +670,43 @@ namespace spla {
 
     }// namespace detail
 
-    std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices1,
-                            const boost::compute::vector<unsigned int> &inputIndices2,
-                            const boost::compute::vector<unsigned char> &inputValues,
-                            boost::compute::vector<unsigned int> &outputIndices1,
-                            boost::compute::vector<unsigned int> &outputIndices2,
-                            boost::compute::vector<unsigned char> &outputValues,
-                            std::size_t valueByteSize,
-                            const std::string &reduceOp,
-                            boost::compute::command_queue &queue) {
+    /**
+     * @brief The algorithm performs reduction for each contiguous
+     * subsequence of aligned values determinate by equivalent keys.
+     *
+     * Aligned value - a sequence of bytes of size @p valueByteSize. Values must
+     * be packed without offsets and paddings.
+     *
+     * Two keys are assumed to be equal if and only if two keys from
+     * key sequences are match.
+     *
+     * @note Reduce function must be associative. Otherwise, reduction result
+     * for values with the same keys is not defined.
+     *
+     * @note Output vectors (such as @p outputValues, @p outputIndices*)
+     * are resized during @p ReduceByPairKey execution. Hence, there is no
+     * need to resize them beforehand.
+     *
+     * @param inputIndices1 First sequence of keys
+     * @param inputIndices2 Second sequence of keys
+     * @param inputValues Sequence of bytes, where values are packed
+     * @param outputIndices1 Output sequence of first keys
+     * @param outputIndices2 Output sequence of second keys
+     * @param outputValues Output sequence of value's bytes
+     * @param valueByteSize Size of each value
+     * @param reduceOp Body of the reduce function
+     * @param queue OpenCL command queue
+     * @return Size of the resulting keys sequence
+     */
+    std::size_t ReduceByPairKey(const boost::compute::vector<unsigned int> &inputIndices1,
+                                const boost::compute::vector<unsigned int> &inputIndices2,
+                                const boost::compute::vector<unsigned char> &inputValues,
+                                boost::compute::vector<unsigned int> &outputIndices1,
+                                boost::compute::vector<unsigned int> &outputIndices2,
+                                boost::compute::vector<unsigned char> &outputValues,
+                                std::size_t valueByteSize,
+                                const std::string &reduceOp,
+                                boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
                 std::vector{inputIndices1, inputIndices2},
                 inputValues,
@@ -684,6 +717,29 @@ namespace spla {
                 queue);
     }
 
+    /**
+     * @brief The algorithm performs reduction for each contiguous
+     * subsequence of aligned values determinate by equivalent keys.
+     *
+     * Aligned value - a sequence of bytes of size @p valueByteSize. Values must
+     * be packed without offsets and paddings.
+     *
+     * @note Reduce function must be associative. Otherwise, reduction result
+     * for values with the same keys is not defined.
+     *
+     * @note Output vectors (such as @p outputValues, @p outputIndices)
+     * are resized during @p ReduceByKey execution. Hence, there is no
+     * need to resize them beforehand.
+     *
+     * @param inputIndices Vector of keys
+     * @param inputValues Sequence of bytes, where values are packed
+     * @param outputIndices Output sequence of keys
+     * @param outputValues Output sequence of value's bytes
+     * @param valueByteSize Size of each value
+     * @param reduceOp Body of the reduce function
+     * @param queue OpenCL command queue
+     * @return Size of the resulting key sequence
+     */
     std::size_t ReduceByKey(const boost::compute::vector<unsigned int> &inputIndices,
                             const boost::compute::vector<unsigned char> &inputValues,
                             boost::compute::vector<unsigned int> &outputIndices,
@@ -700,6 +756,10 @@ namespace spla {
                 reduceOp,
                 queue);
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
