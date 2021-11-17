@@ -182,6 +182,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga30d6fd3b316764e254205dc7133f4201"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, boost::compute::vector&lt; unsigned int &gt; &amp;lengths, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga30d6fd3b316764e254205dc7133f4201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">More...</a><br /></td></tr>
+<tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada1a694da9f8c13ea97619a4ea99ff65"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gada1a694da9f8c13ea97619a4ea99ff65">spla::MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gada1a694da9f8c13ea97619a4ea99ff65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gada1a694da9f8c13ea97619a4ea99ff65">More...</a><br /></td></tr>
 <tr class="separator:gada1a694da9f8c13ea97619a4ea99ff65"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -492,6 +495,65 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
     <tr><td class="paramname">result</td><td>Where to store result </td></tr>
     <tr><td class="paramname">elementsInSequence</td><td>How much values in sequence to copy </td></tr>
     <tr><td class="paramname">queue</td><td>Execution queue </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga30d6fd3b316764e254205dc7133f4201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30d6fd3b316764e254205dc7133f4201">&#9670;&nbsp;</a></span>IndicesToRowOffsets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::IndicesToRowOffsets </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lengths</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute row offsets from coo row indices buffer. </p>
+<p>Result offsets array has size n + 1. Offsets[i] stores first index of row i in indices buffer. Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer. Offsets[n] equals number off values in indices buffer. Lengths[i] equals number of nnz values in row i in indices buffer.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">indices</td><td>Array of rows indices </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">offsets</td><td>Output array with offsets </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">lengths</td><td>Output array of row lengths </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">n</td><td>Number of rows in matrix </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">queue</td><td>Command queue to execute </td></tr>
   </table>
   </dd>
 </dl>
