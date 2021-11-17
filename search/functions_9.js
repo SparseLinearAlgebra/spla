@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['library_765',['Library',['../classspla_1_1Library.html#a469a3daaef05ad3b0bb38afb0e1db039',1,'spla::Library::Library(Config config)'],['../classspla_1_1Library.html#af08ae9415dcd644a677cd36c6549095b',1,'spla::Library::Library()']]],
-  ['libraryprivate_766',['LibraryPrivate',['../classspla_1_1LibraryPrivate.html#ab95aafccd241a3600c26272a7e6d78d5',1,'spla::LibraryPrivate']]],
-  ['limitamount_767',['LimitAmount',['../classspla_1_1Library_1_1Config.html#ae8bc39d8377f0426ab9b5f6982cbc937',1,'spla::Library::Config']]]
+  ['keyarritem_831',['KeyArrItem',['../classspla_1_1detail_1_1KeyArrItem.html#a32e8dda5be7da28afc49489a7cec8a4b',1,'spla::detail::KeyArrItem']]],
+  ['keyvar_832',['KeyVar',['../classspla_1_1detail_1_1KeyVar.html#a895bb7103bd073498d34e0f1c6f2e00e',1,'spla::detail::KeyVar']]],
+  ['keyvec_833',['KeyVec',['../classspla_1_1detail_1_1KeyVec.html#a8ad1e6a7fd9ba476fa1b97019c8f4215',1,'spla::detail::KeyVec::KeyVec(const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;vectors, std::string idx, MetaKernel &amp;k)'],['../classspla_1_1detail_1_1KeyVec.html#a2b20417e43b64239f55b4aaee8d913e7',1,'spla::detail::KeyVec::KeyVec(const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;vectors, std::string idx, MetaKernel &amp;k)'],['../classspla_1_1detail_1_1KeyVec.html#a5aa18d91773e5e675c0e9846b42458ea',1,'spla::detail::KeyVec::KeyVec(const std::vector&lt; compute::vector&lt; uint_ &gt;::iterator &gt; &amp;iterators, std::string idx, MetaKernel &amp;k)']]]
 ];

@@ -9,6 +9,9 @@ var searchData=
   ['algorithmmanager_6',['AlgorithmManager',['../classspla_1_1AlgorithmManager.html#a5200de80f5e2dd907c4f73f43d0a6398',1,'spla::AlgorithmManager::AlgorithmManager()'],['../classspla_1_1AlgorithmManager.html',1,'spla::AlgorithmManager']]],
   ['algorithmparams_7',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]],
   ['api_8',['API',['../group__API.html',1,'']]],
-  ['as_9',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
-  ['assign_10',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]]
+  ['apply_9',['Apply',['../classspla_1_1detail_1_1ReduceOp.html#a03c096ae557b9bdf38e22bcf327ad2cb',1,'spla::detail::ReduceOp']]],
+  ['as_10',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
+  ['assign_11',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]],
+  ['assignkey_12',['AssignKey',['../structspla_1_1detail_1_1AssignKey.html',1,'spla::detail']]],
+  ['assignval_13',['AssignVal',['../structspla_1_1detail_1_1AssignVal.html',1,'spla::detail']]]
 ];

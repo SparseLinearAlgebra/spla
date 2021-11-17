@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['uint16_831',['UInt16',['../classspla_1_1Types.html#aefd6081efec3edbd1a013e87b2459019',1,'spla::Types']]],
-  ['uint32_832',['UInt32',['../classspla_1_1Types.html#a4f617c5e9f4233d169a1eba60921530b',1,'spla::Types']]],
-  ['uint64_833',['UInt64',['../classspla_1_1Types.html#ad8b7c80778ba166a932a9abc889f415b',1,'spla::Types']]],
-  ['uint8_834',['UInt8',['../classspla_1_1Types.html#a814364aa794bbc62e6a055f8fa584e7b',1,'spla::Types']]]
+  ['texception_906',['TException',['../classspla_1_1TException.html#ae60d4c2ec356c322464267cd1565b3ec',1,'spla::TException::TException(std::string message, std::string &amp;&amp;function, std::string &amp;&amp;file, std::size_t line, bool critical)'],['../classspla_1_1TException.html#a41f357a51dbbd98ef7ca2d5d56b75c69',1,'spla::TException::TException(const TException &amp;other) noexcept=default'],['../classspla_1_1TException.html#af522f28b4485670e5e61e4e7640e290f',1,'spla::TException::TException(TException &amp;&amp;other) noexcept=default']]],
+  ['typedobject_907',['TypedObject',['../classspla_1_1TypedObject.html#a71229807510d3c5ef2a6416aac8534d2',1,'spla::TypedObject']]]
 ];
