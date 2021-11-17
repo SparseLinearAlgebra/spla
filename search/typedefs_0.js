@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['device_1023',['Device',['../classspla_1_1DeviceManager.html#a2c34ac99db85da063ec0a5fc4544a775',1,'spla::DeviceManager']]],
-  ['deviceerror_1024',['DeviceError',['../group__Internal.html#ga93b50c45990a5db2417f40138767a72a',1,'spla']]],
-  ['deviceid_1025',['DeviceId',['../classspla_1_1DeviceManager.html#a463d7afa3008aec424751d845d4b04b2',1,'spla::DeviceManager']]],
-  ['devicenotpresent_1026',['DeviceNotPresent',['../group__Internal.html#ga30fcb67db14febcd2559ac50748f59d2',1,'spla']]],
-  ['dimensionmismatch_1027',['DimensionMismatch',['../group__Internal.html#gad996df5657793abf71dd4380f1a15e4d',1,'spla']]]
+  ['device_1027',['Device',['../classspla_1_1DeviceManager.html#a2c34ac99db85da063ec0a5fc4544a775',1,'spla::DeviceManager']]],
+  ['deviceerror_1028',['DeviceError',['../group__Internal.html#ga93b50c45990a5db2417f40138767a72a',1,'spla']]],
+  ['deviceid_1029',['DeviceId',['../classspla_1_1DeviceManager.html#a463d7afa3008aec424751d845d4b04b2',1,'spla::DeviceManager']]],
+  ['devicenotpresent_1030',['DeviceNotPresent',['../group__Internal.html#ga30fcb67db14febcd2559ac50748f59d2',1,'spla']]],
+  ['dimensionmismatch_1031',['DimensionMismatch',['../group__Internal.html#gad996df5657793abf71dd4380f1a15e4d',1,'spla']]]
 ];
