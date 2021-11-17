@@ -25,83 +25,38 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAFUNCTIONS_HPP
-#define SPLA_SPLAFUNCTIONS_HPP
+#include <algo/SplaAlgorithmManager.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <expression/prod/SplaMxM.hpp>
+#include <storage/SplaMatrixStorage.hpp>
 
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
+bool spla::MxM::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+    return true;
+}
 
-namespace spla {
+void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto &node = nodes[nodeIdx];
+    auto library = node->GetLibrary().GetPrivatePtr();
+    auto logger = library->GetLogger();
 
-    /**
-     * @addtogroup API
-     * @{
-     */
+    auto w = node->GetArg(0).Cast<Matrix>();
+    auto mask = node->GetArg(1).Cast<Matrix>();
+    auto mult = node->GetArg(2).Cast<Matrix>();
+    auto add = node->GetArg(3).Cast<Matrix>();
+    auto a = node->GetArg(4).Cast<Matrix>();
+    auto b = node->GetArg(5).Cast<Matrix>();
+    auto desc = node->GetDescriptor();
 
-    /**
-     * @class Functions
-     * @brief Predefined functions for built-in types.
-     * Allows to access standard plus, minus, min, max function for built-in types.
-     */
-    class SPLA_API Functions {
-    public:
-        /**
-         * Function c = a + b for Int32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt32(Library &library);
+    assert(w.IsNotNull());
+    assert(a.IsNotNull());
+    assert(b.IsNotNull());
+    assert(desc.IsNotNull());
 
-        /**
-         * Function c = a + b for Int64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt64(Library &library);
+    std::size_t nBlockRows, nBlockCols;
+    w->GetStorage()->GetBlocksGrid(nBlockRows, nBlockCols);
+}
 
-        /**
-         * Function c = a + b for Float32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat32(Library &library);
-
-        /**
-         * Function c = a + b for Float64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat64(Library &library);
-
-        /**
-         * Function c = a * b for Int32 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultInt32(Library &library);
-
-        /**
-         * Function c = a * b for Int64 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultInt64(Library &library);
-
-        /**
-         * Function c = a * b for Float32 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultFloat32(Library &library);
-
-        /**
-         * Function c = a * b for Float64 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultFloat64(Library &library);
-
-    private:
-        // friend class Library;
-        // todo: static void InitFunctions(Library &library);
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLAFUNCTIONS_HPP
+spla::ExpressionNode::Operation spla::MxM::GetOperationType() const {
+    return ExpressionNode::Operation::MxM;
+}

@@ -35,6 +35,7 @@
 #include <random>
 #include <spla-cpp/Spla.hpp>
 #include <utility>
+#include <utils/Compute.hpp>
 #include <vector>
 
 namespace utils {
@@ -399,6 +400,57 @@ namespace utils {
         template<typename M, typename BinaryOp>
         [[nodiscard]] Matrix EWiseAdd(const Matrix<M> &mask, const Matrix<T> &other, BinaryOp op) const {
             return Mask(mask).EWiseAdd(other.Mask(mask), op);
+        }
+
+        template<typename W, typename B, typename MultOp, typename AddOp>
+        [[nodiscard]] Matrix<W> MxM(const Matrix<B> &b, MultOp multOp, AddOp addOp) {
+            assert(GetNcols() == b.GetNrows());
+
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<W> vals;
+
+            auto aOffsets = toOffsets(GetNrows(), mRows);
+            auto bOffsets = toOffsets(b.GetNrows(), b.mRows);
+
+            for (std::size_t i = 0; i < GetNrows(); i++) {
+                std::vector<Index> nnz;
+                std::vector<Index> mask(b.GetNcols(), i + 1);
+                std::vector<W> tmpResult(b.GetNcols());
+
+                for (std::size_t ak = aOffsets[i]; ak < aOffsets[i + 1]; ak++) {
+                    auto aCol = mCols[ak];
+                    auto aVal = mVals[ak];
+
+                    for (std::size_t bk = bOffsets[aCol]; bk < bOffsets[aCol + 1]; bk++) {
+                        auto bCol = b.mCols[bk];
+                        auto bVal = b.mVals[bk];
+
+                        if (mask[bCol] != i) {
+                            mask[bCol] = i;
+                            nnz.push_back(bCol);
+                            tmpResult[bCol] = multOp(aVal, bVal);
+                        } else
+                            tmpResult[bCol] = addOp(tmpResult[bCol], multOp(aVal, bVal));
+                    }
+                }
+
+                if (!nnz.empty()) {
+                    std::sort(nnz.begin(), nnz.end());
+                    for (auto k : nnz) {
+                        rows.push_back(i);
+                        cols.push_back(k);
+                        vals.push_back(tmpResult[k]);
+                    }
+                }
+            }
+
+            return Matrix<W>(GetNrows(), b.GetNcols(), std::move(rows), std::move(cols), std::move(vals));
+        }
+
+        template<typename W, typename M, typename B, typename MultOp, typename AddOp>
+        [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
+            return MxM<W>(b, multOp, addOp).Mask(mask);
         }
 
         static Matrix Empty(std::size_t nrows, std::size_t ncols) {

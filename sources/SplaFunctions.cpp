@@ -27,43 +27,55 @@
 
 #include <spla-cpp/SplaFunctions.hpp>
 #include <spla-cpp/SplaTypes.hpp>
+#include <sstream>
+
+namespace {
+    std::string MakeBody(const char *clType, const char *clOp) {
+        std::stringstream stream;
+        stream << clType << " a = *((_ACCESS_A const " << clType << "*)vp_a);\n"
+               << clType << " b = *((_ACCESS_A const " << clType << "*)vp_b);\n"
+               << "_ACCESS_C " << clType << "* c = (_ACCESS_C " << clType << "*)vp_c;\n"
+               << "*c = a " << clOp << " b;";
+        return stream.str();
+    }
+}// namespace
 
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &library) {
     auto t = Types::Int32(library);
-    return FunctionBinary::Make(t, t, t,
-                                "int a = *((_ACCESS_A const int*)vp_a);"
-                                "int b = *((_ACCESS_B const int*)vp_b);"
-                                "_ACCESS_C int* c = (_ACCESS_C int*)vp_c;"
-                                "*c = a + b;",
-                                library);
+    return FunctionBinary::Make(t, t, t, MakeBody("int", "+"), library);
 }
 
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &library) {
     auto t = Types::Int64(library);
-    return FunctionBinary::Make(t, t, t,
-                                "long a = *((_ACCESS_A const long*)vp_a);"
-                                "long b = *((_ACCESS_B const long*)vp_b);"
-                                "_ACCESS_C long* c = (_ACCESS_C long*)vp_c;"
-                                "*c = a + b;",
-                                library);
+    return FunctionBinary::Make(t, t, t, MakeBody("long", "+"), library);
 }
 
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
     auto t = Types::Float32(library);
-    return FunctionBinary::Make(t, t, t,
-                                "float a = *((_ACCESS_A const float*)vp_a);"
-                                "float b = *((_ACCESS_B const float*)vp_b);"
-                                "_ACCESS_C float* c = (_ACCESS_C float*)vp_c;"
-                                "*c = a + b;",
-                                library);
+    return FunctionBinary::Make(t, t, t, MakeBody("float", "+"), library);
 }
 
 spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
     auto t = Types::Float64(library);
-    return FunctionBinary::Make(t, t, t,
-                                "double a = *((_ACCESS_A const double*)vp_a);"
-                                "double b = *((_ACCESS_B const double*)vp_b);"
-                                "_ACCESS_C double* c = (_ACCESS_C double*)vp_c;"
-                                "*c = a + b;",
-                                library);
+    return FunctionBinary::Make(t, t, t, MakeBody("double", "+"), library);
+}
+
+spla::RefPtr<spla::FunctionBinary> spla::Functions::MultInt32(spla::Library &library) {
+    auto t = Types::Int32(library);
+    return FunctionBinary::Make(t, t, t, MakeBody("int", "*"), library);
+}
+
+spla::RefPtr<spla::FunctionBinary> spla::Functions::MultInt64(spla::Library &library) {
+    auto t = Types::Int64(library);
+    return FunctionBinary::Make(t, t, t, MakeBody("long", "*"), library);
+}
+
+spla::RefPtr<spla::FunctionBinary> spla::Functions::MultFloat32(Library &library) {
+    auto t = Types::Float32(library);
+    return FunctionBinary::Make(t, t, t, MakeBody("float", "*"), library);
+}
+
+spla::RefPtr<spla::FunctionBinary> spla::Functions::MultFloat64(spla::Library &library) {
+    auto t = Types::Float64(library);
+    return FunctionBinary::Make(t, t, t, MakeBody("double", "*"), library);
 }

@@ -70,7 +70,11 @@ namespace spla {
             /** Vector element-wise addition */
             VectorEWiseAdd,
             /** Matrix-matrix multiplication */
-            MxM
+            MxM,
+            /** Vector-matrix multiplication */
+            VxM,
+            /** Matrix-vector multiplication */
+            MxV
         };
 
         /** @return Node arguments array */
@@ -138,6 +142,10 @@ namespace spla {
                     return "VectorEWiseAdd";
                 case ExpressionNode::Operation::MxM:
                     return "MxM";
+                case ExpressionNode::Operation::VxM:
+                    return "VxM";
+                case ExpressionNode::Operation::MxV:
+                    return "MxV";
 
                 default:
                     return "Unknown";

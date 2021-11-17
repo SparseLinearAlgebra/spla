@@ -25,83 +25,23 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAFUNCTIONS_HPP
-#define SPLA_SPLAFUNCTIONS_HPP
+#ifndef SPLA_COMPUTE_HPP
+#define SPLA_COMPUTE_HPP
 
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
+#include <numeric>
+#include <vector>
 
-namespace spla {
+namespace utils {
 
-    /**
-     * @addtogroup API
-     * @{
-     */
+    template<typename T>
+    std::vector<T> toOffsets(std::size_t n, const std::vector<T> &indices) {
+        std::vector<T> rowLengths(n + 1, 0);
+        std::vector<T> offsets(n + 1);
+        for (auto i : indices) rowLengths[i] += 1;
+        std::exclusive_scan(rowLengths.begin(), rowLengths.end(), offsets.begin(), T{0});
+        return offsets;
+    }
 
-    /**
-     * @class Functions
-     * @brief Predefined functions for built-in types.
-     * Allows to access standard plus, minus, min, max function for built-in types.
-     */
-    class SPLA_API Functions {
-    public:
-        /**
-         * Function c = a + b for Int32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt32(Library &library);
+}// namespace utils
 
-        /**
-         * Function c = a + b for Int64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusInt64(Library &library);
-
-        /**
-         * Function c = a + b for Float32 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat32(Library &library);
-
-        /**
-         * Function c = a + b for Float64 type.
-         * @return Plus function.
-         */
-        static RefPtr<FunctionBinary> PlusFloat64(Library &library);
-
-        /**
-         * Function c = a * b for Int32 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultInt32(Library &library);
-
-        /**
-         * Function c = a * b for Int64 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultInt64(Library &library);
-
-        /**
-         * Function c = a * b for Float32 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultFloat32(Library &library);
-
-        /**
-         * Function c = a * b for Float64 type.
-         * @return Mult function.
-         */
-        static RefPtr<FunctionBinary> MultFloat64(Library &library);
-
-    private:
-        // friend class Library;
-        // todo: static void InitFunctions(Library &library);
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLAFUNCTIONS_HPP
+#endif//SPLA_COMPUTE_HPP
