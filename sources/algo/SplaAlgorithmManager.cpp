@@ -48,21 +48,26 @@ void spla::AlgorithmManager::Register(const spla::RefPtr<spla::Algorithm> &algo)
     list->second.push_back(algo);
 }
 
+void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, spla::AlgorithmParams &params) {
+    auto algorithm = SelectAlgorithm(type, params);
+    algorithm->Process(params);
+}
+
 void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
     assert(params.IsNotNull());
-    auto algorithm = SelectAlgorithm(type, params);
+    auto algorithm = SelectAlgorithm(type, *params);
     algorithm->Process(*params);
 }
 
 tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, TaskBuilder &builder) {
     assert(params.IsNotNull());
-    auto algorithm = SelectAlgorithm(type, params);
+    auto algorithm = SelectAlgorithm(type, *params);
     return builder.Emplace([=]() {
         algorithm->Process(*params);
     });
 }
 
-spla::RefPtr<spla::Algorithm> spla::AlgorithmManager::SelectAlgorithm(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params) {
+spla::RefPtr<spla::Algorithm> spla::AlgorithmManager::SelectAlgorithm(spla::Algorithm::Type type, const spla::AlgorithmParams &params) {
     auto iter = mAlgorithms.find(type);
 
     CHECK_RAISE_ERROR(iter != mAlgorithms.end(), InvalidState,
@@ -73,7 +78,7 @@ spla::RefPtr<spla::Algorithm> spla::AlgorithmManager::SelectAlgorithm(spla::Algo
     // NOTE: Iterate through all processors for this operation and
     // select the first one, which meets requirements
     for (auto &algorithm : algorithms)
-        if (algorithm->Select(*params))
+        if (algorithm->Select(params))
             return algorithm;
 
     RAISE_ERROR(InvalidState,

@@ -58,11 +58,12 @@ namespace spla {
         ~AlgorithmManager() override = default;
 
         void Register(const RefPtr<Algorithm> &algo);
+        void Dispatch(Algorithm::Type type, AlgorithmParams &params);
         void Dispatch(Algorithm::Type type, const RefPtr<AlgorithmParams> &params);
         tf::Task Dispatch(Algorithm::Type type, const RefPtr<AlgorithmParams> &params, TaskBuilder &builder);
 
     private:
-        RefPtr<Algorithm> SelectAlgorithm(Algorithm::Type type, const RefPtr<AlgorithmParams> &params);
+        RefPtr<Algorithm> SelectAlgorithm(Algorithm::Type type, const AlgorithmParams &params);
 
     private:
         using AlgorithmList = std::vector<RefPtr<Algorithm>>;

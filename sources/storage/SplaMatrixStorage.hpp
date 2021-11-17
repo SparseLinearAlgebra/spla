@@ -86,6 +86,9 @@ namespace spla {
 
         ~MatrixStorage() override = default;
 
+        /** Remove all blocks from storage (empty matrix) */
+        void Clear();
+
         /** Set block at specified block index */
         void SetBlock(const Index &index, const RefPtr<MatrixBlock> &block);
 

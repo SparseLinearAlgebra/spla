@@ -93,12 +93,13 @@ namespace spla {
     public:
         ~ParamsMxM() override = default;
 
-        RefPtr<MatrixBlock> w;
-        RefPtr<MatrixBlock> mask;
-        RefPtr<FunctionBinary> mult;
-        RefPtr<FunctionBinary> add;
-        RefPtr<MatrixBlock> a;
-        RefPtr<MatrixBlock> b;
+        bool hasMask;               // true if must apply mask
+        RefPtr<MatrixBlock> w;      // tw
+        RefPtr<MatrixBlock> mask;   // if has mask, must apply this
+        RefPtr<FunctionBinary> mult;// f: ta x tb -> tw
+        RefPtr<FunctionBinary> add; // f: tw x tw -> tw
+        RefPtr<MatrixBlock> a;      // ta
+        RefPtr<MatrixBlock> b;      // tb
         RefPtr<Type> ta;
         RefPtr<Type> tb;
         RefPtr<Type> tw;

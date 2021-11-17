@@ -29,6 +29,12 @@
 #include <core/SplaMath.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 
+void spla::MatrixStorage::Clear() {
+    std::lock_guard<std::mutex> lock(mMutex);
+    mNvals = 0;
+    mBlocks.clear();
+}
+
 void spla::MatrixStorage::SetBlock(const spla::MatrixStorage::Index &index, const spla::RefPtr<spla::MatrixBlock> &block) {
     assert(index.first < mNblockRows);
     assert(index.second < mNblockCols);
