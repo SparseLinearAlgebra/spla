@@ -29,10 +29,13 @@ set(SPLA_ALGORITHM_SOURCES
 
 set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaGather.hpp
+        sources/compute/SplaIndicesToRowOffsets.hpp
         sources/compute/SplaMaskByKey.hpp
         sources/compute/SplaMergeByKey.hpp
+        sources/compute/SplaReduceByKey.hpp
         sources/compute/SplaReduceDuplicates.hpp
-        sources/compute/SplaSortByRowColumn.hpp)
+        sources/compute/SplaSortByRowColumn.hpp
+        )
 
 set(SPLA_CORE_SOURCES
         sources/core/SplaDeviceManager.hpp

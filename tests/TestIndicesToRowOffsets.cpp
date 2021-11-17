@@ -25,28 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/mxm/SplaMxMCOO.hpp>
+#include <Testing.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
 
-bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsMxM *>(&params);
+void test(std::size_t n,
+          const std::vector<unsigned int> &indices,
+          const std::vector<unsigned int> &offsets,
+          const std::vector<unsigned int> &lengths) {
+    using namespace boost;
+    auto ctx = compute::system::default_context();
+    auto queue = compute::system::default_queue();
 
-    return p &&
-           p->w.Is<MatrixCOO>() &&
-           p->mask.Is<MatrixCOO>() &&
-           p->a.Is<MatrixCOO>() &&
-           p->b.Is<MatrixCOO>();
+    compute::vector<unsigned int> deviceIndices(indices.size(), ctx);
+    compute::vector<unsigned int> deviceOffsets(ctx);
+    compute::vector<unsigned int> deviceLengths(ctx);
+
+    compute::copy(indices.begin(), indices.end(), deviceIndices.begin(), queue);
+    spla::IndicesToRowOffsets(deviceIndices, deviceOffsets, deviceLengths, n, queue);
+
+    queue.finish();
+
+    ASSERT_EQ(offsets.size(), deviceOffsets.size());
+    ASSERT_EQ(lengths.size(), deviceLengths.size());
+
+    for (std::size_t i = 0; i < offsets.size(); i++)
+        EXPECT_EQ(offsets[i], (deviceOffsets.begin() + i).read(queue));
+
+    for (std::size_t i = 0; i < lengths.size(); i++)
+        EXPECT_EQ(lengths[i], (deviceLengths.begin() + i).read(queue));
 }
 
-void spla::MxMCOO::Process(spla::AlgorithmParams &params) {
-    // todo: impl me (issue #80)
+TEST(IndicesToRowOffsets, ZeroDim) {
+    test(0, {}, {0}, {0});
 }
 
-spla::Algorithm::Type spla::MxMCOO::GetType() const {
-    return Type::MxM;
+TEST(IndicesToRowOffsets, Empty) {
+    test(10, {}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
 }
 
-std::string spla::MxMCOO::GetName() const {
-    return "MxMCOO";
+TEST(IndicesToRowOffsets, Sequence) {
+    test(10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0});
 }
+
+TEST(IndicesToRowOffsets, Generic) {
+    test(5, {0, 0, 1, 2, 3, 4, 4, 4}, {0, 2, 3, 4, 5, 8}, {2, 1, 1, 1, 3, 0});
+}
+
+SPLA_GTEST_MAIN
