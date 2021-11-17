@@ -41,9 +41,9 @@ namespace spla {
         public:
             ProductsResults(std::size_t m, std::size_t n) : mM(m), mN(n), mBlocks(m * n) {}
 
-            void AddBlock(std::size_t i, std::size_t j, RefPtr<MatrixBlock> &&block) {
+            void AddBlock(std::size_t i, std::size_t j, const RefPtr<MatrixBlock> &block) {
                 std::lock_guard<std::mutex> lockGuard(mMutex);
-                mBlocks[i * mN + j].push_back(std::move(block));
+                mBlocks[i * mN + j].push_back(block);
             }
 
         private:
@@ -78,6 +78,9 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
     assert(b.IsNotNull());
     assert(desc.IsNotNull());
 
+    auto ta = a->GetType();
+    auto tb = b->GetType();
+    auto tw = w->GetType();
     auto hasMask = mask.IsNotNull();
     auto &aStorage = a->GetStorage();
     auto &bStorage = b->GetStorage();
@@ -163,11 +166,16 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                     params.add = add;
                     params.a = aBlock;
                     params.b = bBlock;
+                    params.ta = ta;
+                    params.tb = tb;
+                    params.tw = tw;
                     library->GetAlgoManager()->Dispatch(Algorithm::Type::MxM, params);
 
                     if (params.w.IsNotNull()) {
                         // If has not empty result, store it to sum later
-                        products->AddBlock(i, j, std::move(params.w));
+                        products->AddBlock(i, j, params.w);
+                        SPDLOG_LOGGER_TRACE(logger, "Blocks product ({},{})x({},{}) nnz={}",
+                                            aIdx.first, aIdx.second, bIdx.first, bIdx.second, params.w->GetNvals());
                     }
                 });
                 deviceToFetch += 1;

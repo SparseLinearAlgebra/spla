@@ -61,20 +61,20 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
             auto deviceId = deviceIds[i * w->GetStorage()->GetNblockCols() + j];
             builder.Emplace([=]() {
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
-                auto params = RefPtr<ParamsMatrixEWiseAdd>(new ParamsMatrixEWiseAdd());
-                params->desc = desc;
-                params->deviceId = deviceId;
-                params->hasMask = mask.IsNotNull();
-                params->mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(blockIndex) : RefPtr<MatrixBlock>{};
-                params->op = op;
-                params->a = a->GetStorage()->GetBlock(blockIndex);
-                params->b = b->GetStorage()->GetBlock(blockIndex);
-                params->type = w->GetType();
-                library->GetAlgoManager()->Dispatch(Algorithm::Type::MatrixEWiseAdd, params.As<AlgorithmParams>());
+                ParamsMatrixEWiseAdd params;
+                params.desc = desc;
+                params.deviceId = deviceId;
+                params.hasMask = mask.IsNotNull();
+                params.mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(blockIndex) : RefPtr<MatrixBlock>{};
+                params.op = op;
+                params.a = a->GetStorage()->GetBlock(blockIndex);
+                params.b = b->GetStorage()->GetBlock(blockIndex);
+                params.type = w->GetType();
+                library->GetAlgoManager()->Dispatch(Algorithm::Type::MatrixEWiseAdd, params);
 
-                if (params->w.IsNotNull()) {
-                    w->GetStorage()->SetBlock(blockIndex, params->w);
-                    SPDLOG_LOGGER_TRACE(logger, "Merge block (i={}; j={}) nnz={}", i, j, params->w->GetNvals());
+                if (params.w.IsNotNull()) {
+                    w->GetStorage()->SetBlock(blockIndex, params.w);
+                    SPDLOG_LOGGER_TRACE(logger, "Merge block (i={}; j={}) nnz={}", i, j, params.w->GetNvals());
                 } else
                     w->GetStorage()->RemoveBlock(blockIndex);
             });

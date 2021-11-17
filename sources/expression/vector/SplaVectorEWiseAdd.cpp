@@ -59,20 +59,20 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         auto deviceId = deviceIds[i];
         builder.Emplace([=]() {
-            auto params = RefPtr<ParamsVectorEWiseAdd>(new ParamsVectorEWiseAdd());
-            params->desc = desc;
-            params->deviceId = deviceId;
-            params->hasMask = mask.IsNotNull();
-            params->mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(i) : RefPtr<VectorBlock>{};
-            params->op = op;
-            params->a = a->GetStorage()->GetBlock(i);
-            params->b = b->GetStorage()->GetBlock(i);
-            params->type = w->GetType();
-            library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params.As<AlgorithmParams>());
+            ParamsVectorEWiseAdd params;
+            params.desc = desc;
+            params.deviceId = deviceId;
+            params.hasMask = mask.IsNotNull();
+            params.mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(i) : RefPtr<VectorBlock>{};
+            params.op = op;
+            params.a = a->GetStorage()->GetBlock(i);
+            params.b = b->GetStorage()->GetBlock(i);
+            params.type = w->GetType();
+            library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params);
 
-            if (params->w.IsNotNull()) {
-                w->GetStorage()->SetBlock(i, params->w);
-                SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, params->w->GetNvals());
+            if (params.w.IsNotNull()) {
+                w->GetStorage()->SetBlock(i, params.w);
+                SPDLOG_LOGGER_TRACE(logger, "Merge block i={} nnz={}", i, params.w->GetNvals());
             } else
                 w->GetStorage()->RemoveBlock(i);
         });
