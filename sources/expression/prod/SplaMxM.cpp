@@ -32,22 +32,29 @@
 
 namespace spla {
     namespace {
+        /** Utility to fetch mask block from entry map */
         inline RefPtr<MatrixBlock> GetMaskBlock(MatrixStorage::EntryMap &map, const MatrixStorage::Index &idx) {
             auto found = map.find(idx);
             return found != map.end() ? found->second : RefPtr<MatrixBlock>{};
         }
 
+        /** Used to aggregate non empty results of a[i,j] x b[k,j] products for each (i,j) entry */
         class ProductsResults {
         public:
-            ProductsResults(std::size_t m, std::size_t n) : mM(m), mN(n), mBlocks(m * n) {}
+            ProductsResults(std::size_t m, std::size_t n) : mN(n), mBlocks(m * n) {}
 
             void AddBlock(std::size_t i, std::size_t j, const RefPtr<MatrixBlock> &block) {
                 std::lock_guard<std::mutex> lockGuard(mMutex);
                 mBlocks[i * mN + j].push_back(block);
             }
 
+            void GetBlocks(std::size_t i, std::size_t j, std::vector<RefPtr<MatrixBlock>> &blocks) {
+                std::lock_guard<std::mutex> lockGuard(mMutex);
+                blocks = mBlocks[i * mN + j];
+            }
+
         private:
-            std::size_t mM, mN;
+            std::size_t mN;
             std::vector<std::vector<RefPtr<MatrixBlock>>> mBlocks;
             mutable std::mutex mMutex;
         };
@@ -77,6 +84,9 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
     assert(a.IsNotNull());
     assert(b.IsNotNull());
     assert(desc.IsNotNull());
+
+    // Clear w, so by default empty result returned
+    w->GetStorage()->Clear();
 
     auto ta = a->GetType();
     auto tb = b->GetType();
@@ -133,7 +143,6 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
 
     // Edge case: if no products, return empty result
     if (totalProducts == 0) {
-        w->GetStorage()->Clear();
         return;
     }
 
@@ -180,6 +189,60 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 });
                 deviceToFetch += 1;
                 tasks.push_back(std::move(task));
+            }
+        }
+    }
+
+    // Query required number of devices (strategy: device per not empty w[i,j])
+    auto devicesForFinalMerge = deviceMan.FetchDevices(totalBlocks, node);
+
+    // Finally, for each block w[i,j] we must aggregate intermediate
+    // blocks multiplications results as a series of element-wise additions of blocks
+    deviceToFetch = 0;
+    for (std::size_t i = 0; i < nBlockM; i++) {
+        for (std::size_t j = 0; j < nBlockN; j++) {
+            auto &toProcess = blockProducts[i * nBlockN + j];
+            if (!toProcess.empty()) {
+                auto deviceId = devicesForFinalMerge[deviceToFetch];
+                auto task = builder.Emplace([=]() {
+                    std::vector<RefPtr<MatrixBlock>> blocks;
+                    products->GetBlocks(i, j, blocks);
+
+                    // Nothing to do, w[i,j] is empty
+                    if (blocks.empty())
+                        return;
+
+                    // Start to merge n blocks, number of merges n - 1
+                    auto block = blocks[0];
+                    for (std::size_t k = 1; k < blocks.size(); k++) {
+                        assert(block->GetNrows() == blocks[k]->GetNrows());
+                        assert(block->GetNcols() == blocks[k]->GetNcols());
+                        ParamsMatrixEWiseAdd params;
+                        params.desc = desc;
+                        params.deviceId = deviceId;
+                        params.hasMask = mask.IsNotNull();
+                        params.op = add;
+                        params.a = block;
+                        params.b = blocks[k];
+                        params.type = tw;
+                        library->GetAlgoManager()->Dispatch(Algorithm::Type::MatrixEWiseAdd, params);
+
+                        // Store result for next iteration
+                        block = params.w;
+                    }
+
+                    // Store final result
+                    MatrixStorage::Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                    w->GetStorage()->SetBlock(index, block);
+                });
+
+                // Setup dependencies
+                // Start aggregation as soon as all sums are computed for w[i,j]
+                auto &deps = blockProductsTasks[i * nBlockN + j];
+                for (auto &parent : deps)
+                    parent.precede(task);
+
+                deviceToFetch += 1;
             }
         }
     }
