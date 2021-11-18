@@ -166,6 +166,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 auto bBlock = bBlocks.find(bIdx)->second;
                 auto maskBlock = GetMaskBlock(maskBlocks, Index{aIdx.first, bIdx.second});
                 auto task = builder.Emplace([=]() {
+                    assert(aBlock->GetNcols() == bBlock->GetNrows());
                     ParamsMxM params;
                     params.desc = desc;
                     params.deviceId = deviceId;
@@ -220,7 +221,6 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                         ParamsMatrixEWiseAdd params;
                         params.desc = desc;
                         params.deviceId = deviceId;
-                        params.hasMask = mask.IsNotNull();
                         params.op = add;
                         params.a = block;
                         params.b = blocks[k];

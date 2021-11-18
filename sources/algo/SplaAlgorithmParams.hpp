@@ -65,7 +65,7 @@ namespace spla {
     public:
         ~ParamsMatrixEWiseAdd() override = default;
 
-        bool hasMask;
+        bool hasMask = false;
         RefPtr<MatrixBlock> w;
         RefPtr<MatrixBlock> mask;
         RefPtr<FunctionBinary> op;
@@ -79,7 +79,7 @@ namespace spla {
     public:
         ~ParamsVectorEWiseAdd() override = default;
 
-        bool hasMask;
+        bool hasMask = false;
         RefPtr<VectorBlock> w;
         RefPtr<VectorBlock> mask;
         RefPtr<FunctionBinary> op;
@@ -93,7 +93,7 @@ namespace spla {
     public:
         ~ParamsMxM() override = default;
 
-        bool hasMask;               // true if must apply mask
+        bool hasMask = false;       // true if must apply mask
         RefPtr<MatrixBlock> w;      // tw
         RefPtr<MatrixBlock> mask;   // if has mask, must apply this
         RefPtr<FunctionBinary> mult;// f: ta x tb -> tw
