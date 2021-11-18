@@ -291,6 +291,37 @@ spla::Expression::MakeMxM(const spla::RefPtr<spla::Matrix> &w,
                     desc);
 }
 
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeVxM(const spla::RefPtr<spla::Vector> &w,
+                          const spla::RefPtr<spla::Vector> &mask,
+                          const spla::RefPtr<spla::FunctionBinary> &mult,
+                          const spla::RefPtr<spla::FunctionBinary> &add,
+                          const spla::RefPtr<spla::Vector> &a,
+                          const spla::RefPtr<spla::Matrix> &b,
+                          const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
+    CHECK_RAISE_ERROR(w->GetNrows() == b->GetNcols(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(a->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mult.IsNull() || mult->CanApply(*a, *b, *w), InvalidType, "Cannot apply `mult` op to provided objects");
+    CHECK_RAISE_ERROR(add.IsNull() || add->CanApply(*w, *w, *w), InvalidType, "Cannot apply `add` op to provided objects");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || (mult.IsNotNull() && add.IsNotNull()), NullPointer, "If type has values, `mult` and `add` op must be provided");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            mult.As<Object>(),
+            add.As<Object>(),
+            a.As<Object>(),
+            b.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::MxM,
+                    std::move(args),
+                    desc);
+}
+
 void spla::Expression::SetState(State state) {
     mState.store(state);
 }

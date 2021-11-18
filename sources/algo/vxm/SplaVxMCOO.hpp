@@ -25,59 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAINDICESTOROWOFFSETS_HPP
-#define SPLA_SPLAINDICESTOROWOFFSETS_HPP
+#ifndef SPLA_SPLAVXMCOO_HPP
+#define SPLA_SPLAVXMCOO_HPP
 
-#include <boost/compute/algorithm.hpp>
-#include <boost/compute/command_queue.hpp>
+#include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    /**
-     * @brief Compute row offsets from coo row indices buffer.
-     *
-     * Result offsets array has size n + 1.
-     * Offsets[i] stores first index of row i in indices buffer.
-     * Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer.
-     * Offsets[n] equals number off values in indices buffer.
-     * Lengths[i] equals number of nnz values in row i in indices buffer.
-     *
-     * @param indices Array of rows indices
-     * @param[out] offsets Output array with offsets
-     * @param[out] lengths Output array of row lengths
-     * @param n Number of rows in matrix
-     * @param queue Command queue to execute
-     */
-    inline void IndicesToRowOffsets(const boost::compute::vector<unsigned int> &indices,
-                                    boost::compute::vector<unsigned int> &offsets,
-                                    boost::compute::vector<unsigned int> &lengths,
-                                    std::size_t n,
-                                    boost::compute::command_queue &queue) {
-        using namespace boost;
-
-        lengths.resize(n + 1, queue);
-        compute::fill(lengths.begin(), lengths.end(), 0u, queue);
-
-        BOOST_COMPUTE_CLOSURE(void, countRowLengths, (unsigned int i), (indices, lengths), {
-            uint rowId = indices[i];
-            atomic_inc(&lengths[rowId]);
-        });
-
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), indices.size(), countRowLengths, queue);
-
-        offsets.resize(n + 1, queue);
-        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);
-    }
-
-    /**
-     * @}
-     */
+    class VxMCOO final : public Algorithm {
+    public:
+        ~VxMCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 
 }// namespace spla
 
-#endif//SPLA_SPLAINDICESTOROWOFFSETS_HPP
+#endif//SPLA_SPLAVXMCOO_HPP

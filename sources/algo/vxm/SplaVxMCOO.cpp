@@ -25,59 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAINDICESTOROWOFFSETS_HPP
-#define SPLA_SPLAINDICESTOROWOFFSETS_HPP
+#include <algo/vxm/SplaVxMCOO.hpp>
+#include <compute/SplaIndicesToRowOffsets.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
+#include <storage/block/SplaVectorCOO.hpp>
 
-#include <boost/compute/algorithm.hpp>
-#include <boost/compute/command_queue.hpp>
+bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVxM *>(&params);
 
-namespace spla {
+    return p &&
+           p->w.Is<VectorCOO>() &&
+           p->mask.Is<VectorCOO>() &&
+           p->a.Is<VectorCOO>() &&
+           p->b.Is<MatrixCOO>();
+}
 
-    /**
-     * @addtogroup Internal
-     * @{
-     */
+void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
+    // todo: impl me (issue #83)
+}
 
-    /**
-     * @brief Compute row offsets from coo row indices buffer.
-     *
-     * Result offsets array has size n + 1.
-     * Offsets[i] stores first index of row i in indices buffer.
-     * Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer.
-     * Offsets[n] equals number off values in indices buffer.
-     * Lengths[i] equals number of nnz values in row i in indices buffer.
-     *
-     * @param indices Array of rows indices
-     * @param[out] offsets Output array with offsets
-     * @param[out] lengths Output array of row lengths
-     * @param n Number of rows in matrix
-     * @param queue Command queue to execute
-     */
-    inline void IndicesToRowOffsets(const boost::compute::vector<unsigned int> &indices,
-                                    boost::compute::vector<unsigned int> &offsets,
-                                    boost::compute::vector<unsigned int> &lengths,
-                                    std::size_t n,
-                                    boost::compute::command_queue &queue) {
-        using namespace boost;
+spla::Algorithm::Type spla::VxMCOO::GetType() const {
+    return Type::VxM;
+}
 
-        lengths.resize(n + 1, queue);
-        compute::fill(lengths.begin(), lengths.end(), 0u, queue);
-
-        BOOST_COMPUTE_CLOSURE(void, countRowLengths, (unsigned int i), (indices, lengths), {
-            uint rowId = indices[i];
-            atomic_inc(&lengths[rowId]);
-        });
-
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), indices.size(), countRowLengths, queue);
-
-        offsets.resize(n + 1, queue);
-        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);
-    }
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLAINDICESTOROWOFFSETS_HPP
+std::string spla::VxMCOO::GetName() const {
+    return "VxMCOO";
+}
