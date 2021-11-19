@@ -28,6 +28,7 @@
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/algorithm/scatter_if.hpp>
+#include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaSortByRow.hpp>
@@ -63,7 +64,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto b = p->b.Cast<MatrixCOO>();
     auto mask = p->mask.Cast<VectorCOO>();
 
-    if (p->hasMask && mask.IsNotNull())
+    if (p->hasMask && mask.IsNull())
         return;
 
     if (a->GetNvals() == 0 || b->GetNvals() == 0)
@@ -97,10 +98,9 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         return;
     }
 
+    // Determine location of a and b values (indices in coo arrays) to copy for products evaluation
     compute::vector<unsigned int> aLocations(cooNnz, ctx);
     compute::vector<unsigned int> bLocations(cooNnz, ctx);
-    compute::vector<unsigned int> J(cooNnz, ctx);
-    compute::vector<unsigned char> V(cooNnz * tw->GetByteSize(), ctx);
 
     compute::fill(aLocations.begin(), aLocations.end(), 0u, queue);
     compute::scatter_if(compute::counting_iterator<unsigned int>(0),
@@ -122,9 +122,11 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     compute::for_each_n(compute::counting_iterator<unsigned int>(0), cooNnz, unfoldSegment, queue);
 
     // Gather indices j for each product a[i] * b[i,j]
+    compute::vector<unsigned int> J(cooNnz, ctx);
     compute::gather(bLocations.begin(), bLocations.end(), b->GetCols().begin(), J.begin(), queue);
 
     // Compute a[i] * b[i, j] for each value i and j
+    compute::vector<unsigned char> V(cooNnz * tw->GetByteSize(), ctx);
     TransformValues(aLocations, bLocations,
                     a->GetVals(), b->GetVals(), V,
                     ta->GetByteSize(),
@@ -141,12 +143,18 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned char> vals(ctx);
     ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
 
+    // Apply mask if required (at this point we know, that mask is not null)
+    if (p->hasMask) {
+        compute::vector<unsigned int> tmpRows(ctx);
+        compute::vector<unsigned char> tmpVals(ctx);
+        ApplyMask(mask->GetRows(), rows, vals, tmpRows, tmpVals, tw->GetByteSize(), queue);
+        std::swap(rows, tmpRows);
+        std::swap(vals, tmpVals);
+    }
+
     // Store result
     auto nvals = rows.size();
-    auto block = VectorCOO::Make(N, nvals, std::move(rows), std::move(vals));
-
-    // todo: handle mask
-    p->w = block.As<VectorBlock>();
+    p->w = VectorCOO::Make(N, nvals, std::move(rows), std::move(vals)).As<VectorBlock>();
 }
 
 spla::Algorithm::Type spla::VxMCOO::GetType() const {

@@ -30,6 +30,7 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/SplaAlgorithmParams.hpp)
 
 set(SPLA_COMPUTE_SOURCES
+        sources/compute/SplaApplyMask.hpp
         sources/compute/SplaGather.hpp
         sources/compute/SplaIndicesToRowOffsets.hpp
         sources/compute/SplaMaskByKey.hpp

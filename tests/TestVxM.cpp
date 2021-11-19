@@ -104,7 +104,7 @@ void testMasked(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<Type> c = utils::VxM(mask, a, b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
 void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
