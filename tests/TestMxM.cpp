@@ -109,6 +109,24 @@ void testMasked(spla::Library &library,
 
 void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        auto spT = spla::Types::Float32(library);
+        auto spMult = spla::Functions::MultFloat32(library);
+        auto spAdd = spla::Functions::PlusFloat32(library);
+        auto mult = [](float a, float b) { return a * b; };
+        auto add = [](float a, float b) { return a + b; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Int32(library);
         auto spMult = spla::Functions::MultInt32(library);
         auto spAdd = spla::Functions::PlusInt32(library);
