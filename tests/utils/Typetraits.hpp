@@ -25,23 +25,31 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TESTING_HPP
-#define SPLA_TESTING_HPP
+#ifndef SPLA_TYPETRAITS_HPP
+#define SPLA_TYPETRAITS_HPP
 
-#include <gtest/gtest.h>
-#include <utils/Compute.hpp>
-#include <utils/Matrix.hpp>
-#include <utils/Random.hpp>
-#include <utils/Setup.hpp>
-#include <utils/Typetraits.hpp>
-#include <utils/Vector.hpp>
+#include <cstddef>
 
-// Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                  \
-    int main(int argc, char *argv[]) {                   \
-        ::testing::GTEST_FLAG(catch_exceptions) = false; \
-        ::testing::InitGoogleTest(&argc, argv);          \
-        return RUN_ALL_TESTS();                          \
-    }
+namespace utils {
 
-#endif//SPLA_TESTING_HPP
+    template<typename T>
+    bool UseError();
+
+    template<typename T>
+    T GetError();
+
+    template<>
+    bool UseError<float>() { return false; }
+
+    template<>
+    float GetError<float>() { return 1e-5f; }
+
+    template<>
+    bool UseError<std::int32_t>() { return false; }
+
+    template<>
+    std::int32_t GetError<std::int32_t>() { return 0; }
+
+}// namespace utils
+
+#endif//SPLA_TYPETRAITS_HPP

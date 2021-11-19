@@ -36,6 +36,7 @@
 #include <spla-cpp/Spla.hpp>
 #include <utility>
 #include <utils/Compute.hpp>
+#include <utils/Typetraits.hpp>
 #include <vector>
 
 namespace utils {
@@ -157,7 +158,7 @@ namespace utils {
             return true;
         }
 
-        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m) const {
+        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m, bool useError = UseError<T>(), T error = GetError<T>()) const {
             if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols()) {
                 std::cout << "Size mismatched" << std::endl;
                 return false;
@@ -216,9 +217,12 @@ namespace utils {
                 return false;
             }
 
-            if (std::memcmp(mVals.data(), spVals.data(), GetNvals() * ElementSize) != 0) {
-                std::cout << "Values not equal" << std::endl;
-                return false;
+            for (std::size_t i = 0; i < GetNvals(); i++) {
+                auto a = GetVals()[i];
+                auto b = spVals[i];
+
+                if ((useError && std::abs(a - b) > error) || (a != b))
+                    return false;
             }
 
             return true;
