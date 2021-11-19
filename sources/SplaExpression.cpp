@@ -317,7 +317,7 @@ spla::Expression::MakeVxM(const spla::RefPtr<spla::Vector> &w,
             a.As<Object>(),
             b.As<Object>()};
 
-    return MakeNode(ExpressionNode::Operation::MxM,
+    return MakeNode(ExpressionNode::Operation::VxM,
                     std::move(args),
                     desc);
 }

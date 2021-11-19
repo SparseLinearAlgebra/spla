@@ -78,6 +78,14 @@ namespace utils {
             return mRows.data();
         }
 
+        [[nodiscard]] const std::vector<T> &GetValsVec() const {
+            return mVals;
+        }
+
+        [[nodiscard]] const std::vector<Index> &GetRowsVec() const {
+            return mRows;
+        }
+
         [[nodiscard]] std::size_t GetNrows() const {
             return mNrows;
         }

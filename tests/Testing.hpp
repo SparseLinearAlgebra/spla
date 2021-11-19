@@ -31,6 +31,7 @@
 #include <gtest/gtest.h>
 #include <utils/Compute.hpp>
 #include <utils/Matrix.hpp>
+#include <utils/Operations.hpp>
 #include <utils/Random.hpp>
 #include <utils/Setup.hpp>
 #include <utils/Vector.hpp>

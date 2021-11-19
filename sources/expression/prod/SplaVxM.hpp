@@ -31,6 +31,7 @@
 #include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
+
     class VxM final : public NodeProcessor {
     public:
         ~VxM() override = default;
@@ -38,6 +39,7 @@ namespace spla {
         void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
         ExpressionNode::Operation GetOperationType() const override;
     };
+
 }// namespace spla
 
 #endif//SPLA_SPLAVXM_HPP
