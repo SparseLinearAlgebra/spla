@@ -233,7 +233,7 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (a != b))
+                if ((useError && std::abs(a - b) > error) || (!useError && a != b))
                     return false;
             }
 

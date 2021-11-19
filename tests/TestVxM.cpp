@@ -109,20 +109,40 @@ void testMasked(spla::Library &library,
 
 void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        auto spT = spla::Types::Int32(library);
-        auto spMult = spla::Functions::MultInt32(library);
-        auto spAdd = spla::Functions::PlusInt32(library);
-        auto mult = [](int a, int b) { return a * b; };
-        auto add = [](int a, int b) { return a + b; };
+        using T = float;
+        auto spT = spla::Types::Float32(library);
+        auto spMult = spla::Functions::MultFloat32(library);
+        auto spAdd = spla::Functions::PlusFloat32(library);
+        auto mult = [](T a, T b) { return a * b; };
+        auto add = [](T a, T b) { return a + b; };
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<std::int32_t>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testCommon<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testMasked<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using T = std::int32_t;
+        auto spT = spla::Types::Int32(library);
+        auto spMult = spla::Functions::MultInt32(library);
+        auto spAdd = spla::Functions::PlusInt32(library);
+        auto mult = [](T a, T b) { return a * b; };
+        auto add = [](T a, T b) { return a + b; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCommon<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
         }
     });
 }
