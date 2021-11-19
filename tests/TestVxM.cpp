@@ -62,7 +62,7 @@ void testCommon(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<Type> c = utils::VxM(a, b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
 template<typename Type, typename MultOp, typename AddOp>

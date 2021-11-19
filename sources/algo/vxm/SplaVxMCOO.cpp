@@ -26,7 +26,14 @@
 /**********************************************************************************/
 
 #include <algo/vxm/SplaVxMCOO.hpp>
+#include <boost/compute/algorithm.hpp>
+#include <boost/compute/algorithm/scatter_if.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
+#include <compute/SplaReduceByKey.hpp>
+#include <compute/SplaSortByRow.hpp>
+#include <compute/SplaTransformValues.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
@@ -41,7 +48,105 @@ bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
 }
 
 void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
-    // todo: impl me (issue #83)
+    using namespace boost;
+
+    auto p = dynamic_cast<ParamsVxM *>(&params);
+    auto w = p->w;
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
+
+    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    compute::context ctx = library->GetContext();
+    compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
+
+    auto a = p->a.Cast<VectorCOO>();
+    auto b = p->b.Cast<MatrixCOO>();
+    auto mask = p->mask.Cast<VectorCOO>();
+
+    if (p->hasMask && mask.IsNotNull())
+        return;
+
+    if (a->GetNvals() == 0 || b->GetNvals() == 0)
+        return;
+
+    const auto &ta = p->ta;
+    const auto &tb = p->tb;
+    const auto &tw = p->tw;
+    auto M = a->GetNrows();
+    auto N = b->GetNcols();
+
+    // Compute rows offsets and rows lengths for matrix b
+    compute::vector<unsigned int> offsets(ctx);
+    compute::vector<unsigned int> lengths(ctx);
+    IndicesToRowOffsets(b->GetRows(), offsets, lengths, M, queue);
+
+    // Compute number of products for each a[i] x b[i,:]
+    compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
+    compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths.begin(), segmentLengths.begin(), queue);
+    (segmentLengths.end() - 1).write(0, queue);
+
+    // Compute offsets between each a[i] x b[i,:] products
+    compute::vector<unsigned int> outputPtr(a->GetNvals() + 1, ctx);
+    compute::exclusive_scan(segmentLengths.begin(), segmentLengths.end(), outputPtr.begin(), 0u, queue);
+
+    // Number of products to count
+    std::size_t cooNnz = (outputPtr.end() - 1).read(queue);
+
+    if (!cooNnz) {
+        // nothing to do, no a[i] * b[i,:] product
+        return;
+    }
+
+    compute::vector<unsigned int> aLocations(cooNnz, ctx);
+    compute::vector<unsigned int> bLocations(cooNnz, ctx);
+    compute::vector<unsigned int> J(cooNnz, ctx);
+    compute::vector<unsigned char> V(cooNnz * tw->GetByteSize(), ctx);
+
+    compute::fill(aLocations.begin(), aLocations.end(), 0u, queue);
+    compute::scatter_if(compute::counting_iterator<unsigned int>(0),
+                        compute::counting_iterator<unsigned int>(a->GetNvals()),
+                        outputPtr.begin(),
+                        segmentLengths.begin(),
+                        aLocations.begin(),
+                        queue);
+    compute::inclusive_scan(aLocations.begin(), aLocations.end(), aLocations.begin(), compute::max<unsigned int>(), queue);
+
+    auto &aRows = a->GetRows();
+    BOOST_COMPUTE_CLOSURE(void, unfoldSegment, (unsigned int i), (outputPtr, offsets, aRows, aLocations, bLocations), {
+        uint locationOfRowIndex = aLocations[i];
+        uint rowIdx = aRows[locationOfRowIndex];
+        uint rowBaseOffset = offsets[rowIdx];
+        uint offsetOfRowSegment = outputPtr[locationOfRowIndex];
+        bLocations[i] = rowBaseOffset + (i - offsetOfRowSegment);
+    });
+    compute::for_each_n(compute::counting_iterator<unsigned int>(0), cooNnz, unfoldSegment, queue);
+
+    // Gather indices j for each product a[i] * b[i,j]
+    compute::gather(bLocations.begin(), bLocations.end(), b->GetCols().begin(), J.begin(), queue);
+
+    // Compute a[i] * b[i, j] for each value i and j
+    TransformValues(aLocations, bLocations,
+                    a->GetVals(), b->GetVals(), V,
+                    ta->GetByteSize(),
+                    tb->GetByteSize(),
+                    tw->GetByteSize(),
+                    p->mult->GetSource(),
+                    queue);
+
+    // Sort a[i] * b[i, j] products, so all j products stored in sequence
+    SortByRow(J, V, tw->GetByteSize(), queue);
+
+    // Reduce all produces a[i] * b[i, j] for j using provided add op
+    compute::vector<unsigned int> rows(ctx);
+    compute::vector<unsigned char> vals(ctx);
+    ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
+
+    // Store result
+    auto nvals = rows.size();
+    auto block = VectorCOO::Make(N, nvals, std::move(rows), std::move(vals));
+
+    // todo: handle mask
+    p->w = block.As<VectorBlock>();
 }
 
 spla::Algorithm::Type spla::VxMCOO::GetType() const {

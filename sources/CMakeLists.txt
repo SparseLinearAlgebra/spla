@@ -36,7 +36,9 @@ set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaMergeByKey.hpp
         sources/compute/SplaReduceByKey.hpp
         sources/compute/SplaReduceDuplicates.hpp
+        sources/compute/SplaSortByRow.hpp
         sources/compute/SplaSortByRowColumn.hpp
+        sources/compute/SplaTransformValues.hpp
         )
 
 set(SPLA_CORE_SOURCES

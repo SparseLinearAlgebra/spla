@@ -157,7 +157,9 @@ namespace utils {
             }
 
             if (v->GetNvals() != GetNvals()) {
-                std::cout << "Number of nnz mismatched" << std::endl;
+                std::cout << "Number of nnz mismatched "
+                          << "expected=" << GetNvals() << " "
+                          << "actual=" << v->GetNvals() << std::endl;
                 return false;
             }
 
