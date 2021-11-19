@@ -69,7 +69,6 @@ void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryMap &entryMap) con
     entryMap = mBlocks;
 }
 
-
 void spla::MatrixStorage::GetBlocks(spla::MatrixStorage::EntryRowList &entryList) const {
     std::lock_guard<std::mutex> lock(mMutex);
     entryList.clear();

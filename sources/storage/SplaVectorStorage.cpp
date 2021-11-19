@@ -29,6 +29,12 @@
 #include <core/SplaMath.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
+void spla::VectorStorage::Clear() {
+    std::lock_guard<std::mutex> lock(mMutex);
+    mNvals = 0;
+    mBlocks.clear();
+}
+
 void spla::VectorStorage::SetBlock(const spla::VectorStorage::Index &index, const spla::RefPtr<spla::VectorBlock> &block) {
     assert(index < mNblockRows);
     assert(block.IsNotNull());
@@ -47,6 +53,11 @@ void spla::VectorStorage::GetBlocks(spla::VectorStorage::EntryList &entryList) c
     std::lock_guard<std::mutex> lock(mMutex);
     entryList.clear();
     entryList.insert(entryList.begin(), mBlocks.begin(), mBlocks.end());
+}
+
+void spla::VectorStorage::GetBlocks(EntryMap &entryMap) const {
+    std::lock_guard<std::mutex> lock(mMutex);
+    entryMap = mBlocks;
 }
 
 void spla::VectorStorage::GetBlocksGrid(std::size_t &rows) const {
