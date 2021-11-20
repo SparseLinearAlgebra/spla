@@ -25,11 +25,13 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAINDICESTOROWOFFSETS_HPP
-#define SPLA_SPLAINDICESTOROWOFFSETS_HPP
+#ifndef SPLA_SPLAAPPLYMASK_HPP
+#define SPLA_SPLAAPPLYMASK_HPP
 
-#include <boost/compute/algorithm.hpp>
 #include <boost/compute/command_queue.hpp>
+#include <boost/compute/container/vector.hpp>
+#include <compute/SplaGather.hpp>
+#include <compute/SplaMaskByKey.hpp>
 
 namespace spla {
 
@@ -39,39 +41,55 @@ namespace spla {
      */
 
     /**
-     * @brief Compute row offsets from coo row indices buffer.
+     * @brief Apply mask to coo vector.
      *
-     * Result offsets array has size n + 1.
-     * Offsets[i] stores first index of row i in indices buffer.
-     * Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer.
-     * Offsets[n] equals number off values in indices buffer.
-     * Lengths[i] equals number of nnz values in row i in indices buffer.
-     *
-     * @param indices Array of rows indices
-     * @param[out] offsets Output array with offsets
-     * @param[out] lengths Output array of row lengths
-     * @param n Number of rows in matrix
-     * @param queue Command queue to execute
+     * @param mask Mask indices
+     * @param inputRows Row indices
+     * @param inputVals Values
+     * @param outputRows Result row indices; resized automatically
+     * @param outputVals Result values; resized automatically
+     * @param byteSize Size of values; if 0, apply only indices mask
+     * @param queue Command queue to perform operation
      */
-    inline void IndicesToRowOffsets(const boost::compute::vector<unsigned int> &indices,
-                                    boost::compute::vector<unsigned int> &offsets,
-                                    boost::compute::vector<unsigned int> &lengths,
-                                    std::size_t n,
-                                    boost::compute::command_queue &queue) {
+    inline void ApplyMask(const boost::compute::vector<unsigned int> &mask,
+                          const boost::compute::vector<unsigned int> &inputRows,
+                          const boost::compute::vector<unsigned char> &inputVals,
+                          boost::compute::vector<unsigned int> &outputRows,
+                          boost::compute::vector<unsigned char> &outputVals,
+                          std::size_t byteSize,
+                          boost::compute::command_queue &queue) {
         using namespace boost;
 
-        lengths.resize(n + 1, queue);
-        compute::fill(lengths.begin(), lengths.end(), 0u, queue);
+        if (mask.empty() || inputRows.empty())
+            return;
 
-        BOOST_COMPUTE_CLOSURE(void, countRowLengths, (unsigned int i), (indices, lengths), {
-            uint rowId = indices[i];
-            atomic_inc(&lengths[rowId]);
-        });
+        auto ctx = queue.get_context();
+        auto typeHasValues = byteSize != 0;
+        auto nnz = inputRows.size();
+        compute::vector<unsigned int> perm(ctx);
 
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), indices.size(), countRowLengths, queue);
+        if (typeHasValues) {
+            // Fill permutation to link value to indices
+            perm.resize(nnz, queue);
+            compute::copy_n(compute::make_counting_iterator(0), nnz, perm.begin(), queue);
+        }
 
-        offsets.resize(n + 1, queue);
-        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);
+        if (typeHasValues) {
+            // Mask with new permutation buffer
+            compute::vector<unsigned int> outputPerm(ctx);
+            MaskByKeys(mask,
+                       inputRows, perm,
+                       outputRows, outputPerm,
+                       queue);
+            std::swap(perm, outputPerm);
+        } else
+            MaskKeys(mask, inputRows, outputRows, queue);
+
+        if (typeHasValues) {
+            // Copy output values using indices buffer
+            outputVals.resize(outputRows.size() * byteSize, queue);
+            Gather(perm.begin(), perm.end(), inputVals.begin(), outputVals.begin(), byteSize, queue);
+        }
     }
 
     /**
@@ -80,4 +98,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAINDICESTOROWOFFSETS_HPP
+#endif//SPLA_SPLAAPPLYMASK_HPP

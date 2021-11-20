@@ -54,6 +54,9 @@ namespace spla {
 
         ~VectorStorage() override = default;
 
+        /** Remove all blocks from storage (empty matrix) */
+        void Clear();
+
         /** Set block at specified block index */
         void SetBlock(const Index &index, const RefPtr<VectorBlock> &block);
 
@@ -62,6 +65,9 @@ namespace spla {
 
         /** Get list of non-null presented blocks in storage */
         void GetBlocks(EntryList &entryList) const;
+
+        /** Get map of non-null presented blocks in storage */
+        void GetBlocks(EntryMap &entryMap) const;
 
         /** Get blocks grid (total number of blocks) */
         void GetBlocksGrid(std::size_t &rows) const;

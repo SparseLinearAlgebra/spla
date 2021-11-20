@@ -51,6 +51,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &logger = library->GetLogger();
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -218,6 +219,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                                        queue);
 
     p->w = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals)).As<VectorBlock>();
+    SPDLOG_LOGGER_TRACE(logger, "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
 }
 
 spla::Algorithm::Type spla::VectorEWiseAddCOO::GetType() const {

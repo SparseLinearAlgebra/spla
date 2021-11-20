@@ -253,14 +253,14 @@ namespace spla {
 
         /**
          * Make masked matrix-matrix multiplication expression node.
-         * Operation is evaluated as `w<mask> = a x(mult, add) b`.
+         * Operation is evaluated as `w<mask> = a mxm(mult, add) b`.
          * 
          * @note If mask is null, the whole result is saved
          * @note Mult must have signature `f: ta x tb -> tw`
          * @note Add must have signature `f: tw x tw -> tw`
          *
          * @param w Matrix to store result
-         * @param mask Mask to filter input matrices; may be null
+         * @param mask Mask to filter result; may be null
          * @param mult Binary function used to multiply a and b values
          * @param add Binary function used to accumulate multiplication results
          * @param a Input a matrix
@@ -274,6 +274,32 @@ namespace spla {
                                        const RefPtr<FunctionBinary> &mult,
                                        const RefPtr<FunctionBinary> &add,
                                        const RefPtr<Matrix> &a,
+                                       const RefPtr<Matrix> &b,
+                                       const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make masked vector-matrix multiplication expression node.
+         * Operation is evaluated as `w<mask> = a vxm(mult, add) b`.
+         *
+         * @note If mask is null, the whole result is saved
+         * @note Mult must have signature `f: ta x tb -> tw`
+         * @note Add must have signature `f: tw x tw -> tw`
+         *
+         * @param w Vector to store result
+         * @param mask Mask to filter result; may be null
+         * @param mult Binary function used to multiply a and b values
+         * @param add Binary function used to accumulate multiplication results
+         * @param a Input a vector
+         * @param b Input b matrix
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeVxM(const RefPtr<Vector> &w,
+                                       const RefPtr<Vector> &mask,
+                                       const RefPtr<FunctionBinary> &mult,
+                                       const RefPtr<FunctionBinary> &add,
+                                       const RefPtr<Vector> &a,
                                        const RefPtr<Matrix> &b,
                                        const RefPtr<Descriptor> &desc = nullptr);
 

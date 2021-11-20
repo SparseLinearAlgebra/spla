@@ -39,7 +39,7 @@ namespace utils {
     T GetError();
 
     template<>
-    bool UseError<float>() { return false; }
+    bool UseError<float>() { return true; }
 
     template<>
     float GetError<float>() { return 1e-5f; }

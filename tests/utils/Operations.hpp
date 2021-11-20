@@ -25,23 +25,64 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMPUTE_HPP
-#define SPLA_COMPUTE_HPP
+#ifndef SPLA_OPERATIONS_HPP
+#define SPLA_OPERATIONS_HPP
 
-#include <numeric>
-#include <vector>
+#include <utils/Matrix.hpp>
+#include <utils/Vector.hpp>
 
 namespace utils {
 
-    template<typename T>
-    std::vector<T> ToOffsets(std::size_t n, const std::vector<T> &indices) {
-        std::vector<T> rowLengths(n + 1, 0);
-        std::vector<T> offsets(n + 1);
-        for (auto i : indices) rowLengths[i] += 1;
-        std::exclusive_scan(rowLengths.begin(), rowLengths.end(), offsets.begin(), T{0});
-        return offsets;
+    template<typename T, typename Mult, typename Add>
+    inline Vector<T> VxM(const Vector<T> &a, const Matrix<T> &b, Mult mult, Add add) {
+        assert(a.GetNrows() == b.GetNrows());
+
+        using Index = typename Vector<T>::Index;
+
+        std::vector<Index> rows;
+        std::vector<T> vals;
+
+        std::size_t n = b.GetNcols();
+        std::vector<T> tmp(n);
+        std::vector<bool> mask(n, false);
+        std::vector<Index> nnz;
+
+        auto bOffsets = ToOffsets(b.GetNrows(), b.GetRowsVec());
+
+        for (std::size_t ak = 0; ak < a.GetNvals(); ak++) {
+            auto aRowId = a.GetRowsVec()[ak];
+            auto aVal = a.GetValsVec()[ak];
+
+            for (std::size_t bk = bOffsets[aRowId]; bk < bOffsets[aRowId + 1]; bk++) {
+                auto bColId = b.GetColsVec()[bk];
+                auto bVal = b.GetValsVec()[bk];
+
+                if (mask[bColId])
+                    tmp[bColId] = add(tmp[bColId], mult(aVal, bVal));
+                else {
+                    mask[bColId] = true;
+                    nnz.push_back(bColId);
+                    tmp[bColId] = mult(aVal, bVal);
+                }
+            }
+        }
+
+        if (!nnz.empty()) {
+            std::sort(nnz.begin(), nnz.end());
+            for (auto k : nnz) {
+                rows.push_back(k);
+                vals.push_back(tmp[k]);
+            }
+        }
+
+        return Vector<T>(n, std::move(rows), std::move(vals));
+    }
+
+    template<typename T, typename M, typename Mult, typename Add>
+    inline Vector<T> VxM(const Vector<M> &mask, const Vector<T> &a, const Matrix<T> &b, Mult mult, Add add) {
+        return VxM(a, b, mult, add).Mask(mask);
     }
 
 }// namespace utils
 
-#endif//SPLA_COMPUTE_HPP
+#endif//SPLA_OPERATIONS_HPP

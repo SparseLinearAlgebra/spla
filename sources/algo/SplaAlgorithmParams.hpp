@@ -105,6 +105,23 @@ namespace spla {
         RefPtr<Type> tw;
     };
 
+    /** Blocked vector-matrix multiply params */
+    class ParamsVxM final : public AlgorithmParams {
+    public:
+        ~ParamsVxM() override = default;
+
+        bool hasMask = false;       // true if must apply mask
+        RefPtr<VectorBlock> w;      // tw
+        RefPtr<VectorBlock> mask;   // if has mask, must apply this
+        RefPtr<FunctionBinary> mult;// f: ta x tb -> tw
+        RefPtr<FunctionBinary> add; // f: tw x tw -> tw
+        RefPtr<VectorBlock> a;      // ta
+        RefPtr<MatrixBlock> b;      // tb
+        RefPtr<Type> ta;
+        RefPtr<Type> tb;
+        RefPtr<Type> tw;
+    };
+
     /**
      * @}
      */

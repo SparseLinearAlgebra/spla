@@ -25,23 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMPUTE_HPP
-#define SPLA_COMPUTE_HPP
+#ifndef SPLA_SPLAVXM_HPP
+#define SPLA_SPLAVXM_HPP
 
-#include <numeric>
-#include <vector>
+#include <expression/SplaNodeProcessor.hpp>
 
-namespace utils {
+namespace spla {
 
-    template<typename T>
-    std::vector<T> ToOffsets(std::size_t n, const std::vector<T> &indices) {
-        std::vector<T> rowLengths(n + 1, 0);
-        std::vector<T> offsets(n + 1);
-        for (auto i : indices) rowLengths[i] += 1;
-        std::exclusive_scan(rowLengths.begin(), rowLengths.end(), offsets.begin(), T{0});
-        return offsets;
-    }
+    class VxM final : public NodeProcessor {
+    public:
+        ~VxM() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
-}// namespace utils
+}// namespace spla
 
-#endif//SPLA_COMPUTE_HPP
+#endif//SPLA_SPLAVXM_HPP

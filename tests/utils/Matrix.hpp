@@ -91,6 +91,18 @@ namespace utils {
             return mCols.data();
         }
 
+        [[nodiscard]] const std::vector<T> &GetValsVec() const {
+            return mVals;
+        }
+
+        [[nodiscard]] const std::vector<Index> &GetRowsVec() const {
+            return mRows;
+        }
+
+        [[nodiscard]] const std::vector<Index> &GetColsVec() const {
+            return mCols;
+        }
+
         [[nodiscard]] std::size_t GetNrows() const {
             return mNrows;
         }
@@ -221,7 +233,7 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (a != b))
+                if ((useError && std::abs(a - b) > error) || (!useError && a != b))
                     return false;
             }
 
@@ -414,8 +426,8 @@ namespace utils {
             std::vector<Index> cols;
             std::vector<W> vals;
 
-            auto aOffsets = toOffsets(GetNrows(), mRows);
-            auto bOffsets = toOffsets(b.GetNrows(), b.mRows);
+            auto aOffsets = ToOffsets(GetNrows(), mRows);
+            auto bOffsets = ToOffsets(b.GetNrows(), b.mRows);
 
             for (std::size_t i = 0; i < GetNrows(); i++) {
                 std::vector<Index> nnz;
@@ -454,6 +466,7 @@ namespace utils {
 
         template<typename W, typename M, typename B, typename MultOp, typename AddOp>
         [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
+
             return MxM<W>(b, multOp, addOp).Mask(mask);
         }
 

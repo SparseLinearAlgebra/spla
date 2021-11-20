@@ -79,6 +79,14 @@ namespace utils {
             return mRows.data();
         }
 
+        [[nodiscard]] const std::vector<T> &GetValsVec() const {
+            return mVals;
+        }
+
+        [[nodiscard]] const std::vector<Index> &GetRowsVec() const {
+            return mRows;
+        }
+
         [[nodiscard]] std::size_t GetNrows() const {
             return mNrows;
         }
@@ -150,7 +158,9 @@ namespace utils {
             }
 
             if (v->GetNvals() != GetNvals()) {
-                std::cout << "Number of nnz mismatched" << std::endl;
+                std::cout << "Number of nnz mismatched "
+                          << "expected=" << GetNvals() << " "
+                          << "actual=" << v->GetNvals() << std::endl;
                 return false;
             }
 
@@ -192,7 +202,7 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (a != b))
+                if ((useError && std::abs(a - b) > error) || (!useError && a != b))
                     return false;
             }
 

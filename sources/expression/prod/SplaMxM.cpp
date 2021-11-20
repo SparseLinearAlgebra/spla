@@ -232,7 +232,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                     }
 
                     // Store final result
-                    MatrixStorage::Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                    Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                     w->GetStorage()->SetBlock(index, block);
                 });
 

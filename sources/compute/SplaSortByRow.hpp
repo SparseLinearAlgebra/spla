@@ -25,23 +25,64 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMPUTE_HPP
-#define SPLA_COMPUTE_HPP
+#ifndef SPLA_SPLASORTBYROW_HPP
+#define SPLA_SPLASORTBYROW_HPP
 
-#include <numeric>
-#include <vector>
+#include <boost/compute.hpp>
+#include <cassert>
+#include <compute/SplaGather.hpp>
 
-namespace utils {
+namespace spla {
 
-    template<typename T>
-    std::vector<T> ToOffsets(std::size_t n, const std::vector<T> &indices) {
-        std::vector<T> rowLengths(n + 1, 0);
-        std::vector<T> offsets(n + 1);
-        for (auto i : indices) rowLengths[i] += 1;
-        std::exclusive_scan(rowLengths.begin(), rowLengths.end(), offsets.begin(), T{0});
-        return offsets;
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
+    /**
+     * @brief Sort vector data in coo format in row order.
+     * @note If elementsInSequence is 0 and vals is empty, sorts only vector indices.
+     *
+     * @param rows Vector with row indices to sort
+     * @param vals Vector with values byte data
+     * @param elementsInSequence Size in bytes of values in vals vector
+     * @param queue Queue to perform sort operation
+     */
+    inline void SortByRow(boost::compute::vector<unsigned int> &rows,
+                          boost::compute::vector<unsigned char> &vals,
+                          std::size_t elementsInSequence,
+                          boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        compute::context ctx = queue.get_context();
+        std::size_t nvals = rows.size();
+        bool typeHasValues = elementsInSequence != 0;
+
+        assert(vals.size() == nvals * elementsInSequence);
+
+        // Use permutation buffer to synchronize position of indices of the same
+        // entries in all 2 buffers: rows and vals.
+        compute::vector<unsigned int> permutation(nvals, ctx);
+        compute::copy(compute::counting_iterator<unsigned int>(0),
+                      compute::counting_iterator<unsigned int>(nvals),
+                      permutation.begin(),
+                      queue);
+
+        // Sort in row order and then, using permutation, shuffle column indices
+        compute::sort_by_key(rows.begin(), rows.end(), permutation.begin(), queue);
+
+        // Copy values, using permutation
+        if (typeHasValues) {
+            compute::vector<unsigned char> valsTmp(nvals * elementsInSequence, ctx);
+            Gather(permutation.begin(), permutation.end(), vals.begin(), valsTmp.begin(), elementsInSequence, queue);
+            std::swap(vals, valsTmp);
+        }
     }
 
-}// namespace utils
+    /**
+     * @}
+     */
 
-#endif//SPLA_COMPUTE_HPP
+}// namespace spla
+
+#endif//SPLA_SPLASORTBYROW_HPP

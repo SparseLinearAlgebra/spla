@@ -22,19 +22,24 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/mxm/SplaMxMCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
+        sources/algo/vxm/SplaVxMCOO.cpp
+        sources/algo/vxm/SplaVxMCOO.hpp
         sources/algo/SplaAlgorithm.hpp
         sources/algo/SplaAlgorithmManager.cpp
         sources/algo/SplaAlgorithmManager.hpp
         sources/algo/SplaAlgorithmParams.hpp)
 
 set(SPLA_COMPUTE_SOURCES
+        sources/compute/SplaApplyMask.hpp
         sources/compute/SplaGather.hpp
         sources/compute/SplaIndicesToRowOffsets.hpp
         sources/compute/SplaMaskByKey.hpp
         sources/compute/SplaMergeByKey.hpp
         sources/compute/SplaReduceByKey.hpp
         sources/compute/SplaReduceDuplicates.hpp
+        sources/compute/SplaSortByRow.hpp
         sources/compute/SplaSortByRowColumn.hpp
+        sources/compute/SplaTransformValues.hpp
         )
 
 set(SPLA_CORE_SOURCES
@@ -58,6 +63,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixEWiseAdd.hpp
         sources/expression/prod/SplaMxM.cpp
         sources/expression/prod/SplaMxM.hpp
+        sources/expression/prod/SplaVxM.cpp
+        sources/expression/prod/SplaVxM.hpp
         sources/expression/scalar/SplaScalarDataWrite.cpp
         sources/expression/scalar/SplaScalarDataWrite.hpp
         sources/expression/scalar/SplaScalarDataRead.cpp

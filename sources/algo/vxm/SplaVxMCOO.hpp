@@ -25,23 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMPUTE_HPP
-#define SPLA_COMPUTE_HPP
+#ifndef SPLA_SPLAVXMCOO_HPP
+#define SPLA_SPLAVXMCOO_HPP
 
-#include <numeric>
-#include <vector>
+#include <algo/SplaAlgorithm.hpp>
 
-namespace utils {
+namespace spla {
 
-    template<typename T>
-    std::vector<T> ToOffsets(std::size_t n, const std::vector<T> &indices) {
-        std::vector<T> rowLengths(n + 1, 0);
-        std::vector<T> offsets(n + 1);
-        for (auto i : indices) rowLengths[i] += 1;
-        std::exclusive_scan(rowLengths.begin(), rowLengths.end(), offsets.begin(), T{0});
-        return offsets;
-    }
+    class VxMCOO final : public Algorithm {
+    public:
+        ~VxMCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 
-}// namespace utils
+}// namespace spla
 
-#endif//SPLA_COMPUTE_HPP
+#endif//SPLA_SPLAVXMCOO_HPP
