@@ -31,6 +31,7 @@
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
+#include <compute/SplaReduceDuplicates.hpp>
 #include <compute/SplaSortByRow.hpp>
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaLibraryPrivate.hpp>
@@ -73,6 +74,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     const auto &ta = p->ta;
     const auto &tb = p->tb;
     const auto &tw = p->tw;
+    auto hasValues = tw->HasValues();
     auto M = a->GetNrows();
     auto N = b->GetNcols();
 
@@ -93,10 +95,9 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     // Number of products to count
     std::size_t cooNnz = (outputPtr.end() - 1).read(queue);
 
-    if (!cooNnz) {
-        // nothing to do, no a[i] * b[i,:] product
+    // nothing to do, no a[i] * b[i,:] product
+    if (!cooNnz)
         return;
-    }
 
     // Determine location of a and b values (indices in coo arrays) to copy for products evaluation
     compute::vector<unsigned int> aLocations(cooNnz, ctx);
@@ -125,31 +126,48 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned int> J(cooNnz, ctx);
     compute::gather(bLocations.begin(), bLocations.end(), b->GetCols().begin(), J.begin(), queue);
 
-    // Compute a[i] * b[i, j] for each value i and j
-    compute::vector<unsigned char> V(cooNnz * tw->GetByteSize(), ctx);
-    TransformValues(aLocations, bLocations,
-                    a->GetVals(), b->GetVals(), V,
-                    ta->GetByteSize(),
-                    tb->GetByteSize(),
-                    tw->GetByteSize(),
-                    p->mult->GetSource(),
-                    queue);
-
-    // Sort a[i] * b[i, j] products, so all j products stored in sequence
-    SortByRow(J, V, tw->GetByteSize(), queue);
-
-    // Reduce all produces a[i] * b[i, j] for j using provided add op
+    // Store final result here
     compute::vector<unsigned int> rows(ctx);
     compute::vector<unsigned char> vals(ctx);
-    ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
 
-    // Apply mask if required (at this point we know, that mask is not null)
-    if (p->hasMask) {
-        compute::vector<unsigned int> tmpRows(ctx);
-        compute::vector<unsigned char> tmpVals(ctx);
-        ApplyMask(mask->GetRows(), rows, vals, tmpRows, tmpVals, tw->GetByteSize(), queue);
-        std::swap(rows, tmpRows);
-        std::swap(vals, tmpVals);
+    // Compute a[i] * b[i, j] for each value i and j
+    if (hasValues) {
+        compute::vector<unsigned char> V(cooNnz * tw->GetByteSize(), ctx);
+        TransformValues(aLocations, bLocations,
+                        a->GetVals(), b->GetVals(), V,
+                        ta->GetByteSize(),
+                        tb->GetByteSize(),
+                        tw->GetByteSize(),
+                        p->mult->GetSource(),
+                        queue);
+
+        // Sort a[i] * b[i, j] products, so all j products stored in sequence
+        SortByRow(J, V, tw->GetByteSize(), queue);
+
+        // Reduce all produces a[i] * b[i, j] for j using provided add op
+        ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
+
+        // Apply mask if required (at this point we know, that mask is not null)
+        if (p->hasMask) {
+            compute::vector<unsigned int> tmpRows(ctx);
+            compute::vector<unsigned char> tmpVals(ctx);
+            ApplyMask(mask->GetRows(), rows, vals, tmpRows, tmpVals, tw->GetByteSize(), queue);
+            std::swap(rows, tmpRows);
+            std::swap(vals, tmpVals);
+        }
+    } else {
+        // Sort result indices
+        compute::sort(J.begin(), J.end(), queue);
+
+        // Reduce duplicates (keep only first entry)
+        ReduceDuplicates(J, rows, queue);
+
+        // Apply mask to indices
+        if (p->hasMask) {
+            compute::vector<unsigned int> tmpRows(ctx);
+            MaskKeys(mask->GetRows(), rows, tmpRows, queue);
+            std::swap(rows, tmpRows);
+        }
     }
 
     // Store result

@@ -107,6 +107,40 @@ void testMasked(spla::Library &library,
     ASSERT_TRUE(c.Equals(spW));
 }
 
+void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<unsigned char>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Vector mask = utils::Vector<unsigned char>::Generate(N, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Matrix::Make(M, N, spT, library);
+    auto spW = spla::Vector::Make(N, spT, library);
+    auto spMask = spla::Vector::Make(N, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spVxM = spExpr->MakeVxM(spW, spMask, nullptr, nullptr, spA, spB);
+    spExpr->Dependency(spWriteA, spVxM);
+    spExpr->Dependency(spWriteB, spVxM);
+    spExpr->Dependency(spWriteMask, spVxM);
+    spExpr->Submit();
+    spExpr->Wait();
+
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    auto dummy = [](unsigned char a, unsigned char b) { return 0; };
+    utils::Vector<unsigned char> c = utils::VxM(mask, a, b, dummy, dummy);
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
 void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         using T = float;
@@ -145,23 +179,30 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
             testMasked<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
         }
     });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, N, nvals, i);
+        }
+    });
 }
 
 TEST(VxM, Small) {
     std::vector<std::size_t> blockSizes = {100, 1000};
-    std::size_t M = 80, N = 120;
+    std::size_t M = 120, N = 80;
     test(M, N, M, M, 10, blockSizes);
 }
 
 TEST(MxM, Medium) {
     std::vector<std::size_t> blockSizes = {1000, 10000};
-    std::size_t M = 880, N = 1220;
+    std::size_t M = 1220, N = 880;
     test(M, N, M, M, 10, blockSizes);
 }
 
 TEST(MxM, Large) {
     std::vector<std::size_t> blockSizes = {10000, 100000};
-    std::size_t M = 8080, N = 12400;
+    std::size_t M = 12400, N = 8080;
     test(M, N, M, M, 5, blockSizes);
 }
 
