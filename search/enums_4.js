@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['state_1058',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
-  ['status_1059',['Status',['../group__Internal.html#ga5251dcc549917ecb7b44ad073c479962',1,'spla']]]
+  ['state_1095',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
+  ['status_1096',['Status',['../group__Internal.html#ga5251dcc549917ecb7b44ad073c479962',1,'spla']]]
 ];

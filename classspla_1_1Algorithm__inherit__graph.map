@@ -1,7 +1,8 @@
 <map id="spla::Algorithm" name="spla::Algorithm">
-<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="207,80,313,107"/>
+<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="291,80,397,107"/>
 <area shape="rect" id="node3" href="$classspla_1_1MatrixEWiseAddCOO.html" title=" " alt="" coords="5,155,181,181"/>
 <area shape="rect" id="node4" href="$classspla_1_1MxMCOO.html" title=" " alt="" coords="205,155,315,181"/>
 <area shape="rect" id="node5" href="$classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="339,155,517,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="214,5,306,32"/>
+<area shape="rect" id="node6" href="$classspla_1_1VxMCOO.html" title=" " alt="" coords="541,155,648,181"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="298,5,390,32"/>
 </map>

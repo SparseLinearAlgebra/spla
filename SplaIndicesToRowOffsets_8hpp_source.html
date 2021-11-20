@@ -104,11 +104,11 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">   56</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">IndicesToRowOffsets</a>(<span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;indices,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                             boost::compute::vector&lt;unsigned int&gt; &amp;offsets,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                             boost::compute::vector&lt;unsigned int&gt; &amp;lengths,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                             std::size_t n,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                             boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">   56</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">IndicesToRowOffsets</a>(<span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;indices,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                    boost::compute::vector&lt;unsigned int&gt; &amp;offsets,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                    boost::compute::vector&lt;unsigned int&gt; &amp;lengths,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                    std::size_t n,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                    boost::compute::command_queue &amp;queue) {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        lengths.resize(n + 1, queue);</div>

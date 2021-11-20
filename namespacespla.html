@@ -151,7 +151,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsMxM.html">ParamsMxM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsVxM.html">ParamsVxM</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorEWiseAddCOO.html">VectorEWiseAddCOO</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VxMCOO.html">VxMCOO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DeviceManager.html">DeviceManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computational devices management for expressions execution.  <a href="classspla_1_1DeviceManager.html#details">More...</a><br /></td></tr>
@@ -177,6 +181,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixEWiseAdd.html">MatrixEWiseAdd</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MxM.html">MxM</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VxM.html">VxM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScalarDataRead.html">ScalarDataRead</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,6 +267,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga0fb480f8059294579d1aebfa403e6718"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0fb480f8059294579d1aebfa403e6718">ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga0fb480f8059294579d1aebfa403e6718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo vector.  <a href="group__Internal.html#ga0fb480f8059294579d1aebfa403e6718">More...</a><br /></td></tr>
+<tr class="separator:ga0fb480f8059294579d1aebfa403e6718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,9 +324,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3fbc66f32ba851d7a14f6213d3814214"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3fbc66f32ba851d7a14f6213d3814214">ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga3fbc66f32ba851d7a14f6213d3814214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce duplicates in sorted sequence of elements Reduces duplicated values in sorted sequence of key elements, where one or two duplicated keys are presented.  <a href="group__Internal.html#ga3fbc66f32ba851d7a14f6213d3814214">More...</a><br /></td></tr>
 <tr class="separator:ga3fbc66f32ba851d7a14f6213d3814214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac64f1cbf26dce358c1c0d056ea04db6d">SortByRow</a> (boost::compute::vector&lt; unsigned int &gt; &amp;rows, boost::compute::vector&lt; unsigned char &gt; &amp;vals, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort vector data in coo format in row order.  <a href="group__Internal.html#gac64f1cbf26dce358c1c0d056ea04db6d">More...</a><br /></td></tr>
+<tr class="separator:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3b363e3578d72cb1311091ed22d0f84b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">SortByRowColumn</a> (boost::compute::vector&lt; unsigned int &gt; &amp;rows, boost::compute::vector&lt; unsigned int &gt; &amp;cols, boost::compute::vector&lt; unsigned char &gt; &amp;vals, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga3b363e3578d72cb1311091ed22d0f84b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort matrix data in coo format in row-column order.  <a href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">More...</a><br /></td></tr>
 <tr class="separator:ga3b363e3578d72cb1311091ed22d0f84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga361e8d86479e1f4669f9915cf6389b73"><td class="memItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga361e8d86479e1f4669f9915cf6389b73">TransformValues</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;aMap, const boost::compute::vector&lt; unsigned int &gt; &amp;bMap, const boost::compute::vector&lt; unsigned char &gt; &amp;aValues, const boost::compute::vector&lt; unsigned char &gt; &amp;bValues, boost::compute::vector&lt; unsigned char &gt; &amp;values, std::size_t aByteSize, std::size_t bByteSize, std::size_t resultByteSize, const std::string &amp;transformOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga361e8d86479e1f4669f9915cf6389b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a and b values using map and transfrom op Transforms sequence of a and b values using map to fetch actual a and b values. For each index i of computes result values as v[i] = transform(a[a_map[i]], b[b_map[i]]).  <a href="group__Internal.html#ga361e8d86479e1f4669f9915cf6389b73">More...</a><br /></td></tr>
+<tr class="separator:ga361e8d86479e1f4669f9915cf6389b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

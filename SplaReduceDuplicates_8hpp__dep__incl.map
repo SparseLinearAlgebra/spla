@@ -1,5 +1,6 @@
 <map id="sources/compute/SplaReduceDuplicates.hpp" name="sources/compute/SplaReduceDuplicates.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="119,5,315,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="233,5,429,47"/>
 <area shape="rect" id="node2" href="$SplaMatrixEWiseAddCOO_8cpp.html" title=" " alt="" coords="5,95,205,136"/>
 <area shape="rect" id="node3" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="229,95,432,136"/>
+<area shape="rect" id="node4" href="$SplaVxMCOO_8cpp.html" title=" " alt="" coords="457,102,690,129"/>
 </map>

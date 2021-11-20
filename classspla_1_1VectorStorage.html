@@ -112,12 +112,16 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad05c6cd75d80e8b87b984650ad115cb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#ad05c6cd75d80e8b87b984650ad115cb8">~VectorStorage</a> () override=default</td></tr>
 <tr class="separator:ad05c6cd75d80e8b87b984650ad115cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeea10e78fc6be04690c66e3263d58bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#abeea10e78fc6be04690c66e3263d58bb">Clear</a> ()</td></tr>
+<tr class="separator:abeea10e78fc6be04690c66e3263d58bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c0431a9c6d830ce825ef3b3d2b912e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#a2c0431a9c6d830ce825ef3b3d2b912e1">SetBlock</a> (const <a class="el" href="classspla_1_1VectorStorage.html#a4de8187fe6b6b30d0307a4a90802e3a0">Index</a> &amp;index, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1VectorBlock.html">VectorBlock</a> &gt; &amp;block)</td></tr>
 <tr class="separator:a2c0431a9c6d830ce825ef3b3d2b912e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a263b9d5181b5c88cade9a6f1325be8c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#a263b9d5181b5c88cade9a6f1325be8c1">RemoveBlock</a> (const <a class="el" href="classspla_1_1VectorStorage.html#a4de8187fe6b6b30d0307a4a90802e3a0">Index</a> &amp;index)</td></tr>
 <tr class="separator:a263b9d5181b5c88cade9a6f1325be8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23309f51ea0a90f4f72a00ecb270a650"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#a23309f51ea0a90f4f72a00ecb270a650">GetBlocks</a> (<a class="el" href="classspla_1_1VectorStorage.html#a1494a7a7d111b379fddba1b2811b9f08">EntryList</a> &amp;entryList) const</td></tr>
 <tr class="separator:a23309f51ea0a90f4f72a00ecb270a650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a601f9958b6fdc320593090f17fab7e04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#a601f9958b6fdc320593090f17fab7e04">GetBlocks</a> (<a class="el" href="classspla_1_1VectorStorage.html#ad69311921c0c1f57295ef1d0dd64df29">EntryMap</a> &amp;entryMap) const</td></tr>
+<tr class="separator:a601f9958b6fdc320593090f17fab7e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ed4c453bdfdf83b81a561a447997288"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#a0ed4c453bdfdf83b81a561a447997288">GetBlocksGrid</a> (std::size_t &amp;rows) const</td></tr>
 <tr class="separator:a0ed4c453bdfdf83b81a561a447997288"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8cfadf4de628576fec2106441fb6961"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1VectorBlock.html">VectorBlock</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorStorage.html#aa8cfadf4de628576fec2106441fb6961">GetBlock</a> (const <a class="el" href="classspla_1_1VectorStorage.html#a4de8187fe6b6b30d0307a4a90802e3a0">Index</a> &amp;index) const</td></tr>
@@ -245,6 +249,24 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abeea10e78fc6be04690c66e3263d58bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeea10e78fc6be04690c66e3263d58bb">&#9670;&nbsp;</a></span>Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::VectorStorage::Clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove all blocks from storage (empty matrix) </p>
+
+</div>
+</div>
 <a id="a250770139df06f89ab2a17a0169a4838"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a250770139df06f89ab2a17a0169a4838">&#9670;&nbsp;</a></span>Dump()</h2>
 
@@ -284,7 +306,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a23309f51ea0a90f4f72a00ecb270a650"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23309f51ea0a90f4f72a00ecb270a650">&#9670;&nbsp;</a></span>GetBlocks()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a23309f51ea0a90f4f72a00ecb270a650">&#9670;&nbsp;</a></span>GetBlocks() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,6 +321,25 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Get list of non-null presented blocks in storage </p>
+
+</div>
+</div>
+<a id="a601f9958b6fdc320593090f17fab7e04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a601f9958b6fdc320593090f17fab7e04">&#9670;&nbsp;</a></span>GetBlocks() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::VectorStorage::GetBlocks </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1VectorStorage.html#ad69311921c0c1f57295ef1d0dd64df29">EntryMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>entryMap</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get map of non-null presented blocks in storage </p>
 
 </div>
 </div>
