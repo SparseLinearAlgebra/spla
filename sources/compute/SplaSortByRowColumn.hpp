@@ -50,10 +50,10 @@ namespace spla {
      * @param queue Queue to perform sort operation
      */
     inline void SortByRowColumn(boost::compute::vector<unsigned int> &rows,
-                         boost::compute::vector<unsigned int> &cols,
-                         boost::compute::vector<unsigned char> &vals,
-                         std::size_t elementsInSequence,
-                         boost::compute::command_queue &queue) {
+                                boost::compute::vector<unsigned int> &cols,
+                                boost::compute::vector<unsigned char> &vals,
+                                std::size_t elementsInSequence,
+                                boost::compute::command_queue &queue) {
         using namespace boost;
 
         compute::context ctx = queue.get_context();
