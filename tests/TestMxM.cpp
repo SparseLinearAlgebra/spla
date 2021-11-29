@@ -25,8 +25,6 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
-
 #include <Testing.hpp>
 
 template<typename Type, typename MultOp, typename AddOp, typename Random>

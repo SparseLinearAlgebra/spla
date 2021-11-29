@@ -106,7 +106,7 @@ namespace spla {
         class KeyVec : public VMultiKey {
         public:
             explicit KeyVec(
-                    const std::vector<compute::vector<uint_>> &vectors,
+                    const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &vectors,
                     std::string idx,
                     MetaKernel &k)
                 : mIdx(std::move(idx)) {
@@ -333,12 +333,12 @@ namespace spla {
             const std::size_t mVBytes;
         };
 
-        inline void GenerateUintKeys(const std::vector<compute::vector<unsigned int>> &keysFirst,
+        inline void GenerateUintKeys(const std::vector<std::reference_wrapper<const compute::vector<unsigned int>>> &keysFirst,
                                      const compute::vector<unsigned int>::iterator &newKeysFirst,
                                      std::size_t preferredWorkGroupSize,
                                      compute::command_queue &queue) {
             compute::detail::meta_kernel k("spla_reduce_by_key_new_key_flags");
-            const std::size_t count = keysFirst.at(0).size();
+            const std::size_t count = keysFirst.at(0).get().size();
             const std::size_t nKeys = keysFirst.size();
             k.add_set_arg<const uint_>("count", static_cast<uint_>(count));
 
@@ -525,7 +525,7 @@ namespace spla {
                                           workGroupSize);
         }
 
-        inline void FinalReduction(const std::vector<compute::vector<uint_>> &keys,
+        inline void FinalReduction(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
                                    const compute::vector<unsigned char>::iterator &valuesFirst,
                                    const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
                                    const compute::vector<unsigned char>::iterator &valuesResult,
@@ -620,7 +620,7 @@ namespace spla {
          * 4. Final reduction by key is performed (key-oriented Hillis/Steele scan),
          *  carry-in values are added where needed.
          */
-        inline std::size_t ReduceByKeyWithScan(const std::vector<compute::vector<uint_>> &keys,
+        inline std::size_t ReduceByKeyWithScan(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
                                                const compute::vector<unsigned char> &values,
                                                const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
                                                compute::vector<unsigned char> &valuesResult,
@@ -628,7 +628,7 @@ namespace spla {
                                                const std::string &reduceBody,
                                                compute::command_queue &queue) {
             const compute::context &context = queue.get_context();
-            const std::size_t count = keys.at(0).size();
+            const std::size_t count = keys.at(0).get().size();
 
             if (count == 0) {
                 return 0;
@@ -727,7 +727,7 @@ namespace spla {
                                        const std::string &reduceOp,
                                        boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
-                std::vector{inputIndices1, inputIndices2},
+                std::vector{std::ref(inputIndices1), std::ref(inputIndices2)},
                 inputValues,
                 std::vector{std::ref(outputIndices1), std::ref(outputIndices2)},
                 outputValues,
@@ -769,7 +769,7 @@ namespace spla {
                                    const std::string &reduceOp,
                                    boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
-                std::vector{inputIndices},
+                std::vector{std::ref(inputIndices)},
                 inputValues,
                 std::vector{std::ref(outputIndices)},
                 outputValues,

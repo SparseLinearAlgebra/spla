@@ -30,7 +30,6 @@
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
-#include <compute/SplaInnerProduct.hpp>
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
 #include <compute/SplaTransformValues.hpp>
@@ -88,7 +87,7 @@ namespace spla::detail {
                             compute::counting_iterator<unsigned int>(endSegment),
                             outputPtr.begin() + beginSegmentDiff,
                             segmentLengths.begin() + beginSegmentDiff,
-                            aGatherLocations.begin() - outputPtr[beginSegment],
+                            aGatherLocations.begin() - (outputPtr.begin() + beginSegmentDiff).read(queue),
                             queue);
 
         compute::inclusive_scan(aGatherLocations.begin(),
@@ -133,33 +132,12 @@ namespace spla::detail {
         // sort (I,J,V) tuples by (I,J)
         SortByRowColumn(I, J, V, wValueByteSize, queue);
 
-        using compute::lambda::_1;
-        using compute::lambda::_2;
-        using compute::lambda::get;
-
-        // compute unique number of nonzeros in the output
-        unsigned int NNZ = InnerProduct(compute::make_zip_iterator(boost::make_tuple(I.begin(), J.begin())),
-                                        compute::make_zip_iterator(boost::make_tuple(I.end(), J.end())) - 1,
-                                        compute::make_zip_iterator(boost::make_tuple(I.begin(), J.begin())) + 1,
-                                        0U,
-                                        compute::plus<unsigned int>(),
-                                        get<0>(_1) != get<0>(_2) || get<1>(_1) != get<1>(_2),
-                                        queue) +
-                           1;
-
-        // allocate space for output
-        wCols.resize(NNZ, queue);
-        wRows.resize(NNZ, queue);
-        wVals.resize(NNZ * wValueByteSize, queue);
-
         // sum values with the same (i,j)
-        ReduceByPairKey(I, J, V,
-                        wRows, wCols, wVals,
-                        wValueByteSize,
-                        fAdd.GetSource(),
-                        queue);
-
-        return NNZ;
+        return ReduceByPairKey(I, J, V,
+                               wRows, wCols, wVals,
+                               wValueByteSize,
+                               fAdd.GetSource(),
+                               queue);
     }
 }// namespace spla::detail
 
@@ -192,10 +170,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         return;
     }
 
-    if (a.GetNvals() == 0 || b.GetNvals() == 0) {
-        return;
-    }
-
     const auto &typeA = params->ta;
     const auto &typeB = params->tb;
     const auto &typeW = params->tw;
@@ -210,7 +184,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     IndicesToRowOffsets(b.GetRows(), bRowOffsets, bRowLengths, b.GetNrows(), queue);
 
     // for each element A(i,j) compute the number of nonzero elements in B(j,:)
-    compute::vector<unsigned int> segmentLengths(a.GetNvals(), ctx);
+    compute::vector<unsigned int> segmentLengths(a.GetNvals() + 1, ctx);
     compute::gather(a.GetCols().begin(), a.GetCols().end(),
                     bRowLengths.begin(),
                     segmentLengths.begin(),
@@ -223,13 +197,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                             0U,
                             queue);
 
-    std::size_t cooNumNonZeros;
-    {
-        auto outputPtrLastCalculated = (outputPtr.end() - 2).read(queue);
-        auto lastSegmentLength = (segmentLengths.end() - 1).read(queue);
-        cooNumNonZeros = outputPtrLastCalculated + lastSegmentLength;
-        (outputPtr.end() - 1).write(cooNumNonZeros, queue);
-    }
+    std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
         // TODO: Find the right constant.
@@ -247,8 +215,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> aGatherLocations(ctx), bGatherLocations(ctx);
     compute::vector<unsigned int> I(ctx), J(ctx);
     compute::vector<unsigned char> V(ctx);
-    compute::vector<unsigned int> wTmpRows(ctx);
-    compute::vector<unsigned int> wTmpCols(ctx);
+    compute::vector<unsigned int> wTmpRows(ctx), wTmpCols(ctx);
     compute::vector<unsigned char> wTmpVals(ctx);
 
     //    if (cooNumNonZeros <= workspaceCapacity) { TODO: Handle this!
