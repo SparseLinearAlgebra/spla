@@ -79,8 +79,8 @@ namespace utils {
     }
 
     template<typename T, typename M, typename Mult, typename Add>
-    inline Vector<T> VxM(const Vector<M> &mask, const Vector<T> &a, const Matrix<T> &b, Mult mult, Add add) {
-        return VxM(a, b, mult, add).Mask(mask);
+    inline Vector<T> VxM(const Vector<M> &mask, bool complement, const Vector<T> &a, const Matrix<T> &b, Mult mult, Add add) {
+        return VxM(a, b, mult, add).Mask(mask, complement);
     }
 
 }// namespace utils

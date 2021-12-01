@@ -103,7 +103,53 @@ void testMasked(spla::Library &library,
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<Type> c = utils::VxM(mask, a, b, multOp, addOp);
+    utils::Vector<Type> c = utils::VxM(mask, false, a, b, multOp, addOp);
+    ASSERT_TRUE(c.Equals(spW));
+}
+
+template<typename Type, typename MultOp, typename AddOp>
+void testMaskedComplement(spla::Library &library,
+                          std::size_t M, std::size_t N, std::size_t nvals,
+                          const spla::RefPtr<spla::Type> spT,
+                          const spla::RefPtr<spla::FunctionBinary> spMult,
+                          const spla::RefPtr<spla::FunctionBinary> spAdd,
+                          MultOp multOp, AddOp addOp,
+                          std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<Type>::Generate(M, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Vector mask = utils::Vector<unsigned char>::Generate(N, nvals, seed + 2).SortReduceDuplicates();
+
+    a.Fill(utils::UniformGenerator<Type>());
+    b.Fill(utils::UniformGenerator<Type>());
+
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Matrix::Make(M, N, spT, library);
+    auto spW = spla::Vector::Make(N, spT, library);
+    auto spMask = spla::Vector::Make(N, spla::Types::Void(library), library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    // Use complementary mask
+    auto spOpDesc = spla::Descriptor::Make(library);
+    spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetData(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetData(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spVxM = spExpr->MakeVxM(spW, spMask, spMult, spAdd, spA, spB, spOpDesc);
+    spExpr->Dependency(spWriteA, spVxM);
+    spExpr->Dependency(spWriteB, spVxM);
+    spExpr->Dependency(spWriteMask, spVxM);
+    spExpr->Submit();
+    spExpr->Wait();
+
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    utils::Vector<Type> c = utils::VxM(mask, true, a, b, multOp, addOp);
     ASSERT_TRUE(c.Equals(spW));
 }
 
@@ -137,7 +183,7 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::siz
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     auto dummy = [](unsigned char a, unsigned char b) { return 0; };
-    utils::Vector<unsigned char> c = utils::VxM(mask, a, b, dummy, dummy);
+    utils::Vector<unsigned char> c = utils::VxM(mask, false, a, b, dummy, dummy);
     ASSERT_TRUE(c.EqualsStructure(spW));
 }
 
@@ -159,6 +205,11 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
             std::size_t nvals = base + i * step;
             testMasked<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
         }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMaskedComplement<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
     });
 
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
@@ -177,6 +228,11 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
             testMasked<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMaskedComplement<T>(library, M, N, nvals, spT, spMult, spAdd, mult, add, i);
         }
     });
 

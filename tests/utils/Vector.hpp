@@ -245,7 +245,7 @@ namespace utils {
         }
 
         template<typename M>
-        [[nodiscard]] Vector Mask(const Vector<M> &mask) const {
+        [[nodiscard]] Vector Mask(const Vector<M> &mask, bool complement) const {
             assert(GetNrows() == mask.GetNrows());
 
             std::vector<Index> rows;
@@ -256,16 +256,37 @@ namespace utils {
             std::size_t endA = GetNvals();
             std::size_t endB = mask.GetNvals();
 
-            while (a != endA && b != endB) {
-                if (GetRows()[a] == mask.GetRows()[b]) {
+            if (complement) {
+                while (a != endA && b != endB) {
+                    if (GetRows()[a] == mask.GetRows()[b]) {
+                        a += 1;
+                        b += 1;
+                    } else if (GetRows()[a] < mask.GetRows()[b]) {
+                        rows.push_back(GetRows()[a]);
+                        vals.push_back(GetVals()[a]);
+                        a += 1;
+                    } else {
+                        b += 1;
+                    }
+                }
+
+                while (a != endA) {
                     rows.push_back(GetRows()[a]);
                     vals.push_back(GetVals()[a]);
                     a += 1;
-                    b += 1;
-                } else if (GetRows()[a] < mask.GetRows()[b]) {
-                    a += 1;
-                } else {
-                    b += 1;
+                }
+            } else {
+                while (a != endA && b != endB) {
+                    if (GetRows()[a] == mask.GetRows()[b]) {
+                        rows.push_back(GetRows()[a]);
+                        vals.push_back(GetVals()[a]);
+                        a += 1;
+                        b += 1;
+                    } else if (GetRows()[a] < mask.GetRows()[b]) {
+                        a += 1;
+                    } else {
+                        b += 1;
+                    }
                 }
             }
 
@@ -317,8 +338,8 @@ namespace utils {
         }
 
         template<typename M, typename BinaryOp>
-        [[nodiscard]] Vector EWiseAdd(const Vector<M> &mask, const Vector<T> &other, BinaryOp op) const {
-            return Mask(mask).EWiseAdd(other.Mask(mask), op);
+        [[nodiscard]] Vector EWiseAdd(const Vector<M> &mask, bool complement, const Vector<T> &other, BinaryOp op) const {
+            return Mask(mask, complement).EWiseAdd(other.Mask(mask, complement), op);
         }
 
         static Vector Generate(std::size_t nrows, std::size_t nvals, std::size_t seed = 0, const T &value = T()) {
