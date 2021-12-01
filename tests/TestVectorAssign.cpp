@@ -187,10 +187,10 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
     });
 
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-      for (std::size_t i = 0; i < iter; i++) {
-          std::size_t nvals = base + i * step;
-          testNoValues(library, M, nvals, i);
-      }
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, nvals, i);
+        }
     });
 }
 

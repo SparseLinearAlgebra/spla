@@ -105,7 +105,7 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
             }
         });
 
-        // Assign and the accum result
+        // Assign and then accum result
         assignmentTask.precede(accumTask);
     }
 }
