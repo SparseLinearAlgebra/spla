@@ -51,6 +51,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
     auto &logger = library->GetLogger();
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
@@ -104,12 +105,14 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
             MaskByKeys(maskBlock->GetRows(),
                        block->GetRows(), perm,
                        tmpRows, tmpPerm,
+                       desc->IsParamSet(Descriptor::Param::MaskComplement),
                        queue);
             std::swap(perm, tmpPerm);
         } else
             MaskKeys(maskBlock->GetRows(),
                      block->GetRows(),
                      tmpRows,
+                     desc->IsParamSet(Descriptor::Param::MaskComplement),
                      queue);
 
         out = &tmpRows;

@@ -51,6 +51,7 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsMatrixEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -113,12 +114,14 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
             MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
                            block->GetRows(), block->GetCols(), perm,
                            tmpRows, tmpCols, tmpPerm,
+                           desc->IsParamSet(Descriptor::Param::MaskComplement),
                            queue);
             std::swap(perm, tmpPerm);
         } else
             MaskPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
                          block->GetRows(), block->GetCols(),
                          tmpRows, tmpCols,
+                         desc->IsParamSet(Descriptor::Param::MaskComplement),
                          queue);
 
         outRows = &tmpRows;

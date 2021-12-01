@@ -168,7 +168,8 @@ namespace spla {
                            InputIterator4 tile_first2,
                            OutputIterator counts,
                            Compare compare,
-                           Equals equals) {
+                           Equals equals,
+                           bool complement) {
                 using uint_ = boost::compute::uint_;
                 m_count = boost::compute::detail::iterator_range_size(tile_first1, tile_last1) - 1;
 
@@ -179,17 +180,36 @@ namespace spla {
                       << "uint end2 = " << tile_first2[expr<uint_>("i+1")] << ";\n"
                       << "uint count = 0;\n"
                       << "while(start1<end1 && start2<end2)\n"
-                      << "{\n"
-                      << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
-                      << "   {\n"
-                      << "       count++;\n"
-                      << "       start1++; start2++;\n"
-                      << "   }\n"
-                      << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
-                      << "       start1++;\n"
-                      << "   else start2++;\n"
-                      << "}\n"
-                      << counts[expr<uint_>("i")] << " = count;\n";
+                      << "{\n";
+
+                if (complement) {
+                    *this << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "   {\n"
+                          << "       start1++; start2++;\n"
+                          << "   }\n"
+                          << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "       start1++;\n"
+                          << "   else\n"
+                          << "   {\n"
+                          << "       count++; start2++;\n"
+                          << "   }\n";
+                } else {
+                    *this << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "   {\n"
+                          << "       count++;\n"
+                          << "       start1++; start2++;\n"
+                          << "   }\n"
+                          << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "       start1++;\n"
+                          << "   else start2++;\n";
+                }
+
+                *this << "}\n";
+
+                if (complement)
+                    *this << counts[expr<uint_>("i")] << " = count + (end2 - start2);\n";
+                else
+                    *this << counts[expr<uint_>("i")] << " = count;\n";
             }
 
             boost::compute::event exec(boost::compute::command_queue &queue) {
@@ -225,7 +245,8 @@ namespace spla {
                            InputIterator5 counts,
                            Compare compare,
                            Equals equals,
-                           AssignResult assignResult) {
+                           AssignResult assignResult,
+                           bool complement) {
                 using uint_ = boost::compute::uint_;
                 m_count = boost::compute::detail::iterator_range_size(tile_first1, tile_last1) - 1;
 
@@ -236,17 +257,41 @@ namespace spla {
                       << "uint end2 = " << tile_first2[expr<uint_>("i+1")] << ";\n"
                       << "uint count = " << counts[expr<uint_>("i")] << ";\n"
                       << "while(start1<end1 && start2<end2)\n"
-                      << "{\n"
-                      << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
-                      << "   {\n";
-                assignResult(*this, expr<uint_>("count"), expr<uint_>("start2"));
-                *this << "       count++;\n"
-                      << "       start1++; start2++;\n"
-                      << "   }\n"
-                      << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
-                      << "       start1++;\n"
-                      << "   else start2++;\n"
-                      << "}\n";
+                      << "{\n";
+
+                if (complement) {
+                    *this << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "   {\n"
+                          << "       start1++; start2++;\n"
+                          << "   }\n"
+                          << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "       start1++;\n"
+                          << "   else\n"
+                          << "   {\n";
+                    assignResult(*this, expr<uint_>("count"), expr<uint_>("start2"));
+                    *this << "       count++; start2++;\n"
+                          << "   }\n";
+                } else {
+                    *this << "   if(" << equals(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "   {\n";
+                    assignResult(*this, expr<uint_>("count"), expr<uint_>("start2"));
+                    *this << "       count++;\n"
+                          << "       start1++; start2++;\n"
+                          << "   }\n"
+                          << "   else if(" << compare(maskFirst[expr<uint_>("start1")], keyFirsts[expr<uint_>("start2")]) << ")\n"
+                          << "       start1++;\n"
+                          << "   else start2++;\n";
+                }
+
+                *this << "}\n";
+
+                if (complement) {
+                    *this << "while (start2 < end2)\n"
+                          << "{\n";
+                    assignResult(*this, expr<uint_>("count"), expr<uint_>("start2"));
+                    *this << "    count++; start2++;"
+                          << "}\n";
+                }
             }
 
             boost::compute::event exec(boost::compute::command_queue &queue) {
@@ -276,6 +321,7 @@ namespace spla {
                               AssignResult assignResult,
                               std::size_t maskCount,
                               std::size_t keyCount,
+                              bool complement,
                               boost::compute::command_queue &queue) {
             using namespace boost;
             typedef typename std::iterator_traits<InputMask>::value_type key_type;
@@ -308,7 +354,7 @@ namespace spla {
                                               tileA.begin(), tileA.end(),
                                               tileB.begin(),
                                               counts.begin(),
-                                              compare, equals);
+                                              compare, equals, complement);
             intersectionCountKernel.exec(queue);
 
             // Compute actual counts offsets
@@ -323,7 +369,7 @@ namespace spla {
             intersectionKernel.set_range(maskFirst, keyFirst, tileA.begin(), tileA.end(),
                                          tileB.begin(),
                                          counts.begin(),
-                                         compare, equals, assignResult);
+                                         compare, equals, assignResult, complement);
             intersectionKernel.exec(queue);
 
             return resultCount;
@@ -338,10 +384,12 @@ namespace spla {
      * keys range and stores it in range starting at resultKeys.
      *
      * @note Automatically resizes result containers to result count size.
+     * @note Use complement flag to apply direct or inverse (complement) mask
      *
      * @param mask Mask elements
      * @param keys Keys elements
      * @param resultKeys Result keys elements
+     * @param complement Pass true to apply !mask (complementary mask)
      * @param queue Command queue to perform operations on
      *
      * @return Count of values in intersected region
@@ -349,6 +397,7 @@ namespace spla {
     inline std::size_t MaskKeys(const boost::compute::vector<unsigned int> &mask,
                                 const boost::compute::vector<unsigned int> &keys,
                                 boost::compute::vector<unsigned int> &resultKeys,
+                                bool complement,
                                 boost::compute::command_queue &queue) {
         using namespace boost;
         using MetaKernel = boost::compute::detail::meta_kernel;
@@ -378,6 +427,7 @@ namespace spla {
                                  assignResult,
                                  mask.size(),
                                  keys.size(),
+                                 complement,
                                  queue);
     }
 
@@ -389,12 +439,14 @@ namespace spla {
      *
      * @note Manages associated values with keys.
      * @note Automatically resizes result containers to result count size.
+     * @note Use complement flag to apply direct or inverse (complement) mask
      *
      * @param mask Mask elements
      * @param keys Keys elements
      * @param values Associated with keys values
      * @param resultKeys Result keys elements
      * @param resultValues Result values associated with result keys.
+     * @param complement Pass true to apply !mask (complementary mask)
      * @param queue Command queue to perform operations on
      *
      * @return Count of values in intersected region
@@ -404,6 +456,7 @@ namespace spla {
                                   const boost::compute::vector<unsigned int> &values,
                                   boost::compute::vector<unsigned int> &resultKeys,
                                   boost::compute::vector<unsigned int> &resultValues,
+                                  bool complement,
                                   boost::compute::command_queue &queue) {
         using namespace boost;
         using MetaKernel = boost::compute::detail::meta_kernel;
@@ -437,6 +490,7 @@ namespace spla {
                                  assignResult,
                                  mask.size(),
                                  keys.size(),
+                                 complement,
                                  queue);
     }
 
@@ -448,6 +502,7 @@ namespace spla {
      *
      * @note Interprets keys as pairs, where first and second elements stored in separate arrays.
      * @note Automatically resizes result containers to result count size.
+     * @note Use complement flag to apply direct or inverse (complement) mask
      *
      * @param mask1 Mask first elements
      * @param mask2 Mask second elements
@@ -455,6 +510,7 @@ namespace spla {
      * @param keys2 Keys second elements
      * @param resultKeys1 Result keys first elements
      * @param resultKeys2 Result keys second elements
+     * @param complement Pass true to apply !mask (complementary mask)
      * @param queue Command queue to perform operations on
      *
      * @return Count of values in intersected region
@@ -465,6 +521,7 @@ namespace spla {
                                     const boost::compute::vector<unsigned int> &keys2,
                                     boost::compute::vector<unsigned int> &resultKeys1,
                                     boost::compute::vector<unsigned int> &resultKeys2,
+                                    bool complement,
                                     boost::compute::command_queue &queue) {
         using namespace boost;
         using MetaKernel = boost::compute::detail::meta_kernel;
@@ -500,6 +557,7 @@ namespace spla {
                                  assignResult,
                                  mask1.size(),
                                  keys1.size(),
+                                 complement,
                                  queue);
     }
 
@@ -512,6 +570,7 @@ namespace spla {
      * @note Manages associated values with keys.
      * @note Interprets keys as pairs, where first and second elements stored in separate arrays.
      * @note Automatically resizes result containers to result count size.
+     * @note Use complement flag to apply direct or inverse (complement) mask
      *
      * @param mask1 Mask first elements
      * @param mask2 Mask second elements
@@ -521,6 +580,7 @@ namespace spla {
      * @param resultKeys1 Result keys first elements
      * @param resultKeys2 Result keys second elements
      * @param resultValues Result values associated with result keys.
+     * @param complement Pass true to apply !mask (complementary mask)
      * @param queue Command queue to perform operations on
      *
      * @return Count of values in intersected region
@@ -533,6 +593,7 @@ namespace spla {
                                       boost::compute::vector<unsigned int> &resultKeys1,
                                       boost::compute::vector<unsigned int> &resultKeys2,
                                       boost::compute::vector<unsigned int> &resultValues,
+                                      bool complement,
                                       boost::compute::command_queue &queue) {
         using namespace boost;
         using MetaKernel = boost::compute::detail::meta_kernel;
@@ -571,6 +632,7 @@ namespace spla {
                                  assignResult,
                                  mask1.size(),
                                  keys1.size(),
+                                 complement,
                                  queue);
     }
 

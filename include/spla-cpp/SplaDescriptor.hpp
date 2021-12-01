@@ -57,6 +57,8 @@ namespace spla {
             ValuesSorted,
             /** Provided matrix/vector values has no duplicated */
             NoDuplicates,
+            /** Apply !mask (complementary mask) to result or input arguments */
+            MaskComplement,
             /** Profiles time of the operation and outputs result to the log */
             ProfileTime,
             /** Transpose operation arg 1 matrix before operation */
