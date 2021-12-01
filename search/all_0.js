@@ -10,7 +10,7 @@ var searchData=
   ['algorithmparams_7',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]],
   ['api_8',['API',['../group__API.html',1,'']]],
   ['apply_9',['Apply',['../classspla_1_1detail_1_1ReduceOp.html#a03c096ae557b9bdf38e22bcf327ad2cb',1,'spla::detail::ReduceOp']]],
-  ['applymask_10',['ApplyMask',['../group__Internal.html#ga0fb480f8059294579d1aebfa403e6718',1,'spla']]],
+  ['applymask_10',['ApplyMask',['../group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8',1,'spla']]],
   ['as_11',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
   ['assign_12',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]],
   ['assignkey_13',['AssignKey',['../structspla_1_1detail_1_1AssignKey.html',1,'spla::detail']]],

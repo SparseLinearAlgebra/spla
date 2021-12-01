@@ -181,27 +181,27 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga0fb480f8059294579d1aebfa403e6718"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0fb480f8059294579d1aebfa403e6718">spla::ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="memdesc:ga0fb480f8059294579d1aebfa403e6718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo vector.  <a href="group__Internal.html#ga0fb480f8059294579d1aebfa403e6718">More...</a><br /></td></tr>
-<tr class="separator:ga0fb480f8059294579d1aebfa403e6718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">spla::ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo vector.  <a href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">More...</a><br /></td></tr>
+<tr class="separator:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga30d6fd3b316764e254205dc7133f4201"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, boost::compute::vector&lt; unsigned int &gt; &amp;lengths, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga30d6fd3b316764e254205dc7133f4201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">More...</a><br /></td></tr>
 <tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada1a694da9f8c13ea97619a4ea99ff65"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gada1a694da9f8c13ea97619a4ea99ff65">spla::MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="memdesc:gada1a694da9f8c13ea97619a4ea99ff65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gada1a694da9f8c13ea97619a4ea99ff65">More...</a><br /></td></tr>
-<tr class="separator:gada1a694da9f8c13ea97619a4ea99ff65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a0345fdcaa033dc2833877975283da1"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3a0345fdcaa033dc2833877975283da1">spla::MaskByKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="memdesc:ga3a0345fdcaa033dc2833877975283da1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#ga3a0345fdcaa033dc2833877975283da1">More...</a><br /></td></tr>
-<tr class="separator:ga3a0345fdcaa033dc2833877975283da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a5a65c9e2c075881d3ceb30519d3464"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga5a5a65c9e2c075881d3ceb30519d3464">spla::MaskPairKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="memdesc:ga5a5a65c9e2c075881d3ceb30519d3464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#ga5a5a65c9e2c075881d3ceb30519d3464">More...</a><br /></td></tr>
-<tr class="separator:ga5a5a65c9e2c075881d3ceb30519d3464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad2eb9ffa56e5ea335f15364ae65fb4b5"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gad2eb9ffa56e5ea335f15364ae65fb4b5">spla::MaskByPairKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="memdesc:gad2eb9ffa56e5ea335f15364ae65fb4b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gad2eb9ffa56e5ea335f15364ae65fb4b5">More...</a><br /></td></tr>
-<tr class="separator:gad2eb9ffa56e5ea335f15364ae65fb4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">spla::MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">More...</a><br /></td></tr>
+<tr class="separator:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacb96ee42d6f3a2b1865e84c9d2e6b7c4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gacb96ee42d6f3a2b1865e84c9d2e6b7c4">spla::MaskByKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:gacb96ee42d6f3a2b1865e84c9d2e6b7c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gacb96ee42d6f3a2b1865e84c9d2e6b7c4">More...</a><br /></td></tr>
+<tr class="separator:gacb96ee42d6f3a2b1865e84c9d2e6b7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga768b55141ac21d8464832b89d2e8a74c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga768b55141ac21d8464832b89d2e8a74c">spla::MaskPairKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga768b55141ac21d8464832b89d2e8a74c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#ga768b55141ac21d8464832b89d2e8a74c">More...</a><br /></td></tr>
+<tr class="separator:ga768b55141ac21d8464832b89d2e8a74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c367c12c848bb3b01d26692ba1c3930"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga5c367c12c848bb3b01d26692ba1c3930">spla::MaskByPairKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga5c367c12c848bb3b01d26692ba1c3930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#ga5c367c12c848bb3b01d26692ba1c3930">More...</a><br /></td></tr>
+<tr class="separator:ga5c367c12c848bb3b01d26692ba1c3930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1a0da56195e03b6bc46adffcd70d6faf"><td class="memTemplParams" colspan="2">template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </td></tr>
 <tr class="memitem:ga1a0da56195e03b6bc46adffcd70d6faf"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga1a0da56195e03b6bc46adffcd70d6faf">spla::MergeByKeys</a> (ItKeysABegin keysABegin, ItKeysAEnd keysAEnd, ItValuesA valuesA, ItKeysBBegin keysBBegin, ItKeysBEnd keysBEnd, ItValuesB valuesB, ItKeysResult keysResult, ItValuesResult valuesResult, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga1a0da56195e03b6bc46adffcd70d6faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges two sorted (by key) sequences of values by given keys.  <a href="group__Internal.html#ga1a0da56195e03b6bc46adffcd70d6faf">More...</a><br /></td></tr>
@@ -430,8 +430,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga0fb480f8059294579d1aebfa403e6718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0fb480f8059294579d1aebfa403e6718">&#9670;&nbsp;</a></span>ApplyMask()</h2>
+<a id="ga00300e2b3dde5d373d7d9e1d307748c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00300e2b3dde5d373d7d9e1d307748c8">&#9670;&nbsp;</a></span>ApplyMask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,6 +478,12 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
@@ -503,6 +509,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">outputRows</td><td>Result row indices; resized automatically </td></tr>
     <tr><td class="paramname">outputVals</td><td>Result values; resized automatically </td></tr>
     <tr><td class="paramname">byteSize</td><td>Size of values; if 0, apply only indices mask </td></tr>
+    <tr><td class="paramname">complement</td><td>Pass true to apply inverse (complementary mask) </td></tr>
     <tr><td class="paramname">queue</td><td>Command queue to perform operation </td></tr>
   </table>
   </dd>
@@ -659,8 +666,8 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 
 </div>
 </div>
-<a id="ga3a0345fdcaa033dc2833877975283da1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3a0345fdcaa033dc2833877975283da1">&#9670;&nbsp;</a></span>MaskByKeys()</h2>
+<a id="gacb96ee42d6f3a2b1865e84c9d2e6b7c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacb96ee42d6f3a2b1865e84c9d2e6b7c4">&#9670;&nbsp;</a></span>MaskByKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -701,6 +708,12 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
@@ -721,7 +734,9 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 <p>Finds the intersection of the sorted mask range with the sorted keys range and stores it in range starting at resultKeys.</p>
 <dl class="section note"><dt>Note</dt><dd>Manages associated values with keys. </dd>
 <dd>
-Automatically resizes result containers to result count size.</dd></dl>
+Automatically resizes result containers to result count size. </dd>
+<dd>
+Use complement flag to apply direct or inverse (complement) mask</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>Mask elements </td></tr>
@@ -729,6 +744,7 @@ Automatically resizes result containers to result count size.</dd></dl>
     <tr><td class="paramname">values</td><td>Associated with keys values </td></tr>
     <tr><td class="paramname">resultKeys</td><td>Result keys elements </td></tr>
     <tr><td class="paramname">resultValues</td><td>Result values associated with result keys. </td></tr>
+    <tr><td class="paramname">complement</td><td>Pass true to apply !mask (complementary mask) </td></tr>
     <tr><td class="paramname">queue</td><td>Command queue to perform operations on</td></tr>
   </table>
   </dd>
@@ -737,8 +753,8 @@ Automatically resizes result containers to result count size.</dd></dl>
 
 </div>
 </div>
-<a id="gad2eb9ffa56e5ea335f15364ae65fb4b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad2eb9ffa56e5ea335f15364ae65fb4b5">&#9670;&nbsp;</a></span>MaskByPairKeys()</h2>
+<a id="ga5c367c12c848bb3b01d26692ba1c3930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c367c12c848bb3b01d26692ba1c3930">&#9670;&nbsp;</a></span>MaskByPairKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -797,6 +813,12 @@ Automatically resizes result containers to result count size.</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
@@ -819,7 +841,9 @@ Automatically resizes result containers to result count size.</dd></dl>
 <dd>
 Interprets keys as pairs, where first and second elements stored in separate arrays. </dd>
 <dd>
-Automatically resizes result containers to result count size.</dd></dl>
+Automatically resizes result containers to result count size. </dd>
+<dd>
+Use complement flag to apply direct or inverse (complement) mask</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask1</td><td>Mask first elements </td></tr>
@@ -830,6 +854,7 @@ Automatically resizes result containers to result count size.</dd></dl>
     <tr><td class="paramname">resultKeys1</td><td>Result keys first elements </td></tr>
     <tr><td class="paramname">resultKeys2</td><td>Result keys second elements </td></tr>
     <tr><td class="paramname">resultValues</td><td>Result values associated with result keys. </td></tr>
+    <tr><td class="paramname">complement</td><td>Pass true to apply !mask (complementary mask) </td></tr>
     <tr><td class="paramname">queue</td><td>Command queue to perform operations on</td></tr>
   </table>
   </dd>
@@ -838,8 +863,8 @@ Automatically resizes result containers to result count size.</dd></dl>
 
 </div>
 </div>
-<a id="gada1a694da9f8c13ea97619a4ea99ff65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gada1a694da9f8c13ea97619a4ea99ff65">&#9670;&nbsp;</a></span>MaskKeys()</h2>
+<a id="gab1a135f9660b6d72c3e98a684fff4b5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab1a135f9660b6d72c3e98a684fff4b5c">&#9670;&nbsp;</a></span>MaskKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -868,6 +893,12 @@ Automatically resizes result containers to result count size.</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
@@ -886,12 +917,15 @@ Automatically resizes result containers to result count size.</dd></dl>
 
 <p>Mask intersection algorithm. </p>
 <p>Finds the intersection of the sorted mask range with the sorted keys range and stores it in range starting at resultKeys.</p>
-<dl class="section note"><dt>Note</dt><dd>Automatically resizes result containers to result count size.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Automatically resizes result containers to result count size. </dd>
+<dd>
+Use complement flag to apply direct or inverse (complement) mask</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask</td><td>Mask elements </td></tr>
     <tr><td class="paramname">keys</td><td>Keys elements </td></tr>
     <tr><td class="paramname">resultKeys</td><td>Result keys elements </td></tr>
+    <tr><td class="paramname">complement</td><td>Pass true to apply !mask (complementary mask) </td></tr>
     <tr><td class="paramname">queue</td><td>Command queue to perform operations on</td></tr>
   </table>
   </dd>
@@ -900,8 +934,8 @@ Automatically resizes result containers to result count size.</dd></dl>
 
 </div>
 </div>
-<a id="ga5a5a65c9e2c075881d3ceb30519d3464"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5a5a65c9e2c075881d3ceb30519d3464">&#9670;&nbsp;</a></span>MaskPairKeys()</h2>
+<a id="ga768b55141ac21d8464832b89d2e8a74c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga768b55141ac21d8464832b89d2e8a74c">&#9670;&nbsp;</a></span>MaskPairKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -948,6 +982,12 @@ Automatically resizes result containers to result count size.</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
         </tr>
@@ -968,7 +1008,9 @@ Automatically resizes result containers to result count size.</dd></dl>
 <p>Finds the intersection of the sorted pair mask range with the sorted pair keys range and stores it in range starting at resultKeys.</p>
 <dl class="section note"><dt>Note</dt><dd>Interprets keys as pairs, where first and second elements stored in separate arrays. </dd>
 <dd>
-Automatically resizes result containers to result count size.</dd></dl>
+Automatically resizes result containers to result count size. </dd>
+<dd>
+Use complement flag to apply direct or inverse (complement) mask</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mask1</td><td>Mask first elements </td></tr>
@@ -977,6 +1019,7 @@ Automatically resizes result containers to result count size.</dd></dl>
     <tr><td class="paramname">keys2</td><td>Keys second elements </td></tr>
     <tr><td class="paramname">resultKeys1</td><td>Result keys first elements </td></tr>
     <tr><td class="paramname">resultKeys2</td><td>Result keys second elements </td></tr>
+    <tr><td class="paramname">complement</td><td>Pass true to apply !mask (complementary mask) </td></tr>
     <tr><td class="paramname">queue</td><td>Command queue to perform operations on</td></tr>
   </table>
   </dd>

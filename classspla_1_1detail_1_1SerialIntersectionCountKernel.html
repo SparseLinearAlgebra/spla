@@ -97,9 +97,9 @@ Collaboration diagram for spla::detail::SerialIntersectionCountKernel:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae147e1018f9169773005273b0d74a600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialIntersectionCountKernel.html#ae147e1018f9169773005273b0d74a600">SerialIntersectionCountKernel</a> ()</td></tr>
 <tr class="separator:ae147e1018f9169773005273b0d74a600"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4135ff0af4ee2164174787c1be4dcc25"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class OutputIterator , class Compare , class Equals &gt; </td></tr>
-<tr class="memitem:a4135ff0af4ee2164174787c1be4dcc25"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialIntersectionCountKernel.html#a4135ff0af4ee2164174787c1be4dcc25">set_range</a> (InputIterator1 maskFirst, InputIterator2 keyFirsts, InputIterator3 tile_first1, InputIterator3 tile_last1, InputIterator4 tile_first2, OutputIterator counts, Compare compare, Equals equals)</td></tr>
-<tr class="separator:a4135ff0af4ee2164174787c1be4dcc25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5511a0e9b4cfb0fee85c29900cb73ac"><td class="memTemplParams" colspan="2">template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 , class InputIterator4 , class OutputIterator , class Compare , class Equals &gt; </td></tr>
+<tr class="memitem:aa5511a0e9b4cfb0fee85c29900cb73ac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialIntersectionCountKernel.html#aa5511a0e9b4cfb0fee85c29900cb73ac">set_range</a> (InputIterator1 maskFirst, InputIterator2 keyFirsts, InputIterator3 tile_first1, InputIterator3 tile_last1, InputIterator4 tile_first2, OutputIterator counts, Compare compare, Equals equals, bool complement)</td></tr>
+<tr class="separator:aa5511a0e9b4cfb0fee85c29900cb73ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee974ef9b949ed9dbea0466eb6b97b04"><td class="memItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1SerialIntersectionCountKernel.html#aee974ef9b949ed9dbea0466eb6b97b04">exec</a> (boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:aee974ef9b949ed9dbea0466eb6b97b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -158,8 +158,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a4135ff0af4ee2164174787c1be4dcc25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4135ff0af4ee2164174787c1be4dcc25">&#9670;&nbsp;</a></span>set_range()</h2>
+<a id="aa5511a0e9b4cfb0fee85c29900cb73ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5511a0e9b4cfb0fee85c29900cb73ac">&#9670;&nbsp;</a></span>set_range()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +215,13 @@ template&lt;class InputIterator1 , class InputIterator2 , class InputIterator3 ,
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Equals&#160;</td>
-          <td class="paramname"><em>equals</em>&#160;</td>
+          <td class="paramname"><em>equals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -138,9 +138,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0d4c8f9bbc5f06d9a07b60428892b3b4"><td class="memTemplParams" colspan="2">template&lt;typename InputMask , typename InputKey , typename Compare , typename Equals , typename ResizeResult , typename AssignResult &gt; </td></tr>
-<tr class="memitem:a0d4c8f9bbc5f06d9a07b60428892b3b4"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a0d4c8f9bbc5f06d9a07b60428892b3b4">MaskByKey</a> (InputMask maskFirst, InputKey keyFirst, Compare compare, Equals equals, ResizeResult resizeResult, AssignResult assignResult, std::size_t maskCount, std::size_t keyCount, boost::compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a0d4c8f9bbc5f06d9a07b60428892b3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5d34deca390e3839ecda7c88298c471"><td class="memTemplParams" colspan="2">template&lt;typename InputMask , typename InputKey , typename Compare , typename Equals , typename ResizeResult , typename AssignResult &gt; </td></tr>
+<tr class="memitem:af5d34deca390e3839ecda7c88298c471"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#af5d34deca390e3839ecda7c88298c471">MaskByKey</a> (InputMask maskFirst, InputKey keyFirst, Compare compare, Equals equals, ResizeResult resizeResult, AssignResult assignResult, std::size_t maskCount, std::size_t keyCount, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:af5d34deca390e3839ecda7c88298c471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplParams" colspan="2">template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </td></tr>
 <tr class="memitem:ad76279f1103a911fbec0b10a208e3976"><td class="memTemplItemLeft" align="right" valign="top">std::ptrdiff_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#ad76279f1103a911fbec0b10a208e3976">MergeByKey</a> (const std::size_t count1, const std::size_t count2, Operator1 compareFirstToSecond, Operator2 assignResultToFirst, Operator3 assignResultToSecond, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ad76279f1103a911fbec0b10a208e3976"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -473,8 +473,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0d4c8f9bbc5f06d9a07b60428892b3b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d4c8f9bbc5f06d9a07b60428892b3b4">&#9670;&nbsp;</a></span>MaskByKey()</h2>
+<a id="af5d34deca390e3839ecda7c88298c471"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5d34deca390e3839ecda7c88298c471">&#9670;&nbsp;</a></span>MaskByKey()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,6 +528,12 @@ template&lt;typename InputMask , typename InputKey , typename Compare , typename
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>keyCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
