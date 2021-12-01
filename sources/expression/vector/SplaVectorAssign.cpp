@@ -52,11 +52,18 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
     assert(w.IsNotNull());
     assert(desc.IsNotNull());
 
+    /** Handle case if new to accum(w, s) */
+    auto tmp = w;
+    auto applyAccum = desc->IsParamSet(Descriptor::Param::ApplyAccum);
+
     // Create temporary vector for assignment result
-    auto tmp = Vector::Make(w->GetNrows(), w->GetType(), w->GetLibrary());
+    if (applyAccum) tmp = Vector::Make(w->GetNrows(), w->GetType(), w->GetLibrary());
+
+    // If no accum, clear result first
+    if (!applyAccum) w->GetStorage()->Clear();
 
     // If assign is null, make default to keep new entries
-    accum = accum.IsNull() ? utils::MakeFunctionChooseSecond(w->GetType()) : accum;
+    if (applyAccum && accum.IsNull()) accum = utils::MakeFunctionChooseSecond(w->GetType());
 
     std::size_t requiredDeviceCount = w->GetStorage()->GetNblockRows();
     auto deviceIds = library->GetDeviceManager().FetchDevices(requiredDeviceCount, node);
@@ -85,28 +92,30 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
             }
         });
 
-        auto accumTask = builder.Emplace([=]() {
-            auto tmpBlock = w->GetStorage()->GetBlock(i);
+        if (applyAccum) {
+            auto accumTask = builder.Emplace([=]() {
+                auto tmpBlock = w->GetStorage()->GetBlock(i);
 
-            if (tmpBlock.IsNotNull()) {
-                ParamsVectorEWiseAdd params;
-                params.desc = desc;
-                params.deviceId = deviceId;
-                params.a = w->GetStorage()->GetBlock(i);
-                params.b = tmp->GetStorage()->GetBlock(i);
-                params.op = accum;
-                params.type = w->GetType();
-                library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params);
+                if (tmpBlock.IsNotNull()) {
+                    ParamsVectorEWiseAdd params;
+                    params.desc = desc;
+                    params.deviceId = deviceId;
+                    params.a = w->GetStorage()->GetBlock(i);
+                    params.b = tmp->GetStorage()->GetBlock(i);
+                    params.op = accum;
+                    params.type = w->GetType();
+                    library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params);
 
-                if (params.w.IsNotNull()) {
-                    w->GetStorage()->SetBlock(i, params.w);
-                    SPDLOG_LOGGER_TRACE(logger, "Accum block i={} nnz={}", i, params.w->GetNvals());
+                    if (params.w.IsNotNull()) {
+                        w->GetStorage()->SetBlock(i, params.w);
+                        SPDLOG_LOGGER_TRACE(logger, "Accum block i={} nnz={}", i, params.w->GetNvals());
+                    }
                 }
-            }
-        });
+            });
 
-        // Assign and then accum result
-        assignmentTask.precede(accumTask);
+            // Assign and then accum result
+            assignmentTask.precede(accumTask);
+        }
     }
 }
 

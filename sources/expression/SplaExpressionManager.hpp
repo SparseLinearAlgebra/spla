@@ -65,8 +65,6 @@ namespace spla {
             std::vector<std::size_t> startNodes;
             /** Final nodes */
             std::vector<std::size_t> endNodes;
-            /** Order of the expression traversal to submit computation */
-            std::vector<std::size_t> traversal;
         };
 
         explicit ExpressionManager(Library &library);
@@ -80,8 +78,6 @@ namespace spla {
         void FindEndNodes(TraversalInfo &context);
         void CheckCycles(TraversalInfo &context);
         bool CheckCyclesImpl(std::size_t idx, std::vector<int> &visited, const std::vector<RefPtr<ExpressionNode>> &nodes);
-        void DefineTraversalPath(TraversalInfo &context);
-        void DefineTraversalPathImpl(std::size_t idx, std::size_t &t, std::vector<std::size_t> &out, const std::vector<RefPtr<ExpressionNode>> &nodes);
 
         RefPtr<NodeProcessor> SelectProcessor(std::size_t nodeIdx, const Expression &expression);
 

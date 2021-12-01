@@ -59,6 +59,8 @@ namespace spla {
             NoDuplicates,
             /** Apply !mask (complementary mask) to result or input arguments */
             MaskComplement,
+            /** Apply binary op accum to output and temporary operation result */
+            ApplyAccum,
             /** Profiles time of the operation and outputs result to the log */
             ProfileTime,
             /** Transpose operation arg 1 matrix before operation */

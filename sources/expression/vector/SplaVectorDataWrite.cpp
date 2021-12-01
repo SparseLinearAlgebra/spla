@@ -26,9 +26,9 @@
 /**********************************************************************************/
 
 #include <boost/compute/algorithm.hpp>
-#include <boost/compute/container/vector.hpp>
 #include <boost/compute/iterator.hpp>
 #include <compute/SplaGather.hpp>
+#include <compute/SplaSortByRow.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <core/SplaQueueFinisher.hpp>
@@ -158,21 +158,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             // If entries are not sorted, we must sort it here in row-cols order
             if (!desc->IsParamSet(Descriptor::Param::ValuesSorted) && blockNvals > 1) {
                 SPDLOG_LOGGER_TRACE(logger, "Sort vector block {} entries", i);
-
-                compute::vector<unsigned int> permutation(blockNvals, ctx);
-                compute::copy(compute::counting_iterator<cl_uint>(0),
-                              compute::counting_iterator<cl_uint>(blockNvals),
-                              permutation.begin(),
-                              queue);
-
-                compute::sort_by_key(blockRows.begin(), blockRows.end(), permutation.begin(), queue);
-
-                // Copy values, using permutation
-                if (typeHasValues) {
-                    compute::vector<unsigned char> valsTmp(blockNvals * byteSize, ctx);
-                    Gather(permutation.begin(), permutation.end(), blockVals.begin(), valsTmp.begin(), byteSize, queue);
-                    std::swap(blockVals, valsTmp);
-                }
+                SortByRow(blockRows, blockVals, byteSize, queue);
             }
 
             if (!desc->IsParamSet(Descriptor::Param::NoDuplicates) && blockNvals > 1) {

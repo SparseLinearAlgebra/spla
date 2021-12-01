@@ -32,8 +32,9 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t nvals,
                 const spla::RefPtr<spla::Type> &spT,
                 const spla::RefPtr<spla::FunctionBinary> &spAccum,
                 BinaryOp accum, std::size_t seed = 0) {
+    auto applyAccum = spAccum.IsNotNull();
     Type s = utils::UniformGenerator<Type>()();
-    utils::Vector w = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector w = applyAccum ? utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates() : utils::Vector<Type>::Empty(M);
     utils::Vector mask = utils::Vector<unsigned char>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
 
     w.Fill(utils::UniformGenerator<Type>());
@@ -47,14 +48,21 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t nvals,
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
+
     auto spExpr = spla::Expression::Make(library);
-    auto spWriteW = spExpr->MakeDataWrite(spW, w.GetData(library), spDesc);
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
-    auto spAssign = spExpr->MakeAssign(spW, spMask, spAccum, spS);
-    spExpr->Dependency(spWriteW, spAssign);
+    auto spAssign = spExpr->MakeAssign(spW, spMask, spAccum, spS, spOpDesc);
     spExpr->Dependency(spWriteS, spAssign);
     spExpr->Dependency(spWriteMask, spAssign);
+
+    if (applyAccum) {
+        auto spWriteW = spExpr->MakeDataWrite(spW, w.GetData(library), spDesc);
+        spExpr->Dependency(spWriteW, spAssign);
+    }
+
     spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
@@ -68,8 +76,9 @@ void testMaskedComplement(spla::Library &library, std::size_t M, std::size_t nva
                           const spla::RefPtr<spla::Type> &spT,
                           const spla::RefPtr<spla::FunctionBinary> &spAccum,
                           BinaryOp accum, std::size_t seed = 0) {
+    auto applyAccum = spAccum.IsNotNull();
     Type s = utils::UniformGenerator<Type>()();
-    utils::Vector w = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector w = applyAccum ? utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates() : utils::Vector<Type>::Empty(M);
     utils::Vector mask = utils::Vector<unsigned char>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
 
     w.Fill(utils::UniformGenerator<Type>());
@@ -85,15 +94,20 @@ void testMaskedComplement(spla::Library &library, std::size_t M, std::size_t nva
 
     auto spOpDesc = spla::Descriptor::Make(library);
     spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
 
     auto spExpr = spla::Expression::Make(library);
-    auto spWriteW = spExpr->MakeDataWrite(spW, w.GetData(library), spDesc);
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
     auto spAssign = spExpr->MakeAssign(spW, spMask, spAccum, spS, spOpDesc);
-    spExpr->Dependency(spWriteW, spAssign);
     spExpr->Dependency(spWriteS, spAssign);
     spExpr->Dependency(spWriteMask, spAssign);
+
+    if (applyAccum) {
+        auto spWriteW = spExpr->MakeDataWrite(spW, w.GetData(library), spDesc);
+        spExpr->Dependency(spWriteW, spAssign);
+    }
+
     spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
@@ -115,10 +129,13 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t nvals, std:
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
+    auto spOpDesc = spla::Descriptor::Make(library);
+    spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
+
     auto spExpr = spla::Expression::Make(library);
     auto spWriteW = spExpr->MakeDataWrite(spW, w.GetDataIndices(library), spDesc);
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
-    auto spAssign = spExpr->MakeAssign(spW, spMask, nullptr, nullptr);
+    auto spAssign = spExpr->MakeAssign(spW, spMask, nullptr, nullptr, spOpDesc);
     spExpr->Dependency(spWriteW, spAssign);
     spExpr->Dependency(spWriteMask, spAssign);
     spExpr->Submit();
@@ -139,7 +156,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, nvals, spT, nullptr, accumNull, i);
+            testMasked<Type>(library, M, nvals, spT, spAccum, accum, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
@@ -154,7 +171,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMaskedComplement<Type>(library, M, nvals, spT, spAccum, accum, i);
+            testMaskedComplement<Type>(library, M, nvals, spT, nullptr, accumNull, i);
         }
     });
 
@@ -167,7 +184,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, nvals, spT, nullptr, accumNull, i);
+            testMasked<Type>(library, M, nvals, spT, spAccum, accum, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
@@ -182,7 +199,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMaskedComplement<Type>(library, M, nvals, spT, spAccum, accum, i);
+            testMaskedComplement<Type>(library, M, nvals, spT, nullptr, accumNull, i);
         }
     });
 

@@ -40,6 +40,7 @@ void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
     auto &library = node->GetLibrary().GetPrivate();
+    auto &logger = library.GetLogger();
 
     auto scalar = node->GetArg(0).Cast<Scalar>();
     auto data = node->GetArg(1).Cast<DataScalar>();
@@ -69,6 +70,8 @@ void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
     auto scalarValue = ScalarValue::Make(std::move(deviceValue));
     scalar->GetStorage()->SetValue(scalarValue);
+
+    SPDLOG_LOGGER_TRACE(logger, "Write value byteSize={}", byteSize);
 }
 
 spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {

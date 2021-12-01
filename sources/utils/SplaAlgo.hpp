@@ -33,6 +33,12 @@
 #include <sstream>
 
 namespace spla {
+
+    /**
+     * @addtogroup Internal
+     * @{
+     */
+
     namespace utils {
 
         /** @return Generic function `f x y = y` */
@@ -48,6 +54,11 @@ namespace spla {
         }
 
     }// namespace utils
+
+    /**
+     * @}
+     */
+
 }// namespace spla
 
 #endif//SPLA_SPLAALGO_HPP
