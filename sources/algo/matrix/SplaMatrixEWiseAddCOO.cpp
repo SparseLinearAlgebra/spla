@@ -51,6 +51,7 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsMatrixEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -90,22 +91,27 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned int> tmpColsB(ctx);
 
     auto maskBlock = p->mask.Cast<MatrixCOO>();
+    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+
     auto applyMask = [&](RefPtr<MatrixCOO> &block,
                          compute::vector<unsigned int> &tmpRows,
                          compute::vector<unsigned int> &tmpCols,
                          compute::vector<unsigned int> &perm,
                          const compute::vector<unsigned int> *&outRows,
                          const compute::vector<unsigned int> *&outCols) {
+        // Nothing to do
         if (block.IsNull())
             return;
 
-        if (!p->hasMask) {
+        // No mask or must apply inverse mask (but !null = all)
+        if (!p->hasMask || (complementMask && maskBlock.IsNull())) {
             outRows = &block->GetRows();
             outCols = &block->GetCols();
             return;
         }
 
-        if (maskBlock.IsNull())
+        // No inverse and no block - null result
+        if (!complementMask && maskBlock.IsNull())
             return;
 
         if (typeHasValues) {
@@ -113,12 +119,14 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
             MaskByPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
                            block->GetRows(), block->GetCols(), perm,
                            tmpRows, tmpCols, tmpPerm,
+                           complementMask,
                            queue);
             std::swap(perm, tmpPerm);
         } else
             MaskPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
                          block->GetRows(), block->GetCols(),
                          tmpRows, tmpCols,
+                         complementMask,
                          queue);
 
         outRows = &tmpRows;

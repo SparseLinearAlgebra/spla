@@ -326,7 +326,7 @@ namespace utils {
         }
 
         template<typename M>
-        [[nodiscard]] Matrix Mask(const Matrix<M> &mask) const {
+        [[nodiscard]] Matrix Mask(const Matrix<M> &mask, bool complement) const {
             assert(GetNrows() == mask.GetNrows());
             assert(GetNcols() == mask.GetNcols());
 
@@ -339,20 +339,46 @@ namespace utils {
             std::size_t endA = GetNvals();
             std::size_t endB = mask.GetNvals();
 
-            while (a != endA && b != endB) {
-                auto thisCrd = std::pair{GetRows()[a], GetCols()[a]};
-                auto maskCrd = std::pair{mask.GetRows()[b], mask.GetCols()[b]};
+            if (complement) {
+                while (a != endA && b != endB) {
+                    auto thisCrd = std::pair{GetRows()[a], GetCols()[a]};
+                    auto maskCrd = std::pair{mask.GetRows()[b], mask.GetCols()[b]};
 
-                if (thisCrd == maskCrd) {
+                    if (thisCrd == maskCrd) {
+                        a += 1;
+                        b += 1;
+                    } else if (thisCrd < maskCrd) {
+                        rows.push_back(GetRows()[a]);
+                        cols.push_back(GetCols()[a]);
+                        vals.push_back(GetVals()[a]);
+                        a += 1;
+                    } else {
+                        b += 1;
+                    }
+                }
+
+                while (a != endA) {
                     rows.push_back(GetRows()[a]);
                     cols.push_back(GetCols()[a]);
                     vals.push_back(GetVals()[a]);
                     a += 1;
-                    b += 1;
-                } else if (thisCrd < maskCrd) {
-                    a += 1;
-                } else {
-                    b += 1;
+                }
+            } else {
+                while (a != endA && b != endB) {
+                    auto thisCrd = std::pair{GetRows()[a], GetCols()[a]};
+                    auto maskCrd = std::pair{mask.GetRows()[b], mask.GetCols()[b]};
+
+                    if (thisCrd == maskCrd) {
+                        rows.push_back(GetRows()[a]);
+                        cols.push_back(GetCols()[a]);
+                        vals.push_back(GetVals()[a]);
+                        a += 1;
+                        b += 1;
+                    } else if (thisCrd < maskCrd) {
+                        a += 1;
+                    } else {
+                        b += 1;
+                    }
                 }
             }
 
@@ -414,8 +440,8 @@ namespace utils {
         }
 
         template<typename M, typename BinaryOp>
-        [[nodiscard]] Matrix EWiseAdd(const Matrix<M> &mask, const Matrix<T> &other, BinaryOp op) const {
-            return Mask(mask).EWiseAdd(other.Mask(mask), op);
+        [[nodiscard]] Matrix EWiseAdd(const Matrix<M> &mask, bool complement, const Matrix<T> &other, BinaryOp op) const {
+            return Mask(mask, complement).EWiseAdd(other.Mask(mask, complement), op);
         }
 
         template<typename W, typename B, typename MultOp, typename AddOp>
@@ -465,9 +491,8 @@ namespace utils {
         }
 
         template<typename W, typename M, typename B, typename MultOp, typename AddOp>
-        [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
-
-            return MxM<W>(b, multOp, addOp).Mask(mask);
+        [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, bool complement, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
+            return MxM<W>(b, multOp, addOp).Mask(mask, complement);
         }
 
         static Matrix Empty(std::size_t nrows, std::size_t ncols) {

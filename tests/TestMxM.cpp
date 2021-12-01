@@ -103,7 +103,7 @@ void testMasked(spla::Library &library,
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix<Type> c = a.template MxM<Type>(mask, b, multOp, addOp);
+    utils::Matrix<Type> c = a.template MxM<Type>(mask, false, b, multOp, addOp);
     // ASSERT_TRUE(c.Equals(spW));
 }
 

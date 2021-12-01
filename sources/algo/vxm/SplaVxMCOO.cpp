@@ -55,6 +55,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsVxM *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -64,8 +65,9 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto a = p->a.Cast<VectorCOO>();
     auto b = p->b.Cast<MatrixCOO>();
     auto mask = p->mask.Cast<VectorCOO>();
+    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
-    if (p->hasMask && mask.IsNull())
+    if (p->hasMask && (complementMask && mask.IsNull()))
         return;
 
     if (a->GetNvals() == 0 || b->GetNvals() == 0)
@@ -86,7 +88,6 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
     compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths.begin(), segmentLengths.begin(), queue);
-    (segmentLengths.end() - 1).write(0, queue);
 
     // Compute offsets between each a[i] x b[i,:] products
     compute::vector<unsigned int> outputPtr(a->GetNvals() + 1, ctx);
@@ -147,11 +148,11 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         // Reduce all produces a[i] * b[i, j] for j using provided add op
         ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
 
-        // Apply mask if required (at this point we know, that mask is not null)
-        if (p->hasMask) {
+        // Apply mask if required
+        if (p->hasMask && mask.IsNotNull()) {
             compute::vector<unsigned int> tmpRows(ctx);
             compute::vector<unsigned char> tmpVals(ctx);
-            ApplyMask(mask->GetRows(), rows, vals, tmpRows, tmpVals, tw->GetByteSize(), queue);
+            ApplyMask(mask->GetRows(), rows, vals, tmpRows, tmpVals, tw->GetByteSize(), complementMask, queue);
             std::swap(rows, tmpRows);
             std::swap(vals, tmpVals);
         }
@@ -163,16 +164,19 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         ReduceDuplicates(J, rows, queue);
 
         // Apply mask to indices
-        if (p->hasMask) {
+        if (p->hasMask && mask.IsNotNull()) {
             compute::vector<unsigned int> tmpRows(ctx);
-            MaskKeys(mask->GetRows(), rows, tmpRows, queue);
+            MaskKeys(mask->GetRows(), rows, tmpRows, complementMask, queue);
             std::swap(rows, tmpRows);
         }
     }
 
     // Store result
-    auto nvals = rows.size();
-    p->w = VectorCOO::Make(N, nvals, std::move(rows), std::move(vals)).As<VectorBlock>();
+    // NOTE: can be empty due mask application as the last step
+    if (!rows.empty()) {
+        auto nvals = rows.size();
+        p->w = VectorCOO::Make(N, nvals, std::move(rows), std::move(vals)).As<VectorBlock>();
+    }
 }
 
 spla::Algorithm::Type spla::VxMCOO::GetType() const {

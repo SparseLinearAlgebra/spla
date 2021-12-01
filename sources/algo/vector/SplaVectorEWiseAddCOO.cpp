@@ -51,6 +51,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
     auto &logger = library->GetLogger();
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
@@ -87,16 +88,21 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned int> tmpRowsB(ctx);
 
     auto maskBlock = p->mask.Cast<VectorCOO>();
+    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+
     auto applyMask = [&](RefPtr<VectorCOO> &block, compute::vector<unsigned int> &tmpRows, compute::vector<unsigned int> &perm, const compute::vector<unsigned int> *&out) {
+        // Nothing to do
         if (block.IsNull())
             return;
 
-        if (!p->hasMask) {
+        // No mask or must apply inverse mask (but !null = all)
+        if (!p->hasMask || (complementMask && maskBlock.IsNull())) {
             out = &block->GetRows();
             return;
         }
 
-        if (maskBlock.IsNull())
+        // No inverse and no block - null result
+        if (!complementMask && maskBlock.IsNull())
             return;
 
         if (typeHasValues) {
@@ -104,12 +110,14 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
             MaskByKeys(maskBlock->GetRows(),
                        block->GetRows(), perm,
                        tmpRows, tmpPerm,
+                       complementMask,
                        queue);
             std::swap(perm, tmpPerm);
         } else
             MaskKeys(maskBlock->GetRows(),
                      block->GetRows(),
                      tmpRows,
+                     complementMask,
                      queue);
 
         out = &tmpRows;

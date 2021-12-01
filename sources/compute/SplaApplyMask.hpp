@@ -49,6 +49,7 @@ namespace spla {
      * @param outputRows Result row indices; resized automatically
      * @param outputVals Result values; resized automatically
      * @param byteSize Size of values; if 0, apply only indices mask
+     * @param complement Pass true to apply inverse (complementary mask)
      * @param queue Command queue to perform operation
      */
     inline void ApplyMask(const boost::compute::vector<unsigned int> &mask,
@@ -57,6 +58,7 @@ namespace spla {
                           boost::compute::vector<unsigned int> &outputRows,
                           boost::compute::vector<unsigned char> &outputVals,
                           std::size_t byteSize,
+                          bool complement,
                           boost::compute::command_queue &queue) {
         using namespace boost;
 
@@ -80,10 +82,11 @@ namespace spla {
             MaskByKeys(mask,
                        inputRows, perm,
                        outputRows, outputPerm,
+                       complement,
                        queue);
             std::swap(perm, outputPerm);
         } else
-            MaskKeys(mask, inputRows, outputRows, queue);
+            MaskKeys(mask, inputRows, outputRows, complement, queue);
 
         if (typeHasValues) {
             // Copy output values using indices buffer
