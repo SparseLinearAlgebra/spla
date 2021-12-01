@@ -101,6 +101,10 @@ std::size_t spla::VectorStorage::GetNblockRows() const noexcept {
     return mNblockRows;
 }
 
+std::size_t spla::VectorStorage::GetBlockSize() const noexcept {
+    return mBlockSize;
+}
+
 void spla::VectorStorage::Dump(std::ostream &stream) const {
     std::lock_guard<std::mutex> lock(mMutex);
 

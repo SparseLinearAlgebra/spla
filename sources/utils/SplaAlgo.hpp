@@ -25,32 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SETUP_HPP
-#define SPLA_SETUP_HPP
+#ifndef SPLA_SPLAALGO_HPP
+#define SPLA_SPLAALGO_HPP
 
-#include <cstddef>
-#include <spla-cpp/Spla.hpp>
-#include <vector>
+#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <spla-cpp/SplaType.hpp>
+#include <sstream>
 
-namespace utils {
+namespace spla {
+    namespace utils {
 
-    template<typename Callable>
-    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
-        for (std::size_t blockSize : blocksSizes) {
-            spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
-            callable(library);
+        /** @return Generic function `f x y = y` */
+        inline RefPtr<FunctionBinary> MakeFunctionChooseSecond(const RefPtr<Type> &t) {
+            std::stringstream body;
+
+            body << "_ACCESS_B const uchar * b = (_ACCESS_B const uchar *)vp_b;\n"
+                 << "_ACCESS_C uchar * c = (_ACCESS_C uchar *)vp_c;\n"
+                 << "for (uint i = 0; i < " << t->GetByteSize() << "; i++)\n"
+                 << "   c[i] = b[i];\n";
+
+            return FunctionBinary::Make(t, t, t, body.str(), t->GetLibrary());
         }
-    }
 
-    template<typename T>
-    inline spla::RefPtr<spla::DataScalar> GetData(T s, spla::Library &library) {
-        T *scalar = new T(s);
-        auto data = spla::DataScalar::Make(library);
-        data->SetValue(scalar);
-        data->SetReleaseProc([=](void *scalar) { delete ((T *) scalar); });
-        return data;
-    }
+    }// namespace utils
+}// namespace spla
 
-}// namespace utils
-
-#endif//SPLA_SETUP_HPP
+#endif//SPLA_SPLAALGO_HPP

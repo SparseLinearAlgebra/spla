@@ -41,6 +41,7 @@
 #include <expression/prod/SplaVxM.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
 #include <expression/scalar/SplaScalarDataWrite.hpp>
+#include <expression/vector/SplaVectorAssign.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
@@ -53,6 +54,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixEWiseAdd());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
+    Register(new VectorAssign());
     Register(new VectorDataWrite());
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());

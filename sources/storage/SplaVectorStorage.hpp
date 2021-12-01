@@ -84,6 +84,9 @@ namespace spla {
         /** @return Number of values in storage */
         [[nodiscard]] std::size_t GetNvals() const noexcept;
 
+        /** @return Block size param */
+        [[nodiscard]] std::size_t GetBlockSize() const noexcept;
+
         /** Dump vector content to provided stream */
         void Dump(std::ostream &stream) const;
 

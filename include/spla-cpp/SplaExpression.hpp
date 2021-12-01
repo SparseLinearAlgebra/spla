@@ -212,6 +212,24 @@ namespace spla {
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * Make vector masked scalar value assignment node.
+         * Operation is evaluated as `w<mask> = accum(w, s)`
+         *
+         * @param w Vector to store result
+         * @param mask Mask to select indices to assign; may be null
+         * @param accum Binary function used to accum old and new values; may be null
+         * @param s Input scalar; null for void values
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeAssign(const RefPtr<Vector> &w,
+                                          const RefPtr<Vector> &mask,
+                                          const RefPtr<FunctionBinary> &accum,
+                                          const RefPtr<Scalar> &s,
+                                          const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make matrix masked element-wise add expression node.
          * Operation is evaluated as `w<mask> = a +(op) b`.
          *

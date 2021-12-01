@@ -214,7 +214,8 @@ add_library(spla SHARED
         ${SPLA_COMPUTE_SOURCES}
         ${SPLA_CORE_SOURCES}
         ${SPLA_EXPRESSION_SOURCES}
-        ${SPLA_STORAGE_SOURCES})
+        ${SPLA_STORAGE_SOURCES}
+        ${SPLA_UTILS_SOURCES})
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/sources)

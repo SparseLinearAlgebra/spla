@@ -342,6 +342,18 @@ namespace utils {
             return Mask(mask, complement).EWiseAdd(other.Mask(mask, complement), op);
         }
 
+        template<typename M, typename BinaryOp>
+        [[nodiscard]] Vector Assign(const Vector<M> &mask, bool complement, T scalar, BinaryOp accum) {
+            std::vector<Index> rows(mNrows);
+            std::vector<T> vals(mNrows, scalar);
+
+            for (Index i = 0; i < mNrows; i++)
+                rows[i] = i;
+
+            auto tmp = Vector<T>(GetNrows(), std::move(rows), std::move(vals)).Mask(mask, complement);
+            return EWiseAdd(tmp, accum);
+        }
+
         static Vector Generate(std::size_t nrows, std::size_t nvals, std::size_t seed = 0, const T &value = T()) {
             std::vector<Index> rows;
             std::vector<T> vals(nvals, value);

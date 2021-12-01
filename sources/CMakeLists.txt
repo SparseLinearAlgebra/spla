@@ -20,6 +20,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixEWiseAddCOO.hpp
         sources/algo/mxm/SplaMxMCOO.cpp
         sources/algo/mxm/SplaMxMCOO.hpp
+        sources/algo/vector/SplaVectorAssignCOO.cpp
+        sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
         sources/algo/vxm/SplaVxMCOO.cpp
@@ -69,6 +71,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/scalar/SplaScalarDataWrite.hpp
         sources/expression/scalar/SplaScalarDataRead.cpp
         sources/expression/scalar/SplaScalarDataRead.hpp
+        sources/expression/vector/SplaVectorAssign.cpp
+        sources/expression/vector/SplaVectorAssign.hpp
         sources/expression/vector/SplaVectorDataWrite.cpp
         sources/expression/vector/SplaVectorDataWrite.hpp
         sources/expression/vector/SplaVectorDataRead.cpp
@@ -80,6 +84,9 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/SplaExpressionManager.hpp
         sources/expression/SplaExpressionTasks.hpp
         sources/expression/SplaNodeProcessor.hpp)
+
+set(SPLA_UTILS_SOURCES
+        sources/utils/SplaAlgo.hpp)
 
 set(SPLA_STORAGE_SOURCES
         sources/storage/block/SplaMatrixCOO.cpp
