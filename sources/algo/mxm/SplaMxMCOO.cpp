@@ -81,7 +81,7 @@ namespace spla::detail {
         const auto beginSegmentDiff = static_cast<std::ptrdiff_t>(beginSegment);
         const auto endSegmentDiff = static_cast<std::ptrdiff_t>(endSegment);
 
-        // compute gather locations of intermediate format
+        // compute gather locations of intermediate format for 'a'
         compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);
         compute::scatter_if(compute::counting_iterator<unsigned int>(beginSegment),
                             compute::counting_iterator<unsigned int>(endSegment),
@@ -96,10 +96,9 @@ namespace spla::detail {
                                 compute::max<unsigned int>(),
                                 queue);
 
-        // compute gather locations of intermediate format
         compute::fill(bGatherLocations.begin(), bGatherLocations.end(), 0, queue);
 
-        // Substitute for the original inclusive_scan_by_key
+        // compute gather locations of intermediate format for 'b'
         {
             auto &aCols = a.GetCols();
             BOOST_COMPUTE_CLOSURE(void, smudgeBGatherLoc, (unsigned int i), (beginSegmentDiff, aCols, bRowOffsets, aGatherLocations, bGatherLocations), {
