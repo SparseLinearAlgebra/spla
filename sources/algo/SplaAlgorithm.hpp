@@ -62,6 +62,8 @@ namespace spla {
             MatrixEWiseAdd,
             /** Matrix-matrix element wise multiplication */
             MatrixEWiseMult,
+            /** Vector-scalar assignment */
+            VectorAssign,
             /** Vector-vector element wise addition */
             VectorEWiseAdd,
             /** Vector-vector element wise multiplication */
@@ -109,6 +111,8 @@ namespace spla {
                     return "MatrixEWiseAdd";
                 case Algorithm::Type::MatrixEWiseMult:
                     return "MatrixEWiseMult";
+                case Algorithm::Type::VectorAssign:
+                    return "VectorAssign";
                 case Algorithm::Type::VectorEWiseAdd:
                     return "VectorEWiseAdd";
                 case Algorithm::Type::VectorEWiseMult:

@@ -41,6 +41,7 @@
 #include <expression/prod/SplaVxM.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
 #include <expression/scalar/SplaScalarDataWrite.hpp>
+#include <expression/vector/SplaVectorAssign.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
@@ -53,6 +54,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixEWiseAdd());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
+    Register(new VectorAssign());
     Register(new VectorDataWrite());
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
@@ -88,18 +90,15 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
                                                     << "; Possibly have some dependency cycle?");
 
     CheckCycles(context);
-    DefineTraversalPath(context);
 
-    auto &traversal = context.traversal;
     auto &nodes = expression->GetNodes();
-
     auto expressionTasks = std::make_unique<ExpressionTasks>();
     auto &taskflow = expressionTasks->taskflow;
 
     std::vector<tf::Task> modules;
     modules.reserve(nodes.size());
 
-    for (auto idx : traversal) {
+    for (std::size_t idx = 0; idx < nodes.size(); idx++) {
         // Select processor for node
         auto processor = SelectProcessor(idx, *expression);
         // Wrap processor into task to handle dynamic changes of expression nodes params
@@ -123,7 +122,7 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
         modules.push_back(taskflow.emplace(std::move(task)));
     }
 
-    for (std::size_t idx : traversal) {
+    for (std::size_t idx = 0; idx < nodes.size(); idx++) {
         // Compose final taskflow graph
         auto &node = nodes[idx];
         auto &next = node->GetNext();
@@ -217,53 +216,6 @@ bool spla::ExpressionManager::CheckCyclesImpl(std::size_t idx, std::vector<int> 
     }
 
     return false;
-}
-
-void spla::ExpressionManager::DefineTraversalPath(spla::ExpressionManager::TraversalInfo &context) {
-    auto &expression = context.expression;
-    auto &nodes = expression->GetNodes();
-    auto &start = context.startNodes;
-    auto nodesCount = nodes.size();
-
-    std::size_t t = 0;
-    std::vector<std::size_t> out(nodesCount, t);
-
-    for (auto s : start)
-        DefineTraversalPathImpl(s, t, out, nodes);
-
-    using Pair = std::pair<std::size_t, std::size_t>;
-    std::vector<Pair> traversal;
-
-    traversal.reserve(nodesCount);
-    for (std::size_t i = 0; i < nodesCount; i++)
-        traversal.emplace_back(out[i], i);
-
-    std::sort(traversal.begin(), traversal.end(), [](const Pair &a, const Pair &b) {
-        return a.first > b.first;
-    });
-
-    context.traversal.resize(nodesCount);
-
-    std::transform(traversal.begin(), traversal.end(), context.traversal.begin(), [](const Pair &a) -> std::size_t {
-        return a.second;
-    });
-}
-
-void spla::ExpressionManager::DefineTraversalPathImpl(std::size_t idx, std::size_t &t, std::vector<std::size_t> &out,
-                                                      const std::vector<RefPtr<ExpressionNode>> &nodes) {
-    if (!out[idx]) {
-        t += 1;
-
-        auto &node = nodes[idx];
-        auto &next = node->GetNext();
-
-        for (const auto &n : next)
-            DefineTraversalPathImpl(n->GetIdx(), t, out, nodes);
-
-        t += 1;
-
-        out[idx] = t;
-    }
 }
 
 spla::RefPtr<spla::NodeProcessor>

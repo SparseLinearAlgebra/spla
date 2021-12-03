@@ -202,6 +202,29 @@ spla::Expression::MakeDataRead(const RefPtr<Scalar> &scalar,
 }
 
 spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeAssign(const spla::RefPtr<spla::Vector> &w,
+                             const spla::RefPtr<spla::Vector> &mask,
+                             const spla::RefPtr<FunctionBinary> &accum,
+                             const spla::RefPtr<spla::Scalar> &s,
+                             const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(s.IsNull() || w->IsCompatible(*s), InvalidType, "s and w must have the same type");
+    CHECK_RAISE_ERROR(s.IsNotNull() || !w->GetType()->HasValues(), InvalidState, "s can be null only if w has no values");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetNrows() == mask->GetNrows(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(accum.IsNull() || (s.IsNotNull() && accum->CanApply(*w, *s, *w)), InvalidType, "cannot apply provided accum function");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            accum.As<Object>(),
+            s.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::VectorAssign,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
                                const spla::RefPtr<spla::Matrix> &mask,
                                const spla::RefPtr<spla::FunctionBinary> &op,

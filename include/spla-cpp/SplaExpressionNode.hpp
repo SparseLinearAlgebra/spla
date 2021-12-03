@@ -65,6 +65,8 @@ namespace spla {
             ScalarDataRead,
             /** Write scalar data from the host buffers */
             ScalarDataWrite,
+            /** Vector scalar assignment */
+            VectorAssign,
             /** Matrix element-wise addition */
             MatrixEWiseAdd,
             /** Vector element-wise addition */
@@ -136,6 +138,8 @@ namespace spla {
                     return "ScalarDataRead";
                 case ExpressionNode::Operation::ScalarDataWrite:
                     return "ScalarDataWrite";
+                case ExpressionNode::Operation::VectorAssign:
+                    return "VectorAssign";
                 case ExpressionNode::Operation::MatrixEWiseAdd:
                     return "MatrixEWiseAdd";
                 case ExpressionNode::Operation::VectorEWiseAdd:

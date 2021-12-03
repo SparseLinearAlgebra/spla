@@ -33,6 +33,7 @@
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <storage/SplaMatrixBlock.hpp>
+#include <storage/SplaScalarValue.hpp>
 #include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
@@ -120,6 +121,19 @@ namespace spla {
         RefPtr<Type> ta;
         RefPtr<Type> tb;
         RefPtr<Type> tw;
+    };
+
+    /** Blocked vector-scalar assignment params */
+    class ParamsVectorAssign final : public AlgorithmParams {
+    public:
+        ~ParamsVectorAssign() override = default;
+
+        std::size_t size;        // size of block
+        bool hasMask = false;    // true if must apply mask
+        RefPtr<VectorBlock> w;   // type
+        RefPtr<VectorBlock> mask;// if has mask, must apply this
+        RefPtr<ScalarValue> s;   // type (or null)
+        RefPtr<Type> type;
     };
 
     /**

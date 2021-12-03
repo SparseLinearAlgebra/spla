@@ -28,6 +28,7 @@
 #include <algo/SplaAlgorithmManager.hpp>
 #include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <algo/mxm/SplaMxMCOO.hpp>
+#include <algo/vector/SplaVectorAssignCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <cassert>
@@ -35,6 +36,7 @@
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
+    Register(new VectorAssignCOO());
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());
     Register(new VxMCOO());

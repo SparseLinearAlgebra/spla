@@ -25,32 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SETUP_HPP
-#define SPLA_SETUP_HPP
+#ifndef SPLA_SPLAVECTORASSIGNCOO_HPP
+#define SPLA_SPLAVECTORASSIGNCOO_HPP
 
-#include <cstddef>
-#include <spla-cpp/Spla.hpp>
-#include <vector>
+#include <algo/SplaAlgorithm.hpp>
 
-namespace utils {
+namespace spla {
+    class VectorAssignCOO final : public Algorithm {
+    public:
+        ~VectorAssignCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
+}// namespace spla
 
-    template<typename Callable>
-    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
-        for (std::size_t blockSize : blocksSizes) {
-            spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
-            callable(library);
-        }
-    }
-
-    template<typename T>
-    inline spla::RefPtr<spla::DataScalar> GetData(T s, spla::Library &library) {
-        T *scalar = new T(s);
-        auto data = spla::DataScalar::Make(library);
-        data->SetValue(scalar);
-        data->SetReleaseProc([=](void *scalar) { delete ((T *) scalar); });
-        return data;
-    }
-
-}// namespace utils
-
-#endif//SPLA_SETUP_HPP
+#endif//SPLA_SPLAVECTORASSIGNCOO_HPP
