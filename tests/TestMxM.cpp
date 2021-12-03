@@ -25,21 +25,24 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <boost/compute.hpp>
+
 #include <Testing.hpp>
 
-template<typename Type, typename MultOp, typename AddOp>
+template<typename Type, typename MultOp, typename AddOp, typename Random>
 void testCommon(spla::Library &library,
                 std::size_t M, std::size_t K, std::size_t N, std::size_t nvals,
-                const spla::RefPtr<spla::Type> spT,
-                const spla::RefPtr<spla::FunctionBinary> spMult,
-                const spla::RefPtr<spla::FunctionBinary> spAdd,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spMult,
+                const spla::RefPtr<spla::FunctionBinary> &spAdd,
                 MultOp multOp, AddOp addOp,
-                std::size_t seed = 0) {
-    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, seed).SortReduceDuplicates();
-    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
+                std::size_t indexGenerationSeed,
+                Random valueGenerator) {
+    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, indexGenerationSeed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, indexGenerationSeed + 1).SortReduceDuplicates();
 
-    a.Fill(utils::UniformGenerator<Type>());
-    b.Fill(utils::UniformGenerator<Type>());
+    a.Fill(std::ref(valueGenerator));
+    b.Fill(std::ref(valueGenerator));
 
     auto spA = spla::Matrix::Make(M, K, spT, library);
     auto spB = spla::Matrix::Make(K, N, spT, library);
@@ -62,23 +65,24 @@ void testCommon(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<Type> c = a.template MxM<Type>(b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
-template<typename Type, typename MultOp, typename AddOp>
+template<typename Type, typename MultOp, typename AddOp, typename Random>
 void testMasked(spla::Library &library,
                 std::size_t M, std::size_t K, std::size_t N, std::size_t nvals,
-                const spla::RefPtr<spla::Type> spT,
-                const spla::RefPtr<spla::FunctionBinary> spMult,
-                const spla::RefPtr<spla::FunctionBinary> spAdd,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spMult,
+                const spla::RefPtr<spla::FunctionBinary> &spAdd,
                 MultOp multOp, AddOp addOp,
-                std::size_t seed = 0) {
-    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, seed).SortReduceDuplicates();
-    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
-    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
+                std::size_t indexGenerationSeed,
+                Random valueGenerator) {
+    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, indexGenerationSeed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, indexGenerationSeed + 2).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, indexGenerationSeed + 3).SortReduceDuplicates();
 
-    a.Fill(utils::UniformGenerator<Type>());
-    b.Fill(utils::UniformGenerator<Type>());
+    a.Fill(std::ref(valueGenerator));
+    b.Fill(std::ref(valueGenerator));
 
     auto spA = spla::Matrix::Make(M, K, spT, library);
     auto spB = spla::Matrix::Make(K, N, spT, library);
@@ -104,10 +108,10 @@ void testMasked(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<Type> c = a.template MxM<Type>(mask, false, b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+     ASSERT_TRUE(c.Equals(spW));
 }
 
-void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
+void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes, utils::UniformIntGenerator<std::int32_t> intGen = utils::UniformIntGenerator<std::int32_t>()) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Float32(library);
         auto spMult = spla::Functions::MultFloat32(library);
@@ -117,12 +121,12 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testCommon<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
         }
     });
 
@@ -135,14 +139,25 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
         }
     });
+}
+
+TEST(MxM, Tiny) {
+    spla::Library library;
+    testMasked<std::int32_t>(library,
+                             3, 3, 3, 5,
+                             spla::Types::Int32(library),
+                             spla::Functions::MultInt32(library), spla::Functions::PlusInt32(library),
+                             std::multiplies<>(), std::plus<>(),
+                             0,
+                             utils::UniformIntGenerator<std::int32_t>(0, 1, 10));
 }
 
 TEST(MxM, Small) {

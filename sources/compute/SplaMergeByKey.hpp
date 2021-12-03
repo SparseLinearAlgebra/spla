@@ -303,7 +303,7 @@ namespace spla {
             typename ItValuesB,
             typename ItKeysResult,
             typename ItValuesResult>
-    std::ptrdiff_t MergeByKeys(
+    inline std::ptrdiff_t MergeByKeys(
             ItKeysABegin keysABegin,
             ItKeysAEnd keysAEnd,
             ItValuesA valuesA,
@@ -341,7 +341,7 @@ namespace spla {
             typename ItKeysBBegin,
             typename ItKeysBEnd,
             typename ItKeysResult>
-    std::ptrdiff_t MergeKeys(
+    inline std::ptrdiff_t MergeKeys(
             ItKeysABegin keysABegin,
             ItKeysAEnd keysAEnd,
             ItKeysBBegin keysBBegin,
@@ -384,7 +384,7 @@ namespace spla {
             typename ItOutput1,
             typename ItOutput2,
             typename ItOutput3>
-    std::ptrdiff_t MergeByPairKeys(
+    inline std::ptrdiff_t MergeByPairKeys(
             ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin, ItInput3 valuesA,
             ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin, ItInput6 valuesB,
             ItOutput1 keysFirstOut, ItOutput2 keysSecondOut, ItOutput3 valuesOut,
@@ -428,7 +428,7 @@ namespace spla {
             typename ItInput5,
             typename ItOutput1,
             typename ItOutput2>
-    std::ptrdiff_t MergePairKeys(
+    inline std::ptrdiff_t MergePairKeys(
             ItInput1 keysFirstABegin, ItInput1 keysFirstAEnd, ItInput2 keysSecondABegin,
             ItInput4 keysFirstBBegin, ItInput4 keysFirstBEnd, ItInput5 keysSecondBBegin,
             ItOutput1 keysFirstOut, ItOutput2 keysSecondOut,

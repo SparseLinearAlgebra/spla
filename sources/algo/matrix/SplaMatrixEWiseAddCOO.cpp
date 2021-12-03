@@ -122,12 +122,13 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                            complementMask,
                            queue);
             std::swap(perm, tmpPerm);
-        } else
+        } else {
             MaskPairKeys(maskBlock->GetRows(), maskBlock->GetCols(),
                          block->GetRows(), block->GetCols(),
                          tmpRows, tmpCols,
                          complementMask,
                          queue);
+        }
 
         outRows = &tmpRows;
         outCols = &tmpCols;

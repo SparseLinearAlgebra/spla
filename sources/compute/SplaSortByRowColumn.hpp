@@ -49,7 +49,7 @@ namespace spla {
      * @param elementsInSequence Size in bytes of values in vals vector
      * @param queue Queue to perform sort operation
      */
-    void SortByRowColumn(boost::compute::vector<unsigned int> &rows,
+    inline void SortByRowColumn(boost::compute::vector<unsigned int> &rows,
                          boost::compute::vector<unsigned int> &cols,
                          boost::compute::vector<unsigned char> &vals,
                          std::size_t elementsInSequence,

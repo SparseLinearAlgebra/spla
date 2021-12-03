@@ -52,6 +52,18 @@ const spla::MatrixCOO::Values &spla::MatrixCOO::GetVals() const noexcept {
     return mVals;
 }
 
+spla::MatrixCOO::Indices &spla::MatrixCOO::GetMutRows() noexcept {
+    return mRows;
+}
+
+spla::MatrixCOO::Indices &spla::MatrixCOO::GetMutCols() noexcept {
+    return mCols;
+}
+
+spla::MatrixCOO::Values &spla::MatrixCOO::GetMutVals() noexcept {
+    return mVals;
+}
+
 void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const {
     using namespace boost;
     compute::context context = mRows.get_buffer().get_context();
@@ -71,7 +83,7 @@ void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned in
         compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
     }
 
-    auto byteSize = mVals.size() / GetNvals();
+    auto byteSize = GetValueByteSize();
 
     stream << "Matrix " << GetNrows() << "x" << GetNcols()
            << " nvals=" << GetNvals()
@@ -93,4 +105,15 @@ void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned in
         stream << std::endl
                << std::dec;
     }
+}
+
+void spla::MatrixCOO::ResizeNnz(unsigned int nVals, boost::compute::command_queue &queue) {
+    mRows.resize(nVals, queue);
+    mCols.resize(nVals, queue);
+    mVals.resize(GetValueByteSize() * nVals, queue);
+    mNvals = nVals;
+}
+
+std::size_t spla::MatrixCOO::GetValueByteSize() const noexcept {
+    return GetVals().size() / GetNvals();
 }

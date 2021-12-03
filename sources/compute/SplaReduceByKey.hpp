@@ -54,7 +54,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const DeclareMultiKey &key) {
+        inline MetaKernel &operator<<(MetaKernel &k, const DeclareMultiKey &key) {
             for (std::size_t ki = 0; ki < key.KeySize; ++ki) {
                 k << k.decl<uint_>(key.Name + std::to_string(ki)) << ";";
             }
@@ -66,7 +66,7 @@ namespace spla {
             const std::size_t vBytes;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const DeclareVal &v) {
+        inline MetaKernel &operator<<(MetaKernel &k, const DeclareVal &v) {
             k << k.decl<unsigned char>(v.Name) << "[" << std::to_string(v.vBytes) << "];";
             return k;
         }
@@ -204,7 +204,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const AssignKey &key) {
+        inline MetaKernel &operator<<(MetaKernel &k, const AssignKey &key) {
             for (std::size_t ki = 0; ki < key.KeySize; ++ki) {
                 std::string ind = std::to_string(ki);
                 k << key.Left.GetKeyByN(ki) << " = " << key.Right.GetKeyByN(ki) << ";";
@@ -217,7 +217,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const CompareKey &comp) {
+        inline MetaKernel &operator<<(MetaKernel &k, const CompareKey &comp) {
             for (std::size_t ki = 0; ki < comp.KeySize; ++ki) {
                 std::string ind = std::to_string(ki);
                 k << '(' << comp.Left.GetKeyByN(ki) << " == " << comp.Right.GetKeyByN(ki) << ")";
@@ -233,7 +233,7 @@ namespace spla {
             const std::size_t vBytes;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const AssignVal &v) {
+        inline MetaKernel &operator<<(MetaKernel &k, const AssignVal &v) {
             k << "for (uint byte_i = 0; byte_i < " << std::to_string(v.vBytes) << "; byte_i++) {\n"
               << v.Left.GetByteByN("byte_i") << " = " << v.Right.GetByteByN("byte_i") << ";\n"
               << "}\n";
@@ -290,7 +290,7 @@ namespace spla {
             }
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const std::shared_ptr<ReduceApplication> &reduce) {
+        inline MetaKernel &operator<<(MetaKernel &k, const std::shared_ptr<ReduceApplication> &reduce) {
             reduce->Print(k);
             return k;
         }

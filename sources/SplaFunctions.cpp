@@ -40,42 +40,21 @@ namespace {
     }
 }// namespace
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt32(spla::Library &library) {
-    auto t = Types::Int32(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("int", "+"), library);
-}
+#define SPLA_MAKE_BINARY_FUNCTION(opName, typeName, type, binop)                                   \
+    spla::RefPtr<spla::FunctionBinary> spla::Functions::opName##typeName(spla::Library &library) { \
+        auto t = Types::typeName(library);                                                         \
+        return FunctionBinary::Make(t, t, t, MakeBody(#type, #binop), library);                    \
+    }
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusInt64(spla::Library &library) {
-    auto t = Types::Int64(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("long", "+"), library);
-}
+SPLA_MAKE_BINARY_FUNCTION(Plus, Int32, int, +)
+SPLA_MAKE_BINARY_FUNCTION(Plus, Int64, long, +)
+SPLA_MAKE_BINARY_FUNCTION(Plus, Float32, float, +)
+SPLA_MAKE_BINARY_FUNCTION(Plus, Float64, double, +)
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat32(Library &library) {
-    auto t = Types::Float32(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("float", "+"), library);
-}
+//SPLA_MAKE_BINARY_FUNCTION(Plus, UInt32, unsigned int, +)
+//SPLA_MAKE_BINARY_FUNCTION(Plus, UInt64, long, +)
 
-spla::RefPtr<spla::FunctionBinary> spla::Functions::PlusFloat64(spla::Library &library) {
-    auto t = Types::Float64(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("double", "+"), library);
-}
-
-spla::RefPtr<spla::FunctionBinary> spla::Functions::MultInt32(spla::Library &library) {
-    auto t = Types::Int32(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("int", "*"), library);
-}
-
-spla::RefPtr<spla::FunctionBinary> spla::Functions::MultInt64(spla::Library &library) {
-    auto t = Types::Int64(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("long", "*"), library);
-}
-
-spla::RefPtr<spla::FunctionBinary> spla::Functions::MultFloat32(Library &library) {
-    auto t = Types::Float32(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("float", "*"), library);
-}
-
-spla::RefPtr<spla::FunctionBinary> spla::Functions::MultFloat64(spla::Library &library) {
-    auto t = Types::Float64(library);
-    return FunctionBinary::Make(t, t, t, MakeBody("double", "*"), library);
-}
+SPLA_MAKE_BINARY_FUNCTION(Mult, Int32, int, *)
+SPLA_MAKE_BINARY_FUNCTION(Mult, Int64, long, *)
+SPLA_MAKE_BINARY_FUNCTION(Mult, Float32, float, *)
+SPLA_MAKE_BINARY_FUNCTION(Mult, Float64, double, *)
