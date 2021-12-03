@@ -83,12 +83,13 @@ Inheritance diagram for spla::Algorithm:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1Algorithm__inherit__graph.png" border="0" usemap="#aspla_1_1Algorithm_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1Algorithm_inherit__map" id="aspla_1_1Algorithm_inherit__map">
-<area shape="rect" title="Algorithm interface." alt="" coords="291,80,397,107"/>
-<area shape="rect" href="classspla_1_1MatrixEWiseAddCOO.html" title=" " alt="" coords="5,155,181,181"/>
-<area shape="rect" href="classspla_1_1MxMCOO.html" title=" " alt="" coords="205,155,315,181"/>
-<area shape="rect" href="classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="339,155,517,181"/>
-<area shape="rect" href="classspla_1_1VxMCOO.html" title=" " alt="" coords="541,155,648,181"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="298,5,390,32"/>
+<area shape="rect" title="Algorithm interface." alt="" coords="145,107,252,133"/>
+<area shape="rect" href="classspla_1_1MatrixEWiseAddCOO.html" title=" " alt="" coords="301,5,477,32"/>
+<area shape="rect" href="classspla_1_1MxMCOO.html" title=" " alt="" coords="335,56,444,83"/>
+<area shape="rect" href="classspla_1_1VectorAssignCOO.html" title=" " alt="" coords="310,107,469,133"/>
+<area shape="rect" href="classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="300,157,479,184"/>
+<area shape="rect" href="classspla_1_1VxMCOO.html" title=" " alt="" coords="336,208,443,235"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title=" " alt="" coords="5,107,97,133"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -106,10 +107,11 @@ Public Types</h2></td></tr>
 <tr class="memitem:ab9cbf7c1ff7c7c0900e448b5e42074af"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074af">Type</a> { <br />
 &#160;&#160;<a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afa2ef63891f20bd47306716d68f6a58c8e">MatrixEWiseAdd</a>
 , <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afa27c4d3134e0690e765f6c908b7bfe09d">MatrixEWiseMult</a>
+, <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afae83f2179785e3f91f06a5707386fd5fb">VectorAssign</a>
 , <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afa14cbcab6a0e75f86ebd5b5f5d4d8787a">VectorEWiseAdd</a>
-, <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afaaf488b138e69d014da8950c348277a0a">VectorEWiseMult</a>
 , <br />
-&#160;&#160;<a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afabc428cdf0b4717f6e2dc35213b9e5ec4">MxM</a>
+&#160;&#160;<a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afaaf488b138e69d014da8950c348277a0a">VectorEWiseMult</a>
+, <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afabc428cdf0b4717f6e2dc35213b9e5ec4">MxM</a>
 , <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afaf5419c7ad3580147f9a637339115ecc0">MxV</a>
 , <a class="el" href="classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074afa8beb564f83b050ee554f87baaea84208">VxM</a>
 <br />
@@ -172,6 +174,8 @@ Public Member Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab9cbf7c1ff7c7c0900e448b5e42074afa2ef63891f20bd47306716d68f6a58c8e"></a>MatrixEWiseAdd&#160;</td><td class="fielddoc"><p>Matrix-matrix element wise addition </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab9cbf7c1ff7c7c0900e448b5e42074afa27c4d3134e0690e765f6c908b7bfe09d"></a>MatrixEWiseMult&#160;</td><td class="fielddoc"><p>Matrix-matrix element wise multiplication </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab9cbf7c1ff7c7c0900e448b5e42074afae83f2179785e3f91f06a5707386fd5fb"></a>VectorAssign&#160;</td><td class="fielddoc"><p>Vector-scalar assignment </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab9cbf7c1ff7c7c0900e448b5e42074afa14cbcab6a0e75f86ebd5b5f5d4d8787a"></a>VectorEWiseAdd&#160;</td><td class="fielddoc"><p>Vector-vector element wise addition </p>
 </td></tr>
@@ -238,7 +242,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get algorithm name. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Algorithm.html" title="Algorithm interface.">Algorithm</a> unique name. </dd></dl>
 
-<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#aa6c255425c9866d9e991cd14abd5d14a">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a8ca523ce9c2ff5b41a19f5dbd3ac40bc">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#aeddc95c360808ed5a9752bef362df435">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#af8d738ac1380b7aa0c48fae4ba7ddce4">spla::MatrixEWiseAddCOO</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#aa6c255425c9866d9e991cd14abd5d14a">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a8ca523ce9c2ff5b41a19f5dbd3ac40bc">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1VectorAssignCOO.html#adbaa0dd45c9915da281dd5d1271a05cf">spla::VectorAssignCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#aeddc95c360808ed5a9752bef362df435">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#af8d738ac1380b7aa0c48fae4ba7ddce4">spla::MatrixEWiseAddCOO</a>.</p>
 
 </div>
 </div>
@@ -266,7 +270,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get algorithm type. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Algorithm.html" title="Algorithm interface.">Algorithm</a> type. </dd></dl>
 
-<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#aa027c873bba1dca246e7834c080b290e">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a4ddbdc0cb56edd61880c1dd6a7806b5f">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#adcc652a2709138c37841f7fc09f657eb">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a422bf3fa7eb63854088c5f36e63a23fd">spla::MatrixEWiseAddCOO</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#aa027c873bba1dca246e7834c080b290e">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a4ddbdc0cb56edd61880c1dd6a7806b5f">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1VectorAssignCOO.html#a26a849001065e3c2ed70a7e4c85f01b6">spla::VectorAssignCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#adcc652a2709138c37841f7fc09f657eb">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a422bf3fa7eb63854088c5f36e63a23fd">spla::MatrixEWiseAddCOO</a>.</p>
 
 </div>
 </div>
@@ -300,7 +304,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#a52a8ca562ffbe927277f54061789e264">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a356bf96e7421b839660d4e0f99f8c7c1">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#abf20c1c9a298559e2555d2946c477def">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a680809ed70ccd72aee0913813632af46">spla::MatrixEWiseAddCOO</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#a52a8ca562ffbe927277f54061789e264">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#a356bf96e7421b839660d4e0f99f8c7c1">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1VectorAssignCOO.html#af877ccf17d12ef400b88395df86de43a">spla::VectorAssignCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#abf20c1c9a298559e2555d2946c477def">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a680809ed70ccd72aee0913813632af46">spla::MatrixEWiseAddCOO</a>.</p>
 
 </div>
 </div>
@@ -335,7 +339,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if this algorithm can be invoked with this params. </dd></dl>
 
-<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#a65f0412cb0df234d4e3ff0a443834ee7">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#ac55c1e455c42e81f8b467ddad31fb7c7">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#a468ee8889fffd13d07acf9794bbe9676">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a19d00a17f35235f6f27184f7f6caf85a">spla::MatrixEWiseAddCOO</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1VxMCOO.html#a65f0412cb0df234d4e3ff0a443834ee7">spla::VxMCOO</a>, <a class="el" href="classspla_1_1VectorEWiseAddCOO.html#ac55c1e455c42e81f8b467ddad31fb7c7">spla::VectorEWiseAddCOO</a>, <a class="el" href="classspla_1_1VectorAssignCOO.html#a412958102db425917ed0d6d1e2a97ac1">spla::VectorAssignCOO</a>, <a class="el" href="classspla_1_1MxMCOO.html#a468ee8889fffd13d07acf9794bbe9676">spla::MxMCOO</a>, and <a class="el" href="classspla_1_1MatrixEWiseAddCOO.html#a19d00a17f35235f6f27184f7f6caf85a">spla::MatrixEWiseAddCOO</a>.</p>
 
 </div>
 </div>

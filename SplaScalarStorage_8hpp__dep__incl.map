@@ -1,7 +1,8 @@
 <map id="sources/storage/SplaScalarStorage.hpp" name="sources/storage/SplaScalarStorage.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="356,5,539,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="479,5,661,47"/>
 <area shape="rect" id="node2" href="$SplaScalarDataRead_8cpp.html" title=" " alt="" coords="5,95,215,136"/>
 <area shape="rect" id="node3" href="$SplaScalarDataWrite_8cpp.html" title=" " alt="" coords="239,95,448,136"/>
-<area shape="rect" id="node4" href="$SplaScalar_8cpp.html" title=" " alt="" coords="472,102,631,129"/>
-<area shape="rect" id="node5" href="$SplaScalarStorage_8cpp.html" title=" " alt="" coords="655,95,837,136"/>
+<area shape="rect" id="node4" href="$SplaVectorAssign_8cpp.html" title=" " alt="" coords="473,95,667,136"/>
+<area shape="rect" id="node5" href="$SplaScalar_8cpp.html" title=" " alt="" coords="692,102,851,129"/>
+<area shape="rect" id="node6" href="$SplaScalarStorage_8cpp.html" title=" " alt="" coords="875,95,1057,136"/>
 </map>

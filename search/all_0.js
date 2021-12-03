@@ -10,9 +10,10 @@ var searchData=
   ['algorithmparams_7',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]],
   ['api_8',['API',['../group__API.html',1,'']]],
   ['apply_9',['Apply',['../classspla_1_1detail_1_1ReduceOp.html#a03c096ae557b9bdf38e22bcf327ad2cb',1,'spla::detail::ReduceOp']]],
-  ['applymask_10',['ApplyMask',['../group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8',1,'spla']]],
-  ['as_11',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
-  ['assign_12',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]],
-  ['assignkey_13',['AssignKey',['../structspla_1_1detail_1_1AssignKey.html',1,'spla::detail']]],
-  ['assignval_14',['AssignVal',['../structspla_1_1detail_1_1AssignVal.html',1,'spla::detail']]]
+  ['applyaccum_10',['ApplyAccum',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a04171516cbc627833c3f6d210a5cf4c0',1,'spla::Descriptor']]],
+  ['applymask_11',['ApplyMask',['../group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8',1,'spla']]],
+  ['as_12',['As',['../classspla_1_1RefPtr.html#a5d38314bb037fa4890e77b69dc110931',1,'spla::RefPtr']]],
+  ['assign_13',['Assign',['../classspla_1_1detail_1_1binop_1_1Assign.html#a70bf0b2c9f590552dbf04ae5734e69cd',1,'spla::detail::binop::Assign::Assign()'],['../classspla_1_1detail_1_1binop_1_1Assign.html',1,'spla::detail::binop::Assign&lt; Assignees &gt;']]],
+  ['assignkey_14',['AssignKey',['../structspla_1_1detail_1_1AssignKey.html',1,'spla::detail']]],
+  ['assignval_15',['AssignVal',['../structspla_1_1detail_1_1AssignVal.html',1,'spla::detail']]]
 ];
