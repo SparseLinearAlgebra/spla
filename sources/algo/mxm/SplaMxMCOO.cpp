@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <boost/compute/algorithm/scatter_if.hpp>
+#include <boost/compute/algorithm/transform.hpp>
 
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
@@ -33,6 +34,7 @@
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
 #include <compute/SplaTransformValues.hpp>
+#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
@@ -41,8 +43,6 @@ using IndeciesVector = boost::compute::vector<unsigned int>;
 
 namespace spla::detail {
     std::size_t CooSpmmHelper(std::size_t workspaceSize,
-                              std::size_t beginRow,
-                              std::size_t endRow,
                               std::size_t beginSegment,
                               std::size_t endSegment,
                               const MatrixCOO &a,
@@ -61,7 +61,8 @@ namespace spla::detail {
                               boost::compute::vector<unsigned char> &V,
                               const FunctionBinary &fMultiply,
                               const FunctionBinary &fAdd,
-                              boost::compute::command_queue &queue) {
+                              boost::compute::command_queue &queue,
+                              const std::shared_ptr<spdlog::logger> &) {
         using namespace boost;
 
         aGatherLocations.resize(workspaceSize, queue);
@@ -80,35 +81,35 @@ namespace spla::detail {
 
         const auto beginSegmentDiff = static_cast<std::ptrdiff_t>(beginSegment);
         const auto endSegmentDiff = static_cast<std::ptrdiff_t>(endSegment);
+        assert(beginSegmentDiff < outputPtr.size());
+        const auto startShift = (outputPtr.begin() + beginSegmentDiff).read(queue);
 
         // compute gather locations of intermediate format for 'a'
         compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);
-        compute::scatter_if(compute::counting_iterator<unsigned int>(beginSegment),
-                            compute::counting_iterator<unsigned int>(endSegment),
-                            outputPtr.begin() + beginSegmentDiff,
-                            segmentLengths.begin() + beginSegmentDiff,
-                            aGatherLocations.begin() - (outputPtr.begin() + beginSegmentDiff).read(queue),
-                            queue);
-
+        {
+            BOOST_COMPUTE_CLOSURE(void, calcAGatherLoc, (unsigned int i), (aGatherLocations, outputPtr, startShift, segmentLengths), {
+                if (segmentLengths[i] != 0) {
+                    aGatherLocations[outputPtr[i] - startShift] = i;
+                }
+            });
+            assert(beginSegment <= outputPtr.size());
+            assert(endSegment <= outputPtr.size());
+            compute::for_each_n(compute::counting_iterator(beginSegment), endSegment, calcAGatherLoc, queue);
+        }
         compute::inclusive_scan(aGatherLocations.begin(),
                                 aGatherLocations.end(),
                                 aGatherLocations.begin(),
                                 compute::max<unsigned int>(),
                                 queue);
 
-        compute::fill(bGatherLocations.begin(), bGatherLocations.end(), 0, queue);
-
         // compute gather locations of intermediate format for 'b'
         {
-            auto &aCols = a.GetCols();
-            BOOST_COMPUTE_CLOSURE(void, smudgeBGatherLoc, (unsigned int i), (beginSegmentDiff, aCols, bRowOffsets, aGatherLocations, bGatherLocations), {
-                bGatherLocations[i] = bRowOffsets[aCols[beginSegmentDiff + aGatherLocations[i]]];
-            });
-            compute::for_each_n(compute::counting_iterator<unsigned int>(0), bGatherLocations.size(), smudgeBGatherLoc, queue);
-
-            BOOST_COMPUTE_CLOSURE(void, computeBGatherLoc, (unsigned int i), (outputPtr, aGatherLocations, bGatherLocations), {
-                bGatherLocations[i] += i - outputPtr[aGatherLocations[i]];
-            });
+            const auto &aCols = a.GetCols();
+            BOOST_COMPUTE_CLOSURE(void, computeBGatherLoc, (unsigned int i),
+                                  (aCols, startShift, outputPtr, bRowOffsets, aGatherLocations, bGatherLocations),
+                                  {
+                                      bGatherLocations[i] = bRowOffsets[aCols[aGatherLocations[i]]] + i - (outputPtr[aGatherLocations[i]] - startShift);
+                                  });
             compute::for_each_n(compute::counting_iterator<unsigned int>(0), bGatherLocations.size(), computeBGatherLoc, queue);
         }
 
@@ -140,6 +141,7 @@ namespace spla::detail {
     }
 }// namespace spla::detail
 
+
 bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsMxM *>(&params);
 
@@ -168,6 +170,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     if (params->hasMask && params->mask.Cast<MatrixCOO>().IsNull()) {
         return;
     }
+
+    auto &logger = library->GetLogger();
 
     const auto &typeA = params->ta;
     const auto &typeB = params->tb;
@@ -199,12 +203,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
-        // TODO: Find the right constant.
-        // It probably should be clGetDeviceInfo(CL_DEVICE_LOCAL_MEM_SIZE)
-        //
-        // const std::size_t maxAvailableMemory = ctx.get_device().get_info<std::size_t>(CL_DEVICE_LOCAL_MEM_SIZE);
-
-        const std::size_t free = 1 << 30;
+        const std::size_t free = 1 << 15;
         const std::size_t maxWorkspaceCapacity = free / (4 * sizeof(unsigned int) + valueByteSize);
 
         // use at most one third of the remaining capacity
@@ -217,27 +216,136 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> wTmpRows(ctx), wTmpCols(ctx);
     compute::vector<unsigned char> wTmpVals(ctx);
 
-    //    if (cooNumNonZeros <= workspaceCapacity) { TODO: Handle this!
-    // compute W = A * B in one step
+    std::size_t wTmpNnz = 0;
 
-    assert(cooNumNonZeros <= workspaceCapacity);
+    //    if (cooNumNonZeros <= workspaceCapacity) {
+    if (false) {
+        // compute W = A * B in one step
+        std::size_t beginSegment = 0;
+        std::size_t endSegment = a.GetNvals();
+        std::size_t workspaceSize = cooNumNonZeros;
 
-    std::size_t beginRow = 0;
-    std::size_t endRow = a.GetNrows();
-    std::size_t beginSegment = 0;
-    std::size_t endSegment = a.GetNvals();
-    std::size_t workspaceSize = cooNumNonZeros;
+        wTmpNnz = detail::CooSpmmHelper(workspaceSize,
+                                        beginSegment, endSegment,
+                                        a, b, wTmpRows, wTmpCols, wTmpVals, wValueByteSize,
+                                        bRowOffsets,
+                                        segmentLengths, outputPtr,
+                                        aGatherLocations, bGatherLocations,
+                                        I, J, V,
+                                        *params->mult, *params->add,
+                                        queue, logger);
+    } else {
+        // decompose C = A * B into several C[slice,:] = A[slice,:] * B operations
 
-    std::size_t wTmpNnz = detail::CooSpmmHelper(workspaceSize,
-                                                beginRow, endRow,
-                                                beginSegment, endSegment,
-                                                a, b, wTmpRows, wTmpCols, wTmpVals, wValueByteSize,
-                                                bRowOffsets,
-                                                segmentLengths, outputPtr,
-                                                aGatherLocations, bGatherLocations,
-                                                I, J, V,
-                                                *params->mult, *params->add,
-                                                queue);
+        // storage for C[slice,:] partial results
+        class MatrixSlice {
+        public:
+            MatrixSlice(compute::vector<unsigned int> &&mRows,
+                        compute::vector<unsigned int> &&mCols,
+                        compute::vector<unsigned char> &&mVals)
+                : rows(std::move(mRows)), cols(std::move(mCols)), vals(std::move(mVals)) {}
+
+            const compute::vector<unsigned int> rows;
+            const compute::vector<unsigned int> cols;
+            const compute::vector<unsigned char> vals;
+
+            [[nodiscard]] std::size_t GetNvals() const {
+                return rows.size();
+            }
+        };
+        std::deque<MatrixSlice> slices;
+
+        // compute row offsets for A
+        compute::vector<unsigned int> aRowOffsets(a.GetNrows() + 1, ctx);
+        IndicesToRowOffsets(a.GetRows(), aRowOffsets, a.GetNrows(), queue);
+
+        // compute workspace requirements for each row
+        compute::vector<unsigned int> cumulativeRowWorkspace(a.GetNrows(), ctx);
+
+        compute::gather(aRowOffsets.begin() + 1, aRowOffsets.end(),
+                        outputPtr.begin(),
+                        cumulativeRowWorkspace.begin(),
+                        queue);
+
+        std::ptrdiff_t beginRow = 0;
+        std::size_t totalWork = 0;
+        bool goodBefore = true;
+        {
+            compute::vector<unsigned int> eq(aRowOffsets.size() - 1, ctx);
+            using compute::lambda::_1;
+            using compute::lambda::_2;
+            compute::transform(aRowOffsets.begin(), aRowOffsets.end() - 1, aRowOffsets.begin() + 1, eq.begin(), _1 > _2, queue);
+            auto n = compute::accumulate(eq.begin(), eq.end(), 0, queue);
+            CHECK_RAISE_CRITICAL_ERROR(n == 0, MemOpFailed, (std::string{"IT MUST ZERO!!! "} + std::to_string(n)));
+            goodBefore = true;
+        }
+
+        while (static_cast<std::size_t>(beginRow) < a.GetNrows()) {
+            // find the largest endRow such that the capacity of [beginRow, endRow) fits in the workspaceCapacity
+            std::ptrdiff_t endRow = compute::upper_bound(cumulativeRowWorkspace.begin() + beginRow,
+                                                         cumulativeRowWorkspace.end(),
+                                                         totalWork + workspaceCapacity,
+                                                         queue) -
+                                    cumulativeRowWorkspace.begin();
+            CHECK_RAISE_CRITICAL_ERROR(beginRow < endRow, MemOpFailed, "Workspace size isn't large enough to perform MxM");
+
+            {
+                compute::vector<unsigned int> eq(aRowOffsets.size() - 1, ctx);
+                using compute::lambda::_1;
+                using compute::lambda::_2;
+                compute::transform(aRowOffsets.begin(), aRowOffsets.end() - 1, aRowOffsets.begin() + 1, eq.begin(), _1 > _2, queue);
+                auto n = compute::accumulate(eq.begin(), eq.end(), 0, queue);
+                CHECK_RAISE_CRITICAL_ERROR(n == 0, MemOpFailed, (std::string{"It was good before, but.. not now( IT MUST ZERO!!! "} + std::to_string(n)));
+            }
+            unsigned int beginSegment = (aRowOffsets.begin() + beginRow).read(queue);
+            unsigned int endSegment = (aRowOffsets.begin() + endRow).read(queue);
+            CHECK_RAISE_CRITICAL_ERROR(beginSegment < endSegment, MemOpFailed, "beginSegment >= endSegment :( " + std::to_string(beginSegment) + ' ' + std::to_string(endSegment));
+
+            assert(endSegment < outputPtr.size());
+            assert(beginSegment < outputPtr.size());
+            {
+                auto beginOffset = (outputPtr.begin() + beginSegment).read(queue);
+                auto endOffset = (outputPtr.begin() + endSegment).read(queue);
+
+                CHECK_RAISE_CRITICAL_ERROR(beginOffset < endOffset, MemOpFailed, (std::string{"No!!!!! "} + std::to_string(beginOffset) + ' ' + std::to_string(endOffset) + ' ' + std::to_string(beginSegment) + ' ' + std::to_string(endSegment)));
+            }
+            std::size_t workspaceSize = (outputPtr.begin() + endSegment).read(queue) - (outputPtr.begin() + beginSegment).read(queue);
+            totalWork += workspaceSize;
+            CHECK_RAISE_CRITICAL_ERROR(workspaceSize <= workspaceCapacity, MemOpFailed, (std::string{"Oh, I am so dead "} + std::to_string(workspaceSize) + ' ' + std::to_string(workspaceCapacity)));
+            assert(workspaceSize <= workspaceCapacity);
+
+            compute::vector<unsigned int> wSliceRows(ctx), wSliceCols(ctx);
+            compute::vector<unsigned char> wSliceVals(ctx);
+            wTmpNnz += detail::CooSpmmHelper(workspaceSize,
+                                             beginSegment, endSegment,
+                                             a, b, wSliceRows, wSliceCols, wSliceVals, wValueByteSize,
+                                             bRowOffsets,
+                                             segmentLengths, outputPtr,
+                                             aGatherLocations, bGatherLocations,
+                                             I, J, V,
+                                             *params->mult, *params->add,
+                                             queue, logger);
+            slices.emplace_back(std::move(wSliceRows),
+                                std::move(wSliceCols),
+                                std::move(wSliceVals));
+            beginRow = endRow;
+        }
+
+        // resize output
+        wTmpRows.resize(wTmpNnz, queue);
+        wTmpCols.resize(wTmpNnz, queue);
+        wTmpVals.resize(wTmpNnz * wValueByteSize, queue);
+
+        // copy slices into output
+        std::ptrdiff_t base = 0;
+        for (auto it = slices.begin(); it < slices.end(); ++it) {
+            compute::copy(it->rows.begin(), it->rows.end(), wTmpRows.begin() + base, queue);
+            compute::copy(it->cols.begin(), it->cols.end(), wTmpCols.begin() + base, queue);
+            compute::copy(it->vals.begin(), it->vals.end(), wTmpVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
+            base += static_cast<std::ptrdiff_t>(it->GetNvals());
+        }
+        assert(static_cast<std::size_t>(base) == wTmpNnz);
+    }
 
     if (wTmpNnz == 0) {
         return;
@@ -253,6 +361,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         ApplyMask(mask.GetRows(), mask.GetCols(),
                   wTmpRows, wTmpCols, wTmpVals,
                   wRows, wCols, wVals, wValueByteSize,
+                  params->desc->IsParamSet(Descriptor::Param::MaskComplement),
                   queue);
         wNnz = wRows.size();
     } else {
@@ -269,108 +378,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     params->w = MatrixCOO::Make(a.GetNrows(), b.GetNcols(), wNnz,
                                 std::move(wRows), std::move(wCols), std::move(wVals))
                         .Cast<MatrixBlock>();
-
-    //    } else {
-    //        // decompose C = A * B into several C[slice,:] = A[slice,:] * B operations
-    //        typedef typename cusp::coo_matrix<IndexType, ValueType, MemorySpace> Container;
-    //        typedef typename std::list<Container> ContainerList;
-    //
-    //        // storage for C[slice,:] partial results
-    //        ContainerList slices;
-    //
-    //        // compute row offsets for A
-    //#if THRUST_VERSION >= 100800
-    //        cusp::detail::temporary_array<IndexType, DerivedPolicy> A_row_offsets(exec, A.num_rows + 1);
-    //#else
-    //        cusp::array1d<IndexType, MemorySpace> A_row_offsets(A.num_rows + 1);
-    //#endif
-    //
-    //        cusp::indices_to_offsets(exec, A.row_indices, A_row_offsets);
-    //
-    //// compute worspace requirements for each row
-    //#if THRUST_VERSION >= 100800
-    //        cusp::detail::temporary_array<IndexType, DerivedPolicy> cummulative_row_workspace(exec, A.num_rows);
-    //#else
-    //        cusp::array1d<IndexType, MemorySpace> cummulative_row_workspace(A.num_rows);
-    //#endif
-    //
-    //        thrust::gather(exec,
-    //                       A_row_offsets.begin() + 1, A_row_offsets.end(),
-    //                       output_ptr.begin(),
-    //                       cummulative_row_workspace.begin());
-    //
-    //        size_t begin_row = 0;
-    //        size_t total_work = 0;
-    //
-    //        while (begin_row < size_t(A.num_rows)) {
-    //            Container C_slice;
-    //
-    //            // find largest end_row such that the capacity of [begin_row, end_row) fits in the workspace_capacity
-    //            size_t end_row = thrust::upper_bound(exec,
-    //                                                 cummulative_row_workspace.begin() + begin_row, cummulative_row_workspace.end(),
-    //                                                 IndexType(total_work + workspace_capacity)) -
-    //                             cummulative_row_workspace.begin();
-    //
-    //            size_t begin_segment = A_row_offsets[begin_row];
-    //            size_t end_segment = A_row_offsets[end_row];
-    //
-    //            // TODO throw exception signaling that there is insufficient memory (not necessarily bad_alloc)
-    //            //if (begin_row == end_row)
-    //            //    // workspace wasn't large enough, throw cusp::memory_allocation_failure?
-    //
-    //            size_t workspace_size = output_ptr[end_segment] - output_ptr[begin_segment];
-    //
-    //            total_work += workspace_size;
-    //
-    //            // TODO remove these when an exception is in place
-    //            assert(end_row > begin_row);
-    //            assert(workspace_size <= workspace_capacity);
-    //
-    //            coo_spmm_helper(exec,
-    //                            workspace_size,
-    //                            begin_row, end_row,
-    //                            begin_segment, end_segment,
-    //                            A, B, C_slice,
-    //                            B_row_offsets,
-    //                            segment_lengths, output_ptr,
-    //                            A_gather_locations, B_gather_locations,
-    //                            I, J, V,
-    //                            combine, reduce);
-    //
-    //            slices.push_back(Container());
-    //            slices.back().swap(C_slice);
-    //
-    //            begin_row = end_row;
-    //        }
-
-    //        // deallocate workspace
-    //        // A_gather_locations.clear();
-    //        // A_gather_locations.shrink_to_fit();
-    //        // B_gather_locations.clear();
-    //        // B_gather_locations.shrink_to_fit();
-    //        // I.clear();
-    //        // I.shrink_to_fit();
-    //        // J.clear();
-    //        // J.shrink_to_fit();
-    //        // V.clear();
-    //        // V.shrink_to_fit();
-    //
-    //        // compute total output size
-    //        size_t C_num_entries = 0;
-    //        for (typename ContainerList::iterator iter = slices.begin(); iter != slices.end(); ++iter)
-    //            C_num_entries += iter->num_entries;
-    //
-    //        // resize output
-    //        C.resize(A.num_rows, B.num_cols, C_num_entries);
-    //
-    //        // copy slices into output
-    //        size_t base = 0;
-    //        for (typename ContainerList::iterator iter = slices.begin(); iter != slices.end(); ++iter) {
-    //            thrust::copy(exec, iter->row_indices.begin(), iter->row_indices.end(), C.row_indices.begin() + base);
-    //            thrust::copy(exec, iter->column_indices.begin(), iter->column_indices.end(), C.column_indices.begin() + base);
-    //            thrust::copy(exec, iter->values.begin(), iter->values.end(), C.values.begin() + base);
-    //            base += iter->num_entries;
-    //        }
 }
 
 spla::Algorithm::Type spla::MxMCOO::GetType() const {

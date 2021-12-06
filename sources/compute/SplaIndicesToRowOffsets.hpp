@@ -75,6 +75,18 @@ namespace spla {
     }
 
     /**
+     * Overload
+     */
+    inline void IndicesToRowOffsets(const boost::compute::vector<unsigned int> &indices,
+                                    boost::compute::vector<unsigned int> &offsets,
+                                    std::size_t n,
+                                    boost::compute::command_queue &queue) {
+        using namespace boost;
+        boost::compute::vector<unsigned int> lengths(queue.get_context());
+        IndicesToRowOffsets(indices, offsets, lengths, n, queue);
+    }
+
+    /**
      * @}
      */
 

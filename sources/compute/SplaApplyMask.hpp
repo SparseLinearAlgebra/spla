@@ -118,6 +118,7 @@ namespace spla {
                           boost::compute::vector<unsigned int> &outputCols,
                           boost::compute::vector<unsigned char> &outputVals,
                           std::size_t byteSize,
+                          bool complement,
                           boost::compute::command_queue &queue) {
         using namespace boost;
 
@@ -143,10 +144,11 @@ namespace spla {
             MaskByPairKeys(maskRows, maskCols,
                            inputRows, inputCols, perm,
                            outputRows, outputCols, outputPerm,
+                           complement,
                            queue);
             std::swap(perm, outputPerm);
         } else {
-            MaskPairKeys(maskRows, maskCols, inputRows, inputCols, outputRows, outputCols, queue);
+            MaskPairKeys(maskRows, maskCols, inputRows, inputCols, outputRows, outputCols, complement, queue);
         }
 
         if (typeHasValues) {

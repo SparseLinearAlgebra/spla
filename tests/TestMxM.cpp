@@ -127,24 +127,24 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
             testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
         }
     });
-
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        auto spT = spla::Types::Int32(library);
-        auto spMult = spla::Functions::MultInt32(library);
-        auto spAdd = spla::Functions::PlusInt32(library);
-        auto mult = [](int a, int b) { return a * b; };
-        auto add = [](int a, int b) { return a + b; };
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
-        }
-    });
+//
+//    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+//        auto spT = spla::Types::Int32(library);
+//        auto spMult = spla::Functions::MultInt32(library);
+//        auto spAdd = spla::Functions::PlusInt32(library);
+//        auto mult = [](int a, int b) { return a * b; };
+//        auto add = [](int a, int b) { return a + b; };
+//
+//        for (std::size_t i = 0; i < iter; i++) {
+//            std::size_t nvals = base + i * step;
+//            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
+//        }
+//
+//        for (std::size_t i = 0; i < iter; i++) {
+//            std::size_t nvals = base + i * step;
+//            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
+//        }
+//    });
 }
 
 TEST(MxM, Tiny) {

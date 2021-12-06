@@ -71,4 +71,22 @@ TEST(IndicesToRowOffsets, Generic) {
     test(5, {0, 0, 1, 2, 3, 4, 4, 4}, {0, 2, 3, 4, 5, 8}, {2, 1, 1, 1, 3, 0});
 }
 
+TEST(IndicesToRowOffsets, Stress) {
+    const std::size_t iterations = 100;
+    const std::size_t size = 100000;
+    const unsigned int max = 500;
+
+    for (std::size_t it = 0; it < iterations; ++it) {
+        std::vector<unsigned int> a = utils::GenerateVector<unsigned int>(size, utils::UniformIntGenerator<std::int32_t>(it * it, 0, max));
+        std::sort(a.begin(), a.end());
+        std::vector<unsigned int> offsets(max + 2, a.size());
+        std::vector<unsigned int> lengths(max + 2);
+        for (unsigned int i = 0; i < a.size(); ++i) {
+            lengths[a[i]] += 1;
+            offsets[a[i]] = std::min(offsets[a[i]], i);
+        }
+        test(max + 1, a, offsets, lengths);
+    }
+}
+
 SPLA_GTEST_MAIN

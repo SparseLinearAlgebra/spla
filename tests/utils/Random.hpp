@@ -64,7 +64,7 @@ namespace utils {
             if (mMin == std::numeric_limits<T>::min() && mMax == std::numeric_limits<T>::max()) {
                 return generated;
             }
-            return generated % (mMin - mMax + 1) + mMin;
+            return generated % (mMax - mMin + 1) + mMin;
         }
 
     private:
