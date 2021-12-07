@@ -26,35 +26,3 @@
 /**********************************************************************************/
 
 #include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <sstream>
-
-namespace {
-    std::string MakeBody(const char *clType, const char *clOp) {
-        std::stringstream stream;
-        stream << clType << " a = *((_ACCESS_A const " << clType << "*)vp_a);\n"
-               << clType << " b = *((_ACCESS_A const " << clType << "*)vp_b);\n"
-               << "_ACCESS_C " << clType << "* c = (_ACCESS_C " << clType << "*)vp_c;\n"
-               << "*c = a " << clOp << " b;";
-        return stream.str();
-    }
-}// namespace
-
-#define SPLA_MAKE_BINARY_FUNCTION(opName, typeName, type, binop)                                   \
-    spla::RefPtr<spla::FunctionBinary> spla::Functions::opName##typeName(spla::Library &library) { \
-        auto t = Types::typeName(library);                                                         \
-        return FunctionBinary::Make(t, t, t, MakeBody(#type, #binop), library);                    \
-    }
-
-SPLA_MAKE_BINARY_FUNCTION(Plus, Int32, int, +)
-SPLA_MAKE_BINARY_FUNCTION(Plus, Int64, long, +)
-SPLA_MAKE_BINARY_FUNCTION(Plus, Float32, float, +)
-SPLA_MAKE_BINARY_FUNCTION(Plus, Float64, double, +)
-
-//SPLA_MAKE_BINARY_FUNCTION(Plus, UInt32, unsigned int, +)
-//SPLA_MAKE_BINARY_FUNCTION(Plus, UInt64, long, +)
-
-SPLA_MAKE_BINARY_FUNCTION(Mult, Int32, int, *)
-SPLA_MAKE_BINARY_FUNCTION(Mult, Int64, long, *)
-SPLA_MAKE_BINARY_FUNCTION(Mult, Float32, float, *)
-SPLA_MAKE_BINARY_FUNCTION(Mult, Float64, double, *)
