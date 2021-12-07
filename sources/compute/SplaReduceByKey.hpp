@@ -30,10 +30,13 @@
 
 #include <functional>
 
+#include <boost/compute/algorithm/for_each_n.hpp>
 #include <boost/compute/algorithm/inclusive_scan.hpp>
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/detail/meta_kernel.hpp>
+#include <boost/compute/iterator/counting_iterator.hpp>
 #include <boost/compute/memory/local_buffer.hpp>
+
 
 namespace spla {
 
@@ -54,7 +57,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const DeclareMultiKey &key) {
+        inline MetaKernel &operator<<(MetaKernel &k, const DeclareMultiKey &key) {
             for (std::size_t ki = 0; ki < key.KeySize; ++ki) {
                 k << k.decl<uint_>(key.Name + std::to_string(ki)) << ";";
             }
@@ -66,7 +69,7 @@ namespace spla {
             const std::size_t vBytes;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const DeclareVal &v) {
+        inline MetaKernel &operator<<(MetaKernel &k, const DeclareVal &v) {
             k << k.decl<unsigned char>(v.Name) << "[" << std::to_string(v.vBytes) << "];";
             return k;
         }
@@ -106,7 +109,7 @@ namespace spla {
         class KeyVec : public VMultiKey {
         public:
             explicit KeyVec(
-                    const std::vector<compute::vector<uint_>> &vectors,
+                    const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &vectors,
                     std::string idx,
                     MetaKernel &k)
                 : mIdx(std::move(idx)) {
@@ -204,7 +207,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const AssignKey &key) {
+        inline MetaKernel &operator<<(MetaKernel &k, const AssignKey &key) {
             for (std::size_t ki = 0; ki < key.KeySize; ++ki) {
                 std::string ind = std::to_string(ki);
                 k << key.Left.GetKeyByN(ki) << " = " << key.Right.GetKeyByN(ki) << ";";
@@ -217,7 +220,7 @@ namespace spla {
             const std::size_t KeySize;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const CompareKey &comp) {
+        inline MetaKernel &operator<<(MetaKernel &k, const CompareKey &comp) {
             for (std::size_t ki = 0; ki < comp.KeySize; ++ki) {
                 std::string ind = std::to_string(ki);
                 k << '(' << comp.Left.GetKeyByN(ki) << " == " << comp.Right.GetKeyByN(ki) << ")";
@@ -233,7 +236,7 @@ namespace spla {
             const std::size_t vBytes;
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const AssignVal &v) {
+        inline MetaKernel &operator<<(MetaKernel &k, const AssignVal &v) {
             k << "for (uint byte_i = 0; byte_i < " << std::to_string(v.vBytes) << "; byte_i++) {\n"
               << v.Left.GetByteByN("byte_i") << " = " << v.Right.GetByteByN("byte_i") << ";\n"
               << "}\n";
@@ -290,7 +293,7 @@ namespace spla {
             }
         };
 
-        MetaKernel &operator<<(MetaKernel &k, const std::shared_ptr<ReduceApplication> &reduce) {
+        inline MetaKernel &operator<<(MetaKernel &k, const std::shared_ptr<ReduceApplication> &reduce) {
             reduce->Print(k);
             return k;
         }
@@ -333,12 +336,12 @@ namespace spla {
             const std::size_t mVBytes;
         };
 
-        inline void GenerateUintKeys(const std::vector<compute::vector<unsigned int>> &keysFirst,
+        inline void GenerateUintKeys(const std::vector<std::reference_wrapper<const compute::vector<unsigned int>>> &keysFirst,
                                      const compute::vector<unsigned int>::iterator &newKeysFirst,
                                      std::size_t preferredWorkGroupSize,
                                      compute::command_queue &queue) {
             compute::detail::meta_kernel k("spla_reduce_by_key_new_key_flags");
-            const std::size_t count = keysFirst.at(0).size();
+            const std::size_t count = keysFirst.at(0).get().size();
             const std::size_t nKeys = keysFirst.size();
             k.add_set_arg<const uint_>("count", static_cast<uint_>(count));
 
@@ -525,7 +528,7 @@ namespace spla {
                                           workGroupSize);
         }
 
-        inline void FinalReduction(const std::vector<compute::vector<uint_>> &keys,
+        inline void FinalReduction(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
                                    const compute::vector<unsigned char>::iterator &valuesFirst,
                                    const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
                                    const compute::vector<unsigned char>::iterator &valuesResult,
@@ -620,7 +623,7 @@ namespace spla {
          * 4. Final reduction by key is performed (key-oriented Hillis/Steele scan),
          *  carry-in values are added where needed.
          */
-        inline std::size_t ReduceByKeyWithScan(const std::vector<compute::vector<uint_>> &keys,
+        inline std::size_t ReduceByKeyWithScan(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
                                                const compute::vector<unsigned char> &values,
                                                const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
                                                compute::vector<unsigned char> &valuesResult,
@@ -628,7 +631,7 @@ namespace spla {
                                                const std::string &reduceBody,
                                                compute::command_queue &queue) {
             const compute::context &context = queue.get_context();
-            const std::size_t count = keys.at(0).size();
+            const std::size_t count = keys.at(0).get().size();
 
             if (count == 0) {
                 return 0;
@@ -727,7 +730,7 @@ namespace spla {
                                        const std::string &reduceOp,
                                        boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
-                std::vector{inputIndices1, inputIndices2},
+                std::vector{std::ref(inputIndices1), std::ref(inputIndices2)},
                 inputValues,
                 std::vector{std::ref(outputIndices1), std::ref(outputIndices2)},
                 outputValues,
@@ -769,7 +772,7 @@ namespace spla {
                                    const std::string &reduceOp,
                                    boost::compute::command_queue &queue) {
         return detail::ReduceByKeyWithScan(
-                std::vector{inputIndices},
+                std::vector{std::ref(inputIndices)},
                 inputValues,
                 std::vector{std::ref(outputIndices)},
                 outputValues,
