@@ -55,23 +55,15 @@ namespace utils {
                                      T min = std::numeric_limits<T>::min(),
                                      T max = std::numeric_limits<T>::max())
             : mEngine(seed),
-              mMin(min),
-              mMax(max) {
-        }
+              mDist(min, max) {}
 
         T operator()() {
-            T generated = mDist(mEngine);
-            if (mMin == std::numeric_limits<T>::min() && mMax == std::numeric_limits<T>::max()) {
-                return generated;
-            }
-            return generated % (mMax - mMin + 1) + mMin;
+            return mDist(mEngine);
         }
 
     private:
         std::default_random_engine mEngine;
         std::uniform_int_distribution<T> mDist;
-        T mMin;
-        T mMax;
     };
 
     template<typename T>

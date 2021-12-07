@@ -92,32 +92,6 @@ namespace spla {
     /** Blocked matrix-matrix multiply params */
     class ParamsMxM final : public AlgorithmParams {
     public:
-        /**
-         * @brief The method of how each block will be sliced to perform multiplication
-         */
-        enum class BlockSlicingMethod {
-            /**
-             * All device memory will be used
-             * efficiently to perform multiplication
-             */
-            FIT_FREE_MEMORY,
-
-            /**
-             * Maximal memory consumption will
-             * not exceed specified constant of bytes
-             */
-            FIT_CONSTANT,
-
-            /**
-             * Block of the resulting matrix will
-             * be divided into slices, where height
-             * of each slice is no more than
-             * specified constant
-             */
-            BY_NUMBER_OF_ROWS
-        };
-
-    public:
         ~ParamsMxM() override = default;
 
         bool hasMask = false;       // true if must apply mask

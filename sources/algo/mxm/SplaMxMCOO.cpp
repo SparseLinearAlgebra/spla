@@ -39,6 +39,7 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 
 using IndeciesVector = boost::compute::vector<unsigned int>;
+using ValuesVector = boost::compute::vector<unsigned char>;
 
 namespace spla::detail {
     std::size_t CooSpmmHelper(std::size_t workspaceSize,
@@ -48,7 +49,7 @@ namespace spla::detail {
                               const MatrixCOO &b,
                               IndeciesVector &wRows,
                               IndeciesVector &wCols,
-                              boost::compute::vector<unsigned char> &wVals,
+                              ValuesVector &wVals,
                               std::size_t wValueByteSize,
                               const IndeciesVector &bRowOffsets,
                               const IndeciesVector &segmentLengths,
@@ -57,7 +58,7 @@ namespace spla::detail {
                               IndeciesVector &bGatherLocations,
                               IndeciesVector &I,
                               IndeciesVector &J,
-                              boost::compute::vector<unsigned char> &V,
+                              ValuesVector &V,
                               const RefPtr<FunctionBinary> &fMultiply,
                               const RefPtr<FunctionBinary> &fAdd,
                               boost::compute::command_queue &queue,
@@ -177,8 +178,16 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     MatrixCOO &b = *params->b.Cast<MatrixCOO>();
 
     const std::size_t wValueByteSize = params->tw->GetByteSize();
+    const bool maskIsComplement = params->desc->IsParamSet(Descriptor::Param::MaskComplement);
+    const bool maskIsNull = params->mask.Cast<MatrixCOO>().IsNull();
+    const bool hasMask = params->hasMask;
 
-    if (params->hasMask && params->mask.Cast<MatrixCOO>().IsNull()) {
+    if (hasMask && maskIsNull && !maskIsComplement) {
+        /**
+         * Covered mask cases:
+         *
+         * has mask: 1, complement: 0, mask is null: 1
+         */
         return;
     }
 
@@ -224,8 +233,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> aGatherLocations(ctx), bGatherLocations(ctx);
     compute::vector<unsigned int> I(ctx), J(ctx);
     compute::vector<unsigned char> V(ctx);
-    compute::vector<unsigned int> wTmpRows(ctx), wTmpCols(ctx);
-    compute::vector<unsigned char> wTmpVals(ctx);
+    compute::vector<unsigned int> wRows(ctx), wCols(ctx);
+    compute::vector<unsigned char> wVals(ctx);
 
     std::size_t wTmpNnz = 0;
 
@@ -237,7 +246,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
 
         wTmpNnz = detail::CooSpmmHelper(workspaceSize,
                                         beginSegment, endSegment,
-                                        a, b, wTmpRows, wTmpCols, wTmpVals, wValueByteSize,
+                                        a, b, wRows, wCols, wVals, wValueByteSize,
                                         bRowOffsets,
                                         segmentLengths, outputPtr,
                                         aGatherLocations, bGatherLocations,
@@ -312,20 +321,20 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         }
 
         // resize output
-        wTmpRows.resize(wTmpNnz, queue);
-        wTmpCols.resize(wTmpNnz, queue);
+        wRows.resize(wTmpNnz, queue);
+        wCols.resize(wTmpNnz, queue);
 
         if (hasValues) {
-            wTmpVals.resize(wTmpNnz * wValueByteSize, queue);
+            wVals.resize(wTmpNnz * wValueByteSize, queue);
         }
 
         // copy slices into output
         std::ptrdiff_t base = 0;
         for (auto it = slices.begin(); it < slices.end(); ++it) {
-            compute::copy(it->rows.begin(), it->rows.end(), wTmpRows.begin() + base, queue);
-            compute::copy(it->cols.begin(), it->cols.end(), wTmpCols.begin() + base, queue);
+            compute::copy(it->rows.begin(), it->rows.end(), wRows.begin() + base, queue);
+            compute::copy(it->cols.begin(), it->cols.end(), wCols.begin() + base, queue);
             if (hasValues) {
-                compute::copy(it->vals.begin(), it->vals.end(), wTmpVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
+                compute::copy(it->vals.begin(), it->vals.end(), wVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
             }
             base += static_cast<std::ptrdiff_t>(it->GetNvals());
         }
@@ -335,23 +344,37 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         return;
     }
 
-    compute::vector<unsigned int> wRows(ctx);
-    compute::vector<unsigned int> wCols(ctx);
-    compute::vector<unsigned char> wVals(ctx);
     std::size_t wNnz;
 
-    if (params->hasMask) {
+    if (hasMask && !maskIsNull) {
+        /**
+         * Covered mask cases:
+         *
+         * has mask: 1, complement: 0, mask is null: 0
+         * has mask: 1, complement: 1, mask is null: 0
+         */
+
+        compute::vector<unsigned int> wTmpRows(ctx);
+        compute::vector<unsigned int> wTmpCols(ctx);
+        compute::vector<unsigned char> wTmpVals(ctx);
         MatrixCOO &mask = *params->mask.Cast<MatrixCOO>();
         ApplyMask(mask.GetRows(), mask.GetCols(),
+                  wRows, wCols, wVals,
                   wTmpRows, wTmpCols, wTmpVals,
-                  wRows, wCols, wVals, wValueByteSize,
+                  wValueByteSize,
                   params->desc->IsParamSet(Descriptor::Param::MaskComplement),
                   queue);
-        wNnz = wRows.size();
+        wNnz = wTmpRows.size();
+        std::swap(wTmpRows, wRows);
+        std::swap(wTmpCols, wCols);
+        std::swap(wTmpVals, wVals);
     } else {
-        wRows = std::move(wTmpRows);
-        wCols = std::move(wTmpCols);
-        wVals = std::move(wTmpVals);
+        /**
+         * Covered mask cases:
+         *
+         * has mask: 0, complement: -, mask is null: -
+         * has mask: 1, complement: 1, mask is null: 1
+         */
         wNnz = wTmpNnz;
     }
 
