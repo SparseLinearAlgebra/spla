@@ -81,7 +81,6 @@ namespace spla::detail {
 
         const auto beginSegmentDiff = static_cast<std::ptrdiff_t>(beginSegment);
         const auto endSegmentDiff = static_cast<std::ptrdiff_t>(endSegment);
-        assert(beginSegmentDiff < outputPtr.size());
         const auto startShift = (outputPtr.begin() + beginSegmentDiff).read(queue);
 
         // compute gather locations of intermediate format for 'a'
@@ -92,9 +91,7 @@ namespace spla::detail {
                     aGatherLocations[outputPtr[i] - startShift] = i;
                 }
             });
-            assert(beginSegment <= outputPtr.size());
-            assert(endSegment <= outputPtr.size());
-            compute::for_each_n(compute::counting_iterator(beginSegment), endSegment, calcAGatherLoc, queue);
+            compute::for_each_n(compute::counting_iterator(beginSegment), endSegment - beginSegment, calcAGatherLoc, queue);
         }
         compute::inclusive_scan(aGatherLocations.begin(),
                                 aGatherLocations.end(),
@@ -218,8 +215,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
 
     std::size_t wTmpNnz = 0;
 
-    //    if (cooNumNonZeros <= workspaceCapacity) {
-    if (false) {
+    if (cooNumNonZeros <= workspaceCapacity) {
         // compute W = A * B in one step
         std::size_t beginSegment = 0;
         std::size_t endSegment = a.GetNvals();
@@ -269,16 +265,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
 
         std::ptrdiff_t beginRow = 0;
         std::size_t totalWork = 0;
-        bool goodBefore = true;
-        {
-            compute::vector<unsigned int> eq(aRowOffsets.size() - 1, ctx);
-            using compute::lambda::_1;
-            using compute::lambda::_2;
-            compute::transform(aRowOffsets.begin(), aRowOffsets.end() - 1, aRowOffsets.begin() + 1, eq.begin(), _1 > _2, queue);
-            auto n = compute::accumulate(eq.begin(), eq.end(), 0, queue);
-            CHECK_RAISE_CRITICAL_ERROR(n == 0, MemOpFailed, (std::string{"IT MUST ZERO!!! "} + std::to_string(n)));
-            goodBefore = true;
-        }
 
         while (static_cast<std::size_t>(beginRow) < a.GetNrows()) {
             // find the largest endRow such that the capacity of [beginRow, endRow) fits in the workspaceCapacity
@@ -289,30 +275,10 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                     cumulativeRowWorkspace.begin();
             CHECK_RAISE_CRITICAL_ERROR(beginRow < endRow, MemOpFailed, "Workspace size isn't large enough to perform MxM");
 
-            {
-                compute::vector<unsigned int> eq(aRowOffsets.size() - 1, ctx);
-                using compute::lambda::_1;
-                using compute::lambda::_2;
-                compute::transform(aRowOffsets.begin(), aRowOffsets.end() - 1, aRowOffsets.begin() + 1, eq.begin(), _1 > _2, queue);
-                auto n = compute::accumulate(eq.begin(), eq.end(), 0, queue);
-                CHECK_RAISE_CRITICAL_ERROR(n == 0, MemOpFailed, (std::string{"It was good before, but.. not now( IT MUST ZERO!!! "} + std::to_string(n)));
-            }
             unsigned int beginSegment = (aRowOffsets.begin() + beginRow).read(queue);
             unsigned int endSegment = (aRowOffsets.begin() + endRow).read(queue);
-            CHECK_RAISE_CRITICAL_ERROR(beginSegment < endSegment, MemOpFailed, "beginSegment >= endSegment :( " + std::to_string(beginSegment) + ' ' + std::to_string(endSegment));
-
-            assert(endSegment < outputPtr.size());
-            assert(beginSegment < outputPtr.size());
-            {
-                auto beginOffset = (outputPtr.begin() + beginSegment).read(queue);
-                auto endOffset = (outputPtr.begin() + endSegment).read(queue);
-
-                CHECK_RAISE_CRITICAL_ERROR(beginOffset < endOffset, MemOpFailed, (std::string{"No!!!!! "} + std::to_string(beginOffset) + ' ' + std::to_string(endOffset) + ' ' + std::to_string(beginSegment) + ' ' + std::to_string(endSegment)));
-            }
             std::size_t workspaceSize = (outputPtr.begin() + endSegment).read(queue) - (outputPtr.begin() + beginSegment).read(queue);
             totalWork += workspaceSize;
-            CHECK_RAISE_CRITICAL_ERROR(workspaceSize <= workspaceCapacity, MemOpFailed, (std::string{"Oh, I am so dead "} + std::to_string(workspaceSize) + ' ' + std::to_string(workspaceCapacity)));
-            assert(workspaceSize <= workspaceCapacity);
 
             compute::vector<unsigned int> wSliceRows(ctx), wSliceCols(ctx);
             compute::vector<unsigned char> wSliceVals(ctx);
@@ -344,7 +310,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
             compute::copy(it->vals.begin(), it->vals.end(), wTmpVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
             base += static_cast<std::ptrdiff_t>(it->GetNvals());
         }
-        assert(static_cast<std::size_t>(base) == wTmpNnz);
     }
 
     if (wTmpNnz == 0) {
