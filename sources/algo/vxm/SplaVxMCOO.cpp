@@ -66,7 +66,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto mask = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
-    if (p->hasMask && (complementMask && mask.IsNull()))
+    if (p->hasMask && !complementMask && mask.IsNull())
         return;
 
     if (a->GetNvals() == 0 || b->GetNvals() == 0)
