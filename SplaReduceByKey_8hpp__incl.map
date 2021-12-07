@@ -1,8 +1,10 @@
 <map id="sources/compute/SplaReduceByKey.hpp" name="sources/compute/SplaReduceByKey.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="283,5,479,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="472,5,668,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,102,84,129"/>
 <area shape="rect" id="node3" title=" " alt="" coords="109,95,274,136"/>
 <area shape="rect" id="node4" title=" " alt="" coords="298,95,463,136"/>
-<area shape="rect" id="node5" title=" " alt="" coords="488,95,631,136"/>
-<area shape="rect" id="node6" title=" " alt="" coords="655,95,813,136"/>
+<area shape="rect" id="node5" title=" " alt="" coords="487,95,653,136"/>
+<area shape="rect" id="node6" title=" " alt="" coords="677,95,820,136"/>
+<area shape="rect" id="node7" title=" " alt="" coords="845,95,997,136"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1021,95,1180,136"/>
 </map>

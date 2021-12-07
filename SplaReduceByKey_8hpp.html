@@ -75,21 +75,25 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;boost/compute/algorithm/for_each_n.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/algorithm/inclusive_scan.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/container/vector.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/detail/meta_kernel.hpp&gt;</code><br />
+<code>#include &lt;boost/compute/iterator/counting_iterator.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/memory/local_buffer.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaReduceByKey.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaReduceByKey_8hpp__incl.png" border="0" usemap="#asources_2compute_2SplaReduceByKey_8hpp" alt=""/></div>
 <map name="asources_2compute_2SplaReduceByKey_8hpp" id="asources_2compute_2SplaReduceByKey_8hpp">
-<area shape="rect" title=" " alt="" coords="283,5,479,47"/>
+<area shape="rect" title=" " alt="" coords="472,5,668,47"/>
 <area shape="rect" title=" " alt="" coords="5,102,84,129"/>
 <area shape="rect" title=" " alt="" coords="109,95,274,136"/>
 <area shape="rect" title=" " alt="" coords="298,95,463,136"/>
-<area shape="rect" title=" " alt="" coords="488,95,631,136"/>
-<area shape="rect" title=" " alt="" coords="655,95,813,136"/>
+<area shape="rect" title=" " alt="" coords="487,95,653,136"/>
+<area shape="rect" title=" " alt="" coords="677,95,820,136"/>
+<area shape="rect" title=" " alt="" coords="845,95,997,136"/>
+<area shape="rect" title=" " alt="" coords="1021,95,1180,136"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -165,16 +169,16 @@ Functions</h2></td></tr>
 <tr class="separator:abacd68127f68fd9943edf814009b626b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95052b40bb71ff9086c0f77532aa6328"><td class="memItemLeft" align="right" valign="top">MetaKernel &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a95052b40bb71ff9086c0f77532aa6328">spla::detail::operator&lt;&lt;</a> (MetaKernel &amp;k, const std::shared_ptr&lt; ReduceApplication &gt; &amp;reduce)</td></tr>
 <tr class="separator:a95052b40bb71ff9086c0f77532aa6328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addffa7fe685ffe7f7b158571c6427e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#addffa7fe685ffe7f7b158571c6427e83">spla::detail::GenerateUintKeys</a> (const std::vector&lt; compute::vector&lt; unsigned int &gt;&gt; &amp;keysFirst, const compute::vector&lt; unsigned int &gt;::iterator &amp;newKeysFirst, std::size_t preferredWorkGroupSize, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:addffa7fe685ffe7f7b158571c6427e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a138945ded5cabc9a11933a9c1e7a28b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a138945ded5cabc9a11933a9c1e7a28b2">spla::detail::GenerateUintKeys</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; unsigned int &gt;&gt;&gt; &amp;keysFirst, const compute::vector&lt; unsigned int &gt;::iterator &amp;newKeysFirst, std::size_t preferredWorkGroupSize, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a138945ded5cabc9a11933a9c1e7a28b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a756268c78cb1ae17d3675b8be78d034e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a756268c78cb1ae17d3675b8be78d034e">spla::detail::CarryOuts</a> (const compute::vector&lt; uint_ &gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const compute::vector&lt; uint_ &gt;::iterator &amp;carryOutsKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryOutValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a756268c78cb1ae17d3675b8be78d034e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a720852c7ed3a88d4e5babe8363ddd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a15a720852c7ed3a88d4e5babe8363ddd">spla::detail::CarryIns</a> (const compute::vector&lt; uint_ &gt;::iterator &amp;carryOutsKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryOutValuesFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t carryOutSize, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a15a720852c7ed3a88d4e5babe8363ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a667b05c63970b992e6af9f10e91aa97c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a667b05c63970b992e6af9f10e91aa97c">spla::detail::FinalReduction</a> (const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesFirst, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesResult, std::size_t count, const compute::vector&lt; uint_ &gt;::iterator &amp;newKeysFirst, const compute::vector&lt; uint_ &gt;::iterator &amp;carryInKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a667b05c63970b992e6af9f10e91aa97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51b3651854ab6d28d05aad147591021c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a51b3651854ab6d28d05aad147591021c">spla::detail::ReduceByKeyWithScan</a> (const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, compute::vector&lt; unsigned char &gt; &amp;valuesResult, std::size_t valueByteSize, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a51b3651854ab6d28d05aad147591021c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12cb7af5cfb783a2106c737b8e09cb2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a12cb7af5cfb783a2106c737b8e09cb2c">spla::detail::FinalReduction</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesFirst, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesResult, std::size_t count, const compute::vector&lt; uint_ &gt;::iterator &amp;newKeysFirst, const compute::vector&lt; uint_ &gt;::iterator &amp;carryInKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a12cb7af5cfb783a2106c737b8e09cb2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90b53a87ceacc11a51de6e9be051c25"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#ac90b53a87ceacc11a51de6e9be051c25">spla::detail::ReduceByKeyWithScan</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, compute::vector&lt; unsigned char &gt; &amp;valuesResult, std::size_t valueByteSize, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ac90b53a87ceacc11a51de6e9be051c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab13f7b0b882862cf7de95039d26b2c6f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab13f7b0b882862cf7de95039d26b2c6f">spla::ReduceByPairKey</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;outputValues, std::size_t valueByteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gab13f7b0b882862cf7de95039d26b2c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The algorithm performs reduction for each contiguous subsequence of aligned values determinate by equivalent keys. <br  />
 .  <a href="group__Internal.html#gab13f7b0b882862cf7de95039d26b2c6f">More...</a><br /></td></tr>

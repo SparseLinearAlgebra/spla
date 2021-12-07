@@ -156,16 +156,16 @@ Functions</h2></td></tr>
 <tr class="separator:abacd68127f68fd9943edf814009b626b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95052b40bb71ff9086c0f77532aa6328"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a95052b40bb71ff9086c0f77532aa6328">operator&lt;&lt;</a> (<a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;k, const std::shared_ptr&lt; <a class="el" href="classspla_1_1detail_1_1ReduceApplication.html">ReduceApplication</a> &gt; &amp;reduce)</td></tr>
 <tr class="separator:a95052b40bb71ff9086c0f77532aa6328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addffa7fe685ffe7f7b158571c6427e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#addffa7fe685ffe7f7b158571c6427e83">GenerateUintKeys</a> (const std::vector&lt; compute::vector&lt; unsigned int &gt;&gt; &amp;keysFirst, const compute::vector&lt; unsigned int &gt;::iterator &amp;newKeysFirst, std::size_t preferredWorkGroupSize, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:addffa7fe685ffe7f7b158571c6427e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a138945ded5cabc9a11933a9c1e7a28b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a138945ded5cabc9a11933a9c1e7a28b2">GenerateUintKeys</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; unsigned int &gt;&gt;&gt; &amp;keysFirst, const compute::vector&lt; unsigned int &gt;::iterator &amp;newKeysFirst, std::size_t preferredWorkGroupSize, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a138945ded5cabc9a11933a9c1e7a28b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a756268c78cb1ae17d3675b8be78d034e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a756268c78cb1ae17d3675b8be78d034e">CarryOuts</a> (const compute::vector&lt; uint_ &gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const compute::vector&lt; uint_ &gt;::iterator &amp;carryOutsKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryOutValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a756268c78cb1ae17d3675b8be78d034e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a720852c7ed3a88d4e5babe8363ddd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a15a720852c7ed3a88d4e5babe8363ddd">CarryIns</a> (const compute::vector&lt; uint_ &gt;::iterator &amp;carryOutsKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryOutValuesFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t carryOutSize, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a15a720852c7ed3a88d4e5babe8363ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a667b05c63970b992e6af9f10e91aa97c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a667b05c63970b992e6af9f10e91aa97c">FinalReduction</a> (const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesFirst, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesResult, std::size_t count, const compute::vector&lt; uint_ &gt;::iterator &amp;newKeysFirst, const compute::vector&lt; uint_ &gt;::iterator &amp;carryInKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a667b05c63970b992e6af9f10e91aa97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51b3651854ab6d28d05aad147591021c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a51b3651854ab6d28d05aad147591021c">ReduceByKeyWithScan</a> (const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, compute::vector&lt; unsigned char &gt; &amp;valuesResult, std::size_t valueByteSize, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
-<tr class="separator:a51b3651854ab6d28d05aad147591021c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12cb7af5cfb783a2106c737b8e09cb2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a12cb7af5cfb783a2106c737b8e09cb2c">FinalReduction</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesFirst, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, const compute::vector&lt; unsigned char &gt;::iterator &amp;valuesResult, std::size_t count, const compute::vector&lt; uint_ &gt;::iterator &amp;newKeysFirst, const compute::vector&lt; uint_ &gt;::iterator &amp;carryInKeysFirst, const compute::vector&lt; unsigned char &gt;::iterator &amp;carryInValuesFirst, std::size_t workGroupSize, std::size_t vBytes, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a12cb7af5cfb783a2106c737b8e09cb2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90b53a87ceacc11a51de6e9be051c25"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#ac90b53a87ceacc11a51de6e9be051c25">ReduceByKeyWithScan</a> (const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keys, const compute::vector&lt; unsigned char &gt; &amp;values, const std::vector&lt; std::reference_wrapper&lt; compute::vector&lt; uint_ &gt;&gt;&gt; &amp;keysResult, compute::vector&lt; unsigned char &gt; &amp;valuesResult, std::size_t valueByteSize, const std::string &amp;reduceBody, compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ac90b53a87ceacc11a51de6e9be051c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83567963739f6975624b0ca4065bed1a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#a83567963739f6975624b0ca4065bed1a">ReduceDuplicatesImpl</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:a83567963739f6975624b0ca4065bed1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -329,8 +329,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a667b05c63970b992e6af9f10e91aa97c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a667b05c63970b992e6af9f10e91aa97c">&#9670;&nbsp;</a></span>FinalReduction()</h2>
+<a id="a12cb7af5cfb783a2106c737b8e09cb2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12cb7af5cfb783a2106c737b8e09cb2c">&#9670;&nbsp;</a></span>FinalReduction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,7 +341,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void spla::detail::FinalReduction </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>keys</em>, </td>
         </tr>
         <tr>
@@ -425,8 +425,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="addffa7fe685ffe7f7b158571c6427e83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#addffa7fe685ffe7f7b158571c6427e83">&#9670;&nbsp;</a></span>GenerateUintKeys()</h2>
+<a id="a138945ded5cabc9a11933a9c1e7a28b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a138945ded5cabc9a11933a9c1e7a28b2">&#9670;&nbsp;</a></span>GenerateUintKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -437,7 +437,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void spla::detail::GenerateUintKeys </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; compute::vector&lt; unsigned int &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; unsigned int &gt;&gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>keysFirst</em>, </td>
         </tr>
         <tr>
@@ -610,6 +610,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -629,6 +632,11 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -638,6 +646,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -657,6 +668,11 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -666,6 +682,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -685,6 +704,11 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -694,6 +718,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -713,6 +740,11 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -722,6 +754,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -741,6 +776,11 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -750,6 +790,9 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a>&amp; spla::detail::operator&lt;&lt; </td>
@@ -769,12 +812,17 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a51b3651854ab6d28d05aad147591021c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51b3651854ab6d28d05aad147591021c">&#9670;&nbsp;</a></span>ReduceByKeyWithScan()</h2>
+<a id="ac90b53a87ceacc11a51de6e9be051c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac90b53a87ceacc11a51de6e9be051c25">&#9670;&nbsp;</a></span>ReduceByKeyWithScan()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -785,7 +833,7 @@ template&lt;typename Operator1 , typename Operator2 , typename Operator3 &gt; </
         <tr>
           <td class="memname">std::size_t spla::detail::ReduceByKeyWithScan </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; compute::vector&lt; uint_ &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; std::reference_wrapper&lt; const compute::vector&lt; uint_ &gt;&gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>keys</em>, </td>
         </tr>
         <tr>
