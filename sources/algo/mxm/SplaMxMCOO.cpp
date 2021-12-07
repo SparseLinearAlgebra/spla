@@ -200,7 +200,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
-        const std::size_t free = 1 << 15;
+        const std::size_t free = 1 << 20; // 1 MB. TODO: Get information about amount of free space and put it here
         const std::size_t maxWorkspaceCapacity = free / (4 * sizeof(unsigned int) + valueByteSize);
 
         // use at most one third of the remaining capacity
