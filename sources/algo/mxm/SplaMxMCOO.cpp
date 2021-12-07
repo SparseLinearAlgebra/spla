@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <boost/compute/algorithm/scatter_if.hpp>
-#include <boost/compute/algorithm/transform.hpp>
 
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
@@ -59,23 +58,31 @@ namespace spla::detail {
                               IndeciesVector &I,
                               IndeciesVector &J,
                               boost::compute::vector<unsigned char> &V,
-                              const FunctionBinary &fMultiply,
-                              const FunctionBinary &fAdd,
+                              const RefPtr<FunctionBinary> &fMultiply,
+                              const RefPtr<FunctionBinary> &fAdd,
                               boost::compute::command_queue &queue,
                               const std::shared_ptr<spdlog::logger> &) {
         using namespace boost;
+
+        const bool fillAGatherLocations = !aGatherLocations.empty();
+        const bool typeHasValues = wValueByteSize != 0;
 
         aGatherLocations.resize(workspaceSize, queue);
         bGatherLocations.resize(workspaceSize, queue);
         I.resize(workspaceSize, queue);
         J.resize(workspaceSize, queue);
-        V.resize(workspaceSize * wValueByteSize, queue);
+
+        if (typeHasValues) {
+            V.resize(workspaceSize * wValueByteSize, queue);
+        }
 
         // nothing to do
         if (workspaceSize == 0) {
             wRows.resize(0, queue);
             wCols.resize(0, queue);
-            wVals.resize(0, queue);
+            if (typeHasValues) {
+                wVals.resize(0, queue);
+            }
             return 0;
         }
 
@@ -84,7 +91,9 @@ namespace spla::detail {
         const auto startShift = (outputPtr.begin() + beginSegmentDiff).read(queue);
 
         // compute gather locations of intermediate format for 'a'
-        compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);
+        if (fillAGatherLocations) {
+            compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);
+        }
         {
             BOOST_COMPUTE_CLOSURE(void, calcAGatherLoc, (unsigned int i), (aGatherLocations, outputPtr, startShift, segmentLengths), {
                 if (segmentLengths[i] != 0) {
@@ -119,22 +128,27 @@ namespace spla::detail {
                         J.begin(),
                         queue);
 
-        TransformValues(aGatherLocations, bGatherLocations,
-                        a.GetVals(), b.GetVals(),
-                        V,
-                        a.GetValueByteSize(), b.GetValueByteSize(), wValueByteSize,
-                        fMultiply.GetSource(),
-                        queue);
+        if (typeHasValues) {
+            TransformValues(aGatherLocations, bGatherLocations,
+                            a.GetVals(), b.GetVals(),
+                            V,
+                            a.GetValueByteSize(), b.GetValueByteSize(), wValueByteSize,
+                            fMultiply->GetSource(),
+                            queue);
+        }
 
         // sort (I,J,V) tuples by (I,J)
         SortByRowColumn(I, J, V, wValueByteSize, queue);
 
         // sum values with the same (i,j)
-        return ReduceByPairKey(I, J, V,
-                               wRows, wCols, wVals,
-                               wValueByteSize,
-                               fAdd.GetSource(),
-                               queue);
+        if (typeHasValues) {
+            return ReduceByPairKey(I, J, V,
+                                   wRows, wCols, wVals,
+                                   wValueByteSize,
+                                   fAdd->GetSource(),
+                                   queue);
+        }
+        return ReducePairKey(I, J, wRows, wCols, queue);
     }
 }// namespace spla::detail
 
@@ -173,8 +187,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     const auto &typeA = params->ta;
     const auto &typeB = params->tb;
     const auto &typeW = params->tw;
-    auto hasValues = typeW->HasValues();
-    auto valueByteSize = typeW->GetByteSize();
+    const bool hasValues = typeW->HasValues();
+    const std::size_t valueByteSize = typeW->GetByteSize();
     assert(a.GetNcols() == b.GetNrows());
 
     // compute row offsets and row lengths for B
@@ -200,7 +214,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
-        const std::size_t free = 1 << 20; // 1 MB. TODO: Get information about amount of free space and put it here
+        const std::size_t free = 1 << 20;// 1 MB. TODO: Get information about amount of free space and put it here
         const std::size_t maxWorkspaceCapacity = free / (4 * sizeof(unsigned int) + valueByteSize);
 
         // use at most one third of the remaining capacity
@@ -228,7 +242,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                         segmentLengths, outputPtr,
                                         aGatherLocations, bGatherLocations,
                                         I, J, V,
-                                        *params->mult, *params->add,
+                                        params->mult, params->add,
                                         queue, logger);
     } else {
         // decompose C = A * B into several C[slice,:] = A[slice,:] * B operations
@@ -289,7 +303,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                              segmentLengths, outputPtr,
                                              aGatherLocations, bGatherLocations,
                                              I, J, V,
-                                             *params->mult, *params->add,
+                                             params->mult, params->add,
                                              queue, logger);
             slices.emplace_back(std::move(wSliceRows),
                                 std::move(wSliceCols),
@@ -300,14 +314,19 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         // resize output
         wTmpRows.resize(wTmpNnz, queue);
         wTmpCols.resize(wTmpNnz, queue);
-        wTmpVals.resize(wTmpNnz * wValueByteSize, queue);
+
+        if (hasValues) {
+            wTmpVals.resize(wTmpNnz * wValueByteSize, queue);
+        }
 
         // copy slices into output
         std::ptrdiff_t base = 0;
         for (auto it = slices.begin(); it < slices.end(); ++it) {
             compute::copy(it->rows.begin(), it->rows.end(), wTmpRows.begin() + base, queue);
             compute::copy(it->cols.begin(), it->cols.end(), wTmpCols.begin() + base, queue);
-            compute::copy(it->vals.begin(), it->vals.end(), wTmpVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
+            if (hasValues) {
+                compute::copy(it->vals.begin(), it->vals.end(), wTmpVals.begin() + base * static_cast<std::ptrdiff_t>(wValueByteSize), queue);
+            }
             base += static_cast<std::ptrdiff_t>(it->GetNvals());
         }
     }

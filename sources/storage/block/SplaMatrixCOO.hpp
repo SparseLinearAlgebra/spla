@@ -48,17 +48,9 @@ namespace spla {
 
         [[nodiscard]] const Indices &GetRows() const noexcept;
 
-        [[nodiscard]] Indices &GetMutRows() noexcept;
-
         [[nodiscard]] const Indices &GetCols() const noexcept;
 
-        [[nodiscard]] Indices &GetMutCols() noexcept;
-
         [[nodiscard]] const Values &GetVals() const noexcept;
-
-        [[nodiscard]] Values &GetMutVals() noexcept;
-
-        void ResizeNnz(unsigned int nVals, boost::compute::command_queue &queue);
 
         void Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const override;
 
