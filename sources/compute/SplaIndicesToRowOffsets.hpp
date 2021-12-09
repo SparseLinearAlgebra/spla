@@ -61,7 +61,13 @@ namespace spla {
         using namespace boost;
 
         lengths.resize(n + 1, queue);
+        offsets.resize(n + 1, queue);
         compute::fill(lengths.begin(), lengths.end(), 0u, queue);
+
+        if (indices.empty()) {
+            compute::fill(offsets.begin(), offsets.end(), 0u, queue);
+            return;
+        }
 
         BOOST_COMPUTE_CLOSURE(void, countRowLengths, (unsigned int i), (indices, lengths), {
             uint rowId = indices[i];
@@ -70,7 +76,6 @@ namespace spla {
 
         compute::for_each_n(compute::counting_iterator<unsigned int>(0), indices.size(), countRowLengths, queue);
 
-        offsets.resize(n + 1, queue);
         compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);
     }
 
