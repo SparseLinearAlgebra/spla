@@ -782,6 +782,65 @@ namespace spla {
     }
 
     /**
+     * @brief The algorithm performs reduction of two input keys sequences
+     * for each contiguous subsequence of equivalent keys.
+     * Keys are considered to be equal iff the keys in corresponding
+     * sequences are equal.
+     *
+     * @note Lengths of the sequences must be the same.
+     *
+     * @param inputIndices1 First sequence of keys
+     * @param inputIndices2 Second sequence of keys
+     * @param outputIndices1 Output sequence for the first sequence
+     * @param outputIndices2 Output sequence for the second sequence
+     * @param queue OpenCL command queue
+     * @return Size of the resulting key sequence
+     */
+    inline std::size_t ReducePairKey(const boost::compute::vector<unsigned int> &inputIndices1,
+                                     const boost::compute::vector<unsigned int> &inputIndices2,
+                                     boost::compute::vector<unsigned int> &outputIndices1,
+                                     boost::compute::vector<unsigned int> &outputIndices2,
+                                     boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        compute::context ctx = queue.get_context();
+        assert(inputIndices1.size() == inputIndices2.size());
+        const std::size_t inputSize = inputIndices1.size();
+
+        if (inputSize <= 1) {
+            outputIndices1.resize(inputSize, queue);
+            outputIndices2.resize(inputSize, queue);
+            compute::copy(inputIndices1.begin(), inputIndices1.end(), outputIndices1.begin(), queue);
+            compute::copy(inputIndices2.begin(), inputIndices2.end(), outputIndices2.begin(), queue);
+            return inputSize;
+        }
+
+        compute::vector<unsigned int> outputPos(inputSize, ctx);
+        detail::GenerateUintKeys({std::ref(inputIndices1), std::ref(inputIndices2)},
+                                 outputPos.begin(),
+                                 queue.get_device().get_info<CL_DEVICE_MAX_WORK_GROUP_SIZE>(),
+                                 queue);
+
+        const std::size_t uniqueNum = (outputPos.end() - 1).read(queue) + 1;
+        outputIndices1.resize(uniqueNum, queue);
+        outputIndices2.resize(uniqueNum, queue);
+
+        BOOST_COMPUTE_CLOSURE(void, copyToOutput, (unsigned int i), (inputIndices1, inputIndices2, outputIndices1, outputIndices2, outputPos),
+                              {
+                                  if (outputPos[i] != outputPos[i - 1]) {
+                                      outputIndices1[outputPos[i]] = inputIndices1[i];
+                                      outputIndices2[outputPos[i]] = inputIndices2[i];
+                                  }
+                              });
+
+        compute::for_each_n(compute::counting_iterator(1), inputSize - 1, copyToOutput, queue);
+        outputIndices1.begin().write(inputIndices1.begin().read(queue), queue);
+        outputIndices2.begin().write(inputIndices2.begin().read(queue), queue);
+
+        return uniqueNum;
+    }
+
+    /**
      * @}
      */
 

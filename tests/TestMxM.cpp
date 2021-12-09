@@ -27,19 +27,20 @@
 
 #include <Testing.hpp>
 
-template<typename Type, typename MultOp, typename AddOp>
+template<typename Type, typename MultOp, typename AddOp, typename Random>
 void testCommon(spla::Library &library,
                 std::size_t M, std::size_t K, std::size_t N, std::size_t nvals,
-                const spla::RefPtr<spla::Type> spT,
-                const spla::RefPtr<spla::FunctionBinary> spMult,
-                const spla::RefPtr<spla::FunctionBinary> spAdd,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spMult,
+                const spla::RefPtr<spla::FunctionBinary> &spAdd,
                 MultOp multOp, AddOp addOp,
-                std::size_t seed = 0) {
-    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, seed).SortReduceDuplicates();
-    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
+                std::size_t indexGenerationSeed,
+                Random valueGenerator) {
+    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, indexGenerationSeed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, indexGenerationSeed + 1).SortReduceDuplicates();
 
-    a.Fill(utils::UniformGenerator<Type>());
-    b.Fill(utils::UniformGenerator<Type>());
+    a.Fill(std::ref(valueGenerator));
+    b.Fill(std::ref(valueGenerator));
 
     auto spA = spla::Matrix::Make(M, K, spT, library);
     auto spB = spla::Matrix::Make(K, N, spT, library);
@@ -62,23 +63,25 @@ void testCommon(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<Type> c = a.template MxM<Type>(b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spW));
 }
 
-template<typename Type, typename MultOp, typename AddOp>
+template<typename Type, typename MultOp, typename AddOp, typename Random>
 void testMasked(spla::Library &library,
                 std::size_t M, std::size_t K, std::size_t N, std::size_t nvals,
-                const spla::RefPtr<spla::Type> spT,
-                const spla::RefPtr<spla::FunctionBinary> spMult,
-                const spla::RefPtr<spla::FunctionBinary> spAdd,
+                const spla::RefPtr<spla::Type> &spT,
+                const spla::RefPtr<spla::FunctionBinary> &spMult,
+                const spla::RefPtr<spla::FunctionBinary> &spAdd,
                 MultOp multOp, AddOp addOp,
-                std::size_t seed = 0) {
-    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, seed).SortReduceDuplicates();
-    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
-    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
+                std::size_t indexGenerationSeed,
+                Random valueGenerator,
+                bool maskComplement) {
+    utils::Matrix a = utils::Matrix<Type>::Generate(M, K, nvals, indexGenerationSeed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<Type>::Generate(K, N, nvals, indexGenerationSeed + 2).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, indexGenerationSeed + 3).SortReduceDuplicates();
 
-    a.Fill(utils::UniformGenerator<Type>());
-    b.Fill(utils::UniformGenerator<Type>());
+    a.Fill(std::ref(valueGenerator));
+    b.Fill(std::ref(valueGenerator));
 
     auto spA = spla::Matrix::Make(M, K, spT, library);
     auto spB = spla::Matrix::Make(K, N, spT, library);
@@ -90,11 +93,17 @@ void testMasked(spla::Library &library,
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
+    // Use complementary mask if required
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (maskComplement) {
+        spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+    }
+
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetData(library), spDesc);
     auto spWriteB = spExpr->MakeDataWrite(spB, b.GetData(library), spDesc);
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
-    auto spMxM = spExpr->MakeMxM(spW, spMask, spMult, spAdd, spA, spB);
+    auto spMxM = spExpr->MakeMxM(spW, spMask, spMult, spAdd, spA, spB, spOpDesc);
     spExpr->Dependency(spWriteA, spMxM);
     spExpr->Dependency(spWriteB, spMxM);
     spExpr->Dependency(spWriteMask, spMxM);
@@ -103,11 +112,46 @@ void testMasked(spla::Library &library,
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix<Type> c = a.template MxM<Type>(mask, false, b, multOp, addOp);
-    // ASSERT_TRUE(c.Equals(spW));
+    utils::Matrix<Type> c = a.template MxM<Type>(mask, maskComplement, b, multOp, addOp);
+    ASSERT_TRUE(c.Equals(spW));
 }
 
-void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
+void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+    utils::Matrix a = utils::Matrix<unsigned char>::Generate(M, K, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<unsigned char>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Matrix::Make(M, K, spT, library);
+    auto spB = spla::Matrix::Make(K, N, spT, library);
+    auto spW = spla::Matrix::Make(M, N, spT, library);
+    auto spMask = spla::Matrix::Make(M, N, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spMxM = spExpr->MakeMxM(spW, spMask, nullptr, nullptr, spA, spB);
+    spExpr->Dependency(spWriteA, spMxM);
+    spExpr->Dependency(spWriteB, spMxM);
+    spExpr->Dependency(spWriteMask, spMxM);
+    spExpr->Submit();
+    spExpr->Wait();
+
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    auto dummy = [](unsigned char a, unsigned char b) { return 0; };
+
+    utils::Matrix<unsigned char> c = a.template MxM<unsigned char>(mask, false, b, dummy, dummy);
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
+void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes, utils::UniformIntGenerator<std::int32_t> intGen = utils::UniformIntGenerator<std::int32_t>()) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         auto spT = spla::Types::Float32(library);
         auto spMult = spla::Functions::MultFloat32(library);
@@ -117,12 +161,22 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testCommon<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), false);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<float>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), true);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, K, N, nvals, i * i);
         }
     });
 
@@ -135,14 +189,36 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testCommon<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i);
+            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, false);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMasked<std::int32_t>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, true);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, K, N, nvals, i * i);
         }
     });
+}
+
+TEST(MxM, Tiny) {
+    spla::Library library;
+    testMasked<std::int32_t>(library,
+                             3, 3, 3, 5,
+                             spla::Types::Int32(library),
+                             spla::Functions::MultInt32(library), spla::Functions::PlusInt32(library),
+                             std::multiplies<>(), std::plus<>(),
+                             0,
+                             utils::UniformIntGenerator<std::int32_t>(0, 1, 10),
+                             false);
 }
 
 TEST(MxM, Small) {
