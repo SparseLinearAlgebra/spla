@@ -112,22 +112,27 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        lengths.resize(n + 1, queue);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        compute::fill(lengths.begin(), lengths.end(), 0u, queue);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        BOOST_COMPUTE_CLOSURE(<span class="keywordtype">void</span>, countRowLengths, (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i), (indices, lengths), {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            uint rowId = indices[i];</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            atomic_inc(&amp;lengths[rowId]);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        });</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        compute::for_each_n(compute::counting_iterator&lt;unsigned int&gt;(0), indices.size(), countRowLengths, queue);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        offsets.resize(n + 1, queue);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        offsets.resize(n + 1, queue);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        compute::fill(lengths.begin(), lengths.end(), 0u, queue);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">if</span> (indices.empty()) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            compute::fill(offsets.begin(), offsets.end(), 0u, queue);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        BOOST_COMPUTE_CLOSURE(<span class="keywordtype">void</span>, countRowLengths, (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i), (indices, lengths), {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            uint rowId = indices[i];</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            atomic_inc(&amp;lengths[rowId]);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        });</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAINDICESTOROWOFFSETS_HPP</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        compute::for_each_n(compute::counting_iterator&lt;unsigned int&gt;(0), indices.size(), countRowLengths, queue);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAINDICESTOROWOFFSETS_HPP</span></div>
 <div class="ttc" id="agroup__Internal_html_ga30d6fd3b316764e254205dc7133f4201"><div class="ttname"><a href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">spla::IndicesToRowOffsets</a></div><div class="ttdeci">void IndicesToRowOffsets(const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, boost::compute::vector&lt; unsigned int &gt; &amp;lengths, std::size_t n, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Compute row offsets from coo row indices buffer.</div><div class="ttdef"><b>Definition:</b> SplaIndicesToRowOffsets.hpp:56</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
