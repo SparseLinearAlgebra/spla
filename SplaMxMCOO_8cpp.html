@@ -65,51 +65,132 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">SplaMxMCOO.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="SplaMxMCOO_8hpp_source.html">algo/mxm/SplaMxMCOO.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;boost/compute/algorithm/scatter_if.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaMxMCOO_8hpp_source.html">algo/mxm/SplaMxMCOO.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaApplyMask_8hpp_source.html">compute/SplaApplyMask.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaIndicesToRowOffsets_8hpp_source.html">compute/SplaIndicesToRowOffsets.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaReduceByKey_8hpp_source.html">compute/SplaReduceByKey.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaSortByRowColumn_8hpp_source.html">compute/SplaSortByRowColumn.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaTransformValues_8hpp_source.html">compute/SplaTransformValues.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaError_8hpp_source.html">core/SplaError.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaLibraryPrivate_8hpp_source.html">core/SplaLibraryPrivate.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaQueueFinisher_8hpp_source.html">core/SplaQueueFinisher.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaMatrixCOO_8hpp_source.html">storage/block/SplaMatrixCOO.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaMxMCOO.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaMxMCOO_8cpp__incl.png" border="0" usemap="#asources_2algo_2mxm_2SplaMxMCOO_8cpp" alt=""/></div>
 <map name="asources_2algo_2mxm_2SplaMxMCOO_8cpp" id="asources_2algo_2mxm_2SplaMxMCOO_8cpp">
-<area shape="rect" title=" " alt="" coords="1533,5,1771,32"/>
-<area shape="rect" href="SplaMxMCOO_8hpp.html" title=" " alt="" coords="1317,87,1507,114"/>
-<area shape="rect" href="SplaIndicesToRowOffsets_8hpp.html" title=" " alt="" coords="1691,80,1877,121"/>
-<area shape="rect" href="SplaMatrixCOO_8hpp.html" title=" " alt="" coords="1597,259,1763,300"/>
-<area shape="rect" href="SplaAlgorithm_8hpp.html" title=" " alt="" coords="1119,177,1273,203"/>
-<area shape="rect" href="SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="1043,266,1243,293"/>
-<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="1083,661,1248,688"/>
-<area shape="rect" title=" " alt="" coords="402,811,457,837"/>
-<area shape="rect" href="SplaDeviceManager_8hpp.html" title=" " alt="" coords="647,348,838,375"/>
-<area shape="rect" href="SplaDescriptor_8hpp.html" title=" " alt="" coords="93,512,277,539"/>
-<area shape="rect" href="SplaFunctionBinary_8hpp.html" title=" " alt="" coords="147,430,357,457"/>
-<area shape="rect" href="SplaMatrixBlock_8hpp.html" title=" " alt="" coords="1336,348,1523,375"/>
-<area shape="rect" href="SplaScalarValue_8hpp.html" title=" " alt="" coords="1021,348,1211,375"/>
-<area shape="rect" href="SplaVectorBlock_8hpp.html" title=" " alt="" coords="1070,512,1261,539"/>
-<area shape="rect" title=" " alt="" coords="795,430,970,457"/>
-<area shape="rect" title=" " alt="" coords="625,430,690,457"/>
-<area shape="rect" title=" " alt="" coords="714,430,771,457"/>
-<area shape="rect" href="SplaExpressionNode_8hpp.html" title=" " alt="" coords="381,430,600,457"/>
-<area shape="rect" href="SplaObject_8hpp.html" title=" " alt="" coords="348,587,511,613"/>
-<area shape="rect" title=" " alt="" coords="581,512,640,539"/>
-<area shape="rect" title=" " alt="" coords="213,587,323,613"/>
-<area shape="rect" title=" " alt="" coords="1091,736,1152,763"/>
-<area shape="rect" title=" " alt="" coords="1177,736,1242,763"/>
-<area shape="rect" href="SplaConfig_8hpp.html" title=" " alt="" coords="810,736,971,763"/>
-<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="353,512,506,539"/>
-<area shape="rect" title=" " alt="" coords="535,587,587,613"/>
-<area shape="rect" title=" " alt="" coords="1045,423,1211,464"/>
-<area shape="rect" title=" " alt="" coords="1689,177,1879,203"/>
-<area shape="rect" title=" " alt="" coords="1903,169,2073,211"/>
-<area shape="rect" title=" " alt="" coords="1649,348,1781,375"/>
+<area shape="rect" title=" " alt="" coords="1842,5,2081,32"/>
+<area shape="rect" title=" " alt="" coords="109,80,275,121"/>
+<area shape="rect" href="SplaMxMCOO_8hpp.html" title=" " alt="" coords="1577,87,1767,114"/>
+<area shape="rect" href="SplaApplyMask_8hpp.html" title=" " alt="" coords="2522,87,2713,114"/>
+<area shape="rect" href="SplaIndicesToRowOffsets_8hpp.html" title=" " alt="" coords="2103,80,2289,121"/>
+<area shape="rect" href="SplaReduceByKey_8hpp.html" title=" " alt="" coords="3130,87,3337,114"/>
+<area shape="rect" href="SplaSortByRowColumn_8hpp.html" title=" " alt="" coords="1844,87,2079,114"/>
+<area shape="rect" href="SplaTransformValues_8hpp.html" title=" " alt="" coords="2737,87,2962,114"/>
+<area shape="rect" href="SplaError_8hpp.html" title=" " alt="" coords="299,87,427,114"/>
+<area shape="rect" href="SplaLibraryPrivate_8hpp.html" title=" " alt="" coords="703,87,884,114"/>
+<area shape="rect" href="SplaQueueFinisher_8hpp.html" title=" " alt="" coords="2313,87,2498,114"/>
+<area shape="rect" href="SplaMatrixCOO_8hpp.html" title=" " alt="" coords="1709,169,1875,211"/>
+<area shape="rect" href="SplaAlgorithm_8hpp.html" title=" " alt="" coords="1545,266,1700,293"/>
+<area shape="rect" href="SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="1523,348,1723,375"/>
+<area shape="rect" title=" " alt="" coords="981,497,1035,524"/>
+<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="1544,497,1709,524"/>
+<area shape="rect" href="SplaDeviceManager_8hpp.html" title=" " alt="" coords="251,423,442,449"/>
+<area shape="rect" href="SplaDescriptor_8hpp.html" title=" " alt="" coords="787,423,971,449"/>
+<area shape="rect" href="SplaMatrixBlock_8hpp.html" title=" " alt="" coords="1624,423,1811,449"/>
+<area shape="rect" title=" " alt="" coords="121,497,295,524"/>
+<area shape="rect" title=" " alt="" coords="319,497,385,524"/>
+<area shape="rect" title=" " alt="" coords="409,497,466,524"/>
+<area shape="rect" title=" " alt="" coords="610,497,721,524"/>
+<area shape="rect" title=" " alt="" coords="1691,572,1757,599"/>
+<area shape="rect" title=" " alt="" coords="2403,169,2573,211"/>
+<area shape="rect" title=" " alt="" coords="2816,169,2981,211"/>
+<area shape="rect" href="SplaGather_8hpp.html" title=" " alt="" coords="2000,177,2165,203"/>
+<area shape="rect" href="SplaMaskByKey_8hpp.html" title=" " alt="" coords="2597,177,2792,203"/>
+<area shape="rect" title=" " alt="" coords="1983,266,2115,293"/>
+<area shape="rect" title=" " alt="" coords="2289,259,2441,300"/>
+<area shape="rect" title=" " alt="" coords="2615,259,2774,300"/>
+<area shape="rect" title=" " alt="" coords="2189,177,2379,203"/>
+<area shape="rect" title=" " alt="" coords="1318,348,1397,375"/>
+<area shape="rect" title=" " alt="" coords="3056,169,3221,211"/>
+<area shape="rect" title=" " alt="" coords="3245,169,3411,211"/>
+<area shape="rect" title=" " alt="" coords="3435,169,3578,211"/>
+<area shape="rect" title=" " alt="" coords="3603,169,3755,211"/>
+<area shape="rect" title=" " alt="" coords="3779,169,3938,211"/>
+<area shape="rect" title=" " alt="" coords="5,177,83,203"/>
+<area shape="rect" title=" " alt="" coords="107,177,176,203"/>
+<area shape="rect" href="SplaAlgorithmManager_8hpp.html" title=" " alt="" coords="1429,177,1635,203"/>
+<area shape="rect" title=" " alt="" coords="1147,348,1293,375"/>
+<area shape="rect" title=" " alt="" coords="912,348,971,375"/>
+<area shape="rect" title=" " alt="" coords="805,177,984,203"/>
+<area shape="rect" href="SplaExpressionManager_8hpp.html" title=" " alt="" coords="603,169,781,211"/>
+<area shape="rect" href="SplaLibrary_8hpp.html" title=" " alt="" coords="931,266,1095,293"/>
+<area shape="rect" title=" " alt="" coords="1008,177,1120,203"/>
+<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="677,266,830,293"/>
+<area shape="rect" href="SplaTypes_8hpp.html" title=" " alt="" coords="1144,177,1304,203"/>
+<area shape="rect" href="SplaTaskBuilder_8hpp.html" title=" " alt="" coords="1277,266,1448,293"/>
 </map>
 </div>
-</div></div><!-- contents -->
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacespla_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html">spla::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a43c39fa5058c08beffe7a4fdb0701260"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> = boost::compute::vector&lt; unsigned int &gt;</td></tr>
+<tr class="separator:a43c39fa5058c08beffe7a4fdb0701260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83846d67d5757f1bd279d251a750aca5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> = boost::compute::vector&lt; unsigned char &gt;</td></tr>
+<tr class="separator:a83846d67d5757f1bd279d251a750aca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aad91fd4d8f85d3c367a558cf7356d969"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#aad91fd4d8f85d3c367a558cf7356d969">spla::detail::CooSpmmHelper</a> (std::size_t workspaceSize, std::size_t beginSegment, std::size_t endSegment, const MatrixCOO &amp;a, const MatrixCOO &amp;b, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;wRows, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;wCols, <a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;wVals, std::size_t wValueByteSize, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;bRowOffsets, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;segmentLengths, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;outputPtr, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;aGatherLocations, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;bGatherLocations, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;I, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;J, <a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;V, const RefPtr&lt; FunctionBinary &gt; &amp;fMultiply, const RefPtr&lt; FunctionBinary &gt; &amp;fAdd, boost::compute::command_queue &amp;queue, const std::shared_ptr&lt; spdlog::logger &gt; &amp;)</td></tr>
+<tr class="separator:aad91fd4d8f85d3c367a558cf7356d969"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a43c39fa5058c08beffe7a4fdb0701260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43c39fa5058c08beffe7a4fdb0701260">&#9670;&nbsp;</a></span>IndeciesVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> =  boost::compute::vector&lt;unsigned int&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a83846d67d5757f1bd279d251a750aca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83846d67d5757f1bd279d251a750aca5">&#9670;&nbsp;</a></span>ValuesVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> =  boost::compute::vector&lt;unsigned char&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1

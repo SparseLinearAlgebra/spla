@@ -105,11 +105,11 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">   52</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">SortByRowColumn</a>(boost::compute::vector&lt;unsigned int&gt; &amp;rows,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                         boost::compute::vector&lt;unsigned int&gt; &amp;cols,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                         boost::compute::vector&lt;unsigned char&gt; &amp;vals,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                         std::size_t elementsInSequence,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                         boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">   52</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga3b363e3578d72cb1311091ed22d0f84b">SortByRowColumn</a>(boost::compute::vector&lt;unsigned int&gt; &amp;rows,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                boost::compute::vector&lt;unsigned int&gt; &amp;cols,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                boost::compute::vector&lt;unsigned char&gt; &amp;vals,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                std::size_t elementsInSequence,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                boost::compute::command_queue &amp;queue) {</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        compute::context ctx = queue.get_context();</div>

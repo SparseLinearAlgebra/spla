@@ -138,6 +138,8 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aad91fd4d8f85d3c367a558cf7356d969"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#aad91fd4d8f85d3c367a558cf7356d969">CooSpmmHelper</a> (std::size_t workspaceSize, std::size_t beginSegment, std::size_t endSegment, const <a class="el" href="classspla_1_1MatrixCOO.html">MatrixCOO</a> &amp;a, const <a class="el" href="classspla_1_1MatrixCOO.html">MatrixCOO</a> &amp;b, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;wRows, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;wCols, <a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;wVals, std::size_t wValueByteSize, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;bRowOffsets, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;segmentLengths, const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;outputPtr, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;aGatherLocations, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;bGatherLocations, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;I, <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;J, <a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;V, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;fMultiply, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;fAdd, boost::compute::command_queue &amp;queue, const std::shared_ptr&lt; spdlog::logger &gt; &amp;)</td></tr>
+<tr class="separator:aad91fd4d8f85d3c367a558cf7356d969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5d34deca390e3839ecda7c88298c471"><td class="memTemplParams" colspan="2">template&lt;typename InputMask , typename InputKey , typename Compare , typename Equals , typename ResizeResult , typename AssignResult &gt; </td></tr>
 <tr class="memitem:af5d34deca390e3839ecda7c88298c471"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla_1_1detail.html#af5d34deca390e3839ecda7c88298c471">MaskByKey</a> (InputMask maskFirst, InputKey keyFirst, Compare compare, Equals equals, ResizeResult resizeResult, AssignResult assignResult, std::size_t maskCount, std::size_t keyCount, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:af5d34deca390e3839ecda7c88298c471"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -325,6 +327,148 @@ Functions</h2></td></tr>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aad91fd4d8f85d3c367a558cf7356d969"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad91fd4d8f85d3c367a558cf7356d969">&#9670;&nbsp;</a></span>CooSpmmHelper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::detail::CooSpmmHelper </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>workspaceSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>beginSegment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>endSegment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1MatrixCOO.html">MatrixCOO</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1MatrixCOO.html">MatrixCOO</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>wRows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>wCols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>wVals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>wValueByteSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>bRowOffsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>segmentLengths</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>outputPtr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>aGatherLocations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>bGatherLocations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>I</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260">IndeciesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>J</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5">ValuesVector</a> &amp;&#160;</td>
+          <td class="paramname"><em>V</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fMultiply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fAdd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; spdlog::logger &gt; &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

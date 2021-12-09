@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacespla_1_1detail.html">   41</a></span>&#160;    <span class="keyword">namespace </span>detail {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">namespace </span>detail {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">class</span> InputIterator, <span class="keyword">class</span> MapIterator, <span class="keyword">class</span> OutputIterator&gt;</div>
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1detail_1_1GatherKernel.html">   44</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1detail_1_1GatherKernel.html">GatherKernel</a> : <span class="keyword">public</span> boost::compute::detail::meta_kernel {</div>
@@ -160,9 +160,17 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> kernel.<a class="code" href="classspla_1_1detail_1_1GatherKernel.html#a16b9863dfe3212b6a1b918e089dea8cd">Exec</a>(queue);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAGATHER_HPP</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__Internal.html#ga3cff90a19fe0e6e913ab4933eb8ff25a">  116</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a>(<span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;map,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                       <span class="keyword">const</span> boost::compute::vector&lt;unsigned char&gt; &amp;values,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                       boost::compute::vector&lt;unsigned char&gt; &amp;result,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                       std::size_t elementsInSequence,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                       boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <a class="code" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a>(map.begin(), map.end(), values.begin(), result.begin(), elementsInSequence, queue);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAGATHER_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1detail_1_1GatherKernel_html"><div class="ttname"><a href="classspla_1_1detail_1_1GatherKernel.html">spla::detail::GatherKernel</a></div><div class="ttdef"><b>Definition:</b> SplaGather.hpp:44</div></div>
 <div class="ttc" id="aclassspla_1_1detail_1_1GatherKernel_html_a16b9863dfe3212b6a1b918e089dea8cd"><div class="ttname"><a href="classspla_1_1detail_1_1GatherKernel.html#a16b9863dfe3212b6a1b918e089dea8cd">spla::detail::GatherKernel::Exec</a></div><div class="ttdeci">boost::compute::event Exec(boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaGather.hpp:64</div></div>
 <div class="ttc" id="aclassspla_1_1detail_1_1GatherKernel_html_acb17bd147300edde57b3870caeb4be2e"><div class="ttname"><a href="classspla_1_1detail_1_1GatherKernel.html#acb17bd147300edde57b3870caeb4be2e">spla::detail::GatherKernel::SetRange</a></div><div class="ttdeci">void SetRange(MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence)</div><div class="ttdef"><b>Definition:</b> SplaGather.hpp:48</div></div>

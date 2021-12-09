@@ -149,13 +149,64 @@ $(function() {
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAAPPLYMASK_HPP</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">  112</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">ApplyMask</a>(<span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;maskRows,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                          <span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;maskCols,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                          <span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;inputRows,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                          <span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;inputCols,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                          <span class="keyword">const</span> boost::compute::vector&lt;unsigned char&gt; &amp;inputVals,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                          boost::compute::vector&lt;unsigned int&gt; &amp;outputRows,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                          boost::compute::vector&lt;unsigned int&gt; &amp;outputCols,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                          boost::compute::vector&lt;unsigned char&gt; &amp;outputVals,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                          std::size_t byteSize,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                          <span class="keywordtype">bool</span> complement,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                          boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        assert(maskRows.size() == maskCols.size());</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordflow">if</span> (maskRows.empty() || inputRows.empty())</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keyword">auto</span> ctx = queue.get_context();</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keyword">auto</span> typeHasValues = byteSize != 0;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">auto</span> nnz = inputRows.size();</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        compute::vector&lt;unsigned int&gt; perm(ctx);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keywordflow">if</span> (typeHasValues) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="comment">// Fill permutation to link value to indices</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            perm.resize(nnz, queue);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            compute::copy_n(compute::make_counting_iterator(0), nnz, perm.begin(), queue);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">if</span> (typeHasValues) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="comment">// Mask with new permutation buffer</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            compute::vector&lt;unsigned int&gt; outputPerm(ctx);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="group__Internal.html#ga5c367c12c848bb3b01d26692ba1c3930">MaskByPairKeys</a>(maskRows, maskCols,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                           inputRows, inputCols, perm,</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                           outputRows, outputCols, outputPerm,</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                           complement,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                           queue);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            std::swap(perm, outputPerm);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="group__Internal.html#ga768b55141ac21d8464832b89d2e8a74c">MaskPairKeys</a>(maskRows, maskCols, inputRows, inputCols, outputRows, outputCols, complement, queue);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordflow">if</span> (typeHasValues) {</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="comment">// Copy output values using indices buffer</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            outputVals.resize(outputRows.size() * byteSize, queue);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <a class="code" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a>(perm.begin(), perm.end(), inputVals.begin(), outputVals.begin(), byteSize, queue);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAAPPLYMASK_HPP</span></div>
 <div class="ttc" id="aSplaGather_8hpp_html"><div class="ttname"><a href="SplaGather_8hpp.html">SplaGather.hpp</a></div></div>
 <div class="ttc" id="aSplaMaskByKey_8hpp_html"><div class="ttname"><a href="SplaMaskByKey_8hpp.html">SplaMaskByKey.hpp</a></div></div>
 <div class="ttc" id="agroup__Internal_html_ga00300e2b3dde5d373d7d9e1d307748c8"><div class="ttname"><a href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">spla::ApplyMask</a></div><div class="ttdeci">void ApplyMask(const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Apply mask to coo vector.</div><div class="ttdef"><b>Definition:</b> SplaApplyMask.hpp:55</div></div>
 <div class="ttc" id="agroup__Internal_html_ga0d5127217f33cc7dec534efb6417496e"><div class="ttname"><a href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a></div><div class="ttdeci">boost::compute::event Gather(MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</div><div class="ttdef"><b>Definition:</b> SplaGather.hpp:95</div></div>
+<div class="ttc" id="agroup__Internal_html_ga5c367c12c848bb3b01d26692ba1c3930"><div class="ttname"><a href="group__Internal.html#ga5c367c12c848bb3b01d26692ba1c3930">spla::MaskByPairKeys</a></div><div class="ttdeci">std::size_t MaskByPairKeys(const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, bool complement, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:588</div></div>
+<div class="ttc" id="agroup__Internal_html_ga768b55141ac21d8464832b89d2e8a74c"><div class="ttname"><a href="group__Internal.html#ga768b55141ac21d8464832b89d2e8a74c">spla::MaskPairKeys</a></div><div class="ttdeci">std::size_t MaskPairKeys(const boost::compute::vector&lt; unsigned int &gt; &amp;mask1, const boost::compute::vector&lt; unsigned int &gt; &amp;mask2, const boost::compute::vector&lt; unsigned int &gt; &amp;keys1, const boost::compute::vector&lt; unsigned int &gt; &amp;keys2, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys1, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys2, bool complement, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:518</div></div>
 <div class="ttc" id="agroup__Internal_html_gab1a135f9660b6d72c3e98a684fff4b5c"><div class="ttname"><a href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">spla::MaskKeys</a></div><div class="ttdeci">std::size_t MaskKeys(const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, bool complement, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:397</div></div>
 <div class="ttc" id="agroup__Internal_html_gacb96ee42d6f3a2b1865e84c9d2e6b7c4"><div class="ttname"><a href="group__Internal.html#gacb96ee42d6f3a2b1865e84c9d2e6b7c4">spla::MaskByKeys</a></div><div class="ttdeci">std::size_t MaskByKeys(const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, const boost::compute::vector&lt; unsigned int &gt; &amp;values, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, boost::compute::vector&lt; unsigned int &gt; &amp;resultValues, bool complement, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Mask intersection algorithm.</div><div class="ttdef"><b>Definition:</b> SplaMaskByKey.hpp:454</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>

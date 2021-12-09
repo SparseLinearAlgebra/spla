@@ -9,8 +9,9 @@ var searchData=
   ['clear_27',['Clear',['../classspla_1_1MatrixStorage.html#a45dad9f441e24ddc43cf971bb1059313',1,'spla::MatrixStorage::Clear()'],['../classspla_1_1VectorStorage.html#abeea10e78fc6be04690c66e3263d58bb',1,'spla::VectorStorage::Clear()']]],
   ['comparekey_28',['CompareKey',['../structspla_1_1detail_1_1CompareKey.html',1,'spla::detail']]],
   ['config_29',['Config',['../classspla_1_1Library_1_1Config.html#a954fe345d6dff0d543a48019fdbd34a5',1,'spla::Library::Config::Config()'],['../classspla_1_1Library_1_1Config.html',1,'spla::Library::Config']]],
-  ['coo_30',['COO',['../classspla_1_1VectorBlock.html#ae9348ed0e40b4f94cb1650ce2eee0d5eac9cdddf9eb2cb7dc410ff7ed751c0c13',1,'spla::VectorBlock::COO()'],['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1ac9cdddf9eb2cb7dc410ff7ed751c0c13',1,'spla::MatrixBlock::COO()']]],
-  ['copyreduceduplicates_31',['CopyReduceDuplicates',['../classspla_1_1detail_1_1CopyReduceDuplicates.html#a9404fa255d4b34dcb1266ef219cb54e2',1,'spla::detail::CopyReduceDuplicates::CopyReduceDuplicates()'],['../classspla_1_1detail_1_1CopyReduceDuplicates.html',1,'spla::detail::CopyReduceDuplicates']]],
-  ['cpu_32',['CPU',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea2c2d36c78ed36d7abc6f070f04b7a261',1,'spla::Library::Config']]],
-  ['csr_33',['CSR',['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9dbebbc8de3ea0e81606b05de0fff36d',1,'spla::MatrixBlock']]]
+  ['coo_30',['COO',['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1ac9cdddf9eb2cb7dc410ff7ed751c0c13',1,'spla::MatrixBlock::COO()'],['../classspla_1_1VectorBlock.html#ae9348ed0e40b4f94cb1650ce2eee0d5eac9cdddf9eb2cb7dc410ff7ed751c0c13',1,'spla::VectorBlock::COO()']]],
+  ['coospmmhelper_31',['CooSpmmHelper',['../namespacespla_1_1detail.html#aad91fd4d8f85d3c367a558cf7356d969',1,'spla::detail']]],
+  ['copyreduceduplicates_32',['CopyReduceDuplicates',['../classspla_1_1detail_1_1CopyReduceDuplicates.html#a9404fa255d4b34dcb1266ef219cb54e2',1,'spla::detail::CopyReduceDuplicates::CopyReduceDuplicates()'],['../classspla_1_1detail_1_1CopyReduceDuplicates.html',1,'spla::detail::CopyReduceDuplicates']]],
+  ['cpu_33',['CPU',['../classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2ea2c2d36c78ed36d7abc6f070f04b7a261',1,'spla::Library::Config']]],
+  ['csr_34',['CSR',['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9dbebbc8de3ea0e81606b05de0fff36d',1,'spla::MatrixBlock']]]
 ];

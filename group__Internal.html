@@ -186,12 +186,19 @@ Functions</h2></td></tr>
 <tr class="memitem:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">spla::ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo vector.  <a href="group__Internal.html#ga00300e2b3dde5d373d7d9e1d307748c8">More...</a><br /></td></tr>
 <tr class="separator:ga00300e2b3dde5d373d7d9e1d307748c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">spla::ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;maskRows, const boost::compute::vector&lt; unsigned int &gt; &amp;maskCols, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned int &gt; &amp;inputCols, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned int &gt; &amp;outputCols, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo matrix.  <a href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">More...</a><br /></td></tr>
+<tr class="separator:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3cff90a19fe0e6e913ab4933eb8ff25a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3cff90a19fe0e6e913ab4933eb8ff25a">spla::Gather</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;map, const boost::compute::vector&lt; unsigned char &gt; &amp;values, boost::compute::vector&lt; unsigned char &gt; &amp;result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga3cff90a19fe0e6e913ab4933eb8ff25a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga30d6fd3b316764e254205dc7133f4201"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, boost::compute::vector&lt; unsigned int &gt; &amp;lengths, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga30d6fd3b316764e254205dc7133f4201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">More...</a><br /></td></tr>
 <tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga4d069a703bfb0a1a6bb2bff3add69e8e">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">spla::MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">More...</a><br /></td></tr>
 <tr class="separator:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +235,9 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga4d91b72ba4ceb0cdb990516bb5e64455"><td class="mdescLeft">&#160;</td><td class="mdescRight">The algorithm performs reduction for each contiguous subsequence of aligned values determinate by equivalent keys. <br  />
 .  <a href="group__Internal.html#ga4d91b72ba4ceb0cdb990516bb5e64455">More...</a><br /></td></tr>
 <tr class="separator:ga4d91b72ba4ceb0cdb990516bb5e64455"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f4576c466464b2b84da6e827b78bc11"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga9f4576c466464b2b84da6e827b78bc11">spla::ReducePairKey</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices2, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga9f4576c466464b2b84da6e827b78bc11"><td class="mdescLeft">&#160;</td><td class="mdescRight">The algorithm performs reduction of two input keys sequences for each contiguous subsequence of equivalent keys. Keys are considered to be equal iff the keys in corresponding sequences are equal.  <a href="group__Internal.html#ga9f4576c466464b2b84da6e827b78bc11">More...</a><br /></td></tr>
+<tr class="separator:ga9f4576c466464b2b84da6e827b78bc11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga06e32a4a916ee651cbbd0c2dabe38f6a">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;resultValues, std::size_t elementsInSequence, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce duplicates in sorted sequence of elements Reduces duplicated values in sorted sequence of key elements, where one or two duplicated keys are presented.  <a href="group__Internal.html#ga06e32a4a916ee651cbbd0c2dabe38f6a">More...</a><br /></td></tr>
 <tr class="separator:ga06e32a4a916ee651cbbd0c2dabe38f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -433,7 +443,7 @@ Functions</h2></td></tr>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga00300e2b3dde5d373d7d9e1d307748c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga00300e2b3dde5d373d7d9e1d307748c8">&#9670;&nbsp;</a></span>ApplyMask()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00300e2b3dde5d373d7d9e1d307748c8">&#9670;&nbsp;</a></span>ApplyMask() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -519,8 +529,170 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga253e4c02d64c7faa8ccc9b7b957ade87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga253e4c02d64c7faa8ccc9b7b957ade87">&#9670;&nbsp;</a></span>ApplyMask() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::ApplyMask </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>maskRows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>maskCols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputRows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputCols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputVals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputRows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputCols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputVals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>byteSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply mask to coo matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maskRows</td><td>Mask indices of rows </td></tr>
+    <tr><td class="paramname">maskCols</td><td>Mask indices of cols </td></tr>
+    <tr><td class="paramname">inputRows</td><td>Row indices </td></tr>
+    <tr><td class="paramname">inputCols</td><td>Col indices </td></tr>
+    <tr><td class="paramname">inputVals</td><td>Values </td></tr>
+    <tr><td class="paramname">outputRows</td><td>Result row indices; resized automatically </td></tr>
+    <tr><td class="paramname">outputCols</td><td>Result col indices; resized automatically </td></tr>
+    <tr><td class="paramname">outputVals</td><td>Result values; resized automatically </td></tr>
+    <tr><td class="paramname">byteSize</td><td>Size of values; if 0, apply only indices mask </td></tr>
+    <tr><td class="paramname">queue</td><td>Command queue to perform operation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga3cff90a19fe0e6e913ab4933eb8ff25a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3cff90a19fe0e6e913ab4933eb8ff25a">&#9670;&nbsp;</a></span>Gather() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Gather </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Overload </p>
+
+</div>
+</div>
 <a id="ga0d5127217f33cc7dec534efb6417496e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0d5127217f33cc7dec534efb6417496e">&#9670;&nbsp;</a></span>Gather()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d5127217f33cc7dec534efb6417496e">&#9670;&nbsp;</a></span>Gather() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -602,7 +774,7 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 </div>
 </div>
 <a id="ga30d6fd3b316764e254205dc7133f4201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga30d6fd3b316764e254205dc7133f4201">&#9670;&nbsp;</a></span>IndicesToRowOffsets()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30d6fd3b316764e254205dc7133f4201">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,6 +837,55 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga4d069a703bfb0a1a6bb2bff3add69e8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d069a703bfb0a1a6bb2bff3add69e8e">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::IndicesToRowOffsets </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Overload </p>
 
 </div>
 </div>
@@ -1037,6 +1258,9 @@ Use complement flag to apply direct or inverse (complement) mask</dd></dl>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , typename ItKeysBBegin , typename ItKeysBEnd , typename ItValuesB , typename ItKeysResult , typename ItValuesResult &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::ptrdiff_t spla::MergeByKeys </td>
@@ -1098,6 +1322,11 @@ template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , t
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Merges two sorted (by key) sequences of values by given keys. </p>
@@ -1126,6 +1355,9 @@ template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItValuesA , t
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename ItInput4 , typename ItInput5 , typename ItInput6 , typename ItOutput1 , typename ItOutput2 , typename ItOutput3 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::ptrdiff_t spla::MergeByPairKeys </td>
@@ -1205,6 +1437,11 @@ template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Merges two sorted (by pair key) </p>
@@ -1221,6 +1458,9 @@ template&lt;typename ItInput1 , typename ItInput2 , typename ItInput3 , typename
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin , typename ItKeysBEnd , typename ItKeysResult &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::ptrdiff_t spla::MergeKeys </td>
@@ -1264,6 +1504,11 @@ template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin 
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Merges two sorted sequences. </p>
@@ -1289,6 +1534,9 @@ template&lt;typename ItKeysABegin , typename ItKeysAEnd , typename ItKeysBBegin 
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename ItInput5 , typename ItOutput1 , typename ItOutput2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::ptrdiff_t spla::MergePairKeys </td>
@@ -1350,6 +1598,11 @@ template&lt;typename ItInput1 , typename ItInput2 , typename ItInput4 , typename
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Merges two sorted (by pair key) </p>
@@ -1856,6 +2109,74 @@ Result containers automatically resized to store result count values.</dd></dl>
 
 </div>
 </div>
+<a id="ga9f4576c466464b2b84da6e827b78bc11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f4576c466464b2b84da6e827b78bc11">&#9670;&nbsp;</a></span>ReducePairKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t spla::ReducePairKey </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>inputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputIndices1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputIndices2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The algorithm performs reduction of two input keys sequences for each contiguous subsequence of equivalent keys. Keys are considered to be equal iff the keys in corresponding sequences are equal. </p>
+<dl class="section note"><dt>Note</dt><dd>Lengths of the sequences must be the same.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inputIndices1</td><td>First sequence of keys </td></tr>
+    <tr><td class="paramname">inputIndices2</td><td>Second sequence of keys </td></tr>
+    <tr><td class="paramname">outputIndices1</td><td>Output sequence for the first sequence </td></tr>
+    <tr><td class="paramname">outputIndices2</td><td>Output sequence for the second sequence </td></tr>
+    <tr><td class="paramname">queue</td><td>OpenCL command queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the resulting key sequence </dd></dl>
+
+</div>
+</div>
 <a id="gac64f1cbf26dce358c1c0d056ea04db6d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac64f1cbf26dce358c1c0d056ea04db6d">&#9670;&nbsp;</a></span>SortByRow()</h2>
 
@@ -1921,6 +2242,9 @@ Result containers automatically resized to store result count values.</dd></dl>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void spla::SortByRowColumn </td>
@@ -1958,6 +2282,11 @@ Result containers automatically resized to store result count values.</dd></dl>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sort matrix data in coo format in row-column order. </p>

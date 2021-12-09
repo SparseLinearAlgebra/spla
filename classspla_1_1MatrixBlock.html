@@ -120,6 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a18b052759a4cf8a1ed9ebe93b0507f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac55371dd8c63cd4d17214a56a5f4abe8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixBlock.html#ac55371dd8c63cd4d17214a56a5f4abe8">Dump</a> (std::ostream &amp;stream, unsigned int baseI, unsigned int baseJ) const =0</td></tr>
 <tr class="separator:ac55371dd8c63cd4d17214a56a5f4abe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19d214ee998c67e6927278047f5f7e96"><td class="memItemLeft" align="right" valign="top">virtual std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixBlock.html#a19d214ee998c67e6927278047f5f7e96">GetValueByteSize</a> () const noexcept=0</td></tr>
+<tr class="separator:a19d214ee998c67e6927278047f5f7e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
 <tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -395,6 +397,34 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Number of values in block </dd></dl>
+
+</div>
+</div>
+<a id="a19d214ee998c67e6927278047f5f7e96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19d214ee998c67e6927278047f5f7e96">&#9670;&nbsp;</a></span>GetValueByteSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::size_t spla::MatrixBlock::GetValueByteSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Size of the stored value (in bytes) </dd></dl>
+
+<p>Implemented in <a class="el" href="classspla_1_1MatrixCOO.html#a77cffbb4bc5428fb738d6f8cd339db80">spla::MatrixCOO</a>.</p>
 
 </div>
 </div>

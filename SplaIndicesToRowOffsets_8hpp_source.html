@@ -130,9 +130,18 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAINDICESTOROWOFFSETS_HPP</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="group__Internal.html#ga4d069a703bfb0a1a6bb2bff3add69e8e">   85</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">IndicesToRowOffsets</a>(<span class="keyword">const</span> boost::compute::vector&lt;unsigned int&gt; &amp;indices,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                    boost::compute::vector&lt;unsigned int&gt; &amp;offsets,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                    std::size_t n,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                    boost::compute::command_queue &amp;queue) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">using namespace </span>boost;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        boost::compute::vector&lt;unsigned int&gt; lengths(queue.get_context());</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">IndicesToRowOffsets</a>(indices, offsets, lengths, n, queue);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAINDICESTOROWOFFSETS_HPP</span></div>
 <div class="ttc" id="agroup__Internal_html_ga30d6fd3b316764e254205dc7133f4201"><div class="ttname"><a href="group__Internal.html#ga30d6fd3b316764e254205dc7133f4201">spla::IndicesToRowOffsets</a></div><div class="ttdeci">void IndicesToRowOffsets(const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, boost::compute::vector&lt; unsigned int &gt; &amp;lengths, std::size_t n, boost::compute::command_queue &amp;queue)</div><div class="ttdoc">Compute row offsets from coo row indices buffer.</div><div class="ttdef"><b>Definition:</b> SplaIndicesToRowOffsets.hpp:56</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
