@@ -62,7 +62,9 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">API</div>  </div>
 </div><!--header-->
@@ -94,9 +96,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary Typed element function <code>f: a x b -&gt; c</code>.  <a href="classspla_1_1FunctionBinary.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Functions.html">spla::Functions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predefined functions for built-in types. Allows to access standard plus, minus, min, max function for built-in types.  <a href="classspla_1_1Functions.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1FunctionSelect.html">spla::FunctionSelect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typed element function <code>f: a -&gt; bool</code>.  <a href="classspla_1_1FunctionSelect.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,12 +123,2450 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html">spla::Vector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga2049233a2d6d2b30a40cdd1067669c24"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2049233a2d6d2b30a40cdd1067669c24">SPLA_DEFINE_BINARY_OPERATOR</a>(name,  typeName,  clType,  op)</td></tr>
+<tr class="separator:ga2049233a2d6d2b30a40cdd1067669c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9832b0f253bd5825da0a9fd13e3eeabc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga9832b0f253bd5825da0a9fd13e3eeabc">SPLA_DEFINE_FLIPPED_BINARY_OPERATOR</a>(name,  typeName,  clType,  op)</td></tr>
+<tr class="separator:ga9832b0f253bd5825da0a9fd13e3eeabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf76cf88076e7d78a6940ac9cf9d6ffe3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf76cf88076e7d78a6940ac9cf9d6ffe3">SPLA_DEFINE_TAKE_FIRST</a>(name,  typeName,  clType)</td></tr>
+<tr class="separator:gaf76cf88076e7d78a6940ac9cf9d6ffe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16f56a4d977b478536c78b8d6c89f147"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga16f56a4d977b478536c78b8d6c89f147">SPLA_DEFINE_TAKE_SECOND</a>(name,  typeName,  clType)</td></tr>
+<tr class="separator:ga16f56a4d977b478536c78b8d6c89f147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf09a3bffab1ebf1aa047fb654d1a0ec7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf09a3bffab1ebf1aa047fb654d1a0ec7">SPLA_DEFINE_BINARY_FUNCTION</a>(name,  typeName,  type,  fun)</td></tr>
+<tr class="separator:gaf09a3bffab1ebf1aa047fb654d1a0ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9fa0988d560206daa973314e7d5cf23e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga9fa0988d560206daa973314e7d5cf23e">SPLA_DEFINE_BINARY_OPERATORS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga9fa0988d560206daa973314e7d5cf23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7d0ba6c64ffd3c1f86331972d7f473e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac7d0ba6c64ffd3c1f86331972d7f473e">SPLA_DEFINE_LOGIC_OPERATORS</a>(typeName,  clType)</td></tr>
+<tr class="separator:gac7d0ba6c64ffd3c1f86331972d7f473e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga732e3b63b9d9e16c7678b72c7a8be5a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga732e3b63b9d9e16c7678b72c7a8be5a3">SPLA_DEFINE_FLOAT_BINARY_FUNCTIONS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga732e3b63b9d9e16c7678b72c7a8be5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e7158adec789179bf3cb8fbc96c2252"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4e7158adec789179bf3cb8fbc96c2252">SPLA_DEFINE_INT_BINARY_FUNCTIONS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga4e7158adec789179bf3cb8fbc96c2252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8641b23eec80f6a811b76e447df8926"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac8641b23eec80f6a811b76e447df8926">SPLA_DEFINE_INT_FUNCTIONS</a>(MACRO,  typeNamePrefix,  clTypePrefix)</td></tr>
+<tr class="separator:gac8641b23eec80f6a811b76e447df8926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga2f373b2d2431b020dd1b68d48b717cd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2f373b2d2431b020dd1b68d48b717cd7">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#gac7d0ba6c64ffd3c1f86331972d7f473e">SPLA_DEFINE_LOGIC_OPERATORS</a>, Int,) spla</td></tr>
+<tr class="separator:ga2f373b2d2431b020dd1b68d48b717cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad747927297eef898ec46d659b7d5c766"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gad747927297eef898ec46d659b7d5c766">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#ga9fa0988d560206daa973314e7d5cf23e">SPLA_DEFINE_BINARY_OPERATORS</a>, UInt, u) spla</td></tr>
+<tr class="separator:gad747927297eef898ec46d659b7d5c766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae640f7b7cad8b34c83a8d8716153f927"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gae640f7b7cad8b34c83a8d8716153f927">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#ga4e7158adec789179bf3cb8fbc96c2252">SPLA_DEFINE_INT_BINARY_FUNCTIONS</a>, UInt, u) spla</td></tr>
+<tr class="separator:gae640f7b7cad8b34c83a8d8716153f927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5231b9aa6b0b7bfa66e3e067dab3d3cc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5231b9aa6b0b7bfa66e3e067dab3d3cc">spla::Functions::PlusInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5231b9aa6b0b7bfa66e3e067dab3d3cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6cd0b2f29359fe7d9c244bad0264597"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaa6cd0b2f29359fe7d9c244bad0264597">spla::Functions::MinusInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaa6cd0b2f29359fe7d9c244bad0264597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa940a24c5af420c58387e53d6c14d3ea"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaa940a24c5af420c58387e53d6c14d3ea">spla::Functions::ReverseMinusInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaa940a24c5af420c58387e53d6c14d3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca1bb0a41d31dd76c2f01067b6b35087"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaca1bb0a41d31dd76c2f01067b6b35087">spla::Functions::MultInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaca1bb0a41d31dd76c2f01067b6b35087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f8415f358c34380761e3d3d5f022f4b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga6f8415f358c34380761e3d3d5f022f4b">spla::Functions::DivInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga6f8415f358c34380761e3d3d5f022f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6d3ef95fcf09b8b9a16a0b7a141dc5d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac6d3ef95fcf09b8b9a16a0b7a141dc5d">spla::Functions::ReverseDivInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gac6d3ef95fcf09b8b9a16a0b7a141dc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae4b0578cdc3753d4d7a79754d19a1085"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gae4b0578cdc3753d4d7a79754d19a1085">spla::Functions::TakeFirstInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gae4b0578cdc3753d4d7a79754d19a1085"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga272bbc1da0f58859dabf3dc49d94d3dc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga272bbc1da0f58859dabf3dc49d94d3dc">spla::Functions::TakeSecondInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga272bbc1da0f58859dabf3dc49d94d3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab84b239339acd114117233fd94a2bb64"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gab84b239339acd114117233fd94a2bb64">spla::Functions::PlusInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gab84b239339acd114117233fd94a2bb64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1bc53287e2855c15d04f655833e7ba64"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga1bc53287e2855c15d04f655833e7ba64">spla::Functions::MinusInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga1bc53287e2855c15d04f655833e7ba64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f11d9fdfc735ad168be2d89c9bb880f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga6f11d9fdfc735ad168be2d89c9bb880f">spla::Functions::ReverseMinusInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga6f11d9fdfc735ad168be2d89c9bb880f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63e85d8944fa8911d3aabdbd73adde01"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga63e85d8944fa8911d3aabdbd73adde01">spla::Functions::MultInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga63e85d8944fa8911d3aabdbd73adde01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2e6a195f8c7895fb8bd0c6dcbe536489"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2e6a195f8c7895fb8bd0c6dcbe536489">spla::Functions::DivInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga2e6a195f8c7895fb8bd0c6dcbe536489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab9f316155550c9d0d85d1a95453513d6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gab9f316155550c9d0d85d1a95453513d6">spla::Functions::ReverseDivInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gab9f316155550c9d0d85d1a95453513d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3311f83cdf3c8ac0937fcc838a6d8033"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga3311f83cdf3c8ac0937fcc838a6d8033">spla::Functions::TakeFirstInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga3311f83cdf3c8ac0937fcc838a6d8033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga371a6f25ab413d6d143899664519ac3a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga371a6f25ab413d6d143899664519ac3a">spla::Functions::TakeSecondInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga371a6f25ab413d6d143899664519ac3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76f40fe279757853847ad4182d3a13c6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga76f40fe279757853847ad4182d3a13c6">spla::Functions::PlusInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga76f40fe279757853847ad4182d3a13c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55524b702ed6b2e58453f1c96b3c1603"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga55524b702ed6b2e58453f1c96b3c1603">spla::Functions::MinusInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga55524b702ed6b2e58453f1c96b3c1603"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5538609fc24e7167acc08abb6c9ef88a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5538609fc24e7167acc08abb6c9ef88a">spla::Functions::ReverseMinusInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5538609fc24e7167acc08abb6c9ef88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb0dd10e1b534534203361a30ad5fee8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gafb0dd10e1b534534203361a30ad5fee8">spla::Functions::MultInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gafb0dd10e1b534534203361a30ad5fee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1f6476f2c829e39db5f580119de582a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf1f6476f2c829e39db5f580119de582a">spla::Functions::DivInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaf1f6476f2c829e39db5f580119de582a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c1d70c46816833e201d4284d7bd2a5e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4c1d70c46816833e201d4284d7bd2a5e">spla::Functions::ReverseDivInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4c1d70c46816833e201d4284d7bd2a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d3df7357d03f361af6465a0efd368fa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2d3df7357d03f361af6465a0efd368fa">spla::Functions::TakeFirstInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga2d3df7357d03f361af6465a0efd368fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bcec8b90aaa6611cab04e9c140ea13f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4bcec8b90aaa6611cab04e9c140ea13f">spla::Functions::TakeSecondInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4bcec8b90aaa6611cab04e9c140ea13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga30b015eca880f81ace23e5bc0fb4f710"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga30b015eca880f81ace23e5bc0fb4f710">spla::Functions::PlusInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga30b015eca880f81ace23e5bc0fb4f710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacecfa9ed08dc66a702abb3c5a2be263c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gacecfa9ed08dc66a702abb3c5a2be263c">spla::Functions::MinusInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gacecfa9ed08dc66a702abb3c5a2be263c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cdaa928741b9b5fb883fc187f3fbe2e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga9cdaa928741b9b5fb883fc187f3fbe2e">spla::Functions::ReverseMinusInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga9cdaa928741b9b5fb883fc187f3fbe2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ea2439f6197d74f024fa0fc706afc2e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4ea2439f6197d74f024fa0fc706afc2e">spla::Functions::MultInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4ea2439f6197d74f024fa0fc706afc2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae4bae08ad03c5c6008ec3ccc76ea926c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gae4bae08ad03c5c6008ec3ccc76ea926c">spla::Functions::DivInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gae4bae08ad03c5c6008ec3ccc76ea926c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga226f1b406462de902832bf78709a7bfa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga226f1b406462de902832bf78709a7bfa">spla::Functions::ReverseDivInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga226f1b406462de902832bf78709a7bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7d5a8c3ee6a458562e540ae523e1dd3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac7d5a8c3ee6a458562e540ae523e1dd3">spla::Functions::TakeFirstInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gac7d5a8c3ee6a458562e540ae523e1dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60d0759eba7e2f761039eccae0f87da1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga60d0759eba7e2f761039eccae0f87da1">spla::Functions::TakeSecondInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga60d0759eba7e2f761039eccae0f87da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga919a2c5a9b9bc3195ef7c2d74f0921e2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga919a2c5a9b9bc3195ef7c2d74f0921e2">spla::Functions::MaxInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga919a2c5a9b9bc3195ef7c2d74f0921e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga947457bd7d33371b2608d2b91aaa673a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga947457bd7d33371b2608d2b91aaa673a">spla::Functions::MinInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga947457bd7d33371b2608d2b91aaa673a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa80b9b92a8f9e41e25dbeccad311b02e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaa80b9b92a8f9e41e25dbeccad311b02e">spla::Functions::MaxInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaa80b9b92a8f9e41e25dbeccad311b02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c0dae26f5e57139cc8bb685696d927f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4c0dae26f5e57139cc8bb685696d927f">spla::Functions::MinInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4c0dae26f5e57139cc8bb685696d927f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d13667ffa5b829b212ad652d2d26732"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5d13667ffa5b829b212ad652d2d26732">spla::Functions::MaxInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5d13667ffa5b829b212ad652d2d26732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d5716e40796cd3f64f41830fff36cfb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga8d5716e40796cd3f64f41830fff36cfb">spla::Functions::MinInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga8d5716e40796cd3f64f41830fff36cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga30108d3405e45b534d6f19963afc22ec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga30108d3405e45b534d6f19963afc22ec">spla::Functions::MaxInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga30108d3405e45b534d6f19963afc22ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5dbd84b33a3b711f5b8675b71584f406"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5dbd84b33a3b711f5b8675b71584f406">spla::Functions::AndUInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5dbd84b33a3b711f5b8675b71584f406"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac257338d8386dfbe9532f04bc7244393"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac257338d8386dfbe9532f04bc7244393">spla::Functions::XorUInt8</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gac257338d8386dfbe9532f04bc7244393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga61e3ae41454d80b91c37dd70e4403610"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga61e3ae41454d80b91c37dd70e4403610">spla::Functions::OrUInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga61e3ae41454d80b91c37dd70e4403610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7b99053856d773bc51cb2df59ddf3f9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gad7b99053856d773bc51cb2df59ddf3f9">spla::Functions::AndUInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gad7b99053856d773bc51cb2df59ddf3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab1b177549b6a565ae41ab3e0bd2a676f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gab1b177549b6a565ae41ab3e0bd2a676f">spla::Functions::XorUInt16</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gab1b177549b6a565ae41ab3e0bd2a676f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4310ec2cb18e51fac7269d1389047a67"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4310ec2cb18e51fac7269d1389047a67">spla::Functions::OrUInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4310ec2cb18e51fac7269d1389047a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60059fe6b7d86322c2fa718c85256fde"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga60059fe6b7d86322c2fa718c85256fde">spla::Functions::AndUInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga60059fe6b7d86322c2fa718c85256fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d25c7ed01c0377e56c05a9ae342e605"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4d25c7ed01c0377e56c05a9ae342e605">spla::Functions::XorUInt32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga4d25c7ed01c0377e56c05a9ae342e605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga985173c6500cc97a7a4d401c0ed585d0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga985173c6500cc97a7a4d401c0ed585d0">spla::Functions::OrUInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga985173c6500cc97a7a4d401c0ed585d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77daf55e29092076573acb28fb7bb0e5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga77daf55e29092076573acb28fb7bb0e5">spla::Functions::AndUInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga77daf55e29092076573acb28fb7bb0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48c8a573d70cd9fdffa1a40c5d004944"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga48c8a573d70cd9fdffa1a40c5d004944">spla::Functions::XorUInt64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga48c8a573d70cd9fdffa1a40c5d004944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0270782ecfdc9ac74a234d035be513eb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga0270782ecfdc9ac74a234d035be513eb">spla::Functions::MinusFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga0270782ecfdc9ac74a234d035be513eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95fcc584e1439596a7343ba735edaba3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga95fcc584e1439596a7343ba735edaba3">spla::Functions::ReverseMinusFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga95fcc584e1439596a7343ba735edaba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3c0d4749a663e5fdf183cd92b0399c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gab3c0d4749a663e5fdf183cd92b0399c2">spla::Functions::MultFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gab3c0d4749a663e5fdf183cd92b0399c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga71025f36509ad302578922cca137699d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga71025f36509ad302578922cca137699d">spla::Functions::DivFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga71025f36509ad302578922cca137699d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b7369cd73a42a8dcedf2fbd4b8c5748"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga3b7369cd73a42a8dcedf2fbd4b8c5748">spla::Functions::ReverseDivFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga3b7369cd73a42a8dcedf2fbd4b8c5748"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac332db11b4ccd2a0447e366460f46aeb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac332db11b4ccd2a0447e366460f46aeb">spla::Functions::TakeFirstFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gac332db11b4ccd2a0447e366460f46aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga744599aa36f450267d75d2df22da5d49"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga744599aa36f450267d75d2df22da5d49">spla::Functions::TakeSecondFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga744599aa36f450267d75d2df22da5d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55774f0c14e20a34e0d11374ed564794"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga55774f0c14e20a34e0d11374ed564794">spla::Functions::PlusFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga55774f0c14e20a34e0d11374ed564794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d5a7804637247c9effcf0128691c4ae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5d5a7804637247c9effcf0128691c4ae">spla::Functions::MinusFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5d5a7804637247c9effcf0128691c4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ccf2e34c9126bf5743b69ab7ea4e1cb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2ccf2e34c9126bf5743b69ab7ea4e1cb">spla::Functions::ReverseMinusFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga2ccf2e34c9126bf5743b69ab7ea4e1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga09066a9b324cb3df47207b826db46bfa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga09066a9b324cb3df47207b826db46bfa">spla::Functions::MultFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga09066a9b324cb3df47207b826db46bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40c2ca208319768f6e8caca04fe5f891"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga40c2ca208319768f6e8caca04fe5f891">spla::Functions::DivFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga40c2ca208319768f6e8caca04fe5f891"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85e7122eacf6d9adfb6011fb2e3c510a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga85e7122eacf6d9adfb6011fb2e3c510a">spla::Functions::ReverseDivFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga85e7122eacf6d9adfb6011fb2e3c510a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7e72ea2f3bb4759017cff4e2a5c66c7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf7e72ea2f3bb4759017cff4e2a5c66c7">spla::Functions::TakeFirstFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gaf7e72ea2f3bb4759017cff4e2a5c66c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga897a2cf8aad1565b529db8fd523fbf24"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga897a2cf8aad1565b529db8fd523fbf24">spla::Functions::TakeSecondFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga897a2cf8aad1565b529db8fd523fbf24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac22c042535dc44f65568f33b7b0a5bae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac22c042535dc44f65568f33b7b0a5bae">spla::Functions::MinFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gac22c042535dc44f65568f33b7b0a5bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2bab49cabdd34e5c24dca89a855d527"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gab2bab49cabdd34e5c24dca89a855d527">spla::Functions::MaxFloat32</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gab2bab49cabdd34e5c24dca89a855d527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad934825343027aff882cb0e6e9c2924b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gad934825343027aff882cb0e6e9c2924b">spla::Functions::MinFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:gad934825343027aff882cb0e6e9c2924b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c7289cabd9d2d64b9432e6ae1f14c13"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga5c7289cabd9d2d64b9432e6ae1f14c13">spla::Functions::MaxFloat64</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ga5c7289cabd9d2d64b9432e6ae1f14c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Public library interface. </p>
 <p>API module provides access to all common library primitives. Primitives are exposed as a number of <a class="el" href="classspla_1_1Object.html">Object</a> reference-counted classes. Reference-counting is used to automate objects life-time checks and to pass around this objects as expressions params in a safe way.</p>
 <p>Implementation details are hidden in private Internal sources module. Header files has no other dependencies, except standard c++ library files.</p>
 <p>File <a class="el" href="Spla_8hpp.html">Spla.hpp</a> provides access to all API components. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaf09a3bffab1ebf1aa047fb654d1a0ec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf09a3bffab1ebf1aa047fb654d1a0ec7">&#9670;&nbsp;</a></span>SPLA_DEFINE_BINARY_FUNCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_BINARY_FUNCTION</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fun&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::name##typeName(Library &amp;library) {  \</div>
+<div class="line">        auto t = Types::typeName(library);                                                  \</div>
+<div class="line">        return FunctionBinary::Make(t, t, t, MakeBinaryFunctionBody(#type, #fun), library); \</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr&lt; spla::FunctionBinary &gt;</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga2049233a2d6d2b30a40cdd1067669c24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2049233a2d6d2b30a40cdd1067669c24">&#9670;&nbsp;</a></span>SPLA_DEFINE_BINARY_OPERATOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_BINARY_OPERATOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">op&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::name##typeName(Library &amp;library) {   \</div>
+<div class="line">        auto t = Types::typeName(library);                                                   \</div>
+<div class="line">        return FunctionBinary::Make(t, t, t, MakeBinaryOperatorBody(#clType, #op), library); \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga9fa0988d560206daa973314e7d5cf23e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9fa0988d560206daa973314e7d5cf23e">&#9670;&nbsp;</a></span>SPLA_DEFINE_BINARY_OPERATORS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_BINARY_OPERATORS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="group__API.html#ga2049233a2d6d2b30a40cdd1067669c24">SPLA_DEFINE_BINARY_OPERATOR</a>(Plus, typeName, clType, +)                 \</div>
+<div class="line">    SPLA_DEFINE_BINARY_OPERATOR(Minus, typeName, clType, -)                \</div>
+<div class="line">    SPLA_DEFINE_FLIPPED_BINARY_OPERATOR(ReverseMinus, typeName, clType, -) \</div>
+<div class="line">    SPLA_DEFINE_BINARY_OPERATOR(Mult, typeName, clType, *)                 \</div>
+<div class="line">    SPLA_DEFINE_BINARY_OPERATOR(Div, typeName, clType, /)                  \</div>
+<div class="line">    SPLA_DEFINE_FLIPPED_BINARY_OPERATOR(ReverseDiv, typeName, clType, /)   \</div>
+<div class="line">    SPLA_DEFINE_TAKE_FIRST(TakeFirst, typeName, clType)                    \</div>
+<div class="line">    SPLA_DEFINE_TAKE_SECOND(TakeSecond, typeName, clType)</div>
+<div class="ttc" id="agroup__API_html_ga2049233a2d6d2b30a40cdd1067669c24"><div class="ttname"><a href="group__API.html#ga2049233a2d6d2b30a40cdd1067669c24">SPLA_DEFINE_BINARY_OPERATOR</a></div><div class="ttdeci">#define SPLA_DEFINE_BINARY_OPERATOR(name, typeName, clType, op)</div><div class="ttdef"><b>Definition:</b> SplaFunctions.cpp:81</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga9832b0f253bd5825da0a9fd13e3eeabc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9832b0f253bd5825da0a9fd13e3eeabc">&#9670;&nbsp;</a></span>SPLA_DEFINE_FLIPPED_BINARY_OPERATOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_FLIPPED_BINARY_OPERATOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">op&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::name##typeName(Library &amp;library) {          \</div>
+<div class="line">        auto t = Types::typeName(library);                                                          \</div>
+<div class="line">        return FunctionBinary::Make(t, t, t, MakeFlippedBinaryOperatorBody(#clType, #op), library); \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga732e3b63b9d9e16c7678b72c7a8be5a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga732e3b63b9d9e16c7678b72c7a8be5a3">&#9670;&nbsp;</a></span>SPLA_DEFINE_FLOAT_BINARY_FUNCTIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_FLOAT_BINARY_FUNCTIONS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="group__API.html#gaf09a3bffab1ebf1aa047fb654d1a0ec7">SPLA_DEFINE_BINARY_FUNCTION</a>(Min, typeName, clType, fmin) \</div>
+<div class="line">    SPLA_DEFINE_BINARY_FUNCTION(Max, typeName, clType, fmax)</div>
+<div class="ttc" id="agroup__API_html_gaf09a3bffab1ebf1aa047fb654d1a0ec7"><div class="ttname"><a href="group__API.html#gaf09a3bffab1ebf1aa047fb654d1a0ec7">SPLA_DEFINE_BINARY_FUNCTION</a></div><div class="ttdeci">#define SPLA_DEFINE_BINARY_FUNCTION(name, typeName, type, fun)</div><div class="ttdef"><b>Definition:</b> SplaFunctions.cpp:105</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga4e7158adec789179bf3cb8fbc96c2252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e7158adec789179bf3cb8fbc96c2252">&#9670;&nbsp;</a></span>SPLA_DEFINE_INT_BINARY_FUNCTIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_INT_BINARY_FUNCTIONS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="group__API.html#gaf09a3bffab1ebf1aa047fb654d1a0ec7">SPLA_DEFINE_BINARY_FUNCTION</a>(Min, typeName, clType, min) \</div>
+<div class="line">    SPLA_DEFINE_BINARY_FUNCTION(Max, typeName, clType, max)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gac8641b23eec80f6a811b76e447df8926"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac8641b23eec80f6a811b76e447df8926">&#9670;&nbsp;</a></span>SPLA_DEFINE_INT_FUNCTIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_INT_FUNCTIONS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">MACRO, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeNamePrefix, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clTypePrefix&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    MACRO(typeNamePrefix##8, clTypePrefix##<span class="keywordtype">char</span>)                       \</div>
+<div class="line">    MACRO(typeNamePrefix##16, clTypePrefix##<span class="keywordtype">short</span>)                     \</div>
+<div class="line">    MACRO(typeNamePrefix##32, clTypePrefix##<span class="keywordtype">int</span>)                       \</div>
+<div class="line">    MACRO(typeNamePrefix##64, clTypePrefix##<span class="keywordtype">long</span>)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gac7d0ba6c64ffd3c1f86331972d7f473e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7d0ba6c64ffd3c1f86331972d7f473e">&#9670;&nbsp;</a></span>SPLA_DEFINE_LOGIC_OPERATORS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_LOGIC_OPERATORS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="group__API.html#ga2049233a2d6d2b30a40cdd1067669c24">SPLA_DEFINE_BINARY_OPERATOR</a>(Or, typeName, clType, |)  \</div>
+<div class="line">    SPLA_DEFINE_BINARY_OPERATOR(And, typeName, clType, &amp;) \</div>
+<div class="line">    SPLA_DEFINE_BINARY_OPERATOR(Xor, typeName, clType, ^)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaf76cf88076e7d78a6940ac9cf9d6ffe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf76cf88076e7d78a6940ac9cf9d6ffe3">&#9670;&nbsp;</a></span>SPLA_DEFINE_TAKE_FIRST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_TAKE_FIRST</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::name##typeName(Library &amp;library) {   \</div>
+<div class="line">        auto t = Types::typeName(library);                                                   \</div>
+<div class="line">        return FunctionBinary::Make(t, t, t, MakeFirstBinaryOperatorBody(#clType), library); \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga16f56a4d977b478536c78b8d6c89f147"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga16f56a4d977b478536c78b8d6c89f147">&#9670;&nbsp;</a></span>SPLA_DEFINE_TAKE_SECOND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_DEFINE_TAKE_SECOND</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">typeName, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">clType&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::name##typeName(Library &amp;library) {    \</div>
+<div class="line">        auto t = Types::typeName(library);                                                    \</div>
+<div class="line">        return FunctionBinary::Make(t, t, t, MakeSecondBinaryOperatorBody(#clType), library); \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gad7b99053856d773bc51cb2df59ddf3f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad7b99053856d773bc51cb2df59ddf3f9">&#9670;&nbsp;</a></span>AndUInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::AndUInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga60059fe6b7d86322c2fa718c85256fde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga60059fe6b7d86322c2fa718c85256fde">&#9670;&nbsp;</a></span>AndUInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::AndUInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga77daf55e29092076573acb28fb7bb0e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga77daf55e29092076573acb28fb7bb0e5">&#9670;&nbsp;</a></span>AndUInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::AndUInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5dbd84b33a3b711f5b8675b71584f406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5dbd84b33a3b711f5b8675b71584f406">&#9670;&nbsp;</a></span>AndUInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::AndUInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga71025f36509ad302578922cca137699d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga71025f36509ad302578922cca137699d">&#9670;&nbsp;</a></span>DivFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga40c2ca208319768f6e8caca04fe5f891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga40c2ca208319768f6e8caca04fe5f891">&#9670;&nbsp;</a></span>DivFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga2e6a195f8c7895fb8bd0c6dcbe536489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2e6a195f8c7895fb8bd0c6dcbe536489">&#9670;&nbsp;</a></span>DivInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaf1f6476f2c829e39db5f580119de582a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf1f6476f2c829e39db5f580119de582a">&#9670;&nbsp;</a></span>DivInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae4bae08ad03c5c6008ec3ccc76ea926c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae4bae08ad03c5c6008ec3ccc76ea926c">&#9670;&nbsp;</a></span>DivInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6f8415f358c34380761e3d3d5f022f4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f8415f358c34380761e3d3d5f022f4b">&#9670;&nbsp;</a></span>DivInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::DivInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab2bab49cabdd34e5c24dca89a855d527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2bab49cabdd34e5c24dca89a855d527">&#9670;&nbsp;</a></span>MaxFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5c7289cabd9d2d64b9432e6ae1f14c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c7289cabd9d2d64b9432e6ae1f14c13">&#9670;&nbsp;</a></span>MaxFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa80b9b92a8f9e41e25dbeccad311b02e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa80b9b92a8f9e41e25dbeccad311b02e">&#9670;&nbsp;</a></span>MaxInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5d13667ffa5b829b212ad652d2d26732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d13667ffa5b829b212ad652d2d26732">&#9670;&nbsp;</a></span>MaxInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga30108d3405e45b534d6f19963afc22ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30108d3405e45b534d6f19963afc22ec">&#9670;&nbsp;</a></span>MaxInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga919a2c5a9b9bc3195ef7c2d74f0921e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga919a2c5a9b9bc3195ef7c2d74f0921e2">&#9670;&nbsp;</a></span>MaxInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MaxInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac22c042535dc44f65568f33b7b0a5bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac22c042535dc44f65568f33b7b0a5bae">&#9670;&nbsp;</a></span>MinFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad934825343027aff882cb0e6e9c2924b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad934825343027aff882cb0e6e9c2924b">&#9670;&nbsp;</a></span>MinFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga947457bd7d33371b2608d2b91aaa673a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga947457bd7d33371b2608d2b91aaa673a">&#9670;&nbsp;</a></span>MinInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4c0dae26f5e57139cc8bb685696d927f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c0dae26f5e57139cc8bb685696d927f">&#9670;&nbsp;</a></span>MinInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8d5716e40796cd3f64f41830fff36cfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d5716e40796cd3f64f41830fff36cfb">&#9670;&nbsp;</a></span>MinInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga0270782ecfdc9ac74a234d035be513eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0270782ecfdc9ac74a234d035be513eb">&#9670;&nbsp;</a></span>MinusFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5d5a7804637247c9effcf0128691c4ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d5a7804637247c9effcf0128691c4ae">&#9670;&nbsp;</a></span>MinusFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga1bc53287e2855c15d04f655833e7ba64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1bc53287e2855c15d04f655833e7ba64">&#9670;&nbsp;</a></span>MinusInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga55524b702ed6b2e58453f1c96b3c1603"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55524b702ed6b2e58453f1c96b3c1603">&#9670;&nbsp;</a></span>MinusInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gacecfa9ed08dc66a702abb3c5a2be263c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacecfa9ed08dc66a702abb3c5a2be263c">&#9670;&nbsp;</a></span>MinusInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa6cd0b2f29359fe7d9c244bad0264597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa6cd0b2f29359fe7d9c244bad0264597">&#9670;&nbsp;</a></span>MinusInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MinusInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab3c0d4749a663e5fdf183cd92b0399c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab3c0d4749a663e5fdf183cd92b0399c2">&#9670;&nbsp;</a></span>MultFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga09066a9b324cb3df47207b826db46bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga09066a9b324cb3df47207b826db46bfa">&#9670;&nbsp;</a></span>MultFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga63e85d8944fa8911d3aabdbd73adde01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga63e85d8944fa8911d3aabdbd73adde01">&#9670;&nbsp;</a></span>MultInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafb0dd10e1b534534203361a30ad5fee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafb0dd10e1b534534203361a30ad5fee8">&#9670;&nbsp;</a></span>MultInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4ea2439f6197d74f024fa0fc706afc2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ea2439f6197d74f024fa0fc706afc2e">&#9670;&nbsp;</a></span>MultInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaca1bb0a41d31dd76c2f01067b6b35087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaca1bb0a41d31dd76c2f01067b6b35087">&#9670;&nbsp;</a></span>MultInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::MultInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga61e3ae41454d80b91c37dd70e4403610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61e3ae41454d80b91c37dd70e4403610">&#9670;&nbsp;</a></span>OrUInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::OrUInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4310ec2cb18e51fac7269d1389047a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4310ec2cb18e51fac7269d1389047a67">&#9670;&nbsp;</a></span>OrUInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::OrUInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga985173c6500cc97a7a4d401c0ed585d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga985173c6500cc97a7a4d401c0ed585d0">&#9670;&nbsp;</a></span>OrUInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::OrUInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga55774f0c14e20a34e0d11374ed564794"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55774f0c14e20a34e0d11374ed564794">&#9670;&nbsp;</a></span>PlusFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::PlusFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab84b239339acd114117233fd94a2bb64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab84b239339acd114117233fd94a2bb64">&#9670;&nbsp;</a></span>PlusInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::PlusInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga76f40fe279757853847ad4182d3a13c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76f40fe279757853847ad4182d3a13c6">&#9670;&nbsp;</a></span>PlusInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::PlusInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga30b015eca880f81ace23e5bc0fb4f710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30b015eca880f81ace23e5bc0fb4f710">&#9670;&nbsp;</a></span>PlusInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::PlusInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5231b9aa6b0b7bfa66e3e067dab3d3cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5231b9aa6b0b7bfa66e3e067dab3d3cc">&#9670;&nbsp;</a></span>PlusInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::PlusInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga3b7369cd73a42a8dcedf2fbd4b8c5748"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b7369cd73a42a8dcedf2fbd4b8c5748">&#9670;&nbsp;</a></span>ReverseDivFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga85e7122eacf6d9adfb6011fb2e3c510a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85e7122eacf6d9adfb6011fb2e3c510a">&#9670;&nbsp;</a></span>ReverseDivFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab9f316155550c9d0d85d1a95453513d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab9f316155550c9d0d85d1a95453513d6">&#9670;&nbsp;</a></span>ReverseDivInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4c1d70c46816833e201d4284d7bd2a5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c1d70c46816833e201d4284d7bd2a5e">&#9670;&nbsp;</a></span>ReverseDivInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga226f1b406462de902832bf78709a7bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga226f1b406462de902832bf78709a7bfa">&#9670;&nbsp;</a></span>ReverseDivInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac6d3ef95fcf09b8b9a16a0b7a141dc5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac6d3ef95fcf09b8b9a16a0b7a141dc5d">&#9670;&nbsp;</a></span>ReverseDivInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseDivInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga95fcc584e1439596a7343ba735edaba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga95fcc584e1439596a7343ba735edaba3">&#9670;&nbsp;</a></span>ReverseMinusFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga2ccf2e34c9126bf5743b69ab7ea4e1cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2ccf2e34c9126bf5743b69ab7ea4e1cb">&#9670;&nbsp;</a></span>ReverseMinusFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6f11d9fdfc735ad168be2d89c9bb880f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f11d9fdfc735ad168be2d89c9bb880f">&#9670;&nbsp;</a></span>ReverseMinusInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5538609fc24e7167acc08abb6c9ef88a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5538609fc24e7167acc08abb6c9ef88a">&#9670;&nbsp;</a></span>ReverseMinusInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga9cdaa928741b9b5fb883fc187f3fbe2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9cdaa928741b9b5fb883fc187f3fbe2e">&#9670;&nbsp;</a></span>ReverseMinusInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa940a24c5af420c58387e53d6c14d3ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa940a24c5af420c58387e53d6c14d3ea">&#9670;&nbsp;</a></span>ReverseMinusInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::ReverseMinusInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad747927297eef898ec46d659b7d5c766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad747927297eef898ec46d659b7d5c766">&#9670;&nbsp;</a></span>SSSSSPLA_DEFINE_INT_FUNCTIONS() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SSSSSPLA_DEFINE_INT_FUNCTIONS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__API.html#ga9fa0988d560206daa973314e7d5cf23e">SPLA_DEFINE_BINARY_OPERATORS</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">u&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae640f7b7cad8b34c83a8d8716153f927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae640f7b7cad8b34c83a8d8716153f927">&#9670;&nbsp;</a></span>SSSSSPLA_DEFINE_INT_FUNCTIONS() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SSSSSPLA_DEFINE_INT_FUNCTIONS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__API.html#ga4e7158adec789179bf3cb8fbc96c2252">SPLA_DEFINE_INT_BINARY_FUNCTIONS</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UInt&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">u&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga2f373b2d2431b020dd1b68d48b717cd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2f373b2d2431b020dd1b68d48b717cd7">&#9670;&nbsp;</a></span>SSSSSPLA_DEFINE_INT_FUNCTIONS() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SSSSSPLA_DEFINE_INT_FUNCTIONS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__API.html#gac7d0ba6c64ffd3c1f86331972d7f473e">SPLA_DEFINE_LOGIC_OPERATORS</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac332db11b4ccd2a0447e366460f46aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac332db11b4ccd2a0447e366460f46aeb">&#9670;&nbsp;</a></span>TakeFirstFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaf7e72ea2f3bb4759017cff4e2a5c66c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7e72ea2f3bb4759017cff4e2a5c66c7">&#9670;&nbsp;</a></span>TakeFirstFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga3311f83cdf3c8ac0937fcc838a6d8033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3311f83cdf3c8ac0937fcc838a6d8033">&#9670;&nbsp;</a></span>TakeFirstInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga2d3df7357d03f361af6465a0efd368fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2d3df7357d03f361af6465a0efd368fa">&#9670;&nbsp;</a></span>TakeFirstInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac7d5a8c3ee6a458562e540ae523e1dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7d5a8c3ee6a458562e540ae523e1dd3">&#9670;&nbsp;</a></span>TakeFirstInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae4b0578cdc3753d4d7a79754d19a1085"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae4b0578cdc3753d4d7a79754d19a1085">&#9670;&nbsp;</a></span>TakeFirstInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeFirstInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga744599aa36f450267d75d2df22da5d49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga744599aa36f450267d75d2df22da5d49">&#9670;&nbsp;</a></span>TakeSecondFloat32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondFloat32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga897a2cf8aad1565b529db8fd523fbf24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga897a2cf8aad1565b529db8fd523fbf24">&#9670;&nbsp;</a></span>TakeSecondFloat64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondFloat64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga371a6f25ab413d6d143899664519ac3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga371a6f25ab413d6d143899664519ac3a">&#9670;&nbsp;</a></span>TakeSecondInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4bcec8b90aaa6611cab04e9c140ea13f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4bcec8b90aaa6611cab04e9c140ea13f">&#9670;&nbsp;</a></span>TakeSecondInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga60d0759eba7e2f761039eccae0f87da1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga60d0759eba7e2f761039eccae0f87da1">&#9670;&nbsp;</a></span>TakeSecondInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga272bbc1da0f58859dabf3dc49d94d3dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga272bbc1da0f58859dabf3dc49d94d3dc">&#9670;&nbsp;</a></span>TakeSecondInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::TakeSecondInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab1b177549b6a565ae41ab3e0bd2a676f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab1b177549b6a565ae41ab3e0bd2a676f">&#9670;&nbsp;</a></span>XorUInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::XorUInt16 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4d25c7ed01c0377e56c05a9ae342e605"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d25c7ed01c0377e56c05a9ae342e605">&#9670;&nbsp;</a></span>XorUInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::XorUInt32 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga48c8a573d70cd9fdffa1a40c5d004944"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga48c8a573d70cd9fdffa1a40c5d004944">&#9670;&nbsp;</a></span>XorUInt64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::XorUInt64 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac257338d8386dfbe9532f04bc7244393"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac257338d8386dfbe9532f04bc7244393">&#9670;&nbsp;</a></span>XorUInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">spla::FunctionBinary</a> &gt; spla::Functions::XorUInt8 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

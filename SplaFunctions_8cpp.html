@@ -66,92 +66,72 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">SplaFunctions.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="SplaFunctions_8hpp_source.html">spla-cpp/SplaFunctions.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="SplaTypes_8hpp_source.html">spla-cpp/SplaTypes.hpp</a>&gt;</code><br />
-<code>#include &lt;sstream&gt;</code><br />
+<div class="textblock"><code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaFunctions_8hpp_source.html">spla-cpp/SplaFunctions.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaFunctions.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaFunctions_8cpp__incl.png" border="0" usemap="#asources_2SplaFunctions_8cpp" alt=""/></div>
 <map name="asources_2SplaFunctions_8cpp" id="asources_2SplaFunctions_8cpp">
-<area shape="rect" title=" " alt="" coords="332,5,511,32"/>
-<area shape="rect" href="SplaFunctions_8hpp.html" title=" " alt="" coords="330,80,513,107"/>
-<area shape="rect" href="SplaTypes_8hpp.html" title=" " alt="" coords="132,155,292,181"/>
-<area shape="rect" title=" " alt="" coords="537,80,607,107"/>
-<area shape="rect" href="SplaFunctionBinary_8hpp.html" title=" " alt="" coords="316,155,527,181"/>
-<area shape="rect" href="SplaFunctionUnary_8hpp.html" title=" " alt="" coords="551,155,761,181"/>
-<area shape="rect" href="SplaObject_8hpp.html" title=" " alt="" coords="461,304,624,331"/>
-<area shape="rect" title=" " alt="" coords="293,528,347,555"/>
-<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="345,229,498,256"/>
+<area shape="rect" title=" " alt="" coords="263,5,441,32"/>
+<area shape="rect" title=" " alt="" coords="243,80,312,107"/>
+<area shape="rect" href="SplaFunctions_8hpp.html" title=" " alt="" coords="337,80,519,107"/>
+<area shape="rect" href="SplaFunctionBinary_8hpp.html" title=" " alt="" coords="532,155,743,181"/>
+<area shape="rect" href="SplaFunctionUnary_8hpp.html" title=" " alt="" coords="114,155,323,181"/>
+<area shape="rect" href="SplaTypes_8hpp.html" title=" " alt="" coords="348,155,508,181"/>
+<area shape="rect" href="SplaObject_8hpp.html" title=" " alt="" coords="387,304,549,331"/>
+<area shape="rect" title=" " alt="" coords="235,528,290,555"/>
+<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="391,229,545,256"/>
 <area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="411,379,576,405"/>
-<area shape="rect" title=" " alt="" coords="515,453,576,480"/>
-<area shape="rect" title=" " alt="" coords="425,453,490,480"/>
-<area shape="rect" href="SplaConfig_8hpp.html" title=" " alt="" coords="239,453,401,480"/>
-<area shape="rect" title=" " alt="" coords="385,304,437,331"/>
-<area shape="rect" href="SplaLibrary_8hpp.html" title=" " alt="" coords="130,304,294,331"/>
-<area shape="rect" title=" " alt="" coords="177,379,245,405"/>
-<area shape="rect" title=" " alt="" coords="269,379,336,405"/>
-<area shape="rect" title=" " alt="" coords="93,379,152,405"/>
+<area shape="rect" title=" " alt="" coords="399,453,460,480"/>
+<area shape="rect" title=" " alt="" coords="485,453,550,480"/>
+<area shape="rect" href="SplaConfig_8hpp.html" title=" " alt="" coords="182,453,343,480"/>
+<area shape="rect" title=" " alt="" coords="574,304,626,331"/>
+<area shape="rect" href="SplaLibrary_8hpp.html" title=" " alt="" coords="179,304,343,331"/>
+<area shape="rect" title=" " alt="" coords="227,379,295,405"/>
+<area shape="rect" title=" " alt="" coords="320,379,387,405"/>
+<area shape="rect" title=" " alt="" coords="43,379,101,405"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a73c8a75781578b9e7efd02bd699ecbd4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SplaFunctions_8cpp.html#a73c8a75781578b9e7efd02bd699ecbd4">SPLA_MAKE_BINARY_FUNCTION</a>(opName,  typeName,  type,  binop)</td></tr>
-<tr class="separator:a73c8a75781578b9e7efd02bd699ecbd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2049233a2d6d2b30a40cdd1067669c24"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2049233a2d6d2b30a40cdd1067669c24">SPLA_DEFINE_BINARY_OPERATOR</a>(name,  typeName,  clType,  op)</td></tr>
+<tr class="separator:ga2049233a2d6d2b30a40cdd1067669c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9832b0f253bd5825da0a9fd13e3eeabc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga9832b0f253bd5825da0a9fd13e3eeabc">SPLA_DEFINE_FLIPPED_BINARY_OPERATOR</a>(name,  typeName,  clType,  op)</td></tr>
+<tr class="separator:ga9832b0f253bd5825da0a9fd13e3eeabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf76cf88076e7d78a6940ac9cf9d6ffe3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf76cf88076e7d78a6940ac9cf9d6ffe3">SPLA_DEFINE_TAKE_FIRST</a>(name,  typeName,  clType)</td></tr>
+<tr class="separator:gaf76cf88076e7d78a6940ac9cf9d6ffe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16f56a4d977b478536c78b8d6c89f147"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga16f56a4d977b478536c78b8d6c89f147">SPLA_DEFINE_TAKE_SECOND</a>(name,  typeName,  clType)</td></tr>
+<tr class="separator:ga16f56a4d977b478536c78b8d6c89f147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf09a3bffab1ebf1aa047fb654d1a0ec7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gaf09a3bffab1ebf1aa047fb654d1a0ec7">SPLA_DEFINE_BINARY_FUNCTION</a>(name,  typeName,  type,  fun)</td></tr>
+<tr class="separator:gaf09a3bffab1ebf1aa047fb654d1a0ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9fa0988d560206daa973314e7d5cf23e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga9fa0988d560206daa973314e7d5cf23e">SPLA_DEFINE_BINARY_OPERATORS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga9fa0988d560206daa973314e7d5cf23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7d0ba6c64ffd3c1f86331972d7f473e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac7d0ba6c64ffd3c1f86331972d7f473e">SPLA_DEFINE_LOGIC_OPERATORS</a>(typeName,  clType)</td></tr>
+<tr class="separator:gac7d0ba6c64ffd3c1f86331972d7f473e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga732e3b63b9d9e16c7678b72c7a8be5a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga732e3b63b9d9e16c7678b72c7a8be5a3">SPLA_DEFINE_FLOAT_BINARY_FUNCTIONS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga732e3b63b9d9e16c7678b72c7a8be5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e7158adec789179bf3cb8fbc96c2252"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga4e7158adec789179bf3cb8fbc96c2252">SPLA_DEFINE_INT_BINARY_FUNCTIONS</a>(typeName,  clType)</td></tr>
+<tr class="separator:ga4e7158adec789179bf3cb8fbc96c2252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8641b23eec80f6a811b76e447df8926"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gac8641b23eec80f6a811b76e447df8926">SPLA_DEFINE_INT_FUNCTIONS</a>(MACRO,  typeNamePrefix,  clTypePrefix)</td></tr>
+<tr class="separator:gac8641b23eec80f6a811b76e447df8926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga2f373b2d2431b020dd1b68d48b717cd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#ga2f373b2d2431b020dd1b68d48b717cd7">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#gac7d0ba6c64ffd3c1f86331972d7f473e">SPLA_DEFINE_LOGIC_OPERATORS</a>, Int,) spla</td></tr>
+<tr class="separator:ga2f373b2d2431b020dd1b68d48b717cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad747927297eef898ec46d659b7d5c766"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gad747927297eef898ec46d659b7d5c766">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#ga9fa0988d560206daa973314e7d5cf23e">SPLA_DEFINE_BINARY_OPERATORS</a>, UInt, u) spla</td></tr>
+<tr class="separator:gad747927297eef898ec46d659b7d5c766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae640f7b7cad8b34c83a8d8716153f927"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__API.html#gae640f7b7cad8b34c83a8d8716153f927">SSSSSPLA_DEFINE_INT_FUNCTIONS</a> (<a class="el" href="group__API.html#ga4e7158adec789179bf3cb8fbc96c2252">SPLA_DEFINE_INT_BINARY_FUNCTIONS</a>, UInt, u) spla</td></tr>
+<tr class="separator:gae640f7b7cad8b34c83a8d8716153f927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a73c8a75781578b9e7efd02bd699ecbd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73c8a75781578b9e7efd02bd699ecbd4">&#9670;&nbsp;</a></span>SPLA_MAKE_BINARY_FUNCTION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPLA_MAKE_BINARY_FUNCTION</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">opName, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">typeName, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">binop&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classspla_1_1RefPtr.html">spla::RefPtr&lt;spla::FunctionBinary&gt;</a> spla::Functions::opName##typeName(<a class="code" href="classspla_1_1Library.html">spla::Library</a> &amp;library) { \</div>
-<div class="line">        auto t = Types::typeName(library);                                                         \</div>
-<div class="line">        return FunctionBinary::Make(t, t, t, MakeBody(#type, #binop), library);                    \</div>
-<div class="line">    }</div>
-<div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
-<div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr&lt; spla::FunctionBinary &gt;</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
