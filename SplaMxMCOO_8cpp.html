@@ -73,11 +73,12 @@ $(function() {
 <div class="title">SplaMxMCOO.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/compute/algorithm/scatter_if.hpp&gt;</code><br />
-<code>#include &lt;<a class="el" href="SplaMxMCOO_8hpp_source.html">algo/mxm/SplaMxMCOO.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="SplaMxMCOO_8hpp_source.html">algo/mxm/SplaMxMCOO.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/compute/algorithm/scatter_if.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaApplyMask_8hpp_source.html">compute/SplaApplyMask.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaIndicesToRowOffsets_8hpp_source.html">compute/SplaIndicesToRowOffsets.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaReduceByKey_8hpp_source.html">compute/SplaReduceByKey.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaReduceDuplicates_8hpp_source.html">compute/SplaReduceDuplicates.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaSortByRowColumn_8hpp_source.html">compute/SplaSortByRowColumn.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaTransformValues_8hpp_source.html">compute/SplaTransformValues.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaError_8hpp_source.html">core/SplaError.hpp</a>&gt;</code><br />
@@ -89,56 +90,56 @@ Include dependency graph for SplaMxMCOO.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaMxMCOO_8cpp__incl.png" border="0" usemap="#asources_2algo_2mxm_2SplaMxMCOO_8cpp" alt=""/></div>
 <map name="asources_2algo_2mxm_2SplaMxMCOO_8cpp" id="asources_2algo_2mxm_2SplaMxMCOO_8cpp">
-<area shape="rect" title=" " alt="" coords="1842,5,2081,32"/>
-<area shape="rect" title=" " alt="" coords="109,80,275,121"/>
-<area shape="rect" href="SplaMxMCOO_8hpp.html" title=" " alt="" coords="1577,87,1767,114"/>
-<area shape="rect" href="SplaApplyMask_8hpp.html" title=" " alt="" coords="2522,87,2713,114"/>
-<area shape="rect" href="SplaIndicesToRowOffsets_8hpp.html" title=" " alt="" coords="2103,80,2289,121"/>
-<area shape="rect" href="SplaReduceByKey_8hpp.html" title=" " alt="" coords="3130,87,3337,114"/>
-<area shape="rect" href="SplaSortByRowColumn_8hpp.html" title=" " alt="" coords="1844,87,2079,114"/>
-<area shape="rect" href="SplaTransformValues_8hpp.html" title=" " alt="" coords="2737,87,2962,114"/>
-<area shape="rect" href="SplaError_8hpp.html" title=" " alt="" coords="299,87,427,114"/>
-<area shape="rect" href="SplaLibraryPrivate_8hpp.html" title=" " alt="" coords="703,87,884,114"/>
-<area shape="rect" href="SplaQueueFinisher_8hpp.html" title=" " alt="" coords="2313,87,2498,114"/>
-<area shape="rect" href="SplaMatrixCOO_8hpp.html" title=" " alt="" coords="1709,169,1875,211"/>
-<area shape="rect" href="SplaAlgorithm_8hpp.html" title=" " alt="" coords="1545,266,1700,293"/>
-<area shape="rect" href="SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="1523,348,1723,375"/>
-<area shape="rect" title=" " alt="" coords="981,497,1035,524"/>
-<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="1544,497,1709,524"/>
-<area shape="rect" href="SplaDeviceManager_8hpp.html" title=" " alt="" coords="251,423,442,449"/>
-<area shape="rect" href="SplaDescriptor_8hpp.html" title=" " alt="" coords="787,423,971,449"/>
-<area shape="rect" href="SplaMatrixBlock_8hpp.html" title=" " alt="" coords="1624,423,1811,449"/>
-<area shape="rect" title=" " alt="" coords="121,497,295,524"/>
-<area shape="rect" title=" " alt="" coords="319,497,385,524"/>
-<area shape="rect" title=" " alt="" coords="409,497,466,524"/>
-<area shape="rect" title=" " alt="" coords="610,497,721,524"/>
-<area shape="rect" title=" " alt="" coords="1691,572,1757,599"/>
-<area shape="rect" title=" " alt="" coords="2403,169,2573,211"/>
-<area shape="rect" title=" " alt="" coords="2816,169,2981,211"/>
-<area shape="rect" href="SplaGather_8hpp.html" title=" " alt="" coords="2000,177,2165,203"/>
-<area shape="rect" href="SplaMaskByKey_8hpp.html" title=" " alt="" coords="2597,177,2792,203"/>
-<area shape="rect" title=" " alt="" coords="1983,266,2115,293"/>
-<area shape="rect" title=" " alt="" coords="2289,259,2441,300"/>
-<area shape="rect" title=" " alt="" coords="2615,259,2774,300"/>
-<area shape="rect" title=" " alt="" coords="2189,177,2379,203"/>
-<area shape="rect" title=" " alt="" coords="1318,348,1397,375"/>
-<area shape="rect" title=" " alt="" coords="3056,169,3221,211"/>
-<area shape="rect" title=" " alt="" coords="3245,169,3411,211"/>
-<area shape="rect" title=" " alt="" coords="3435,169,3578,211"/>
-<area shape="rect" title=" " alt="" coords="3603,169,3755,211"/>
-<area shape="rect" title=" " alt="" coords="3779,169,3938,211"/>
-<area shape="rect" title=" " alt="" coords="5,177,83,203"/>
-<area shape="rect" title=" " alt="" coords="107,177,176,203"/>
-<area shape="rect" href="SplaAlgorithmManager_8hpp.html" title=" " alt="" coords="1429,177,1635,203"/>
-<area shape="rect" title=" " alt="" coords="1147,348,1293,375"/>
-<area shape="rect" title=" " alt="" coords="912,348,971,375"/>
-<area shape="rect" title=" " alt="" coords="805,177,984,203"/>
-<area shape="rect" href="SplaExpressionManager_8hpp.html" title=" " alt="" coords="603,169,781,211"/>
-<area shape="rect" href="SplaLibrary_8hpp.html" title=" " alt="" coords="931,266,1095,293"/>
-<area shape="rect" title=" " alt="" coords="1008,177,1120,203"/>
-<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="677,266,830,293"/>
-<area shape="rect" href="SplaTypes_8hpp.html" title=" " alt="" coords="1144,177,1304,203"/>
-<area shape="rect" href="SplaTaskBuilder_8hpp.html" title=" " alt="" coords="1277,266,1448,293"/>
+<area shape="rect" title=" " alt="" coords="2053,5,2291,32"/>
+<area shape="rect" href="SplaMxMCOO_8hpp.html" title=" " alt="" coords="616,87,805,114"/>
+<area shape="rect" title=" " alt="" coords="3309,80,3475,121"/>
+<area shape="rect" href="SplaApplyMask_8hpp.html" title=" " alt="" coords="2195,87,2386,114"/>
+<area shape="rect" href="SplaIndicesToRowOffsets_8hpp.html" title=" " alt="" coords="2410,80,2595,121"/>
+<area shape="rect" href="SplaReduceByKey_8hpp.html" title=" " alt="" coords="3078,87,3285,114"/>
+<area shape="rect" href="SplaReduceDuplicates_8hpp.html" title=" " alt="" coords="1681,87,1911,114"/>
+<area shape="rect" href="SplaSortByRowColumn_8hpp.html" title=" " alt="" coords="1936,87,2171,114"/>
+<area shape="rect" href="SplaTransformValues_8hpp.html" title=" " alt="" coords="2829,87,3054,114"/>
+<area shape="rect" href="SplaError_8hpp.html" title=" " alt="" coords="112,87,240,114"/>
+<area shape="rect" href="SplaLibraryPrivate_8hpp.html" title=" " alt="" coords="1059,87,1240,114"/>
+<area shape="rect" href="SplaQueueFinisher_8hpp.html" title=" " alt="" coords="2619,87,2805,114"/>
+<area shape="rect" href="SplaMatrixCOO_8hpp.html" title=" " alt="" coords="1560,169,1725,211"/>
+<area shape="rect" href="SplaAlgorithm_8hpp.html" title=" " alt="" coords="825,266,980,293"/>
+<area shape="rect" href="SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="947,348,1147,375"/>
+<area shape="rect" title=" " alt="" coords="841,497,895,524"/>
+<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="641,497,807,524"/>
+<area shape="rect" href="SplaDeviceManager_8hpp.html" title=" " alt="" coords="1167,423,1358,449"/>
+<area shape="rect" href="SplaDescriptor_8hpp.html" title=" " alt="" coords="1383,423,1567,449"/>
+<area shape="rect" href="SplaMatrixBlock_8hpp.html" title=" " alt="" coords="956,423,1143,449"/>
+<area shape="rect" title=" " alt="" coords="1389,497,1563,524"/>
+<area shape="rect" title=" " alt="" coords="1230,497,1295,524"/>
+<area shape="rect" title=" " alt="" coords="1630,497,1741,524"/>
+<area shape="rect" title=" " alt="" coords="1341,572,1406,599"/>
+<area shape="rect" title=" " alt="" coords="2627,169,2797,211"/>
+<area shape="rect" title=" " alt="" coords="2821,169,2987,211"/>
+<area shape="rect" href="SplaGather_8hpp.html" title=" " alt="" coords="2005,177,2171,203"/>
+<area shape="rect" href="SplaMaskByKey_8hpp.html" title=" " alt="" coords="2195,177,2389,203"/>
+<area shape="rect" title=" " alt="" coords="1851,266,1983,293"/>
+<area shape="rect" title=" " alt="" coords="2059,259,2211,300"/>
+<area shape="rect" title=" " alt="" coords="2235,259,2394,300"/>
+<area shape="rect" title=" " alt="" coords="2413,177,2603,203"/>
+<area shape="rect" title=" " alt="" coords="1494,348,1573,375"/>
+<area shape="rect" title=" " alt="" coords="3779,169,3944,211"/>
+<area shape="rect" title=" " alt="" coords="3061,169,3227,211"/>
+<area shape="rect" title=" " alt="" coords="3251,169,3394,211"/>
+<area shape="rect" title=" " alt="" coords="3419,169,3571,211"/>
+<area shape="rect" title=" " alt="" coords="3595,169,3754,211"/>
+<area shape="rect" title=" " alt="" coords="99,177,176,203"/>
+<area shape="rect" title=" " alt="" coords="5,177,75,203"/>
+<area shape="rect" href="SplaAlgorithmManager_8hpp.html" title=" " alt="" coords="976,177,1181,203"/>
+<area shape="rect" title=" " alt="" coords="1323,348,1469,375"/>
+<area shape="rect" title=" " alt="" coords="569,348,628,375"/>
+<area shape="rect" title=" " alt="" coords="587,177,765,203"/>
+<area shape="rect" href="SplaExpressionManager_8hpp.html" title=" " alt="" coords="1257,169,1434,211"/>
+<area shape="rect" href="SplaLibrary_8hpp.html" title=" " alt="" coords="637,266,801,293"/>
+<area shape="rect" title=" " alt="" coords="789,177,901,203"/>
+<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="322,266,475,293"/>
+<area shape="rect" href="SplaTypes_8hpp.html" title=" " alt="" coords="352,177,512,203"/>
+<area shape="rect" href="SplaTaskBuilder_8hpp.html" title=" " alt="" coords="1323,266,1493,293"/>
 </map>
 </div>
 </div><table class="memberdecls">
