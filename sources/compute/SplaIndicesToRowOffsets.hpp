@@ -75,7 +75,6 @@ namespace spla {
         });
 
         compute::for_each_n(compute::counting_iterator<unsigned int>(0), indices.size(), countRowLengths, queue);
-
         compute::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), queue);
     }
 

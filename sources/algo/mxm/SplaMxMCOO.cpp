@@ -25,12 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute/algorithm/scatter_if.hpp>
-
 #include <algo/mxm/SplaMxMCOO.hpp>
+#include <boost/compute/algorithm/scatter_if.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
+#include <compute/SplaReduceDuplicates.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaError.hpp>
@@ -64,8 +64,6 @@ namespace spla::detail {
                               boost::compute::command_queue &queue,
                               const std::shared_ptr<spdlog::logger> &) {
         using namespace boost;
-
-        const bool fillAGatherLocations = !aGatherLocations.empty();
         const bool typeHasValues = wValueByteSize != 0;
 
         aGatherLocations.resize(workspaceSize, queue);
@@ -88,37 +86,28 @@ namespace spla::detail {
         }
 
         const auto beginSegmentDiff = static_cast<std::ptrdiff_t>(beginSegment);
-        const auto endSegmentDiff = static_cast<std::ptrdiff_t>(endSegment);
         const auto startShift = (outputPtr.begin() + beginSegmentDiff).read(queue);
 
         // compute gather locations of intermediate format for 'a'
-        if (fillAGatherLocations) {
-            compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);
-        }
-        {
-            BOOST_COMPUTE_CLOSURE(void, calcAGatherLoc, (unsigned int i), (aGatherLocations, outputPtr, startShift, segmentLengths), {
-                if (segmentLengths[i] != 0) {
-                    aGatherLocations[outputPtr[i] - startShift] = i;
-                }
-            });
-            compute::for_each_n(compute::counting_iterator(beginSegment), endSegment - beginSegment, calcAGatherLoc, queue);
-        }
-        compute::inclusive_scan(aGatherLocations.begin(),
-                                aGatherLocations.end(),
-                                aGatherLocations.begin(),
-                                compute::max<unsigned int>(),
-                                queue);
+        compute::fill(aGatherLocations.begin(), aGatherLocations.end(), 0, queue);// On resize (if enlarge), new entries can store rubbish
+        BOOST_COMPUTE_CLOSURE(void, calcAGatherLoc, (unsigned int i), (aGatherLocations, outputPtr, startShift, segmentLengths), {
+            if (segmentLengths[i] != 0) {
+                aGatherLocations[outputPtr[i] - startShift] = i;
+            }
+        });
+        compute::for_each_n(compute::counting_iterator<unsigned int>(beginSegment), endSegment - beginSegment, calcAGatherLoc, queue);
+        compute::inclusive_scan(aGatherLocations.begin(), aGatherLocations.end(), aGatherLocations.begin(), compute::max<unsigned int>(), queue);
 
         // compute gather locations of intermediate format for 'b'
-        {
-            const auto &aCols = a.GetCols();
-            BOOST_COMPUTE_CLOSURE(void, computeBGatherLoc, (unsigned int i),
-                                  (aCols, startShift, outputPtr, bRowOffsets, aGatherLocations, bGatherLocations),
-                                  {
-                                      bGatherLocations[i] = bRowOffsets[aCols[aGatherLocations[i]]] + i - (outputPtr[aGatherLocations[i]] - startShift);
-                                  });
-            compute::for_each_n(compute::counting_iterator<unsigned int>(0), bGatherLocations.size(), computeBGatherLoc, queue);
-        }
+        const auto &aCols = a.GetCols();
+        BOOST_COMPUTE_CLOSURE(void, calcBGatherLoc, (unsigned int i), (aCols, startShift, outputPtr, bRowOffsets, aGatherLocations, bGatherLocations), {
+            uint locationOfColIndex = aGatherLocations[i];
+            uint col = aCols[locationOfColIndex];
+            uint rowBaseOffset = bRowOffsets[col];
+            uint offsetOfRowSegment = outputPtr[locationOfColIndex];
+            bGatherLocations[i] = bRowOffsets[aCols[aGatherLocations[i]]] + i - (outputPtr[aGatherLocations[i]] - startShift);
+        });
+        compute::for_each_n(compute::counting_iterator<unsigned int>(0), bGatherLocations.size(), calcBGatherLoc, queue);
 
         compute::gather(aGatherLocations.begin(), aGatherLocations.end(),
                         a.GetRows().begin(),
@@ -136,20 +125,22 @@ namespace spla::detail {
                             a.GetValueByteSize(), b.GetValueByteSize(), wValueByteSize,
                             fMultiply->GetSource(),
                             queue);
-        }
 
-        // sort (I,J,V) tuples by (I,J)
-        SortByRowColumn(I, J, V, wValueByteSize, queue);
+            // sort (I,J,V) tuples by (I,J)
+            SortByRowColumn(I, J, V, wValueByteSize, queue);
 
-        // sum values with the same (i,j)
-        if (typeHasValues) {
             return ReduceByPairKey(I, J, V,
                                    wRows, wCols, wVals,
                                    wValueByteSize,
                                    fAdd->GetSource(),
                                    queue);
-        }
-        return ReducePairKey(I, J, wRows, wCols, queue);
+        } else {
+            // sort (I,J,V) tuples by (I,J)
+            SortByRowColumn(I, J, V, wValueByteSize, queue);
+
+            // Only reduce duplicated indices, no values sum
+            return ReduceDuplicates(I, J, wRows, wCols, queue);
+        };
     }
 }// namespace spla::detail
 
@@ -203,7 +194,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     // compute row offsets and row lengths for B
     compute::vector<unsigned int> bRowOffsets(ctx);
     compute::vector<unsigned int> bRowLengths(ctx);
-
     IndicesToRowOffsets(b.GetRows(), bRowOffsets, bRowLengths, b.GetNrows(), queue);
 
     // for each element A(i,j) compute the number of nonzero elements in B(j,:)
@@ -275,12 +265,11 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         std::deque<MatrixSlice> slices;
 
         // compute row offsets for A
-        compute::vector<unsigned int> aRowOffsets(a.GetNrows() + 1, ctx);
+        compute::vector<unsigned int> aRowOffsets(ctx);
         IndicesToRowOffsets(a.GetRows(), aRowOffsets, a.GetNrows(), queue);
 
         // compute workspace requirements for each row
         compute::vector<unsigned int> cumulativeRowWorkspace(a.GetNrows(), ctx);
-
         compute::gather(aRowOffsets.begin() + 1, aRowOffsets.end(),
                         outputPtr.begin(),
                         cumulativeRowWorkspace.begin(),
