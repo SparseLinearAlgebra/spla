@@ -71,7 +71,7 @@ void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned in
         compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
     }
 
-    auto byteSize = mVals.size() / GetNvals();
+    auto byteSize = GetValueByteSize();
 
     stream << "Matrix " << GetNrows() << "x" << GetNcols()
            << " nvals=" << GetNvals()
@@ -93,4 +93,8 @@ void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned in
         stream << std::endl
                << std::dec;
     }
+}
+
+std::size_t spla::MatrixCOO::GetValueByteSize() const noexcept {
+    return GetVals().size() / GetNvals();
 }

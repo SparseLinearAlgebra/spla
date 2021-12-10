@@ -111,6 +111,17 @@ namespace spla {
     }
 
     /**
+     * Overload
+     */
+    inline void Gather(const boost::compute::vector<unsigned int> &map,
+                       const boost::compute::vector<unsigned char> &values,
+                       boost::compute::vector<unsigned char> &result,
+                       std::size_t elementsInSequence,
+                       boost::compute::command_queue &queue) {
+        Gather(map.begin(), map.end(), values.begin(), result.begin(), elementsInSequence, queue);
+    }
+
+    /**
      * @}
      */
 

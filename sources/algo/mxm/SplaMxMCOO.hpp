@@ -31,7 +31,6 @@
 #include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
     class MxMCOO final : public Algorithm {
     public:
         ~MxMCOO() override = default;

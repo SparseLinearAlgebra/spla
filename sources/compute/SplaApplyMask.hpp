@@ -96,6 +96,69 @@ namespace spla {
     }
 
     /**
+     * @brief Apply mask to coo matrix.
+     *
+     * @param maskRows Mask indices of rows
+     * @param maskCols Mask indices of cols
+     * @param inputRows Row indices
+     * @param inputCols Col indices
+     * @param inputVals Values
+     * @param outputRows Result row indices; resized automatically
+     * @param outputCols Result col indices; resized automatically
+     * @param outputVals Result values; resized automatically
+     * @param byteSize Size of values; if 0, apply only indices mask
+     * @param queue Command queue to perform operation
+     */
+    inline void ApplyMask(const boost::compute::vector<unsigned int> &maskRows,
+                          const boost::compute::vector<unsigned int> &maskCols,
+                          const boost::compute::vector<unsigned int> &inputRows,
+                          const boost::compute::vector<unsigned int> &inputCols,
+                          const boost::compute::vector<unsigned char> &inputVals,
+                          boost::compute::vector<unsigned int> &outputRows,
+                          boost::compute::vector<unsigned int> &outputCols,
+                          boost::compute::vector<unsigned char> &outputVals,
+                          std::size_t byteSize,
+                          bool complement,
+                          boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        assert(maskRows.size() == maskCols.size());
+
+        if (maskRows.empty() || inputRows.empty())
+            return;
+
+        auto ctx = queue.get_context();
+        auto typeHasValues = byteSize != 0;
+        auto nnz = inputRows.size();
+        compute::vector<unsigned int> perm(ctx);
+
+        if (typeHasValues) {
+            // Fill permutation to link value to indices
+            perm.resize(nnz, queue);
+            compute::copy_n(compute::make_counting_iterator(0), nnz, perm.begin(), queue);
+        }
+
+        if (typeHasValues) {
+            // Mask with new permutation buffer
+            compute::vector<unsigned int> outputPerm(ctx);
+            MaskByPairKeys(maskRows, maskCols,
+                           inputRows, inputCols, perm,
+                           outputRows, outputCols, outputPerm,
+                           complement,
+                           queue);
+            std::swap(perm, outputPerm);
+        } else {
+            MaskPairKeys(maskRows, maskCols, inputRows, inputCols, outputRows, outputCols, complement, queue);
+        }
+
+        if (typeHasValues) {
+            // Copy output values using indices buffer
+            outputVals.resize(outputRows.size() * byteSize, queue);
+            Gather(perm.begin(), perm.end(), inputVals.begin(), outputVals.begin(), byteSize, queue);
+        }
+    }
+
+    /**
      * @}
      */
 

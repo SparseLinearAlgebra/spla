@@ -49,7 +49,7 @@ void testMasked(spla::Library &library, std::size_t M, std::size_t nvals,
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
     auto spOpDesc = spla::Descriptor::Make(library);
-    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
+    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::AccumResult);
 
     auto spExpr = spla::Expression::Make(library);
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
@@ -94,7 +94,7 @@ void testMaskedComplement(spla::Library &library, std::size_t M, std::size_t nva
 
     auto spOpDesc = spla::Descriptor::Make(library);
     spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
-    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
+    if (applyAccum) spOpDesc->SetParam(spla::Descriptor::Param::AccumResult);
 
     auto spExpr = spla::Expression::Make(library);
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
@@ -130,7 +130,7 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t nvals, std:
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
     auto spOpDesc = spla::Descriptor::Make(library);
-    spOpDesc->SetParam(spla::Descriptor::Param::ApplyAccum);
+    spOpDesc->SetParam(spla::Descriptor::Param::AccumResult);
 
     auto spExpr = spla::Expression::Make(library);
     auto spWriteW = spExpr->MakeDataWrite(spW, w.GetDataIndices(library), spDesc);

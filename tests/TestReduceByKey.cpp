@@ -103,6 +103,27 @@ void TestReduceAlignedValuesByPairKey(
         EXPECT_EQ(keys1Expected_1, keysActual);
         EXPECT_EQ(valuesExpected_1, valuesActual);
     }
+
+    {
+        compute::vector<std::uint32_t> dKeysOut1(ctx);
+        compute::vector<std::uint32_t> dKeysOut2(ctx);
+
+        std::size_t reducedSize = spla::ReducePairKey(
+                dKeys1, dKeys2,
+                dKeysOut1, dKeysOut2,
+                queue);
+
+        std::vector<std::uint32_t> keys1Actual(reducedSize);
+        std::vector<std::uint32_t> keys2Actual(reducedSize);
+
+        compute::copy(dKeysOut1.begin(), dKeysOut1.end(), keys1Actual.begin(), queue);
+        compute::copy(dKeysOut2.begin(), dKeysOut2.end(), keys2Actual.begin(), queue);
+
+        queue.finish();
+
+        EXPECT_EQ(keys1Expected_2, keys1Actual);
+        EXPECT_EQ(keys2Expected_2, keys2Actual);
+    }
 }
 
 TEST(ReduceByKey, ByPairKeyBasic) {

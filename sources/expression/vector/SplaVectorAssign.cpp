@@ -54,7 +54,7 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     /** Handle case if new to accum(w, s) */
     auto tmp = w;
-    auto applyAccum = desc->IsParamSet(Descriptor::Param::ApplyAccum);
+    auto applyAccum = desc->IsParamSet(Descriptor::Param::AccumResult);
 
     // Create temporary vector for assignment result
     if (applyAccum) tmp = Vector::Make(w->GetNrows(), w->GetType(), w->GetLibrary());
