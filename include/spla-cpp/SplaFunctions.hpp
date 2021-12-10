@@ -28,123 +28,12 @@
 #ifndef SPLA_SPLAFUNCTIONS_HPP
 #define SPLA_SPLAFUNCTIONS_HPP
 
-
-#include <sstream>
-
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaFunctionUnary.hpp>
 #include <spla-cpp/SplaTypes.hpp>
 
 
 namespace spla {
-
-    namespace {
-        template<typename T>
-        std::string MakeBody(const char *clType, T apply) {
-            std::stringstream stream;
-            stream << clType << " a = *((_ACCESS_A const " << clType << "*)vp_a);\n"
-                   << clType << " b = *((_ACCESS_A const " << clType << "*)vp_b);\n"
-                   << "_ACCESS_C " << clType << "* c = (_ACCESS_C " << clType << "*)vp_c;\n"
-                   << "*c = ";
-            apply(stream);
-            stream << ";";
-            return stream.str();
-        }
-
-        std::string MakeBinaryFunctionBody(const char *clType, const char *clFun) {
-            return MakeBody(clType, [&](std::ostream &os) {
-                os << clFun << "(a, b)";
-            });
-        }
-
-        std::string MakeBinaryOperatorBody(const char *clType, const char *clOp) {
-            return MakeBody(clType, [&](std::ostream &os) {
-                os << "a " << clOp << " b";
-            });
-        }
-
-        std::string MakeFlippedBinaryOperatorBody(const char *clType, const char *clOp) {
-            return MakeBody(clType, [&](std::ostream &os) {
-                os << "b " << clOp << " a";
-            });
-        }
-
-        std::string MakeFirstBinaryOperatorBody(const char *clType) {
-            return MakeBody(clType, [&](std::ostream &os) {
-                os << "a";
-            });
-        }
-
-        std::string MakeSecondBinaryOperatorBody(const char *clType) {
-            return MakeBody(clType, [&](std::ostream &os) {
-                os << "b";
-            });
-        }
-    }// namespace
-
-    /**
-     * @addtogroup API
-     * @{
-     */
-
-#define SPLA_DECLARE_BINARY_OPERATOR(name, typeName, clType, op)                             \
-    static RefPtr<FunctionBinary> name##typeName(Library &library) {                         \
-        auto t = Types::typeName(library);                                                   \
-        return FunctionBinary::Make(t, t, t, MakeBinaryOperatorBody(#clType, #op), library); \
-    }
-
-#define SPLA_DECLARE_FLIPPED_BINARY_OPERATOR(name, typeName, clType, op)                            \
-    static RefPtr<FunctionBinary> name##typeName(Library &library) {                                \
-        auto t = Types::typeName(library);                                                          \
-        return FunctionBinary::Make(t, t, t, MakeFlippedBinaryOperatorBody(#clType, #op), library); \
-    }
-
-#define SPLA_DECLARE_TAKE_FIRST(name, typeName, clType)                                      \
-    static RefPtr<FunctionBinary> name##typeName(Library &library) {                         \
-        auto t = Types::typeName(library);                                                   \
-        return FunctionBinary::Make(t, t, t, MakeFirstBinaryOperatorBody(#clType), library); \
-    }
-
-#define SPLA_DECLARE_TAKE_SECOND(name, typeName, clType)                                      \
-    static RefPtr<FunctionBinary> name##typeName(Library &library) {                          \
-        auto t = Types::typeName(library);                                                    \
-        return FunctionBinary::Make(t, t, t, MakeSecondBinaryOperatorBody(#clType), library); \
-    }
-
-#define SPLA_DECLARE_BINARY_FUNCTION(name, typeName, type, fun)                             \
-    static RefPtr<FunctionBinary> name##typeName(Library &library) {                        \
-        auto t = Types::typeName(library);                                                  \
-        return FunctionBinary::Make(t, t, t, MakeBinaryFunctionBody(#type, #fun), library); \
-    }
-
-#define SPLA_DECLARE_BINARY_OPERATORS(typeName, clType)                     \
-    SPLA_DECLARE_BINARY_OPERATOR(Plus, typeName, clType, +)                 \
-    SPLA_DECLARE_BINARY_OPERATOR(Minus, typeName, clType, -)                \
-    SPLA_DECLARE_FLIPPED_BINARY_OPERATOR(ReverseMinus, typeName, clType, -) \
-    SPLA_DECLARE_BINARY_OPERATOR(Mult, typeName, clType, *)                 \
-    SPLA_DECLARE_BINARY_OPERATOR(Div, typeName, clType, /)                  \
-    SPLA_DECLARE_FLIPPED_BINARY_OPERATOR(ReverseDiv, typeName, clType, /)   \
-    SPLA_DECLARE_TAKE_FIRST(TakeFirst, typeName, clType)                    \
-    SPLA_DECLARE_TAKE_SECOND(TakeSecond, typeName, clType)
-
-#define SPLA_DECLARE_LOGIC_OPERATORS(typeName, clType)     \
-    SPLA_DECLARE_BINARY_OPERATOR(Or, typeName, clType, |)  \
-    SPLA_DECLARE_BINARY_OPERATOR(And, typeName, clType, &) \
-    SPLA_DECLARE_BINARY_OPERATOR(Xor, typeName, clType, ^)
-
-#define SPLA_DECLARE_FLOAT_BINARY_FUNCTIONS(typeName, clType) \
-    SPLA_DECLARE_BINARY_FUNCTION(Min, typeName, clType, fmin) \
-    SPLA_DECLARE_BINARY_FUNCTION(Max, typeName, clType, fmax)
-
-#define SPLA_DECLARE_INT_BINARY_FUNCTIONS(typeName, clType)  \
-    SPLA_DECLARE_BINARY_FUNCTION(Min, typeName, clType, min) \
-    SPLA_DECLARE_BINARY_FUNCTION(Max, typeName, clType, max)
-
-#define SPLA_DECLARE_INT_FUNCTIONS(MACRO, typeNamePrefix, clTypePrefix) \
-    MACRO(typeNamePrefix##8, clTypePrefix##char)                        \
-    MACRO(typeNamePrefix##16, clTypePrefix##short)                      \
-    MACRO(typeNamePrefix##32, clTypePrefix##int)                        \
-    MACRO(typeNamePrefix##64, clTypePrefix##long)
 
     /**
      * @class Functions
@@ -153,19 +42,139 @@ namespace spla {
      */
     class SPLA_API Functions {
     public:
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_BINARY_OPERATORS, Int, )
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_LOGIC_OPERATORS, Int, )
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_INT_BINARY_FUNCTIONS, Int, )
+        static RefPtr<FunctionBinary> PlusInt8(Library &library);
+        static RefPtr<FunctionBinary> MinusInt8(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusInt8(Library &library);
+        static RefPtr<FunctionBinary> MultInt8(Library &library);
+        static RefPtr<FunctionBinary> DivInt8(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivInt8(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstInt8(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondInt8(Library &library);
+        static RefPtr<FunctionBinary> PlusInt16(Library &library);
+        static RefPtr<FunctionBinary> MinusInt16(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusInt16(Library &library);
+        static RefPtr<FunctionBinary> MultInt16(Library &library);
+        static RefPtr<FunctionBinary> DivInt16(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivInt16(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstInt16(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondInt16(Library &library);
+        static RefPtr<FunctionBinary> PlusInt32(Library &library);
+        static RefPtr<FunctionBinary> MinusInt32(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusInt32(Library &library);
+        static RefPtr<FunctionBinary> MultInt32(Library &library);
+        static RefPtr<FunctionBinary> DivInt32(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivInt32(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstInt32(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondInt32(Library &library);
+        static RefPtr<FunctionBinary> PlusInt64(Library &library);
+        static RefPtr<FunctionBinary> MinusInt64(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusInt64(Library &library);
+        static RefPtr<FunctionBinary> MultInt64(Library &library);
+        static RefPtr<FunctionBinary> DivInt64(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivInt64(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstInt64(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondInt64(Library &library);
 
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_BINARY_OPERATORS, UInt, u)
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_LOGIC_OPERATORS, UInt, u)
-        SPLA_DECLARE_INT_FUNCTIONS(SPLA_DECLARE_INT_BINARY_FUNCTIONS, UInt, u)
+        static RefPtr<FunctionBinary> OrInt8(Library &library);
+        static RefPtr<FunctionBinary> AndInt8(Library &library);
+        static RefPtr<FunctionBinary> XorInt8(Library &library);
+        static RefPtr<FunctionBinary> OrInt16(Library &library);
+        static RefPtr<FunctionBinary> AndInt16(Library &library);
+        static RefPtr<FunctionBinary> XorInt16(Library &library);
+        static RefPtr<FunctionBinary> OrInt32(Library &library);
+        static RefPtr<FunctionBinary> AndInt32(Library &library);
+        static RefPtr<FunctionBinary> XorInt32(Library &library);
+        static RefPtr<FunctionBinary> OrInt64(Library &library);
+        static RefPtr<FunctionBinary> AndInt64(Library &library);
+        static RefPtr<FunctionBinary> XorInt64(Library &library);
 
-        SPLA_DECLARE_BINARY_OPERATORS(Float32, float)
-        SPLA_DECLARE_BINARY_OPERATORS(Float64, double)
+        static RefPtr<FunctionBinary> MinInt8(Library &library);
+        static RefPtr<FunctionBinary> MaxInt8(Library &library);
+        static RefPtr<FunctionBinary> MinInt16(Library &library);
+        static RefPtr<FunctionBinary> MaxInt16(Library &library);
+        static RefPtr<FunctionBinary> MinInt32(Library &library);
+        static RefPtr<FunctionBinary> MaxInt32(Library &library);
+        static RefPtr<FunctionBinary> MinInt64(Library &library);
+        static RefPtr<FunctionBinary> MaxInt64(Library &library);
 
-        SPLA_DECLARE_FLOAT_BINARY_FUNCTIONS(Float32, float)
-        SPLA_DECLARE_FLOAT_BINARY_FUNCTIONS(Float64, double)
+        static RefPtr<FunctionBinary> PlusUInt8(Library &library);
+        static RefPtr<FunctionBinary> MinusUInt8(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusUInt8(Library &library);
+        static RefPtr<FunctionBinary> MultUInt8(Library &library);
+        static RefPtr<FunctionBinary> DivUInt8(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivUInt8(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstUInt8(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondUInt8(Library &library);
+        static RefPtr<FunctionBinary> PlusUInt16(Library &library);
+        static RefPtr<FunctionBinary> MinusUInt16(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusUInt16(Library &library);
+        static RefPtr<FunctionBinary> MultUInt16(Library &library);
+        static RefPtr<FunctionBinary> DivUInt16(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivUInt16(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstUInt16(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondUInt16(Library &library);
+        static RefPtr<FunctionBinary> PlusUInt32(Library &library);
+        static RefPtr<FunctionBinary> MinusUInt32(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusUInt32(Library &library);
+        static RefPtr<FunctionBinary> MultUInt32(Library &library);
+        static RefPtr<FunctionBinary> DivUInt32(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivUInt32(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstUInt32(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondUInt32(Library &library);
+        static RefPtr<FunctionBinary> PlusUInt64(Library &library);
+        static RefPtr<FunctionBinary> MinusUInt64(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusUInt64(Library &library);
+        static RefPtr<FunctionBinary> MultUInt64(Library &library);
+        static RefPtr<FunctionBinary> DivUInt64(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivUInt64(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstUInt64(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondUInt64(Library &library);
+
+        static RefPtr<FunctionBinary> OrUInt8(Library &library);
+        static RefPtr<FunctionBinary> AndUInt8(Library &library);
+        static RefPtr<FunctionBinary> XorUInt8(Library &library);
+        static RefPtr<FunctionBinary> OrUInt16(Library &library);
+        static RefPtr<FunctionBinary> AndUInt16(Library &library);
+        static RefPtr<FunctionBinary> XorUInt16(Library &library);
+        static RefPtr<FunctionBinary> OrUInt32(Library &library);
+        static RefPtr<FunctionBinary> AndUInt32(Library &library);
+        static RefPtr<FunctionBinary> XorUInt32(Library &library);
+        static RefPtr<FunctionBinary> OrUInt64(Library &library);
+        static RefPtr<FunctionBinary> AndUInt64(Library &library);
+        static RefPtr<FunctionBinary> XorUInt64(Library &library);
+
+        static RefPtr<FunctionBinary> MinUInt8(Library &library);
+        static RefPtr<FunctionBinary> MaxUInt8(Library &library);
+        static RefPtr<FunctionBinary> MinUInt16(Library &library);
+        static RefPtr<FunctionBinary> MaxUInt16(Library &library);
+        static RefPtr<FunctionBinary> MinUInt32(Library &library);
+        static RefPtr<FunctionBinary> MaxUInt32(Library &library);
+        static RefPtr<FunctionBinary> MinUInt64(Library &library);
+        static RefPtr<FunctionBinary> MaxUInt64(Library &library);
+
+        static RefPtr<FunctionBinary> PlusFloat32(Library &library);
+        static RefPtr<FunctionBinary> MinusFloat32(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusFloat32(Library &library);
+        static RefPtr<FunctionBinary> MultFloat32(Library &library);
+        static RefPtr<FunctionBinary> DivFloat32(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivFloat32(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstFloat32(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondFloat32(Library &library);
+
+        static RefPtr<FunctionBinary> PlusFloat64(Library &library);
+        static RefPtr<FunctionBinary> MinusFloat64(Library &library);
+        static RefPtr<FunctionBinary> ReverseMinusFloat64(Library &library);
+        static RefPtr<FunctionBinary> MultFloat64(Library &library);
+        static RefPtr<FunctionBinary> DivFloat64(Library &library);
+        static RefPtr<FunctionBinary> ReverseDivFloat64(Library &library);
+        static RefPtr<FunctionBinary> TakeFirstFloat64(Library &library);
+        static RefPtr<FunctionBinary> TakeSecondFloat64(Library &library);
+
+        static RefPtr<FunctionBinary> MinFloat32(Library &library);
+        static RefPtr<FunctionBinary> MaxFloat32(Library &library);
+
+        static RefPtr<FunctionBinary> MinFloat64(Library &library);
+        static RefPtr<FunctionBinary> MaxFloat64(Library &library);
 
     private:
         // friend class Library;
