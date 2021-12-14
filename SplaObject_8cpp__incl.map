@@ -1,9 +1,12 @@
 <map id="sources/SplaObject.cpp" name="sources/SplaObject.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="172,5,332,32"/>
-<area shape="rect" id="node2" href="$SplaObject_8hpp.html" title=" " alt="" coords="171,80,333,107"/>
-<area shape="rect" id="node3" href="$SplaRefCnt_8hpp.html" title=" " alt="" coords="109,155,275,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="293,304,347,331"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,229,67,256"/>
-<area shape="rect" id="node5" title=" " alt="" coords="91,229,157,256"/>
-<area shape="rect" id="node6" href="$SplaConfig_8hpp.html" title=" " alt="" coords="181,229,342,256"/>
+<area shape="rect" id="node1" title=" " alt="" coords="145,5,305,32"/>
+<area shape="rect" id="node2" href="$SplaError_8hpp.html" title=" " alt="" coords="77,80,205,107"/>
+<area shape="rect" id="node6" href="$SplaObject_8hpp.html" title=" " alt="" coords="229,80,392,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,155,83,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="107,155,176,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="237,304,291,331"/>
+<area shape="rect" id="node7" href="$SplaRefCnt_8hpp.html" title=" " alt="" coords="319,155,484,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="301,229,363,256"/>
+<area shape="rect" id="node9" title=" " alt="" coords="387,229,453,256"/>
+<area shape="rect" id="node10" href="$SplaConfig_8hpp.html" title=" " alt="" coords="477,229,638,256"/>
 </map>
