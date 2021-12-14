@@ -40,7 +40,6 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals,
 
     auto spA = spla::Vector::Make(M, spT, library);
     auto spB = spla::Vector::Make(M, spT, library);
-    auto spW = spla::Vector::Make(M, spT, library);
 
     // Specify, that values already in row order + no duplicates
     auto spDesc = spla::Descriptor::Make(library);
@@ -50,7 +49,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals,
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetData(library), spDesc);
     auto spWriteB = spExpr->MakeDataWrite(spB, b.GetData(library), spDesc);
-    auto spEAddAB = spExpr->MakeEWiseAdd(spW, nullptr, spOp, spA, spB);
+    auto spEAddAB = spExpr->MakeEWiseAdd(spA, nullptr, spOp, spA, spB);
     spExpr->Dependency(spWriteA, spEAddAB);
     spExpr->Dependency(spWriteB, spEAddAB);
     spExpr->Submit();
@@ -58,7 +57,7 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t nvals,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Vector<Type> c = a.EWiseAdd(b, op);
-    ASSERT_TRUE(c.Equals(spW));
+    ASSERT_TRUE(c.Equals(spA));
 }
 
 template<typename Type, typename BinaryOp>

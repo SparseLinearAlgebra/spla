@@ -45,7 +45,17 @@ tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
         }
     };
 
-    return mSubflow.emplace(std::move(task));
+    return mTasks.emplace_back(mSubflow.emplace(std::move(task)));
+}
+
+tf::Task spla::TaskBuilder::EmplaceAfterAll(std::function<void()> work) {
+    auto task = Emplace(std::move(work));
+
+    for (std::size_t i = 0; i < mTasks.size() - 1; i++) {
+        mTasks[i].precede(task);
+    }
+
+    return task;
 }
 
 spla::TaskBuilder::TaskBuilder(spla::Expression *expression, tf::Subflow &subflow)

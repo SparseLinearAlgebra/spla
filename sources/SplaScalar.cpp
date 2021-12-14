@@ -49,4 +49,18 @@ spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &librar
     mStorage = ScalarStorage::Make(GetLibrary());
 }
 
+spla::RefPtr<spla::Object> spla::Scalar::CloneEmpty() {
+    return Make(GetType(), GetLibrary()).As<Object>();
+}
+
+void spla::Scalar::CopyData(const spla::RefPtr<spla::Object> &object) {
+    auto scalar = dynamic_cast<const Scalar *>(object.Get());
+    assert(scalar);
+
+    if (scalar) {
+        assert(GetType() == scalar->GetType());
+        mStorage = scalar->GetStorage();
+    }
+}
+
 spla::Scalar::~Scalar() = default;

@@ -82,6 +82,8 @@ namespace spla {
 
     private:
         Scalar(const RefPtr<Type> &type, class Library &library);
+        RefPtr<Object> CloneEmpty() override;
+        void CopyData(const RefPtr<Object> &object) override;
 
         // Separate storage for private impl
         RefPtr<class ScalarStorage> mStorage;

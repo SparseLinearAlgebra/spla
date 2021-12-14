@@ -27,12 +27,8 @@
 
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaTaskBuilder.hpp>
 #include <expression/SplaExpressionFuture.hpp>
-#include <expression/SplaExpressionManager.hpp>
 #include <expression/SplaExpressionTasks.hpp>
-#include <numeric>
-#include <vector>
 
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
@@ -45,6 +41,10 @@
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
+
+#include <algorithm>
+#include <numeric>
+#include <vector>
 
 spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(library) {
     // Here we can register built-in processors, one by on
@@ -107,12 +107,34 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
             if (expression->GetState() == Expression::State::Aborted)
                 return;
 
+            // Check, if out arg appears in the input list
+            auto &node = expression->GetNodes()[idx];
+            auto &args = node->GetArgs();
+            RefPtr<Object> out;
+            RefPtr<Object> proxy;
+            if (!args.empty()) {
+                out = args[0];
+                auto query = std::find(args.begin() + 1, args.end(), out);
+                // If appears, must create a proxy
+                if (query != args.end()) {
+                    args[0] = proxy = out->CloneEmpty();
+                }
+            }
+
             // Task build wraps error handling and abortion
             TaskBuilder taskBuilder(expression, subflow);
 
             try {
                 // Actual task graph composition
                 processor->Process(idx, *expression, taskBuilder);
+                // If created proxy, set result back to the out
+                if (proxy.IsNotNull()) {
+                    taskBuilder.EmplaceAfterAll([out, proxy]() {
+                        // NOTE: Copy proxy data to out only when all
+                        // expression sub tasks are finished
+                        out->CopyData(proxy);
+                    });
+                }
             } catch (std::exception &ex) {
                 expression->SetState(Expression::State::Aborted);
                 auto logger = expression->GetLibrary().GetPrivate().GetLogger();

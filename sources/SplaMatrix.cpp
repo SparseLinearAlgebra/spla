@@ -64,4 +64,20 @@ spla::Matrix::Matrix(std::size_t nrows, std::size_t ncols,
     mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
 }
 
+spla::RefPtr<spla::Object> spla::Matrix::CloneEmpty() {
+    return Make(GetNrows(), GetNcols(), GetType(), GetLibrary()).As<Object>();
+}
+
+void spla::Matrix::CopyData(const spla::RefPtr<spla::Object> &object) {
+    auto matrix = dynamic_cast<const Matrix *>(object.Get());
+    assert(matrix);
+
+    if (matrix) {
+        assert(GetNrows() == matrix->GetNrows());
+        assert(GetNcols() == matrix->GetNcols());
+        assert(GetType() == matrix->GetType());
+        mStorage = matrix->GetStorage();
+    }
+}
+
 spla::Matrix::~Matrix() = default;

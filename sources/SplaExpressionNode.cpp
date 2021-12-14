@@ -75,6 +75,10 @@ void spla::ExpressionNode::SetDescriptor(const spla::RefPtr<spla::Descriptor> &d
     mDescriptor = desc;
 }
 
+std::vector<spla::RefPtr<spla::Object>> &spla::ExpressionNode::GetArgs() {
+    return mArgs;
+}
+
 const std::vector<spla::ExpressionNode *> &spla::ExpressionNode::GetPrev() const {
     return mPrev;
 }

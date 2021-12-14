@@ -97,6 +97,8 @@ namespace spla {
 
     private:
         Matrix(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
+        RefPtr<Object> CloneEmpty() override;
+        void CopyData(const RefPtr<Object> &object) override;
 
         // Separate storage for private impl
         RefPtr<class MatrixStorage> mStorage;

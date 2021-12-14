@@ -56,4 +56,19 @@ void spla::Vector::Dump(std::ostream &stream) const {
     mStorage->Dump(stream);
 }
 
+spla::RefPtr<spla::Object> spla::Vector::CloneEmpty() {
+    return Make(GetNrows(), GetType(), GetLibrary()).As<Object>();
+}
+
+void spla::Vector::CopyData(const spla::RefPtr<spla::Object> &object) {
+    auto vector = dynamic_cast<const Vector *>(object.Get());
+    assert(vector);
+
+    if (vector) {
+        assert(GetNrows() == vector->GetNrows());
+        assert(GetType() == vector->GetType());
+        mStorage = vector->GetStorage();
+    }
+}
+
 spla::Vector::~Vector() = default;

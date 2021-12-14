@@ -25,6 +25,7 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <core/SplaError.hpp>
 #include <spla-cpp/SplaObject.hpp>
 
 spla::Object::Object(spla::Object::TypeName typeName, class Library &library)
@@ -41,4 +42,14 @@ spla::Object::TypeName spla::Object::GetTypeName() const {
 
 spla::Library &spla::Object::GetLibrary() const {
     return mLibrary;
+}
+
+spla::RefPtr<spla::Object> spla::Object::CloneEmpty() {
+    assert(false && "Object::CloneEmpty() is not implemented");
+    RAISE_ERROR(NotImplemented, "Object::CloneEmpty() is not implemented");
+}
+
+void spla::Object::CopyData(const RefPtr<Object> &object) {
+    assert(false && "Object::CopyData() is not implemented");
+    RAISE_ERROR(NotImplemented, "Object::CopyData() is not implemented");
 }

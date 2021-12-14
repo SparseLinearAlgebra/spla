@@ -106,6 +106,8 @@ namespace spla {
         void SetArgs(std::vector<RefPtr<Object>> &&args);
         void SetDescriptor(const RefPtr<Descriptor> &desc);
 
+        std::vector<RefPtr<Object>> &GetArgs();
+
         const std::vector<ExpressionNode *> &GetPrev() const;
         const std::vector<ExpressionNode *> &GetNext() const;
 

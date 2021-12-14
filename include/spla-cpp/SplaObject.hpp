@@ -77,6 +77,11 @@ namespace spla {
         class Library &GetLibrary() const;
 
     private:
+        friend class ExpressionManager;
+        virtual RefPtr<Object> CloneEmpty();
+        virtual void CopyData(const RefPtr<Object> &object);
+
+    private:
         // User defined text label (for profiling/debugging)
         std::string mLabel;
         // Type of the object
