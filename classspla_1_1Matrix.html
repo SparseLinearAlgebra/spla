@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0d5fae97f80314e1051156b8c9437214"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d38b177d543a7ef02c686cf06242365"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a1d38b177d543a7ef02c686cf06242365">Dump</a> (std::ostream &amp;stream) const</td></tr>
 <tr class="separator:a1d38b177d543a7ef02c686cf06242365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7ebc3597aeea5c5c2d188663a442768"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Object.html">Object</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#af7ebc3597aeea5c5c2d188663a442768">Clone</a> () const override</td></tr>
+<tr class="memdesc:af7ebc3597aeea5c5c2d188663a442768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create copy of this object.  <a href="classspla_1_1Matrix.html#af7ebc3597aeea5c5c2d188663a442768">More...</a><br /></td></tr>
+<tr class="separator:af7ebc3597aeea5c5c2d188663a442768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1TypedObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1TypedObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1TypedObject.html">spla::TypedObject</a></td></tr>
 <tr class="memitem:a5277789b7d73b39becf3f5c1f90331b3 inherit pub_methods_classspla_1_1TypedObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TypedObject.html#a5277789b7d73b39becf3f5c1f90331b3">~TypedObject</a> () override=default</td></tr>
 <tr class="separator:a5277789b7d73b39becf3f5c1f90331b3 inherit pub_methods_classspla_1_1TypedObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +220,38 @@ Can be updated from the host using <a class="el" href="classspla_1_1MatrixDataWr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af7ebc3597aeea5c5c2d188663a442768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7ebc3597aeea5c5c2d188663a442768">&#9670;&nbsp;</a></span>Clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1Object.html">spla::Object</a> &gt; spla::Matrix::Clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create copy of this object. </p>
+<p>Creates new object instance, which is the exact copy of this source object. Modifications of the source(new) object do not affect the new(source) object respectively.</p>
+<dl class="section note"><dt>Note</dt><dd>For matrices, vectors and scalars duplication is effective, actual device data is copied in <code>cow</code> fashion.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>New object instance </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classspla_1_1Object.html#a64401d5a3695cc0ac3da621853377656">spla::Object</a>.</p>
+
+</div>
+</div>
 <a id="a1d38b177d543a7ef02c686cf06242365"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d38b177d543a7ef02c686cf06242365">&#9670;&nbsp;</a></span>Dump()</h2>
 

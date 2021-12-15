@@ -83,8 +83,6 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a67bf3382fbb44046da229c6021b04f50"><td class="memItemLeft" align="right" valign="top">tf::Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">Emplace</a> (std::function&lt; void()&gt; work)</td></tr>
 <tr class="separator:a67bf3382fbb44046da229c6021b04f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a602bf3212d4920442fe83c1def37f271"><td class="memItemLeft" align="right" valign="top">tf::Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TaskBuilder.html#a602bf3212d4920442fe83c1def37f271">EmplaceAfterAll</a> (std::function&lt; void()&gt; work)</td></tr>
-<tr class="separator:a602bf3212d4920442fe83c1def37f271"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -111,32 +109,6 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Emplace work to the subflow.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">work</td><td>Function to execute as work inside task. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Taskflow task handle. </dd></dl>
-
-</div>
-</div>
-<a id="a602bf3212d4920442fe83c1def37f271"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a602bf3212d4920442fe83c1def37f271">&#9670;&nbsp;</a></span>EmplaceAfterAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">tf::Task spla::TaskBuilder::EmplaceAfterAll </td>
-          <td>(</td>
-          <td class="paramtype">std::function&lt; void()&gt;&#160;</td>
-          <td class="paramname"><em>work</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Emplace work to the subflow. Work will be executed only after all previously submitted tasks to the builder.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">work</td><td>Function to execute as work inside task. </td></tr>
