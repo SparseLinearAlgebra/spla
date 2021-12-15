@@ -6,7 +6,7 @@ var searchData=
   ['accumresult_3',['AccumResult',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a19cc7b810c9900e79f631086e34fc363',1,'spla::Descriptor']]],
   ['add_4',['add',['../classspla_1_1ParamsVxM.html#a59ef6f5ccf6befc3c4c27eb98aeae242',1,'spla::ParamsVxM::add()'],['../classspla_1_1ParamsMxM.html#a019834ba08d73788d3926f00950c8145',1,'spla::ParamsMxM::add()']]],
   ['addref_5',['AddRef',['../classspla_1_1RefCnt.html#a4baf8cce74f6ba7900e7d7fbe03876aa',1,'spla::RefCnt']]],
-  ['algorithm_6',['Algorithm',['../classspla_1_1Algorithm.html',1,'spla']]],
+  ['algorithm_6',['Algorithm',['../group__Algorithm.html',1,'(Global Namespace)'],['../classspla_1_1Algorithm.html',1,'spla::Algorithm']]],
   ['algorithmmanager_7',['AlgorithmManager',['../classspla_1_1AlgorithmManager.html#a5200de80f5e2dd907c4f73f43d0a6398',1,'spla::AlgorithmManager::AlgorithmManager()'],['../classspla_1_1AlgorithmManager.html',1,'spla::AlgorithmManager']]],
   ['algorithmparams_8',['AlgorithmParams',['../classspla_1_1AlgorithmParams.html',1,'spla']]],
   ['andint16_9',['AndInt16',['../classspla_1_1Functions.html#afa6ea4c1906272ef275a6eea9f6f519c',1,'spla::Functions']]],

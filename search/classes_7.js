@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['isfirstgt_734',['IsFirstGt',['../classspla_1_1detail_1_1binop_1_1IsFirstGt.html',1,'spla::detail::binop']]],
-  ['isfirstpairgt_735',['IsFirstPairGt',['../classspla_1_1detail_1_1binop_1_1IsFirstPairGt.html',1,'spla::detail::binop']]]
+  ['hostmatrix_749',['HostMatrix',['../classspla_1_1HostMatrix.html',1,'spla']]],
+  ['hostvector_750',['HostVector',['../classspla_1_1HostVector.html',1,'spla']]]
 ];
