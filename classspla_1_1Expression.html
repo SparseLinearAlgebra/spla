@@ -140,6 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae86aada7d382cfb1a6786a259e2ccd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71d2c339369f18a9460c4435214bf2ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec">Wait</a> ()</td></tr>
 <tr class="separator:a71d2c339369f18a9460c4435214bf2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba32861a3d98418b92bc57fa7d14ba9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a8ba32861a3d98418b92bc57fa7d14ba9">SubmitWait</a> ()</td></tr>
+<tr class="separator:a8ba32861a3d98418b92bc57fa7d14ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65177dd4abd3f1a559f973cc235cdfb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a65177dd4abd3f1a559f973cc235cdfb4">Dependency</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt; &amp;pred, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt; &amp;succ)</td></tr>
 <tr class="separator:a65177dd4abd3f1a559f973cc235cdfb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdbf9f75e3a89173ff67febc64b6f729"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#afdbf9f75e3a89173ff67febc64b6f729">MakeDataWrite</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;matrix, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataMatrix.html">DataMatrix</a> &gt; &amp;data, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
@@ -1045,6 +1047,34 @@ Call state query to check current state of the expression</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec">Expression::Wait()</a> </dd>
 <dd>
 <a class="el" href="classspla_1_1Expression.html#a28977cb6a8958b145f5ab1a0af206c2e">Expression::GetState()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8ba32861a3d98418b92bc57fa7d14ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ba32861a3d98418b92bc57fa7d14ba9">&#9670;&nbsp;</a></span>SubmitWait()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Expression::SubmitWait </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Submit expression for the execution and wait until completion.</p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classspla_1_1Expression.html" title="Computational expression for submission.">Expression</a> asynchronously submitted for execution </dd>
+<dd>
+<a class="el" href="classspla_1_1Expression.html" title="Computational expression for submission.">Expression</a> cannot be modified after submission </dd>
+<dd>
+Blocks current thread until evaluated or aborted. </dd>
+<dd>
+Check expression state after completion to ensure correctness.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classspla_1_1Expression.html#ae86aada7d382cfb1a6786a259e2ccd65">Expression::Submit()</a>; </dd>
+<dd>
+<a class="el" href="classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec">Expression::Wait()</a>; </dd></dl>
 
 </div>
 </div>

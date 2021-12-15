@@ -232,6 +232,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:aa4ce2878429fe10dd01b1365c090a51c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> = unsigned int</td></tr>
+<tr class="memdesc:aa4ce2878429fe10dd01b1365c090a51c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of matrix/vector values.  <a href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">More...</a><br /></td></tr>
+<tr class="separator:aa4ce2878429fe10dd01b1365c090a51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1077f01f0bb170ce125d99dafc943504"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">Size</a> = std::size_t</td></tr>
+<tr class="memdesc:a1077f01f0bb170ce125d99dafc943504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size (count) type.  <a href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">More...</a><br /></td></tr>
+<tr class="separator:a1077f01f0bb170ce125d99dafc943504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga45d873dd1e17d078c56647d26f0e65ec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga45d873dd1e17d078c56647d26f0e65ec">Error</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::Error &gt;</td></tr>
 <tr class="separator:ga45d873dd1e17d078c56647d26f0e65ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga93b50c45990a5db2417f40138767a72a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga93b50c45990a5db2417f40138767a72a">DeviceError</a> = <a class="el" href="classspla_1_1TException.html">TException</a>&lt; Status::DeviceError &gt;</td></tr>
@@ -291,6 +297,11 @@ Functions</h2></td></tr>
 <tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga4d069a703bfb0a1a6bb2bff3add69e8e">IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;offsets, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;lengths, std::size_t n)</td></tr>
+<tr class="memdesc:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">More...</a><br /></td></tr>
+<tr class="separator:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16dadc1b219812bdf7d6860f09850954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga16dadc1b219812bdf7d6860f09850954">IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;offsets, std::size_t n)</td></tr>
+<tr class="separator:ga16dadc1b219812bdf7d6860f09850954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">More...</a><br /></td></tr>
 <tr class="separator:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -352,6 +363,39 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga361e8d86479e1f4669f9915cf6389b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a and b values using map and transfrom op Transforms sequence of a and b values using map to fetch actual a and b values. For each index i of computes result values as v[i] = transform(a[a_map[i]], b[b_map[i]]).  <a href="group__Internal.html#ga361e8d86479e1f4669f9915cf6389b73">More...</a><br /></td></tr>
 <tr class="separator:ga361e8d86479e1f4669f9915cf6389b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="aa4ce2878429fe10dd01b1365c090a51c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4ce2878429fe10dd01b1365c090a51c">&#9670;&nbsp;</a></span>Index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">spla::Index</a> = typedef unsigned int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Index of matrix/vector values. </p>
+
+</div>
+</div>
+<a id="a1077f01f0bb170ce125d99dafc943504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1077f01f0bb170ce125d99dafc943504">&#9670;&nbsp;</a></span>Size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">spla::Size</a> = typedef std::size_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Size (count) type. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

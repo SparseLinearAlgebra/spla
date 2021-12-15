@@ -199,6 +199,11 @@ Functions</h2></td></tr>
 <tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga4d069a703bfb0a1a6bb2bff3add69e8e">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">spla::IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;offsets, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;lengths, std::size_t n)</td></tr>
+<tr class="memdesc:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">More...</a><br /></td></tr>
+<tr class="separator:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16dadc1b219812bdf7d6860f09850954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga16dadc1b219812bdf7d6860f09850954">spla::IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;offsets, std::size_t n)</td></tr>
+<tr class="separator:ga16dadc1b219812bdf7d6860f09850954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">spla::MaskKeys</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;mask, const boost::compute::vector&lt; unsigned int &gt; &amp;keys, boost::compute::vector&lt; unsigned int &gt; &amp;resultKeys, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask intersection algorithm.  <a href="group__Internal.html#gab1a135f9660b6d72c3e98a684fff4b5c">More...</a><br /></td></tr>
 <tr class="separator:gab1a135f9660b6d72c3e98a684fff4b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -774,7 +779,7 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 </div>
 </div>
 <a id="ga30d6fd3b316764e254205dc7133f4201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga30d6fd3b316764e254205dc7133f4201">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga30d6fd3b316764e254205dc7133f4201">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -841,7 +846,7 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 </div>
 </div>
 <a id="ga4d069a703bfb0a1a6bb2bff3add69e8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4d069a703bfb0a1a6bb2bff3add69e8e">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d069a703bfb0a1a6bb2bff3add69e8e">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -886,6 +891,109 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
 </table>
 </div><div class="memdoc">
 <p>Overload </p>
+
+</div>
+</div>
+<a id="ga16dadc1b219812bdf7d6860f09850954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga16dadc1b219812bdf7d6860f09850954">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::IndicesToRowOffsets </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Overload </p>
+
+</div>
+</div>
+<a id="gaf34d7d6d2ab834d42e8db56cd7d98532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf34d7d6d2ab834d42e8db56cd7d98532">&#9670;&nbsp;</a></span>IndicesToRowOffsets() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::IndicesToRowOffsets </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lengths</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute row offsets from coo row indices buffer. </p>
+<p>Result offsets array has size n + 1. Offsets[i] stores first index of row i in indices buffer. Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer. Offsets[n] equals number off values in indices buffer. Lengths[i] equals number of nnz values in row i in indices buffer.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">indices</td><td>Array of rows indices </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">offsets</td><td>Output array with offsets </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">lengths</td><td>Output array of row lengths </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">n</td><td>Number of rows in matrix </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -151,6 +151,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a562d7d47a49e2991866056cc62e8cfcf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataVector.html">DataVector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DataVector.html#a562d7d47a49e2991866056cc62e8cfcf">Make</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
 <tr class="separator:a562d7d47a49e2991866056cc62e8cfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e4cfa8acf1a35339ae6d047adca83f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataVector.html">DataVector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DataVector.html#ac0e4cfa8acf1a35339ae6d047adca83f">Make</a> (unsigned int *rows, void *values, std::size_t nvals, <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:ac0e4cfa8acf1a35339ae6d047adca83f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -267,7 +269,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a562d7d47a49e2991866056cc62e8cfcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a562d7d47a49e2991866056cc62e8cfcf">&#9670;&nbsp;</a></span>Make()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a562d7d47a49e2991866056cc62e8cfcf">&#9670;&nbsp;</a></span>Make() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,6 +291,56 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Emtpy data object </dd></dl>
+
+</div>
+</div>
+<a id="ac0e4cfa8acf1a35339ae6d047adca83f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e4cfa8acf1a35339ae6d047adca83f">&#9670;&nbsp;</a></span>Make() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1DataVector.html">spla::DataVector</a> &gt; spla::DataVector::Make </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>nvals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Transient data object; passed pointers must stay valid util data is consumed; </dd></dl>
 
 </div>
 </div>

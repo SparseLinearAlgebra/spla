@@ -155,6 +155,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1a152838dd7272c8212aee4f6db83e36"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataMatrix.html">DataMatrix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DataMatrix.html#a1a152838dd7272c8212aee4f6db83e36">Make</a> (<a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
 <tr class="separator:a1a152838dd7272c8212aee4f6db83e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e06bd6fd1ccc136da010989973c3291"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1DataMatrix.html">DataMatrix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1DataMatrix.html#a5e06bd6fd1ccc136da010989973c3291">Make</a> (unsigned int *rows, unsigned int *cols, void *values, std::size_t nvals, <a class="el" href="classspla_1_1Library.html">Library</a> &amp;library)</td></tr>
+<tr class="separator:a5e06bd6fd1ccc136da010989973c3291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -289,7 +291,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a1a152838dd7272c8212aee4f6db83e36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a152838dd7272c8212aee4f6db83e36">&#9670;&nbsp;</a></span>Make()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a152838dd7272c8212aee4f6db83e36">&#9670;&nbsp;</a></span>Make() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,6 +313,62 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Emtpy data object </dd></dl>
+
+</div>
+</div>
+<a id="a5e06bd6fd1ccc136da010989973c3291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e06bd6fd1ccc136da010989973c3291">&#9670;&nbsp;</a></span>Make() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1DataMatrix.html">spla::DataMatrix</a> &gt; spla::DataMatrix::Make </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>nvals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1Library.html">Library</a> &amp;&#160;</td>
+          <td class="paramname"><em>library</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Transient data object; passed pointers must stay valid util data is consumed; </dd></dl>
 
 </div>
 </div>

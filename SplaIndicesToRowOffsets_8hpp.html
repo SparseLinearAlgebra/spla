@@ -74,14 +74,20 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;boost/compute/algorithm.hpp&gt;</code><br />
 <code>#include &lt;boost/compute/command_queue.hpp&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;numeric&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SplaIndicesToRowOffsets.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaIndicesToRowOffsets_8hpp__incl.png" border="0" usemap="#asources_2compute_2SplaIndicesToRowOffsets_8hpp" alt=""/></div>
 <map name="asources_2compute_2SplaIndicesToRowOffsets_8hpp" id="asources_2compute_2SplaIndicesToRowOffsets_8hpp">
-<area shape="rect" title=" " alt="" coords="104,5,299,47"/>
+<area shape="rect" title=" " alt="" coords="353,5,548,47"/>
 <area shape="rect" title=" " alt="" coords="5,102,195,129"/>
 <area shape="rect" title=" " alt="" coords="219,95,389,136"/>
+<area shape="rect" title=" " alt="" coords="413,102,488,129"/>
+<area shape="rect" title=" " alt="" coords="513,102,581,129"/>
+<area shape="rect" title=" " alt="" coords="605,102,664,129"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -89,9 +95,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaIndicesToRowOffsets_8hpp__dep__incl.png" border="0" usemap="#asources_2compute_2SplaIndicesToRowOffsets_8hppdep" alt=""/></div>
 <map name="asources_2compute_2SplaIndicesToRowOffsets_8hppdep" id="asources_2compute_2SplaIndicesToRowOffsets_8hppdep">
-<area shape="rect" title=" " alt="" coords="157,5,351,47"/>
+<area shape="rect" title=" " alt="" coords="287,5,482,47"/>
 <area shape="rect" href="SplaMxMCOO_8cpp.html" title=" " alt="" coords="5,95,244,121"/>
 <area shape="rect" href="SplaVxMCOO_8cpp.html" title=" " alt="" coords="268,95,501,121"/>
+<area shape="rect" href="SplaAlgoBfs_8cpp.html" title=" " alt="" coords="526,95,694,121"/>
 </map>
 </div>
 </div>
@@ -109,6 +116,11 @@ Functions</h2></td></tr>
 <tr class="separator:ga30d6fd3b316764e254205dc7133f4201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga4d069a703bfb0a1a6bb2bff3add69e8e">spla::IndicesToRowOffsets</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;indices, boost::compute::vector&lt; unsigned int &gt; &amp;offsets, std::size_t n, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga4d069a703bfb0a1a6bb2bff3add69e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">spla::IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; Index &gt; &amp;offsets, std::vector&lt; Index &gt; &amp;lengths, std::size_t n)</td></tr>
+<tr class="memdesc:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute row offsets from coo row indices buffer.  <a href="group__Internal.html#gaf34d7d6d2ab834d42e8db56cd7d98532">More...</a><br /></td></tr>
+<tr class="separator:gaf34d7d6d2ab834d42e8db56cd7d98532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16dadc1b219812bdf7d6860f09850954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga16dadc1b219812bdf7d6860f09850954">spla::IndicesToRowOffsets</a> (const std::vector&lt; unsigned int &gt; &amp;indices, std::vector&lt; Index &gt; &amp;offsets, std::size_t n)</td></tr>
+<tr class="separator:ga16dadc1b219812bdf7d6860f09850954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
