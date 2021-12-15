@@ -104,6 +104,19 @@ namespace spla {
         void Wait();
 
         /**
+         * Submit expression for the execution and wait until completion.
+         *
+         * @note Expression asynchronously submitted for execution
+         * @note Expression cannot be modified after submission
+         * @note Blocks current thread until evaluated or aborted.
+         * @note Check expression state after completion to ensure correctness.
+         *
+         * @see Expression::Submit();
+         * @see Expression::Wait();
+         */
+        void SubmitWait();
+
+        /**
          * Makes dependency between provided expression nodes.
          * Next `succ` node will be evaluated only after `pred` node evaluation is finished.
          *

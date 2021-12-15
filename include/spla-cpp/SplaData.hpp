@@ -115,7 +115,11 @@ namespace spla {
         /** @return Number of entries in data */
         std::size_t GetNvals() const;
 
+        /** @return Emtpy data object */
         static RefPtr<DataMatrix> Make(Library &library);
+
+        /** @return Transient data object; passed pointers must stay valid util data is consumed; */
+        static RefPtr<DataMatrix> Make(unsigned int *rows, unsigned int *cols, void *values, std::size_t nvals, Library &library);
 
     private:
         explicit DataMatrix(class Library &library);
@@ -164,7 +168,11 @@ namespace spla {
         /** @return Number of entries in data */
         std::size_t GetNvals() const;
 
+        /** @return Emtpy data object */
         static RefPtr<DataVector> Make(Library &library);
+
+        /** @return Transient data object; passed pointers must stay valid util data is consumed; */
+        static RefPtr<DataVector> Make(unsigned int *rows, void *values, std::size_t nvals, Library &library);
 
     private:
         explicit DataVector(class Library &library);
@@ -193,7 +201,11 @@ namespace spla {
         /** @return Scalar values */
         void *GetValue() const;
 
+        /** @return Emtpy data object */
         static RefPtr<DataScalar> Make(Library &library);
+
+        /** @return Transient data object; passed pointers must stay valid util data is consumed; */
+        static RefPtr<DataScalar> Make(void *value, Library &library);
 
     private:
         void *mValue = nullptr;

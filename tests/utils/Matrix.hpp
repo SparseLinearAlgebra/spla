@@ -33,6 +33,7 @@
 #include <functional>
 #include <iostream>
 #include <random>
+#include <spla-algo/SplaAlgo.hpp>
 #include <spla-cpp/Spla.hpp>
 #include <utility>
 #include <utils/Compute.hpp>
@@ -493,6 +494,22 @@ namespace utils {
         template<typename W, typename M, typename B, typename MultOp, typename AddOp>
         [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, bool complement, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
             return MxM<W>(b, multOp, addOp).Mask(mask, complement);
+        }
+
+        [[nodiscard]] spla::RefPtr<spla::HostMatrix> ToHostMatrix() const {
+            std::vector<Index> rows = mRows;
+            std::vector<Index> cols = mCols;
+            std::vector<unsigned char> data(mVals.size() * sizeof(T));
+            std::memcpy(data.data(), mVals.data(), mVals.size() * sizeof(T));
+            return spla::RefPtr<spla::HostMatrix>(new spla::HostMatrix(mNrows, mNcols, std::move(rows), std::move(cols), std::move(data)));
+        }
+
+        static Matrix FromHostMatrix(const spla::RefPtr<spla::HostMatrix> &m) {
+            std::vector<Index> rows = m->GetRowIndices();
+            std::vector<Index> cols = m->GetColIndices();
+            std::vector<T> values(m->GetNnvals());
+            std::memcpy(values.data(), m->GetValues().data(), values.size() * sizeof(T));
+            return Matrix(m->GetNrows(), m->GetNcols(), std::move(rows), std::move(cols), std::move(values));
         }
 
         static Matrix Empty(std::size_t nrows, std::size_t ncols) {

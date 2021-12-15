@@ -17,3 +17,8 @@ set(SPLA_CPP_HEADERS
         include/spla-cpp/SplaType.hpp
         include/spla-cpp/SplaTypes.hpp
         include/spla-cpp/SplaVector.hpp)
+
+set(SPLA_ALGO_HEADERS
+        include/spla-algo/SplaAlgo.hpp
+        include/spla-algo/SplaAlgoBfs.hpp
+        include/spla-algo/SplaAlgoCommon.hpp)

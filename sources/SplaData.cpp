@@ -89,6 +89,15 @@ spla::RefPtr<spla::DataMatrix> spla::DataMatrix::Make(spla::Library &library) {
     return spla::RefPtr<spla::DataMatrix>(new DataMatrix(library));
 }
 
+spla::RefPtr<spla::DataMatrix> spla::DataMatrix::Make(unsigned int *rows, unsigned int *cols, void *values, std::size_t nvals, Library &library) {
+    auto data = Make(library);
+    data->SetRows(rows);
+    data->SetCols(cols);
+    data->SetVals(values);
+    data->SetNvals(nvals);
+    return data;
+}
+
 spla::DataVector::DataVector(spla::Library &library) : Data(Object::TypeName::DataVector, library) {
 }
 
@@ -133,6 +142,14 @@ spla::RefPtr<spla::DataVector> spla::DataVector::Make(spla::Library &library) {
     return spla::RefPtr<spla::DataVector>(new DataVector(library));
 }
 
+spla::RefPtr<spla::DataVector> spla::DataVector::Make(unsigned int *rows, void *values, std::size_t nvals, Library &library) {
+    auto data = Make(library);
+    data->SetRows(rows);
+    data->SetVals(values);
+    data->SetNvals(nvals);
+    return data;
+}
+
 spla::DataScalar::DataScalar(spla::Library &library) : Data(Object::TypeName::DataScalar, library) {
 }
 
@@ -155,4 +172,10 @@ void *spla::DataScalar::GetValue() const {
 
 spla::RefPtr<spla::DataScalar> spla::DataScalar::Make(spla::Library &library) {
     return spla::RefPtr<spla::DataScalar>(new DataScalar(library));
+}
+
+spla::RefPtr<spla::DataScalar> spla::DataScalar::Make(void *value, spla::Library &library) {
+    auto data = Make(library);
+    data->SetValue(value);
+    return data;
 }

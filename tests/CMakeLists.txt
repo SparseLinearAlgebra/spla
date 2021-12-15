@@ -6,6 +6,7 @@ function(spla_test_target target)
     target_include_directories(${target} PRIVATE ../sources)
 endfunction()
 
+spla_test_target(TestAlgoBfs)
 spla_test_target(TestBasic)
 spla_test_target(TestDataMatrix)
 spla_test_target(TestDataScalar)

@@ -25,59 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLACONFIG_HPP
-#define SPLA_SPLACONFIG_HPP
+#include <spla-algo/SplaAlgoCommon.hpp>
 
-#include <string>
+spla::HostVector::HostVector(spla::Size nrows, std::vector<Index> rows, std::vector<unsigned char> vals)
+    : mNrows(nrows), mNnvals(rows.size()), mElementSize(vals.size() / rows.size()), mRowIndices(std::move(rows)), mValues(std::move(vals)) {
+}
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+spla::RefPtr<spla::DataVector> spla::HostVector::GetData(Library &library) {
+    return DataVector::Make(mRowIndices.data(), HasValues() ? mValues.data() : nullptr, GetNnvals(), library);
+}
 
-#define SPLA_TEXT(text) u8##text
+spla::HostMatrix::HostMatrix(spla::Size nrows, spla::Size ncols, std::vector<Index> rows, std::vector<Index> cols, std::vector<unsigned char> vals)
+    : mNrows(nrows), mNcols(ncols), mNnvals(rows.size()), mElementSize(vals.size() / rows.size()), mRowIndices(std::move(rows)), mColIndices(std::move(cols)), mValues(std::move(vals)) {
+}
 
-namespace spla {
-
-    /**
-     * @defgroup Internal
-     *
-     * @brief Implementation details
-     *
-     * @details The internal module implements the full functionality of the library.
-     * It is not anticipated that the user will ever need to work with
-     * the objects in this module, as it only contains details
-     * of the library's implementation.
-     */
-
-#if defined(SPLA_TARGET_WINDOWS)
-    /** String for universal file names representation */
-    using Filename = std::wstring;
-#elif defined(SPLA_TARGET_LINUX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#elif defined(SPLA_TARGET_MACOSX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#else
-    #error Unsupported platfrom
-#endif
-
-    /** @brief Index of matrix/vector values */
-    using Index = unsigned int;
-
-    /** @brief Size (count) type */
-    using Size = std::size_t;
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLACONFIG_HPP
+spla::RefPtr<spla::DataMatrix> spla::HostMatrix::GetData(Library &library) {
+    return DataMatrix::Make(mRowIndices.data(), mColIndices.data(), HasValues() ? mValues.data() : nullptr, GetNnvals(), library);
+}

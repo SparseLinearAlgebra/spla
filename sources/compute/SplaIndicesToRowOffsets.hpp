@@ -31,6 +31,10 @@
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/command_queue.hpp>
 
+#include <algorithm>
+#include <numeric>
+#include <vector>
+
 namespace spla {
 
     /**
@@ -88,6 +92,47 @@ namespace spla {
         using namespace boost;
         boost::compute::vector<unsigned int> lengths(queue.get_context());
         IndicesToRowOffsets(indices, offsets, lengths, n, queue);
+    }
+
+    /**
+     * @brief Compute row offsets from coo row indices buffer.
+     *
+     * Result offsets array has size n + 1.
+     * Offsets[i] stores first index of row i in indices buffer.
+     * Offsets[i + 1] - Offsets[i] equals number of nnz values in row i in indices buffer.
+     * Offsets[n] equals number off values in indices buffer.
+     * Lengths[i] equals number of nnz values in row i in indices buffer.
+     *
+     * @param indices Array of rows indices
+     * @param[out] offsets Output array with offsets
+     * @param[out] lengths Output array of row lengths
+     * @param n Number of rows in matrix
+     */
+    inline void IndicesToRowOffsets(const std::vector<unsigned int> &indices,
+                                    std::vector<Index> &offsets,
+                                    std::vector<Index> &lengths,
+                                    std::size_t n) {
+        offsets.resize(n + 1);
+        lengths.resize(n + 1);
+        std::fill(lengths.begin(), lengths.end(), 0u);
+
+        if (indices.empty()) {
+            std::fill(offsets.begin(), offsets.end(), 0u);
+            return;
+        }
+
+        std::for_each(indices.begin(), indices.end(), [&](auto i) { lengths[i] += 1; });
+        std::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), 0u);
+    }
+
+    /**
+     * Overload
+     */
+    inline void IndicesToRowOffsets(const std::vector<unsigned int> &indices,
+                                    std::vector<Index> &offsets,
+                                    std::size_t n) {
+        std::vector<unsigned int> lengths;
+        IndicesToRowOffsets(indices, offsets, lengths, n);
     }
 
     /**

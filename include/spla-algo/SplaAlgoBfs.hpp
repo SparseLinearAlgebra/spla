@@ -25,54 +25,39 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLACONFIG_HPP
-#define SPLA_SPLACONFIG_HPP
+#ifndef SPLA_SPLAALGOBFS_HPP
+#define SPLA_SPLAALGOBFS_HPP
 
-#include <string>
-
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
-
-#define SPLA_TEXT(text) u8##text
+#include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaMatrix.hpp>
+#include <spla-cpp/SplaVector.hpp>
 
 namespace spla {
 
     /**
-     * @defgroup Internal
-     *
-     * @brief Implementation details
-     *
-     * @details The internal module implements the full functionality of the library.
-     * It is not anticipated that the user will ever need to work with
-     * the objects in this module, as it only contains details
-     * of the library's implementation.
+     * @addtogroup Algorithm
+     * @{
      */
 
-#if defined(SPLA_TARGET_WINDOWS)
-    /** String for universal file names representation */
-    using Filename = std::wstring;
-#elif defined(SPLA_TARGET_LINUX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#elif defined(SPLA_TARGET_MACOSX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#else
-    #error Unsupported platfrom
-#endif
+    /**
+     * @brief Breadth-first search algorithm
+     *
+     * @param[out] v Vector where to store levels of the reached vertices
+     * @param A Input adjacency matrix of the graph; must be n x n
+     * @param s Index of the source vertex to begin bfs
+     */
+    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s);
 
-    /** @brief Index of matrix/vector values */
-    using Index = unsigned int;
-
-    /** @brief Size (count) type */
-    using Size = std::size_t;
+    /**
+     * @brief Breadth-first search algorithm
+     *
+     * @note Naive cpu reference algo implementation for correctness only
+     *
+     * @param[out] v Vector where to store levels of the reached vertices
+     * @param A Input adjacency matrix of the graph; must be n x n
+     * @param s Index of the source vertex to begin bfs
+     */
+    SPLA_API void Bfs(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s);
 
     /**
      * @}
@@ -80,4 +65,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLACONFIG_HPP
+#endif//SPLA_SPLAALGOBFS_HPP

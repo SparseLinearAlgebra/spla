@@ -15,6 +15,10 @@ set(SPLA_CPP_SOURCES
         sources/SplaTypes.cpp
         sources/SplaVector.cpp)
 
+set(SPLA_ALGO_SOURCES
+        sources/SplaAlgoBfs.cpp
+        sources/SplaAlgoCommon.cpp)
+
 set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixEWiseAddCOO.cpp
         sources/algo/matrix/SplaMatrixEWiseAddCOO.hpp
