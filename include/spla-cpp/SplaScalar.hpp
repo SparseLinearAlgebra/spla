@@ -70,6 +70,9 @@ namespace spla {
         /** Dump scalar content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @copydoc Object::Clone() */
+        RefPtr<Object> Clone() const override;
+
         /**
          * Make new scalar with specified params
          *
@@ -81,7 +84,7 @@ namespace spla {
         static RefPtr<Scalar> Make(const RefPtr<Type> &type, class Library &library);
 
     private:
-        Scalar(const RefPtr<Type> &type, class Library &library);
+        Scalar(const RefPtr<Type> &type, class Library &library, RefPtr<class ScalarStorage> storage = nullptr);
         RefPtr<Object> CloneEmpty() override;
         void CopyData(const RefPtr<Object> &object) override;
 

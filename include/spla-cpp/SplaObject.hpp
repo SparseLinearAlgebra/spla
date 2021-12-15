@@ -76,6 +76,19 @@ namespace spla {
         /** @return Library instance that this object is associated with */
         class Library &GetLibrary() const;
 
+        /**
+         * @brief Create copy of this object
+         *
+         * Creates new object instance, which is the exact copy of this source object.
+         * Modifications of the source(new) object do not affect the new(source) object respectively.
+         *
+         * @note For matrices, vectors and scalars duplication is effective, actual
+         *       device data is copied in `cow` fashion.
+         *
+         * @return New object instance
+         */
+        virtual RefPtr<Object> Clone() const;
+
     private:
         friend class ExpressionManager;
         virtual RefPtr<Object> CloneEmpty();

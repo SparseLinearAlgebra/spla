@@ -75,6 +75,9 @@ namespace spla {
         /** Dump vector content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @copydoc Object::Clone() */
+        RefPtr<Object> Clone() const override;
+
         /**
          * Make new vector with specified size
          *
@@ -87,7 +90,7 @@ namespace spla {
         static RefPtr<Vector> Make(std::size_t nrows, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Vector(std::size_t nrows, const RefPtr<Type> &type, class Library &library);
+        Vector(std::size_t nrows, const RefPtr<Type> &type, class Library &library, RefPtr<class VectorStorage> storage = nullptr);
         RefPtr<Object> CloneEmpty() override;
         void CopyData(const RefPtr<Object> &object) override;
 

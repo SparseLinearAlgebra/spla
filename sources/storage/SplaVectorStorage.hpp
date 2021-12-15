@@ -90,6 +90,9 @@ namespace spla {
         /** Dump vector content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @return Cloned `cow` storage */
+        RefPtr<VectorStorage> Clone() const;
+
         static RefPtr<VectorStorage> Make(std::size_t nrows, Library &library);
 
     private:

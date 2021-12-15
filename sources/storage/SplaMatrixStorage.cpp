@@ -137,6 +137,17 @@ void spla::MatrixStorage::Dump(std::ostream &stream) const {
     }
 }
 
+spla::RefPtr<spla::MatrixStorage> spla::MatrixStorage::Clone() const {
+    std::lock_guard<std::mutex> lock(mMutex);
+
+    auto storage = Make(GetNrows(), GetNcols(), mLibrary);
+    storage->mBlockSize = mBlockSize;
+    storage->mBlocks = mBlocks;
+    storage->mNvals = mNvals;
+
+    return storage;
+}
+
 spla::RefPtr<spla::MatrixStorage> spla::MatrixStorage::Make(std::size_t nrows, std::size_t ncols, spla::Library &library) {
     assert(nrows > 0);
     assert(ncols > 0);

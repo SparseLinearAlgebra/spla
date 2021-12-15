@@ -33,7 +33,6 @@
 #include <taskflow/taskflow.hpp>
 
 #include <functional>
-#include <vector>
 
 namespace spla {
 
@@ -60,22 +59,12 @@ namespace spla {
          */
         tf::Task Emplace(std::function<void()> work);
 
-        /**
-         * Emplace work to the subflow.
-         * Work will be executed only after all previously submitted tasks to the builder.
-         *
-         * @param work Function to execute as work inside task.
-         * @return Taskflow task handle.
-         */
-        tf::Task EmplaceAfterAll(std::function<void()> work);
-
     private:
         friend class ExpressionManager;
         TaskBuilder(Expression *expression, tf::Subflow &subflow);
 
         Expression *mExpression;
         tf::Subflow &mSubflow;
-        std::vector<tf::Task> mTasks;
     };
 
     /**

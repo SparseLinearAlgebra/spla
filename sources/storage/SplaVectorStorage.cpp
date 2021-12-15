@@ -123,3 +123,14 @@ void spla::VectorStorage::Dump(std::ostream &stream) const {
         block->Dump(stream, index * bsize);
     }
 }
+
+spla::RefPtr<spla::VectorStorage> spla::VectorStorage::Clone() const {
+    std::lock_guard<std::mutex> lock(mMutex);
+
+    auto storage = Make(GetNrows(), mLibrary);
+    storage->mBlockSize = mBlockSize;
+    storage->mBlocks = mBlocks;
+    storage->mNvals = mNvals;
+
+    return storage;
+}

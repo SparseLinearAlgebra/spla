@@ -83,6 +83,9 @@ namespace spla {
         /** Dump matrix content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @copydoc Object::Clone() */
+        RefPtr<Object> Clone() const override;
+
         /**
          * Make new matrix with specified size.
          *
@@ -96,7 +99,8 @@ namespace spla {
         static RefPtr<Matrix> Make(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
 
     private:
-        Matrix(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library);
+        Matrix(std::size_t nrows, std::size_t ncols, const RefPtr<Type> &type, class Library &library, RefPtr<class MatrixStorage> storage = nullptr);
+
         RefPtr<Object> CloneEmpty() override;
         void CopyData(const RefPtr<Object> &object) override;
 

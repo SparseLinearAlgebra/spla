@@ -60,6 +60,9 @@ namespace spla {
         /** Dump scalar content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @return Cloned `cow` storage */
+        RefPtr<ScalarStorage> Clone() const;
+
         static RefPtr<ScalarStorage> Make(Library &library);
 
     private:

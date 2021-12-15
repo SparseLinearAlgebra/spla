@@ -108,16 +108,18 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
                 return;
 
             // Check, if out arg appears in the input list
-            auto &node = expression->GetNodes()[idx];
-            auto &args = node->GetArgs();
-            RefPtr<Object> out;
-            RefPtr<Object> proxy;
+            auto &args = expression->GetNodes()[idx]->GetArgs();
             if (!args.empty()) {
-                out = args[0];
+                auto out = args[0];
                 auto query = std::find(args.begin() + 1, args.end(), out);
                 // If appears, must create a proxy
+                // And replace all `in` entries with read-only proxy
                 if (query != args.end()) {
-                    args[0] = proxy = out->CloneEmpty();
+                    auto proxy = out->Clone();
+                    std::for_each(args.begin() + 1, args.end(), [&](RefPtr<Object> &arg) {
+                        if (arg == out)
+                            arg = proxy;
+                    });
                 }
             }
 
@@ -127,14 +129,6 @@ void spla::ExpressionManager::Submit(const spla::RefPtr<spla::Expression> &expre
             try {
                 // Actual task graph composition
                 processor->Process(idx, *expression, taskBuilder);
-                // If created proxy, set result back to the out
-                if (proxy.IsNotNull()) {
-                    taskBuilder.EmplaceAfterAll([out, proxy]() {
-                        // NOTE: Copy proxy data to out only when all
-                        // expression sub tasks are finished
-                        out->CopyData(proxy);
-                    });
-                }
             } catch (std::exception &ex) {
                 expression->SetState(Expression::State::Aborted);
                 auto logger = expression->GetLibrary().GetPrivate().GetLogger();

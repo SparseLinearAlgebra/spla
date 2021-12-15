@@ -40,13 +40,17 @@ void spla::Scalar::Dump(std::ostream &stream) const {
     mStorage->Dump(stream);
 }
 
+spla::RefPtr<spla::Object> spla::Scalar::Clone() const {
+    return RefPtr<Scalar>(new Scalar(GetType(), GetLibrary(), GetStorage()->Clone())).As<Object>();
+}
+
 spla::RefPtr<spla::Scalar> spla::Scalar::Make(const spla::RefPtr<spla::Type> &type, spla::Library &library) {
     return RefPtr<spla::Scalar>(new Scalar(type, library));
 }
 
-spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &library)
+spla::Scalar::Scalar(const spla::RefPtr<spla::Type> &type, spla::Library &library, RefPtr<class ScalarStorage> storage)
     : TypedObject(type, TypeName::Scalar, library) {
-    mStorage = ScalarStorage::Make(GetLibrary());
+    mStorage = storage.IsNotNull() ? std::move(storage) : ScalarStorage::Make(GetLibrary());
 }
 
 spla::RefPtr<spla::Object> spla::Scalar::CloneEmpty() {

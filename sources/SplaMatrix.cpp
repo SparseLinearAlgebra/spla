@@ -52,6 +52,10 @@ void spla::Matrix::Dump(std::ostream &stream) const {
     mStorage->Dump(stream);
 }
 
+spla::RefPtr<spla::Object> spla::Matrix::Clone() const {
+    return RefPtr<Matrix>(new Matrix(GetNrows(), GetNcols(), GetType(), GetLibrary(), GetStorage()->Clone())).As<Object>();
+}
+
 spla::RefPtr<spla::Matrix> spla::Matrix::Make(std::size_t nrows, std::size_t ncols,
                                               const RefPtr<Type> &type,
                                               spla::Library &library) {
@@ -60,8 +64,9 @@ spla::RefPtr<spla::Matrix> spla::Matrix::Make(std::size_t nrows, std::size_t nco
 
 spla::Matrix::Matrix(std::size_t nrows, std::size_t ncols,
                      const RefPtr<Type> &type,
-                     spla::Library &library) : TypedObject(type, Object::TypeName::Matrix, library) {
-    mStorage = MatrixStorage::Make(nrows, ncols, GetLibrary());
+                     spla::Library &library,
+                     RefPtr<class MatrixStorage> storage) : TypedObject(type, Object::TypeName::Matrix, library) {
+    mStorage = storage.IsNotNull() ? std::move(storage) : MatrixStorage::Make(nrows, ncols, GetLibrary());
 }
 
 spla::RefPtr<spla::Object> spla::Matrix::CloneEmpty() {

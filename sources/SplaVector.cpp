@@ -44,8 +44,9 @@ spla::RefPtr<spla::Vector> spla::Vector::Make(std::size_t nrows,
 
 spla::Vector::Vector(std::size_t nrows,
                      const RefPtr<Type> &type,
-                     spla::Library &library) : TypedObject(type, Object::TypeName::Vector, library) {
-    mStorage = VectorStorage::Make(nrows, GetLibrary());
+                     spla::Library &library,
+                     RefPtr<VectorStorage> storage) : TypedObject(type, Object::TypeName::Vector, library) {
+    mStorage = storage.IsNotNull() ? std::move(storage) : VectorStorage::Make(nrows, GetLibrary());
 }
 
 const spla::RefPtr<spla::VectorStorage> &spla::Vector::GetStorage() const {
@@ -55,6 +56,11 @@ const spla::RefPtr<spla::VectorStorage> &spla::Vector::GetStorage() const {
 void spla::Vector::Dump(std::ostream &stream) const {
     mStorage->Dump(stream);
 }
+
+spla::RefPtr<spla::Object> spla::Vector::Clone() const {
+    return RefPtr<Vector>(new Vector(GetNrows(), GetType(), GetLibrary(), GetStorage()->Clone())).As<Object>();
+}
+
 
 spla::RefPtr<spla::Object> spla::Vector::CloneEmpty() {
     return Make(GetNrows(), GetType(), GetLibrary()).As<Object>();

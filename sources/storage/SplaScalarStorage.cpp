@@ -57,6 +57,15 @@ void spla::ScalarStorage::Dump(std::ostream &stream) const {
     if (mValue.IsNotNull()) mValue->Dump(stream);
 }
 
+spla::RefPtr<spla::ScalarStorage> spla::ScalarStorage::Clone() const {
+    std::lock_guard<std::mutex> lock(mMutex);
+
+    auto storage = Make(mLibrary);
+    storage->mValue = mValue;
+
+    return storage;
+}
+
 spla::RefPtr<spla::ScalarStorage> spla::ScalarStorage::Make(spla::Library &library) {
     return spla::RefPtr<spla::ScalarStorage>(new ScalarStorage(library));
 }

@@ -128,6 +128,9 @@ namespace spla {
         /** Dump matrix content to provided stream */
         void Dump(std::ostream &stream) const;
 
+        /** @return Cloned `cow` storage */
+        RefPtr<MatrixStorage> Clone() const;
+
         /**
          * Make new matrix storage.
          *

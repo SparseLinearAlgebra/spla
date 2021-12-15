@@ -44,12 +44,17 @@ spla::Library &spla::Object::GetLibrary() const {
     return mLibrary;
 }
 
+spla::RefPtr<spla::Object> spla::Object::Clone() const {
+    assert(false && "Object::Clone() is not implemented");
+    RAISE_ERROR(NotImplemented, "Object::Clone() is not implemented");
+}
+
 spla::RefPtr<spla::Object> spla::Object::CloneEmpty() {
     assert(false && "Object::CloneEmpty() is not implemented");
     RAISE_ERROR(NotImplemented, "Object::CloneEmpty() is not implemented");
 }
 
-void spla::Object::CopyData(const RefPtr<Object> &object) {
+void spla::Object::CopyData(const RefPtr<Object> &) {
     assert(false && "Object::CopyData() is not implemented");
     RAISE_ERROR(NotImplemented, "Object::CopyData() is not implemented");
 }
