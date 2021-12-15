@@ -202,8 +202,10 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (!useError && a != b))
+                if ((useError && std::abs(a - b) > error) || (!useError && a != b)) {
+                    std::cout << "Values not equal at " << i << " a=" << a << " b=" << b << std::endl;
                     return false;
+                }
             }
 
             return true;
@@ -370,6 +372,20 @@ namespace utils {
             }
 
             return Vector<T>(nrows, std::move(rows), std::move(vals));
+        }
+
+        [[nodiscard]] spla::RefPtr<spla::HostVector> ToHostVector() const {
+            std::vector<Index> rows = mRows;
+            std::vector<unsigned char> data(mVals.size() * sizeof(T));
+            std::memcpy(data.data(), mVals.data(), mVals.size() * sizeof(T));
+            return spla::RefPtr<spla::HostVector>(new spla::HostVector(mNrows, std::move(rows), std::move(data)));
+        }
+
+        static Vector FromHostVector(const spla::RefPtr<spla::HostVector> &m) {
+            std::vector<Index> rows = m->GetRowIndices();
+            std::vector<T> values(m->GetNnvals());
+            std::memcpy(values.data(), m->GetValues().data(), values.size() * sizeof(T));
+            return Vector(m->GetNrows(), std::move(rows), std::move(values));
         }
 
         static Vector Empty(std::size_t nrows) {

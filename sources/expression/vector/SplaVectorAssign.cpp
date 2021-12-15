@@ -94,7 +94,7 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
 
         if (applyAccum) {
             auto accumTask = builder.Emplace([=]() {
-                auto tmpBlock = w->GetStorage()->GetBlock(i);
+                auto tmpBlock = tmp->GetStorage()->GetBlock(i);
 
                 if (tmpBlock.IsNotNull()) {
                     ParamsVectorEWiseAdd params;

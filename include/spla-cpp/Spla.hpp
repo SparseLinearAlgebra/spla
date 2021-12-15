@@ -28,6 +28,22 @@
 #ifndef SPLA_SPLA_HPP
 #define SPLA_SPLA_HPP
 
+/**
+ * @defgroup API
+ *
+ * @brief Public library interface
+ *
+ * @details API module provides access to all common library primitives.
+ * Primitives are exposed as a number of Object reference-counted classes.
+ * Reference-counting is used to automate objects life-time checks and
+ * to pass around this objects as expressions params in a safe way.
+ *
+ * Implementation details are hidden in private Internal sources module.
+ * Header files has no other dependencies, except standard c++ library files.
+ *
+ * File Spla.hpp provides access to all API components.
+ */
+
 #include <spla-cpp/SplaConfig.hpp>
 #include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>

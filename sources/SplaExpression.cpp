@@ -63,6 +63,11 @@ void spla::Expression::Wait() {
         mFuture->Get().wait();
 }
 
+void spla::Expression::SubmitWait() {
+    Submit();
+    Wait();
+}
+
 void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred,
                                   const spla::RefPtr<spla::ExpressionNode> &succ) {
     CHECK_RAISE_ERROR(GetState() == State::Default, InvalidState, "Expression must be in default state");

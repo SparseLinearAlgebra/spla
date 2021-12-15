@@ -209,13 +209,13 @@ TEST(VxM, Small) {
     test(M, N, M, M, 10, blockSizes);
 }
 
-TEST(MxM, Medium) {
+TEST(VxM, Medium) {
     std::vector<std::size_t> blockSizes = {1000, 10000};
     std::size_t M = 1220, N = 880;
     test(M, N, M, M, 10, blockSizes);
 }
 
-TEST(MxM, Large) {
+TEST(VxM, Large) {
     std::vector<std::size_t> blockSizes = {10000, 100000};
     std::size_t M = 12400, N = 8080;
     test(M, N, M, M, 5, blockSizes);

@@ -25,59 +25,30 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLACONFIG_HPP
-#define SPLA_SPLACONFIG_HPP
+#ifndef SPLA_SPLAALGO_HPP
+#define SPLA_SPLAALGO_HPP
 
-#include <string>
+/**
+ * @defgroup Algorithm
+ *
+ * @brief Public library algorithms interface
+ *
+ * @details Algorithm module provides interface to comment graph
+ * algorithms, such as breadth-first search (bfs), single source
+ * shortest paths (ssps), triangles counting (tc), page rank,
+ * connected components and etc. implemented both using
+ * spla library API (matrix, vectors, expressions) for multi-GPU evaluation
+ * and using standard C++ primitives (for reference and conformance checks only).
+ *
+ * This algorithms can be safely used in user applications.
+ *
+ * Implementation details are hidden in private Internal sources module.
+ * Header files has no other dependencies, except standard c++ library files and core SPLA API interface.
+ *
+ * File SplaAlgo.hpp provides access to all algorithm module components.
+ */
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+#include <spla-algo/SplaAlgoBfs.hpp>
+#include <spla-algo/SplaAlgoCommon.hpp>
 
-#define SPLA_TEXT(text) u8##text
-
-namespace spla {
-
-    /**
-     * @defgroup Internal
-     *
-     * @brief Implementation details
-     *
-     * @details The internal module implements the full functionality of the library.
-     * It is not anticipated that the user will ever need to work with
-     * the objects in this module, as it only contains details
-     * of the library's implementation.
-     */
-
-#if defined(SPLA_TARGET_WINDOWS)
-    /** String for universal file names representation */
-    using Filename = std::wstring;
-#elif defined(SPLA_TARGET_LINUX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#elif defined(SPLA_TARGET_MACOSX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#else
-    #error Unsupported platfrom
-#endif
-
-    /** @brief Index of matrix/vector values */
-    using Index = unsigned int;
-
-    /** @brief Size (count) type */
-    using Size = std::size_t;
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLACONFIG_HPP
+#endif//SPLA_SPLAALGO_HPP

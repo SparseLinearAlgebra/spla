@@ -25,59 +25,60 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLACONFIG_HPP
-#define SPLA_SPLACONFIG_HPP
+#include <Testing.hpp>
 
-#include <string>
+void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
+    auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
+    auto sp_Int32 = spla::Types::Int32(library);
+    auto sp_Void = spla::Types::Void(library);
+    auto sp_s = rnd();
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+    utils::Matrix A = utils::Matrix<char>::Generate(M, M, nvals).SortReduceDuplicates();
 
-#define SPLA_TEXT(text) u8##text
+    auto sp_v = spla::Vector::Make(M, sp_Int32, library);
+    auto sp_A = spla::Matrix::Make(M, M, sp_Void, library);
 
-namespace spla {
+    auto sp_setup = spla::Expression::Make(library);
+    sp_setup->MakeDataWrite(sp_A, A.GetDataIndices(library));
+    sp_setup->SubmitWait();
+    ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    /**
-     * @defgroup Internal
-     *
-     * @brief Implementation details
-     *
-     * @details The internal module implements the full functionality of the library.
-     * It is not anticipated that the user will ever need to work with
-     * the objects in this module, as it only contains details
-     * of the library's implementation.
-     */
+    spla::Bfs(sp_v, sp_A, sp_s);
 
-#if defined(SPLA_TARGET_WINDOWS)
-    /** String for universal file names representation */
-    using Filename = std::wstring;
-#elif defined(SPLA_TARGET_LINUX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#elif defined(SPLA_TARGET_MACOSX)
-    /** String for universal file names representation */
-    using Filename = std::string;
-#else
-    #error Unsupported platfrom
-#endif
+    auto host_A = A.ToHostMatrix();
+    auto host_v = spla::RefPtr<spla::HostVector>();
 
-    /** @brief Index of matrix/vector values */
-    using Index = unsigned int;
+    spla::Bfs(host_v, host_A, sp_s);
 
-    /** @brief Size (count) type */
-    using Size = std::size_t;
+    auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
+    ASSERT_TRUE(result.Equals(sp_v));
+}
 
-    /**
-     * @}
-     */
+void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testCase(library, M, nvals, i);
+        }
+    });
+}
 
-}// namespace spla
+TEST(BFS, Small) {
+    std::vector<std::size_t> blockSizes = {100, 1000};
+    std::size_t M = 120;
+    test(M, M, M, 10, blockSizes);
+}
 
-#endif//SPLA_SPLACONFIG_HPP
+TEST(BFS, Medium) {
+    std::vector<std::size_t> blockSizes = {1000, 10000};
+    std::size_t M = 1220;
+    test(M, M, M, 10, blockSizes);
+}
+
+TEST(BFS, Large) {
+    std::vector<std::size_t> blockSizes = {10000, 100000};
+    std::size_t M = 12400;
+    test(M, M, M, 5, blockSizes);
+}
+
+SPLA_GTEST_MAIN
