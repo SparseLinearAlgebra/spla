@@ -130,6 +130,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
                 // If type has non-zero elements size, resize values storage
                 if (typeHasValues) {
+                    assert(valsHost);
                     blockVals.resize(blockNvals * byteSize, queue);
                     blockValsHost.resize(blockNvals * byteSize);
                 }

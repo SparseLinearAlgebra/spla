@@ -240,7 +240,8 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
     CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
     CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
     CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
-    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type is has values then `op` must be provided");
+    CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type has values then `op` must be provided");
+    CHECK_RAISE_ERROR(w->GetType()->HasValues() || op.IsNull(), InvalidArgument, "If type has no values then `op` must be null");
     CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
     CHECK_RAISE_ERROR(w->GetDim() == a->GetDim(), DimensionMismatch, "Incompatible size");
     CHECK_RAISE_ERROR(w->GetDim() == b->GetDim(), DimensionMismatch, "Incompatible size");
@@ -270,6 +271,7 @@ spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Vector> &w,
     CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "b can't be null");
     CHECK_RAISE_ERROR(w->IsCompatible(*a) && w->IsCompatible(*b), InvalidType, "w, a, b must have the same type");
     CHECK_RAISE_ERROR(!w->GetType()->HasValues() || op.IsNotNull(), NullPointer, "If type has values then `op` must be provided");
+    CHECK_RAISE_ERROR(w->GetType()->HasValues() || op.IsNull(), InvalidArgument, "If type has no values then `op` must be null");
     CHECK_RAISE_ERROR(op.IsNull() || op->CanApply(*a, *b, *w), InvalidType, "Can't apply provided op");
     CHECK_RAISE_ERROR(w->GetNrows() == a->GetNrows(), DimensionMismatch, "Incompatible size");
     CHECK_RAISE_ERROR(w->GetNrows() == b->GetNrows(), DimensionMismatch, "Incompatible size");
@@ -305,6 +307,7 @@ spla::Expression::MakeMxM(const spla::RefPtr<spla::Matrix> &w,
     CHECK_RAISE_ERROR(mult.IsNull() || mult->CanApply(*a, *b, *w), InvalidType, "Cannot apply `mult` op to provided objects");
     CHECK_RAISE_ERROR(add.IsNull() || add->CanApply(*w, *w, *w), InvalidType, "Cannot apply `add` op to provided objects");
     CHECK_RAISE_ERROR(!w->GetType()->HasValues() || (mult.IsNotNull() && add.IsNotNull()), NullPointer, "If type has values, `mult` and `add` op must be provided");
+    CHECK_RAISE_ERROR(w->GetType()->HasValues() || (mult.IsNull() && add.IsNull()), InvalidArgument, "If type has no values then `mult` and `add` must be null");
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),
@@ -336,6 +339,7 @@ spla::Expression::MakeVxM(const spla::RefPtr<spla::Vector> &w,
     CHECK_RAISE_ERROR(mult.IsNull() || mult->CanApply(*a, *b, *w), InvalidType, "Cannot apply `mult` op to provided objects");
     CHECK_RAISE_ERROR(add.IsNull() || add->CanApply(*w, *w, *w), InvalidType, "Cannot apply `add` op to provided objects");
     CHECK_RAISE_ERROR(!w->GetType()->HasValues() || (mult.IsNotNull() && add.IsNotNull()), NullPointer, "If type has values, `mult` and `add` op must be provided");
+    CHECK_RAISE_ERROR(w->GetType()->HasValues() || (mult.IsNull() && add.IsNull()), InvalidArgument, "If type has no values then `mult` and `add` must be null");
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),

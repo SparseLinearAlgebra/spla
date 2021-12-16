@@ -119,6 +119,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
             // If type has non-zero elements size, resize values storage
             if (typeHasValues) {
+                assert(valsHost);
                 blockVals.resize(blockNvals * byteSize, queue);
                 blockValsHost.resize(blockNvals * byteSize);
             }
@@ -126,8 +127,6 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             // Copy data related to this block
             std::size_t writeOffset = 0;
             {
-                using namespace boost;
-
                 for (std::size_t k = 0; k < nvalsHost; k++) {
                     auto rowIdx = rowsHost[k];
 

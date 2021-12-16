@@ -30,16 +30,16 @@
 void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
     auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
     auto sp_Int32 = spla::Types::Int32(library);
-    auto sp_Void = spla::Types::Void(library);
     auto sp_s = rnd();
 
-    utils::Matrix A = utils::Matrix<char>::Generate(M, M, nvals).SortReduceDuplicates();
+    utils::Matrix A = utils::Matrix<std::int32_t>::Generate(M, M, nvals).SortReduceDuplicates();
+    A.Fill(utils::UniformIntGenerator<std::int32_t>());
 
     auto sp_v = spla::Vector::Make(M, sp_Int32, library);
-    auto sp_A = spla::Matrix::Make(M, M, sp_Void, library);
+    auto sp_A = spla::Matrix::Make(M, M, sp_Int32, library);
 
     auto sp_setup = spla::Expression::Make(library);
-    sp_setup->MakeDataWrite(sp_A, A.GetDataIndices(library));
+    sp_setup->MakeDataWrite(sp_A, A.GetData(library));
     sp_setup->SubmitWait();
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
