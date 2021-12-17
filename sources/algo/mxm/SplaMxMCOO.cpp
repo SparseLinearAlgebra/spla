@@ -207,17 +207,31 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> outputPtr(a.GetNvals() + 1, ctx);
     compute::exclusive_scan(segmentLengths.begin(), segmentLengths.end(),
                             outputPtr.begin(),
-                            0U,
+                            0u,
                             queue);
 
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
-        const std::size_t free = 1 << 20;// 1 MB. TODO: Get information about amount of free space and put it here
-        const std::size_t maxWorkspaceCapacity = free / (4 * sizeof(unsigned int) + valueByteSize);
+        const auto maxGlobalMem = device.global_memory_size();
+        const auto maxAllocSize = device.get_info<cl_ulong>(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
+
+        // See issue #97 for more info https://github.com/JetBrains-Research/spla/issues/97
+        // - CL_DEVICE_MAX_MEM_ALLOC_SIZE (max single allocation, nearly max single buffer size, CL_DEVICE_MAX_MEM_ALLOC_SIZE <= CL_DEVICE_GLOBAL_MEM_SIZE)
+        // - CL_DEVICE_GLOBAL_MEM_SIZE (total device memory, might be virtualized)
+        const std::size_t factor = std::max<std::size_t>(maxGlobalMem / maxAllocSize, 3);
+        const std::size_t free = maxGlobalMem;
+        const std::size_t maxWorkspaceCapacity = free / (6 * sizeof(unsigned int) + valueByteSize);
+        const std::size_t maxWorkspaceCapacityToSelect = maxWorkspaceCapacity / factor;
 
         // use at most one third of the remaining capacity
-        workspaceCapacity = std::min(maxWorkspaceCapacity / 3, workspaceCapacity);
+        workspaceCapacity = std::min(maxWorkspaceCapacityToSelect, workspaceCapacity);
+
+        // Log for info only
+        SPDLOG_LOGGER_TRACE(logger, "Global mem={} KiB alloc={} KiB ({}%) required={} selected={} available={}",
+                            maxGlobalMem / 1024, maxAllocSize / 1024,
+                            static_cast<double>(maxAllocSize) / static_cast<double>(maxGlobalMem) * 100.0f,
+                            cooNumNonZeros, workspaceCapacity, maxWorkspaceCapacityToSelect);
     }
 
     compute::vector<unsigned int> aGatherLocations(ctx), bGatherLocations(ctx);
@@ -330,10 +344,11 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     }
 
     if (wTmpNnz == 0) {
+        // Nothing to do
         return;
     }
 
-    std::size_t wNnz;
+    std::size_t wNnz = wTmpNnz;
 
     if (hasMask && !maskIsNull) {
         /**
@@ -342,7 +357,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
          * has mask: 1, complement: 0, mask is null: 0
          * has mask: 1, complement: 1, mask is null: 0
          */
-
         compute::vector<unsigned int> wTmpRows(ctx);
         compute::vector<unsigned int> wTmpCols(ctx);
         compute::vector<unsigned char> wTmpVals(ctx);
@@ -357,23 +371,16 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         std::swap(wTmpRows, wRows);
         std::swap(wTmpCols, wCols);
         std::swap(wTmpVals, wVals);
-    } else {
-        /**
-         * Covered mask cases:
-         *
-         * has mask: 0, complement: -, mask is null: -
-         * has mask: 1, complement: 1, mask is null: 1
-         */
-        wNnz = wTmpNnz;
     }
+    /**
+     * Else Covered mask cases:
+     *
+     * has mask: 0, complement: -, mask is null: -
+     * has mask: 1, complement: 1, mask is null: 1
+     */
 
-    if (wNnz == 0) {
-        return;
-    }
-
-    params->w = MatrixCOO::Make(a.GetNrows(), b.GetNcols(), wNnz,
-                                std::move(wRows), std::move(wCols), std::move(wVals))
-                        .Cast<MatrixBlock>();
+    if (wNnz)
+        params->w = MatrixCOO::Make(a.GetNrows(), b.GetNcols(), wNnz, std::move(wRows), std::move(wCols), std::move(wVals)).Cast<MatrixBlock>();
 }
 
 spla::Algorithm::Type spla::MxMCOO::GetType() const {
