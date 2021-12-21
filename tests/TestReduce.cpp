@@ -25,43 +25,53 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/vector/SplaVectorReduceCOO.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaQueueFinisher.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
-#include <storage/block/SplaVectorCOO.hpp>
+#include <Testing.hpp>
 #include <compute/SplaReduce.hpp>
 
+void TestReduceAlignedValues(
+        const std::vector<std::uint8_t> &values,
+        const std::vector<std::uint8_t> &valuesExpected) {
+    namespace compute = boost::compute;
 
-bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsVectorReduce *>(&params);
-    return p && p->v.Is<VectorCOO>();
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    compute::vector<std::uint8_t> dValues(values, queue);
+
+    std::string op = "_ACCESS_A const uchar* a = ((_ACCESS_A const uchar*)vp_a);"
+                     "_ACCESS_B const uchar* b = ((_ACCESS_B const uchar*)vp_b);"
+                     "_ACCESS_C uchar* c = (_ACCESS_C uchar*)vp_c;"
+                     "c[0] = a[0] * b[0];"
+                     "c[1] = a[1] + b[1];";
+
+    compute::vector<std::uint8_t> dValuesOut(ctx);
+    compute::vector<std::uint8_t> reduced = spla::Reduce(values, 2, op, queue);
+    std::vector<std::uint8_t> reducedActual(2);
+    compute::copy(reduced.begin(), reduced.end(), reducedActual.begin(), queue);
+
+    queue.finish();
+
+    EXPECT_EQ(valuesExpected, reducedActual);
 }
 
-void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
-    using namespace boost;
-
-    auto p = dynamic_cast<ParamsVectorReduce *>(&params);
-    assert(p != nullptr);
-    auto library = p->desc->GetLibrary().GetPrivatePtr();
-    auto &desc = p->desc;
-
-    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
-    compute::context ctx = library->GetContext();
-    compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
-
-    compute::vector<unsigned char> reduced(p->s->GetType()->GetByteSize(), ctx);
-
-    p->s->GetStorage()->SetValue(
-            ScalarValue::Make(std::move(reduced)));
+TEST(ReduceByKey, Basic) {
+    TestReduceAlignedValues({2, 0, 2, 1, 3, 3, 1, 2}, {12, 6});
 }
 
-spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {
-    return spla::Algorithm::Type::VectorReduce;
+TEST(ReduceByKey, Singleton) {
+    TestReduceAlignedValues({2, 0}, {2, 0});
 }
 
-std::string spla::VectorReduceCOO::GetName() const {
-    return "VectorReduceCOO";
+TEST(ReduceByKey, Binary) {
+    TestReduceAlignedValues({2, 0, 4, 2}, {8, 2});
 }
+
+TEST(ReduceByKey, Empty) {
+    TestReduceAlignedValues({}, {0, 0});
+}
+
+SPLA_GTEST_MAIN

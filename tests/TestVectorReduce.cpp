@@ -74,17 +74,17 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-//    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-//        using Type = float;
-//        auto spT = spla::Types::Float32(library);
-//        auto spAccum = spla::Functions::PlusFloat32(library);
-//        auto accum = [](Type x, Type y) { return x + y; };
-//
-//        for (std::size_t i = 0; i < iter; i++) {
-//            std::size_t nvals = base + i * step;
-//            testSimple<Type>(library, M, nvals, spT, spT, spAccum, accum, i);
-//        }
-//    });
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = float;
+        auto spT = spla::Types::Float32(library);
+        auto spAccum = spla::Functions::PlusFloat32(library);
+        auto accum = [](Type x, Type y) { return x + y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testSimple<Type>(library, M, nvals, spT, spT, spAccum, accum, i);
+        }
+    });
 
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         using Type = std::int32_t;
