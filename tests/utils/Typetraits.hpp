@@ -50,6 +50,14 @@ namespace utils {
     template<>
     std::int32_t GetError<std::int32_t>() { return 0; }
 
+    template<typename T>
+    bool EqWithError(T a, T b) {
+        if (!UseError<T>()) {
+            return a == b;
+        }
+        return std::abs(a - b) <= GetError<T>();
+    }
+
 }// namespace utils
 
 #endif//SPLA_TYPETRAITS_HPP

@@ -24,26 +24,31 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_VALUES_HPP
+#define SPLA_VALUES_HPP
 
-#ifndef SPLA_TESTING_HPP
-#define SPLA_TESTING_HPP
-
-#include <gtest/gtest.h>
-#include <utils/Compute.hpp>
-#include <utils/Matrix.hpp>
-#include <utils/Operations.hpp>
-#include <utils/Random.hpp>
-#include <utils/Setup.hpp>
 #include <utils/Typetraits.hpp>
-#include <utils/Vector.hpp>
-#include <utils/Values.hpp>
 
-// Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                  \
-    int main(int argc, char *argv[]) {                   \
-        ::testing::GTEST_FLAG(catch_exceptions) = false; \
-        ::testing::InitGoogleTest(&argc, argv);          \
-        return RUN_ALL_TESTS();                          \
+namespace utils {
+
+    template<typename T>
+    bool ValuesEqual(const std::vector<unsigned char> &a, const std::vector<unsigned char> &b) {
+        if (a.size() != b.size()) {
+            return false;
+        }
+
+        const std::size_t n = a.size() / sizeof(T);
+        for (std::size_t i = 0; i < n; ++i) {
+            T av, bv;
+            std::memcpy(&av, a.data() + i * sizeof(T), sizeof(T));
+            std::memcpy(&bv, b.data() + i * sizeof(T), sizeof(T));
+            if (!EqWithError(av, bv)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-#endif//SPLA_TESTING_HPP
+}// namespace utils
+
+#endif//SPLA_VALUES_HPP

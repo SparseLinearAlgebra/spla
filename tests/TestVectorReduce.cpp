@@ -61,7 +61,7 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
     ASSERT_TRUE(spS->HasValue());
-    auto reducedActual = spS->GetStorage()->GetValue()->GetVal();
+    auto &reducedActual = spS->GetStorage()->GetValue()->GetVal();
     auto reducedExpected = v.Reduce(reduce);
 
     std::vector<unsigned char> bytesActual(reducedActual.size());
@@ -70,22 +70,10 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     std::copy(reducedActual.begin(), reducedActual.end(), bytesActual.begin());
     std::memcpy(bytesExpected.data(), &reducedExpected, sizeof(reducedExpected));
 
-    ASSERT_EQ(bytesActual, bytesExpected);
+    ASSERT_TRUE(utils::ValuesEqual<Type>(bytesActual, bytesExpected));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        using Type = float;
-        auto spT = spla::Types::Float32(library);
-        auto spAccum = spla::Functions::PlusFloat32(library);
-        auto accum = [](Type x, Type y) { return x + y; };
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testSimple<Type>(library, M, nvals, spT, spT, spAccum, accum, i);
-        }
-    });
-
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         using Type = std::int32_t;
         auto spT = spla::Types::Int32(library);

@@ -31,6 +31,10 @@ const spla::ScalarValue::Value &spla::ScalarValue::GetVal() const noexcept {
     return mValue;
 }
 
+spla::ScalarValue::Value &spla::ScalarValue::GetVal() noexcept {
+    return mValue;
+}
+
 void spla::ScalarValue::Dump(std::ostream &stream) const {
     using namespace boost;
     compute::context context = mValue.get_buffer().get_context();

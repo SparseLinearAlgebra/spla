@@ -28,6 +28,7 @@
 #include <mutex>
 
 #include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
 #include <expression/vector/SplaVectorReduce.hpp>
 #include <storage/SplaScalarStorage.hpp>
 #include <storage/SplaVectorStorage.hpp>
@@ -132,13 +133,28 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     auto lastReduceDeviceId = deviceIds[blocksInVector];
     tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
-        auto ctx = library->GetContext();
-        auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
-        auto [builtIntermedicateBuffer, nnzIntermediate] = intermediateBuffer->BuildSharedBuffer(queue);
+        if (blocksInVector == 1) {
+            auto &value = (*intermediateBuffer)[0]->GetStorage()->GetValue()->GetVal();
+            argS->GetStorage()->SetValue(ScalarValue::Make(std::move(value)));
+            SPDLOG_LOGGER_TRACE(logger, "Primitive final reduce of intermediate buffer, nnz=1");
+            return;
+        }
+
+        auto &ctx = library->GetContext();
+        boost::compute::vector<unsigned char> builtIntermediateBuffer(ctx);
+        std::size_t nnzIntermediate;
+        {
+            auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
+            QueueFinisher finisher(queue);
+            auto [buf, nnz] = intermediateBuffer->BuildSharedBuffer(queue);
+            builtIntermediateBuffer = std::move(buf);
+            nnzIntermediate = nnz;
+        }
+
         auto intermedicateVector = VectorCOO::Make(0,
                                                    nnzIntermediate,
                                                    boost::compute::vector<unsigned int>(ctx),
-                                                   std::move(builtIntermedicateBuffer))
+                                                   std::move(builtIntermediateBuffer))
                                            .Cast<VectorBlock>();
         ParamsVectorReduce params;
         params.desc = desc;
@@ -149,7 +165,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         params.ts = argS->GetType();
         params.reduce = argOp;
         library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
-        SPDLOG_LOGGER_TRACE(logger, "Final reduce of intermediate buffer, Reduce block i={} nnz={}", nnzIntermediate);
+        SPDLOG_LOGGER_TRACE(logger, "Final reduce of intermediate buffer, nnz={}", nnzIntermediate);
     });
 
     for (auto &blockReduce : reduceBlocksTasks) {

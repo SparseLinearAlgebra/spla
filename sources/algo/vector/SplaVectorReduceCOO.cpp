@@ -26,12 +26,12 @@
 /**********************************************************************************/
 
 #include <algo/vector/SplaVectorReduceCOO.hpp>
+#include <compute/SplaReduce.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/SplaScalarStorage.hpp>
 #include <storage/SplaScalarValue.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
-#include <compute/SplaReduce.hpp>
 
 
 bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
@@ -48,14 +48,17 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
     auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    auto vector = p->v.Cast<VectorCOO>();
+    auto valueByteSize = p->ts->GetByteSize();
+    auto reduceOp = p->reduce;
+
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    compute::vector<unsigned char> reduced(p->s->GetType()->GetByteSize(), ctx);
+    compute::vector<unsigned char> reduced = Reduce(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue);
 
-    p->s->GetStorage()->SetValue(
-            ScalarValue::Make(std::move(reduced)));
+    p->s->GetStorage()->SetValue(ScalarValue::Make(std::move(reduced)));
 }
 
 spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {
