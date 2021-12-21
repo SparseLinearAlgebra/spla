@@ -164,6 +164,11 @@ namespace spla::detail {
             : mArr(k.get_buffer_identifier<unsigned char>(it.get_buffer())),
               mIdx(std::move(idx)), mVBytes(vBytes) {}
 
+
+        explicit ValArrItem(const compute::vector<unsigned char> &v, std::string idx, std::size_t vBytes, MetaKernel &k)
+            : mArr(k.get_buffer_identifier<unsigned char>(v.get_buffer())),
+              mIdx(std::move(idx)), mVBytes(vBytes) {}
+
         [[nodiscard]] std::string GetByteByN(const std::string &n) const override {
             std::stringstream ss;
             ss << mArr << "[(" << mIdx << ") * " << mVBytes << " + (" << n << ")]";
@@ -278,25 +283,51 @@ namespace spla::detail {
         return k;
     }
 
+    enum class Visibility {
+        Unspecified,
+        Local,
+        Global
+    };
+
+    inline std::string MakeVisibilityString(Visibility v) {
+        std::string s;
+        switch (v) {
+            case (Visibility::Unspecified):
+                s = "";
+                break;
+            case (Visibility::Local):
+                s = "__local";
+                break;
+            case (Visibility::Global):
+                s = "__global";
+                break;
+            default:
+                break;
+        }
+        return s;
+    };
+
     class ReduceOp {
     public:
         explicit ReduceOp(MetaKernel &k,
                           std::string reduceOpName,
                           const std::string &body,
                           std::size_t vBytes,
-                          bool lGlobal = false,
-                          bool rGlobal = false)
+                          Visibility aVisibility = Visibility::Unspecified,
+                          Visibility bVisibility = Visibility::Unspecified,
+                          Visibility cVisibility = Visibility::Unspecified)
             : mReduceOpName(std::move(reduceOpName)),
               mVBytes(vBytes) {
             std::stringstream splaReduceOp;
 
-            std::string lAccess = lGlobal ? "__global" : "";
-            std::string rAccess = rGlobal ? "__global" : "";
+            std::string aAccess = MakeVisibilityString(aVisibility);
+            std::string bAccess = MakeVisibilityString(bVisibility);
+            std::string cAccess = MakeVisibilityString(cVisibility);
 
-            splaReduceOp << "void " << mReduceOpName << "(const " << lAccess << " void* vp_a, const " << rAccess << " void* vp_b, void* vp_c) {\n"
-                         << "#define _ACCESS_A " << lAccess << "\n"
-                         << "#define _ACCESS_B " << rAccess << "\n"
-                         << "#define _ACCESS_C\n"
+            splaReduceOp << "void " << mReduceOpName << "(const " << aAccess << " void* vp_a, const " << bAccess << " void* vp_b, " << cAccess << " void* vp_c) {\n"
+                         << "#define _ACCESS_A " << aAccess << "\n"
+                         << "#define _ACCESS_B " << bAccess << "\n"
+                         << "#define _ACCESS_C " << cAccess << "\n"
                          << "   " << body << "\n"
                          << "#undef _ACCESS_A\n"
                          << "#undef _ACCESS_B\n"

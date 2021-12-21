@@ -58,20 +58,28 @@ namespace spla {
             compute::detail::meta_kernel k("inplace_reduce");
             size_t inputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "input");
             size_t inputSizeArg = k.add_arg<const uint_>("input_size");
-            size_t output_arg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
-            size_t scratch_arg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "scratch");
-            ReduceOp reduceOp(k, "inplace_reduce_reduce", functionBody, valueByteSize);
+            size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
+            size_t scratchArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "scratch");
+
+            ReduceOp reduceOp1(k, "inplace_reduce_reduce_1", functionBody, valueByteSize,
+                               Visibility::Unspecified,
+                               Visibility::Global,
+                               Visibility::Unspecified);
+
+            ReduceOp reduceOp2(k, "inplace_reduce_reduce_2", functionBody, valueByteSize,
+                               Visibility::Local,
+                               Visibility::Local,
+                               Visibility::Unspecified);
 
             k << "const uint gid = get_global_id(0);\n"
               << "const uint lid = get_local_id(0);\n"
-              << "const uint values_per_thread =\n"
-              << uint_(valuesPerThread) << ";\n"
+              << "const uint values_per_thread = " << uint_(valuesPerThread) << ";\n"
               << "const uint index = gid * values_per_thread;\n"
               << "if(index < input_size){\n"
               << DeclareVal{"sum", valueByteSize} << ";\n"
               << AssignVal{ValVar{"sum"}, ValArrItem{"input", "index", valueByteSize}, valueByteSize} << ";\n"
               << "for(uint i = 1; i < values_per_thread && (index + i) < input_size; i++) {\n"
-              << reduceOp.Apply(ValVar{"sum"}, ValArrItem{"input", "index+i", valueByteSize}, ValVar{"sum"}) << ";\n"
+              << reduceOp1.Apply(ValVar{"sum"}, ValArrItem{"input", "index+i", valueByteSize}, ValVar{"sum"}) << ";\n"
               << "}\n"
               << AssignVal{ValArrItem("scratch", "lid", valueByteSize), ValVar("sum"), valueByteSize} << ";\n"
               << "}\n"
@@ -80,7 +88,7 @@ namespace spla {
               << "    uint mask = (i << 1) - 1;\n"
               << "    uint next_index = (gid + i) * values_per_thread;\n"
                  "    if((lid & mask) == 0 && next_index < input_size){\n"
-              << reduceOp.Apply(ValArrItem("scratch", "lid", valueByteSize), ValArrItem("scratch", "lid+i", valueByteSize), ValArrItem("scratch", "lid", valueByteSize))
+              << reduceOp2.Apply(ValArrItem("scratch", "lid", valueByteSize), ValArrItem("scratch", "lid+i", valueByteSize), ValArrItem("scratch", "lid", valueByteSize))
               << "    }\n"
               << "}\n"
               << "if(lid == 0){\n"
@@ -95,8 +103,8 @@ namespace spla {
             while (inputSize > 1) {
                 kernel.set_arg(inputArg, *inputBuffer);
                 kernel.set_arg(inputSizeArg, static_cast<uint_>(inputSize));
-                kernel.set_arg(output_arg, *outputBuffer);
-                kernel.set_arg(scratch_arg, compute::local_buffer<unsigned char>(blockSize * valueByteSize));
+                kernel.set_arg(outputArg, *outputBuffer);
+                kernel.set_arg(scratchArg, compute::local_buffer<unsigned char>(blockSize * valueByteSize));
 
                 queue.enqueue_1d_range_kernel(kernel,
                                               0,
@@ -139,21 +147,27 @@ namespace spla {
                 std::size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
                 std::size_t blockArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "block");
 
-                ReduceOp reduceOp(k, "block_reduce_reduce", functionBody, valueByteSize);
+                ReduceOp reduceOpGlobal(k, "block_reduce_reduce_global", functionBody, valueByteSize,
+                                        Visibility::Global,
+                                        Visibility::Global,
+                                        Visibility::Local);
+                ReduceOp reduceOpLocal(k, "block_reduce_reduce_local", functionBody, valueByteSize,
+                                       Visibility::Local,
+                                       Visibility::Local,
+                                       Visibility::Unspecified);
 
                 k << "const uint gid = get_global_id(0);\n"
                   << "const uint lid = get_local_id(0);\n"
-                  << DeclareVal{"reduce_res", valueByteSize} << ";\n"
-                  << reduceOp.Apply(ValArrItem(values.begin(), "gid*2+0", valueByteSize, k),
-                                    ValArrItem(values.begin(), "gid*2+1", valueByteSize, k),
-                                    ValArrItem("block", "lid", valueByteSize))
+                  << reduceOpGlobal.Apply(ValArrItem(values, "gid*2+0", valueByteSize, k),
+                                          ValArrItem(values, "gid*2+1", valueByteSize, k),
+                                          ValArrItem("block", "lid", valueByteSize))
                   << "for(uint i = 1; i < " << uint_(blockSize) << "; i <<= 1){\n"
                   << "    barrier(CLK_LOCAL_MEM_FENCE);\n"
                   << "    uint mask = (i << 1) - 1;\n"
                   << "    if((lid & mask) == 0){\n"
-                  << reduceOp.Apply(ValArrItem("block", "lid", valueByteSize),
-                                    ValArrItem("block", "lid+i", valueByteSize),
-                                    ValArrItem("block", "lid", valueByteSize))
+                  << reduceOpLocal.Apply(ValArrItem("block", "lid", valueByteSize),
+                                         ValArrItem("block", "lid+i", valueByteSize),
+                                         ValArrItem("block", "lid", valueByteSize))
                   << "    }\n"
                   << "}\n"
                   << "if(lid == 0)\n"
@@ -182,13 +196,16 @@ namespace spla {
                 const std::size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
                 const std::size_t outputOffsetArg = k.add_arg<uint_>("output_offset");
 
-                ReduceOp reduceOp(k, "leftover_reduce_reduce", functionBody, valueByteSize, false, true);
+                ReduceOp reduceOp(k, "leftover_reduce_reduce", functionBody, valueByteSize,
+                                  Visibility::Unspecified,
+                                  Visibility::Global,
+                                  Visibility::Unspecified);
 
                 k << DeclareVal{"result", valueByteSize} << ";\n"
-                  << AssignVal{ValVar{"result"}, ValArrItem{values.begin(), "offset", valueByteSize, k}, valueByteSize}
+                  << AssignVal{ValVar{"result"}, ValArrItem{values, "offset", valueByteSize, k}, valueByteSize}
                   << "for(uint i = offset + 1; i < count; i++)\n"
                   << reduceOp.Apply(ValVar{"result"},
-                                    ValArrItem(values.begin(), "i", valueByteSize, k),
+                                    ValArrItem(values, "i", valueByteSize, k),
                                     ValVar{"result"})
                   << AssignVal{ValArrItem{"output", "output_offset", valueByteSize},
                                ValVar{"result"},
@@ -196,7 +213,7 @@ namespace spla {
                   << ";\n";
 
                 compute::kernel kernel = k.compile(context);
-                kernel.set_arg(countArg, static_cast<uint_>(nValues * valueByteSize));
+                kernel.set_arg(countArg, static_cast<uint_>(nValues));
                 kernel.set_arg(offsetArg, static_cast<uint_>(lastBlockStart));
                 kernel.set_arg(outputArg, result.get_buffer());
                 kernel.set_arg(outputOffsetArg, static_cast<uint_>(blockCount));
@@ -208,20 +225,20 @@ namespace spla {
         }
 
         inline boost::compute::vector<unsigned char> BlockReduce(const boost::compute::vector<unsigned char> &values,
-                                                                 std::size_t valueSize,
+                                                                 std::size_t valueByteSize,
                                                                  std::size_t blockSize,
                                                                  const std::string &functionBody,
                                                                  boost::compute::command_queue &queue) {
             using namespace boost;
 
             const compute::context &ctx = queue.get_context();
-            const std::size_t nValues = values.size() / valueSize;
+            const std::size_t nValues = values.size() / valueByteSize;
 
             auto totalBlockCount = static_cast<std::size_t>(
                     std::ceil(static_cast<float>(nValues) / 2.f / static_cast<float>(blockSize)));
-            compute::vector<unsigned char> resultVector(totalBlockCount, ctx);
+            compute::vector<unsigned char> resultVector(totalBlockCount * valueByteSize, ctx);
 
-            Reduce(values, valueSize, resultVector, blockSize, functionBody, queue);
+            Reduce(values, valueByteSize, resultVector, blockSize, functionBody, queue);
 
             return resultVector;
         }
@@ -233,7 +250,6 @@ namespace spla {
                                   boost::compute::command_queue &queue) {
             using namespace boost;
 
-            const std::size_t count = values.size() / valueByteSize;
             const std::size_t blockSize = 256;
 
             compute::vector<unsigned char> results = BlockReduce(values, valueByteSize, blockSize, functionBody, queue);
@@ -258,6 +274,7 @@ namespace spla {
 
         const compute::context &ctx = queue.get_context();
         boost::compute::vector<unsigned char> result(valueByteSize, ctx);
+        compute::fill(result.begin(), result.end(), 0, queue);
 
         detail::GenericReduce(values, valueByteSize, result, reduceOp, queue);
 

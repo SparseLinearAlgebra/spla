@@ -73,7 +73,7 @@ namespace spla::detail {
                                      queue);
                 offset += byteSize;
             }
-            return std::pair{sharedBuffer, nnz};
+            return std::pair{std::move(sharedBuffer), nnz};
         }
 
     private:

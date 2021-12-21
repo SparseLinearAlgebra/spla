@@ -29,16 +29,12 @@
 #include <compute/SplaReduce.hpp>
 
 void TestReduceAlignedValues(
-        const std::vector<std::uint8_t> &values,
-        const std::vector<std::uint8_t> &valuesExpected) {
+        const std::vector<unsigned char> &values,
+        const std::vector<unsigned char> &valuesExpected) {
     namespace compute = boost::compute;
 
-    // get the default compute device
-    compute::device gpu = compute::system::default_device();
-
-    // create a compute context and command queue
-    compute::context ctx(gpu);
-    compute::command_queue queue(ctx, gpu);
+    compute::context ctx(compute::system::devices()[0]);
+    compute::command_queue queue(ctx, ctx.get_device());
 
     compute::vector<std::uint8_t> dValues(values, queue);
 
@@ -49,7 +45,7 @@ void TestReduceAlignedValues(
                      "c[1] = a[1] + b[1];";
 
     compute::vector<std::uint8_t> dValuesOut(ctx);
-    compute::vector<std::uint8_t> reduced = spla::Reduce(values, 2, op, queue);
+    compute::vector<std::uint8_t> reduced = spla::Reduce(dValues, 2, op, queue);
     std::vector<std::uint8_t> reducedActual(2);
     compute::copy(reduced.begin(), reduced.end(), reducedActual.begin(), queue);
 
@@ -58,20 +54,92 @@ void TestReduceAlignedValues(
     EXPECT_EQ(valuesExpected, reducedActual);
 }
 
-TEST(ReduceByKey, Basic) {
+TEST(Reduce, Basic) {
     TestReduceAlignedValues({2, 0, 2, 1, 3, 3, 1, 2}, {12, 6});
 }
 
-TEST(ReduceByKey, Singleton) {
+TEST(Reduce, Singleton) {
     TestReduceAlignedValues({2, 0}, {2, 0});
 }
 
-TEST(ReduceByKey, Binary) {
+TEST(Reduce, Binary) {
     TestReduceAlignedValues({2, 0, 4, 2}, {8, 2});
 }
 
-TEST(ReduceByKey, Empty) {
+TEST(Reduce, Empty) {
     TestReduceAlignedValues({}, {0, 0});
+}
+
+template<typename T, std::size_t ValueSize = sizeof(T), typename Reduce>
+std::array<unsigned char, ValueSize> ReduceCpu(const std::vector<unsigned char> &values, Reduce f) {
+    std::array<unsigned char, ValueSize> result;
+    if (values.empty()) {
+        std::fill(result.begin(), result.end(), 0);
+        return result;
+    }
+    std::memcpy(result.data(), values.data(), ValueSize);
+    std::size_t nVals = values.size() / ValueSize;
+    for (std::size_t i = 1; i < nVals; ++i) {
+        T left, right;
+        std::memcpy(&left, result.data(), ValueSize);
+        std::memcpy(&right, values.data() + i * ValueSize, ValueSize);
+        T ap = f(left, right);
+        std::memcpy(result.data(), &ap, ValueSize);
+    }
+    return result;
+}
+
+void ReduceStress(std::size_t n, std::size_t seed) {
+    using T = std::uint32_t;
+    constexpr std::size_t valueByteSize = sizeof(T);
+
+    namespace compute = boost::compute;
+
+    compute::context ctx(compute::system::devices()[0]);
+    compute::command_queue queue(ctx, ctx.get_device());
+
+    std::default_random_engine rand(seed);
+
+    std::vector<unsigned char> values(sizeof(T) * n);
+    for (std::size_t i = 0; i < n; ++i) {
+        for (std::size_t j = 0; j < sizeof(T); ++j) {
+            values[i * sizeof(T) + j] = rand();
+        }
+    }
+
+    std::string op = "_ACCESS_A const uint* a = ((_ACCESS_A const uint*)vp_a);"
+                     "_ACCESS_B const uint* b = ((_ACCESS_B const uint*)vp_b);"
+                     "_ACCESS_C uint* c = (_ACCESS_C uint*)vp_c;"
+                     "*c = *a + *b;";
+
+    compute::vector<std::uint8_t> dValues(values, queue);
+
+    compute::vector<std::uint8_t> reduced = spla::Reduce(dValues, sizeof(T), op, queue);
+    queue.finish();
+
+    std::array<unsigned char, sizeof(T)> reducedActual{};
+    compute::copy(reduced.begin(), reduced.end(), reducedActual.begin(), queue);
+    std::array<unsigned char, sizeof(T)> reducedExpected = ReduceCpu<T>(values, [](T a, T b) { return a + b; });
+
+    EXPECT_EQ(reducedExpected, reducedActual);
+}
+
+void ReduceStressSeries(std::size_t iterations, std::size_t n) {
+    for (std::size_t i = 0; i < iterations; ++i) {
+        ReduceStress(n, std::chrono::steady_clock::now().time_since_epoch().count());
+    }
+}
+
+TEST(ReduceStress, Small) {
+    ReduceStressSeries(60, 500);
+}
+
+TEST(ReduceStress, Medium) {
+    ReduceStressSeries(50, 10000);
+}
+
+TEST(ReduceStress, Large) {
+    ReduceStressSeries(10, 100000);
 }
 
 SPLA_GTEST_MAIN
