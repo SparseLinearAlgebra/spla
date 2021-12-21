@@ -25,43 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAALGO_HPP
-#define SPLA_SPLAALGO_HPP
+#ifndef SPLA_SPLAVECTORREDUCE_HPP
+#define SPLA_SPLAVECTORREDUCE_HPP
 
-#include <sstream>
-
-#include <boost/hana.hpp>
-
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    namespace utils {
-
-        /** @return Generic function `f x y = y` */
-        inline RefPtr<FunctionBinary> MakeFunctionChooseSecond(const RefPtr<Type> &t) {
-            std::stringstream body;
-
-            body << "_ACCESS_B const uchar * b = (_ACCESS_B const uchar *)vp_b;\n"
-                 << "_ACCESS_C uchar * c = (_ACCESS_C uchar *)vp_c;\n"
-                 << "for (uint i = 0; i < " << t->GetByteSize() << "; i++)\n"
-                 << "   c[i] = b[i];\n";
-
-            return FunctionBinary::Make(t, t, t, body.str(), t->GetLibrary());
-        }
-
-    }// namespace utils
-
-    /**
-     * @}
-     */
+    class VectorReduce final : public NodeProcessor {
+    public:
+        ~VectorReduce() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
 }// namespace spla
 
-#endif//SPLA_SPLAALGO_HPP
+#endif//SPLA_SPLAVECTORREDUCE_HPP

@@ -229,6 +229,7 @@ spla::Expression::MakeAssign(const spla::RefPtr<spla::Vector> &w,
                     desc);
 }
 
+
 spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Matrix> &w,
                                const spla::RefPtr<spla::Matrix> &mask,
@@ -389,4 +390,23 @@ void spla::Expression::SetFuture(std::unique_ptr<class ExpressionFuture> &&futur
 
 void spla::Expression::SetTasks(std::unique_ptr<class ExpressionTasks> &&tasks) {
     mTasks = std::move(tasks);
+}
+
+spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeReduce(const spla::RefPtr<spla::Scalar> &s,
+                                                                const spla::RefPtr<spla::FunctionBinary> &op,
+                                                                const spla::RefPtr<spla::Vector> &v,
+                                                                const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(s.IsNotNull(), NullPointer, "s op can't be null");
+    CHECK_RAISE_ERROR(op.IsNotNull(), NullPointer, "op can't be null");
+    CHECK_RAISE_ERROR(v.IsNotNull(), NullPointer, "v can't be null");
+    CHECK_RAISE_ERROR(op->CanApply(*v, *v, *s), InvalidType, "Can't apply reduce op to provided objects");
+
+    std::vector<RefPtr<Object>> args = {
+            s.As<Object>(),
+            op.As<Object>(),
+            v.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::VectorReduce,
+                    std::move(args),
+                    desc);
 }

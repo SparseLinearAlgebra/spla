@@ -30,6 +30,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
+        sources/algo/vector/SplaVectorReduceCOO.cpp
+        sources/algo/vector/SplaVectorReduceCOO.hpp
         sources/algo/vxm/SplaVxMCOO.cpp
         sources/algo/vxm/SplaVxMCOO.hpp
         sources/algo/SplaAlgorithm.hpp
@@ -87,6 +89,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/vector/SplaVectorDataRead.hpp
         sources/expression/vector/SplaVectorEWiseAdd.cpp
         sources/expression/vector/SplaVectorEWiseAdd.hpp
+        sources/expression/vector/SplaVectorReduce.cpp
+        sources/expression/vector/SplaVectorReduce.hpp
         sources/expression/SplaExpressionFuture.hpp
         sources/expression/SplaExpressionManager.cpp
         sources/expression/SplaExpressionManager.hpp

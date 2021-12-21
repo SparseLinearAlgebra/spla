@@ -25,24 +25,23 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/vector/SplaVectorAssignCOO.hpp>
-#include <compute/SplaGather.hpp>
-#include <compute/SplaMaskByKey.hpp>
+#include <algo/vector/SplaVectorReduceCOO.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
+#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
-bool spla::VectorAssignCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsVectorAssign *>(&params);
-
-    return p &&
-           p->mask.Is<VectorCOO>();
+bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVectorReduce *>(&params);
+    return p && p->v.Is<VectorCOO>();
 }
 
-void spla::VectorAssignCOO::Process(spla::AlgorithmParams &params) {
+void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    auto p = dynamic_cast<ParamsVectorAssign *>(&params);
+    auto p = dynamic_cast<ParamsVectorReduce *>(&params);
+    assert(p != nullptr);
     auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto &desc = p->desc;
 
@@ -51,63 +50,16 @@ void spla::VectorAssignCOO::Process(spla::AlgorithmParams &params) {
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    auto s = p->s;
-    auto size = p->size;
-    auto type = p->type;
-    auto mask = p->mask.Cast<VectorCOO>();
-    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+    compute::vector<unsigned char> reduced(p->s->GetType()->GetByteSize(), ctx);
 
-    // Indices and values of the result
-    compute::vector<unsigned int> rows(ctx);
-    compute::vector<unsigned char> vals(ctx);
-
-    // Assign full result
-    if (!p->hasMask || (mask.IsNull() && complementMask)) {
-        rows.resize(size, queue);
-        compute::copy_n(compute::counting_iterator<unsigned int>(0), size, rows.begin(), queue);
-    }
-    // Has mask, must filter
-    else {
-        // Nothing to do
-        if (mask.IsNull())
-            return;
-
-        // Apply direct mask
-        if (!complementMask) {
-            auto maskSize = mask->GetNvals();
-            rows.resize(maskSize, queue);
-            compute::copy_n(mask->GetRows().begin(), maskSize, rows.begin(), queue);
-        }
-        // Apply complement mask
-        else {
-            // Tmp indices to filter
-            compute::vector<unsigned int> indices(size, ctx);
-            compute::copy_n(compute::counting_iterator<unsigned int>(0), size, indices.begin(), queue);
-
-            // Filter indices and save in rows result
-            MaskKeys(mask->GetRows(), indices, rows, complementMask, queue);
-        }
-    }
-
-    auto nvals = rows.size();
-
-    // If type has values, gather it (for each nnz value assign scalar value)
-    if (nvals > 0 && type->HasValues()) {
-        vals.resize(nvals * type->GetByteSize(), queue);
-        auto mapIdBegin = compute::constant_iterator<unsigned int>(0, 0);
-        auto mapIdEnd = compute::constant_iterator<unsigned int>(0, nvals);
-        Gather(mapIdBegin, mapIdEnd, s->GetVal().begin(), vals.begin(), type->GetByteSize(), queue);
-    }
-
-    // If after masking has values, store new block
-    if (nvals)
-        p->w = VectorCOO::Make(size, nvals, std::move(rows), std::move(vals)).As<VectorBlock>();
+    p->s->GetStorage()->SetValue(
+            ScalarValue::Make(std::move(reduced)));
 }
 
-spla::Algorithm::Type spla::VectorAssignCOO::GetType() const {
-    return spla::Algorithm::Type::VectorAssign;
+spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {
+    return spla::Algorithm::Type::VectorReduce;
 }
 
-std::string spla::VectorAssignCOO::GetName() const {
-    return "VectorAssignCOO";
+std::string spla::VectorReduceCOO::GetName() const {
+    return "VectorReduceCOO";
 }

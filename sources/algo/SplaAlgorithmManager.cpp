@@ -25,12 +25,15 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <cassert>
+
 #include <algo/SplaAlgorithmManager.hpp>
 #include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <algo/matrix/SplaMatrixTransposeCOO.hpp>
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <algo/vector/SplaVectorAssignCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
+#include <algo/vector/SplaVectorReduceCOO.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <core/SplaError.hpp>
 
@@ -40,6 +43,7 @@ spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());
     Register(new VectorAssignCOO());
+    Register(new VectorReduceCOO());
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());
     Register(new VxMCOO());

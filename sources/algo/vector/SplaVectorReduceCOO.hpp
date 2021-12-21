@@ -25,43 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAALGO_HPP
-#define SPLA_SPLAALGO_HPP
+#ifndef SPLA_SPLAVECTORREDUCECOO_HPP
+#define SPLA_SPLAVECTORREDUCECOO_HPP
 
-#include <sstream>
-
-#include <boost/hana.hpp>
-
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
-    /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    namespace utils {
-
-        /** @return Generic function `f x y = y` */
-        inline RefPtr<FunctionBinary> MakeFunctionChooseSecond(const RefPtr<Type> &t) {
-            std::stringstream body;
-
-            body << "_ACCESS_B const uchar * b = (_ACCESS_B const uchar *)vp_b;\n"
-                 << "_ACCESS_C uchar * c = (_ACCESS_C uchar *)vp_c;\n"
-                 << "for (uint i = 0; i < " << t->GetByteSize() << "; i++)\n"
-                 << "   c[i] = b[i];\n";
-
-            return FunctionBinary::Make(t, t, t, body.str(), t->GetLibrary());
-        }
-
-    }// namespace utils
-
-    /**
-     * @}
-     */
-
+    class VectorReduceCOO final : public Algorithm {
+    public:
+        ~VectorReduceCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 }// namespace spla
 
-#endif//SPLA_SPLAALGO_HPP
+#endif//SPLA_SPLAVECTORREDUCECOO_HPP

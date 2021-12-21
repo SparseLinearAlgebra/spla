@@ -243,6 +243,22 @@ namespace spla {
                                           const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * Make vector reduce to scalar node.
+         * Behaviour: s = reduce(v[i] for i in range(v.nnz), reduce_op)
+         *
+         * @param s Destination scalar
+         * @param op Reduce binary operation
+         * @param v Vector to reduce
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeReduce(const RefPtr<Scalar> &s,
+                                          const RefPtr<FunctionBinary> &op,
+                                          const RefPtr<Vector> &v,
+                                          const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make matrix masked element-wise add expression node.
          * Operation is evaluated as `w<mask> = a +(op) b`.
          *

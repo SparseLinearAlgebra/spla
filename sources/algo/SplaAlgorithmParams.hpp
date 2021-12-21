@@ -34,6 +34,7 @@
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <storage/SplaMatrixBlock.hpp>
 #include <storage/SplaScalarValue.hpp>
+#include <storage/SplaScalarStorage.hpp>
 #include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
@@ -146,6 +147,18 @@ namespace spla {
         RefPtr<MatrixBlock> w;   // of type t
         RefPtr<MatrixBlock> a;   // of type t
         RefPtr<Type> type;       // t
+    };
+
+    /** Blocked vector reduce params */
+    class ParamsVectorReduce final : public AlgorithmParams {
+    public:
+        ~ParamsVectorReduce() override = default;
+
+        RefPtr<VectorBlock> v;
+        RefPtr<FunctionBinary> reduce;
+        RefPtr<ScalarStorage> s;
+        RefPtr<Type> tv;
+        RefPtr<Type> ts;
     };
 
     /**
