@@ -356,7 +356,7 @@ namespace utils {
             return EWiseAdd(tmp, accum);
         }
 
-        template <typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
+        template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
         [[nodiscard]] R Reduce(ReduceT reduce) {
             if (mVals.empty()) {
                 return 0;
