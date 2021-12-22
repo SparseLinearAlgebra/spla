@@ -76,7 +76,9 @@ namespace spla {
             /** Vector-matrix multiplication */
             VxM,
             /** Matrix-vector multiplication */
-            MxV
+            MxV,
+            /** Transpose matrix */
+            Transpose
         };
 
         /** @return Node arguments array */
@@ -152,6 +154,8 @@ namespace spla {
                     return "VxM";
                 case ExpressionNode::Operation::MxV:
                     return "MxV";
+                case ExpressionNode::Operation::Transpose:
+                    return "Transpose";
 
                 default:
                     return "Unknown";

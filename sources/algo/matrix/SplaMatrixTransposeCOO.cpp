@@ -24,21 +24,59 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
-#ifndef SPLA_SPLAMATRIXEWISEADD_HPP
-#define SPLA_SPLAMATRIXEWISEADD_HPP
 
-#include <expression/SplaNodeProcessor.hpp>
+#include <algo/matrix/SplaMatrixTransposeCOO.hpp>
+#include <compute/SplaMaskByKey.hpp>
+#include <compute/SplaSortByRowColumn.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <storage/SplaMatrixStorage.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
 
-namespace spla {
+bool spla::SplaMatrixTransposeCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsTranspose *>(&params);
 
-    class MatrixEWiseAdd final : public NodeProcessor {
-    public:
-        ~MatrixEWiseAdd() override = default;
-        bool Select(std::size_t nodeIdx, const Expression &expression) override;
-        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
-        ExpressionNode::Operation GetOperationType() const override;
-    };
+    return p &&
+           p->mask.Is<MatrixCOO>() &&
+           p->a.Is<MatrixCOO>();
+}
 
-}// namespace spla
+void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
+    using namespace boost;
 
-#endif//SPLA_SPLAMATRIXEWISEADD_HPP
+    auto p = dynamic_cast<ParamsTranspose *>(&params);
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
+
+    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    compute::context ctx = library->GetContext();
+    compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
+
+    auto &type = p->type;
+    auto byteSize = type->GetByteSize();
+    auto typeHasValues = type->HasValues();
+
+    auto a = p->a.Cast<MatrixCOO>();
+    auto mask = p->mask.Cast<MatrixCOO>();
+    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+
+    // Nothing to do
+    if (p->hasMask && !complementMask && mask.IsNull())
+        return;
+
+    if (typeHasValues) {
+
+    }
+    else {
+
+    }
+}
+
+spla::Algorithm::Type spla::SplaMatrixTransposeCOO::GetType() const {
+    return spla::Algorithm::Type::Transpose;
+}
+
+std::string spla::SplaMatrixTransposeCOO::GetName() const {
+    return "TransposeCOO";
+}

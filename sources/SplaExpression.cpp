@@ -354,6 +354,31 @@ spla::Expression::MakeVxM(const spla::RefPtr<spla::Vector> &w,
                     desc);
 }
 
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeTranspose(const spla::RefPtr<spla::Matrix> &w,
+                                const spla::RefPtr<spla::Matrix> &mask,
+                                const spla::RefPtr<spla::FunctionBinary> &accum,
+                                const spla::RefPtr<spla::Matrix> &a,
+                                const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(w->IsCompatible(*a), InvalidType, "w and a must have the same type");
+    CHECK_RAISE_ERROR(w->GetNrows() == a->GetNcols(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(a->GetNrows() == w->GetNcols(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(mask.IsNull() || w->GetDim() == mask->GetDim(), DimensionMismatch, "Incompatible size");
+    CHECK_RAISE_ERROR(accum.IsNull() || accum->CanApply(*w, *a, *w), InvalidType, "Cannot apply `add` op to provided objects");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            accum.As<Object>(),
+            a.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::Transpose,
+                    std::move(args),
+                    desc);
+}
+
 void spla::Expression::SetState(State state) {
     mState.store(state);
 }

@@ -24,21 +24,21 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
-#ifndef SPLA_SPLAMATRIXEWISEADD_HPP
-#define SPLA_SPLAMATRIXEWISEADD_HPP
 
-#include <expression/SplaNodeProcessor.hpp>
+#ifndef SPLA_SPLAMATRIXTRANSPOSECOO_HPP
+#define SPLA_SPLAMATRIXTRANSPOSECOO_HPP
+
+#include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
-    class MatrixEWiseAdd final : public NodeProcessor {
+    class SplaMatrixTransposeCOO final : public Algorithm {
     public:
-        ~MatrixEWiseAdd() override = default;
-        bool Select(std::size_t nodeIdx, const Expression &expression) override;
-        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
-        ExpressionNode::Operation GetOperationType() const override;
+        ~SplaMatrixTransposeCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
     };
-
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIXEWISEADD_HPP
+#endif//SPLA_SPLAMATRIXTRANSPOSECOO_HPP
