@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['algorithm_1501',['Algorithm',['../group__Algorithm.html',1,'']]],
-  ['api_1502',['API',['../group__API.html',1,'']]]
+  ['algorithm_1523',['Algorithm',['../group__Algorithm.html',1,'']]],
+  ['api_1524',['API',['../group__API.html',1,'']]]
 ];

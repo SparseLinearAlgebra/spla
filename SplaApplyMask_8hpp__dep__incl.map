@@ -1,5 +1,6 @@
 <map id="sources/compute/SplaApplyMask.hpp" name="sources/compute/SplaApplyMask.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="162,5,346,47"/>
-<area shape="rect" id="node2" href="$SplaMxMCOO_8cpp.html" title=" " alt="" coords="5,95,244,121"/>
-<area shape="rect" id="node3" href="$SplaVxMCOO_8cpp.html" title=" " alt="" coords="268,95,501,121"/>
+<area shape="rect" id="node1" title=" " alt="" coords="258,5,442,47"/>
+<area shape="rect" id="node2" href="$SplaMatrixTransposeCOO_8cpp.html" title=" " alt="" coords="5,95,207,136"/>
+<area shape="rect" id="node3" href="$SplaMxMCOO_8cpp.html" title=" " alt="" coords="231,102,469,129"/>
+<area shape="rect" id="node4" href="$SplaVxMCOO_8cpp.html" title=" " alt="" coords="493,102,727,129"/>
 </map>
