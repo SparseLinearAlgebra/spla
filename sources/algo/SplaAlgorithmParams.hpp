@@ -33,8 +33,8 @@
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
 #include <storage/SplaMatrixBlock.hpp>
-#include <storage/SplaScalarValue.hpp>
 #include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
 #include <storage/SplaVectorBlock.hpp>
 
 namespace spla {
