@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <algo/matrix/SplaMatrixTransposeCOO.hpp>
+#include <compute/SplaApplyMask.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
 #include <core/SplaLibraryPrivate.hpp>
@@ -61,15 +62,51 @@ void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
     auto mask = p->mask.Cast<MatrixCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
+    // Do not process empty block
+    if (a.IsNull())
+        return;
     // Nothing to do
     if (p->hasMask && !complementMask && mask.IsNull())
         return;
 
+    // Buffers to store result
+    compute::vector<unsigned int> rows(a->GetNvals(), ctx);
+    compute::vector<unsigned int> cols(a->GetNvals(), ctx);
+    compute::vector<unsigned char> vals(ctx);
+
+    // Copy indices
+    compute::copy(a->GetRows().begin(), a->GetRows().end(), cols.begin(), queue);
+    compute::copy(a->GetCols().begin(), a->GetCols().end(), rows.begin(), queue);
+
+    // If has values, copy values
     if (typeHasValues) {
-
+        vals.resize(a->GetRows().size() * byteSize, queue);
+        compute::copy(a->GetVals().begin(), a->GetVals().end(), vals.begin(), queue);
     }
-    else {
 
+    // Sort to reorder indices
+    SortByRowColumn(rows, cols, vals, byteSize, queue);
+
+    // Apply finally mask if required
+    compute::vector<unsigned int> tmpRows(ctx);
+    compute::vector<unsigned int> tmpCols(ctx);
+    compute::vector<unsigned char> tmpVals(ctx);
+
+    // Apply mask
+    if (p->hasMask && mask.IsNotNull())
+        ApplyMask(mask->GetRows(), mask->GetCols(), rows, cols, vals, tmpRows, tmpCols, tmpVals, byteSize, complementMask, queue);
+
+    // Swap back
+    std::swap(rows, tmpRows);
+    std::swap(cols, tmpCols);
+    std::swap(vals, tmpVals);
+
+    // Save if result is not empty
+    if (!rows.empty()) {
+        auto nrowsT = a->GetNcols();
+        auto ncolsT = a->GetNrows();
+        auto nvalsT = rows.size();
+        p->w = MatrixCOO::Make(nrowsT, ncolsT, nvalsT, std::move(rows), std::move(cols), std::move(vals)).As<MatrixBlock>();
     }
 }
 
