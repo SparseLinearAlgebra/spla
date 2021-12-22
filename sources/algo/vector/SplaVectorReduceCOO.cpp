@@ -36,7 +36,7 @@
 
 bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorReduce *>(&params);
-    return p && p->v.Is<VectorCOO>();
+    return p != nullptr && p->vec.Is<VectorCOO>();
 }
 
 void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
@@ -48,17 +48,21 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
     auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
-    auto vector = p->v.Cast<VectorCOO>();
-    auto valueByteSize = p->ts->GetByteSize();
+    auto vector = p->vec.Cast<VectorCOO>();
+    auto type = p->type;
+    auto valueByteSize = type->GetByteSize();
     auto reduceOp = p->reduce;
+
+    if (vector->GetVals().empty()) {
+        p->scalar = nullptr;
+        return;
+    }
 
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    compute::vector<unsigned char> reduced = Reduce(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue);
-
-    p->s->GetStorage()->SetValue(ScalarValue::Make(std::move(reduced)));
+    p->scalar = ScalarValue::Make(Reduce(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue));
 }
 
 spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {

@@ -154,11 +154,10 @@ namespace spla {
     public:
         ~ParamsVectorReduce() override = default;
 
-        RefPtr<VectorBlock> v;
+        RefPtr<VectorBlock> vec;
         RefPtr<FunctionBinary> reduce;
-        RefPtr<ScalarStorage> s;
-        RefPtr<Type> tv;
-        RefPtr<Type> ts;
+        RefPtr<ScalarValue> scalar;
+        RefPtr<Type> type;
     };
 
     /**

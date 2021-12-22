@@ -38,48 +38,40 @@ namespace spla::detail {
 
     class ReduceIntermediateBuffer {
     public:
-        explicit ReduceIntermediateBuffer(std::size_t size, const RefPtr<Type> &type, Library &library)
-            : mBuffer(size) {
-            assert(size > 0);
-            for (std::size_t i = 0; i < size; ++i) {
-                mBuffer[i] = Scalar::Make(type, library);
+        void Add(RefPtr<ScalarValue> scalar) {
+            assert(scalar.IsNotNull());
+            std::scoped_lock guard(mMutex);
+            mScalars.push_back(std::move(scalar));
+        }
+
+        [[nodiscard]] std::size_t GetNScalars() const noexcept {
+            return mScalars.size();
+        }
+
+        [[nodiscard]] RefPtr<ScalarValue> FirstScalar() const {
+            return mScalars.front();
+        }
+
+        [[nodiscard]] auto BuildSharedBuffer(std::size_t byteSize, boost::compute::command_queue &queue) const {
+            if (mScalars.empty()) {
+                return std::pair{boost::compute::vector<unsigned char>(queue.get_context()), 0UL};
             }
-        }
-
-        RefPtr<Scalar> &operator[](std::size_t i) {
-            assert(i < mBuffer.size());
-            std::scoped_lock guard(mMutex);
-            return mBuffer[i];
-        }
-
-        const RefPtr<Scalar> &operator[](std::size_t i) const {
-            assert(i < mBuffer.size());
-            std::scoped_lock guard(mMutex);
-            return mBuffer[i];
-        }
-
-        [[nodiscard]] auto BuildSharedBuffer(boost::compute::command_queue &queue) const {
-            const std::size_t byteSize = mBuffer[0]->GetType()->GetByteSize();
-            boost::compute::vector<unsigned char> sharedBuffer(mBuffer.size() * byteSize, queue.get_context());
+            boost::compute::vector<unsigned char> sharedBuffer(mScalars.size() * byteSize, queue.get_context());
             std::size_t offset = 0;
-            std::size_t nnz = 0;
-            for (const auto &scalar : mBuffer) {
-                if (!scalar->HasValue()) {
-                    continue;
-                }
-                nnz += 1;
-                const auto &curValue = scalar->GetStorage()->GetValue()->GetVal();
+            for (const auto &scalarValue : mScalars) {
+                assert(scalarValue.IsNotNull());
+                const auto &curValue = scalarValue->GetVal();
                 boost::compute::copy(curValue.begin(), curValue.end(),
                                      sharedBuffer.begin() + static_cast<std::ptrdiff_t>(offset),
                                      queue);
                 offset += byteSize;
             }
-            return std::pair{std::move(sharedBuffer), nnz};
+            return std::pair{std::move(sharedBuffer), mScalars.size()};
         }
 
     private:
         mutable std::mutex mMutex;
-        std::vector<RefPtr<Scalar>> mBuffer;
+        std::deque<RefPtr<ScalarValue>> mScalars;
     };
 
 }// namespace spla::detail
@@ -105,7 +97,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     assert(argOp.IsNotNull());
     assert(argV.IsNotNull());
 
-    auto intermediateBuffer = std::make_shared<detail::ReduceIntermediateBuffer>(blocksInVector, argS->GetType(), node->GetLibrary());
+    auto intermediateBuffer = std::make_shared<detail::ReduceIntermediateBuffer>();
     auto deviceIds = library->GetDeviceManager().FetchDevices(blocksInVector + 1, node);
 
     std::vector<tf::Task> reduceBlocksTasks;
@@ -113,58 +105,63 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     for (std::size_t i = 0; i < blocksInVector; ++i) {
         auto deviceId = deviceIds[i];
-        auto intermediateBufferElem = (*intermediateBuffer)[i];
 
         tf::Task reduceIthBlock = builder.Emplace([=]() {
             ParamsVectorReduce params;
             params.desc = desc;
             params.deviceId = deviceId;
-            params.v = argV->GetStorage()->GetBlock(i);
-            params.tv = argV->GetType();
-            params.s = intermediateBufferElem;
-            params.ts = argS->GetType();
+            params.vec = argV->GetStorage()->GetBlock(i);
+            params.type = argV->GetType();
             params.reduce = argOp;
             library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
-
-            SPDLOG_LOGGER_TRACE(logger, "Reduce block i={} nnz={}", i, params.v->GetNvals());
+            if (params.scalar.IsNotNull()) {
+                intermediateBuffer->Add(params.scalar);
+            }
+            SPDLOG_LOGGER_TRACE(logger, "Reduce block i={} nnz={}", i, params.vec->GetNvals());
         });
         reduceBlocksTasks.push_back(std::move(reduceIthBlock));
     }
 
     auto lastReduceDeviceId = deviceIds[blocksInVector];
     tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
-        if (blocksInVector == 1) {
-            auto &value = (*intermediateBuffer)[0]->GetStorage()->GetValue()->GetVal();
-            argS->GetStorage()->SetValue(ScalarValue::Make(std::move(value)));
-            SPDLOG_LOGGER_TRACE(logger, "Primitive final reduce of intermediate buffer, nnz=1");
+        if (intermediateBuffer->GetNScalars() == 0) {
+            argS->GetStorage()->RemoveValue();
+            SPDLOG_LOGGER_TRACE(logger, "Final reduce of empty intermediate buffer, nnz=0");
             return;
         }
 
         auto &ctx = library->GetContext();
-        boost::compute::vector<unsigned char> builtIntermediateBuffer(ctx);
-        std::size_t nnzIntermediate;
-        {
-            auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
-            QueueFinisher finisher(queue);
-            auto [buf, nnz] = intermediateBuffer->BuildSharedBuffer(queue);
-            builtIntermediateBuffer = std::move(buf);
-            nnzIntermediate = nnz;
+        auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
+        QueueFinisher finisher(queue);
+
+        if (intermediateBuffer->GetNScalars() == 1) {
+            auto &value = intermediateBuffer->FirstScalar()->GetVal();
+            boost::compute::vector<unsigned char> bufferCopy(value, queue);
+            queue.finish();
+            argS->GetStorage()->SetValue(ScalarValue::Make(std::move(bufferCopy)));
+            SPDLOG_LOGGER_TRACE(logger, "Primitive final reduce of intermediate buffer, nnz=1");
+            return;
         }
+
+        auto [builtIntermediateBuffer, nnzIntermediate] = intermediateBuffer->BuildSharedBuffer(argV->GetType()->GetByteSize(), queue);
+        queue.finish();
 
         auto intermedicateVector = VectorCOO::Make(0,
                                                    nnzIntermediate,
                                                    boost::compute::vector<unsigned int>(ctx),
-                                                   std::move(builtIntermediateBuffer))
-                                           .Cast<VectorBlock>();
+                                                   std::move(builtIntermediateBuffer));
         ParamsVectorReduce params;
         params.desc = desc;
         params.deviceId = lastReduceDeviceId;
-        params.v = intermedicateVector;
-        params.tv = argV->GetType();
-        params.s = argS;
-        params.ts = argS->GetType();
+        params.vec = intermedicateVector.Cast<VectorBlock>();
+        params.type = argV->GetType();
         params.reduce = argOp;
         library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
+
+        boost::compute::vector<unsigned char> reducedVal(params.scalar->GetVal(), queue);
+        queue.finish();
+
+        argS->GetStorage()->SetValue(ScalarValue::Make(std::move(reducedVal)));
         SPDLOG_LOGGER_TRACE(logger, "Final reduce of intermediate buffer, nnz={}", nnzIntermediate);
     });
 

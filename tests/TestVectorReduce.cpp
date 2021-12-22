@@ -26,8 +26,6 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
 
 template<typename Type, typename BinaryOp>
 void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
@@ -40,8 +38,12 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
 
     v.Fill(utils::UniformGenerator<Type>());
 
+    Type reducedActual{};
+
     auto spV = spla::Vector::Make(M, spTypeVec, library);
     auto spS = spla::Scalar::Make(spTypeRes, library);
+    auto spReadScalarData = spla::DataScalar::Make(library);
+    spReadScalarData->SetValue(&reducedActual);
 
     // Specify, that values already in row order + no duplicates
     auto spDesc = spla::Descriptor::Make(library);
@@ -54,23 +56,24 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
     auto spWriteVector = spExpr->MakeDataWrite(spV, v.GetData(library), spDesc);
     auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV, spOpDesc);
+    auto spReadScalar = spExpr->MakeDataRead(spS, spReadScalarData);
     spExpr->Dependency(spWriteS, spReduceNode);
     spExpr->Dependency(spWriteVector, spReduceNode);
+    spExpr->Dependency(spReduceNode, spReadScalar);
 
     spExpr->Submit();
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
     ASSERT_TRUE(spS->HasValue());
-    auto &reducedActual = spS->GetStorage()->GetValue()->GetVal();
-    auto reducedExpected = v.Reduce(reduce);
 
-    std::vector<unsigned char> bytesActual(reducedActual.size());
-    std::vector<unsigned char> bytesExpected(sizeof(reducedExpected));
+    Type reducedExpected = v.Reduce(reduce);
 
-    std::copy(reducedActual.begin(), reducedActual.end(), bytesActual.begin());
-    std::memcpy(bytesExpected.data(), &reducedExpected, sizeof(reducedExpected));
-
-    ASSERT_TRUE(utils::ValuesEqual<Type>(bytesActual, bytesExpected));
+    if (!utils::EqWithError(reducedExpected, reducedActual)) {
+        std::cout << "Reduced values are not equal: "
+                  << "expected: " << reducedExpected << ' '
+                  << "actual: " << reducedActual << std::endl;
+        ASSERT_TRUE(utils::EqWithError(reducedExpected, reducedActual));
+    }
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {

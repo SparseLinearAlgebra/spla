@@ -41,8 +41,6 @@ namespace spla {
 
         [[nodiscard]] const Value &GetVal() const noexcept;
 
-        [[nodiscard]] Value &GetVal() noexcept;
-
         void Dump(std::ostream &stream) const;
 
         static RefPtr<ScalarValue> Make(Value val);
