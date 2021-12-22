@@ -359,7 +359,7 @@ namespace utils {
         template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
         [[nodiscard]] R Reduce(ReduceT reduce) {
             if (mVals.empty()) {
-                return 0;
+                throw std::invalid_argument("Unable to reduce empty vector");
             }
 
             R result = mVals[0];
