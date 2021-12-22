@@ -31,9 +31,9 @@
 #include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-    class SplaMatrixTransposeCOO final : public Algorithm {
+    class MatrixTransposeCOO final : public Algorithm {
     public:
-        ~SplaMatrixTransposeCOO() override = default;
+        ~MatrixTransposeCOO() override = default;
         bool Select(const AlgorithmParams &params) const override;
         void Process(AlgorithmParams &params) override;
         Type GetType() const override;

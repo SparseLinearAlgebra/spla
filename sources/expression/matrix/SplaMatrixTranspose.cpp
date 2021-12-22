@@ -70,40 +70,42 @@ void spla::MatrixTranspose::Process(std::size_t nodeIdx, const spla::Expression 
         for (std::size_t j = 0; j < w->GetStorage()->GetNblockCols(); j++) {
             auto deviceId = deviceIds[i * w->GetStorage()->GetNblockCols() + j];
             auto taskTranspose = builder.Emplace([=]() {
-                MatrixStorage::Index blockIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                MatrixStorage::Index aIndex{static_cast<unsigned int>(j), static_cast<unsigned int>(i)};
+                MatrixStorage::Index wIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+
                 ParamsTranspose params;
                 params.desc = desc;
                 params.deviceId = deviceId;
                 params.hasMask = mask.IsNotNull();
-                params.mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(blockIndex) : RefPtr<MatrixBlock>{};
-                params.a = a->GetStorage()->GetBlock(blockIndex);
+                params.mask = mask.IsNotNull() ? mask->GetStorage()->GetBlock(wIndex) : RefPtr<MatrixBlock>{};
+                params.a = a->GetStorage()->GetBlock(aIndex);
                 params.type = w->GetType();
                 library->GetAlgoManager()->Dispatch(Algorithm::Type::Transpose, params);
 
                 if (params.w.IsNotNull()) {
-                    MatrixStorage::Index blockIndexT{blockIndex.second, blockIndex.first};
-                    tmp->GetStorage()->SetBlock(blockIndexT, params.w);
+                    tmp->GetStorage()->SetBlock(wIndex, params.w);
                     SPDLOG_LOGGER_TRACE(logger, "Transpose block=({},{})",
-                                        blockIndex.first, blockIndex.second);
+                                        aIndex.first, aIndex.second);
                 }
             });
 
             if (applyAccum) {
                 auto taskAccum = builder.Emplace([=]() {
-                    MatrixStorage::Index blockIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                    MatrixStorage::Index wIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+
                     ParamsMatrixEWiseAdd params;
                     params.desc = desc;
                     params.deviceId = deviceId;
-                    params.a = w->GetStorage()->GetBlock(blockIndex);
-                    params.b = tmp->GetStorage()->GetBlock(blockIndex);
+                    params.a = w->GetStorage()->GetBlock(wIndex);
+                    params.b = tmp->GetStorage()->GetBlock(wIndex);
                     params.op = accum;
                     params.type = w->GetType();
-                    library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorEWiseAdd, params);
+                    library->GetAlgoManager()->Dispatch(Algorithm::Type::MatrixEWiseAdd, params);
 
                     if (params.w.IsNotNull()) {
-                        w->GetStorage()->SetBlock(blockIndex, params.w);
+                        w->GetStorage()->SetBlock(wIndex, params.w);
                         SPDLOG_LOGGER_TRACE(logger, "Accum block=({},{}) nnz={}",
-                                            blockIndex.first, blockIndex.second, params.w->GetNvals());
+                                            wIndex.first, wIndex.second, params.w->GetNvals());
                     }
                 });
 

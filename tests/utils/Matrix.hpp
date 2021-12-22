@@ -32,6 +32,7 @@
 #include <cstring>
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include <random>
 #include <spla-algo/SplaAlgo.hpp>
 #include <spla-cpp/Spla.hpp>
@@ -494,6 +495,37 @@ namespace utils {
         template<typename W, typename M, typename B, typename MultOp, typename AddOp>
         [[nodiscard]] Matrix<W> MxM(const Matrix<M> &mask, bool complement, const Matrix<B> &b, MultOp multOp, AddOp addOp) {
             return MxM<W>(b, multOp, addOp).Mask(mask, complement);
+        }
+
+        Matrix<T> Transpose() {
+            std::size_t M = GetNrows();
+            std::size_t N = GetNcols();
+            std::size_t nvals = GetNvals();
+            std::vector<Index> rowSizeT(N, 0);
+
+            for (std::size_t k = 0; k < nvals; k++) {
+                rowSizeT[mCols[k]] += 1;
+            }
+
+            std::vector<Index> rowOffsetT(N, 0);
+            std::exclusive_scan(rowSizeT.begin(), rowSizeT.end(), rowOffsetT.begin(), 0);
+
+            std::vector<Index> rowsT(nvals);
+            std::vector<Index> colsT(nvals);
+            std::vector<T> valsT(nvals);
+
+            for (std::size_t k = 0; k < nvals; k++) {
+                auto i = mRows[k];
+                auto j = mCols[k];
+                auto v = mVals[k];
+                auto &offset = rowOffsetT[j];
+                rowsT[offset] = j;
+                colsT[offset] = i;
+                valsT[offset] = v;
+                offset += 1;
+            }
+
+            return Matrix<T>(N, M, std::move(rowsT), std::move(colsT), std::move(valsT));
         }
 
         [[nodiscard]] spla::RefPtr<spla::HostMatrix> ToHostMatrix() const {

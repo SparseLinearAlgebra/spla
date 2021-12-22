@@ -34,7 +34,7 @@
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
 
-bool spla::SplaMatrixTransposeCOO::Select(const spla::AlgorithmParams &params) const {
+bool spla::MatrixTransposeCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsTranspose *>(&params);
 
     return p &&
@@ -42,7 +42,7 @@ bool spla::SplaMatrixTransposeCOO::Select(const spla::AlgorithmParams &params) c
            p->a.Is<MatrixCOO>();
 }
 
-void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
+void spla::MatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
     auto p = dynamic_cast<ParamsTranspose *>(&params);
@@ -80,7 +80,7 @@ void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
 
     // If has values, copy values
     if (typeHasValues) {
-        vals.resize(a->GetRows().size() * byteSize, queue);
+        vals.resize(a->GetNvals() * byteSize, queue);
         compute::copy(a->GetVals().begin(), a->GetVals().end(), vals.begin(), queue);
     }
 
@@ -88,18 +88,17 @@ void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
     SortByRowColumn(rows, cols, vals, byteSize, queue);
 
     // Apply finally mask if required
-    compute::vector<unsigned int> tmpRows(ctx);
-    compute::vector<unsigned int> tmpCols(ctx);
-    compute::vector<unsigned char> tmpVals(ctx);
+    if (p->hasMask && mask.IsNotNull()) {
+        compute::vector<unsigned int> tmpRows(ctx);
+        compute::vector<unsigned int> tmpCols(ctx);
+        compute::vector<unsigned char> tmpVals(ctx);
 
-    // Apply mask
-    if (p->hasMask && mask.IsNotNull())
         ApplyMask(mask->GetRows(), mask->GetCols(), rows, cols, vals, tmpRows, tmpCols, tmpVals, byteSize, complementMask, queue);
 
-    // Swap back
-    std::swap(rows, tmpRows);
-    std::swap(cols, tmpCols);
-    std::swap(vals, tmpVals);
+        std::swap(rows, tmpRows);
+        std::swap(cols, tmpCols);
+        std::swap(vals, tmpVals);
+    }
 
     // Save if result is not empty
     if (!rows.empty()) {
@@ -110,10 +109,10 @@ void spla::SplaMatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
     }
 }
 
-spla::Algorithm::Type spla::SplaMatrixTransposeCOO::GetType() const {
+spla::Algorithm::Type spla::MatrixTransposeCOO::GetType() const {
     return spla::Algorithm::Type::Transpose;
 }
 
-std::string spla::SplaMatrixTransposeCOO::GetName() const {
+std::string spla::MatrixTransposeCOO::GetName() const {
     return "TransposeCOO";
 }
