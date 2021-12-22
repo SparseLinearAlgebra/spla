@@ -33,6 +33,7 @@
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
+#include <expression/matrix/SplaMatrixTranspose.hpp>
 #include <expression/prod/SplaMxM.hpp>
 #include <expression/prod/SplaVxM.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
@@ -52,6 +53,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixDataRead());
     Register(new MatrixDataWrite());
     Register(new MatrixEWiseAdd());
+    Register(new MatrixTranspose());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
     Register(new VectorAssign());

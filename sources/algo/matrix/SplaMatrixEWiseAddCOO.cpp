@@ -49,7 +49,6 @@ void spla::MatrixEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
     auto p = dynamic_cast<ParamsMatrixEWiseAdd *>(&params);
-    auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto &desc = p->desc;
 

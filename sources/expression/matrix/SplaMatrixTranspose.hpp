@@ -24,16 +24,17 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
-#ifndef SPLA_SPLAMATRIXEWISEADD_HPP
-#define SPLA_SPLAMATRIXEWISEADD_HPP
+
+#ifndef SPLA_SPLAMATRIXTRANSPOSE_HPP
+#define SPLA_SPLAMATRIXTRANSPOSE_HPP
 
 #include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    class MatrixEWiseAdd final : public NodeProcessor {
+    class MatrixTranspose final : public NodeProcessor {
     public:
-        ~MatrixEWiseAdd() override = default;
+        ~MatrixTranspose() override = default;
         bool Select(std::size_t nodeIdx, const Expression &expression) override;
         void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
         ExpressionNode::Operation GetOperationType() const override;
@@ -41,4 +42,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIXEWISEADD_HPP
+#endif//SPLA_SPLAMATRIXTRANSPOSE_HPP

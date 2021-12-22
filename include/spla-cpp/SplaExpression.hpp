@@ -334,6 +334,24 @@ namespace spla {
                                        const RefPtr<Matrix> &b,
                                        const RefPtr<Descriptor> &desc = nullptr);
 
+        /**
+         * @brief Make masked matrix transpose expression node.
+         * Operation is evaluated as `w<mask> = accum(w, a^T)`.
+         *
+         * @param w Matrix to store result
+         * @param mask Mask to filter result; may be null
+         * @param accum Binary function used to accum old and new values; may be null
+         * @param a Input matrix to transpose
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeTranspose(const RefPtr<Matrix> &w,
+                                             const RefPtr<Matrix> &mask,
+                                             const RefPtr<FunctionBinary> &accum,
+                                             const RefPtr<Matrix> &a,
+                                             const RefPtr<Descriptor> &desc = nullptr);
+
         /** @return Current expression state */
         State GetState() const;
 

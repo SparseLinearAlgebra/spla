@@ -123,6 +123,7 @@ namespace spla {
         using namespace boost;
 
         assert(maskRows.size() == maskCols.size());
+        assert(inputRows.size() == inputCols.size());
 
         if (maskRows.empty() || inputRows.empty())
             return;

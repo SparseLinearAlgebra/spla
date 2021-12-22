@@ -136,6 +136,18 @@ namespace spla {
         RefPtr<Type> type;
     };
 
+    /** Transpose matrix block */
+    class ParamsTranspose final : public AlgorithmParams {
+    public:
+        ~ParamsTranspose() override = default;
+
+        bool hasMask = false;    // true if must apply mask
+        RefPtr<MatrixBlock> mask;// apply if required to the a
+        RefPtr<MatrixBlock> w;   // of type t
+        RefPtr<MatrixBlock> a;   // of type t
+        RefPtr<Type> type;       // t
+    };
+
     /**
      * @}
      */

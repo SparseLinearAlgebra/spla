@@ -73,7 +73,9 @@ namespace spla {
             /** Matrix-vector multiplication */
             MxV,
             /** Vector-matrix multiplication */
-            VxM
+            VxM,
+            /** Matrix block transpose */
+            Transpose
         };
 
         /**
@@ -123,6 +125,8 @@ namespace spla {
                     return "MxV";
                 case Algorithm::Type::VxM:
                     return "VxM";
+                case Algorithm::Type::Transpose:
+                    return "Transpose";
 
                 default:
                     return "Unknown";

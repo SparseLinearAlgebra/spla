@@ -22,6 +22,8 @@ set(SPLA_ALGO_SOURCES
 set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixEWiseAddCOO.cpp
         sources/algo/matrix/SplaMatrixEWiseAddCOO.hpp
+        sources/algo/matrix/SplaMatrixTransposeCOO.cpp
+        sources/algo/matrix/SplaMatrixTransposeCOO.hpp
         sources/algo/mxm/SplaMxMCOO.cpp
         sources/algo/mxm/SplaMxMCOO.hpp
         sources/algo/vector/SplaVectorAssignCOO.cpp
@@ -67,6 +69,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.hpp
         sources/expression/matrix/SplaMatrixEWiseAdd.cpp
         sources/expression/matrix/SplaMatrixEWiseAdd.hpp
+        sources/expression/matrix/SplaMatrixTranspose.cpp
+        sources/expression/matrix/SplaMatrixTranspose.hpp
         sources/expression/prod/SplaMxM.cpp
         sources/expression/prod/SplaMxM.hpp
         sources/expression/prod/SplaVxM.cpp
