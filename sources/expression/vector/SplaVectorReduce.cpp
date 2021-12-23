@@ -100,6 +100,12 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     assert(argOp.IsNotNull());
     assert(argV.IsNotNull());
 
+    if (argV->GetNvals() == 0) {
+        argS->GetStorage()->RemoveValue();
+        SPDLOG_LOGGER_TRACE(logger, "Reduce of empty vector");
+        return;
+    }
+
     auto intermediateBuffer = std::make_shared<detail::ReduceIntermediateBuffer>();
     auto deviceIds = library->GetDeviceManager().FetchDevices(blocksInVector + 1, node);
 
@@ -127,12 +133,6 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     auto lastReduceDeviceId = deviceIds[blocksInVector];
     tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
-        if (intermediateBuffer->GetNScalars() == 0) {
-            argS->GetStorage()->RemoveValue();
-            SPDLOG_LOGGER_TRACE(logger, "Final reduce of empty intermediate buffer, nnz=0");
-            return;
-        }
-
         auto &ctx = library->GetContext();
         auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
         QueueFinisher finisher(queue);
