@@ -52,21 +52,24 @@ namespace spla::detail {
             return mScalars.front();
         }
 
-        [[nodiscard]] auto BuildSharedBuffer(std::size_t byteSize, boost::compute::command_queue &queue) const {
+        [[nodiscard]] std::size_t BuildSharedBuffer(std::size_t byteSize,
+                                                    boost::compute::vector<unsigned char> &buffer,
+                                                    boost::compute::command_queue &queue) const {
             if (mScalars.empty()) {
-                return std::pair{boost::compute::vector<unsigned char>(queue.get_context()), 0UL};
+                buffer.resize(0, queue);
+                return 0;
             }
-            boost::compute::vector<unsigned char> sharedBuffer(mScalars.size() * byteSize, queue.get_context());
+            buffer.resize(mScalars.size() * byteSize, queue);
             std::size_t offset = 0;
             for (const auto &scalarValue : mScalars) {
                 assert(scalarValue.IsNotNull());
                 const auto &curValue = scalarValue->GetVal();
                 boost::compute::copy(curValue.begin(), curValue.end(),
-                                     sharedBuffer.begin() + static_cast<std::ptrdiff_t>(offset),
+                                     buffer.begin() + static_cast<std::ptrdiff_t>(offset),
                                      queue);
                 offset += byteSize;
             }
-            return std::pair{std::move(sharedBuffer), mScalars.size()};
+            return mScalars.size();
         }
 
     private:
@@ -137,15 +140,15 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         if (intermediateBuffer->GetNScalars() == 1) {
             auto &value = intermediateBuffer->FirstScalar()->GetVal();
             boost::compute::vector<unsigned char> bufferCopy(value, queue);
-            queue.finish();
             argS->GetStorage()->SetValue(ScalarValue::Make(std::move(bufferCopy)));
             SPDLOG_LOGGER_TRACE(logger, "Primitive final reduce of intermediate buffer, nnz=1");
             return;
         }
 
-        auto [builtIntermediateBuffer, nnzIntermediate] = intermediateBuffer->BuildSharedBuffer(argV->GetType()->GetByteSize(), queue);
-        queue.finish();
-
+        boost::compute::vector<unsigned char> builtIntermediateBuffer(ctx);
+        const std::size_t nnzIntermediate = intermediateBuffer->BuildSharedBuffer(argV->GetType()->GetByteSize(),
+                                                                                  builtIntermediateBuffer,
+                                                                                  queue);
         auto intermedicateVector = VectorCOO::Make(0,
                                                    nnzIntermediate,
                                                    boost::compute::vector<unsigned int>(ctx),
@@ -156,10 +159,11 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         params.vec = intermedicateVector.Cast<VectorBlock>();
         params.type = argV->GetType();
         params.reduce = argOp;
+
+        queue.finish();
         library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
 
         boost::compute::vector<unsigned char> reducedVal(params.scalar->GetVal(), queue);
-        queue.finish();
 
         argS->GetStorage()->SetValue(ScalarValue::Make(std::move(reducedVal)));
         SPDLOG_LOGGER_TRACE(logger, "Final reduce of intermediate buffer, nnz={}", nnzIntermediate);
