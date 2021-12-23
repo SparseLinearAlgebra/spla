@@ -29,8 +29,7 @@
 
 template<typename Type, typename BinaryOp>
 void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
-                const spla::RefPtr<spla::Type> &spTypeVec,
-                const spla::RefPtr<spla::Type> &spTypeRes,
+                const spla::RefPtr<spla::Type> &spType,
                 const spla::RefPtr<spla::FunctionBinary> &spReduce,
                 BinaryOp reduce, std::size_t seed = 0) {
     Type s = utils::UniformGenerator<Type>()();
@@ -40,8 +39,8 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
 
     Type reducedActual{};
 
-    auto spV = spla::Vector::Make(M, spTypeVec, library);
-    auto spS = spla::Scalar::Make(spTypeRes, library);
+    auto spV = spla::Vector::Make(M, spType, library);
+    auto spS = spla::Scalar::Make(spType, library);
     auto spReadScalarData = spla::DataScalar::Make(library);
     spReadScalarData->SetValue(&reducedActual);
 
@@ -76,6 +75,34 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     }
 }
 
+template<typename Type>
+void testEmpty(spla::Library &library,
+               const spla::RefPtr<spla::Type> &spType,
+               const spla::RefPtr<spla::FunctionBinary> &spReduce) {
+    Type s = utils::UniformGenerator<Type>()();
+
+    Type reducedActual{};
+
+    auto spV = spla::Vector::Make(0, spType, library);
+    auto spS = spla::Scalar::Make(spType, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spOpDesc = spla::Descriptor::Make(library);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV, spOpDesc);
+
+    spExpr->Submit();
+    spExpr->Wait();
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    ASSERT_FALSE(spS->HasValue());
+}
+
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         using Type = std::int32_t;
@@ -85,8 +112,9 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testSimple<Type>(library, M, nvals, spT, spT, spAccum, accum, i);
+            testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
         }
+        testEmpty<Type>(library, spT, spAccum);
     });
 }
 
