@@ -33,10 +33,10 @@ namespace {
     template<typename T>
     std::string MakeBody(const char *clType, T apply) {
         std::stringstream stream;
-        stream << clType << " a = *((_ACCESS_A const " << clType << "*)vp_a);\n"
-               << clType << " b = *((_ACCESS_B const " << clType << "*)vp_b);\n"
-               << "_ACCESS_C " << clType << "* c = (_ACCESS_C " << clType << "*)vp_c;\n"
-               << "*c = ";
+        stream << "    " << clType << " a = *((_ACCESS_A const " << clType << "*)vp_a);\n"
+               << "    " << clType << " b = *((_ACCESS_B const " << clType << "*)vp_b);\n"
+               << "    " << "_ACCESS_C " << clType << "* c = (_ACCESS_C " << clType << "*)vp_c;\n"
+               << "    " << "*c = ";
         apply(stream);
         stream << ";";
         return stream.str();

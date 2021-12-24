@@ -94,7 +94,6 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     auto argOp = node->GetArg(1).Cast<FunctionBinary>();
     auto argV = node->GetArg(2).Cast<Vector>();
     auto desc = node->GetDescriptor();
-    auto blocksInVector = argV->GetStorage()->GetNblockRows();
 
     assert(argS.IsNotNull());
     assert(argOp.IsNotNull());
@@ -106,6 +105,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         return;
     }
 
+    auto blocksInVector = argV->GetStorage()->GetNblockRows();
     auto intermediateBuffer = std::make_shared<detail::ReduceIntermediateBuffer>();
     auto deviceIds = library->GetDeviceManager().FetchDevices(blocksInVector + 1, node);
 
@@ -149,14 +149,14 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         const std::size_t nnzIntermediate = intermediateBuffer->BuildSharedBuffer(argV->GetType()->GetByteSize(),
                                                                                   builtIntermediateBuffer,
                                                                                   queue);
-        auto intermedicateVector = VectorCOO::Make(0,
+        auto intermediateVector = VectorCOO::Make(0,
                                                    nnzIntermediate,
                                                    boost::compute::vector<unsigned int>(ctx),
                                                    std::move(builtIntermediateBuffer));
         ParamsVectorReduce params;
         params.desc = desc;
         params.deviceId = lastReduceDeviceId;
-        params.vec = intermedicateVector.Cast<VectorBlock>();
+        params.vec = intermediateVector.Cast<VectorBlock>();
         params.type = argV->GetType();
         params.reduce = argOp;
 

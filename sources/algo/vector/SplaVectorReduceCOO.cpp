@@ -36,7 +36,7 @@
 
 bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorReduce *>(&params);
-    return p != nullptr && p->vec.Is<VectorCOO>();
+    return p && p->vec.Is<VectorCOO>();
 }
 
 void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
@@ -44,16 +44,15 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
 
     auto p = dynamic_cast<ParamsVectorReduce *>(&params);
     assert(p != nullptr);
-    auto library = p->desc->GetLibrary().GetPrivatePtr();
-    auto &desc = p->desc;
 
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     auto vector = p->vec.Cast<VectorCOO>();
     auto type = p->type;
     auto valueByteSize = type->GetByteSize();
     auto reduceOp = p->reduce;
 
-    if (vector->GetVals().empty()) {
+    if (!vector->GetNvals()) {
         p->scalar = nullptr;
         return;
     }

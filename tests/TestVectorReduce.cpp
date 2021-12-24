@@ -49,20 +49,17 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
-    auto spOpDesc = spla::Descriptor::Make(library);
-
     auto spExpr = spla::Expression::Make(library);
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
-    auto spWriteVector = spExpr->MakeDataWrite(spV, v.GetData(library), spDesc);
-    auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV, spOpDesc);
-    auto spReadScalar = spExpr->MakeDataRead(spS, spReadScalarData);
-    spExpr->Dependency(spWriteS, spReduceNode);
-    spExpr->Dependency(spWriteVector, spReduceNode);
-    spExpr->Dependency(spReduceNode, spReadScalar);
-
-    spExpr->Submit();
-    spExpr->Wait();
+    auto spWriteV = spExpr->MakeDataWrite(spV, v.GetData(library), spDesc);
+    auto spReduceV = spExpr->MakeReduce(spS, spReduce, spV);
+    auto spReadS= spExpr->MakeDataRead(spS, spReadScalarData);
+    spExpr->Dependency(spWriteS, spReduceV);
+    spExpr->Dependency(spWriteV, spReduceV);
+    spExpr->Dependency(spReduceV, spReadS);
+    spExpr->SubmitWait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
     ASSERT_TRUE(spS->HasValue());
 
     Type reducedExpected = v.Reduce(reduce);
@@ -71,7 +68,7 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
         std::cout << "Reduced values are not equal: "
                   << "expected: " << reducedExpected << ' '
                   << "actual: " << reducedActual << std::endl;
-        ASSERT_TRUE(utils::EqWithError(reducedExpected, reducedActual));
+        ASSERT_TRUE(false);
     }
 }
 
@@ -80,26 +77,15 @@ void testEmpty(spla::Library &library,
                const spla::RefPtr<spla::Type> &spType,
                const spla::RefPtr<spla::FunctionBinary> &spReduce) {
     Type s = utils::UniformGenerator<Type>()();
-
     Type reducedActual{};
 
     auto spV = spla::Vector::Make(0, spType, library);
     auto spS = spla::Scalar::Make(spType, library);
 
-    // Specify, that values already in row order + no duplicates
-    auto spDesc = spla::Descriptor::Make(library);
-    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
-    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
-
-    auto spOpDesc = spla::Descriptor::Make(library);
-
     auto spExpr = spla::Expression::Make(library);
-    auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV, spOpDesc);
-
-    spExpr->Submit();
-    spExpr->Wait();
+    auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV);
+    spExpr->SubmitWait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
-
     ASSERT_FALSE(spS->HasValue());
 }
 
@@ -114,6 +100,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
             std::size_t nvals = base + i * step;
             testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
         }
+
         testEmpty<Type>(library, spT, spAccum);
     });
 }
