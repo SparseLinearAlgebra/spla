@@ -26,7 +26,7 @@
 /**********************************************************************************/
 
 #include <algo/vector/SplaVectorReduceCOO.hpp>
-#include <compute/SplaReduce.hpp>
+#include <compute/SplaReduce2.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/SplaScalarStorage.hpp>
@@ -61,7 +61,10 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    p->scalar = ScalarValue::Make(Reduce(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue));
+    compute::vector<unsigned char> result(ctx);
+    Reduce2(vector->GetVals(), result, vector->GetNvals(), valueByteSize, reduceOp->GetSource(), queue);
+
+    p->scalar = ScalarValue::Make(std::move(result));
 }
 
 spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {

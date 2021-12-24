@@ -352,6 +352,21 @@ namespace spla::detail {
         const std::string mReduceOpName{};
         const std::size_t mVBytes{};
     };
+
+    inline std::string MakeFunction(const std::string &name, const std::string &body, const std::string &accessA, const std::string &accessB, const std::string &accessC) {
+        std::stringstream fun;
+        fun << "void " << name << " (" << accessA << " const void* vp_a, " << accessB << " const void* vp_b, " << accessC << " void* vp_c) {\n"
+            << "#define _ACCESS_A " << accessA << "\n"
+            << "#define _ACCESS_B " << accessB << "\n"
+            << "#define _ACCESS_C " << accessC << "\n"
+            << body << "\n"
+            << "#undef _ACCESS_A\n"
+            << "#undef _ACCESS_B\n"
+            << "#undef _ACCESS_C\n"
+            << "}";
+        return fun.str();
+    }
+
 }// namespace spla::detail
 
 #endif//SPLA_SPLAMETAUTIL_HPP

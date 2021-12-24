@@ -53,7 +53,7 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
     auto spWriteV = spExpr->MakeDataWrite(spV, v.GetData(library), spDesc);
     auto spReduceV = spExpr->MakeReduce(spS, spReduce, spV);
-    auto spReadS= spExpr->MakeDataRead(spS, spReadScalarData);
+    auto spReadS = spExpr->MakeDataRead(spS, spReadScalarData);
     spExpr->Dependency(spWriteS, spReduceV);
     spExpr->Dependency(spWriteV, spReduceV);
     spExpr->Dependency(spReduceV, spReadS);
@@ -64,8 +64,9 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
 
     Type reducedExpected = v.Reduce(reduce);
 
-    if (!utils::EqWithError(reducedExpected, reducedActual)) {
-        std::cout << "Reduced values are not equal: "
+    if (!utils::EqWithRelativeError(reducedExpected, reducedActual)) {
+        std::cout << std::setprecision(10)
+                  << "Reduced values are not equal: "
                   << "expected: " << reducedExpected << ' '
                   << "actual: " << reducedActual << std::endl;
         ASSERT_TRUE(false);
@@ -100,7 +101,24 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
             std::size_t nvals = base + i * step;
             testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
         }
+    });
 
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = float;
+        auto spT = spla::Types::Float32(library);
+        auto spAccum = spla::Functions::PlusFloat32(library);
+        auto accum = [](Type x, Type y) { return x + y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::int32_t;
+        auto spT = spla::Types::Int32(library);
+        auto spAccum = spla::Functions::PlusInt32(library);
         testEmpty<Type>(library, spT, spAccum);
     });
 }
@@ -113,14 +131,20 @@ TEST(VectorReduce, Small) {
 
 TEST(VectorReduce, Medium) {
     std::vector<std::size_t> blocksSizes{100, 1000, 10000};
-    std::size_t M = 1100;
+    std::size_t M = 2140;
     test(M, M / 2, M / 10, 10, blocksSizes);
 }
 
 TEST(VectorReduce, Large) {
     std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
     std::size_t M = 10300;
-    test(M, M / 2, M / 10, 5, blocksSizes);
+    test(M, M / 4, M / 20, 10, blocksSizes);
+}
+
+TEST(VectorReduce, MegaLarge) {
+    std::vector<std::size_t> blocksSizes{1000000};
+    std::size_t M = 990100;
+    test(M, M / 10, M / 10, 5, blocksSizes);
 }
 
 SPLA_GTEST_MAIN

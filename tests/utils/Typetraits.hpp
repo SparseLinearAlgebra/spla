@@ -58,6 +58,14 @@ namespace utils {
         return std::abs(a - b) <= GetError<T>();
     }
 
+    template<typename T>
+    bool EqWithRelativeError(T a, T b, T part = 0.001) {
+        if (!UseError<T>()) {
+            return a == b;
+        }
+        return (std::abs(a - b) / std::max(a, b)) <= part;
+    }
+
 }// namespace utils
 
 #endif//SPLA_TYPETRAITS_HPP
