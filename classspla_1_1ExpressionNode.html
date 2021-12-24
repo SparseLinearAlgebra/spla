@@ -111,11 +111,12 @@ Public Types</h2></td></tr>
 , <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">MatrixEWiseAdd</a>
 , <br />
 &#160;&#160;<a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">VectorEWiseAdd</a>
+, <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5">VectorReduce</a>
 , <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fabc428cdf0b4717f6e2dc35213b9e5ec4">MxM</a>
 , <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa8beb564f83b050ee554f87baaea84208">VxM</a>
-, <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faf5419c7ad3580147f9a637339115ecc0">MxV</a>
 , <br />
-&#160;&#160;<a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faaf70b1ac863830a4e1ce6268c8399f54">Transpose</a>
+&#160;&#160;<a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faf5419c7ad3580147f9a637339115ecc0">MxV</a>
+, <a class="el" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faaf70b1ac863830a4e1ce6268c8399f54">Transpose</a>
 <br />
  }</td></tr>
 <tr class="separator:a167b26d5aa4562ed9d6b178fe2a3b39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +147,6 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abb3083297512afecd4ea002b665662db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ExpressionNode.html#abb3083297512afecd4ea002b665662db">~ExpressionNode</a> () override=default</td></tr>
 <tr class="separator:abb3083297512afecd4ea002b665662db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d31198e4877865e4abfeb33c9afa9eb"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Object.html">Object</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ExpressionNode.html#a9d31198e4877865e4abfeb33c9afa9eb">GetArgs</a> () const</td></tr>
-<tr class="separator:a9d31198e4877865e4abfeb33c9afa9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88be73539b970d3d3be0b9f34c203c32"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Object.html">Object</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ExpressionNode.html#a88be73539b970d3d3be0b9f34c203c32">GetArg</a> (unsigned int idx) const</td></tr>
 <tr class="separator:a88be73539b970d3d3be0b9f34c203c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa887a937292b8074bb105c03e66e591d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ExpressionNode.html#aa887a937292b8074bb105c03e66e591d">GetDescriptor</a> () const</td></tr>
@@ -231,6 +230,8 @@ Friends</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a"></a>VectorEWiseAdd&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html">Vector</a> element-wise addition </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5"></a>VectorReduce&#160;</td><td class="fielddoc"><p>Reduce vector elements </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a167b26d5aa4562ed9d6b178fe2a3b39fabc428cdf0b4717f6e2dc35213b9e5ec4"></a>MxM&#160;</td><td class="fielddoc"><p>Matrix-matrix multiplication </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a167b26d5aa4562ed9d6b178fe2a3b39fa8beb564f83b050ee554f87baaea84208"></a>VxM&#160;</td><td class="fielddoc"><p>Vector-matrix multiplication </p>
@@ -286,24 +287,6 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Node argument at specified index </dd></dl>
-
-</div>
-</div>
-<a id="a9d31198e4877865e4abfeb33c9afa9eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d31198e4877865e4abfeb33c9afa9eb">&#9670;&nbsp;</a></span>GetArgs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt; <a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1Object.html">spla::Object</a> &gt; &gt; &amp; spla::ExpressionNode::GetArgs </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>Node arguments array </dd></dl>
 
 </div>
 </div>

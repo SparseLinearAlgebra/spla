@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="SplaReduceByKey_8hpp_source.html">SplaReduceByKey.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="SplaMetaUtil_8hpp_source.html">SplaMetaUtil.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for spla::detail::ValArrItem:</div>
 <div class="dyncontent">
@@ -99,6 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1ec017f39878c82d3f3de147fb825eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62a2965dce536c6ce0c4a7597f93dd33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ValArrItem.html#a62a2965dce536c6ce0c4a7597f93dd33">ValArrItem</a> (const compute::vector&lt; unsigned char &gt;::iterator &amp;it, std::string idx, std::size_t vBytes, <a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;k)</td></tr>
 <tr class="separator:a62a2965dce536c6ce0c4a7597f93dd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d95221e2d431c2602b471d4639c7928"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ValArrItem.html#a8d95221e2d431c2602b471d4639c7928">ValArrItem</a> (const compute::vector&lt; unsigned char &gt; &amp;v, std::string idx, std::size_t vBytes, <a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;k)</td></tr>
+<tr class="separator:a8d95221e2d431c2602b471d4639c7928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2677bcf902dd28eb1417319db5ee1f98"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ValArrItem.html#a2677bcf902dd28eb1417319db5ee1f98">GetByteByN</a> (const std::string &amp;n) const override</td></tr>
 <tr class="separator:a2677bcf902dd28eb1417319db5ee1f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3f198a7c77cbbc1b1e59ef49a25aa6d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ValArrItem.html#ad3f198a7c77cbbc1b1e59ef49a25aa6d">GetPointer</a> () const override</td></tr>
@@ -109,7 +111,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1ec017f39878c82d3f3de147fb825eef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ec017f39878c82d3f3de147fb825eef">&#9670;&nbsp;</a></span>ValArrItem() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ec017f39878c82d3f3de147fb825eef">&#9670;&nbsp;</a></span>ValArrItem() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,7 +153,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a62a2965dce536c6ce0c4a7597f93dd33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62a2965dce536c6ce0c4a7597f93dd33">&#9670;&nbsp;</a></span>ValArrItem() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a62a2965dce536c6ce0c4a7597f93dd33">&#9670;&nbsp;</a></span>ValArrItem() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,6 +166,54 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const compute::vector&lt; unsigned char &gt;::iterator &amp;&#160;</td>
           <td class="paramname"><em>it</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>vBytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8d95221e2d431c2602b471d4639c7928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d95221e2d431c2602b471d4639c7928">&#9670;&nbsp;</a></span>ValArrItem() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla::detail::ValArrItem::ValArrItem </td>
+          <td>(</td>
+          <td class="paramtype">const compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -255,7 +305,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>sources/compute/<a class="el" href="SplaReduceByKey_8hpp_source.html">SplaReduceByKey.hpp</a></li>
+<li>sources/compute/metautil/<a class="el" href="SplaMetaUtil_8hpp_source.html">SplaMetaUtil.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

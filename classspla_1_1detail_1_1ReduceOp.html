@@ -73,18 +73,18 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="SplaReduceByKey_8hpp_source.html">SplaReduceByKey.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="SplaMetaUtil_8hpp_source.html">SplaMetaUtil.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2f6ad5346726452ca56eeb302e57f473"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ReduceOp.html#a2f6ad5346726452ca56eeb302e57f473">ReduceOp</a> (<a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;k, std::string reduceOpName, const std::string &amp;body, std::size_t vBytes)</td></tr>
-<tr class="separator:a2f6ad5346726452ca56eeb302e57f473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98e5012dbcfe9f4448273a69b852ea08"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ReduceOp.html#a98e5012dbcfe9f4448273a69b852ea08">ReduceOp</a> (<a class="el" href="namespacespla_1_1detail.html#a4681802dc1ea712b376e5a7378946533">MetaKernel</a> &amp;k, std::string reduceOpName, const std::string &amp;body, std::size_t vBytes, <a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a> aVisibility=<a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a>, <a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a> bVisibility=<a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a>, <a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a> cVisibility=<a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a>)</td></tr>
+<tr class="separator:a98e5012dbcfe9f4448273a69b852ea08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03c096ae557b9bdf38e22bcf327ad2cb"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classspla_1_1detail_1_1ReduceApplication.html">ReduceApplication</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1detail_1_1ReduceOp.html#a03c096ae557b9bdf38e22bcf327ad2cb">Apply</a> (const <a class="el" href="classspla_1_1detail_1_1VAlignedValue.html">VAlignedValue</a> &amp;left, const <a class="el" href="classspla_1_1detail_1_1VAlignedValue.html">VAlignedValue</a> &amp;right, const <a class="el" href="classspla_1_1detail_1_1VAlignedValue.html">VAlignedValue</a> &amp;result)</td></tr>
 <tr class="separator:a03c096ae557b9bdf38e22bcf327ad2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2f6ad5346726452ca56eeb302e57f473"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f6ad5346726452ca56eeb302e57f473">&#9670;&nbsp;</a></span>ReduceOp()</h2>
+<a id="a98e5012dbcfe9f4448273a69b852ea08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e5012dbcfe9f4448273a69b852ea08">&#9670;&nbsp;</a></span>ReduceOp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -114,7 +114,25 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>vBytes</em>&#160;</td>
+          <td class="paramname"><em>vBytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a>&#160;</td>
+          <td class="paramname"><em>aVisibility</em> = <code><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a>&#160;</td>
+          <td class="paramname"><em>bVisibility</em> = <code><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1c">Visibility</a>&#160;</td>
+          <td class="paramname"><em>cVisibility</em> = <code><a class="el" href="namespacespla_1_1detail.html#a656e0d9fbb09bd77055324e6bec83e1ca6fcdc090caeade09d0efd6253932b6f5">Visibility::Unspecified</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -175,7 +193,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>sources/compute/<a class="el" href="SplaReduceByKey_8hpp_source.html">SplaReduceByKey.hpp</a></li>
+<li>sources/compute/metautil/<a class="el" href="SplaMetaUtil_8hpp_source.html">SplaMetaUtil.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

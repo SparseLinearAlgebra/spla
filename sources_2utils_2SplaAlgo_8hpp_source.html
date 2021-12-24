@@ -99,35 +99,38 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLAALGO_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAALGO_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaFunctionBinary_8hpp.html">spla-cpp/SplaFunctionBinary.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaType_8hpp.html">spla-cpp/SplaType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;boost/hana.hpp&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacespla_1_1utils.html">   42</a></span>&#160;    <span class="keyword">namespace </span>utils {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">   45</a></span>&#160;        <span class="keyword">inline</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;FunctionBinary&gt;</a> <a class="code" href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">MakeFunctionChooseSecond</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;t) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            std::stringstream body;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            body &lt;&lt; <span class="stringliteral">&quot;_ACCESS_B const uchar * b = (_ACCESS_B const uchar *)vp_b;\n&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;_ACCESS_C uchar * c = (_ACCESS_C uchar *)vp_c;\n&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;for (uint i = 0; i &lt; &quot;</span> &lt;&lt; t-&gt;GetByteSize() &lt;&lt; <span class="stringliteral">&quot;; i++)\n&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;   c[i] = b[i];\n&quot;</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classspla_1_1FunctionBinary.html#a083efd8ce20347c6432ea75205c7853c">FunctionBinary::Make</a>(t, t, t, body.str(), t-&gt;GetLibrary());</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaFunctionBinary_8hpp.html">spla-cpp/SplaFunctionBinary.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaType_8hpp.html">spla-cpp/SplaType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacespla_1_1utils.html">   45</a></span>&#160;    <span class="keyword">namespace </span>utils {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">   48</a></span>&#160;        <span class="keyword">inline</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;FunctionBinary&gt;</a> <a class="code" href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">MakeFunctionChooseSecond</a>(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Type&gt;</a> &amp;t) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::stringstream body;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            body &lt;&lt; <span class="stringliteral">&quot;_ACCESS_B const uchar * b = (_ACCESS_B const uchar *)vp_b;\n&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;_ACCESS_C uchar * c = (_ACCESS_C uchar *)vp_c;\n&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;for (uint i = 0; i &lt; &quot;</span> &lt;&lt; t-&gt;GetByteSize() &lt;&lt; <span class="stringliteral">&quot;; i++)\n&quot;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;   c[i] = b[i];\n&quot;</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }<span class="comment">// namespace utils</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAALGO_HPP</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classspla_1_1FunctionBinary.html#a083efd8ce20347c6432ea75205c7853c">FunctionBinary::Make</a>(t, t, t, body.str(), t-&gt;GetLibrary());</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }<span class="comment">// namespace utils</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAALGO_HPP</span></div>
 <div class="ttc" id="aSplaFunctionBinary_8hpp_html"><div class="ttname"><a href="SplaFunctionBinary_8hpp.html">SplaFunctionBinary.hpp</a></div></div>
 <div class="ttc" id="aSplaType_8hpp_html"><div class="ttname"><a href="SplaType_8hpp.html">SplaType.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1FunctionBinary_html_a083efd8ce20347c6432ea75205c7853c"><div class="ttname"><a href="classspla_1_1FunctionBinary.html#a083efd8ce20347c6432ea75205c7853c">spla::FunctionBinary::Make</a></div><div class="ttdeci">static RefPtr&lt; FunctionBinary &gt; Make(RefPtr&lt; Type &gt; a, RefPtr&lt; Type &gt; b, RefPtr&lt; Type &gt; c, std::string source, Library &amp;library)</div><div class="ttdef"><b>Definition:</b> SplaFunctionBinary.cpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
-<div class="ttc" id="anamespacespla_1_1utils_html_a160a4d192fbd0aa13875a3a265ad7ae4"><div class="ttname"><a href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">spla::utils::MakeFunctionChooseSecond</a></div><div class="ttdeci">RefPtr&lt; FunctionBinary &gt; MakeFunctionChooseSecond(const RefPtr&lt; Type &gt; &amp;t)</div><div class="ttdef"><b>Definition:</b> SplaAlgo.hpp:45</div></div>
+<div class="ttc" id="anamespacespla_1_1utils_html_a160a4d192fbd0aa13875a3a265ad7ae4"><div class="ttname"><a href="namespacespla_1_1utils.html#a160a4d192fbd0aa13875a3a265ad7ae4">spla::utils::MakeFunctionChooseSecond</a></div><div class="ttdeci">RefPtr&lt; FunctionBinary &gt; MakeFunctionChooseSecond(const RefPtr&lt; Type &gt; &amp;t)</div><div class="ttdef"><b>Definition:</b> SplaAlgo.hpp:48</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
