@@ -150,9 +150,9 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
                                                                                   builtIntermediateBuffer,
                                                                                   queue);
         auto intermediateVector = VectorCOO::Make(0,
-                                                   nnzIntermediate,
-                                                   boost::compute::vector<unsigned int>(ctx),
-                                                   std::move(builtIntermediateBuffer));
+                                                  nnzIntermediate,
+                                                  boost::compute::vector<unsigned int>(ctx),
+                                                  std::move(builtIntermediateBuffer));
         ParamsVectorReduce params;
         params.desc = desc;
         params.deviceId = lastReduceDeviceId;
