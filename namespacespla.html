@@ -356,6 +356,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga5c492598b8acdfa5f9a2f5d49cb6aa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1234e2d728ff6b65ece431f340dc07c"><td class="memItemLeft" align="right" valign="top">boost::compute::vector&lt; unsigned char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ad1234e2d728ff6b65ece431f340dc07c">Reduce</a> (const boost::compute::vector&lt; unsigned char &gt; &amp;values, std::size_t valueByteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ad1234e2d728ff6b65ece431f340dc07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f482aba6d6be13b7c2c0e1c29dc42f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a63f482aba6d6be13b7c2c0e1c29dc42f">Reduce2</a> (const boost::compute::vector&lt; unsigned char &gt; &amp;values, boost::compute::vector&lt; unsigned char &gt; &amp;result, std::size_t count, unsigned int byteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:a63f482aba6d6be13b7c2c0e1c29dc42f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab13f7b0b882862cf7de95039d26b2c6f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gab13f7b0b882862cf7de95039d26b2c6f">ReduceByPairKey</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices1, const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices2, const boost::compute::vector&lt; unsigned char &gt; &amp;inputValues, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices1, boost::compute::vector&lt; unsigned int &gt; &amp;outputIndices2, boost::compute::vector&lt; unsigned char &gt; &amp;outputValues, std::size_t valueByteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gab13f7b0b882862cf7de95039d26b2c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The algorithm performs reduction for each contiguous subsequence of aligned values determinate by equivalent keys. <br  />
 .  <a href="group__Internal.html#gab13f7b0b882862cf7de95039d26b2c6f">More...</a><br /></td></tr>
@@ -443,6 +445,66 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>valueByteSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reduceOp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63f482aba6d6be13b7c2c0e1c29dc42f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63f482aba6d6be13b7c2c0e1c29dc42f">&#9670;&nbsp;</a></span>Reduce2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Reduce2 </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>byteSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
