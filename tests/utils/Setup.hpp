@@ -37,7 +37,7 @@ namespace utils {
     template<typename Callable>
     inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
         for (std::size_t blockSize : blocksSizes) {
-            spla::Library library(spla::Library::Config().SetBlockSize(blockSize));
+            spla::Library library(spla::Library::Config().SetDeviceType(spla::Library::Config::GPU).SetBlockSize(blockSize));
             callable(library);
         }
     }

@@ -25,39 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#ifndef SPLA_SPLAVECTORREDUCE_HPP
+#define SPLA_SPLAVECTORREDUCE_HPP
 
-#include <cstddef>
+#include <expression/SplaNodeProcessor.hpp>
 
-namespace utils {
+namespace spla {
 
-    template<typename T>
-    bool UseError();
+    class VectorReduce final : public NodeProcessor {
+    public:
+        ~VectorReduce() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
-    template<typename T>
-    T GetError();
+}// namespace spla
 
-    template<>
-    bool UseError<float>() { return true; }
-
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
-    }
-
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+#endif//SPLA_SPLAVECTORREDUCE_HPP

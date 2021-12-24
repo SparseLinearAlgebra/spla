@@ -42,9 +42,9 @@
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
+#include <expression/vector/SplaVectorReduce.hpp>
 
 #include <algorithm>
-#include <numeric>
 #include <vector>
 
 spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(library) {
@@ -60,6 +60,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new VectorDataWrite());
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
+    Register(new VectorReduce());
     Register(new MxM());
     Register(new VxM());
 }

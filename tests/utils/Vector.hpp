@@ -356,6 +356,19 @@ namespace utils {
             return EWiseAdd(tmp, accum);
         }
 
+        template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
+        [[nodiscard]] R Reduce(ReduceT reduce) {
+            if (mVals.empty()) {
+                throw std::invalid_argument("Unable to reduce empty vector");
+            }
+
+            R result = mVals[0];
+            for (std::size_t i = 1; i < mVals.size(); ++i) {
+                result = reduce(result, mVals[i]);
+            }
+            return result;
+        }
+
         static Vector Generate(std::size_t nrows, std::size_t nvals, std::size_t seed = 0, const T &value = T()) {
             std::vector<Index> rows;
             std::vector<T> vals(nvals, value);

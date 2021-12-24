@@ -28,9 +28,12 @@
 #ifndef SPLA_SPLAALGO_HPP
 #define SPLA_SPLAALGO_HPP
 
+#include <sstream>
+
+#include <boost/hana.hpp>
+
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaType.hpp>
-#include <sstream>
 
 namespace spla {
 

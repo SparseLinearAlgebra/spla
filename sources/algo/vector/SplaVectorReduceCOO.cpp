@@ -25,39 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <algo/vector/SplaVectorReduceCOO.hpp>
+#include <compute/SplaReduce.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaScalarValue.hpp>
+#include <storage/block/SplaVectorCOO.hpp>
 
-#include <cstddef>
 
-namespace utils {
+bool spla::VectorReduceCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVectorReduce *>(&params);
+    return p != nullptr && p->vec.Is<VectorCOO>();
+}
 
-    template<typename T>
-    bool UseError();
+void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
+    using namespace boost;
 
-    template<typename T>
-    T GetError();
+    auto p = dynamic_cast<ParamsVectorReduce *>(&params);
+    assert(p != nullptr);
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
+    auto &desc = p->desc;
 
-    template<>
-    bool UseError<float>() { return true; }
+    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    auto vector = p->vec.Cast<VectorCOO>();
+    auto type = p->type;
+    auto valueByteSize = type->GetByteSize();
+    auto reduceOp = p->reduce;
 
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
+    if (vector->GetVals().empty()) {
+        p->scalar = nullptr;
+        return;
     }
 
-}// namespace utils
+    compute::context ctx = library->GetContext();
+    compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
 
-#endif//SPLA_TYPETRAITS_HPP
+    p->scalar = ScalarValue::Make(Reduce(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue));
+}
+
+spla::Algorithm::Type spla::VectorReduceCOO::GetType() const {
+    return spla::Algorithm::Type::VectorReduce;
+}
+
+std::string spla::VectorReduceCOO::GetName() const {
+    return "VectorReduceCOO";
+}

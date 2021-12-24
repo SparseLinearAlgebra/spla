@@ -30,7 +30,6 @@
 #include <compute/SplaMaskByKey.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
 bool spla::VectorAssignCOO::Select(const spla::AlgorithmParams &params) const {

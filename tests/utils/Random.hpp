@@ -73,6 +73,9 @@ namespace utils {
     class UniformGenerator<float> : public UniformRealGenerator<float> {};
 
     template<>
+    class UniformGenerator<double> : public UniformRealGenerator<double> {};
+
+    template<>
     class UniformGenerator<std::int32_t> : public UniformIntGenerator<std::int32_t> {};
 
     template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>

@@ -64,6 +64,8 @@ namespace spla {
             MatrixEWiseMult,
             /** Vector-scalar assignment */
             VectorAssign,
+            /** Vector nnz elements reduce */
+            VectorReduce,
             /** Vector-vector element wise addition */
             VectorEWiseAdd,
             /** Vector-vector element wise multiplication */

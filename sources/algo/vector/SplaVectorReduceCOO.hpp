@@ -25,39 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#ifndef SPLA_SPLAVECTORREDUCECOO_HPP
+#define SPLA_SPLAVECTORREDUCECOO_HPP
 
-#include <cstddef>
+#include <algo/SplaAlgorithm.hpp>
 
-namespace utils {
+namespace spla {
+    class VectorReduceCOO final : public Algorithm {
+    public:
+        ~VectorReduceCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
+}// namespace spla
 
-    template<typename T>
-    bool UseError();
-
-    template<typename T>
-    T GetError();
-
-    template<>
-    bool UseError<float>() { return true; }
-
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
-    }
-
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+#endif//SPLA_SPLAVECTORREDUCECOO_HPP

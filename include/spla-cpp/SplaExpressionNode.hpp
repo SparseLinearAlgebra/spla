@@ -71,6 +71,8 @@ namespace spla {
             MatrixEWiseAdd,
             /** Vector element-wise addition */
             VectorEWiseAdd,
+            /** Reduce vector elements */
+            VectorReduce,
             /** Matrix-matrix multiplication */
             MxM,
             /** Vector-matrix multiplication */
@@ -80,9 +82,6 @@ namespace spla {
             /** Transpose matrix */
             Transpose
         };
-
-        /** @return Node arguments array */
-        const std::vector<RefPtr<Object>> &GetArgs() const;
 
         /** @return Node argument at specified index */
         const RefPtr<Object> &GetArg(unsigned int idx) const;
@@ -109,6 +108,7 @@ namespace spla {
         void SetDescriptor(const RefPtr<Descriptor> &desc);
 
         std::vector<RefPtr<Object>> &GetArgs();
+        const std::vector<RefPtr<Object>> &GetArgs() const;
 
         const std::vector<ExpressionNode *> &GetPrev() const;
         const std::vector<ExpressionNode *> &GetNext() const;
@@ -144,6 +144,8 @@ namespace spla {
                     return "ScalarDataWrite";
                 case ExpressionNode::Operation::VectorAssign:
                     return "VectorAssign";
+                case ExpressionNode::Operation::VectorReduce:
+                    return "VectorReduce";
                 case ExpressionNode::Operation::MatrixEWiseAdd:
                     return "MatrixEWiseAdd";
                 case ExpressionNode::Operation::VectorEWiseAdd:
