@@ -89,6 +89,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga699b659648d03d51d337df2b3084977e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga699b659648d03d51d337df2b3084977e">spla::Bfs</a> (<a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostVector.html">HostVector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;A, <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s)</td></tr>
 <tr class="memdesc:ga699b659648d03d51d337df2b3084977e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Breadth-first search algorithm.  <a href="group__Algorithm.html#ga699b659648d03d51d337df2b3084977e">More...</a><br /></td></tr>
 <tr class="separator:ga699b659648d03d51d337df2b3084977e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">spla::Sssp</a> (<a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s)</td></tr>
+<tr class="memdesc:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">More...</a><br /></td></tr>
+<tr class="separator:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ef083028f6779cca83fff114d61b95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">spla::Sssp</a> (<a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostVector.html">HostVector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;A, <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s)</td></tr>
+<tr class="memdesc:ga8ef083028f6779cca83fff114d61b95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">More...</a><br /></td></tr>
+<tr class="separator:ga8ef083028f6779cca83fff114d61b95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Public library algorithms interface. </p>
@@ -180,6 +186,98 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> where to store levels of the reached vertices </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">A</td><td>Input adjacency matrix of the graph; must be n x n </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">s</td><td>Index of the source vertex to begin bfs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga8ef083028f6779cca83fff114d61b95b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8ef083028f6779cca83fff114d61b95b">&#9670;&nbsp;</a></span>Sssp() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Sssp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostVector.html">HostVector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Single-source shortest path. </p>
+<dl class="section note"><dt>Note</dt><dd>Naive cpu reference algo implementation for correctness only </dd>
+<dd>
+Accepts input matrix with float32 type.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> where to store shortest paths of the reached vertices </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">A</td><td>Input adjacency matrix of the graph; must be n x n; </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">s</td><td>Index of the source vertex to begin paths search </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga29faf0d8abeec2f54e86c40500fe75c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga29faf0d8abeec2f54e86c40500fe75c6">&#9670;&nbsp;</a></span>Sssp() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Sssp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Single-source shortest path. </p>
+<dl class="section note"><dt>Note</dt><dd>Accepts input matrix with float32 type.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> where to store shortest paths of the reached vertices </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">A</td><td>Input adjacency matrix of the graph; must be n x n; </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">s</td><td>Index of the source vertex to begin paths search </td></tr>
   </table>
   </dd>
 </dl>
