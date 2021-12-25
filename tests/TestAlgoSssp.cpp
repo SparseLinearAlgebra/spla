@@ -29,33 +29,33 @@
 
 void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
     auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
-    auto sp_Int32 = spla::Types::Int32(library);
+    auto sp_Float32 = spla::Types::Float32(library);
     auto sp_s = rnd();
 
-    utils::Matrix A = utils::Matrix<std::int32_t>::Generate(M, M, nvals).SortReduceDuplicates();
-    A.Fill(utils::UniformIntGenerator<std::int32_t>());
+    utils::Matrix A = utils::Matrix<float>::Generate(M, M, nvals).SortReduceDuplicates();
+    A.Fill(utils::UniformRealGenerator<float>());
 
-    auto sp_v = spla::Vector::Make(M, sp_Int32, library);
-    auto sp_A = spla::Matrix::Make(M, M, sp_Int32, library);
+    auto sp_v = spla::Vector::Make(M, sp_Float32, library);
+    auto sp_A = spla::Matrix::Make(M, M, sp_Float32, library);
 
     auto sp_setup = spla::Expression::Make(library);
     sp_setup->MakeDataWrite(sp_A, A.GetData(library));
     sp_setup->SubmitWait();
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    SPLA_TIME_BEGIN(bfs_spla);
-    spla::Bfs(sp_v, sp_A, sp_s);
-    SPLA_TIME_END(bfs_spla, "spla");
+    SPLA_TIME_BEGIN(sssp_spla);
+    spla::Sssp(sp_v, sp_A, sp_s);
+    SPLA_TIME_END(sssp_spla, "spla");
 
     auto host_A = A.ToHostMatrix();
     auto host_v = spla::RefPtr<spla::HostVector>();
 
-    SPLA_TIME_BEGIN(bfs_cpu);
-    spla::Bfs(host_v, host_A, sp_s);
-    SPLA_TIME_END(bfs_cpu, "cpu");
+    SPLA_TIME_BEGIN(sssp_cpu);
+    spla::Sssp(host_v, host_A, sp_s);
+    SPLA_TIME_END(sssp_cpu, "cpu");
 
-    auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
-    ASSERT_TRUE(result.Equals(sp_v));
+    auto result = utils::Vector<float>::FromHostVector(host_v);
+    EXPECT_TRUE(result.Equals(sp_v));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
@@ -67,34 +67,28 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
     });
 }
 
-TEST(BFS, Small) {
+TEST(SSSP, Small) {
     std::vector<std::size_t> blockSizes = {100, 1000};
     std::size_t M = 120;
     test(M, M, M, 10, blockSizes);
 }
 
-TEST(BFS, Medium) {
+TEST(SSSP, Medium) {
     std::vector<std::size_t> blockSizes = {1000, 10000};
     std::size_t M = 1220;
     test(M, M, M, 10, blockSizes);
 }
 
-TEST(BFS, Large) {
+TEST(SSSP, Large) {
     std::vector<std::size_t> blockSizes = {10000, 100000};
     std::size_t M = 12400;
     test(M, M, M, 5, blockSizes);
 }
 
-TEST(BFS, MegaLarge) {
+TEST(SSSP, MegaLarge) {
     std::vector<std::size_t> blockSizes = {1000000};
     std::size_t M = 990990;
-    test(M, 10 * M, M, 1, blockSizes);
-}
-
-TEST(BFS, UltraLarge) {
-    std::vector<std::size_t> blockSizes = {10000000};
-    std::size_t M = 4500000;
-    test(M, 10 * M, 10 * M, 2, blockSizes);
+    test(M, 5 * M, M, 3, blockSizes);
 }
 
 SPLA_GTEST_MAIN

@@ -17,7 +17,8 @@ set(SPLA_CPP_SOURCES
 
 set(SPLA_ALGO_SOURCES
         sources/SplaAlgoBfs.cpp
-        sources/SplaAlgoCommon.cpp)
+        sources/SplaAlgoCommon.cpp
+        sources/SplaAlgoSssp.cpp)
 
 set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixEWiseAddCOO.cpp

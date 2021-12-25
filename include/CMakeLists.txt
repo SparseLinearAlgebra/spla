@@ -21,4 +21,5 @@ set(SPLA_CPP_HEADERS
 set(SPLA_ALGO_HEADERS
         include/spla-algo/SplaAlgo.hpp
         include/spla-algo/SplaAlgoBfs.hpp
-        include/spla-algo/SplaAlgoCommon.hpp)
+        include/spla-algo/SplaAlgoCommon.hpp
+        include/spla-algo/SplaAlgoSssp.hpp)

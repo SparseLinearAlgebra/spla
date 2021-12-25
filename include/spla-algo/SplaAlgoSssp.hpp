@@ -25,34 +25,47 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TESTING_HPP
-#define SPLA_TESTING_HPP
+#ifndef SPLA_SPLAALGOSSSP_HPP
+#define SPLA_SPLAALGOSSSP_HPP
 
-#include <gtest/gtest.h>
-#include <utils/Compute.hpp>
-#include <utils/Matrix.hpp>
-#include <utils/Operations.hpp>
-#include <utils/Random.hpp>
-#include <utils/Setup.hpp>
-#include <utils/Typetraits.hpp>
-#include <utils/Vector.hpp>
+#include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaMatrix.hpp>
+#include <spla-cpp/SplaVector.hpp>
 
-#include <chrono>
-#include <iostream>
+namespace spla {
 
-#define SPLA_TIME_BEGIN(timer) \
-    auto timer = std::chrono::steady_clock::now();
+    /**
+     * @addtogroup Algorithm
+     * @{
+     */
 
-#define SPLA_TIME_END(timer, message) \
-    std::cout << message << " " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - timer).count() << std::endl;
+    /**
+     * @brief Single-source shortest path
+     *
+     * @note Accepts input matrix with float32 type.
+     *
+     * @param[out] v Vector where to store shortest paths of the reached vertices
+     * @param A Input adjacency matrix of the graph; must be n x n;
+     * @param s Index of the source vertex to begin paths search
+     */
+    SPLA_API void Sssp(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s);
 
+    /**
+     * @brief Single-source shortest path
+     *
+     * @note Naive cpu reference algo implementation for correctness only
+     * @note Accepts input matrix with float32 type.
+     *
+     * @param[out] v Vector where to store shortest paths of the reached vertices
+     * @param A Input adjacency matrix of the graph; must be n x n;
+     * @param s Index of the source vertex to begin paths search
+     */
+    SPLA_API void Sssp(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s);
 
-// Put in the end of the unit test file
-#define SPLA_GTEST_MAIN                                  \
-    int main(int argc, char *argv[]) {                   \
-        ::testing::GTEST_FLAG(catch_exceptions) = false; \
-        ::testing::InitGoogleTest(&argc, argv);          \
-        return RUN_ALL_TESTS();                          \
-    }
+    /**
+     * @}
+     */
 
-#endif//SPLA_TESTING_HPP
+}// namespace spla
+
+#endif//SPLA_SPLAALGOSSSP_HPP
