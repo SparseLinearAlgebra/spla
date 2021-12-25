@@ -114,21 +114,24 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     for (std::size_t i = 0; i < blocksInVector; ++i) {
         auto deviceId = deviceIds[i];
+        auto blockVec = argV->GetStorage()->GetBlock(i);
 
-        tf::Task reduceIthBlock = builder.Emplace([=]() {
-            ParamsVectorReduce params;
-            params.desc = desc;
-            params.deviceId = deviceId;
-            params.vec = argV->GetStorage()->GetBlock(i);
-            params.type = argV->GetType();
-            params.reduce = argOp;
-            library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
-            if (params.scalar.IsNotNull()) {
-                intermediateBuffer->Add(params.scalar);
-            }
-            SPDLOG_LOGGER_TRACE(logger, "Reduce block i={} nnz={}", i, params.vec->GetNvals());
-        });
-        reduceBlocksTasks.push_back(std::move(reduceIthBlock));
+        if (blockVec.IsNotNull()) {
+            tf::Task reduceIthBlock = builder.Emplace([=]() {
+                ParamsVectorReduce params;
+                params.desc = desc;
+                params.deviceId = deviceId;
+                params.vec = argV->GetStorage()->GetBlock(i);
+                params.type = argV->GetType();
+                params.reduce = argOp;
+                library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorReduce, params);
+                if (params.scalar.IsNotNull()) {
+                    intermediateBuffer->Add(params.scalar);
+                }
+                SPDLOG_LOGGER_TRACE(logger, "Reduce block i={} nnz={}", i, params.vec->GetNvals());
+            });
+            reduceBlocksTasks.push_back(std::move(reduceIthBlock));
+        }
     }
 
     auto lastReduceDeviceId = deviceIds[blocksInVector];
