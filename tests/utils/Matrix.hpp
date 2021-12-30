@@ -172,7 +172,7 @@ namespace utils {
             return true;
         }
 
-        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m, bool useError = UseError<T>(), T error = GetError<T>()) const {
+        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Matrix> &m) const {
             if (m->GetNrows() != GetNrows() || m->GetNcols() != GetNcols()) {
                 std::cout << "Size mismatched" << std::endl;
                 return false;
@@ -235,8 +235,9 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (!useError && a != b))
+                if (!utils::EqWithError(a, b)) {
                     return false;
+                }
             }
 
             return true;
