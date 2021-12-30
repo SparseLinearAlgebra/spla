@@ -43,7 +43,10 @@ namespace spla {
                                                          unsigned int byteSize,
                                                          const std::string &reduceOp,
                                                          boost::compute::command_queue &queue) {
+
+#ifndef SPLA_TEST_REDUCE2
         assert(false && "Usage of spla::Reduce2 is not stable at this moment");
+#endif
 
         using namespace boost;
 

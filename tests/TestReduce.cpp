@@ -28,6 +28,9 @@
 #include <Testing.hpp>
 #include <compute/SplaReduce.hpp>
 
+#define SPLA_TEST_REDUCE2
+#include <compute/SplaReduce2.hpp>
+
 void TestReduceAlignedValues(
         const std::vector<unsigned char> &values,
         const std::vector<unsigned char> &valuesExpected) {
@@ -72,7 +75,7 @@ TEST(Reduce, Empty) {
 
 template<typename T, std::size_t ValueSize = sizeof(T), typename Reduce>
 std::array<unsigned char, ValueSize> ReduceCpu(const std::vector<unsigned char> &values, Reduce f) {
-    std::array<unsigned char, ValueSize> result;
+    std::array<unsigned char, ValueSize> result{};
     if (values.empty()) {
         std::fill(result.begin(), result.end(), 0);
         return result;
@@ -89,7 +92,8 @@ std::array<unsigned char, ValueSize> ReduceCpu(const std::vector<unsigned char> 
     return result;
 }
 
-void ReduceStress(std::size_t n, std::size_t seed) {
+template<typename ComputeReduce>
+void ReduceStress(std::size_t n, std::size_t seed, ComputeReduce computeReduce) {
     using T = std::uint32_t;
     constexpr std::size_t valueByteSize = sizeof(T);
 
@@ -114,7 +118,7 @@ void ReduceStress(std::size_t n, std::size_t seed) {
 
     compute::vector<std::uint8_t> dValues(values, queue);
 
-    compute::vector<std::uint8_t> reduced = spla::Reduce(dValues, sizeof(T), op, queue);
+    compute::vector<std::uint8_t> reduced = computeReduce(dValues, sizeof(T), op, queue);
     queue.finish();
 
     std::array<unsigned char, sizeof(T)> reducedActual{};
@@ -124,22 +128,35 @@ void ReduceStress(std::size_t n, std::size_t seed) {
     EXPECT_EQ(reducedExpected, reducedActual);
 }
 
-void ReduceStressSeries(std::size_t iterations, std::size_t n) {
+template<typename ComputeReduce>
+void ReduceStressSeries(std::size_t iterations, std::size_t n, ComputeReduce reduce) {
     for (std::size_t i = 0; i < iterations; ++i) {
-        ReduceStress(n, std::chrono::steady_clock::now().time_since_epoch().count());
+        ReduceStress(n, std::chrono::steady_clock::now().time_since_epoch().count(), reduce);
     }
 }
 
 TEST(ReduceStress, Small) {
-    ReduceStressSeries(60, 500);
+    ReduceStressSeries(60, 500, spla::Reduce);
 }
 
 TEST(ReduceStress, Medium) {
-    ReduceStressSeries(50, 10000);
+    ReduceStressSeries(50, 10000, spla::Reduce);
 }
 
 TEST(ReduceStress, Large) {
-    ReduceStressSeries(10, 100000);
+    ReduceStressSeries(10, 100000, spla::Reduce);
+}
+
+TEST(Reduce2Stress, Small) {
+    ReduceStressSeries(60, 500, spla::Reduce2);
+}
+
+TEST(Reduce2Stress, Medium) {
+    ReduceStressSeries(50, 10000, spla::Reduce2);
+}
+
+TEST(Reduce2Stress, Large) {
+    ReduceStressSeries(10, 100000, spla::Reduce2);
 }
 
 SPLA_GTEST_MAIN
