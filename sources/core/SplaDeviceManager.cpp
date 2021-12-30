@@ -77,7 +77,7 @@ std::vector<spla::DeviceManager::DeviceId> spla::DeviceManager::FetchDevices(std
     std::lock_guard<std::mutex> lockGuard(mMutex);
 
     if (!required)
-        return std::vector<DeviceId>();
+        return {};
 
     assert(node);
     auto desc = node->GetDescriptor();

@@ -24,48 +24,34 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLASCALARBUFFER_HPP
+#define SPLA_SPLASCALARBUFFER_HPP
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <storage/SplaScalarValue.hpp>
 
-#include <cstddef>
+namespace spla::detail {
 
-namespace utils {
+    class ScalarBuffer {
+    public:
+        void Add(RefPtr<ScalarValue> scalar);
 
-    template<typename T>
-    bool UseError();
+        [[nodiscard]] std::size_t GetNScalars() const noexcept;
 
-    template<typename T>
-    T GetError();
+        [[nodiscard]] RefPtr<ScalarValue> FirstScalar() const;
 
-    template<>
-    bool UseError<float>() { return true; }
+        [[nodiscard]] boost::compute::vector<unsigned char> Reduce(const RefPtr<FunctionBinary> &reduce,
+                                                                   boost::compute::command_queue &queue);
 
-    template<>
-    float GetError<float>() { return 1e-5f; }
+    private:
+        [[nodiscard]] std::size_t BuildSharedBuffer(std::size_t byteSize,
+                                                    boost::compute::vector<unsigned char> &buffer,
+                                                    boost::compute::command_queue &queue) const;
 
-    template<>
-    bool UseError<std::int32_t>() { return false; }
+        mutable std::mutex mMutex;
+        std::deque<RefPtr<ScalarValue>> mScalars;
+    };
 
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
+}// namespace spla::detail
 
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
-    }
-
-    template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
-    }
-
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+#endif//SPLA_SPLASCALARBUFFER_HPP

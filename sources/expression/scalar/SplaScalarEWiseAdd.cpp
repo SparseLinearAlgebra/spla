@@ -25,47 +25,56 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <algo/SplaAlgorithmManager.hpp>
+#include <compute/SplaAdd.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <expression/scalar/SplaScalarEWiseAdd.hpp>
 
-#include <cstddef>
+bool spla::ScalarEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+    return true;
+}
 
-namespace utils {
+void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto node = nodes[nodeIdx];
+    auto library = expression.GetLibrary().GetPrivatePtr();
+    auto logger = library->GetLogger();
 
-    template<typename T>
-    bool UseError();
+    auto argResult = node->GetArg(0).Cast<Scalar>();
+    auto argAdd = node->GetArg(1).Cast<FunctionBinary>();
+    auto argA = node->GetArg(2).Cast<Scalar>();
+    auto argB = node->GetArg(3).Cast<Scalar>();
+    auto desc = node->GetDescriptor();
 
-    template<typename T>
-    T GetError();
+    assert(argResult.IsNotNull());
+    assert(argAdd.IsNotNull());
+    assert(argA.IsNotNull());
+    assert(argB.IsNotNull());
+    assert(desc.IsNotNull());
 
-    template<>
-    bool UseError<float>() { return true; }
+    auto deviceId = library->GetDeviceManager().FetchDevice(node);
 
-    template<>
-    float GetError<float>() { return 1e-5f; }
+    builder.Emplace([=]() {
+        auto device = library->GetDeviceManager().GetDevice(deviceId);
+        boost::compute::context ctx = library->GetContext();
+        boost::compute::command_queue queue(ctx, device);
 
-    template<>
-    bool UseError<std::int32_t>() { return false; }
+        QueueFinisher finisher(queue);
+        argResult->GetStorage()->SetValue(ScalarValue::Make(
+                Add(argA->GetStorage()->GetValue()->GetVal(),
+                    argB->GetStorage()->GetValue()->GetVal(),
+                    argResult->GetType()->GetByteSize(),
+                    argAdd->GetSource(),
+                    queue)));
 
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
+        SPDLOG_LOGGER_TRACE(logger, "Scalar addition: [{}] x [{}] -> [{}]",
+                            argAdd->GetA()->GetByteSize(),
+                            argAdd->GetB()->GetByteSize(),
+                            argResult->GetType()->GetByteSize());
+    });
+}
 
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
-    }
-
-    template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
-    }
-
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+spla::ExpressionNode::Operation spla::ScalarEWiseAdd::GetOperationType() const {
+    return ExpressionNode::Operation::ScalarEWiseAdd;
+}

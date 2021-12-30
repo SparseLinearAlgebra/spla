@@ -37,8 +37,6 @@
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <core/SplaError.hpp>
 
-#include <cassert>
-
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());

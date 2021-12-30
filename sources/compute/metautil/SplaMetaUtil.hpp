@@ -27,14 +27,13 @@
 #ifndef SPLA_SPLAMETAUTIL_HPP
 #define SPLA_SPLAMETAUTIL_HPP
 
-namespace spla::detail {
-    using namespace boost;
-    using compute::uint_;
-    using MetaKernel = compute::detail::meta_kernel;
+namespace spla::detail::meta {
+    using boost::compute::uint_;
+    using MetaKernel = boost::compute::detail::meta_kernel;
 
     struct DeclareMultiKey {
-        const std::string Name;
-        const std::size_t KeySize;
+        const std::string Name{};
+        const std::size_t KeySize{};
     };
 
     inline MetaKernel &operator<<(MetaKernel &k, const DeclareMultiKey &key) {
@@ -45,8 +44,8 @@ namespace spla::detail {
     }
 
     struct DeclareVal {
-        const std::string Name;
-        const std::size_t vBytes;
+        const std::string Name{};
+        const std::size_t vBytes{};
     };
 
     inline MetaKernel &operator<<(MetaKernel &k, const DeclareVal &v) {
@@ -70,7 +69,7 @@ namespace spla::detail {
         }
 
     private:
-        const std::string mName;
+        const std::string mName{};
     };
 
     class KeyArrItem : public VMultiKey {
@@ -82,41 +81,40 @@ namespace spla::detail {
         }
 
     private:
-        const std::string mArr;
-        const std::string mIdx;
+        const std::string mArr{};
+        const std::string mIdx{};
     };
 
     class KeyVec : public VMultiKey {
     public:
         explicit KeyVec(
-                const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &vectors,
+                const std::vector<std::reference_wrapper<const boost::compute::vector<uint_>>> &vectors,
                 std::string idx,
                 MetaKernel &k)
             : mIdx(std::move(idx)) {
             mBuffersNames.reserve(vectors.size());
-            for (const compute::vector<uint_> &v : vectors) {
+            for (const boost::compute::vector<uint_> &v : vectors) {
+                mBuffersNames.push_back(k.template get_buffer_identifier<uint_>(v.get_buffer()));
+            }
+        }
+
+        explicit KeyVec(const std::vector<std::reference_wrapper<boost::compute::vector<uint_>>> &vectors,
+                        std::string idx,
+                        MetaKernel &k)
+            : mIdx(std::move(idx)) {
+            mBuffersNames.reserve(vectors.size());
+            for (const boost::compute::vector<uint_> &v : vectors) {
                 mBuffersNames.push_back(k.template get_buffer_identifier<uint_>(v.get_buffer()));
             }
         }
 
         explicit KeyVec(
-                const std::vector<std::reference_wrapper<compute::vector<uint_>>> &vectors,
-                std::string idx,
-                MetaKernel &k)
-            : mIdx(std::move(idx)) {
-            mBuffersNames.reserve(vectors.size());
-            for (const compute::vector<uint_> &v : vectors) {
-                mBuffersNames.push_back(k.template get_buffer_identifier<uint_>(v.get_buffer()));
-            }
-        }
-
-        explicit KeyVec(
-                const std::vector<compute::vector<uint_>::iterator> &iterators,
+                const std::vector<boost::compute::vector<uint_>::iterator> &iterators,
                 std::string idx,
                 MetaKernel &k)
             : mIdx(std::move(idx)) {
             mBuffersNames.reserve(iterators.size());
-            for (const compute::vector<uint_>::iterator &it : iterators) {
+            for (const boost::compute::vector<uint_>::iterator &it : iterators) {
                 mBuffersNames.push_back(k.template get_buffer_identifier<uint_>(it.get_buffer()));
             }
         }
@@ -126,8 +124,8 @@ namespace spla::detail {
         }
 
     private:
-        std::vector<std::string> mBuffersNames;
-        const std::string mIdx;
+        std::vector<std::string> mBuffersNames{};
+        const std::string mIdx{};
     };
 
     class VAlignedValue {
@@ -152,7 +150,7 @@ namespace spla::detail {
         }
 
     private:
-        std::string mName;
+        std::string mName{};
     };
 
     class ValArrItem : public VAlignedValue {
@@ -160,12 +158,12 @@ namespace spla::detail {
         explicit ValArrItem(std::string arr, std::string idx, std::size_t vBytes)
             : mArr(std::move(arr)), mIdx(std::move(idx)), mVBytes(vBytes) {}
 
-        explicit ValArrItem(const compute::vector<unsigned char>::iterator &it, std::string idx, std::size_t vBytes, MetaKernel &k)
+        explicit ValArrItem(const boost::compute::vector<unsigned char>::iterator &it, std::string idx, std::size_t vBytes, MetaKernel &k)
             : mArr(k.get_buffer_identifier<unsigned char>(it.get_buffer())),
               mIdx(std::move(idx)), mVBytes(vBytes) {}
 
 
-        explicit ValArrItem(const compute::vector<unsigned char> &v, std::string idx, std::size_t vBytes, MetaKernel &k)
+        explicit ValArrItem(const boost::compute::vector<unsigned char> &v, std::string idx, std::size_t vBytes, MetaKernel &k)
             : mArr(k.get_buffer_identifier<unsigned char>(v.get_buffer())),
               mIdx(std::move(idx)), mVBytes(vBytes) {}
 
@@ -182,14 +180,14 @@ namespace spla::detail {
         }
 
     private:
-        std::string mArr;
-        std::string mIdx;
-        std::size_t mVBytes;
+        std::string mArr{};
+        std::string mIdx{};
+        std::size_t mVBytes{};
     };
 
     struct AssignKey {
         const VMultiKey &Left, &Right;
-        const std::size_t KeySize;
+        const std::size_t KeySize{};
     };
 
     inline MetaKernel &operator<<(MetaKernel &k, const AssignKey &key) {
@@ -202,7 +200,7 @@ namespace spla::detail {
 
     struct CompareKey {
         const VMultiKey &Left, &Right;
-        const std::size_t KeySize;
+        const std::size_t KeySize{};
     };
 
     inline MetaKernel &operator<<(MetaKernel &k, const CompareKey &comp) {
@@ -218,7 +216,7 @@ namespace spla::detail {
 
     struct AssignVal {
         const VAlignedValue &Left, &Right;
-        const std::size_t vBytes;
+        const std::size_t vBytes{};
     };
 
     inline MetaKernel &operator<<(MetaKernel &k, const AssignVal &v) {
@@ -241,7 +239,7 @@ namespace spla::detail {
         virtual ~ReduceApplication() = default;
 
     protected:
-        const std::string mOpName;
+        const std::string mOpName{};
         const VAlignedValue &mA, &mB, &mC;
     };
 
@@ -266,7 +264,7 @@ namespace spla::detail {
         }
 
     private:
-        const std::size_t mVBytes;
+        const std::size_t mVBytes{};
     };
 
     class ReduceApplicationRestrict : public ReduceApplication {
@@ -289,7 +287,7 @@ namespace spla::detail {
         Global
     };
 
-    inline std::string MakeVisibilityString(Visibility v) {
+    inline std::string PrintVisibility(Visibility v) {
         std::string s;
         switch (v) {
             case (Visibility::Unspecified):
@@ -307,34 +305,41 @@ namespace spla::detail {
         return s;
     };
 
-    class ReduceOp {
+    inline std::string MakeFunction(const std::string &name, const std::string &body, Visibility accessA, Visibility accessB, Visibility accessC) {
+        std::stringstream fun;
+        fun << "void " << name << " ("
+            << PrintVisibility(accessA) << " const void* vp_a, "
+            << PrintVisibility(accessB) << " const void* vp_b, "
+            << PrintVisibility(accessC) << " void* vp_c) {\n"
+            << "#define _ACCESS_A " << PrintVisibility(accessA) << "\n"
+            << "#define _ACCESS_B " << PrintVisibility(accessB) << "\n"
+            << "#define _ACCESS_C " << PrintVisibility(accessC) << "\n"
+            << body << "\n"
+            << "#undef _ACCESS_A\n"
+            << "#undef _ACCESS_B\n"
+            << "#undef _ACCESS_C\n"
+            << "}";
+        return fun.str();
+    }
+
+    class FunctionApplication {
     public:
-        explicit ReduceOp(MetaKernel &k,
-                          std::string reduceOpName,
-                          const std::string &body,
-                          std::size_t vBytes,
-                          Visibility aVisibility = Visibility::Unspecified,
-                          Visibility bVisibility = Visibility::Unspecified,
-                          Visibility cVisibility = Visibility::Unspecified)
-            : mReduceOpName(std::move(reduceOpName)),
-              mVBytes(vBytes) {
-            std::stringstream splaReduceOp;
+        explicit FunctionApplication(MetaKernel &k,
+                                     std::string reduceOpName,
+                                     const std::string &body,
+                                     std::size_t vBytes,
+                                     Visibility aVisibility = Visibility::Unspecified,
+                                     Visibility bVisibility = Visibility::Unspecified,
+                                     Visibility cVisibility = Visibility::Unspecified)
+            : FunctionApplication(k, reduceOpName, body, std::optional(vBytes), aVisibility, bVisibility, cVisibility) {}
 
-            std::string aAccess = MakeVisibilityString(aVisibility);
-            std::string bAccess = MakeVisibilityString(bVisibility);
-            std::string cAccess = MakeVisibilityString(cVisibility);
-
-            splaReduceOp << "void " << mReduceOpName << "(const " << aAccess << " void* vp_a, const " << bAccess << " void* vp_b, " << cAccess << " void* vp_c) {\n"
-                         << "#define _ACCESS_A " << aAccess << "\n"
-                         << "#define _ACCESS_B " << bAccess << "\n"
-                         << "#define _ACCESS_C " << cAccess << "\n"
-                         << "   " << body << "\n"
-                         << "#undef _ACCESS_A\n"
-                         << "#undef _ACCESS_B\n"
-                         << "#undef _ACCESS_C\n"
-                         << "}";
-            k.add_function(mReduceOpName, splaReduceOp.str());
-        }
+        explicit FunctionApplication(MetaKernel &k,
+                                     std::string reduceOpName,
+                                     const std::string &body,
+                                     Visibility aVisibility = Visibility::Unspecified,
+                                     Visibility bVisibility = Visibility::Unspecified,
+                                     Visibility cVisibility = Visibility::Unspecified)
+            : FunctionApplication(k, reduceOpName, body, std::nullopt, aVisibility, bVisibility, cVisibility) {}
 
         std::shared_ptr<ReduceApplication> Apply(const VAlignedValue &left,
                                                  const VAlignedValue &right,
@@ -345,28 +350,40 @@ namespace spla::detail {
             if (lPtr != resPtr && rPtr != resPtr) {
                 return std::make_shared<ReduceApplicationRestrict>(mReduceOpName, left, right, result);
             }
-            return std::make_shared<ReduceApplicationNonRestrict>(mReduceOpName, left, right, result, mVBytes);
+            assert(mVBytes.has_value() && "To invoke function (non-restrict) value byte size is required");
+            return std::make_shared<ReduceApplicationNonRestrict>(mReduceOpName, left, right, result, mVBytes.value());
         }
 
     private:
+        explicit FunctionApplication(MetaKernel &k,
+                                     std::string reduceOpName,
+                                     const std::string &body,
+                                     std::optional<std::size_t> vBytes,
+                                     Visibility aVisibility,
+                                     Visibility bVisibility,
+                                     Visibility cVisibility)
+            : mReduceOpName(std::move(reduceOpName)),
+              mVBytes(vBytes) {
+
+            std::stringstream splaReduceOp;
+
+            std::string aAccess = PrintVisibility(aVisibility);
+            std::string bAccess = PrintVisibility(bVisibility);
+            std::string cAccess = PrintVisibility(cVisibility);
+
+            splaReduceOp << MakeFunction(mReduceOpName,
+                                         body,
+                                         aVisibility,
+                                         bVisibility,
+                                         cVisibility);
+
+            k.add_function(mReduceOpName, splaReduceOp.str());
+        }
+
         const std::string mReduceOpName{};
-        const std::size_t mVBytes{};
+        const std::optional<std::size_t> mVBytes{};
     };
 
-    inline std::string MakeFunction(const std::string &name, const std::string &body, const std::string &accessA, const std::string &accessB, const std::string &accessC) {
-        std::stringstream fun;
-        fun << "void " << name << " (" << accessA << " const void* vp_a, " << accessB << " const void* vp_b, " << accessC << " void* vp_c) {\n"
-            << "#define _ACCESS_A " << accessA << "\n"
-            << "#define _ACCESS_B " << accessB << "\n"
-            << "#define _ACCESS_C " << accessC << "\n"
-            << body << "\n"
-            << "#undef _ACCESS_A\n"
-            << "#undef _ACCESS_B\n"
-            << "#undef _ACCESS_C\n"
-            << "}";
-        return fun.str();
-    }
-
-}// namespace spla::detail
+}// namespace spla::detail::meta
 
 #endif//SPLA_SPLAMETAUTIL_HPP

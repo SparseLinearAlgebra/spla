@@ -24,48 +24,38 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLAADD_HPP
+#define SPLA_SPLAADD_HPP
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <boost/compute.hpp>
+#include <boost/compute/detail/meta_kernel.hpp>
 
-#include <cstddef>
+#include <compute/metautil/SplaMetaUtil.hpp>
 
-namespace utils {
 
-    template<typename T>
-    bool UseError();
+namespace spla {
 
-    template<typename T>
-    T GetError();
+    inline boost::compute::vector<unsigned char> Add(const boost::compute::vector<unsigned char> &a,
+                                                     const boost::compute::vector<unsigned char> &b,
+                                                     std::size_t resultByteSize,
+                                                     const std::string &addBody,
+                                                     boost::compute::command_queue &queue) {
+        using namespace boost;
+        using namespace detail::meta;
 
-    template<>
-    bool UseError<float>() { return true; }
+        compute::detail::meta_kernel k("spla_scalar_add");
 
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
+        FunctionApplication add(k, "spla_scalar_add_func", addBody,
+                                Visibility::Global,
+                                Visibility::Global,
+                                Visibility::Global);
+        compute::vector<unsigned char> result(resultByteSize, queue.get_context());
+        compute::fill(result.begin(), result.end(), 0, queue);// TODO: Remove it maybe?
+        k << add.Apply(ValArrItem(a, "0", a.size(), k), ValArrItem(b, "0", b.size(), k), ValArrItem(result, "0", resultByteSize, k));
+        k.exec(queue);
+        return result;
     }
 
-    template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
-    }
+}// namespace spla
 
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+#endif//SPLA_SPLAADD_HPP

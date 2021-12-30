@@ -71,8 +71,12 @@ namespace spla {
             MatrixEWiseAdd,
             /** Vector element-wise addition */
             VectorEWiseAdd,
+            /** Scalar addition */
+            ScalarEWiseAdd,
             /** Reduce vector elements */
             VectorReduce,
+            /** Reduce matrix elements to scalar */
+            ReduceScalar,
             /** Matrix-matrix multiplication */
             MxM,
             /** Vector-matrix multiplication */
@@ -158,9 +162,10 @@ namespace spla {
                     return "MxV";
                 case ExpressionNode::Operation::Transpose:
                     return "Transpose";
-
-                default:
-                    return "Unknown";
+                case ExpressionNode::Operation::ScalarEWiseAdd:
+                    return "ScalarEWiseAdd";
+                case ExpressionNode::Operation::ReduceScalar:
+                    return "ReduceScalar";
             }
         }
     }// namespace

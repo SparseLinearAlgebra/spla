@@ -25,47 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <algo/SplaAlgorithmParams.hpp>
+#include <compute/SplaReduce2.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <utils/SplaScalarBuffer.hpp>
 
-#include <cstddef>
+void spla::detail::ScalarBuffer::Add(RefPtr<ScalarValue> scalar) {
+    assert(scalar.IsNotNull());
+    std::scoped_lock guard(mMutex);
+    mScalars.push_back(std::move(scalar));
+}
 
-namespace utils {
+std::size_t spla::detail::ScalarBuffer::GetNScalars() const noexcept {
+    return mScalars.size();
+}
 
-    template<typename T>
-    bool UseError();
+spla::RefPtr<spla::ScalarValue> spla::detail::ScalarBuffer::FirstScalar() const {
+    return mScalars.front();
+}
 
-    template<typename T>
-    T GetError();
+std::size_t spla::detail::ScalarBuffer::BuildSharedBuffer(std::size_t byteSize, boost::compute::vector<unsigned char> &buffer, boost::compute::command_queue &queue) const {
+    if (mScalars.empty()) {
+        buffer.resize(0, queue);
+        return 0;
+    }
+    buffer.resize(mScalars.size() * byteSize, queue);
+    std::size_t offset = 0;
+    for (const auto &scalarValue : mScalars) {
+        assert(scalarValue.IsNotNull());
+        const auto &curValue = scalarValue->GetVal();
+        boost::compute::copy(curValue.begin(), curValue.end(),
+                             buffer.begin() + static_cast<std::ptrdiff_t>(offset),
+                             queue);
+        offset += byteSize;
+    }
+    return mScalars.size();
+}
 
-    template<>
-    bool UseError<float>() { return true; }
+boost::compute::vector<unsigned char> spla::detail::ScalarBuffer::Reduce(const spla::RefPtr<spla::FunctionBinary> &reduce,
+                                                                         boost::compute::command_queue &queue) {
 
-    template<>
-    float GetError<float>() { return 1e-5f; }
+    auto ctx = queue.get_context();
 
-    template<>
-    bool UseError<std::int32_t>() { return false; }
+    const std::size_t valueByteSize = reduce->GetA()->GetByteSize();
 
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
+    if (GetNScalars() == 1) {
+        auto &value = FirstScalar()->GetVal();
+        return {value, queue};
     }
 
-    template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
-    }
+    boost::compute::vector<unsigned char> buffer(ctx);
+    const std::size_t nnzInBuffer = BuildSharedBuffer(valueByteSize, buffer, queue);
 
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+    return Reduce2(buffer, valueByteSize, reduce->GetSource(), queue);
+}

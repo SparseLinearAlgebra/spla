@@ -24,48 +24,23 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLAREDUCECOO_HPP
+#define SPLA_SPLAREDUCECOO_HPP
 
-#ifndef SPLA_TYPETRAITS_HPP
-#define SPLA_TYPETRAITS_HPP
+#include <algo/SplaAlgorithm.hpp>
 
-#include <cstddef>
+namespace spla {
 
-namespace utils {
+    class ReduceScalarCOO : public Algorithm {
+    public:
+        ~ReduceScalarCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
 
-    template<typename T>
-    bool UseError();
+}// namespace spla
 
-    template<typename T>
-    T GetError();
 
-    template<>
-    bool UseError<float>() { return true; }
-
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
-
-    template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return std::abs(a - b) <= GetError<T>();
-    }
-
-    template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
-            return a == b;
-        }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
-    }
-
-}// namespace utils
-
-#endif//SPLA_TYPETRAITS_HPP
+#endif//SPLA_SPLAREDUCECOO_HPP

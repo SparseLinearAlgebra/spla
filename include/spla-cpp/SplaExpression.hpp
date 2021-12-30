@@ -259,6 +259,46 @@ namespace spla {
                                           const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * Make matrix reduce to scalar node.
+         * Behaviour: w = accum(w, reduce(a[i,j] for (i,j) if (i,j) in mask, op))
+         *
+         * @param w Scalar to store result of type @p t
+         * @param mask Matrix mask to filter input
+         * @param accum Function to accumulate result :: t x t -> t
+         * @param op Function to reduce :: t x t -> t
+         * @param a Matrix to reduce of type t
+         * @param desc Description, which can have Complement flag
+         *
+         * @note
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeReduceScalar(const RefPtr<Scalar> &w,
+                                                const RefPtr<Matrix> &mask,
+                                                const RefPtr<FunctionBinary> &accum,
+                                                const RefPtr<FunctionBinary> &op,
+                                                const RefPtr<Matrix> &a,
+                                                const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * Make scalar add expression node.
+         * Operation is evaluated as `w = a +(op) b`.
+         *
+         * @param w Scalar to store result
+         * @param op Binary op to sum input scalars
+         * @param a Input a scalar
+         * @param b Input b scalar
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeEWiseAdd(const RefPtr<Scalar> &w,
+                                            const RefPtr<FunctionBinary> &op,
+                                            const RefPtr<Scalar> &a,
+                                            const RefPtr<Scalar> &b,
+                                            const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make matrix masked element-wise add expression node.
          * Operation is evaluated as `w<mask> = a +(op) b`.
          *
