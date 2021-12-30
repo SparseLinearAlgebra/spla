@@ -32,31 +32,55 @@
 
 namespace utils {
 
-    template<typename T>
-    bool UseError();
+    template<bool IsComparable, typename = void>
+    struct Comparable {
+        static constexpr bool comparable = IsComparable;
+    };
+
+    template<bool DoUseError>
+    struct ComparableWithError : Comparable<true> {
+        static constexpr bool useError = DoUseError;
+    };
+
+    template<typename T, typename = void>
+    struct ComparisonHelper : Comparable<false> {
+        static constexpr T GetError() {
+            // Will not be executed
+            return 0;
+        }
+    };
 
     template<typename T>
-    T GetError();
-
-    template<>
-    bool UseError<float>() { return true; }
-
-    template<>
-    float GetError<float>() { return 1e-5f; }
-
-    template<>
-    bool UseError<std::int32_t>() { return false; }
-
-    template<>
-    std::int32_t GetError<std::int32_t>() { return 0; }
+    inline constexpr bool UseError() {
+        static_assert(ComparisonHelper<T>::comparable);
+        return ComparisonHelper<T>::useError;
+    }
 
     template<typename T>
-    bool EqWithError(T a, T b) {
-        if (!UseError<T>()) {
+    inline constexpr T GetError() {
+        static_assert(ComparisonHelper<T>::comparable);
+        return ComparisonHelper<T>::GetError();
+    }
+
+    template<typename T>
+    inline constexpr bool EqWithError(T a, T b) {
+        if constexpr (UseError<T>()) {
+            return std::abs(a - b) < GetError<T>();
+        } else {
             return a == b;
         }
-        return std::abs(a - b) <= GetError<T>();
     }
+
+    template<typename T>
+    struct ComparisonHelper<T, std::enable_if_t<std::is_floating_point_v<T>>> : ComparableWithError<true> {
+        static constexpr T GetError() {
+            return static_cast<T>(1e-5);
+        }
+    };
+
+    template<typename T>
+    struct ComparisonHelper<T, std::enable_if_t<std::is_integral_v<T>>> : ComparableWithError<false> {
+    };
 
     template<typename T>
     bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {

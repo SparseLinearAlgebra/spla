@@ -97,7 +97,7 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
                         intermediateBuffer->Add(params.scalar);
                     }
 
-                    SPDLOG_LOGGER_TRACE(logger, "ReduceScalar: block ({}, {}) nnz={}", i, j, params.matrix->GetNvals());
+                    SPDLOG_LOGGER_TRACE(logger, "Reduce matrix block ({}, {}) nnz={}", i, j, params.matrix->GetNvals());
                 });
                 reduceBlocksTasks.push_back(std::move(reduceAnotherBlock));
             }
@@ -126,7 +126,7 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
         }
 
         SPDLOG_LOGGER_TRACE(logger,
-                            "ReduceScalar: final reduce of intermediate buffer, nnz={}, accum: {}",
+                            "Reduce final reduce of intermediate buffer, nnz={}, accum: {}",
                             reducedBufferSize / valueByteSize,
                             hasAccum ? "true" : "false");
     });

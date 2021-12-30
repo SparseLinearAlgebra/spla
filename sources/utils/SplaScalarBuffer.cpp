@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <algo/SplaAlgorithmParams.hpp>
+#include <compute/SplaReduce.hpp>
 #include <compute/SplaReduce2.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <utils/SplaScalarBuffer.hpp>
@@ -77,5 +78,5 @@ boost::compute::vector<unsigned char> spla::detail::ScalarBuffer::Reduce(const s
     boost::compute::vector<unsigned char> buffer(ctx);
     const std::size_t nnzInBuffer = BuildSharedBuffer(valueByteSize, buffer, queue);
 
-    return Reduce2(buffer, valueByteSize, reduce->GetSource(), queue);
+    return ::spla::Reduce(buffer, valueByteSize, reduce->GetSource(), queue);
 }
