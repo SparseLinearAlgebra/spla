@@ -26,9 +26,9 @@
 /**********************************************************************************/
 
 #include <Testing.hpp>
-#include <compute/SplaReduce.hpp>
 
-#define SPLA_TEST_REDUCE2
+#define SPLA_TEST_REDUCE
+#include <compute/SplaReduce.hpp>
 #include <compute/SplaReduce2.hpp>
 
 void TestReduceAlignedValues(
@@ -94,7 +94,7 @@ std::array<unsigned char, ValueSize> ReduceCpu(const std::vector<unsigned char> 
 
 template<typename ComputeReduce>
 void ReduceStress(std::size_t n, std::size_t seed, ComputeReduce computeReduce) {
-    using T = std::uint32_t;
+    using T = std::int32_t;
     constexpr std::size_t valueByteSize = sizeof(T);
 
     namespace compute = boost::compute;
@@ -125,13 +125,17 @@ void ReduceStress(std::size_t n, std::size_t seed, ComputeReduce computeReduce) 
     compute::copy(reduced.begin(), reduced.end(), reducedActual.begin(), queue);
     std::array<unsigned char, sizeof(T)> reducedExpected = ReduceCpu<T>(values, [](T a, T b) { return a + b; });
 
+    T reducedNumberExpected = *reducedExpected.data();
+    T reducedNumberActual = *reducedActual.data();
+
+    EXPECT_EQ(reducedNumberExpected, reducedNumberActual);
     EXPECT_EQ(reducedExpected, reducedActual);
 }
 
 template<typename ComputeReduce>
 void ReduceStressSeries(std::size_t iterations, std::size_t n, ComputeReduce reduce) {
     for (std::size_t i = 0; i < iterations; ++i) {
-        ReduceStress(n, std::chrono::steady_clock::now().time_since_epoch().count(), reduce);
+        ReduceStress(n, i, reduce);
     }
 }
 

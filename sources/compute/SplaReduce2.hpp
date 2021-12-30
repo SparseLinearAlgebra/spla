@@ -44,15 +44,11 @@ namespace spla {
                                                          const std::string &reduceOp,
                                                          boost::compute::command_queue &queue) {
 
-#ifndef SPLA_TEST_REDUCE2
-        assert(false && "Usage of spla::Reduce2 is not stable at this moment");
-#endif
-
         using namespace boost;
 
         auto ctx = queue.get_context();
         auto device = queue.get_device();
-        std::size_t count = values.size();
+        std::size_t count = values.size() / byteSize;
 
         assert(!values.empty());
 

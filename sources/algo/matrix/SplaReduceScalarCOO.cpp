@@ -27,7 +27,6 @@
 
 #include <algo/matrix/SplaReduceScalarCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
-#include <compute/SplaReduce.hpp>
 #include <compute/SplaReduce2.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
@@ -85,7 +84,7 @@ void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
     }
 
     auto reduceValues = [&](const compute::vector<unsigned char> &values) {
-        return Reduce(values, byteSize, reduce->GetSource(), queue);
+        return Reduce2(values, byteSize, reduce->GetSource(), queue);
     };
 
     // Apply finally mask if required

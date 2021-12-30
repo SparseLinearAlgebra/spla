@@ -276,6 +276,10 @@ namespace spla {
                                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
+#ifndef SPLA_TEST_REDUCE
+        assert(false && "Use spla::Reduce2 instead of spla::Reduce");
+#endif
+
         const compute::context &ctx = queue.get_context();
         boost::compute::vector<unsigned char> result(valueByteSize, ctx);
         compute::fill(result.begin(), result.end(), 0, queue);
