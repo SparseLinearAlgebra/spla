@@ -48,6 +48,11 @@ namespace utils {
             // Will not be executed
             return 0;
         }
+
+        static constexpr T GetRelativeErrorPart() {
+            // Will not be executed
+            return 0;
+        }
     };
 
     template<typename T>
@@ -60,6 +65,12 @@ namespace utils {
     inline constexpr T GetError() {
         static_assert(ComparisonHelper<T>::comparable);
         return ComparisonHelper<T>::GetError();
+    }
+
+    template<typename T>
+    inline constexpr T GetRelativeErrorPart() {
+        static_assert(ComparisonHelper<T>::comparable);
+        return ComparisonHelper<T>::GetRelativeErrorPart();
     }
 
     template<typename T>
@@ -76,6 +87,10 @@ namespace utils {
         static constexpr T GetError() {
             return static_cast<T>(1e-5);
         }
+
+        static constexpr T GetRelativeErrorPart() {
+            return static_cast<T>(0.001);
+        }
     };
 
     template<typename T>
@@ -83,11 +98,12 @@ namespace utils {
     };
 
     template<typename T>
-    bool EqWithRelativeError(T a, T b, T part = static_cast<T>(0.001)) {
-        if (!UseError<T>()) {
+    bool EqWithRelativeError(T a, T b) {
+        if constexpr (!UseError<T>()) {
             return a == b;
+        } else {
+            return (std::abs(a - b) / std::max(a, b)) <= GetRelativeErrorPart<T>();
         }
-        return (std::abs(a - b) / std::max(a, b)) <= part;
     }
 
 }// namespace utils
