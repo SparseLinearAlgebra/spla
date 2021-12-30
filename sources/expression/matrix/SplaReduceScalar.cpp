@@ -89,7 +89,10 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
                     params.desc = desc;
                     params.deviceId = deviceId;
                     params.matrix = block;
-                    params.mask = argMask->GetStorage()->GetBlock({i, j});
+                    params.hasMask = argMask.IsNotNull();
+                    params.mask = argMask.IsNotNull()
+                                          ? argMask->GetStorage()->GetBlock({i, j})
+                                          : nullptr;
                     params.type = argType;
                     params.reduce = argReduce;
                     library->GetAlgoManager()->Dispatch(Algorithm::Type::ReduceScalar, params);
@@ -106,6 +109,11 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
 
     auto lastReduceDeviceId = deviceIds.back();
     tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
+        if (intermediateBuffer->GetNScalars() == 0) {
+            argScalar->GetStorage()->RemoveValue();
+            return;
+        }
+
         auto &ctx = library->GetContext();
         auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
         QueueFinisher finisher(queue);

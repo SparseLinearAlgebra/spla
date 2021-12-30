@@ -27,7 +27,9 @@
 
 #include <algo/matrix/SplaReduceScalarCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
+#include <compute/SplaReduce.hpp>
 #include <compute/SplaReduce2.hpp>
+#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
@@ -61,12 +63,9 @@ void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
     auto mask = p->mask.Cast<MatrixCOO>();
     auto reduce = p->reduce;
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+    bool hasMask = p->hasMask;
 
-    // Nothing to do with an empty matrix
-    if (matrix.IsNull()) {
-        p->scalar = nullptr;
-        return;
-    }
+    CHECK_RAISE_ERROR(!(!p->hasMask && complementMask), InvalidState, "MaskComplement is set to true, but flag hasMask is false");
 
     // Nothing to do with a matrix that has been emptied by the mask
     if (p->hasMask && !complementMask && mask.IsNull()) {
@@ -74,12 +73,23 @@ void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
         return;
     }
 
+    // Mask is actually absent
+    if (p->hasMask && complementMask && mask.IsNull()) {
+        hasMask = false;
+    }
+
+    // Nothing to do with an empty matrix
+    if (matrix.IsNull()) {
+        p->scalar = nullptr;
+        return;
+    }
+
     auto reduceValues = [&](const compute::vector<unsigned char> &values) {
-        return Reduce2(values, byteSize, reduce->GetSource(), queue);
+        return Reduce(values, byteSize, reduce->GetSource(), queue);
     };
 
     // Apply finally mask if required
-    if (p->hasMask && mask.IsNotNull()) {
+    if (hasMask && mask.IsNotNull()) {
         // TODO: Avoid usage of cols and rows to reduce memory usage
 
         compute::vector<unsigned int> maskedRows(ctx);
@@ -93,6 +103,12 @@ void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
                   byteSize,
                   complementMask,
                   queue);
+        std::size_t maskedSize = maskedRows.size();
+
+        if (maskedSize == 0) {
+            p->scalar = nullptr;
+            return;
+        }
 
         p->scalar = ScalarValue::Make(reduceValues(maskedVals));
     } else {

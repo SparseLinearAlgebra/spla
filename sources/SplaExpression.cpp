@@ -425,6 +425,9 @@ spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeReduceScalar(const spla
     if (accum.IsNotNull()) {
         CHECK_RAISE_ERROR(accum->CanApply(*w, *w, *w), InvalidType, "Can't apply accum to provided objects");
     }
+    if (mask.IsNotNull()) {
+        CHECK_RAISE_ERROR(mask->GetDim() == a->GetDim(), DimensionMismatch, "Mask has incompatible size");
+    }
 
     std::vector<RefPtr<Object>> args = {
             w.As<Object>(),

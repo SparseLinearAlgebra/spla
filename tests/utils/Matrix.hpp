@@ -387,6 +387,10 @@ namespace utils {
             return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
         }
 
+        [[nodiscard]] bool IsEmpty() const {
+            return GetNvals() == 0;
+        }
+
         template<typename BinaryOp>
         [[nodiscard]] Matrix EWiseAdd(const Matrix<T> &other, BinaryOp op) const {
             assert(GetNrows() == other.GetNrows());
@@ -526,6 +530,18 @@ namespace utils {
             }
 
             return Matrix<T>(N, M, std::move(rowsT), std::move(colsT), std::move(valsT));
+        }
+
+        template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
+        [[nodiscard]] R Reduce(ReduceT reduce) {
+            if (mVals.empty()) {
+                throw std::invalid_argument("Unable to reduce empty matrix");
+            }
+            R result = mVals[0];
+            for (std::size_t i = 1; i < mVals.size(); ++i) {
+                result = reduce(result, mVals[i]);
+            }
+            return result;
         }
 
         [[nodiscard]] spla::RefPtr<spla::HostMatrix> ToHostMatrix() const {

@@ -27,20 +27,39 @@
 
 #include <Testing.hpp>
 
-template<typename Type, typename BinaryOp>
-void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
-                const spla::RefPtr<spla::Type> &spType,
-                const spla::RefPtr<spla::FunctionBinary> &spReduce,
-                BinaryOp reduce, std::size_t seed = 0) {
-    Type s = utils::UniformGenerator<Type>()();
-    utils::Vector v = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+enum class MaskStatus {
+    Absent,
+    Existent,
+    ExistentComplement,
+};
 
-    v.Fill(utils::UniformGenerator<Type>());
+template<typename Type>
+void testReduceScalar(spla::Library &library,
+                      std::size_t M, std::size_t N, std::size_t nvals,
+                      const spla::RefPtr<spla::Type> &spType,
+                      const spla::RefPtr<spla::FunctionBinary> &spReduce,
+                      MaskStatus maskStatus,
+                      const std::optional<std::pair<spla::RefPtr<spla::FunctionBinary>, std::function<Type(Type, Type)>>> &spApply,
+                      const std::function<Type(Type, Type)> &reduce,
+                      std::size_t seed) {
+
+    Type scalar = utils::UniformGenerator<Type>()();
+    const Type scalarInitialValue = scalar;
+    utils::Matrix matrix = utils::Matrix<Type>::Generate(M, N, nvals, seed).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned short>::Generate(M, N, nvals, seed * 12 + 3).SortReduceDuplicates();
+
+    utils::UniformGenerator<Type> generator;
+
+    matrix.Fill(std::ref(generator));
+    matrix.Fill(std::ref(generator));
 
     Type reducedActual{};
 
-    auto spV = spla::Vector::Make(M, spType, library);
-    auto spS = spla::Scalar::Make(spType, library);
+    auto spMatrix = spla::Matrix::Make(M, N, spType, library);
+    auto spMask = maskStatus == MaskStatus::Absent
+                          ? nullptr
+                          : spla::Matrix::Make(M, N, spla::Types::Void(library), library);
+    auto spScalar = spla::Scalar::Make(spType, library);
     auto spReadScalarData = spla::DataScalar::Make(library);
     spReadScalarData->SetValue(&reducedActual);
 
@@ -48,103 +67,177 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
     auto spDesc = spla::Descriptor::Make(library);
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+    if (maskStatus == MaskStatus::ExistentComplement) {
+        spDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+    }
 
     auto spExpr = spla::Expression::Make(library);
-    auto spWriteS = spExpr->MakeDataWrite(spS, utils::GetData(s, library));
-    auto spWriteV = spExpr->MakeDataWrite(spV, v.GetData(library), spDesc);
-    auto spReduceV = spExpr->MakeReduce(spS, spReduce, spV);
-    auto spReadS = spExpr->MakeDataRead(spS, spReadScalarData);
-    spExpr->Dependency(spWriteS, spReduceV);
-    spExpr->Dependency(spWriteV, spReduceV);
-    spExpr->Dependency(spReduceV, spReadS);
+    auto spWriteScalar = spExpr->MakeDataWrite(spScalar, utils::GetData(scalar, library));
+    auto spWriteMatrix = spExpr->MakeDataWrite(spMatrix, matrix.GetData(library), spDesc);
+    auto spWriteMask = maskStatus == MaskStatus::Absent
+                               ? nullptr
+                               : spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+
+    auto spReduceNode = spExpr->MakeReduceScalar(spScalar,
+                                                 spMask,
+                                                 spApply.has_value()
+                                                         ? spApply.value().first
+                                                         : nullptr,
+                                                 spReduce,
+                                                 spMatrix,
+                                                 spDesc);
+    auto spReadScalar = spExpr->MakeDataRead(spScalar, spReadScalarData);
+    spExpr->Dependency(spWriteScalar, spReduceNode);
+    spExpr->Dependency(spWriteMatrix, spReduceNode);
+    if (maskStatus != MaskStatus::Absent) {
+        spExpr->Dependency(spWriteMask, spReduceNode);
+    }
+    spExpr->Dependency(spReduceNode, spReadScalar);
     spExpr->SubmitWait();
+
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    ASSERT_TRUE(spS->HasValue());
+    Type reducedExpected{};
 
-    Type reducedExpected = v.Reduce(reduce);
+    if (maskStatus == MaskStatus::Absent) {
+        reducedExpected = matrix.Reduce(reduce);
+    } else {
+        auto matrixMasked = matrix.Mask(mask, maskStatus == MaskStatus::ExistentComplement);
+        if (matrixMasked.IsEmpty()) {
+            ASSERT_FALSE(spScalar->HasValue());
+            return;
+        }
+        reducedExpected = matrixMasked.Reduce(reduce);
+    }
+
+    ASSERT_TRUE(spScalar->HasValue());
+
+    if (spApply.has_value()) {
+        reducedExpected = spApply.value().second(scalarInitialValue, reducedExpected);
+    }
 
     if (!utils::EqWithRelativeError(reducedExpected, reducedActual)) {
         std::cout << std::setprecision(10)
                   << "Reduced values are not equal: "
                   << "expected: " << reducedExpected << ' '
                   << "actual: " << reducedActual << std::endl;
-        ASSERT_TRUE(false);
+        ASSERT_EQ(reducedExpected, reducedActual);
     }
 }
 
-template<typename Type>
-void testEmpty(spla::Library &library,
-               const spla::RefPtr<spla::Type> &spType,
-               const spla::RefPtr<spla::FunctionBinary> &spReduce) {
-    Type s = utils::UniformGenerator<Type>()();
-    Type reducedActual{};
+void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::uint32_t;
+        auto spT = spla::Types::UInt32(library);
+        auto spReduce = spla::Functions::PlusUInt32(library);
+        auto reduce = [](Type x, Type y) { return x + y; };
 
-    auto spV = spla::Vector::Make(0, spType, library);
-    auto spS = spla::Scalar::Make(spType, library);
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testReduceScalar<Type>(library,
+                                   M, N, nvals,
+                                   spT,
+                                   spReduce,
+                                   MaskStatus::Absent,
+                                   std::nullopt,
+                                   reduce,
+                                   i);
+        }
+    });
 
-    auto spExpr = spla::Expression::Make(library);
-    auto spReduceNode = spExpr->MakeReduce(spS, spReduce, spV);
-    spExpr->SubmitWait();
-    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
-    ASSERT_FALSE(spS->HasValue());
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::uint32_t;
+        auto spT = spla::Types::UInt32(library);
+        auto spReduce = spla::Functions::PlusUInt32(library);
+        auto reduce = [](Type x, Type y) { return x + y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testReduceScalar<Type>(library,
+                                   M, N, nvals,
+                                   spT,
+                                   spReduce,
+                                   MaskStatus::Existent,
+                                   std::nullopt,
+                                   reduce,
+                                   i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::uint32_t;
+        auto spT = spla::Types::UInt32(library);
+        auto spReduce = spla::Functions::PlusUInt32(library);
+        auto reduce = [](Type x, Type y) { return x + y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testReduceScalar<Type>(library,
+                                   M, N, nvals,
+                                   spT,
+                                   spReduce,
+                                   MaskStatus::ExistentComplement,
+                                   std::nullopt,
+                                   reduce,
+                                   i);
+        }
+    });
+
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::uint32_t;
+        auto spT = spla::Types::UInt32(library);
+        auto spReduce = spla::Functions::PlusUInt32(library);
+        auto spApply = spla::Functions::MultUInt32(library);
+        auto reduce = [](Type x, Type y) { return x + y; };
+        auto apply = [](Type x, Type y) { return x * y; };
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testReduceScalar<Type>(library,
+                                   M, N, nvals,
+                                   spT,
+                                   spReduce,
+                                   MaskStatus::ExistentComplement,
+                                   {{spApply, std::function<Type(Type, Type)>(apply)}},
+                                   reduce,
+                                   i);
+        }
+    });
 }
 
-void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        using Type = std::int32_t;
-        auto spT = spla::Types::Int32(library);
-        auto spAccum = spla::Functions::PlusInt32(library);
-        auto accum = [](Type x, Type y) { return x + y; };
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
-        }
-    });
-
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        using Type = float;
-        auto spT = spla::Types::Float32(library);
-        auto spAccum = spla::Functions::PlusFloat32(library);
-        auto accum = [](Type x, Type y) { return x + y; };
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testSimple<Type>(library, M, nvals, spT, spAccum, accum, i);
-        }
-    });
-
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        using Type = std::int32_t;
-        auto spT = spla::Types::Int32(library);
-        auto spAccum = spla::Functions::PlusInt32(library);
-        testEmpty<Type>(library, spT, spAccum);
-    });
+TEST(VectorReduce, TinyDense) {
+    std::vector<std::size_t> blocksSizes{100, 1000};
+    std::size_t M = 25;
+    std::size_t N = 15;
+    test(M, N, M * N / 2, 0, 200, blocksSizes);
 }
 
 TEST(VectorReduce, Small) {
     std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 100;
-    test(M, M / 2, M / 10, 10, blocksSizes);
+    std::size_t N = 89;
+    test(M, N, M / 2, M / 10, 10, blocksSizes);
 }
 
 TEST(VectorReduce, Medium) {
     std::vector<std::size_t> blocksSizes{100, 1000, 10000};
     std::size_t M = 2140;
-    test(M, M / 2, M / 10, 10, blocksSizes);
+    std::size_t N = 3127;
+    test(M, N, M / 2, M / 10, 10, blocksSizes);
 }
 
 TEST(VectorReduce, Large) {
     std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
-    std::size_t M = 10300;
-    test(M, M / 4, M / 20, 10, blocksSizes);
+    std::size_t M = 10209;
+    std::size_t N = 19303;
+    test(M, N, M / 4, M / 20, 10, blocksSizes);
 }
 
 TEST(VectorReduce, MegaLarge) {
     std::vector<std::size_t> blocksSizes{1000000};
-    std::size_t M = 990100;
-    test(M, M / 10, M / 10, 5, blocksSizes);
+    std::size_t M = 990116;
+    std::size_t N = 897156;
+    test(M, N, M / 10, M / 10, 5, blocksSizes);
 }
 
 SPLA_GTEST_MAIN

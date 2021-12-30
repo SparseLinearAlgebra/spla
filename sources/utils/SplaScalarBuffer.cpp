@@ -27,7 +27,6 @@
 
 #include <algo/SplaAlgorithmParams.hpp>
 #include <compute/SplaReduce.hpp>
-#include <compute/SplaReduce2.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <utils/SplaScalarBuffer.hpp>
 

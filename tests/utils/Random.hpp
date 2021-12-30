@@ -66,7 +66,7 @@ namespace utils {
         std::uniform_int_distribution<T> mDist;
     };
 
-    template<typename T>
+    template<typename T, typename = void>
     class UniformGenerator;
 
     template<>
@@ -75,8 +75,8 @@ namespace utils {
     template<>
     class UniformGenerator<double> : public UniformRealGenerator<double> {};
 
-    template<>
-    class UniformGenerator<std::int32_t> : public UniformIntGenerator<std::int32_t> {};
+    template<typename T>
+    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
 
     template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
     std::vector<T> GenerateVector(const std::size_t size, G generator) {
