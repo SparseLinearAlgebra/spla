@@ -89,9 +89,9 @@ TEST(ScalarEWiseAdd, SameType) {
     };
 
     testLocal(42, 13);
-    //    testLocal(1289372, 9492818);
-    //    testLocal(0, std::numeric_limits<std::uint32_t>::max());
-    //    testLocal(std::numeric_limits<std::uint32_t>::max(), 0);
+    testLocal(1289372, 9492818);
+    testLocal(0, std::numeric_limits<std::uint32_t>::max());
+    testLocal(std::numeric_limits<std::uint32_t>::max(), 0);
 }
 
 TEST(ScalarEWiseAdd, DifferentTypes) {

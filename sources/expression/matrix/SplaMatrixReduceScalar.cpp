@@ -29,16 +29,16 @@
 #include <compute/SplaAdd.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <expression/matrix/SplaReduceScalar.hpp>
+#include <expression/matrix/SplaMatrixReduceScalar.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <utils/SplaScalarBuffer.hpp>
 
 
-bool spla::ReduceScalar::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MatrixReduceScalar::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
 }
 
-void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
     auto library = node->GetLibrary().GetPrivatePtr();
@@ -85,7 +85,7 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
 
             if (block.IsNotNull()) {
                 tf::Task reduceAnotherBlock = builder.Emplace([=]() {
-                    ParamsReduceScalar params;
+                    ParamsMatrixReduceScalar params;
                     params.desc = desc;
                     params.deviceId = deviceId;
                     params.matrix = block;
@@ -95,7 +95,7 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
                                           : nullptr;
                     params.type = argType;
                     params.reduce = argReduce;
-                    library->GetAlgoManager()->Dispatch(Algorithm::Type::ReduceScalar, params);
+                    library->GetAlgoManager()->Dispatch(Algorithm::Type::MatrixReduceScalar, params);
                     if (params.scalar.IsNotNull()) {
                         intermediateBuffer->Add(params.scalar);
                     }
@@ -144,6 +144,6 @@ void spla::ReduceScalar::Process(std::size_t nodeIdx, const spla::Expression &ex
     }
 }
 
-spla::ExpressionNode::Operation spla::ReduceScalar::GetOperationType() const {
-    return spla::ExpressionNode::Operation::ReduceScalar;
+spla::ExpressionNode::Operation spla::MatrixReduceScalar::GetOperationType() const {
+    return spla::ExpressionNode::Operation::MatrixReduceScalar;
 }

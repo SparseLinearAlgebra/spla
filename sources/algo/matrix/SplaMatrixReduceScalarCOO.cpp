@@ -25,7 +25,7 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/matrix/SplaReduceScalarCOO.hpp>
+#include <algo/matrix/SplaMatrixReduceScalarCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaReduce2.hpp>
 #include <core/SplaError.hpp>
@@ -34,18 +34,18 @@
 #include <storage/block/SplaMatrixCOO.hpp>
 
 
-bool spla::ReduceScalarCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsReduceScalar *>(&params);
+bool spla::MatrixReduceScalarCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsMatrixReduceScalar *>(&params);
 
     return p &&
            p->mask.Is<MatrixCOO>() &&
            p->matrix.Is<MatrixCOO>();
 }
 
-void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
+void spla::MatrixReduceScalarCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    auto p = dynamic_cast<ParamsReduceScalar *>(&params);
+    auto p = dynamic_cast<ParamsMatrixReduceScalar *>(&params);
     auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto &desc = p->desc;
 
@@ -115,10 +115,10 @@ void spla::ReduceScalarCOO::Process(spla::AlgorithmParams &params) {
     }
 }
 
-spla::Algorithm::Type spla::ReduceScalarCOO::GetType() const {
-    return spla::Algorithm::Type::ReduceScalar;
+spla::Algorithm::Type spla::MatrixReduceScalarCOO::GetType() const {
+    return spla::Algorithm::Type::MatrixReduceScalar;
 }
 
-std::string spla::ReduceScalarCOO::GetName() const {
+std::string spla::MatrixReduceScalarCOO::GetName() const {
     return "ReduceScalarCOO";
 }

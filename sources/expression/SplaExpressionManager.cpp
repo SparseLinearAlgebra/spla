@@ -32,8 +32,8 @@
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
+#include <expression/matrix/SplaMatrixReduceScalar.hpp>
 #include <expression/matrix/SplaMatrixTranspose.hpp>
-#include <expression/matrix/SplaReduceScalar.hpp>
 #include <expression/prod/SplaMxM.hpp>
 #include <expression/prod/SplaVxM.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
@@ -63,7 +63,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
     Register(new VectorReduce());
-    Register(new ReduceScalar());
+    Register(new MatrixReduceScalar());
     Register(new MxM());
     Register(new VxM());
 }

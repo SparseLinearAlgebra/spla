@@ -24,23 +24,20 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
-#ifndef SPLA_SPLAREDUCECOO_HPP
-#define SPLA_SPLAREDUCECOO_HPP
-
-#include <algo/SplaAlgorithm.hpp>
+#ifndef SPLA_SPLAMATRIXREDUCESCALAR_HPP
+#define SPLA_SPLAMATRIXREDUCESCALAR_HPP
 
 namespace spla {
 
-    class ReduceScalarCOO : public Algorithm {
+    class MatrixReduceScalar final : public NodeProcessor {
     public:
-        ~ReduceScalarCOO() override = default;
-        bool Select(const AlgorithmParams &params) const override;
-        void Process(AlgorithmParams &params) override;
-        Type GetType() const override;
-        std::string GetName() const override;
+        ~MatrixReduceScalar() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
     };
 
 }// namespace spla
 
 
-#endif//SPLA_SPLAREDUCECOO_HPP
+#endif//SPLA_SPLAMATRIXREDUCESCALAR_HPP

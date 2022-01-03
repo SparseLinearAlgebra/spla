@@ -173,9 +173,9 @@ namespace spla {
     };
 
     /** Matrix reduce to scalar params */
-    class ParamsReduceScalar final : public AlgorithmParams {
+    class ParamsMatrixReduceScalar final : public AlgorithmParams {
     public:
-        ~ParamsReduceScalar() override = default;
+        ~ParamsMatrixReduceScalar() override = default;
 
         bool hasMask = false;         // true when must apply mask
         RefPtr<MatrixBlock> matrix;   // matrix block to reduce of type t

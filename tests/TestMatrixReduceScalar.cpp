@@ -205,35 +205,35 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
     });
 }
 
-TEST(VectorReduce, TinyDense) {
+TEST(MatrixReduceScalar, TinyDense) {
     std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 25;
     std::size_t N = 15;
     test(M, N, M * N / 2, 0, 200, blocksSizes);
 }
 
-TEST(VectorReduce, Small) {
+TEST(MatrixReduceScalar, Small) {
     std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 100;
     std::size_t N = 89;
     test(M, N, M / 2, M / 10, 10, blocksSizes);
 }
 
-TEST(VectorReduce, Medium) {
+TEST(MatrixReduceScalar, Medium) {
     std::vector<std::size_t> blocksSizes{100, 1000, 10000};
     std::size_t M = 2140;
     std::size_t N = 3127;
     test(M, N, M / 2, M / 10, 10, blocksSizes);
 }
 
-TEST(VectorReduce, Large) {
+TEST(MatrixReduceScalar, Large) {
     std::vector<std::size_t> blocksSizes{1000, 10000, 100000};
     std::size_t M = 10209;
     std::size_t N = 19303;
     test(M, N, M / 4, M / 20, 10, blocksSizes);
 }
 
-TEST(VectorReduce, MegaLarge) {
+TEST(MatrixReduceScalar, MegaLarge) {
     std::vector<std::size_t> blocksSizes{1000000};
     std::size_t M = 990116;
     std::size_t N = 897156;

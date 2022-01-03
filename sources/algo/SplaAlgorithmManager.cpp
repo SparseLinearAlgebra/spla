@@ -29,8 +29,8 @@
 
 #include <algo/SplaAlgorithmManager.hpp>
 #include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
+#include <algo/matrix/SplaMatrixReduceScalarCOO.hpp>
 #include <algo/matrix/SplaMatrixTransposeCOO.hpp>
-#include <algo/matrix/SplaReduceScalarCOO.hpp>
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <algo/vector/SplaVectorAssignCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
@@ -46,7 +46,7 @@ spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());
     Register(new VxMCOO());
-    Register(new ReduceScalarCOO());
+    Register(new MatrixReduceScalarCOO());
 }
 
 void spla::AlgorithmManager::Register(const spla::RefPtr<spla::Algorithm> &algo) {

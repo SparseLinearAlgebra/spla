@@ -436,7 +436,7 @@ spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeReduceScalar(const spla
             op.As<Object>(),
             a.As<Object>()};
 
-    return MakeNode(ExpressionNode::Operation::ReduceScalar,
+    return MakeNode(ExpressionNode::Operation::MatrixReduceScalar,
                     std::move(args),
                     desc);
 }

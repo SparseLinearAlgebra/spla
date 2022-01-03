@@ -76,7 +76,7 @@ namespace spla {
             /** Reduce vector elements */
             VectorReduce,
             /** Reduce matrix elements to scalar */
-            ReduceScalar,
+            MatrixReduceScalar,
             /** Matrix-matrix multiplication */
             MxM,
             /** Vector-matrix multiplication */
@@ -164,8 +164,8 @@ namespace spla {
                     return "Transpose";
                 case ExpressionNode::Operation::ScalarEWiseAdd:
                     return "ScalarEWiseAdd";
-                case ExpressionNode::Operation::ReduceScalar:
-                    return "ReduceScalar";
+                case ExpressionNode::Operation::MatrixReduceScalar:
+                    return "MatrixReduceScalar";
             }
         }
     }// namespace
