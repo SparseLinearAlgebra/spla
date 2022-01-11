@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['name_1461',['Name',['../structspla_1_1detail_1_1DeclareMultiKey.html#ae94952cadef5b31bcf67041dc914f890',1,'spla::detail::DeclareMultiKey::Name()'],['../structspla_1_1detail_1_1DeclareVal.html#a7af171395ed28ad8b4da4f21033a82a2',1,'spla::detail::DeclareVal::Name()']]]
+  ['name_1509',['Name',['../structspla_1_1detail_1_1meta_1_1DeclareMultiKey.html#aed8c3a2846857bdbc309c82f93f4bc97',1,'spla::detail::meta::DeclareMultiKey::Name()'],['../structspla_1_1detail_1_1meta_1_1DeclareVal.html#aae276f08e0a8a858406ce3ec63e2fd2d',1,'spla::detail::meta::DeclareVal::Name()']]]
 ];

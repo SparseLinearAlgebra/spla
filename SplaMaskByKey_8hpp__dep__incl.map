@@ -1,10 +1,11 @@
 <map id="sources/compute/SplaMaskByKey.hpp" name="sources/compute/SplaMaskByKey.hpp">
 <area shape="rect" id="node1" title=" " alt="" coords="280,5,464,47"/>
 <area shape="rect" id="node2" href="$SplaMatrixEWiseAddCOO_8cpp.html" title=" " alt="" coords="5,95,205,136"/>
-<area shape="rect" id="node3" href="$SplaMatrixTransposeCOO_8cpp.html" title=" " alt="" coords="302,184,503,225"/>
+<area shape="rect" id="node3" href="$SplaMatrixTransposeCOO_8cpp.html" title=" " alt="" coords="179,184,381,225"/>
 <area shape="rect" id="node4" href="$SplaVectorAssignCOO_8cpp.html" title=" " alt="" coords="281,95,463,136"/>
 <area shape="rect" id="node5" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="488,95,691,136"/>
 <area shape="rect" id="node6" href="$SplaApplyMask_8hpp.html" title=" " alt="" coords="715,95,899,136"/>
-<area shape="rect" id="node7" href="$SplaMxMCOO_8cpp.html" title=" " alt="" coords="557,191,795,218"/>
-<area shape="rect" id="node8" href="$SplaVxMCOO_8cpp.html" title=" " alt="" coords="819,191,1053,218"/>
+<area shape="rect" id="node7" href="$SplaMatrixReduceScalarCOO_8cpp.html" title=" " alt="" coords="441,184,663,225"/>
+<area shape="rect" id="node8" href="$SplaMxMCOO_8cpp.html" title=" " alt="" coords="687,191,926,218"/>
+<area shape="rect" id="node9" href="$SplaVxMCOO_8cpp.html" title=" " alt="" coords="950,191,1183,218"/>
 </map>

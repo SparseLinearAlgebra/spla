@@ -1,4 +1,6 @@
 <map id="sources/compute/SplaReduce2.hpp" name="sources/compute/SplaReduce2.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,232,32"/>
-<area shape="rect" id="node2" href="$SplaVectorReduceCOO_8cpp.html" title=" " alt="" coords="25,80,212,121"/>
+<area shape="rect" id="node1" title=" " alt="" coords="231,5,457,32"/>
+<area shape="rect" id="node2" href="$SplaMatrixReduceScalarCOO_8cpp.html" title=" " alt="" coords="5,80,227,121"/>
+<area shape="rect" id="node3" href="$SplaVectorReduceCOO_8cpp.html" title=" " alt="" coords="251,80,437,121"/>
+<area shape="rect" id="node4" href="$SplaScalarBuffer_8cpp.html" title=" " alt="" coords="461,80,624,121"/>
 </map>

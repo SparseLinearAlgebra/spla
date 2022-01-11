@@ -1,17 +1,19 @@
 <map id="spla::NodeProcessor" name="spla::NodeProcessor">
-<area shape="rect" id="node1" title="Interface to the expression node processor class." alt="" coords="145,309,288,336"/>
-<area shape="rect" id="node3" href="$classspla_1_1MatrixDataRead.html" title=" " alt="" coords="339,5,483,32"/>
-<area shape="rect" id="node4" href="$classspla_1_1MatrixDataWrite.html" title=" " alt="" coords="339,56,483,83"/>
-<area shape="rect" id="node5" href="$classspla_1_1MatrixEWiseAdd.html" title=" " alt="" coords="338,107,485,133"/>
-<area shape="rect" id="node6" href="$classspla_1_1MatrixTranspose.html" title=" " alt="" coords="337,157,485,184"/>
-<area shape="rect" id="node7" href="$classspla_1_1MxM.html" title=" " alt="" coords="371,208,451,235"/>
-<area shape="rect" id="node8" href="$classspla_1_1ScalarDataRead.html" title=" " alt="" coords="338,259,485,285"/>
-<area shape="rect" id="node9" href="$classspla_1_1ScalarDataWrite.html" title=" " alt="" coords="338,309,485,336"/>
-<area shape="rect" id="node10" href="$classspla_1_1VectorAssign.html" title=" " alt="" coords="346,360,477,387"/>
-<area shape="rect" id="node11" href="$classspla_1_1VectorDataRead.html" title=" " alt="" coords="338,411,485,437"/>
-<area shape="rect" id="node12" href="$classspla_1_1VectorDataWrite.html" title=" " alt="" coords="338,461,485,488"/>
-<area shape="rect" id="node13" href="$classspla_1_1VectorEWiseAdd.html" title=" " alt="" coords="336,512,487,539"/>
-<area shape="rect" id="node14" href="$classspla_1_1VectorReduce.html" title=" " alt="" coords="344,563,479,589"/>
-<area shape="rect" id="node15" href="$classspla_1_1VxM.html" title=" " alt="" coords="372,613,451,640"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,309,97,336"/>
+<area shape="rect" id="node1" title="Interface to the expression node processor class." alt="" coords="145,360,288,387"/>
+<area shape="rect" id="node3" href="$classspla_1_1MatrixDataRead.html" title=" " alt="" coords="348,5,492,32"/>
+<area shape="rect" id="node4" href="$classspla_1_1MatrixDataWrite.html" title=" " alt="" coords="348,56,492,83"/>
+<area shape="rect" id="node5" href="$classspla_1_1MatrixEWiseAdd.html" title=" " alt="" coords="347,107,493,133"/>
+<area shape="rect" id="node6" href="$classspla_1_1MatrixReduceScalar.html" title=" " alt="" coords="336,157,504,184"/>
+<area shape="rect" id="node7" href="$classspla_1_1MatrixTranspose.html" title=" " alt="" coords="346,208,494,235"/>
+<area shape="rect" id="node8" href="$classspla_1_1MxM.html" title=" " alt="" coords="380,259,460,285"/>
+<area shape="rect" id="node9" href="$classspla_1_1ScalarDataRead.html" title=" " alt="" coords="347,309,493,336"/>
+<area shape="rect" id="node10" href="$classspla_1_1ScalarDataWrite.html" title=" " alt="" coords="347,360,493,387"/>
+<area shape="rect" id="node11" href="$classspla_1_1ScalarEWiseAdd.html" title=" " alt="" coords="345,411,495,437"/>
+<area shape="rect" id="node12" href="$classspla_1_1VectorAssign.html" title=" " alt="" coords="355,461,485,488"/>
+<area shape="rect" id="node13" href="$classspla_1_1VectorDataRead.html" title=" " alt="" coords="347,512,493,539"/>
+<area shape="rect" id="node14" href="$classspla_1_1VectorDataWrite.html" title=" " alt="" coords="347,563,493,589"/>
+<area shape="rect" id="node15" href="$classspla_1_1VectorEWiseAdd.html" title=" " alt="" coords="345,613,495,640"/>
+<area shape="rect" id="node16" href="$classspla_1_1VectorReduce.html" title=" " alt="" coords="353,664,487,691"/>
+<area shape="rect" id="node17" href="$classspla_1_1VxM.html" title=" " alt="" coords="381,715,459,741"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,360,97,387"/>
 </map>
