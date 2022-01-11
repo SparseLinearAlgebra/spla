@@ -57,6 +57,7 @@ namespace spla {
     class LibraryPrivate {
     public:
         explicit LibraryPrivate(Library &library, Library::Config config);
+        ~LibraryPrivate();
 
         tf::Executor &GetTaskFlowExecutor() noexcept;
 
@@ -84,7 +85,7 @@ namespace spla {
         std::size_t GetBlockSize() const noexcept;
 
     private:
-        tf::Executor mExecutor;
+        std::shared_ptr<tf::Executor> mExecutor;
         RefPtr<Descriptor> mDefaultDesc;
         RefPtr<ExpressionManager> mExprManager;
         RefPtr<AlgorithmManager> mAlgoManager;

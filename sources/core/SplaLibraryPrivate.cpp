@@ -90,10 +90,15 @@ spla::LibraryPrivate::LibraryPrivate(
     mDefaultDesc = Descriptor::Make(library);
     mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
     mAlgoManager = RefPtr<AlgorithmManager>(new AlgorithmManager(library));
+    mExecutor = std::make_shared<tf::Executor>();
+}
+
+spla::LibraryPrivate::~LibraryPrivate() {
+    mExecutor.reset();
 }
 
 tf::Executor &spla::LibraryPrivate::GetTaskFlowExecutor() noexcept {
-    return mExecutor;
+    return *mExecutor;
 }
 
 const spla::RefPtr<spla::Descriptor> &spla::LibraryPrivate::GetDefaultDesc() const noexcept {

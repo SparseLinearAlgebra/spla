@@ -118,6 +118,7 @@ std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
         if (mPlatformName.has_value() && platform.name() != mPlatformName.value()) {
             continue;
         }
+        platformExists = true;
         for (const boost::compute::device &device : platform.devices()) {
             bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
                                                           (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
