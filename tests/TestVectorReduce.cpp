@@ -69,7 +69,7 @@ void testSimple(spla::Library &library, std::size_t M, std::size_t nvals,
                   << "Reduced values are not equal: "
                   << "expected: " << reducedExpected << ' '
                   << "actual: " << reducedActual << std::endl;
-        ASSERT_TRUE(false);
+        ASSERT_EQ(reducedExpected, reducedActual);
     }
 }
 

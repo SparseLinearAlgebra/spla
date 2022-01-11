@@ -32,6 +32,7 @@
 #include <storage/SplaVectorStorage.hpp>
 #include <utils/SplaAlgo.hpp>
 
+
 bool spla::MatrixTranspose::Select(std::size_t nodeIdx, const spla::Expression &expression) {
     return true;
 }
@@ -41,7 +42,6 @@ void spla::MatrixTranspose::Process(std::size_t nodeIdx, const spla::Expression 
     auto &node = nodes[nodeIdx];
     auto library = node->GetLibrary().GetPrivatePtr();
     auto logger = library->GetLogger();
-    auto &deviceMan = library->GetDeviceManager();
 
     auto w = node->GetArg(0).Cast<Matrix>();
     auto mask = node->GetArg(1).Cast<Matrix>();

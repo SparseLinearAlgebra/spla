@@ -24,66 +24,34 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLASCALARBUFFER_HPP
+#define SPLA_SPLASCALARBUFFER_HPP
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <spla-cpp/SplaFunctionBinary.hpp>
+#include <storage/SplaScalarValue.hpp>
 
-#include <random>
+namespace spla::detail {
 
-namespace utils {
-
-    template<typename T>
-    class UniformRealGenerator {
+    class ScalarBuffer {
     public:
-        explicit UniformRealGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
-        }
+        void Add(RefPtr<ScalarValue> scalar);
 
-        T operator()() {
-            return mDist(mEngine);
-        }
+        [[nodiscard]] std::size_t GetNScalars() const noexcept;
+
+        [[nodiscard]] RefPtr<ScalarValue> FirstScalar() const;
+
+        [[nodiscard]] boost::compute::vector<unsigned char> Reduce(const RefPtr<FunctionBinary> &reduce,
+                                                                   boost::compute::command_queue &queue);
 
     private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
+        [[nodiscard]] std::size_t BuildSharedBuffer(std::size_t byteSize,
+                                                    boost::compute::vector<unsigned char> &buffer,
+                                                    boost::compute::command_queue &queue) const;
+
+        mutable std::mutex mMutex;
+        std::deque<RefPtr<ScalarValue>> mScalars;
     };
 
-    template<typename T>
-    class UniformIntGenerator {
-    public:
-        explicit UniformIntGenerator(std::size_t seed = 0,
-                                     T min = std::numeric_limits<T>::min(),
-                                     T max = std::numeric_limits<T>::max())
-            : mEngine(seed),
-              mDist(min, max) {}
+}// namespace spla::detail
 
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_int_distribution<T> mDist;
-    };
-
-    template<typename T, typename = void>
-    class UniformGenerator;
-
-    template<>
-    class UniformGenerator<float> : public UniformRealGenerator<float> {};
-
-    template<>
-    class UniformGenerator<double> : public UniformRealGenerator<double> {};
-
-    template<typename T>
-    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
-
-    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateVector(const std::size_t size, G generator) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, generator);
-        return vec;
-    }
-}// namespace utils
-
-#endif//SPLA_RANDOM_HPP
+#endif//SPLA_SPLASCALARBUFFER_HPP

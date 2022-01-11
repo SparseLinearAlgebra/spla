@@ -151,7 +151,7 @@ namespace utils {
             return true;
         }
 
-        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v, bool useError = UseError<T>(), T error = GetError<T>()) const {
+        [[nodiscard]] bool Equals(const spla::RefPtr<spla::Vector> &v) const {
             if (v->GetNrows() != GetNrows()) {
                 std::cout << "Size mismatched" << std::endl;
                 return false;
@@ -202,7 +202,7 @@ namespace utils {
                 auto a = GetVals()[i];
                 auto b = spVals[i];
 
-                if ((useError && std::abs(a - b) > error) || (!useError && a != b)) {
+                if (!utils::EqWithError(a, b)) {
                     std::cout << "Values not equal at " << i << " a=" << a << " b=" << b << std::endl;
                     return false;
                 }

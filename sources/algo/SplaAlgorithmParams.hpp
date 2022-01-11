@@ -90,6 +90,18 @@ namespace spla {
         RefPtr<Type> type;
     };
 
+    /** Scalar addition params */
+    class ParamsScalarEWiseAdd final : public AlgorithmParams {
+    public:
+        ~ParamsScalarEWiseAdd() override = default;
+
+        RefPtr<ScalarValue> w;    // destination scalar of type tw
+        RefPtr<FunctionBinary> op;// 'plus' function of type ta x tb -> tw
+        RefPtr<ScalarValue> a;    // left applicant scalar of type ta
+        RefPtr<ScalarValue> b;    // right applicant scalar of type tb
+        RefPtr<Type> tw;          // the type tw
+    };
+
     /** Blocked matrix-matrix multiply params */
     class ParamsMxM final : public AlgorithmParams {
     public:
@@ -149,15 +161,28 @@ namespace spla {
         RefPtr<Type> type;       // t
     };
 
-    /** Blocked vector reduce params */
+    /** Vector reduce params */
     class ParamsVectorReduce final : public AlgorithmParams {
     public:
         ~ParamsVectorReduce() override = default;
 
-        RefPtr<VectorBlock> vec;
-        RefPtr<FunctionBinary> reduce;
-        RefPtr<ScalarValue> scalar;
-        RefPtr<Type> type;
+        RefPtr<VectorBlock> vec;      // vector block to reduce of type t
+        RefPtr<FunctionBinary> reduce;// reduce operation of type t x t -> t
+        RefPtr<ScalarValue> scalar;   // scalar of type t
+        RefPtr<Type> type;            // the type t itself
+    };
+
+    /** Matrix reduce to scalar params */
+    class ParamsMatrixReduceScalar final : public AlgorithmParams {
+    public:
+        ~ParamsMatrixReduceScalar() override = default;
+
+        bool hasMask = false;         // true when must apply mask
+        RefPtr<MatrixBlock> matrix;   // matrix block to reduce of type t
+        RefPtr<MatrixBlock> mask;     // mask to apply on matrix
+        RefPtr<FunctionBinary> reduce;// reduce function of type t x t -> t
+        RefPtr<ScalarValue> scalar;   // destination scalar of type t
+        RefPtr<Type> type;            // the type t itself
     };
 
     /**

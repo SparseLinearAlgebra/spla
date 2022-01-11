@@ -39,26 +39,26 @@
 
 namespace spla {
 
-    inline void Reduce2(const boost::compute::vector<unsigned char> &values,
-                        boost::compute::vector<unsigned char> &result,
-                        std::size_t count,
-                        unsigned int byteSize,
-                        const std::string &reduceOp,
-                        boost::compute::command_queue &queue) {
+    inline boost::compute::vector<unsigned char> Reduce2(const boost::compute::vector<unsigned char> &values,
+                                                         unsigned int byteSize,
+                                                         const std::string &reduceOp,
+                                                         boost::compute::command_queue &queue) {
+
         using namespace boost;
 
-        assert(count > 0);
+        auto ctx = queue.get_context();
+        auto device = queue.get_device();
+        std::size_t count = values.size() / byteSize;
 
-        result.resize(byteSize, queue);
+        assert(!values.empty());
+
+        boost::compute::vector<unsigned char> result(byteSize, ctx);
 
         // Edge case - nothing to do
         if (count == 1) {
             compute::copy_n(values.begin(), byteSize, result.begin(), queue);
-            return;
+            return result;
         }
-
-        auto ctx = queue.get_context();
-        auto device = queue.get_device();
 
         compute::detail::meta_kernel kernel("__spla_reduce_2");
         auto argCount = kernel.add_arg<cl_uint>("count");
@@ -73,9 +73,12 @@ namespace spla {
 
         assert(!((BLOCK_SIZE - 1) & BLOCK_SIZE) && "Must be power of 2");
 
-        std::string access_mode("__local");
         std::string reduce_function("reduce_function");
-        kernel.add_function(reduce_function, detail::MakeFunction(reduce_function, reduceOp, access_mode, access_mode, access_mode));
+        kernel.add_function(reduce_function,
+                            detail::meta::MakeFunction(reduce_function, reduceOp,
+                                                       detail::meta::Visibility::Local,
+                                                       detail::meta::Visibility::Local,
+                                                       detail::meta::Visibility::Local));
 
         // Why do we have to use `__local ulong lvalues_buffer[]` ?
         // It throws INVALID_COMMAND_QUEUE on nvidia because it requires 8-byte alignment for __local pointers
@@ -142,8 +145,9 @@ namespace spla {
         compiledKerned.set_arg(argInput, *input);
         compiledKerned.set_arg(argOutput, result.get_buffer());
         queue.enqueue_1d_range_kernel(compiledKerned, 0, BLOCK_SIZE, BLOCK_SIZE);
-    }
 
+        return result;
+    }
 }// namespace spla
 
 #endif//SPLA_SPLAREDUCE2_HPP

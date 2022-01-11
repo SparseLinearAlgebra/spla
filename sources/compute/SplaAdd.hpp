@@ -24,66 +24,38 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLAADD_HPP
+#define SPLA_SPLAADD_HPP
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <boost/compute.hpp>
+#include <boost/compute/detail/meta_kernel.hpp>
 
-#include <random>
+#include <compute/metautil/SplaMetaUtil.hpp>
 
-namespace utils {
 
-    template<typename T>
-    class UniformRealGenerator {
-    public:
-        explicit UniformRealGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
-        }
+namespace spla {
 
-        T operator()() {
-            return mDist(mEngine);
-        }
+    inline boost::compute::vector<unsigned char> Add(const boost::compute::vector<unsigned char> &a,
+                                                     const boost::compute::vector<unsigned char> &b,
+                                                     std::size_t resultByteSize,
+                                                     const std::string &addBody,
+                                                     boost::compute::command_queue &queue) {
+        using namespace boost;
+        using namespace detail::meta;
 
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
-    };
+        compute::detail::meta_kernel k("spla_scalar_add");
 
-    template<typename T>
-    class UniformIntGenerator {
-    public:
-        explicit UniformIntGenerator(std::size_t seed = 0,
-                                     T min = std::numeric_limits<T>::min(),
-                                     T max = std::numeric_limits<T>::max())
-            : mEngine(seed),
-              mDist(min, max) {}
-
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_int_distribution<T> mDist;
-    };
-
-    template<typename T, typename = void>
-    class UniformGenerator;
-
-    template<>
-    class UniformGenerator<float> : public UniformRealGenerator<float> {};
-
-    template<>
-    class UniformGenerator<double> : public UniformRealGenerator<double> {};
-
-    template<typename T>
-    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
-
-    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateVector(const std::size_t size, G generator) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, generator);
-        return vec;
+        FunctionApplication add(k, "spla_scalar_add_func", addBody,
+                                Visibility::Global,
+                                Visibility::Global,
+                                Visibility::Global);
+        compute::vector<unsigned char> result(resultByteSize, queue.get_context());
+        compute::fill(result.begin(), result.end(), 0, queue);// TODO: Remove it maybe?
+        k << add.Apply(ValArrItem(a, "0", a.size(), k), ValArrItem(b, "0", b.size(), k), ValArrItem(result, "0", resultByteSize, k));
+        k.exec(queue);
+        return result;
     }
-}// namespace utils
 
-#endif//SPLA_RANDOM_HPP
+}// namespace spla
+
+#endif//SPLA_SPLAADD_HPP

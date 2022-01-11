@@ -24,66 +24,23 @@
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
+#ifndef SPLA_SPLAREDUCECOO_HPP
+#define SPLA_SPLAREDUCECOO_HPP
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <algo/SplaAlgorithm.hpp>
 
-#include <random>
+namespace spla {
 
-namespace utils {
-
-    template<typename T>
-    class UniformRealGenerator {
+    class MatrixReduceScalarCOO final : public Algorithm {
     public:
-        explicit UniformRealGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
-        }
-
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
+        ~MatrixReduceScalarCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
     };
 
-    template<typename T>
-    class UniformIntGenerator {
-    public:
-        explicit UniformIntGenerator(std::size_t seed = 0,
-                                     T min = std::numeric_limits<T>::min(),
-                                     T max = std::numeric_limits<T>::max())
-            : mEngine(seed),
-              mDist(min, max) {}
+}// namespace spla
 
-        T operator()() {
-            return mDist(mEngine);
-        }
 
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_int_distribution<T> mDist;
-    };
-
-    template<typename T, typename = void>
-    class UniformGenerator;
-
-    template<>
-    class UniformGenerator<float> : public UniformRealGenerator<float> {};
-
-    template<>
-    class UniformGenerator<double> : public UniformRealGenerator<double> {};
-
-    template<typename T>
-    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
-
-    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateVector(const std::size_t size, G generator) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, generator);
-        return vec;
-    }
-}// namespace utils
-
-#endif//SPLA_RANDOM_HPP
+#endif//SPLA_SPLAREDUCECOO_HPP

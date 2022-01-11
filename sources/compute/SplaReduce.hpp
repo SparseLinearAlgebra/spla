@@ -40,6 +40,9 @@ namespace spla {
                                   std::size_t valueByteSize,
                                   const std::string &functionBody,
                                   boost::compute::command_queue &queue) {
+            using namespace detail::meta;
+            using namespace boost;
+
             std::size_t inputSize = values.size() / valueByteSize;
             if (inputSize < 2) {
                 return;
@@ -61,15 +64,15 @@ namespace spla {
             size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
             size_t scratchArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "scratch");
 
-            ReduceOp reduceOp1(k, "inplace_reduce_reduce_1", functionBody, valueByteSize,
-                               Visibility::Unspecified,
-                               Visibility::Global,
-                               Visibility::Unspecified);
+            FunctionApplication reduceOp1(k, "inplace_reduce_reduce_1", functionBody, valueByteSize,
+                                          Visibility::Unspecified,
+                                          Visibility::Global,
+                                          Visibility::Unspecified);
 
-            ReduceOp reduceOp2(k, "inplace_reduce_reduce_2", functionBody, valueByteSize,
-                               Visibility::Local,
-                               Visibility::Local,
-                               Visibility::Unspecified);
+            FunctionApplication reduceOp2(k, "inplace_reduce_reduce_2", functionBody, valueByteSize,
+                                          Visibility::Local,
+                                          Visibility::Local,
+                                          Visibility::Unspecified);
 
             k << "const uint gid = get_global_id(0);\n"
               << "const uint lid = get_local_id(0);\n"
@@ -134,6 +137,7 @@ namespace spla {
                                   std::size_t blockSize,
                                   const std::string &functionBody,
                                   boost::compute::command_queue &queue) {
+            using namespace detail::meta;
             using namespace boost;
 
             const compute::context &context = queue.get_context();
@@ -147,14 +151,14 @@ namespace spla {
                 std::size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
                 std::size_t blockArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "block");
 
-                ReduceOp reduceOpGlobal(k, "block_reduce_reduce_global", functionBody, valueByteSize,
-                                        Visibility::Global,
-                                        Visibility::Global,
-                                        Visibility::Local);
-                ReduceOp reduceOpLocal(k, "block_reduce_reduce_local", functionBody, valueByteSize,
-                                       Visibility::Local,
-                                       Visibility::Local,
-                                       Visibility::Unspecified);
+                FunctionApplication reduceOpGlobal(k, "block_reduce_reduce_global", functionBody, valueByteSize,
+                                                   Visibility::Global,
+                                                   Visibility::Global,
+                                                   Visibility::Local);
+                FunctionApplication reduceOpLocal(k, "block_reduce_reduce_local", functionBody, valueByteSize,
+                                                  Visibility::Local,
+                                                  Visibility::Local,
+                                                  Visibility::Unspecified);
 
                 k << "const uint gid = get_global_id(0);\n"
                   << "const uint lid = get_local_id(0);\n"
@@ -196,10 +200,10 @@ namespace spla {
                 const std::size_t outputArg = k.add_arg<unsigned char *>(compute::memory_object::global_memory, "output");
                 const std::size_t outputOffsetArg = k.add_arg<uint_>("output_offset");
 
-                ReduceOp reduceOp(k, "leftover_reduce_reduce", functionBody, valueByteSize,
-                                  Visibility::Unspecified,
-                                  Visibility::Global,
-                                  Visibility::Unspecified);
+                FunctionApplication reduceOp(k, "leftover_reduce_reduce", functionBody, valueByteSize,
+                                             Visibility::Unspecified,
+                                             Visibility::Global,
+                                             Visibility::Unspecified);
 
                 k << DeclareVal{"result", valueByteSize} << ";\n"
                   << AssignVal{ValVar{"result"}, ValArrItem{values, "offset", valueByteSize, k}, valueByteSize}
@@ -271,6 +275,10 @@ namespace spla {
                                                         const std::string &reduceOp,
                                                         boost::compute::command_queue &queue) {
         using namespace boost;
+
+#ifndef SPLA_TEST_REDUCE
+        assert(false && "Use spla::Reduce2 instead of spla::Reduce");
+#endif
 
         const compute::context &ctx = queue.get_context();
         boost::compute::vector<unsigned char> result(valueByteSize, ctx);

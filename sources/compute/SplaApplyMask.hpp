@@ -107,6 +107,7 @@ namespace spla {
      * @param outputCols Result col indices; resized automatically
      * @param outputVals Result values; resized automatically
      * @param byteSize Size of values; if 0, apply only indices mask
+     * @param complement If mask is a complement
      * @param queue Command queue to perform operation
      */
     inline void ApplyMask(const boost::compute::vector<unsigned int> &maskRows,

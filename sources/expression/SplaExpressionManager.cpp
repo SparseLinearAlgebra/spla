@@ -29,15 +29,16 @@
 #include <core/SplaLibraryPrivate.hpp>
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionTasks.hpp>
-
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
+#include <expression/matrix/SplaMatrixReduceScalar.hpp>
 #include <expression/matrix/SplaMatrixTranspose.hpp>
 #include <expression/prod/SplaMxM.hpp>
 #include <expression/prod/SplaVxM.hpp>
 #include <expression/scalar/SplaScalarDataRead.hpp>
 #include <expression/scalar/SplaScalarDataWrite.hpp>
+#include <expression/scalar/SplaScalarEWiseAdd.hpp>
 #include <expression/vector/SplaVectorAssign.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
@@ -56,11 +57,13 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixTranspose());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
+    Register(new ScalarEWiseAdd());
     Register(new VectorAssign());
     Register(new VectorDataWrite());
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
     Register(new VectorReduce());
+    Register(new MatrixReduceScalar());
     Register(new MxM());
     Register(new VxM());
 }

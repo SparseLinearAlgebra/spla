@@ -25,65 +25,56 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <algo/SplaAlgorithmManager.hpp>
+#include <compute/SplaAdd.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <expression/scalar/SplaScalarEWiseAdd.hpp>
 
-#include <random>
+bool spla::ScalarEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+    return true;
+}
 
-namespace utils {
+void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto node = nodes[nodeIdx];
+    auto library = expression.GetLibrary().GetPrivatePtr();
+    auto logger = library->GetLogger();
 
-    template<typename T>
-    class UniformRealGenerator {
-    public:
-        explicit UniformRealGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
-        }
+    auto argResult = node->GetArg(0).Cast<Scalar>();
+    auto argAdd = node->GetArg(1).Cast<FunctionBinary>();
+    auto argA = node->GetArg(2).Cast<Scalar>();
+    auto argB = node->GetArg(3).Cast<Scalar>();
+    auto desc = node->GetDescriptor();
 
-        T operator()() {
-            return mDist(mEngine);
-        }
+    assert(argResult.IsNotNull());
+    assert(argAdd.IsNotNull());
+    assert(argA.IsNotNull());
+    assert(argB.IsNotNull());
+    assert(desc.IsNotNull());
 
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
-    };
+    auto deviceId = library->GetDeviceManager().FetchDevice(node);
 
-    template<typename T>
-    class UniformIntGenerator {
-    public:
-        explicit UniformIntGenerator(std::size_t seed = 0,
-                                     T min = std::numeric_limits<T>::min(),
-                                     T max = std::numeric_limits<T>::max())
-            : mEngine(seed),
-              mDist(min, max) {}
+    builder.Emplace([=]() {
+        auto device = library->GetDeviceManager().GetDevice(deviceId);
+        boost::compute::context ctx = library->GetContext();
+        boost::compute::command_queue queue(ctx, device);
 
-        T operator()() {
-            return mDist(mEngine);
-        }
+        QueueFinisher finisher(queue);
+        argResult->GetStorage()->SetValue(ScalarValue::Make(
+                Add(argA->GetStorage()->GetValue()->GetVal(),
+                    argB->GetStorage()->GetValue()->GetVal(),
+                    argResult->GetType()->GetByteSize(),
+                    argAdd->GetSource(),
+                    queue)));
 
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_int_distribution<T> mDist;
-    };
+        SPDLOG_LOGGER_TRACE(logger, "Scalar addition: [{}] x [{}] -> [{}]",
+                            argAdd->GetA()->GetByteSize(),
+                            argAdd->GetB()->GetByteSize(),
+                            argResult->GetType()->GetByteSize());
+    });
+}
 
-    template<typename T, typename = void>
-    class UniformGenerator;
-
-    template<>
-    class UniformGenerator<float> : public UniformRealGenerator<float> {};
-
-    template<>
-    class UniformGenerator<double> : public UniformRealGenerator<double> {};
-
-    template<typename T>
-    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
-
-    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateVector(const std::size_t size, G generator) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, generator);
-        return vec;
-    }
-}// namespace utils
-
-#endif//SPLA_RANDOM_HPP
+spla::ExpressionNode::Operation spla::ScalarEWiseAdd::GetOperationType() const {
+    return ExpressionNode::Operation::ScalarEWiseAdd;
+}

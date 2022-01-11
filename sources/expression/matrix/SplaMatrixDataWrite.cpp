@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
-#include <compute/SplaGather.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
@@ -34,6 +33,7 @@
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
+
 #include <vector>
 
 bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, const spla::Expression &expression) {

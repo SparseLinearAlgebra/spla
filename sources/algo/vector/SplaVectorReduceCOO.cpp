@@ -61,8 +61,7 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    compute::vector<unsigned char> result(ctx);
-    Reduce2(vector->GetVals(), result, vector->GetNvals(), valueByteSize, reduceOp->GetSource(), queue);
+    compute::vector<unsigned char> result = Reduce2(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue);
 
     p->scalar = ScalarValue::Make(std::move(result));
 }

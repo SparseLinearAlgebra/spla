@@ -410,3 +410,55 @@ spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeReduce(const spla::RefP
                     std::move(args),
                     desc);
 }
+
+
+spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeReduceScalar(const spla::RefPtr<spla::Scalar> &w,
+                                                                      const spla::RefPtr<spla::Matrix> &mask,
+                                                                      const spla::RefPtr<spla::FunctionBinary> &accum,
+                                                                      const spla::RefPtr<spla::FunctionBinary> &op,
+                                                                      const spla::RefPtr<spla::Matrix> &a,
+                                                                      const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "scalar w can't be null");
+    CHECK_RAISE_ERROR(op.IsNotNull(), NullPointer, "reduce op can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "matrix a can't be null");
+    CHECK_RAISE_ERROR(op->CanApply(*a, *a, *w), InvalidType, "Can't apply op to provided objects");
+    if (accum.IsNotNull()) {
+        CHECK_RAISE_ERROR(accum->CanApply(*w, *w, *w), InvalidType, "Can't apply accum to provided objects");
+    }
+    if (mask.IsNotNull()) {
+        CHECK_RAISE_ERROR(mask->GetDim() == a->GetDim(), DimensionMismatch, "Mask has incompatible size");
+    }
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            mask.As<Object>(),
+            accum.As<Object>(),
+            op.As<Object>(),
+            a.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::MatrixReduceScalar,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode> spla::Expression::MakeEWiseAdd(const spla::RefPtr<spla::Scalar> &w,
+                                                                  const spla::RefPtr<spla::FunctionBinary> &op,
+                                                                  const spla::RefPtr<spla::Scalar> &a,
+                                                                  const spla::RefPtr<spla::Scalar> &b,
+                                                                  const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "Scalar w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "Scalar a can't be null");
+    CHECK_RAISE_ERROR(b.IsNotNull(), NullPointer, "Scalar b can't be null");
+    CHECK_RAISE_ERROR(op.IsNotNull(), NullPointer, "Function op can't be null");
+    CHECK_RAISE_ERROR(op->CanApply(*a, *b, *w), InvalidType, "Can't apply op ot provided objects");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            op.As<Object>(),
+            a.As<Object>(),
+            b.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::ScalarEWiseAdd,
+                    std::move(args),
+                    desc);
+}

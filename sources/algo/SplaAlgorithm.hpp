@@ -62,6 +62,8 @@ namespace spla {
             MatrixEWiseAdd,
             /** Matrix-matrix element wise multiplication */
             MatrixEWiseMult,
+            /** Matrix nnz elements reduce to scalar */
+            MatrixReduceScalar,
             /** Vector-scalar assignment */
             VectorAssign,
             /** Vector nnz elements reduce */
@@ -129,9 +131,10 @@ namespace spla {
                     return "VxM";
                 case Algorithm::Type::Transpose:
                     return "Transpose";
-
-                default:
-                    return "Unknown";
+                case Algorithm::Type::VectorReduce:
+                    return "VectorReduce";
+                case Algorithm::Type::MatrixReduceScalar:
+                    return "MatrixReduceScalar";
             }
         }
     }// namespace

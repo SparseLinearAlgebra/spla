@@ -49,10 +49,14 @@ namespace spla {
 
     namespace detail {
 
-        inline void GenerateUintKeys(const std::vector<std::reference_wrapper<const compute::vector<unsigned int>>> &keysFirst,
-                                     const compute::vector<unsigned int>::iterator &newKeysFirst,
+        inline void GenerateUintKeys(const std::vector<std::reference_wrapper<const boost::compute::vector<unsigned int>>> &keysFirst,
+                                     const boost::compute::vector<unsigned int>::iterator &newKeysFirst,
                                      std::size_t preferredWorkGroupSize,
-                                     compute::command_queue &queue) {
+                                     boost::compute::command_queue &queue) {
+            using namespace boost;
+            using namespace spla::detail::meta;
+            using compute::uint_;
+
             compute::detail::meta_kernel k("spla_reduce_by_key_new_key_flags");
             const std::size_t count = keysFirst.at(0).get().size();
             const std::size_t nKeys = keysFirst.size();
@@ -87,14 +91,18 @@ namespace spla {
                            newKeysFirst, queue);
         }
 
-        inline void CarryOuts(const compute::vector<uint_> &keys,
-                              const compute::vector<unsigned char> &values,
-                              const compute::vector<uint_>::iterator &carryOutsKeysFirst,
-                              const compute::vector<unsigned char>::iterator &carryOutValuesFirst,
+        inline void CarryOuts(const boost::compute::vector<boost::compute::uint_> &keys,
+                              const boost::compute::vector<unsigned char> &values,
+                              const boost::compute::vector<boost::compute::uint_>::iterator &carryOutsKeysFirst,
+                              const boost::compute::vector<unsigned char>::iterator &carryOutValuesFirst,
                               std::size_t workGroupSize,
                               std::size_t vBytes,
                               const std::string &reduceBody,
-                              compute::command_queue &queue) {
+                              boost::compute::command_queue &queue) {
+            using namespace boost;
+            using namespace detail::meta;
+            using compute::uint_;
+
             compute::vector<uint_>::iterator keysFirst = keys.begin();
             compute::vector<unsigned char>::iterator valuesFirst = values.begin();
             compute::detail::meta_kernel k("spla_reduce_by_key_with_scan_carry_outs");
@@ -102,7 +110,7 @@ namespace spla {
             size_t localKeysArg = k.add_arg<uint_ *>(compute::memory_object::local_memory, "lkeys");
             size_t localValsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
 
-            ReduceOp reduceOp(k, "spla_reduce", reduceBody, vBytes);
+            FunctionApplication reduceOp(k, "spla_reduce", reduceBody, vBytes);
 
             k << k.decl<const uint_>("gid") << " = get_global_id(0);\n"
               << k.decl<const uint_>("wg_size") << " = get_local_size(0);\n"
@@ -152,14 +160,18 @@ namespace spla {
                                           workGroupSize);
         }
 
-        inline void CarryIns(const compute::vector<uint_>::iterator &carryOutsKeysFirst,
-                             const compute::vector<unsigned char>::iterator &carryOutValuesFirst,
-                             const compute::vector<unsigned char>::iterator &carryInValuesFirst,
+        inline void CarryIns(const boost::compute::vector<boost::compute::uint_>::iterator &carryOutsKeysFirst,
+                             const boost::compute::vector<unsigned char>::iterator &carryOutValuesFirst,
+                             const boost::compute::vector<unsigned char>::iterator &carryInValuesFirst,
                              std::size_t carryOutSize,
                              std::size_t workGroupSize,
                              std::size_t vBytes,
                              const std::string &reduceBody,
-                             compute::command_queue &queue) {
+                             boost::compute::command_queue &queue) {
+            using namespace boost;
+            using namespace detail::meta;
+            using compute::uint_;
+
             auto valuesPreWorkItem = static_cast<uint_>(
                     std::ceil(static_cast<float>(carryOutSize) / static_cast<float>(workGroupSize)));
 
@@ -169,7 +181,7 @@ namespace spla {
             std::size_t localKeysArg = k.add_arg<uint_ *>(compute::memory_object::local_memory, "lkeys");
             std::size_t localValsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
 
-            ReduceOp reduceOp(k, "spla_reduce", reduceBody, vBytes);
+            FunctionApplication reduceOp(k, "spla_reduce", reduceBody, vBytes);
 
             k << k.decl<uint_>("id") << " = get_global_id(0) * values_per_work_item;\n"
               << k.decl<uint_>("idx") << " = id;\n"
@@ -241,25 +253,29 @@ namespace spla {
                                           workGroupSize);
         }
 
-        inline void FinalReduction(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
-                                   const compute::vector<unsigned char>::iterator &valuesFirst,
-                                   const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
-                                   const compute::vector<unsigned char>::iterator &valuesResult,
+        inline void FinalReduction(const std::vector<std::reference_wrapper<const boost::compute::vector<boost::compute::uint_>>> &keys,
+                                   const boost::compute::vector<unsigned char>::iterator &valuesFirst,
+                                   const std::vector<std::reference_wrapper<boost::compute::vector<boost::compute::uint_>>> &keysResult,
+                                   const boost::compute::vector<unsigned char>::iterator &valuesResult,
                                    std::size_t count,
-                                   const compute::vector<uint_>::iterator &newKeysFirst,
-                                   const compute::vector<uint_>::iterator &carryInKeysFirst,
-                                   const compute::vector<unsigned char>::iterator &carryInValuesFirst,
+                                   const boost::compute::vector<boost::compute::uint_>::iterator &newKeysFirst,
+                                   const boost::compute::vector<boost::compute::uint_>::iterator &carryInKeysFirst,
+                                   const boost::compute::vector<unsigned char>::iterator &carryInValuesFirst,
                                    std::size_t workGroupSize,
                                    std::size_t vBytes,
                                    const std::string &reduceBody,
-                                   compute::command_queue &queue) {
+                                   boost::compute::command_queue &queue) {
+            using namespace boost;
+            using namespace detail::meta;
+            using compute::uint_;
+
             compute::detail::meta_kernel k("spla_reduce_by_key_with_scan_final_reduction");
             k.add_set_arg<const uint_>("count", static_cast<uint_>(count));
             const std::size_t localKeysArg = k.add_arg<uint_ *>(compute::memory_object::local_memory, "lkeys");
             const std::size_t localValsArg = k.add_arg<unsigned char *>(compute::memory_object::local_memory, "lvals");
             const std::size_t nKeys = keys.size();
             assert(nKeys == keysResult.size());
-            ReduceOp reduceOp(k, "spla_reduce", reduceBody, vBytes);
+            FunctionApplication reduceOp(k, "spla_reduce", reduceBody, vBytes);
 
             k << k.decl<const uint_>("gid") << " = get_global_id(0);\n"
               << k.decl<const uint_>("wg_size") << " = get_local_size(0);\n"
@@ -336,13 +352,17 @@ namespace spla {
          * 4. Final reduction by key is performed (key-oriented Hillis/Steele scan),
          *  carry-in values are added where needed.
          */
-        inline std::size_t ReduceByKeyWithScan(const std::vector<std::reference_wrapper<const compute::vector<uint_>>> &keys,
-                                               const compute::vector<unsigned char> &values,
-                                               const std::vector<std::reference_wrapper<compute::vector<uint_>>> &keysResult,
-                                               compute::vector<unsigned char> &valuesResult,
+        inline std::size_t ReduceByKeyWithScan(const std::vector<std::reference_wrapper<const boost::compute::vector<boost::compute::uint_>>> &keys,
+                                               const boost::compute::vector<unsigned char> &values,
+                                               const std::vector<std::reference_wrapper<boost::compute::vector<boost::compute::uint_>>> &keysResult,
+                                               boost::compute::vector<unsigned char> &valuesResult,
                                                std::size_t valueByteSize,
                                                const std::string &reduceBody,
-                                               compute::command_queue &queue) {
+                                               boost::compute::command_queue &queue) {
+            using namespace boost;
+            using namespace detail::meta;
+            using compute::uint_;
+
             const compute::context &context = queue.get_context();
             const std::size_t count = keys.at(0).get().size();
 

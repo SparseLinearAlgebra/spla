@@ -25,65 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_RANDOM_HPP
-#define SPLA_RANDOM_HPP
+#include <algo/SplaAlgorithmParams.hpp>
+#include <compute/SplaReduce2.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <utils/SplaScalarBuffer.hpp>
 
-#include <random>
+void spla::detail::ScalarBuffer::Add(RefPtr<ScalarValue> scalar) {
+    assert(scalar.IsNotNull());
+    std::scoped_lock guard(mMutex);
+    mScalars.push_back(std::move(scalar));
+}
 
-namespace utils {
+std::size_t spla::detail::ScalarBuffer::GetNScalars() const noexcept {
+    return mScalars.size();
+}
 
-    template<typename T>
-    class UniformRealGenerator {
-    public:
-        explicit UniformRealGenerator(std::size_t seed = 0)
-            : mEngine(seed) {
-        }
+spla::RefPtr<spla::ScalarValue> spla::detail::ScalarBuffer::FirstScalar() const {
+    return mScalars.front();
+}
 
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_real_distribution<T> mDist;
-    };
-
-    template<typename T>
-    class UniformIntGenerator {
-    public:
-        explicit UniformIntGenerator(std::size_t seed = 0,
-                                     T min = std::numeric_limits<T>::min(),
-                                     T max = std::numeric_limits<T>::max())
-            : mEngine(seed),
-              mDist(min, max) {}
-
-        T operator()() {
-            return mDist(mEngine);
-        }
-
-    private:
-        std::default_random_engine mEngine;
-        std::uniform_int_distribution<T> mDist;
-    };
-
-    template<typename T, typename = void>
-    class UniformGenerator;
-
-    template<>
-    class UniformGenerator<float> : public UniformRealGenerator<float> {};
-
-    template<>
-    class UniformGenerator<double> : public UniformRealGenerator<double> {};
-
-    template<typename T>
-    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> : public UniformIntGenerator<std::int32_t> {};
-
-    template<typename T, typename G, typename = std::enable_if_t<std::is_integral_v<T>>>
-    std::vector<T> GenerateVector(const std::size_t size, G generator) {
-        std::vector<T> vec(size);
-        std::generate_n(vec.begin(), size, generator);
-        return vec;
+std::size_t spla::detail::ScalarBuffer::BuildSharedBuffer(std::size_t byteSize, boost::compute::vector<unsigned char> &buffer, boost::compute::command_queue &queue) const {
+    if (mScalars.empty()) {
+        buffer.resize(0, queue);
+        return 0;
     }
-}// namespace utils
+    buffer.resize(mScalars.size() * byteSize, queue);
+    std::size_t offset = 0;
+    for (const auto &scalarValue : mScalars) {
+        assert(scalarValue.IsNotNull());
+        const auto &curValue = scalarValue->GetVal();
+        boost::compute::copy(curValue.begin(), curValue.end(),
+                             buffer.begin() + static_cast<std::ptrdiff_t>(offset),
+                             queue);
+        offset += byteSize;
+    }
+    return mScalars.size();
+}
 
-#endif//SPLA_RANDOM_HPP
+boost::compute::vector<unsigned char> spla::detail::ScalarBuffer::Reduce(const spla::RefPtr<spla::FunctionBinary> &reduce,
+                                                                         boost::compute::command_queue &queue) {
+
+    auto ctx = queue.get_context();
+
+    const std::size_t valueByteSize = reduce->GetA()->GetByteSize();
+
+    if (GetNScalars() == 1) {
+        auto &value = FirstScalar()->GetVal();
+        return {value, queue};
+    }
+
+    boost::compute::vector<unsigned char> buffer(ctx);
+    const std::size_t nnzInBuffer = BuildSharedBuffer(valueByteSize, buffer, queue);
+
+    return ::spla::Reduce2(buffer, valueByteSize, reduce->GetSource(), queue);
+}

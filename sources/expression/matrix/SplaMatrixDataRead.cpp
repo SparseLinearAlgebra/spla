@@ -25,10 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaMath.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <storage/SplaMatrixStorage.hpp>
