@@ -127,7 +127,7 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatr
 
     // Convert to raw data
     std::vector<unsigned char> data(nTrins.size() * sizeof(std::int32_t));
-    std::memcpy(data.data(), nTrins.data(), nTrins.size() * sizeof(float));
+    std::memcpy(data.data(), nTrins.data(), nTrins.size() * sizeof(std::int32_t));
 
     B = RefPtr<HostMatrix>(new HostMatrix(n, n, std::move(trinsFrom), std::move(trinsTo), std::move(data)));
 }
