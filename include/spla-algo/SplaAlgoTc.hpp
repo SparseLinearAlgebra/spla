@@ -46,7 +46,7 @@ namespace spla {
      * @param [in]  spA - input adjacency matrix of directed graph with values of type int32_t,
      *                   with 1 stored where has edge between i and j
      */
-    SPLA_API void Tc(std::int32_t& ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA);
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA);
 
     /**
      * @brief Triangle counting
@@ -58,7 +58,7 @@ namespace spla {
      * @param [in]  A - input adjacency matrix of directed graph with values of type int32_t,
      *                 with 1 stored where has edge between i and j
      */
-    SPLA_API void Tc(std::int32_t& ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A);
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A);
 
     /**
      * @}
