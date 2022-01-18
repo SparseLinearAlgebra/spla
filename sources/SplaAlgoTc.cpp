@@ -31,6 +31,7 @@
 #include <core/SplaError.hpp>
 #include <core/SplaHash.hpp>
 
+#include <cstring>
 #include <unordered_set>
 #include <vector>
 
