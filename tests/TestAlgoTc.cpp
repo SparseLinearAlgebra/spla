@@ -29,7 +29,6 @@
 #include <spla-algo/SplaAlgoTc.hpp>
 
 void testCase(spla::Library &library, std::size_t M, std::size_t nvals, bool dir) {
-
     utils::Matrix A = utils::Matrix<int>::Generate(M, M, nvals).SortReduceDuplicates();
     A.Fill([]() { return 1; });
 
@@ -61,7 +60,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, bool dir
 
     SPLA_TIME_BEGIN(sssp_cpu);
     spla::Tc(nTrinsCpu, host_B, host_A, dir);
-    SPLA_TIME_END(sssp_cpu, "cpu");
+    SPLA_TIME_END(sssp_cpu, "cpu ");
 
     auto result = utils::Matrix<int>::FromHostMatrix(host_B);
     EXPECT_TRUE(result.Equals(sp_B));
