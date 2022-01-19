@@ -28,10 +28,14 @@
 #include <Testing.hpp>
 #include <spla-algo/SplaAlgoTc.hpp>
 
-void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
+void testCase(spla::Library &library, std::size_t M, std::size_t nvals, bool dir) {
 
     utils::Matrix A = utils::Matrix<int>::Generate(M, M, nvals).SortReduceDuplicates();
     A.Fill([]() { return 1; });
+
+    if (!dir) {
+        A = A.EWiseAdd(A.Transpose(), [](int a, int b) { return a | b; });
+    }
 
     auto sp_Int32 = spla::Types::Int32(library);
 
@@ -44,12 +48,10 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    sp_B->Dump(std::cout);
-
     std::int32_t nTrinsSpla = 0;
 
     SPLA_TIME_BEGIN(tc_spla);
-    spla::Tc(nTrinsSpla, sp_B, sp_A);
+    spla::Tc(nTrinsSpla, sp_B, sp_A, dir);
     SPLA_TIME_END(tc_spla, "spla");
 
     auto host_A = A.ToHostMatrix();
@@ -58,7 +60,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
     std::int32_t nTrinsCpu = 0;
 
     SPLA_TIME_BEGIN(sssp_cpu);
-    spla::Tc(nTrinsCpu, host_B, host_A);
+    spla::Tc(nTrinsCpu, host_B, host_A, dir);
     SPLA_TIME_END(sssp_cpu, "cpu");
 
     auto result = utils::Matrix<int>::FromHostMatrix(host_B);
@@ -70,7 +72,8 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCase(library, M, nvals, i);
+            testCase(library, M, nvals, true);
+            testCase(library, M, nvals, false);
         }
     });
 }
@@ -78,6 +81,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 void testCpu(std::size_t n,
              std::vector<spla::Index> from,
              std::vector<spla::Index> to,
+             bool dir,
              std::int32_t nTrins,
              const std::vector<std::int32_t> &trinsPerEdge) {
     std::int32_t actualNTrins = 0;
@@ -95,9 +99,14 @@ void testCpu(std::size_t n,
                                                                  n,
                                                                  from,
                                                                  to,
-                                                                 std::move(valuesData)));
+                                                                 valuesData));
 
-    spla::Tc(actualNTrins, trinsActual, A);
+    spla::Tc(actualNTrins, trinsActual, A, dir);
+
+    if (trinsActual.IsNull()) {
+        EXPECT_EQ(nTrins, 0);
+        return;
+    }
 
     std::vector<int> trinsCounts(trinsActual->GetNnvals());
     const std::vector<spla::Index> &actRows = trinsActual->GetRowIndices();
@@ -117,18 +126,24 @@ void testCpu(std::size_t n,
     }
 }
 
-TEST(TC, CpuShallow) {
-    testCpu(3, {1, 1, 2}, {0, 2, 0}, 1, {0, 1, 0});
-    testCpu(3, {0, 1, 2}, {1, 2, 0}, 0, {0, 0, 0});
+TEST(TC, CpuShallowDirectedDir) {
+    testCpu(3, {1, 1, 2}, {0, 2, 0}, true, 1, {0, 1, 0});
+    testCpu(3, {0, 1, 2}, {1, 2, 0}, true, 0, {0, 0, 0});
     testCpu(5,
             {2, 2, 2, 3, 3, 3, 4},
-            {0, 1, 3, 0, 1, 4, 1}, 3,
+            {0, 1, 3, 0, 1, 4, 1}, true, 3,
             {0, 0, 2, 0, 0, 1, 0});
 }
 
-TEST(TC, Tiny) {
-    spla::Library library(spla::Library::Config().SetDeviceType(spla::Library::Config::GPU));
-    testCase(library, 5, 10);
+TEST(TC, CpuShallowDirectedNonDir) {
+    testCpu(3, {0, 0, 1, 1, 2, 2}, {1, 2, 0, 2, 0, 1}, false, 1, {1, 1, 1});
+    testCpu(3, {0, 1, 1, 2}, {1, 0, 2, 1}, false, 0, {0, 0, 0});
+    testCpu(6,
+            {0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5},
+            {1, 2, 0, 2, 3, 0, 1, 1, 4, 5, 3, 5, 3, 4},
+            false,
+            2,
+            {1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1});
 }
 
 TEST(TC, Small) {
@@ -147,12 +162,6 @@ TEST(TC, Large) {
     std::vector<std::size_t> blockSizes = {10000, 100000};
     std::size_t M = 12400;
     test(M, M, M, 5, blockSizes);
-}
-
-TEST(TC, MegaLarge) {
-    std::vector<std::size_t> blockSizes = {1000000};
-    std::size_t M = 990990;
-    test(M, 5 * M, M, 3, blockSizes);
 }
 
 SPLA_GTEST_MAIN
