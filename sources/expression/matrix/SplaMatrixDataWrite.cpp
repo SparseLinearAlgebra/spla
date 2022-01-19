@@ -26,13 +26,14 @@
 /**********************************************************************************/
 
 #include <boost/compute.hpp>
+
 #include <compute/SplaSortByRowColumn.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaMath.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <storage/SplaMatrixStorage.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 
 #include <vector>
 
@@ -258,7 +259,9 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 }
 
                 // Allocate result block and set in storage
-                auto block = MatrixCOO::Make(blockNrows, blockNcols, blockNvals, std::move(blockRows), std::move(blockCols), std::move(blockVals));
+                // Currently, we prefer CSR blocks over COO
+                // todo: make auto choice of the best storage scheme
+                auto block = MatrixCSR::Make(blockNrows, blockNcols, blockNvals, std::move(blockRows), std::move(blockCols), std::move(blockVals), queue);
                 storage->SetBlock(blockIndex, block.As<MatrixBlock>());
             });
         }

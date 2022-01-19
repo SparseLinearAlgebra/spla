@@ -39,7 +39,7 @@ namespace spla {
      * @{
      */
 
-    class MatrixCOO final : public MatrixBlock {
+    class MatrixCOO : public MatrixBlock {
     public:
         using Indices = boost::compute::vector<unsigned int>;
         using Values = boost::compute::vector<unsigned char>;
@@ -59,6 +59,8 @@ namespace spla {
         static RefPtr<MatrixCOO> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals);
 
     private:
+        friend class MatrixCSR;
+
         MatrixCOO(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals);
 
         Indices mRows;

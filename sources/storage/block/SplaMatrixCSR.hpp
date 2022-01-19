@@ -25,10 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIXBLOCK_HPP
-#define SPLA_SPLAMATRIXBLOCK_HPP
+#ifndef SPLA_SPLAMATRIXCSR_HPP
+#define SPLA_SPLAMATRIXCSR_HPP
 
-#include <spla-cpp/SplaRefCnt.hpp>
+#include <storage/block/SplaMatrixCOO.hpp>
+
+#include <boost/compute/command_queue.hpp>
 
 namespace spla {
 
@@ -37,79 +39,31 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class MatrixBlock
-     *
-     * Base class for a matrix block.
-     * Used in matrix storage to represent block of the matrix with specific sparse storage schema.
-     * Common matrix blocks: CSR, COO, dense and etc.
-     */
-    class MatrixBlock : public RefCnt {
+    class MatrixCSR final : public MatrixCOO {
     public:
-        /** Sparse matrix formats */
-        enum class Format {
-            CSR,
-            COO,
-            Dense
-        };
+        using Indices = MatrixCOO::Indices;
+        using Values = MatrixCOO::Values;
 
-        MatrixBlock(std::size_t nrows, std::size_t ncols, std::size_t nvals, Format format)
-            : mNrows(nrows), mNcols(ncols), mNvals(nvals), mFormat(format) {}
+        ~MatrixCSR() override = default;
 
-        ~MatrixBlock() override = default;
+        [[nodiscard]] const Indices &GetRowsOffsets() const noexcept;
 
-        /** @return Number of rows of the block */
-        [[nodiscard]] std::size_t GetNrows() const noexcept {
-            return mNrows;
-        }
+        [[nodiscard]] const Indices &GetRowLengths() const noexcept;
 
-        /** @return Number of columns of the block */
-        [[nodiscard]] std::size_t GetNcols() const noexcept {
-            return mNcols;
-        }
+        static RefPtr<MatrixCSR> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue& queue);
+        static RefPtr<MatrixCSR> Make(const RefPtr<MatrixCOO> &block, boost::compute::command_queue& queue);
 
-        /** @return Number of values in block */
-        [[nodiscard]] std::size_t GetNvals() const noexcept {
-            return mNvals;
-        }
+    private:
+        MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue& queue);
 
-        /** @return Sparse format name of this block */
-        [[nodiscard]] Format GetFormat() const noexcept {
-            return mFormat;
-        }
-
-        /** Dump block content to provided stream */
-        virtual void Dump(std::ostream &stream, unsigned int baseI, unsigned int baseJ) const = 0;
-
-        /** @return Size of the stored value (in bytes) */
-        [[nodiscard]] virtual std::size_t GetValueByteSize() const noexcept = 0;
-
-    protected:
-        std::size_t mNrows;
-        std::size_t mNcols;
-        std::size_t mNvals;
-        Format mFormat;
+        Indices mRowOffsets;
+        Indices mRowLengths;
     };
-
-    namespace {
-        inline const char *GetFormatStr(MatrixBlock::Format format) {
-            switch (format) {
-                case MatrixBlock::Format::COO:
-                    return "COO";
-                case MatrixBlock::Format::CSR:
-                    return "CSR";
-                case MatrixBlock::Format::Dense:
-                    return "COO";
-                default:
-                    return "Unknown";
-            }
-        }
-    }// namespace
 
     /**
      * @}
      */
 
-}// namespace spla
+}
 
-#endif//SPLA_SPLAMATRIXBLOCK_HPP
+#endif//SPLA_SPLAMATRIXCSR_HPP

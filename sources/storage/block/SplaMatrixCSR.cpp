@@ -25,72 +25,32 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <Testing.hpp>
+#include <compute/SplaIndicesToRowOffsets.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 
-void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
-    auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
-    auto sp_Float32 = spla::Types::Float32(library);
-    auto sp_s = rnd();
-
-    utils::Matrix A = utils::Matrix<float>::Generate(M, M, nvals).SortReduceDuplicates();
-    A.Fill(utils::UniformRealGenerator<float>());
-
-    auto sp_v = spla::Vector::Make(M, sp_Float32, library);
-    auto sp_A = spla::Matrix::Make(M, M, sp_Float32, library);
-
-    auto sp_setup = spla::Expression::Make(library);
-    sp_setup->MakeDataWrite(sp_A, A.GetData(library));
-    sp_setup->SubmitWait();
-    ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
-
-    SPLA_TIME_BEGIN(sssp_spla);
-    spla::Sssp(sp_v, sp_A, sp_s);
-    SPLA_TIME_END(sssp_spla, "spla");
-
-    auto host_A = A.ToHostMatrix();
-    auto host_v = spla::RefPtr<spla::HostVector>();
-
-    SPLA_TIME_BEGIN(sssp_cpu);
-    spla::Sssp(host_v, host_A, sp_s);
-    SPLA_TIME_END(sssp_cpu, "cpu ");
-
-    auto result = utils::Vector<float>::FromHostVector(host_v);
-    EXPECT_TRUE(result.Equals(sp_v));
+const spla::MatrixCSR::Indices &spla::MatrixCSR::GetRowsOffsets() const noexcept {
+    return mRowOffsets;
 }
 
-void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        for (std::size_t i = 0; i < iter; i++) {
-            for (std::size_t k = 0; k < 4; k++) {
-                std::size_t nvals = base + i * step;
-                testCase(library, M, nvals, i);
-            }
-        }
-    });
+const spla::MatrixCSR::Indices &spla::MatrixCSR::GetRowLengths() const noexcept {
+    return mRowLengths;
 }
 
-TEST(SSSP, Small) {
-    std::vector<std::size_t> blockSizes = {100, 1000};
-    std::size_t M = 120;
-    test(M, M, M, 10, blockSizes);
+spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, boost::compute::command_queue &queue) {
+    return spla::RefPtr<spla::MatrixCSR>(new MatrixCSR(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals), queue));
 }
 
-TEST(SSSP, Medium) {
-    std::vector<std::size_t> blockSizes = {1000, 10000};
-    std::size_t M = 1220;
-    test(M, M, M, 10, blockSizes);
+spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(const spla::RefPtr<spla::MatrixCOO> &block, boost::compute::command_queue &queue) {
+    // Copy data from block (blocks are immutable)
+    Indices rows(block->GetRows().begin(), block->GetRows().end(), queue);
+    Indices cols(block->GetCols().begin(), block->GetCols().end(), queue);
+    Values vals(block->GetVals().begin(), block->GetVals().end(), queue);
+    return Make(block->GetNrows(), block->GetNcols(), block->GetNvals(), std::move(rows), std::move(cols), std::move(vals), queue);
 }
 
-TEST(SSSP, Large) {
-    std::vector<std::size_t> blockSizes = {10000, 100000};
-    std::size_t M = 12400;
-    test(M, M, M, 5, blockSizes);
+spla::MatrixCSR::MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, boost::compute::command_queue &queue)
+    : MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)), mRowOffsets(queue.get_context()), mRowLengths(queue.get_context()) {
+    mFormat = Format::CSR;
+    // Compute and cache offsets and rows lengths (frequently used in vxm mxm operations)
+    IndicesToRowOffsets(GetRows(), mRowOffsets, mRowLengths, GetNrows(), queue);
 }
-
-TEST(SSSP, MegaLarge) {
-    std::vector<std::size_t> blockSizes = {1000000};
-    std::size_t M = 990990;
-    test(M, 5 * M, M, 3, blockSizes);
-}
-
-SPLA_GTEST_MAIN

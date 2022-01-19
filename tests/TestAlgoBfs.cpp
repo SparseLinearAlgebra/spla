@@ -59,7 +59,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, "Intel", 1, [=](spla::Library &library) {
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
             std::cout << "iter [" << i << "]\n";
             for (std::size_t k = 0; k < 4; k++) {
@@ -71,7 +71,7 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 }
 
 TEST(BFS, Average) {
-    utils::testBlocks({1000000}, "Intel", 1, [=](spla::Library &library) {
+    utils::testBlocks({1000000}, [=](spla::Library &library) {
         std::vector<std::size_t> sizes = {120, 1222, 13405};
         std::vector<std::size_t> iters = {5, 2, 2};
         std::vector<std::size_t> steps = {100, 1000, 10000};
@@ -92,31 +92,31 @@ TEST(BFS, Average) {
     });
 }
 
-TEST(BFS, DISABLED_Small) {
+TEST(BFS, Small) {
     std::vector<std::size_t> blockSizes = {1000};
     std::size_t M = 120;
     test(M, M, M, 5, blockSizes);
 }
 
-TEST(BFS, DISABLED_Medium) {
+TEST(BFS, Medium) {
     std::vector<std::size_t> blockSizes = {10000};
     std::size_t M = 1220;
     test(M, M, M, 2, blockSizes);
 }
 
-TEST(BFS, DISABLED_Large) {
+TEST(BFS, Large) {
     std::vector<std::size_t> blockSizes = {100000};
     std::size_t M = 12400;
     test(M, M, M, 2, blockSizes);
 }
 
-TEST(BFS, DISABLED_MegaLarge) {
+TEST(BFS, MegaLarge) {
     std::vector<std::size_t> blockSizes = {1000000};
     std::size_t M = 990990;
     test(M, 10 * M, M, 1, blockSizes);
 }
 
-TEST(BFS, DISABLED_UltraLarge) {
+TEST(BFS, UltraLarge) {
     std::vector<std::size_t> blockSizes = {10000000};
     std::size_t M = 4500000;
     test(M, 10 * M, 10 * M, 2, blockSizes);

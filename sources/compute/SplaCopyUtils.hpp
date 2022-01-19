@@ -57,7 +57,7 @@ namespace spla {
         auto argValuesB = kernel.add_arg<const cl_uchar *>(compute::memory_object::global_memory, "valuesB");
         auto argOutputValues = kernel.add_arg<cl_uchar *>(compute::memory_object::global_memory, "outputValues");
 
-        kernel << "#define BYTE_SIZE " << byteSize << "\n"
+        kernel << "#define BYTE_SIZE " << static_cast<cl_ulong>(byteSize) << "\n"
                << "const uint i = get_global_id(0);\n"
                << "const uint idx = offsets[i];\n"
                << "if (idx < baseOffset) {\n"

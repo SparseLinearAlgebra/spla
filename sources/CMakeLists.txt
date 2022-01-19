@@ -115,6 +115,8 @@ set(SPLA_UTILS_SOURCES
 set(SPLA_STORAGE_SOURCES
         sources/storage/block/SplaMatrixCOO.cpp
         sources/storage/block/SplaMatrixCOO.hpp
+        sources/storage/block/SplaMatrixCSR.cpp
+        sources/storage/block/SplaMatrixCSR.hpp
         sources/storage/block/SplaVectorCOO.cpp
         sources/storage/block/SplaVectorCOO.hpp
         sources/storage/SplaMatrixBlock.hpp

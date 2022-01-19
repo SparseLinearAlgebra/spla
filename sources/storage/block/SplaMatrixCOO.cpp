@@ -76,7 +76,7 @@ void spla::MatrixCOO::Dump(std::ostream &stream, unsigned int baseI, unsigned in
     stream << "Matrix " << GetNrows() << "x" << GetNcols()
            << " nvals=" << GetNvals()
            << " bsize=" << byteSize
-           << " format=coo" << std::endl;
+           << " format=" << GetFormatStr(GetFormat()) << std::endl;
 
     for (std::size_t k = 0; k < GetNvals(); k++) {
         auto i = rows[k] + baseI;

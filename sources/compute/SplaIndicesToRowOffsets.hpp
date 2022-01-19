@@ -35,6 +35,8 @@
 #include <numeric>
 #include <vector>
 
+#include <spla-cpp/SplaConfig.hpp>
+
 namespace spla {
 
     /**
