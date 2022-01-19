@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['raise_5fcritical_5ferror_1642',['RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#adde239ef21ecbdad94fd9859beb775df',1,'SplaError.hpp']]],
-  ['raise_5ferror_1643',['RAISE_ERROR',['../SplaError_8hpp.html#aedc91891937319eef48224447f657444',1,'SplaError.hpp']]]
+  ['raise_5fcritical_5ferror_1647',['RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#adde239ef21ecbdad94fd9859beb775df',1,'SplaError.hpp']]],
+  ['raise_5ferror_1648',['RAISE_ERROR',['../SplaError_8hpp.html#aedc91891937319eef48224447f657444',1,'SplaError.hpp']]]
 ];

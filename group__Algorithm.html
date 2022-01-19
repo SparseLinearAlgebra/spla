@@ -95,6 +95,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8ef083028f6779cca83fff114d61b95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">spla::Sssp</a> (<a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostVector.html">HostVector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;A, <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s)</td></tr>
 <tr class="memdesc:ga8ef083028f6779cca83fff114d61b95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">More...</a><br /></td></tr>
 <tr class="separator:ga8ef083028f6779cca83fff114d61b95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga676a61746f1bae85eda9f44c38ece25f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga676a61746f1bae85eda9f44c38ece25f">spla::Tc</a> (std::int32_t &amp;ntrins, <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;spB, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;spA)</td></tr>
+<tr class="memdesc:ga676a61746f1bae85eda9f44c38ece25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangle counting.  <a href="group__Algorithm.html#ga676a61746f1bae85eda9f44c38ece25f">More...</a><br /></td></tr>
+<tr class="separator:ga676a61746f1bae85eda9f44c38ece25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9471af2fe00d16ce74a2448de1b54ffb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga9471af2fe00d16ce74a2448de1b54ffb">spla::Tc</a> (std::int32_t &amp;ntrins, <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;B, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;A)</td></tr>
+<tr class="memdesc:ga9471af2fe00d16ce74a2448de1b54ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangle counting.  <a href="group__Algorithm.html#ga9471af2fe00d16ce74a2448de1b54ffb">More...</a><br /></td></tr>
+<tr class="separator:ga9471af2fe00d16ce74a2448de1b54ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Public library algorithms interface. </p>
@@ -278,6 +284,100 @@ Accepts input matrix with float32 type.</dd></dl>
     <tr><td class="paramdir">[out]</td><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html">Vector</a> where to store shortest paths of the reached vertices </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">A</td><td>Input adjacency matrix of the graph; must be n x n; </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">s</td><td>Index of the source vertex to begin paths search </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga9471af2fe00d16ce74a2448de1b54ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9471af2fe00d16ce74a2448de1b54ffb">&#9670;&nbsp;</a></span>Tc() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Tc </td>
+          <td>(</td>
+          <td class="paramtype">std::int32_t &amp;&#160;</td>
+          <td class="paramname"><em>ntrins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1HostMatrix.html">HostMatrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Triangle counting. </p>
+<dl class="section note"><dt>Note</dt><dd>Naive cpu reference algo implementation for correctness only</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">ntris</td><td>- number of triangles in the graph </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">B</td><td>- matrix b with number of triangles per vertex </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">A</td><td>- input adjacency matrix of directed graph with values of type int32_t, with 1 stored where has edge between i and j </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Counting triangles Triangle - set of edges</p><ul>
+<li>from-&gt;to</li>
+<li>from-&gt;inter</li>
+<li>to-&gt;inter</li>
+</ul>
+
+</div>
+</div>
+<a id="ga676a61746f1bae85eda9f44c38ece25f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga676a61746f1bae85eda9f44c38ece25f">&#9670;&nbsp;</a></span>Tc() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Tc </td>
+          <td>(</td>
+          <td class="paramtype">std::int32_t &amp;&#160;</td>
+          <td class="paramname"><em>ntrins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>spB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>spA</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Triangle counting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">ntris</td><td>- number of triangles in the graph </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">spB</td><td>- matrix b with number of triangles per vertex </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">spA</td><td>- input adjacency matrix of directed graph with values of type int32_t, with 1 stored where has edge between i and j </td></tr>
   </table>
   </dd>
 </dl>
