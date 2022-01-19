@@ -236,7 +236,6 @@ target_link_libraries(spla PRIVATE spdlog)
 set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
-target_compile_definitions(spla PRIVATE BOOST_COMPUTE_DEBUG_KERNEL_COMPILATION)
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)

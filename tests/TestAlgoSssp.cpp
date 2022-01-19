@@ -59,7 +59,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+    utils::testBlocks(blocksSizes, "", 1, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
             for (std::size_t k = 0; k < 4; k++) {
                 std::size_t nvals = base + i * step;
