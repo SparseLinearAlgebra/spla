@@ -29,7 +29,6 @@
 #include <spla-algo/SplaAlgoTc.hpp>
 
 void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
-
     utils::Matrix A = utils::Matrix<int>::Generate(M, M, nvals).SortReduceDuplicates();
     A.Fill([]() { return 1; });
 
@@ -44,8 +43,6 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    sp_B->Dump(std::cout);
-
     std::int32_t nTrinsSpla = 0;
 
     SPLA_TIME_BEGIN(tc_spla);
@@ -59,7 +56,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     SPLA_TIME_BEGIN(sssp_cpu);
     spla::Tc(nTrinsCpu, host_B, host_A);
-    SPLA_TIME_END(sssp_cpu, "cpu");
+    SPLA_TIME_END(sssp_cpu, "cpu ");
 
     auto result = utils::Matrix<int>::FromHostMatrix(host_B);
     EXPECT_TRUE(result.Equals(sp_B));

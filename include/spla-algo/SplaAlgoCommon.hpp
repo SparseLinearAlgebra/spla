@@ -66,7 +66,7 @@ namespace spla {
     private:
         Size mNrows;
         Size mNnvals;
-        Size mElementSize;
+        Size mElementSize = 0;
         std::vector<Index> mRowIndices;
         std::vector<unsigned char> mValues;
     };
@@ -100,7 +100,7 @@ namespace spla {
         Size mNrows;
         Size mNcols;
         Size mNnvals;
-        Size mElementSize;
+        Size mElementSize = 0;
         std::vector<Index> mRowIndices;
         std::vector<Index> mColIndices;
         std::vector<unsigned char> mValues;
