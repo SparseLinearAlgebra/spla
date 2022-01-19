@@ -138,6 +138,8 @@ namespace spla {
                     return "MatrixDataRead";
                 case ExpressionNode::Operation::MatrixDataWrite:
                     return "MatrixDataWrite";
+                case ExpressionNode::Operation::MatrixReduceScalar:
+                    return "MatrixReduceScalar";
                 case ExpressionNode::Operation::VectorDataRead:
                     return "VectorDataRead";
                 case ExpressionNode::Operation::VectorDataWrite:
@@ -154,6 +156,8 @@ namespace spla {
                     return "MatrixEWiseAdd";
                 case ExpressionNode::Operation::VectorEWiseAdd:
                     return "VectorEWiseAdd";
+                case ExpressionNode::Operation::ScalarEWiseAdd:
+                    return "ScalarEWiseAdd";
                 case ExpressionNode::Operation::MxM:
                     return "MxM";
                 case ExpressionNode::Operation::VxM:
@@ -162,10 +166,8 @@ namespace spla {
                     return "MxV";
                 case ExpressionNode::Operation::Transpose:
                     return "Transpose";
-                case ExpressionNode::Operation::ScalarEWiseAdd:
-                    return "ScalarEWiseAdd";
-                case ExpressionNode::Operation::MatrixReduceScalar:
-                    return "MatrixReduceScalar";
+                default:
+                    return "Unknown";
             }
         }
     }// namespace

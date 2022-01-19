@@ -52,46 +52,71 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     SPLA_TIME_BEGIN(bfs_cpu);
     spla::Bfs(host_v, host_A, sp_s);
-    SPLA_TIME_END(bfs_cpu, "cpu");
+    SPLA_TIME_END(bfs_cpu, "cpu ");
 
     auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
     ASSERT_TRUE(result.Equals(sp_v));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+    utils::testBlocks(blocksSizes, "Intel", 1, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCase(library, M, nvals, i);
+            std::cout << "iter [" << i << "]\n";
+            for (std::size_t k = 0; k < 4; k++) {
+                std::size_t nvals = base + i * step;
+                testCase(library, M, nvals, i);
+            }
         }
     });
 }
 
-TEST(BFS, Small) {
-    std::vector<std::size_t> blockSizes = {100, 1000};
+TEST(BFS, Average) {
+    utils::testBlocks({1000000}, "Intel", 1, [=](spla::Library &library) {
+        std::vector<std::size_t> sizes = {120, 1222, 13405};
+        std::vector<std::size_t> iters = {5, 2, 2};
+        std::vector<std::size_t> steps = {100, 1000, 10000};
+        std::vector<std::size_t> bases = {100, 1000, 10000};
+        for (std::size_t run = 0; run < sizes.size(); run++) {
+            auto M = sizes[run];
+            auto base = bases[run];
+            auto iter = iters[run];
+            auto step = steps[run];
+            for (std::size_t i = 0; i < iter; i++) {
+                std::cout << "run [" << run << "] iter [" << i << "]\n";
+                for (std::size_t k = 0; k < 4; k++) {
+                    std::size_t nvals = base + i * step;
+                    testCase(library, M, nvals, i);
+                }
+            }
+        }
+    });
+}
+
+TEST(BFS, DISABLED_Small) {
+    std::vector<std::size_t> blockSizes = {1000};
     std::size_t M = 120;
-    test(M, M, M, 10, blockSizes);
-}
-
-TEST(BFS, Medium) {
-    std::vector<std::size_t> blockSizes = {1000, 10000};
-    std::size_t M = 1220;
-    test(M, M, M, 10, blockSizes);
-}
-
-TEST(BFS, Large) {
-    std::vector<std::size_t> blockSizes = {10000, 100000};
-    std::size_t M = 12400;
     test(M, M, M, 5, blockSizes);
 }
 
-TEST(BFS, MegaLarge) {
+TEST(BFS, DISABLED_Medium) {
+    std::vector<std::size_t> blockSizes = {10000};
+    std::size_t M = 1220;
+    test(M, M, M, 2, blockSizes);
+}
+
+TEST(BFS, DISABLED_Large) {
+    std::vector<std::size_t> blockSizes = {100000};
+    std::size_t M = 12400;
+    test(M, M, M, 2, blockSizes);
+}
+
+TEST(BFS, DISABLED_MegaLarge) {
     std::vector<std::size_t> blockSizes = {1000000};
     std::size_t M = 990990;
     test(M, 10 * M, M, 1, blockSizes);
 }
 
-TEST(BFS, UltraLarge) {
+TEST(BFS, DISABLED_UltraLarge) {
     std::vector<std::size_t> blockSizes = {10000000};
     std::size_t M = 4500000;
     test(M, 10 * M, 10 * M, 2, blockSizes);

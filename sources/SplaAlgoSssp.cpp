@@ -90,6 +90,10 @@ void spla::Sssp(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
 
         iterations += 1;
     }
+
+#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
+    std::cout << "Exec iterations: " << iterations << "\n";
+#endif
 }
 
 void spla::Sssp(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s) {

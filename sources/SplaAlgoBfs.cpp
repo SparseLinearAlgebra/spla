@@ -35,6 +35,10 @@
 #include <queue>
 #include <vector>
 
+#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
+    #include <iostream>
+#endif
+
 void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(sp_A->GetNrows() == sp_A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
@@ -79,6 +83,10 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
 
         depth += 1;
     }
+
+#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
+    std::cout << "Exec iterations: " << depth << "\n";
+#endif
 }
 
 void spla::Bfs(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s) {

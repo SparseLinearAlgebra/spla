@@ -29,17 +29,34 @@
 #define SPLA_SETUP_HPP
 
 #include <cstddef>
-#include <spla-cpp/Spla.hpp>
+#include <string>
 #include <vector>
+
+#include <spla-cpp/Spla.hpp>
 
 namespace utils {
 
     template<typename Callable>
-    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
+    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, const std::string &platform, std::size_t workersCount, Callable callable) {
         for (std::size_t blockSize : blocksSizes) {
-            spla::Library library(spla::Library::Config().SetDeviceType(spla::Library::Config::GPU).SetBlockSize(blockSize));
+            spla::Library::Config config;
+
+            config.SetDeviceType(spla::Library::Config::GPU);
+            config.SetBlockSize(blockSize);
+
+            if (!platform.empty())
+                config.SetPlatform(platform);
+            if (workersCount)
+                config.SetWorkersCount(workersCount);
+
+            spla::Library library(config);
             callable(library);
         }
+    }
+
+    template<typename Callable>
+    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
+        testBlocks(blocksSizes, "", 0, std::forward<Callable>(callable));
     }
 
     template<typename T>
