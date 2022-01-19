@@ -35,7 +35,7 @@
 #include <unordered_set>
 #include <vector>
 
-void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA) {
+void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, bool dir) {
     CHECK_RAISE_ERROR(spA.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(spA->GetNrows() == spA->GetNcols(), DimensionMismatch, "Matrix must be nxn");
 
@@ -53,25 +53,31 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &s
     auto multOp = Functions::MultInt32(library);
     auto addOp = Functions::PlusInt32(library);
 
-    auto spATransposed = Matrix::Make(n, n, type, library);
+    auto spATransposed = dir ? Matrix::Make(n, n, type, library) : spA;
     auto spNTriangles = Scalar::Make(type, library);
     auto spNTrianglesData = spla::DataScalar::Make(library);
 
     spNTrianglesData->SetValue(&ntrins);
 
-    auto spNodeTransposeA = spTcExpr->MakeTranspose(spATransposed, nullptr, nullptr, spA);
     auto spNodeMxM = spTcExpr->MakeMxM(spB, spA, multOp, addOp, spA, spATransposed, nullptr);
     auto spNodeAccum = spTcExpr->MakeReduceScalar(spNTriangles, nullptr, nullptr, addOp, spB, nullptr);
     auto spNodeReadNTriangles = spTcExpr->MakeDataRead(spNTriangles, spNTrianglesData);
 
-    spTcExpr->Dependency(spNodeTransposeA, spNodeMxM);
+    if (dir) {
+        auto spNodeTransposeA = spTcExpr->MakeTranspose(spATransposed, nullptr, nullptr, spA);
+        spTcExpr->Dependency(spNodeTransposeA, spNodeMxM);
+    }
     spTcExpr->Dependency(spNodeMxM, spNodeAccum);
     spTcExpr->Dependency(spNodeAccum, spNodeReadNTriangles);
 
     spTcExpr->SubmitWait();
+
+    if (!dir) {
+        ntrins /= 6;
+    }
 }
 
-void spla::Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A) {
+void spla::Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A, bool dir) {
     CHECK_RAISE_ERROR(A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(A->GetNrows() == A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(A->GetElementSize() == sizeof(std::int32_t), InvalidType, "Matrix A must have int32 values of size 4");
@@ -129,5 +135,13 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatr
     std::vector<unsigned char> data(nTrins.size() * sizeof(std::int32_t));
     std::memcpy(data.data(), nTrins.data(), nTrins.size() * sizeof(std::int32_t));
 
-    B = RefPtr<HostMatrix>(new HostMatrix(n, n, std::move(trinsFrom), std::move(trinsTo), std::move(data)));
+    if (!trinsFrom.empty()) {
+        B = RefPtr<HostMatrix>(new HostMatrix(n, n, std::move(trinsFrom), std::move(trinsTo), std::move(data)));
+    } else {
+        B = nullptr;
+    }
+
+    if (!dir) {
+        ntrins /= 6;
+    }
 }
