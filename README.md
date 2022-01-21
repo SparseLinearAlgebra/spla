@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
 **spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL`
-and `Boost.Compute` technologies. It provides linear algebra primitives, such as matrices,
-vectors and scalars, supports wide variety of operations, and gives an ability to customize
-underlying values types and parametrise operations using arbitrary user defined functions.
+and `boost.compute` technologies. It provides linear algebra primitives, such as matrices, vectors and scalars, supports
+wide variety of operations, and gives an ability to customize underlying values types and parametrise operations using
+arbitrary user defined functions.
 
 > Note: project under heavy development! Not ready for usage.
 
@@ -40,9 +40,8 @@ underlying values types and parametrise operations using arbitrary user defined 
 
 ### Get source code
 
-The following code snippet downloads project source code repository, enters project root folder
-and runs submodules init in order to get dependencies source code initialized.
-Must be executed from the folder where you want to locate project.
+The following code snippet downloads project source code repository, enters project root folder and runs submodules init
+in order to get dependencies source code initialized. Must be executed from the folder where you want to locate project.
 
 ```shell
 $ git clone https://github.com/JetBrains-Research/spla.git
@@ -52,20 +51,18 @@ $ git submodule update --init --recursive
 
 ### Configure and run build
 
-The following code snippet runs cmake build configuration process
-with output into `build` directory, in `Release` mode with tests `SPLA_BUILD_TESTS=ON` enabled.
-Then runs build process for `build` directory in verbose mode with `-j 4` four system threads.
-Pass optionally `SPLA_BUILD_EXAMPLES=OFF` to disable build of library example applications.
-Must be executed from project root folder.
+The following code snippet runs cmake build configuration process with output into `build` directory, in `Release` mode
+with tests `SPLA_BUILD_TESTS=ON` enabled. Then runs build process for `build` directory in verbose mode with `-j 4` four
+system threads. Pass optionally `SPLA_BUILD_EXAMPLES=OFF` to disable build of library example applications. Must be
+executed from project root folder.
 
 ```shell
 $ cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_TESTS=ON
 $ cmake --build build --target all --verbose -j 4
 ```
 
-On macOS, you can optionally specify target binaries architecture to build.
-Pass option `-DCMAKE_OSX_ARCHITECTURES` with `x86_64` or `arm64` respectively.
-By default, build falls back to `CMAKE_SYSTEM_PROCESSOR` specified architecture. 
+On macOS, you can optionally specify target binaries architecture to build. Pass option `-DCMAKE_OSX_ARCHITECTURES`
+with `x86_64` or `arm64` respectively. By default, build falls back to `CMAKE_SYSTEM_PROCESSOR` specified architecture.
 See example bellow, replace `<arch>` with desired architecture for your build.
 
 ```shell
@@ -75,9 +72,8 @@ $ cmake --build build --target all --verbose -j 4
 
 ### Run unit-tests
 
-The following code snippet executed python script, which allows to
-run all native C++ library unit-tests, located in build directory,
-specified in `--build-dir=build`. Must be executed from project root folder.
+The following code snippet executed python script, which allows to run all native C++ library unit-tests, located in
+build directory, specified in `--build-dir=build`. Must be executed from project root folder.
 
 ```shell
 python ./scripts/run_tests.py --build-dir=build
@@ -92,7 +88,8 @@ spla
 ├── scripts - short utility programs 
 ├── include 
 │   ├── spla-c - library public C API
-│   └── spla-cpp - library public C++ API
+│   ├── spla-cpp - library public C++ API
+│   └── spla-algo - library public C++ algortihms API
 ├── sources - source code for library implementation
 │   ├── algo - algortihms implementation for math operations
 │   ├── bindings - c api bindings
@@ -101,6 +98,9 @@ spla
 │   ├── expression - expression nodes processing
 │   └── storage - data storage 
 ├── examples - example applications with library usage
+│   ├── spla_bfs - bfs application
+│   ├── spla_sssp - sssp application
+│   └── spla_tc - tc application
 ├── tests - gtest-based unit-tests collection
 ├── package - python-package files
 │   ├── pyspla - library python wrapper source code
@@ -138,5 +138,5 @@ This project licensed under MIT License. License text can be found in the
 
 ## Acknowledgments <img align="right" width="15%" src="https://github.com/JetBrains-Research/spla/raw/main/docs/logos/jetbrains-logo.png?raw=true&sanitize=true">
 
-This is a research project of the Programming Languages and Tools Laboratory
-at JetBrains-Research. Laboratory website [link](https://research.jetbrains.org/groups/plt_lab/).
+This is a research project of the Programming Languages and Tools Laboratory at JetBrains-Research. Laboratory
+website [link](https://research.jetbrains.org/groups/plt_lab/).

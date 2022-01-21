@@ -28,7 +28,10 @@
 #ifndef SPLA_SPLAUTILS_HPP
 #define SPLA_SPLAUTILS_HPP
 
+#include <chrono>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <istream>
 #include <sstream>
 #include <type_traits>
@@ -44,12 +47,39 @@ namespace spla {
      */
 
     /**
+     * @class CpuTimer
+     * @brief Simple timer for measuring time on cpu side
+     */
+    class CpuTimer {
+    public:
+        using Clock = std::chrono::steady_clock;
+        using TimePoint = Clock::time_point;
+        using Duration = std::chrono::nanoseconds;
+        using Value = double;
+
+    public:
+        void Start() { mStart = mEnd = Clock::now(); }
+        void Stop() { mEnd = Clock::now(); }
+
+        [[nodiscard]] Duration GetElapsed() const { return GetEnd() - GetStart(); }
+        [[nodiscard]] Value GetElapsedMs() const { return static_cast<double>(GetElapsed().count()) * 1e-6; }
+
+        [[nodiscard]] TimePoint GetStart() const noexcept { return mStart; }
+        [[nodiscard]] TimePoint GetEnd() const noexcept { return mEnd; }
+
+    private:
+        TimePoint mStart{};
+        TimePoint mEnd{};
+    };
+
+    /**
+     * @class MatrixLoader
      * @brief A matrix loader of .mtx format
      *
      * @tparam Value A type of target matrix value
      */
     template<typename Value>
-    class SPLA_API MatrixLoader {
+    class MatrixLoader {
     public:
         static constexpr bool HasValue = !std::is_same_v<Value, void>;
         using ValueCollectionType = std::conditional_t<std::is_same_v<Value, void>, nullptr_t, std::vector<Value>>;
@@ -127,11 +157,14 @@ namespace spla {
 
         [[nodiscard]] Size GetNrows() const { return mNrows; }
         [[nodiscard]] Size GetNcols() const { return mNcols; }
-        [[nodiscard]] Size GetNnvals() const { return mRows.size(); }
+        [[nodiscard]] Size GetNvals() const { return mRows.size(); }
         [[nodiscard]] static constexpr Size GetElementSize() { return sizeof(Value); }
 
-        [[nodiscard]] const std::vector<Index> &GetRowIndices() { return mRows; }
-        [[nodiscard]] const std::vector<Index> &GetColIndices() { return mCols; }
+        [[nodiscard]] const std::vector<Index> &GetRowIndices() const { return mRows; }
+        [[nodiscard]] const std::vector<Index> &GetColIndices() const { return mCols; }
+
+        [[nodiscard]] std::vector<Index> &GetRowIndices() { return mRows; }
+        [[nodiscard]] std::vector<Index> &GetColIndices() { return mCols; }
 
         [[nodiscard]] std::conditional_t<HasValue, const ValueCollectionType &, nullptr_t> GetValues() const {
             return mVals;
@@ -145,6 +178,20 @@ namespace spla {
         Size mNrows{};
         Size mNcols{};
     };
+
+    namespace {
+        inline void OutputMeasurements(std::ostream &stream, const CpuTimer &warmUp, const std::vector<CpuTimer> &iters) {
+            stream << "warm-up(ms): " << std::setprecision(15) << warmUp.GetElapsedMs() << "\n";
+            stream << "iters(ms): ";
+            for (auto &iter : iters)
+                stream << iter.GetElapsedMs() << " ";
+            stream << std::endl;
+        }
+
+        inline void OutputMeasurements(const CpuTimer &warmUp, const std::vector<CpuTimer> &iters) {
+            OutputMeasurements(std::cout, warmUp, iters);
+        }
+    }// namespace
 
     /**
      * @}
