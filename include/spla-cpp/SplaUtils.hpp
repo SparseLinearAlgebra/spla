@@ -57,6 +57,13 @@ namespace spla {
     public:
         MatrixLoader() = default;
 
+        /**
+         * @brief Loads matrix from @p is
+         *
+         * @tparam FileValue Type of value which is written in the file
+         * @param is An input stream with .mtx matrix inside
+         * @return Reference at created matrix
+         */
         template<typename FileValue>
         MatrixLoader &Load(std::istream &is) {
             static_assert(!(std::is_same_v<FileValue, void> && !std::is_same_v<Value, void>) );
@@ -81,14 +88,15 @@ namespace spla {
                 std::stringstream lineStream(line);
                 Index i, j;
                 lineStream >> i >> j;
+                --i, --j;
                 mRows.push_back(i);
                 mCols.push_back(j);
 
-                if (!(0 < i && i <= mNrows)) {
+                if (!(0 <= i && i < mNrows)) {
                     throw std::logic_error("Row index is out of bounds on the line " + std::to_string(lineN));
                 }
 
-                if (!(0 < j && j <= mNcols)) {
+                if (!(0 <= j && j < mNcols)) {
                     throw std::logic_error("Column index is out of bounds on the line " + std::to_string(lineN));
                 }
 

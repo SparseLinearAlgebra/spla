@@ -41,30 +41,30 @@ TEST(LoadMatrix, Int) {
             "1 2  4\n"
             "4 5 2\n";
     {
-        std::istringstream is(content.data());
+        std::istringstream is(content);
         spla::MatrixLoader<int> loader;
         loader.Load<int>(is);
         EXPECT_EQ(loader.GetNnvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{1, 1, 4}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{1, 2, 5}));
+        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
         EXPECT_EQ(loader.GetValues(), (std::vector<int>{1, 4, 2}));
     }
     {
             // // Should not compile
-            //        std::istrstream is(content.data());
+            //        std::istrstream is(content);
             //        spla::MatrixLoader<int> loader;
             //        loader.Load<void>(is);
     } {
-        std::istringstream is(content.data());
+        std::istringstream is(content);
         spla::MatrixLoader<void> loader;
         loader.Load<int>(is);
         EXPECT_EQ(loader.GetNnvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{1, 1, 4}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{1, 2, 5}));
+        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
         EXPECT_EQ(loader.GetValues(), nullptr);
     }
 }
@@ -80,14 +80,14 @@ TEST(LoadMatrix, Void) {
             "1 2\n"
             "4 5";
     {
-        std::istringstream is(content.data());
+        std::istringstream is(content);
         spla::MatrixLoader<void> loader;
         loader.Load<void>(is);
         EXPECT_EQ(loader.GetNnvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{1, 1, 4}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{1, 2, 5}));
+        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
         EXPECT_EQ(loader.GetValues(), nullptr);
     }
 }
