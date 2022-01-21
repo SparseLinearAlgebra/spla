@@ -13,22 +13,6 @@ underlying values types and parametrise operations using arbitrary user defined 
 
 > Note: project under heavy development! Not ready for usage.
 
-### Features
-
-- [ ] Library
-- [ ] Arbitrary type
-- [ ] Function unary
-- [ ] Function binary
-- [ ] Sparse matrix
-- [ ] Sparse vector
-- [ ] Sparse matrix-matrix multiplication
-- [ ] Sparse matrix-vector multiplication
-- [ ] Kronecker product
-- [ ] Element-wise matrix-matrix addition
-- [ ] Element-wise vector-vector addition
-- [ ] Sub-matrix extraction
-- [ ] Sub-vector extraction
-
 ### Platforms
 
 - Windows 10
@@ -71,6 +55,7 @@ $ git submodule update --init --recursive
 The following code snippet runs cmake build configuration process
 with output into `build` directory, in `Release` mode with tests `SPLA_BUILD_TESTS=ON` enabled.
 Then runs build process for `build` directory in verbose mode with `-j 4` four system threads.
+Pass optionally `SPLA_BUILD_EXAMPLES=OFF` to disable build of library example applications.
 Must be executed from project root folder.
 
 ```shell
@@ -115,11 +100,13 @@ spla
 │   ├── core - library foundation
 │   ├── expression - expression nodes processing
 │   └── storage - data storage 
+├── examples - example applications with library usage
 ├── tests - gtest-based unit-tests collection
 ├── package - python-package files
 │   ├── pyspla - library python wrapper source code
 │   └── tests - python package regression tests   
 ├── deps - project dependencies
+│   ├── cxxopts - lightweight C++ command line option parser
 │   ├── gtest - google test framework for unit testing
 │   ├── spdlog - spdlog library for debug/release loggging features
 │   └── taskflow - taskflow library for parallel tasks execution

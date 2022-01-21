@@ -5,6 +5,7 @@ project(spla LANGUAGES CXX)
 ## Public options
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
+option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
 option(SPLA_PROFILING "Enable time profiling of executed tasks" YES)
 
 ######################################################################
@@ -198,6 +199,16 @@ message(STATUS "Add Taskflow library")
 add_library(taskflow INTERFACE)
 target_include_directories(taskflow INTERFACE ${CMAKE_SOURCE_DIR}/deps/taskflow)
 
+if (SPLA_BUILD_EXAMPLES)
+    message(STATUS "Add cxxopts as arguments parser for example applications")
+    set(CXXOPTS_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(CXXOPTS_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(CXXOPTS_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+    set(CXXOPTS_ENABLE_WARNINGS OFF CACHE BOOL "" FORCE)
+    set(CXXOPTS_USE_UNICODE_HELP OFF CACHE BOOL "" FORCE)
+    add_subdirectory(deps/cxxopts)
+endif ()
+
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add Google test as unit test framework")
     set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
@@ -240,6 +251,23 @@ target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)
 spla_target_link_options(spla)
+
+######################################################################
+## Add examples directory
+
+if (SPLA_BUILD_EXAMPLES)
+    message(STATUS "Add examples to build")
+
+    function(spla_example_application target)
+        add_executable(${target} examples/${target}.cpp)
+        target_link_libraries(${target} PRIVATE spla)
+        target_link_libraries(${target} PRIVATE cxxopts)
+    endfunction()
+
+    spla_example_application(spla_bfs)
+    spla_example_application(spla_sssp)
+    spla_example_application(spla_tc)
+endif ()
 
 ######################################################################
 ## Add unit-tests directory
