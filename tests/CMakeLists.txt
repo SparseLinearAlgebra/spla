@@ -8,7 +8,7 @@ endfunction()
 
 spla_test_target(TestAlgoBfs)
 spla_test_target(TestAlgoSssp)
-spla_test_target(TestBasic)
+spla_test_target(TestAlgoTc)
 spla_test_target(TestDataMatrix)
 spla_test_target(TestDataScalar)
 spla_test_target(TestDataVector)

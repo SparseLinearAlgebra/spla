@@ -28,7 +28,8 @@
 #include <spla-algo/SplaAlgoCommon.hpp>
 
 spla::HostVector::HostVector(spla::Size nrows, std::vector<Index> rows, std::vector<unsigned char> vals)
-    : mNrows(nrows), mNnvals(rows.size()), mElementSize(vals.size() / rows.size()), mRowIndices(std::move(rows)), mValues(std::move(vals)) {
+    : mNrows(nrows), mNnvals(rows.size()), mRowIndices(std::move(rows)), mValues(std::move(vals)) {
+    mElementSize = !mRowIndices.empty() ? mValues.size() / mRowIndices.size() : 0;
 }
 
 spla::RefPtr<spla::DataVector> spla::HostVector::GetData(Library &library) {
@@ -36,7 +37,8 @@ spla::RefPtr<spla::DataVector> spla::HostVector::GetData(Library &library) {
 }
 
 spla::HostMatrix::HostMatrix(spla::Size nrows, spla::Size ncols, std::vector<Index> rows, std::vector<Index> cols, std::vector<unsigned char> vals)
-    : mNrows(nrows), mNcols(ncols), mNnvals(rows.size()), mElementSize(vals.size() / rows.size()), mRowIndices(std::move(rows)), mColIndices(std::move(cols)), mValues(std::move(vals)) {
+    : mNrows(nrows), mNcols(ncols), mNnvals(rows.size()), mRowIndices(std::move(rows)), mColIndices(std::move(cols)), mValues(std::move(vals)) {
+    mElementSize = !mRowIndices.empty() ? mValues.size() / mRowIndices.size() : 0;
 }
 
 spla::RefPtr<spla::DataMatrix> spla::HostMatrix::GetData(Library &library) {
