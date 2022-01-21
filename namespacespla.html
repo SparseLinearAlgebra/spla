@@ -243,6 +243,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCOO.html">MatrixCOO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCSR.html">MatrixCSR</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorCOO.html">VectorCOO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixBlock.html">MatrixBlock</a></td></tr>
@@ -335,6 +337,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;maskRows, const boost::compute::vector&lt; unsigned int &gt; &amp;maskCols, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned int &gt; &amp;inputCols, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned int &gt; &amp;outputCols, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo matrix.  <a href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">More...</a><br /></td></tr>
 <tr class="separator:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4f82171a90acd91dcb7c0c20d2aaede"><td class="memItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ae4f82171a90acd91dcb7c0c20d2aaede">CopyMergedValues</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;offsets, const boost::compute::vector&lt; unsigned char &gt; &amp;valuesA, const boost::compute::vector&lt; unsigned char &gt; &amp;valuesB, boost::compute::vector&lt; unsigned char &gt; &amp;outputValues, std::size_t baseOffset, std::size_t byteSize, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ae4f82171a90acd91dcb7c0c20d2aaede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd07d409d325cd9768ea9f6b6dff840"><td class="memItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#aacd07d409d325cd9768ea9f6b6dff840">OffsetIndices</a> (boost::compute::vector&lt; unsigned int &gt; &amp;indices, std::size_t offset, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:aacd07d409d325cd9768ea9f6b6dff840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,6 +487,114 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>addBody</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4f82171a90acd91dcb7c0c20d2aaede"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4f82171a90acd91dcb7c0c20d2aaede">&#9670;&nbsp;</a></span>CopyMergedValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::compute::event spla::CopyMergedValues </td>
+          <td>(</td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>valuesA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>valuesB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputValues</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>baseOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>byteSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aacd07d409d325cd9768ea9f6b6dff840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacd07d409d325cd9768ea9f6b6dff840">&#9670;&nbsp;</a></span>OffsetIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::compute::event spla::OffsetIndices </td>
+          <td>(</td>
+          <td class="paramtype">boost::compute::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

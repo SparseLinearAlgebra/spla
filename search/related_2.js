@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['taskbuilder_1643',['TaskBuilder',['../classspla_1_1Expression.html#a88a29778c78dfbfd8bdb4ed69abe7fa7',1,'spla::Expression']]],
-  ['types_1644',['Types',['../classspla_1_1Type.html#ad7b39434bdbb846c888a2002554e1c84',1,'spla::Type']]]
+  ['matrixcsr_1666',['MatrixCSR',['../classspla_1_1MatrixCOO.html#a7b30beb1c9709f428959f49481f8dd57',1,'spla::MatrixCOO']]]
 ];

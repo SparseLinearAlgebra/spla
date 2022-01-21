@@ -143,9 +143,24 @@ $(function() {
 <div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classspla_1_1MatrixBlock.html#a1889f7a9e1f99176b055bd8223e12832">   91</a></span>&#160;        <a class="code" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1">Format</a> <a class="code" href="classspla_1_1MatrixBlock.html#a1889f7a9e1f99176b055bd8223e12832">mFormat</a>;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMATRIXBLOCK_HPP</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    namespace {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *GetFormatStr(<a class="code" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1">MatrixBlock::Format</a> format) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">switch</span> (format) {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1ac9cdddf9eb2cb7dc410ff7ed751c0c13">MatrixBlock::Format::COO</a>:</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;COO&quot;</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9dbebbc8de3ea0e81606b05de0fff36d">MatrixBlock::Format::CSR</a>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;CSR&quot;</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9a71a13863c84ba34fc41595fc2ee0c6">MatrixBlock::Format::Dense</a>:</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;COO&quot;</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }<span class="comment">// namespace</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAMATRIXBLOCK_HPP</span></div>
 <div class="ttc" id="aSplaRefCnt_8hpp_html"><div class="ttname"><a href="SplaRefCnt_8hpp.html">SplaRefCnt.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1MatrixBlock_html"><div class="ttname"><a href="classspla_1_1MatrixBlock.html">spla::MatrixBlock</a></div><div class="ttdef"><b>Definition:</b> SplaMatrixBlock.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1MatrixBlock_html_a06fd090ff8edb125d2a2d5feb8cf5e9c"><div class="ttname"><a href="classspla_1_1MatrixBlock.html#a06fd090ff8edb125d2a2d5feb8cf5e9c">spla::MatrixBlock::~MatrixBlock</a></div><div class="ttdeci">~MatrixBlock() override=default</div></div>

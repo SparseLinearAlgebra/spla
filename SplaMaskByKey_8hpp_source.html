@@ -391,7 +391,7 @@ $(function() {
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            <span class="keyword">using namespace </span>boost;</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            <span class="keyword">typedef</span> <span class="keyword">typename</span> std::iterator_traits&lt;InputMask&gt;::value_type key_type;</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            std::size_t tileSize = 1024;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            std::size_t tileSize = 8;</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            compute::vector&lt;compute::uint_&gt; tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            compute::vector&lt;compute::uint_&gt; tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());</div>
