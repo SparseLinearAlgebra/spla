@@ -66,7 +66,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://research.jetbrains.org/"><img src="https://jb.gg/badges/research-flat-square.svg" alt="JB Research" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/actions/workflows/build.yml"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main" alt="Build" style="pointer-events: none;" class="inline"/></a> <a href="https://jetbrains-research.github.io/spla/"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/docs.yml/badge.svg?branch=main" alt="Pages" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml"><img src="https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main" alt="Clang Format" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License" class="inline"/></a></p>
-<p><b>spla</b> is a sparse linear algebra framework for multi-GPU computations based on <code>OpenCL</code> and <code>Boost.Compute</code> technologies. It provides linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of operations, and gives an ability to customize underlying values types and parametrise operations using arbitrary user defined functions.</p>
+<p><b>spla</b> is a sparse linear algebra framework for multi-GPU computations based on <code>OpenCL</code> and <code>boost.compute</code> technologies. It provides linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of operations, and gives an ability to customize underlying values types and parametrise operations using arbitrary user defined functions.</p>
 <blockquote class="doxtable">
 <p>Note: project under heavy development! Not ready for usage. </p>
 </blockquote>
@@ -124,7 +124,8 @@ $(function() {
 <div class="line">├── scripts - short utility programs </div>
 <div class="line">├── include </div>
 <div class="line">│   ├── spla-c - library public C API</div>
-<div class="line">│   └── spla-cpp - library public C++ API</div>
+<div class="line">│   ├── spla-cpp - library public C++ API</div>
+<div class="line">│   └── spla-algo - library public C++ algortihms API</div>
 <div class="line">├── sources - source code for library implementation</div>
 <div class="line">│   ├── algo - algortihms implementation for math operations</div>
 <div class="line">│   ├── bindings - c api bindings</div>
@@ -133,6 +134,9 @@ $(function() {
 <div class="line">│   ├── expression - expression nodes processing</div>
 <div class="line">│   └── storage - data storage </div>
 <div class="line">├── examples - example applications with library usage</div>
+<div class="line">│   ├── spla_bfs - bfs application</div>
+<div class="line">│   ├── spla_sssp - sssp application</div>
+<div class="line">│   └── spla_tc - tc application</div>
 <div class="line">├── tests - gtest-based unit-tests collection</div>
 <div class="line">├── package - python-package files</div>
 <div class="line">│   ├── pyspla - library python wrapper source code</div>

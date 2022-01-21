@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['memopfailed_1579',['MemOpFailed',['../group__Internal.html#gafd4634b302c77cc636953331de02a81c',1,'spla']]],
-  ['metaidx_1580',['MetaIdx',['../namespacespla_1_1detail_1_1binop.html#ad98239747aa396d6d775b35898da8073',1,'spla::detail::binop']]],
-  ['metakernel_1581',['MetaKernel',['../namespacespla_1_1detail_1_1meta.html#a562874531e97943e128f7c8b5dd140d1',1,'spla::detail::meta::MetaKernel()'],['../namespacespla_1_1detail_1_1binop.html#af588679554ef9c7346ae86c122eae574',1,'spla::detail::binop::MetaKernel()']]]
+  ['indeciesvector_1594',['IndeciesVector',['../SplaMxMCOO_8cpp.html#a43c39fa5058c08beffe7a4fdb0701260',1,'SplaMxMCOO.cpp']]],
+  ['index_1595',['Index',['../classspla_1_1MatrixStorage.html#a0090baf8ee9817e281acdf4a1e662418',1,'spla::MatrixStorage::Index()'],['../classspla_1_1VectorStorage.html#a4de8187fe6b6b30d0307a4a90802e3a0',1,'spla::VectorStorage::Index()'],['../namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c',1,'spla::Index()']]],
+  ['indices_1596',['Indices',['../classspla_1_1MatrixCOO.html#a1fb2c82b2b4f104ca051eeba2d415e43',1,'spla::MatrixCOO::Indices()'],['../classspla_1_1MatrixCSR.html#ab03bedcca7e2befc68d131eeb40146fe',1,'spla::MatrixCSR::Indices()'],['../classspla_1_1VectorCOO.html#a030f0b144aa59b2e66916b670f89f9ee',1,'spla::VectorCOO::Indices()']]],
+  ['invalidargument_1597',['InvalidArgument',['../group__Internal.html#ga06715d178091c293c2ec3564827fd9c7',1,'spla']]],
+  ['invalidstate_1598',['InvalidState',['../group__Internal.html#ga613ae237941a9d20dfaae339d631c775',1,'spla']]],
+  ['invalidtype_1599',['InvalidType',['../group__Internal.html#gafb50a533fa5a48aab0f1dbc73b1f4c35',1,'spla']]]
 ];

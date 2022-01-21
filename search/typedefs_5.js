@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['releaseproc_1584',['ReleaseProc',['../classspla_1_1Data.html#ab80e853b44b2a3c7bbf1a0b3c1eb9fe7',1,'spla::Data']]]
+  ['notimplemented_1603',['NotImplemented',['../group__Internal.html#gabcd969f389137654ed73708fd9450197',1,'spla']]],
+  ['nullpointer_1604',['NullPointer',['../group__Internal.html#ga424ab0cd09fe4315b95b4e1d2c3a8064',1,'spla']]]
 ];

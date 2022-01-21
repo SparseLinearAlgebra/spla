@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['value_1586',['Value',['../classspla_1_1ScalarValue.html#a980a3906fb644ba35cc0b8d3618261d4',1,'spla::ScalarValue']]],
-  ['valuecollectiontype_1587',['ValueCollectionType',['../classspla_1_1MatrixLoader.html#afb2ad7db32e89a9b304dd7104d931c3e',1,'spla::MatrixLoader']]],
-  ['values_1588',['Values',['../classspla_1_1MatrixCOO.html#a07f97ee90ab76db5f62d91709dd8b9fc',1,'spla::MatrixCOO::Values()'],['../classspla_1_1MatrixCSR.html#a7e6c583a332c3b3ff18d0d686612a959',1,'spla::MatrixCSR::Values()'],['../classspla_1_1VectorCOO.html#a60fd13a85f7d71b5d72eff3409a50ebd',1,'spla::VectorCOO::Values()']]],
-  ['valuesvector_1589',['ValuesVector',['../SplaMxMCOO_8cpp.html#a83846d67d5757f1bd279d251a750aca5',1,'SplaMxMCOO.cpp']]]
+  ['size_1606',['Size',['../namespacespla.html#a1077f01f0bb170ce125d99dafc943504',1,'spla']]]
 ];
