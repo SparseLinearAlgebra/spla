@@ -38,13 +38,23 @@
 #include <utils/Vector.hpp>
 
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 
 #define SPLA_TIME_BEGIN(timer) \
     auto timer = std::chrono::steady_clock::now();
 
-#define SPLA_TIME_END(timer, message) \
-    std::cout << message << " " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - timer).count() << std::endl;
+#define SPLA_TIME_END(timer, message)                                           \
+    std::cout << std::setw(10)                                                  \
+              << message << " "                                                 \
+              << std::setw(10)                                                  \
+              << std::setprecision(9)                                           \
+              << static_cast<double>(                                           \
+                         std::chrono::duration_cast<std::chrono::microseconds>( \
+                                 std::chrono::steady_clock::now() - timer)      \
+                                 .count()) *                                    \
+                         1e-3                                                   \
+              << " ms" << std::endl;
 
 
 // Put in the end of the unit test file

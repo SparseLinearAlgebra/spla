@@ -27,7 +27,7 @@
 
 #include <Testing.hpp>
 
-void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
+void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0, std::size_t repeats = 4) {
     auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
     auto sp_Int32 = spla::Types::Int32(library);
     auto sp_s = rnd();
@@ -43,46 +43,70 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
     sp_setup->SubmitWait();
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    SPLA_TIME_BEGIN(bfs_spla);
-    spla::Bfs(sp_v, sp_A, sp_s);
-    SPLA_TIME_END(bfs_spla, "spla");
+    for (std::size_t k = 0; k < repeats; k++) {
+        SPLA_TIME_BEGIN(bfs_spla);
+        spla::Bfs(sp_v, sp_A, sp_s);
+        SPLA_TIME_END(bfs_spla, "spla");
 
-    auto host_A = A.ToHostMatrix();
-    auto host_v = spla::RefPtr<spla::HostVector>();
+        auto host_A = A.ToHostMatrix();
+        auto host_v = spla::RefPtr<spla::HostVector>();
 
-    SPLA_TIME_BEGIN(bfs_cpu);
-    spla::Bfs(host_v, host_A, sp_s);
-    SPLA_TIME_END(bfs_cpu, "cpu");
+        SPLA_TIME_BEGIN(bfs_cpu);
+        spla::Bfs(host_v, host_A, sp_s);
+        SPLA_TIME_END(bfs_cpu, "cpu");
 
-    auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
-    ASSERT_TRUE(result.Equals(sp_v));
+        auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
+        ASSERT_TRUE(result.Equals(sp_v));
+    }
 }
 
-void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes, std::size_t repeats = 4) {
+    utils::testBlocks(blocksSizes, "", 1, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
+            std::cout << "iter [" << i << "]\n";
             std::size_t nvals = base + i * step;
-            testCase(library, M, nvals, i);
+            testCase(library, M, nvals, i, repeats);
+        }
+    });
+}
+
+TEST(BFS, Average) {
+    utils::testBlocks({1000000}, "", 1, [=](spla::Library &library) {
+        std::vector<std::size_t> sizes = {120, 1222, 13405, 15623};
+        std::vector<std::size_t> iters = {5, 5, 5, 5};
+        std::vector<std::size_t> steps = {100, 1000, 10000, 15000};
+        std::vector<std::size_t> bases = {100, 1000, 10000, 15000};
+        std::vector<std::size_t> repeats = {10, 10, 5, 5};
+        for (std::size_t run = 0; run < sizes.size(); run++) {
+            auto M = sizes[run];
+            auto base = bases[run];
+            auto iter = iters[run];
+            auto step = steps[run];
+            for (std::size_t i = 0; i < iter; i++) {
+                std::cout << "run [" << run << "] iter [" << i << "]\n";
+                std::size_t nvals = base + i * step;
+                testCase(library, M, nvals, i, repeats[run]);
+            }
         }
     });
 }
 
 TEST(BFS, Small) {
-    std::vector<std::size_t> blockSizes = {100, 1000};
+    std::vector<std::size_t> blockSizes = {1000};
     std::size_t M = 120;
-    test(M, M, M, 10, blockSizes);
+    test(M, M, M, 5, blockSizes);
 }
 
 TEST(BFS, Medium) {
-    std::vector<std::size_t> blockSizes = {1000, 10000};
+    std::vector<std::size_t> blockSizes = {10000};
     std::size_t M = 1220;
-    test(M, M, M, 10, blockSizes);
+    test(M, M, M, 2, blockSizes);
 }
 
 TEST(BFS, Large) {
-    std::vector<std::size_t> blockSizes = {10000, 100000};
+    std::vector<std::size_t> blockSizes = {100000};
     std::size_t M = 12400;
-    test(M, M, M, 5, blockSizes);
+    test(M, M, M, 2, blockSizes);
 }
 
 TEST(BFS, MegaLarge) {

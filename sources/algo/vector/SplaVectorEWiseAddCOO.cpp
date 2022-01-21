@@ -27,7 +27,8 @@
 
 #include <algo/SplaAlgorithmParams.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
-#include <boost/compute/algorithm.hpp>
+
+#include <compute/SplaCopyUtils.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <compute/SplaMergeByKey.hpp>
@@ -35,6 +36,8 @@
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+
+#include <boost/compute/algorithm.hpp>
 
 bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorEWiseAdd *>(&params);
@@ -158,14 +161,8 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     }
 
     // NOTE: offset b perm indices to preserve uniqueness
-    if (typeHasValues) {
-        auto offset = static_cast<unsigned int>(blockA->GetNvals());
-        BOOST_COMPUTE_CLOSURE(void, offsetB, (unsigned int i), (permB, offset), {
-            permB[i] = permB[i] + offset;
-        });
-
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), permB.size(), offsetB, queue);
-    }
+    if (typeHasValues)
+        OffsetIndices(permB, blockA->GetNvals(), queue);
 
     // Merge a and b values
     auto mergeCount = rowsA->size() + rowsB->size();
@@ -188,25 +185,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned char> mergedValues(ctx);
     if (typeHasValues) {
         mergedValues.resize(mergeCount * byteSize, queue);
-        auto &aVals = blockA->GetVals();
-        auto &bVals = blockB->GetVals();
-        auto offset = blockA->GetNvals();
-        BOOST_COMPUTE_CLOSURE(void, copyValues, (unsigned int i), (mergedPerm, mergedValues, aVals, bVals, offset, byteSize), {
-            const uint idx = mergedPerm[i];
-
-            if (idx < offset) {
-                const uint dst = i * byteSize;
-                const uint src = idx * byteSize;
-                for (uint k = 0; k < byteSize; k++)
-                    mergedValues[dst + k] = aVals[src + k];
-            } else {
-                const uint dst = i * byteSize;
-                const uint src = (idx - offset) * byteSize;
-                for (uint k = 0; k < byteSize; k++)
-                    mergedValues[dst + k] = bVals[src + k];
-            }
-        });
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), mergedPerm.size(), copyValues, queue);
+        CopyMergedValues(mergedPerm, blockA->GetVals(), blockB->GetVals(), mergedValues, blockA->GetNvals(), byteSize, queue);
     }
 
     // Reduce duplicates

@@ -81,7 +81,8 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
     for (std::size_t i = 0; i < rowBlocks; ++i) {
         for (std::size_t j = 0; j < colBlocks; ++j) {
             auto deviceId = deviceIds[i * colBlocks + j];
-            auto block = argMatrix->GetStorage()->GetBlock({i, j});
+            auto blockIdx = MatrixStorage::Index(static_cast<unsigned int>(i), static_cast<unsigned int>(j));
+            auto block = argMatrix->GetStorage()->GetBlock(blockIdx);
 
             if (block.IsNotNull()) {
                 tf::Task reduceAnotherBlock = builder.Emplace([=]() {
@@ -91,7 +92,7 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
                     params.matrix = block;
                     params.hasMask = argMask.IsNotNull();
                     params.mask = argMask.IsNotNull()
-                                          ? argMask->GetStorage()->GetBlock({i, j})
+                                          ? argMask->GetStorage()->GetBlock(blockIdx)
                                           : nullptr;
                     params.type = argType;
                     params.reduce = argReduce;

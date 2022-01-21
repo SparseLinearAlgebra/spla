@@ -58,6 +58,8 @@ namespace spla {
                 using namespace boost;
                 mCount = count;
 
+                set_arg(add_arg<cl_ulong>("count"), static_cast<cl_long>(mCount));
+
                 std::stringstream _spla_reduce_op;
                 _spla_reduce_op << "void _spla_reduce_op(__global void* vp_a, __global void* vp_b, __global void* vp_c) {\n"
                                 << "#define _ACCESS_A __global\n"
@@ -75,7 +77,7 @@ namespace spla {
                       << "const uint m = " << mask[expr<compute::uint_>("i")] << ";\n"
                       << "if (m) {\n"
                       << "  const uint offset = " << offset[expr<compute::uint_>("i")] << ";\n"
-                      << "  if (i + 1 < " << count << " && " << mask[expr<compute::uint_>("i+1")] << " == 0) {\n"
+                      << "  if (i + 1 < count && " << mask[expr<compute::uint_>("i+1")] << " == 0) {\n"
                       << "    const uint arg1 = i * " << elementsInSequence << "\n;"
                       << "    const uint arg2 = (i + 1) * " << elementsInSequence << "\n;"
                       << "    const uint arg3 = offset * " << elementsInSequence << "\n;"

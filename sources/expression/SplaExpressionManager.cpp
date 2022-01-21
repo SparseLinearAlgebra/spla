@@ -55,6 +55,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixDataWrite());
     Register(new MatrixEWiseAdd());
     Register(new MatrixTranspose());
+    Register(new MatrixReduceScalar());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
     Register(new ScalarEWiseAdd());
@@ -63,7 +64,6 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new VectorDataRead());
     Register(new VectorEWiseAdd());
     Register(new VectorReduce());
-    Register(new MatrixReduceScalar());
     Register(new MxM());
     Register(new VxM());
 }

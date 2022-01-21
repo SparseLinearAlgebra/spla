@@ -326,7 +326,7 @@ namespace spla {
             using namespace boost;
             typedef typename std::iterator_traits<InputMask>::value_type key_type;
 
-            std::size_t tileSize = 1024;
+            std::size_t tileSize = 8;
 
             compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());

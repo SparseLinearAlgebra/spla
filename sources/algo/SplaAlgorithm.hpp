@@ -117,12 +117,16 @@ namespace spla {
                     return "MatrixEWiseAdd";
                 case Algorithm::Type::MatrixEWiseMult:
                     return "MatrixEWiseMult";
+                case Algorithm::Type::MatrixReduceScalar:
+                    return "MatrixReduceScalar";
                 case Algorithm::Type::VectorAssign:
                     return "VectorAssign";
                 case Algorithm::Type::VectorEWiseAdd:
                     return "VectorEWiseAdd";
                 case Algorithm::Type::VectorEWiseMult:
                     return "VectorEWiseMult";
+                case Algorithm::Type::VectorReduce:
+                    return "VectorReduce";
                 case Algorithm::Type::MxM:
                     return "MxM";
                 case Algorithm::Type::MxV:
@@ -131,10 +135,8 @@ namespace spla {
                     return "VxM";
                 case Algorithm::Type::Transpose:
                     return "Transpose";
-                case Algorithm::Type::VectorReduce:
-                    return "VectorReduce";
-                case Algorithm::Type::MatrixReduceScalar:
-                    return "MatrixReduceScalar";
+                default:
+                    return "Unknown";
             }
         }
     }// namespace

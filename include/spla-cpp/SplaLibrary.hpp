@@ -84,12 +84,13 @@ namespace spla {
             explicit Config();
 
             /**
-             * Sets platform name to @p platformName.
+             * @brief Sets platform name to @p platformName.
+             *
              * All context devices will belong to specified platform.
              * If this function was not called,
              * the one for which as many devices as possible meet the given parameters will be used.
              * 
-             * @param platformName Full name of OpenCL platform.
+             * @param platformName Name of OpenCL platform.
              */
             Config &SetPlatform(std::string platformName);
 
@@ -116,7 +117,7 @@ namespace spla {
             Config &RemoveAmountLimit();
 
             /**
-             * Set log file name, to log trace messages in debug library build.
+             * @brief Set log file name, to log trace messages in debug library build.
              *
              * @note Use utf-16 encoded wstring on windows platform to specify log file name.
              * @note Use utf-8 encoded string on windows platform to specify log file name.
@@ -127,7 +128,7 @@ namespace spla {
             Config &SetLogFilename(Filename filename);
 
             /**
-             * Set matrix/vector block size param.
+             * @brief Set matrix/vector block size param.
              *
              * This param used to split primitives data:
              * - matrix data in equally sized blocks of size `blockSize` x `blockSize`
@@ -143,6 +144,17 @@ namespace spla {
              */
             Config &SetBlockSize(std::size_t blockSize);
 
+            /**
+             * @brief Set workers count for task executor
+             *
+             * Sets number of workers (threads) created inside task
+             * executor for parallel processing of expression graphs.
+             *
+             * @param workersCount Number of workers
+             * @return This config
+             */
+            Config &SetWorkersCount(std::size_t workersCount);
+
             /** @return List of available devices for specified config settings */
             [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
 
@@ -152,16 +164,20 @@ namespace spla {
             /** @return Block size */
             [[nodiscard]] std::size_t GetBlockSize() const;
 
+            /** @return Workers count */
+            [[nodiscard]] std::size_t GetWorkersCount() const;
+
         private:
             std::optional<std::string> mPlatformName;
             std::optional<DeviceType> mDeviceType;
             std::optional<std::size_t> mDeviceAmount = std::optional{1U};
             std::optional<Filename> mLogFilename;
             std::size_t mBlockSize = DEFAULT_BLOCK_SIZE;
+            std::size_t mWorkersCount = 0;
         };
 
     public:
-        Library(Config config);
+        explicit Library(Config config);
 
         Library();
 

@@ -196,7 +196,7 @@ namespace spla {
             namespace compute = boost::compute;
             using compute::uint_;
 
-            const std::size_t tileSize = 1024;
+            const std::size_t tileSize = 8;
 
             compute::vector<uint_> tileA((count1 + count2 + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<uint_> tileB((count1 + count2 + tileSize - 1) / tileSize + 1, queue.get_context());

@@ -25,9 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/vxm/SplaVxMCOO.hpp>
 #include <boost/compute/algorithm.hpp>
 #include <boost/compute/algorithm/scatter_if.hpp>
+
+#include <algo/vxm/SplaVxMCOO.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
@@ -36,7 +37,7 @@
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <storage/block/SplaMatrixCOO.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
 bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
@@ -79,14 +80,28 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto M = a->GetNrows();
     auto N = b->GetNcols();
 
-    // Compute rows offsets and rows lengths for matrix b
-    compute::vector<unsigned int> offsets(ctx);
-    compute::vector<unsigned int> lengths(ctx);
-    IndicesToRowOffsets(b->GetRows(), offsets, lengths, M, queue);
+    // todo: beautify and avoid pinters usage?
+    const compute::vector<Index> *offsets;
+    const compute::vector<Index> *lengths;
+
+    compute::vector<Index> offsetsBuffer(ctx);
+    compute::vector<Index> lengthsBuffer(ctx);
+
+    if (b.Is<MatrixCSR>()) {
+        // Get rows offsets and rows lengths for matrix b
+        auto bCSR = b.Cast<MatrixCSR>();
+        offsets = &bCSR->GetRowsOffsets();
+        lengths = &bCSR->GetRowLengths();
+    } else {
+        // Compute new rows offsets and rows lengths for matrix b
+        offsets = &offsetsBuffer;
+        lengths = &lengthsBuffer;
+        IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
+    }
 
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
-    compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths.begin(), segmentLengths.begin(), queue);
+    compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths->begin(), segmentLengths.begin(), queue);
 
     // Compute offsets between each a[i] x b[i,:] products
     compute::vector<unsigned int> outputPtr(a->GetNvals() + 1, ctx);
@@ -113,10 +128,11 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     compute::inclusive_scan(aLocations.begin(), aLocations.end(), aLocations.begin(), compute::max<unsigned int>(), queue);
 
     auto &aRows = a->GetRows();
-    BOOST_COMPUTE_CLOSURE(void, unfoldSegment, (unsigned int i), (outputPtr, offsets, aRows, aLocations, bLocations), {
+    auto &offsetsRef = *offsets;
+    BOOST_COMPUTE_CLOSURE(void, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations, bLocations), {
         uint locationOfRowIndex = aLocations[i];
         uint rowIdx = aRows[locationOfRowIndex];
-        uint rowBaseOffset = offsets[rowIdx];
+        uint rowBaseOffset = offsetsRef[rowIdx];
         uint offsetOfRowSegment = outputPtr[locationOfRowIndex];
         bLocations[i] = rowBaseOffset + (i - offsetOfRowSegment);
     });

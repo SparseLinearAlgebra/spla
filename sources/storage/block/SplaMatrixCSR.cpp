@@ -25,49 +25,32 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SETUP_HPP
-#define SPLA_SETUP_HPP
+#include <compute/SplaIndicesToRowOffsets.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 
-#include <cstddef>
-#include <string>
-#include <vector>
+const spla::MatrixCSR::Indices &spla::MatrixCSR::GetRowsOffsets() const noexcept {
+    return mRowOffsets;
+}
 
-#include <spla-cpp/Spla.hpp>
+const spla::MatrixCSR::Indices &spla::MatrixCSR::GetRowLengths() const noexcept {
+    return mRowLengths;
+}
 
-namespace utils {
+spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, boost::compute::command_queue &queue) {
+    return spla::RefPtr<spla::MatrixCSR>(new MatrixCSR(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals), queue));
+}
 
-    template<typename Callable>
-    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, const std::string &platform, std::size_t workersCount, Callable callable) {
-        for (std::size_t blockSize : blocksSizes) {
-            spla::Library::Config config;
+spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(const spla::RefPtr<spla::MatrixCOO> &block, boost::compute::command_queue &queue) {
+    // Copy data from block (blocks are immutable)
+    Indices rows(block->GetRows().begin(), block->GetRows().end(), queue);
+    Indices cols(block->GetCols().begin(), block->GetCols().end(), queue);
+    Values vals(block->GetVals().begin(), block->GetVals().end(), queue);
+    return Make(block->GetNrows(), block->GetNcols(), block->GetNvals(), std::move(rows), std::move(cols), std::move(vals), queue);
+}
 
-            config.SetDeviceType(spla::Library::Config::GPU);
-            config.SetBlockSize(blockSize);
-
-            if (!platform.empty())
-                config.SetPlatform(platform);
-            if (workersCount)
-                config.SetWorkersCount(workersCount);
-
-            spla::Library library(config);
-            callable(library);
-        }
-    }
-
-    template<typename Callable>
-    inline void testBlocks(const std::vector<std::size_t> &blocksSizes, Callable callable) {
-        testBlocks(blocksSizes, "", 0, std::forward<Callable>(callable));
-    }
-
-    template<typename T>
-    inline spla::RefPtr<spla::DataScalar> GetData(T s, spla::Library &library) {
-        T *scalar = new T(s);
-        auto data = spla::DataScalar::Make(library);
-        data->SetValue(scalar);
-        data->SetReleaseProc([=](void *scalar) { delete ((T *) scalar); });
-        return data;
-    }
-
-}// namespace utils
-
-#endif//SPLA_SETUP_HPP
+spla::MatrixCSR::MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, boost::compute::command_queue &queue)
+    : MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)), mRowOffsets(queue.get_context()), mRowLengths(queue.get_context()) {
+    mFormat = Format::CSR;
+    // Compute and cache offsets and rows lengths (frequently used in vxm mxm operations)
+    IndicesToRowOffsets(GetRows(), mRowOffsets, mRowLengths, GetNrows(), queue);
+}

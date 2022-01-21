@@ -5,6 +5,7 @@ project(spla LANGUAGES CXX)
 ## Public options
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
+option(SPLA_PROFILING "Enable time profiling of executed tasks" YES)
 
 ######################################################################
 ## internal definitions
@@ -18,6 +19,10 @@ set(SPLA_TARGET_LINUX NO)
 set(SPLA_TARGET_WINDOWS NO)
 set(SPLA_TARGET_MACOSX NO)
 set(SPLA_ARCH)
+
+if (SPLA_PROFILING)
+    list(APPEND SPLA_DEFINES SPLA_PROFILING)
+endif (SPLA_PROFILING)
 
 ####################################################################
 ## Define platform
@@ -70,6 +75,7 @@ elseif (CMAKE_BUILD_TYPE MATCHES Release)
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(SPLA_RELEASE YES)
     list(APPEND SPLA_DEFINES SPLA_RELEASE)
+    list(APPEND SPLA_DEFINES SPLA_DEBUG_RELEASE)
     message(STATUS "Build spla in release mode with debug info (specified)")
 else ()
     set(SPLA_RELEASE YES)
@@ -229,6 +235,7 @@ target_link_libraries(spla PRIVATE spdlog)
 
 set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
+target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)

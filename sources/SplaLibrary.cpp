@@ -25,14 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <memory>
+#include <sstream>
+#include <thread>
+
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
+
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <memory>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaTypes.hpp>
-#include <sstream>
 
 spla::Library::Library(Config config) : mPrivate(std::make_shared<LibraryPrivate>(*this, std::move(config))) {
     Types::RegisterTypes(*this);
@@ -103,43 +106,59 @@ spla::Library::Config &spla::Library::Config::SetBlockSize(std::size_t blockSize
     return *this;
 }
 
+
+spla::Library::Config &spla::Library::Config::SetWorkersCount(std::size_t workersCount) {
+    assert(workersCount > 0);
+    mWorkersCount = workersCount;
+    return *this;
+}
+
 std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
     std::vector<std::string> devicesNames;
 
+    auto platforms = boost::compute::system::platforms();
+    if (platforms.empty()) {
+        RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
+    }
+
     if (!mDeviceType.has_value() &&
         !mPlatformName.has_value() &&
-        mDeviceAmount.has_value() &&
         mDeviceAmount.value() == 1U) {
         return {boost::compute::system::default_device().name()};
     }
 
-    bool platformExists = false;
-    for (const boost::compute::platform &platform : boost::compute::system::platforms()) {
-        if (mPlatformName.has_value() && platform.name() != mPlatformName.value()) {
+    for (const boost::compute::platform &platform : platforms) {
+        bool matchPlatform = !mPlatformName.has_value() || platform.name().find(mPlatformName.value()) != std::string::npos;
+        if (!matchPlatform)
             continue;
-        }
-        platformExists = true;
+
         for (const boost::compute::device &device : platform.devices()) {
             bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
                                                           (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
                                                           (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator));
-            bool matchPlatform = !mPlatformName.has_value() || device.platform().name() == mPlatformName.value();
-            if (matchType && matchPlatform) {
+            if (matchType) {
                 devicesNames.push_back(device.name());
             }
         }
     }
-    if (mPlatformName.has_value() && !platformExists) {
-        RAISE_ERROR(DeviceNotPresent, ("No OpenCL platform found with name '" + mPlatformName.value() + "'").c_str());
+
+    if (devicesNames.empty()) {
+        devicesNames.push_back(boost::compute::system::default_device().name());
     }
+
     if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
         devicesNames.resize(mDeviceAmount.value());
     }
+
     return devicesNames;
 }
 
 std::size_t spla::Library::Config::GetBlockSize() const {
     return mBlockSize;
+}
+
+std::size_t spla::Library::Config::GetWorkersCount() const {
+    return !mWorkersCount ? std::thread::hardware_concurrency() : mWorkersCount;
 }
 
 const std::optional<spla::Filename> &spla::Library::Config::GetLogFilename() const {

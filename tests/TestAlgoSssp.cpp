@@ -27,7 +27,7 @@
 
 #include <Testing.hpp>
 
-void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0) {
+void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::size_t seed = 0, std::size_t repeats = 4) {
     auto rnd = utils::UniformIntGenerator<spla::Index>(seed, 0, M - 1);
     auto sp_Float32 = spla::Types::Float32(library);
     auto sp_s = rnd();
@@ -43,26 +43,29 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
     sp_setup->SubmitWait();
     ASSERT_EQ(sp_setup->GetState(), spla::Expression::State::Evaluated);
 
-    SPLA_TIME_BEGIN(sssp_spla);
-    spla::Sssp(sp_v, sp_A, sp_s);
-    SPLA_TIME_END(sssp_spla, "spla");
+    for (std::size_t k = 0; k < repeats; k++) {
+        SPLA_TIME_BEGIN(sssp_spla);
+        spla::Sssp(sp_v, sp_A, sp_s);
+        SPLA_TIME_END(sssp_spla, "spla");
 
-    auto host_A = A.ToHostMatrix();
-    auto host_v = spla::RefPtr<spla::HostVector>();
+        auto host_A = A.ToHostMatrix();
+        auto host_v = spla::RefPtr<spla::HostVector>();
 
-    SPLA_TIME_BEGIN(sssp_cpu);
-    spla::Sssp(host_v, host_A, sp_s);
-    SPLA_TIME_END(sssp_cpu, "cpu");
+        SPLA_TIME_BEGIN(sssp_cpu);
+        spla::Sssp(host_v, host_A, sp_s);
+        SPLA_TIME_END(sssp_cpu, "cpu");
 
-    auto result = utils::Vector<float>::FromHostVector(host_v);
-    EXPECT_TRUE(result.Equals(sp_v));
+        auto result = utils::Vector<float>::FromHostVector(host_v);
+        EXPECT_TRUE(result.Equals(sp_v));
+    }
 }
 
-void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes, std::size_t repeats = 4) {
+    utils::testBlocks(blocksSizes, "", 1, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
+            std::cout << "iter [" << i << "]\n";
             std::size_t nvals = base + i * step;
-            testCase(library, M, nvals, i);
+            testCase(library, M, nvals, i, repeats);
         }
     });
 }

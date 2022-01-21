@@ -41,12 +41,12 @@
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());
+    Register(new MatrixReduceScalarCOO());
     Register(new VectorAssignCOO());
     Register(new VectorReduceCOO());
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());
     Register(new VxMCOO());
-    Register(new MatrixReduceScalarCOO());
 }
 
 void spla::AlgorithmManager::Register(const spla::RefPtr<spla::Algorithm> &algo) {
