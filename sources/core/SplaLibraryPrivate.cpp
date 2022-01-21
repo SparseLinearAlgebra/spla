@@ -92,8 +92,8 @@ spla::LibraryPrivate::LibraryPrivate(
     mAlgoManager = RefPtr<AlgorithmManager>(new AlgorithmManager(library));
     mExecutor = std::make_shared<tf::Executor>(config.GetWorkersCount());
 
-#if 1
-    std::cout << "Selected platform: " << mPlatform.name() << ", device count: " << mDeviceManager.GetDevices().size() << '\n';
+#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
+    std::cout << "Platform: " << mPlatform.name() << " device count: " << mDeviceManager.GetDevices().size() << '\n';
 #endif
 }
 

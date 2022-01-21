@@ -53,7 +53,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
         SPLA_TIME_BEGIN(bfs_cpu);
         spla::Bfs(host_v, host_A, sp_s);
-        SPLA_TIME_END(bfs_cpu, "cpu ");
+        SPLA_TIME_END(bfs_cpu, "cpu");
 
         auto result = utils::Vector<std::int32_t>::FromHostVector(host_v);
         ASSERT_TRUE(result.Equals(sp_v));

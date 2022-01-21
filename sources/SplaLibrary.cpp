@@ -116,33 +116,40 @@ spla::Library::Config &spla::Library::Config::SetWorkersCount(std::size_t worker
 std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
     std::vector<std::string> devicesNames;
 
+    auto platforms = boost::compute::system::platforms();
+    if (platforms.empty()) {
+        RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
+    }
+
     if (!mDeviceType.has_value() &&
         !mPlatformName.has_value() &&
-        mDeviceAmount.has_value() &&
         mDeviceAmount.value() == 1U) {
         return {boost::compute::system::default_device().name()};
     }
 
-    bool platformExists = false;
-    for (const boost::compute::platform &platform : boost::compute::system::platforms()) {
-        platformExists = true;
+    for (const boost::compute::platform &platform : platforms) {
+        bool matchPlatform = !mPlatformName.has_value() || platform.name().find(mPlatformName.value()) != std::string::npos;
+        if (!matchPlatform)
+            continue;
+
         for (const boost::compute::device &device : platform.devices()) {
             bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
                                                           (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
                                                           (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator));
-            bool matchPlatform = !mPlatformName.has_value() || platform.name().find(mPlatformName.value()) != std::string::npos;
-
-            if (matchType && matchPlatform) {
+            if (matchType) {
                 devicesNames.push_back(device.name());
             }
         }
     }
-    if (mPlatformName.has_value() && !platformExists) {
-        RAISE_ERROR(DeviceNotPresent, ("No OpenCL platform found with name '" + mPlatformName.value() + "'").c_str());
+
+    if (devicesNames.empty()) {
+        devicesNames.push_back(boost::compute::system::default_device().name());
     }
+
     if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
         devicesNames.resize(mDeviceAmount.value());
     }
+
     return devicesNames;
 }
 
