@@ -36,10 +36,9 @@ var searchData=
   ['transposearg2_693',['TransposeArg2',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78adafec008b26d69c6d78c7964d7c1f44f',1,'spla::Descriptor']]],
   ['traversalinfo_694',['TraversalInfo',['../structspla_1_1ExpressionManager_1_1TraversalInfo.html',1,'spla::ExpressionManager']]],
   ['tw_695',['tw',['../classspla_1_1ParamsMxM.html#a9cfb56865debc0e4e831ed6ce85ff97b',1,'spla::ParamsMxM::tw()'],['../classspla_1_1ParamsVxM.html#ab8a354a2a7c8ef688b525f97d165e194',1,'spla::ParamsVxM::tw()'],['../classspla_1_1ParamsScalarEWiseAdd.html#aaf4e468f627812db1d503838e8ef268a',1,'spla::ParamsScalarEWiseAdd::tw()']]],
-  ['type_696',['Type',['../classspla_1_1Type.html',1,'spla']]],
+  ['type_696',['Type',['../classspla_1_1Type.html',1,'spla::Type'],['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074af',1,'spla::Algorithm::Type()'],['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caa1fa27779242b4902f7ae3bdd5c6d508',1,'spla::Object::Type()']]],
   ['type_697',['type',['../classspla_1_1ParamsMatrixEWiseAdd.html#a04d62bb6cbaff22373c225e09f83c2aa',1,'spla::ParamsMatrixEWiseAdd::type()'],['../classspla_1_1ParamsVectorEWiseAdd.html#a57c392fc0341584e56c5e00ad13cbdf1',1,'spla::ParamsVectorEWiseAdd::type()'],['../classspla_1_1ParamsVectorAssign.html#a0a673cc74a6b00e8ec4a99018493004b',1,'spla::ParamsVectorAssign::type()'],['../classspla_1_1ParamsTranspose.html#a5f6cbc2990cc453830d8e54946c7b195',1,'spla::ParamsTranspose::type()'],['../classspla_1_1ParamsVectorReduce.html#aa6fecf81fb250dd89340932e2bfc00f9',1,'spla::ParamsVectorReduce::type()'],['../classspla_1_1ParamsMatrixReduceScalar.html#ad82c3a328e5526bd118dcb502c150443',1,'spla::ParamsMatrixReduceScalar::type()']]],
-  ['type_698',['Type',['../classspla_1_1Algorithm.html#ab9cbf7c1ff7c7c0900e448b5e42074af',1,'spla::Algorithm::Type()'],['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caa1fa27779242b4902f7ae3bdd5c6d508',1,'spla::Object::Type()']]],
-  ['typedobject_699',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla::TypedObject'],['../classspla_1_1TypedObject.html#a71229807510d3c5ef2a6416aac8534d2',1,'spla::TypedObject::TypedObject()']]],
-  ['typename_700',['TypeName',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c',1,'spla::Object']]],
-  ['types_701',['Types',['../classspla_1_1Types.html',1,'spla::Types'],['../classspla_1_1Type.html#ad7b39434bdbb846c888a2002554e1c84',1,'spla::Type::Types()']]]
+  ['typedobject_698',['TypedObject',['../classspla_1_1TypedObject.html',1,'spla::TypedObject'],['../classspla_1_1TypedObject.html#a71229807510d3c5ef2a6416aac8534d2',1,'spla::TypedObject::TypedObject()']]],
+  ['typename_699',['TypeName',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c',1,'spla::Object']]],
+  ['types_700',['Types',['../classspla_1_1Types.html',1,'spla::Types'],['../classspla_1_1Type.html#ad7b39434bdbb846c888a2002554e1c84',1,'spla::Type::Types()']]]
 ];

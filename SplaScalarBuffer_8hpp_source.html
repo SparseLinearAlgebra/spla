@@ -115,9 +115,9 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                                                                   boost::compute::command_queue &amp;queue);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        [[nodiscard]] std::size_t BuildSharedBuffer(std::size_t byteSize,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                                    boost::compute::vector&lt;unsigned char&gt; &amp;buffer,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                                                    boost::compute::command_queue &amp;queue) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        std::size_t BuildSharedBuffer(std::size_t byteSize,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                      boost::compute::vector&lt;unsigned char&gt; &amp;buffer,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                                      boost::compute::command_queue &amp;queue) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">mutable</span> std::mutex mMutex;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::deque&lt;RefPtr&lt;ScalarValue&gt;&gt; mScalars;</div>
