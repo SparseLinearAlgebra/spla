@@ -92,10 +92,16 @@ namespace spla {
          *
          * @tparam FileValue Type of value which is written in the file
          * @param is An input stream with .mtx matrix inside
+         * @param makeUndirected Add backward edges for directed edges
+         * @param verbose Verbose std output info
+         * @param source Source name to display
          * @return Reference at created matrix
          */
         template<typename FileValue>
-        MatrixLoader &Load(std::istream &is) {
+        MatrixLoader &Load(std::istream &is, bool makeUndirected, bool verbose = true, const std::string &source = "") {
+            CpuTimer loading;
+            loading.Start();
+
             static_assert(!(std::is_same_v<FileValue, void> && !std::is_same_v<Value, void>) );
             std::string line;
             std::size_t lineN = 0;
@@ -113,22 +119,25 @@ namespace spla {
             mRows.reserve(nnz);
             mCols.reserve(nnz);
 
+            CpuTimer reading;
+
+            reading.Start();
             while (std::getline(is, line)) {
                 ++lineN;
                 std::stringstream lineStream(line);
                 Index i, j;
                 lineStream >> i >> j;
-                --i, --j;
-                mRows.push_back(i);
-                mCols.push_back(j);
 
-                if (!(0 <= i && i < mNrows)) {
+                if (!(1 <= i && i <= mNrows)) {
                     throw std::logic_error("Row index is out of bounds on the line " + std::to_string(lineN));
                 }
 
-                if (!(0 <= j && j < mNcols)) {
+                if (!(1 <= j && j <= mNcols)) {
                     throw std::logic_error("Column index is out of bounds on the line " + std::to_string(lineN));
                 }
+
+                mRows.push_back(i);
+                mCols.push_back(j);
 
                 if constexpr (!std::is_same_v<FileValue, void>) {
                     FileValue value;
@@ -138,21 +147,50 @@ namespace spla {
                     }
                 }
             }
+            reading.Stop();
 
             if (mRows.size() != nnz) {
                 throw std::logic_error("Number of non zero values is not valid");
+            }
+
+            // Offset indices
+            for (std::size_t k = 0; k < mRows.size(); k++) {
+                mRows[k] -= 1;
+                mCols[k] -= 1;
+            }
+
+            CpuTimer doubling;
+
+            if (makeUndirected) {
+                doubling.Start();
+                DoubleEdges();
+                doubling.Stop();
+            }
+
+            loading.Stop();
+
+            if (verbose) {
+                std::cout << "Loading Matrix-market coordinate format graph\n";
+                std::cout << "  Reading from " << source << "\n";
+                std::cout << "  Parsing MTX file (" << mNrows << " rows, " << mNcols << " cols, " << nnz << " directed edges)"
+                          << "in " << reading.GetElapsedMs() << " ms\n";
+                if (makeUndirected) {
+                    std::cout << "  Doubling edges: " << nnz << " to " << GetNvals()
+                              << " in " << doubling.GetElapsedMs() << " ms\n";
+                }
+                std::cout << "  Loaded in " << loading.GetElapsedMs() << " ms\n";
             }
 
             return *this;
         }
 
         template<typename FileValue>
-        MatrixLoader &Load(const std::string &filename) {
+        MatrixLoader &Load(const std::string &filename, bool makeUndirected, bool verbose = true) {
             std::ifstream file(filename);
             if (!file.is_open()) {
                 throw std::invalid_argument("Could not open '" + filename + "' to read matrix");
             }
-            return Load<FileValue>(file);
+            return Load<FileValue>(file, makeUndirected, verbose, filename);
         }
 
         [[nodiscard]] Size GetNrows() const { return mNrows; }
@@ -171,6 +209,20 @@ namespace spla {
         }
 
     private:
+        void DoubleEdges() {
+            auto nnz = GetNvals();
+            for (std::size_t i = 0; i < nnz; i++) {
+                if (mRows[i] != mCols[i]) {
+                    mRows.push_back(mCols[i]);
+                    mCols.push_back(mRows[i]);
+
+                    if constexpr (HasValue) {
+                        mVals.push_back(mVals[i]);
+                    }
+                }
+            }
+        }
+
         ValueCollectionType mVals{};
         std::vector<Index> mRows{};
         std::vector<Index> mCols{};

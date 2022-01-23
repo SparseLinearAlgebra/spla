@@ -184,8 +184,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
 
     auto &logger = library->GetLogger();
 
-    const auto &typeA = params->ta;
-    const auto &typeB = params->tb;
     const auto &typeW = params->tw;
     const bool hasValues = typeW->HasValues();
     const std::size_t valueByteSize = typeW->GetByteSize();

@@ -37,7 +37,7 @@
 
 #include <vector>
 
-bool spla::MatrixDataWrite::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MatrixDataWrite::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

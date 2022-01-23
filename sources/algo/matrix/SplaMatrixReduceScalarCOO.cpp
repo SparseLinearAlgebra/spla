@@ -56,7 +56,6 @@ void spla::MatrixReduceScalarCOO::Process(spla::AlgorithmParams &params) {
 
     auto &type = p->type;
     auto byteSize = type->GetByteSize();
-    auto typeHasValues = type->HasValues();
 
     auto matrix = p->matrix.Cast<MatrixCOO>();
     auto mask = p->mask.Cast<MatrixCOO>();

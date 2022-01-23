@@ -44,9 +44,9 @@ namespace spla::detail {
                                                                    boost::compute::command_queue &queue);
 
     private:
-        [[nodiscard]] std::size_t BuildSharedBuffer(std::size_t byteSize,
-                                                    boost::compute::vector<unsigned char> &buffer,
-                                                    boost::compute::command_queue &queue) const;
+        std::size_t BuildSharedBuffer(std::size_t byteSize,
+                                      boost::compute::vector<unsigned char> &buffer,
+                                      boost::compute::command_queue &queue) const;
 
         mutable std::mutex mMutex;
         std::deque<RefPtr<ScalarValue>> mScalars;

@@ -45,7 +45,7 @@ namespace spla {
     }// namespace
 }// namespace spla
 
-bool spla::MatrixDataRead::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MatrixDataRead::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

@@ -34,7 +34,7 @@
 #include <utils/SplaScalarBuffer.hpp>
 
 
-bool spla::MatrixReduceScalar::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MatrixReduceScalar::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

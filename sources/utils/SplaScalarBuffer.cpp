@@ -75,7 +75,7 @@ boost::compute::vector<unsigned char> spla::detail::ScalarBuffer::Reduce(const s
     }
 
     boost::compute::vector<unsigned char> buffer(ctx);
-    const std::size_t nnzInBuffer = BuildSharedBuffer(valueByteSize, buffer, queue);
+    BuildSharedBuffer(valueByteSize, buffer, queue);
 
     return ::spla::Reduce2(buffer, valueByteSize, reduce->GetSource(), queue);
 }

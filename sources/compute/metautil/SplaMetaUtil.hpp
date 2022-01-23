@@ -303,7 +303,7 @@ namespace spla::detail::meta {
                 break;
         }
         return s;
-    };
+    }
 
     inline std::string MakeFunction(const std::string &name, const std::string &body, Visibility accessA, Visibility accessB, Visibility accessC) {
         std::stringstream fun;

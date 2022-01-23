@@ -37,6 +37,8 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("niters", "number of iterations to run", cxxopts::value<int>()->default_value("4")));
     options.add_option("", cxxopts::Option("source", "source vertex to run bfs", cxxopts::value<int>()->default_value("0")));
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
+    options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
+    options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
     auto args = options.parse(argc, argv);
 
     if (args["help"].as<bool>()) {
@@ -48,12 +50,16 @@ int main(int argc, const char *const *argv) {
     int niters;
     int source;
     int bsize;
+    bool undirected;
+    bool verbose;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
         niters = args["niters"].as<int>();
         source = args["source"].as<int>();
         bsize = args["bsize"].as<int>();
+        undirected = args["undirected"].as<bool>();
+        verbose = args["verbose"].as<bool>();
     } catch (const std::exception &e) {
         std::cerr << "Invalid input arguments: " << e.what();
         return 1;
@@ -67,7 +73,7 @@ int main(int argc, const char *const *argv) {
     spla::MatrixLoader<void> loader;
 
     try {
-        loader.Load<void>(mtxpath);
+        loader.Load<void>(mtxpath, undirected, verbose);
     } catch (const std::exception &e) {
         std::cerr << "Failed load matrix: " << e.what();
         return 1;

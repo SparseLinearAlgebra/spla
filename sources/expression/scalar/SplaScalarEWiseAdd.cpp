@@ -31,7 +31,7 @@
 #include <core/SplaQueueFinisher.hpp>
 #include <expression/scalar/SplaScalarEWiseAdd.hpp>
 
-bool spla::ScalarEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::ScalarEWiseAdd::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

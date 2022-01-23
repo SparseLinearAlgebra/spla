@@ -35,7 +35,7 @@
 #include <storage/block/SplaVectorCOO.hpp>
 #include <utils/SplaScalarBuffer.hpp>
 
-bool spla::VectorReduce::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::VectorReduce::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
@@ -44,7 +44,6 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     auto &node = nodes[nodeIdx];
     auto library = node->GetLibrary().GetPrivatePtr();
     auto logger = library->GetLogger();
-    auto &deviceMan = library->GetDeviceManager();
 
     auto argS = node->GetArg(0).Cast<Scalar>();
     auto argOp = node->GetArg(1).Cast<FunctionBinary>();

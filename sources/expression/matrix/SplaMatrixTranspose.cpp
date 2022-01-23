@@ -33,7 +33,7 @@
 #include <utils/SplaAlgo.hpp>
 
 
-bool spla::MatrixTranspose::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MatrixTranspose::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

@@ -32,7 +32,7 @@
 #include <storage/SplaVectorStorage.hpp>
 #include <utils/SplaAlgo.hpp>
 
-bool spla::VectorAssign::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::VectorAssign::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
@@ -41,7 +41,6 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
     auto &node = nodes[nodeIdx];
     auto library = node->GetLibrary().GetPrivatePtr();
     auto logger = library->GetLogger();
-    auto &deviceMan = library->GetDeviceManager();
 
     auto w = node->GetArg(0).Cast<Vector>();
     auto mask = node->GetArg(1).Cast<Vector>();

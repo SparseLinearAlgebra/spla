@@ -30,7 +30,7 @@
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
-bool spla::VectorEWiseAdd::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::VectorEWiseAdd::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

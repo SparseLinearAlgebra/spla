@@ -85,7 +85,7 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     }
 
 #if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    std::cout << "Exec iterations: " << depth << "\n";
+    std::cout << "source " << s << " #iterations " << depth - 1 << "\n";
 #endif
 }
 

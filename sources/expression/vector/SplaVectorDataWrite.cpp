@@ -36,7 +36,7 @@
 #include <storage/SplaVectorStorage.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
-bool spla::VectorDataWrite::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::VectorDataWrite::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

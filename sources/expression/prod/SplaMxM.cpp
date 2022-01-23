@@ -61,7 +61,7 @@ namespace spla {
     }// namespace
 }// namespace spla
 
-bool spla::MxM::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::MxM::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 

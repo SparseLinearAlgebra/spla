@@ -32,11 +32,11 @@
 #include <storage/SplaScalarStorage.hpp>
 #include <storage/SplaScalarValue.hpp>
 
-bool spla::ScalarDataRead::Select(std::size_t nodeIdx, const spla::Expression &expression) {
+bool spla::ScalarDataRead::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
-void spla::ScalarDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+void spla::ScalarDataRead::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
     auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
     auto &library = node->GetLibrary().GetPrivate();
