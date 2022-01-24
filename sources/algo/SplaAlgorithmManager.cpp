@@ -36,6 +36,7 @@
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
 #include <algo/vector/SplaVectorReduceCOO.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
+#include <algo/vxm/SplaVxMCOOStructure.hpp>
 #include <core/SplaError.hpp>
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
@@ -46,6 +47,7 @@ spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new VectorReduceCOO());
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());
+    Register(new VxMCOOStructure());
     Register(new VxMCOO());
 }
 

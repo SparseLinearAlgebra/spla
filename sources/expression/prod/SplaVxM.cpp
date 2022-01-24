@@ -179,7 +179,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 library->GetAlgoManager()->Dispatch(Algorithm::Type::VxM, params);
 
                 if (params.w.IsNotNull()) {
-                    // If has not empty result, store it to sum later
+                    // If result has not empty result, store it to sum later
                     products->AddBlock(j, params.w);
                     SPDLOG_LOGGER_TRACE(logger, "Blocks product ({})x({},{}) nnz={}",
                                         aIdx, bIdx.first, bIdx.second, params.w->GetNvals());

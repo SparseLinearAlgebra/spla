@@ -38,6 +38,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/vector/SplaVectorReduceCOO.hpp
         sources/algo/vxm/SplaVxMCOO.cpp
         sources/algo/vxm/SplaVxMCOO.hpp
+        sources/algo/vxm/SplaVxMCOOStructure.cpp
+        sources/algo/vxm/SplaVxMCOOStructure.hpp
         sources/algo/SplaAlgorithm.hpp
         sources/algo/SplaAlgorithmManager.cpp
         sources/algo/SplaAlgorithmManager.hpp
