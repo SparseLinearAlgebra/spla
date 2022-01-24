@@ -33,6 +33,7 @@
 #include <boost/compute/detail/meta_kernel.hpp>
 
 #include <cassert>
+#include <iostream>
 
 namespace spla {
 
@@ -46,12 +47,13 @@ namespace spla {
         using namespace boost;
 
         if (offsets.empty())
-            return compute::event();
+            return {};
 
         assert(outputValues.size() <= offsets.size() * byteSize);
 
         compute::detail::meta_kernel kernel("__spla_copy_merged_values");
         auto argBaseOffset = kernel.add_arg<cl_uint>("baseOffset");
+        auto argCount = kernel.add_arg<cl_uint>("count");
         auto argOffsets = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "offsets");
         auto argValuesA = kernel.add_arg<const cl_uchar *>(compute::memory_object::global_memory, "valuesA");
         auto argValuesB = kernel.add_arg<const cl_uchar *>(compute::memory_object::global_memory, "valuesB");
@@ -59,27 +61,33 @@ namespace spla {
 
         kernel << "#define BYTE_SIZE " << static_cast<cl_ulong>(byteSize) << "\n"
                << "const uint i = get_global_id(0);\n"
-               << "const uint idx = offsets[i];\n"
-               << "if (idx < baseOffset) {\n"
-               << "    const uint dst = i * BYTE_SIZE;\n"
-               << "    const uint src = idx * BYTE_SIZE;\n"
-               << "    for (uint k = 0; k < BYTE_SIZE; k++)\n"
-               << "        outputValues[dst + k] = valuesA[src + k];\n"
-               << "} else {\n"
-               << "    const uint dst = i * BYTE_SIZE;\n"
-               << "    const uint src = (idx - baseOffset) * BYTE_SIZE;\n"
-               << "    for (uint k = 0; k < BYTE_SIZE; k++)\n"
-               << "        outputValues[dst + k] = valuesB[src + k];\n"
+               << "if (i < count) {\n"
+               << "    const uint idx = offsets[i];\n"
+               << "    if (idx < baseOffset) {\n"
+               << "        const uint dst = i * BYTE_SIZE;\n"
+               << "        const uint src = idx * BYTE_SIZE;\n"
+               << "        for (uint k = 0; k < BYTE_SIZE; k++)\n"
+               << "            outputValues[dst + k] = valuesA[src + k];\n"
+               << "    } else {\n"
+               << "        const uint dst = i * BYTE_SIZE;\n"
+               << "        const uint src = (idx - baseOffset) * BYTE_SIZE;\n"
+               << "        for (uint k = 0; k < BYTE_SIZE; k++)\n"
+               << "            outputValues[dst + k] = valuesB[src + k];\n"
+               << "    }\n"
                << "}\n";
 
         auto compiledKernel = kernel.compile(queue.get_context());
         compiledKernel.set_arg(argBaseOffset, static_cast<cl_uint>(baseOffset));
+        compiledKernel.set_arg(argCount, static_cast<cl_uint>(offsets.size()));
         compiledKernel.set_arg(argOffsets, offsets.get_buffer());
         compiledKernel.set_arg(argValuesA, valuesA.get_buffer());
         compiledKernel.set_arg(argValuesB, valuesB.get_buffer());
         compiledKernel.set_arg(argOutputValues, outputValues.get_buffer());
 
-        return queue.enqueue_1d_range_kernel(compiledKernel, 0, offsets.size(), 0);
+        const std::size_t blockSize = 128;
+        const std::size_t workSize = compute::detail::calculate_work_size(offsets.size(), 1, blockSize);
+
+        return queue.enqueue_1d_range_kernel(compiledKernel, 0, workSize, blockSize);
     }
 
     inline boost::compute::event OffsetIndices(boost::compute::vector<unsigned int> &indices,

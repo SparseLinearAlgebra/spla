@@ -324,7 +324,7 @@ namespace spla {
                               bool complement,
                               boost::compute::command_queue &queue) {
             using namespace boost;
-            std::size_t tileSize = 8;
+            const std::size_t tileSize = 8;
 
             compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());

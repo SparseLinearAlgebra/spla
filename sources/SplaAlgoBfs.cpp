@@ -142,8 +142,9 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     overallTimer.Stop();
 
     if (descriptor.DisplayTiming()) {
-        std::cout << "run tight: " << tightTimer.GetElapsedMs() << "\n";
-        std::cout << "run overall: " << overallTimer.GetElapsedMs() << "\n";
+        std::cout << "Result: " << sp_v->GetNvals() << " reached\n";
+        std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
+        std::cout << " run overall: " << overallTimer.GetElapsedMs() << "\n";
     }
 }
 
