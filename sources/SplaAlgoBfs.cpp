@@ -88,54 +88,15 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
             tightTimer.Start();
         }
 
-        if (!descriptor.SeparateSteps()) {
-            // Built one expression with all nodes
-            // and submit as single big task
-            auto sp_iter = Expression::Make(library);
+        auto sp_iter = Expression::Make(library);
 
-            auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
-            auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
-            auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
+        auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
+        auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
+        auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
 
-            sp_iter->Dependency(t1, t2);
-            sp_iter->Dependency(t2, t3);
-            sp_iter->SubmitWait();
-        } else {
-            // Split bfs expression into several expressions
-            // and run them separately to get timing of each step.
-            tightTimer.Stop();
-
-            auto sp_iter_t1 = Expression::Make(library);
-            auto sp_iter_t2 = Expression::Make(library);
-            auto sp_iter_t3 = Expression::Make(library);
-
-            sp_iter_t1->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
-            sp_iter_t2->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
-            sp_iter_t3->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
-
-            tightTimer.Start();
-            sp_iter_t1->SubmitWait();
-            tightTimer.Stop();
-
-            if (descriptor.DisplayTiming())
-                std::cout << "  - update scalar: " << tightTimer.GetDurationMs() << "\n";
-
-            tightTimer.Start();
-            sp_iter_t2->SubmitWait();
-            tightTimer.Stop();
-
-            if (descriptor.DisplayTiming())
-                std::cout << "  - assign depth: " << tightTimer.GetDurationMs() << "\n";
-
-            tightTimer.Start();
-            sp_iter_t3->SubmitWait();
-            tightTimer.Stop();
-
-            if (descriptor.DisplayTiming())
-                std::cout << "  - update front: " << tightTimer.GetDurationMs() << "\n";
-
-            tightTimer.Start();
-        }
+        sp_iter->Dependency(t1, t2);
+        sp_iter->Dependency(t2, t3);
+        sp_iter->SubmitWait();
 
         depth += 1;
     }

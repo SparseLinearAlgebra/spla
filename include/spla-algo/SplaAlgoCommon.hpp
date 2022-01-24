@@ -112,10 +112,8 @@ namespace spla {
      */
     struct AlgoDescriptor {
         bool timing = true;
-        bool separateSteps = true;
 
         [[nodiscard]] bool DisplayTiming() const { return timing; }
-        [[nodiscard]] bool SeparateSteps() const { return separateSteps; }
     };
 
     /**
