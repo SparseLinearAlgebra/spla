@@ -77,12 +77,14 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     // Tight timer to measure iterations
     CpuTimer tightTimer;
     tightTimer.Start();
+    double tight = 0.0;
 
     while (sp_q->GetNvals() != 0) {
         if (descriptor.DisplayTiming()) {
             tightTimer.Stop();
             std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
-                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetDurationMs() << "\n";
+                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
+            tight = tightTimer.GetElapsedMs();
             tightTimer.Start();
         }
 

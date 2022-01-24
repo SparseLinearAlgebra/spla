@@ -162,7 +162,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
             auto aBlock = aBlocks.find(aIdx)->second;
             auto bBlock = bBlocks.find(bIdx)->second;
             auto maskBlock = GetMaskBlock(maskBlocks, IndexV{bIdx.second});
-            auto task = builder.Emplace([=]() {
+            auto task = builder.Emplace("vxm", [=]() {
                 assert(aBlock->GetNrows() == bBlock->GetNrows());
                 ParamsVxM params;
                 params.desc = desc;
@@ -200,7 +200,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
         auto &toProcess = blockProducts[j];
         if (!toProcess.empty()) {
             auto deviceId = devicesForFinalMerge[deviceToFetch];
-            auto task = builder.Emplace([=]() {
+            auto task = builder.Emplace("mat-red-blocks", [=]() {
                 std::vector<RefPtr<VectorBlock>> blocks;
                 products->GetBlocks(j, blocks);
 

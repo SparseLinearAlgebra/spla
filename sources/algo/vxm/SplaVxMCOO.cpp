@@ -40,6 +40,17 @@
 #include <storage/block/SplaMatrixCSR.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 
+#include <spla-cpp/SplaUtils.hpp>
+
+#define PRF_S(tm) \
+    CpuTimer tm;  \
+    tm.Start();
+
+#define PRF_F(tm, msg) \
+    queue.finish();    \
+    tm.Stop();         \
+    std::cout << " ++++ " msg << " " << tm.GetElapsedMs() << std::endl;
+
 bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVxM *>(&params);
 
@@ -99,13 +110,21 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
     }
 
+    PRF_S(tmSL);
+
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
     compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths->begin(), segmentLengths.begin(), queue);
 
+    PRF_F(tmSL, "segmentLengths");
+
+    PRF_S(tmOP);
+
     // Compute offsets between each a[i] x b[i,:] products
     compute::vector<unsigned int> outputPtr(a->GetNvals() + 1, ctx);
     compute::exclusive_scan(segmentLengths.begin(), segmentLengths.end(), outputPtr.begin(), 0u, queue);
+
+    PRF_F(tmOP, "outputPtr");
 
     // Number of products to count
     std::size_t cooNnz = (outputPtr.end() - 1).read(queue);
@@ -118,29 +137,41 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned int> aLocations(cooNnz, ctx);
     compute::vector<unsigned int> bLocations(cooNnz, ctx);
 
+    PRF_S(tmALF);
     compute::fill(aLocations.begin(), aLocations.end(), 0u, queue);
+    PRF_F(tmALF, "aLocations fill");
+    PRF_S(tmALS);
     compute::scatter_if(compute::counting_iterator<unsigned int>(0),
                         compute::counting_iterator<unsigned int>(a->GetNvals()),
                         outputPtr.begin(),
                         segmentLengths.begin(),
                         aLocations.begin(),
                         queue);
+    PRF_F(tmALS, "aLocations scatter_if");
+    PRF_S(tmALIS);
     compute::inclusive_scan(aLocations.begin(), aLocations.end(), aLocations.begin(), compute::max<unsigned int>(), queue);
+    PRF_F(tmALIS, "aLocations inclusive_scan");
 
+    PRF_S(tmBL);
     auto &aRows = a->GetRows();
     auto &offsetsRef = *offsets;
-    BOOST_COMPUTE_CLOSURE(void, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations, bLocations), {
+    BOOST_COMPUTE_CLOSURE(unsigned int, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations), {
         uint locationOfRowIndex = aLocations[i];
         uint rowIdx = aRows[locationOfRowIndex];
         uint rowBaseOffset = offsetsRef[rowIdx];
         uint offsetOfRowSegment = outputPtr[locationOfRowIndex];
-        bLocations[i] = rowBaseOffset + (i - offsetOfRowSegment);
+        return rowBaseOffset + (i - offsetOfRowSegment);
     });
-    compute::for_each_n(compute::counting_iterator<unsigned int>(0), cooNnz, unfoldSegment, queue);
+    compute::transform(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(cooNnz), bLocations.begin(), unfoldSegment, queue);
+    PRF_F(tmBL, "bLocations");
+
+    PRF_S(tmJ);
 
     // Gather indices j for each product a[i] * b[i,j]
     compute::vector<unsigned int> J(cooNnz, ctx);
     compute::gather(bLocations.begin(), bLocations.end(), b->GetCols().begin(), J.begin(), queue);
+
+    PRF_F(tmJ, "J");
 
     // Store final result here
     compute::vector<unsigned int> rows(ctx);
@@ -172,18 +203,27 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
             std::swap(vals, tmpVals);
         }
     } else {
+        PRF_S(tmS);
+
         // Sort result indices
         compute::sort(J.begin(), J.end(), queue);
+
+        PRF_F(tmS, "sort");
+        PRF_S(tmRD);
 
         // Reduce duplicates (keep only first entry)
         ReduceDuplicates(J, rows, queue);
 
+        PRF_F(tmRD, "ReduceDuplicates");
+
+        PRF_S(tmAM);
         // Apply mask to indices
         if (p->hasMask && mask.IsNotNull()) {
             compute::vector<unsigned int> tmpRows(ctx);
             MaskKeys(mask->GetRows(), rows, tmpRows, complementMask, queue);
             std::swap(rows, tmpRows);
         }
+        PRF_F(tmAM, "MaskKeys");
     }
 
     // Store result

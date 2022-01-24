@@ -32,6 +32,22 @@
 #include <boost/compute/detail/iterator_range_size.hpp>
 #include <boost/compute/iterator/zip_iterator.hpp>
 
+#include <spla-cpp/SplaUtils.hpp>
+
+#ifdef PROFILE_MASK_BY_KEY
+    #define MPRF_S(tm) \
+        CpuTimer tm;   \
+        tm.Start();
+
+    #define MPRF_F(tm, msg) \
+        queue.finish();     \
+        tm.Stop();          \
+        std::cout << " ^^^^ " msg << " " << tm.GetElapsedMs() << std::endl;
+#else
+    #define MPRF_S(tm)
+    #define MPRF_F(tm, msg)
+#endif
+
 namespace spla {
 
     /**
@@ -324,10 +340,19 @@ namespace spla {
                               bool complement,
                               boost::compute::command_queue &queue) {
             using namespace boost;
-            const std::size_t tileSize = 8;
+            const std::size_t tileSize = 32;
 
+            MPRF_S(tmTAB);
             compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
+            MPRF_F(tmTAB, "allocate tileA tileB");
+
+            MPRF_S(tmF1);
+            fill_n(tileA.begin(), 1, 0, queue);
+            fill_n(tileB.begin(), 1, 0, queue);
+            MPRF_F(tmF1, "f1 b");
+
+            MPRF_S(tmBPK);
 
             // Tile the sets
             detail::BalancedPathKernel balancedPathKernel;
@@ -336,15 +361,21 @@ namespace spla {
                                          keyFirst, keyFirst + keyCount,
                                          tileA.begin() + 1, tileB.begin() + 1,
                                          compare);
-            fill_n(tileA.begin(), 1, 0, queue);
-            fill_n(tileB.begin(), 1, 0, queue);
-            balancedPathKernel.exec(queue);
 
+            balancedPathKernel.exec(queue);
+            MPRF_F(tmBPK, "tiling");
+
+            MPRF_S(tmF2);
             fill_n(tileA.end() - 1, 1, maskCount, queue);
             fill_n(tileB.end() - 1, 1, keyCount, queue);
+            MPRF_F(tmF2, "f2 e");
 
+            MPRF_S(tmC);
             compute::vector<compute::uint_> counts((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::fill_n(counts.end() - 1, 1, 0, queue);
+            MPRF_F(tmC, "c f");
+
+            MPRF_S(tmSICK);
 
             // Find result intersections count and offsets to write result of each tile
             detail::SerialIntersectionCountKernel intersectionCountKernel;
@@ -354,6 +385,7 @@ namespace spla {
                                               counts.begin(),
                                               compare, equals, complement);
             intersectionCountKernel.exec(queue);
+            MPRF_F(tmSICK, "SerialIntersectionCountKernel");
 
             // Compute actual counts offsets
             exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);
@@ -362,6 +394,8 @@ namespace spla {
             std::size_t resultCount = (counts.end() - 1).read(queue);
             resizeResult(resultCount);
 
+            MPRF_S(tmSIK);
+
             // Find result intersections
             detail::SerialIntersectionKernel intersectionKernel;
             intersectionKernel.set_range(maskFirst, keyFirst, tileA.begin(), tileA.end(),
@@ -369,6 +403,8 @@ namespace spla {
                                          counts.begin(),
                                          compare, equals, assignResult, complement);
             intersectionKernel.exec(queue);
+
+            MPRF_F(tmSIK, "SerialIntersectionKernel");
 
             return resultCount;
         }
