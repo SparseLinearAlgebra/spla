@@ -39,7 +39,7 @@
     #include <iostream>
 #endif
 
-void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
+void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const AlgoDescriptor &descriptor) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(sp_A->GetNrows() == sp_A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(s < sp_A->GetNrows(), InvalidArgument, "Start index must be withing A bounds");
@@ -62,6 +62,10 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     auto sp_desc_comp = Descriptor::Make(library);
     sp_desc_comp->SetParam(Descriptor::Param::MaskComplement);
 
+    // Overall time of execution
+    CpuTimer overallTimer;
+    overallTimer.Start();
+
     // Set q[s]: start vertex
     auto sp_setup = Expression::Make(library);
     sp_setup->MakeDataWrite(sp_q, DataVector::Make(&s, nullptr, 1, library));
@@ -70,23 +74,77 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     // Start for depth 1: v[s]=1
     std::int32_t depth = 1;
 
+    // Tight timer to measure iterations
+    CpuTimer tightTimer;
+    tightTimer.Start();
+
     while (sp_q->GetNvals() != 0) {
-        auto sp_iter = Expression::Make(library);
+        if (descriptor.DisplayTiming()) {
+            tightTimer.Stop();
+            std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
+                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetDurationMs() << "\n";
+            tightTimer.Start();
+        }
 
-        auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
-        auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
-        auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
+        if (!descriptor.SeparateSteps()) {
+            // Built one expression with all nodes
+            // and submit as single big task
+            auto sp_iter = Expression::Make(library);
 
-        sp_iter->Dependency(t1, t2);
-        sp_iter->Dependency(t2, t3);
-        sp_iter->SubmitWait();
+            auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
+            auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
+            auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
+
+            sp_iter->Dependency(t1, t2);
+            sp_iter->Dependency(t2, t3);
+            sp_iter->SubmitWait();
+        } else {
+            // Split bfs expression into several expressions
+            // and run them separately to get timing of each step.
+            tightTimer.Stop();
+
+            auto sp_iter_t1 = Expression::Make(library);
+            auto sp_iter_t2 = Expression::Make(library);
+            auto sp_iter_t3 = Expression::Make(library);
+
+            sp_iter_t1->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
+            sp_iter_t2->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
+            sp_iter_t3->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
+
+            tightTimer.Start();
+            sp_iter_t1->SubmitWait();
+            tightTimer.Stop();
+
+            if (descriptor.DisplayTiming())
+                std::cout << "  - update scalar: " << tightTimer.GetDurationMs() << "\n";
+
+            tightTimer.Start();
+            sp_iter_t2->SubmitWait();
+            tightTimer.Stop();
+
+            if (descriptor.DisplayTiming())
+                std::cout << "  - assign depth: " << tightTimer.GetDurationMs() << "\n";
+
+            tightTimer.Start();
+            sp_iter_t3->SubmitWait();
+            tightTimer.Stop();
+
+            if (descriptor.DisplayTiming())
+                std::cout << "  - update front: " << tightTimer.GetDurationMs() << "\n";
+
+            tightTimer.Start();
+        }
 
         depth += 1;
     }
 
-#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    std::cout << "source " << s << " #iterations " << depth - 1 << "\n";
-#endif
+    tightTimer.Stop();
+    overallTimer.Stop();
+
+    if (descriptor.DisplayTiming()) {
+        std::cout << "run tight: " << tightTimer.GetElapsedMs() << "\n";
+        std::cout << "run overall: " << overallTimer.GetElapsedMs() << "\n";
+    }
 }
 
 void spla::Bfs(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s) {

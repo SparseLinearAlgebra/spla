@@ -58,11 +58,23 @@ namespace spla {
         using Value = double;
 
     public:
-        void Start() { mStart = mEnd = Clock::now(); }
-        void Stop() { mEnd = Clock::now(); }
+        void Start() {
+            mStart = mEnd = Clock::now();
+        }
 
-        [[nodiscard]] Duration GetElapsed() const { return GetEnd() - GetStart(); }
-        [[nodiscard]] Value GetElapsedMs() const { return static_cast<double>(GetElapsed().count()) * 1e-6; }
+        void Stop() {
+            mEnd = Clock::now();
+            mElapsedMs += GetDurationMs();
+        }
+
+        void Reset() {
+            mElapsedMs = 0.0;
+            mStart = mEnd = TimePoint{};
+        }
+
+        [[nodiscard]] Duration GetDuration() const { return GetEnd() - GetStart(); }
+        [[nodiscard]] Value GetDurationMs() const { return static_cast<double>(GetDuration().count()) * 1e-6; }
+        [[nodiscard]] Value GetElapsedMs() const { return mElapsedMs; }
 
         [[nodiscard]] TimePoint GetStart() const noexcept { return mStart; }
         [[nodiscard]] TimePoint GetEnd() const noexcept { return mEnd; }
@@ -70,6 +82,8 @@ namespace spla {
     private:
         TimePoint mStart{};
         TimePoint mEnd{};
+
+        double mElapsedMs = 0.0;
     };
 
     /**

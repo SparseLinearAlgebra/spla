@@ -107,6 +107,18 @@ namespace spla {
     };
 
     /**
+     * @class AlgoDescriptor
+     * @brief Parameters additionally passed to the algorithm
+     */
+    struct AlgoDescriptor {
+        bool timing = true;
+        bool separateSteps = true;
+
+        [[nodiscard]] bool DisplayTiming() const { return timing; }
+        [[nodiscard]] bool SeparateSteps() const { return separateSteps; }
+    };
+
+    /**
      * @}
      */
 
