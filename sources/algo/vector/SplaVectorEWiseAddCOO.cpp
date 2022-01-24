@@ -25,6 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <spla-cpp/SplaUtils.hpp>
+
 #include <algo/SplaAlgorithmParams.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
 
@@ -74,6 +76,9 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
+    CpuTimer timerFPI;
+    timerFPI.Start();
+
     auto blockA = p->a.Cast<VectorCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;
     compute::vector<unsigned int> permA(ctx);
@@ -89,6 +94,10 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     // If mask is present, apply it to a and b blocks
     compute::vector<unsigned int> tmpRowsA(ctx);
     compute::vector<unsigned int> tmpRowsB(ctx);
+
+    queue.finish();
+    timerFPI.Stop();
+    std::cout << " **** FillValuesPermutationIndices " << timerFPI.GetElapsedMs() << std::endl;
 
     auto maskBlock = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
@@ -126,8 +135,15 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         out = &tmpRows;
     };
 
+    CpuTimer timerAM;
+    timerAM.Start();
+
     applyMask(blockA, tmpRowsA, permA, rowsA);
     applyMask(blockB, tmpRowsB, permB, rowsB);
+
+    queue.finish();
+    timerAM.Stop();
+    std::cout << " **** ApplyMask " << timerAM.GetElapsedMs() << std::endl;
 
     // If some block is empty (or both, save result as is and finish without merge)
     auto aEmpty = !rowsA || rowsA->empty();
@@ -160,9 +176,19 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         return;
     }
 
+    CpuTimer timerOI;
+    timerOI.Start();
+
     // NOTE: offset b perm indices to preserve uniqueness
     if (typeHasValues)
         OffsetIndices(permB, blockA->GetNvals(), queue);
+
+    queue.finish();
+    timerOI.Stop();
+    std::cout << " **** OffsetIndices " << timerOI.GetElapsedMs() << std::endl;
+
+    CpuTimer timerMBK;
+    timerMBK.Start();
 
     // Merge a and b values
     auto mergeCount = rowsA->size() + rowsB->size();
@@ -181,6 +207,13 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                   mergedRows.begin(),
                   queue);
 
+    queue.finish();
+    timerMBK.Stop();
+    std::cout << " **** MergeByKeys " << timerMBK.GetElapsedMs() << std::endl;
+
+    CpuTimer timerCMV;
+    timerCMV.Start();
+
     // Copy values to single buffer
     compute::vector<unsigned char> mergedValues(ctx);
     if (typeHasValues) {
@@ -188,11 +221,18 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         CopyMergedValues(mergedPerm, blockA->GetVals(), blockB->GetVals(), mergedValues, blockA->GetNvals(), byteSize, queue);
     }
 
+    queue.finish();
+    timerCMV.Stop();
+    std::cout << " **** CopyMergedValues " << timerCMV.GetElapsedMs() << std::endl;
+
     // Reduce duplicates
     // NOTE: max 2 duplicated entries for each index
     compute::vector<unsigned int> resultRows(ctx);
     compute::vector<unsigned char> resultVals(ctx);
     std::size_t resultNvals;
+
+    CpuTimer timerRD;
+    timerRD.Start();
 
     if (typeHasValues)
         resultNvals = ReduceDuplicates(mergedRows, mergedValues,
@@ -204,6 +244,10 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         resultNvals = ReduceDuplicates(mergedRows,
                                        resultRows,
                                        queue);
+
+    queue.finish();
+    timerRD.Stop();
+    std::cout << " **** ReduceDuplicates " << timerRD.GetElapsedMs() << std::endl;
 
     p->w = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals)).As<VectorBlock>();
     SPDLOG_LOGGER_TRACE(logger, "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
