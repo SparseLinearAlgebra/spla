@@ -47,7 +47,7 @@ namespace spla {
      * @param s Index of the source vertex to begin bfs
      * @param descriptor Algorithm descriptor
      */
-    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const AlgoDescriptor& descriptor = {});
+    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const AlgoDescriptor &descriptor = {});
 
     /**
      * @brief Breadth-first search algorithm
