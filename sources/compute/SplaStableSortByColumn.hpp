@@ -80,10 +80,10 @@ namespace spla {
         BOOST_COMPUTE_CLOSURE(bool, compareRowCol, (unsigned int a, unsigned int b),
                               (cols, rows),
                               {
-                                      if (rows[a] != rows[b]) {
-                                          return rows[a] < rows[b];
-                                      }
-                                      return cols[a] < cols[b];
+                                  if (rows[a] != rows[b]) {
+                                      return rows[a] < rows[b];
+                                  }
+                                  return cols[a] < cols[b];
                               });
         compute::stable_sort(permutation.begin(), permutation.end(), compareRowCol, queue);
 
