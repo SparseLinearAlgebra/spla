@@ -75,7 +75,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
-    PF_SCOPE(eadd, " -veadd");
+    PF_SCOPE(eadd, "-veadd-");
 
     auto blockA = p->a.Cast<VectorCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;

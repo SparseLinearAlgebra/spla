@@ -30,7 +30,7 @@
 #include <core/SplaTaskBuilder.hpp>
 #include <spdlog/spdlog.h>
 
-#ifdef SPLA_PROFILING
+#ifdef SPLA_PROFILING_TASKS
     #include <spla-cpp/SplaUtils.hpp>
 #endif
 
@@ -46,12 +46,12 @@ tf::Task spla::TaskBuilder::Emplace(const std::string &workName, std::function<v
             return;
 
         try {
-#ifdef SPLA_PROFILING
+#ifdef SPLA_PROFILING_TASKS
             CpuTimer timer;
             timer.Start();
 #endif
             work();
-#ifdef SPLA_PROFILING
+#ifdef SPLA_PROFILING_TASKS
             timer.Stop();
             std::cout << "[SplaTaskBuilder.cpp:53] task-" << taskId << " (" << workName << ") " << timer.GetElapsedMs() << " ms" << std::endl;
 #endif

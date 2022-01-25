@@ -6,7 +6,8 @@ project(spla LANGUAGES CXX)
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
-option(SPLA_PROFILING "Enable time profiling of executed tasks" YES)
+option(SPLA_PROFILING "Enable time profiling of computational code" NO)
+option(SPLA_PROFILING_TASKS "Enable time profiling of executed tasks" NO)
 
 ######################################################################
 ## internal definitions
@@ -24,6 +25,10 @@ set(SPLA_ARCH)
 if (SPLA_PROFILING)
     list(APPEND SPLA_DEFINES SPLA_PROFILING)
 endif (SPLA_PROFILING)
+
+if (SPLA_PROFILING_TASKS)
+    list(APPEND SPLA_DEFINES SPLA_PROFILING_TASKS)
+endif (SPLA_PROFILING_TASKS)
 
 ####################################################################
 ## Define platform
