@@ -165,4 +165,10 @@ TEST(TC, Large) {
     test(M, M, M, 4, blockSizes, 3);
 }
 
+TEST(TC, MegaLarge) {
+    std::vector<std::size_t> blockSizes = {302400};
+    std::size_t M = 102400;
+    test(M, M, M, 5, blockSizes, 3);
+}
+
 SPLA_GTEST_MAIN
