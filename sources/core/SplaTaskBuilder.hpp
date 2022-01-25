@@ -33,6 +33,7 @@
 #include <taskflow/taskflow.hpp>
 
 #include <functional>
+#include <string>
 
 namespace spla {
 
@@ -52,12 +53,21 @@ namespace spla {
     class TaskBuilder {
     public:
         /**
-         * Emplace work to the subflow.
+         * @brief Emplace work to the subflow.
          *
          * @param work Function to execute as work inside task.
          * @return Taskflow task handle.
          */
         tf::Task Emplace(std::function<void()> work);
+
+        /**
+         * @brief Emplace work to the subflow.
+         *
+         * @param workName Name of the task (for debugging and error handling)
+         * @param work Function to execute as work inside task.
+         * @return Taskflow task handle.
+         */
+        tf::Task Emplace(const std::string &workName, std::function<void()> work);
 
     private:
         friend class ExpressionManager;
@@ -65,6 +75,7 @@ namespace spla {
 
         Expression *mExpression;
         tf::Subflow &mSubflow;
+        std::size_t mTaskID = 0;
     };
 
     /**

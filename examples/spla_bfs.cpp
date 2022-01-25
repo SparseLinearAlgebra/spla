@@ -39,6 +39,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
     auto args = options.parse(argc, argv);
 
     if (args["help"].as<bool>()) {
@@ -51,7 +52,10 @@ int main(int argc, const char *const *argv) {
     int source;
     int bsize;
     bool undirected;
+    bool removeLoops = true;
+    bool ignoreValues = true;
     bool verbose;
+    bool debugTiming;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -60,6 +64,7 @@ int main(int argc, const char *const *argv) {
         bsize = args["bsize"].as<int>();
         undirected = args["undirected"].as<bool>();
         verbose = args["verbose"].as<bool>();
+        debugTiming = args["debug-timing"].as<bool>();
     } catch (const std::exception &e) {
         std::cerr << "Invalid input arguments: " << e.what();
         return 1;
@@ -70,19 +75,20 @@ int main(int argc, const char *const *argv) {
     assert(bsize > 1);
 
     // Load data
-    spla::MatrixLoader<void> loader;
+    spla::MatrixLoader<int> loader;
 
     try {
-        loader.Load<void>(mtxpath, undirected, verbose);
+        loader.Load(mtxpath, undirected, removeLoops, ignoreValues, verbose);
     } catch (const std::exception &e) {
         std::cerr << "Failed load matrix: " << e.what();
         return 1;
     }
 
+    // Configure library
     spla::Library::Config config;
+    config.SetDeviceType(spla::Library::Config::DeviceType::GPU);
     config.SetBlockSize(bsize);
     config.SetWorkersCount(1);// Force single worker thread for now
-
     spla::Library library(config);
 
     // v and M bfs args
@@ -94,17 +100,20 @@ int main(int argc, const char *const *argv) {
     prepareData->MakeDataWrite(M, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), nullptr, loader.GetNvals(), library));
     prepareData->SubmitWait();
 
+    spla::AlgoDescriptor descriptor;
+    descriptor.timing = debugTiming;
+
     // Warm up phase
     spla::CpuTimer tWarmUp;
     tWarmUp.Start();
-    spla::Bfs(v, M, source);
+    spla::Bfs(v, M, source, descriptor);
     tWarmUp.Stop();
 
     // Main phase, measure iterations
     std::vector<spla::CpuTimer> tIters(niters);
     for (int i = 0; i < niters; i++) {
         tIters[i].Start();
-        spla::Bfs(v, M, source);
+        spla::Bfs(v, M, source, descriptor);
         tIters[i].Stop();
     }
 

@@ -32,6 +32,8 @@
 #include <boost/compute/detail/iterator_range_size.hpp>
 #include <boost/compute/iterator/zip_iterator.hpp>
 
+#include <utils/SplaProfiling.hpp>
+
 namespace spla {
 
     /**
@@ -324,10 +326,19 @@ namespace spla {
                               bool complement,
                               boost::compute::command_queue &queue) {
             using namespace boost;
-            std::size_t tileSize = 8;
+            const std::size_t tileSize = 32;
+
+            PF_SCOPE(mask, "-mask-");
 
             compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
+
+            PF_SCOPE_MARK(mask, "alloc tiles");
+
+            fill_n(tileA.begin(), 1, 0, queue);
+            fill_n(tileB.begin(), 1, 0, queue);
+
+            PF_SCOPE_MARK(mask, "fill begin");
 
             // Tile the sets
             detail::BalancedPathKernel balancedPathKernel;
@@ -336,15 +347,20 @@ namespace spla {
                                          keyFirst, keyFirst + keyCount,
                                          tileA.begin() + 1, tileB.begin() + 1,
                                          compare);
-            fill_n(tileA.begin(), 1, 0, queue);
-            fill_n(tileB.begin(), 1, 0, queue);
+
             balancedPathKernel.exec(queue);
+
+            PF_SCOPE_MARK(mask, "tiling");
 
             fill_n(tileA.end() - 1, 1, maskCount, queue);
             fill_n(tileB.end() - 1, 1, keyCount, queue);
 
+            PF_SCOPE_MARK(mask, "fill end");
+
             compute::vector<compute::uint_> counts((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::fill_n(counts.end() - 1, 1, 0, queue);
+
+            PF_SCOPE_MARK(mask, "fill counts");
 
             // Find result intersections count and offsets to write result of each tile
             detail::SerialIntersectionCountKernel intersectionCountKernel;
@@ -355,12 +371,18 @@ namespace spla {
                                               compare, equals, complement);
             intersectionCountKernel.exec(queue);
 
+            PF_SCOPE_MARK(mask, "intersection (count)");
+
             // Compute actual counts offsets
             exclusive_scan(counts.begin(), counts.end(), counts.begin(), queue);
+
+            PF_SCOPE_MARK(mask, "scan offsets");
 
             // Get result count and resize buffers
             std::size_t resultCount = (counts.end() - 1).read(queue);
             resizeResult(resultCount);
+
+            PF_SCOPE_MARK(mask, "intersection (count)");
 
             // Find result intersections
             detail::SerialIntersectionKernel intersectionKernel;
@@ -369,6 +391,8 @@ namespace spla {
                                          counts.begin(),
                                          compare, equals, assignResult, complement);
             intersectionKernel.exec(queue);
+
+            PF_SCOPE_MARK(mask, "intersection");
 
             return resultCount;
         }

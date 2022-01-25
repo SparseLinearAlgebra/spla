@@ -51,16 +51,14 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
     assert(w.IsNotNull());
     assert(desc.IsNotNull());
 
-    /** Handle case if new to accum(w, s) */
+    /** Handle case if need to accum(w, s) */
     auto tmp = w;
     auto applyAccum = desc->IsParamSet(Descriptor::Param::AccumResult);
 
     // Create temporary vector for assignment result
     if (applyAccum) tmp = Vector::Make(w->GetNrows(), w->GetType(), w->GetLibrary());
-
     // If no accum, clear result first
     if (!applyAccum) w->GetStorage()->Clear();
-
     // If assign is null, make default to keep new entries
     if (applyAccum && accum.IsNull()) accum = utils::MakeFunctionChooseSecond(w->GetType());
 
@@ -70,7 +68,7 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         auto deviceId = deviceIds[i];
 
-        auto assignmentTask = builder.Emplace([=]() {
+        auto assignmentTask = builder.Emplace("vec-assign", [=]() {
             auto blockIdx = i;
             auto blockSize = w->GetStorage()->GetBlockSize();
             auto dim = w->GetStorage()->GetNrows();
@@ -92,7 +90,7 @@ void spla::VectorAssign::Process(std::size_t nodeIdx, const spla::Expression &ex
         });
 
         if (applyAccum) {
-            auto accumTask = builder.Emplace([=]() {
+            auto accumTask = builder.Emplace("vec-accum", [=]() {
                 auto tmpBlock = tmp->GetStorage()->GetBlock(i);
 
                 if (tmpBlock.IsNotNull()) {

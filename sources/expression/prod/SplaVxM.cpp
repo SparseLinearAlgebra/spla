@@ -162,7 +162,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
             auto aBlock = aBlocks.find(aIdx)->second;
             auto bBlock = bBlocks.find(bIdx)->second;
             auto maskBlock = GetMaskBlock(maskBlocks, IndexV{bIdx.second});
-            auto task = builder.Emplace([=]() {
+            auto task = builder.Emplace("vxm", [=]() {
                 assert(aBlock->GetNrows() == bBlock->GetNrows());
                 ParamsVxM params;
                 params.desc = desc;
@@ -179,7 +179,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 library->GetAlgoManager()->Dispatch(Algorithm::Type::VxM, params);
 
                 if (params.w.IsNotNull()) {
-                    // If has not empty result, store it to sum later
+                    // If result has not empty result, store it to sum later
                     products->AddBlock(j, params.w);
                     SPDLOG_LOGGER_TRACE(logger, "Blocks product ({})x({},{}) nnz={}",
                                         aIdx, bIdx.first, bIdx.second, params.w->GetNvals());
@@ -200,7 +200,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
         auto &toProcess = blockProducts[j];
         if (!toProcess.empty()) {
             auto deviceId = devicesForFinalMerge[deviceToFetch];
-            auto task = builder.Emplace([=]() {
+            auto task = builder.Emplace("mat-red-blocks", [=]() {
                 std::vector<RefPtr<VectorBlock>> blocks;
                 products->GetBlocks(j, blocks);
 

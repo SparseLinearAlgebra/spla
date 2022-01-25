@@ -25,46 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/SplaError.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaTaskBuilder.hpp>
-#include <spdlog/spdlog.h>
+#ifndef SPLA_SPLAVXMCOOSTRUCTURE_HPP
+#define SPLA_SPLAVXMCOOSTRUCTURE_HPP
 
-#ifdef SPLA_PROFILING_TASKS
-    #include <spla-cpp/SplaUtils.hpp>
-#endif
+#include <algo/SplaAlgorithm.hpp>
 
-tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
-    return Emplace("no-name", std::move(work));
-}
+namespace spla {
 
-tf::Task spla::TaskBuilder::Emplace(const std::string &workName, std::function<void()> work) {
-    auto taskId = mTaskID++;
-    auto task = [expression = mExpression, work = std::move(work), taskId, workName]() {
-        // If some error occurred earlier, no sense to continue
-        if (expression->GetState() == Expression::State::Aborted)
-            return;
-
-        try {
-#ifdef SPLA_PROFILING_TASKS
-            CpuTimer timer;
-            timer.Start();
-#endif
-            work();
-#ifdef SPLA_PROFILING_TASKS
-            timer.Stop();
-            std::cout << "[SplaTaskBuilder.cpp:53] task-" << taskId << " (" << workName << ") " << timer.GetElapsedMs() << " ms" << std::endl;
-#endif
-        } catch (std::exception &ex) {
-            expression->SetState(Expression::State::Aborted);
-            auto logger = expression->GetLibrary().GetPrivate().GetLogger();
-            SPDLOG_LOGGER_ERROR(logger, "Error inside expression node task-{} ({}). {}", taskId, workName, ex.what());
-        }
+    class VxMCOOStructure final : public Algorithm {
+    public:
+        ~VxMCOOStructure() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
     };
 
-    return mSubflow.emplace(std::move(task));
-}
+}// namespace spla
 
-spla::TaskBuilder::TaskBuilder(spla::Expression *expression, tf::Subflow &subflow)
-    : mExpression(expression), mSubflow(subflow) {
-}
+#endif//SPLA_SPLAVXMCOOSTRUCTURE_HPP

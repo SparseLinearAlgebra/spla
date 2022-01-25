@@ -39,6 +39,7 @@
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCSR.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <utils/SplaProfiling.hpp>
 
 bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVxM *>(&params);
@@ -99,13 +100,19 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
     }
 
+    PF_SCOPE(vxm, " -vxm");
+
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
     compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths->begin(), segmentLengths.begin(), queue);
 
+    PF_SCOPE_MARK(vxm, "segment lengths");
+
     // Compute offsets between each a[i] x b[i,:] products
     compute::vector<unsigned int> outputPtr(a->GetNvals() + 1, ctx);
     compute::exclusive_scan(segmentLengths.begin(), segmentLengths.end(), outputPtr.begin(), 0u, queue);
+
+    PF_SCOPE_MARK(vxm, "output ptr");
 
     // Number of products to count
     std::size_t cooNnz = (outputPtr.end() - 1).read(queue);
@@ -125,22 +132,28 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
                         segmentLengths.begin(),
                         aLocations.begin(),
                         queue);
+    PF_SCOPE_MARK(vxm, "a-loc scatter_if");
+
     compute::inclusive_scan(aLocations.begin(), aLocations.end(), aLocations.begin(), compute::max<unsigned int>(), queue);
+    PF_SCOPE_MARK(vxm, "a-loc scan");
 
     auto &aRows = a->GetRows();
     auto &offsetsRef = *offsets;
-    BOOST_COMPUTE_CLOSURE(void, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations, bLocations), {
+    BOOST_COMPUTE_CLOSURE(unsigned int, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations), {
         uint locationOfRowIndex = aLocations[i];
         uint rowIdx = aRows[locationOfRowIndex];
         uint rowBaseOffset = offsetsRef[rowIdx];
         uint offsetOfRowSegment = outputPtr[locationOfRowIndex];
-        bLocations[i] = rowBaseOffset + (i - offsetOfRowSegment);
+        return rowBaseOffset + (i - offsetOfRowSegment);
     });
-    compute::for_each_n(compute::counting_iterator<unsigned int>(0), cooNnz, unfoldSegment, queue);
+    compute::transform(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(cooNnz), bLocations.begin(), unfoldSegment, queue);
+    PF_SCOPE_MARK(vxm, "b-loc");
 
     // Gather indices j for each product a[i] * b[i,j]
     compute::vector<unsigned int> J(cooNnz, ctx);
     compute::gather(bLocations.begin(), bLocations.end(), b->GetCols().begin(), J.begin(), queue);
+
+    PF_SCOPE_MARK(vxm, "gather J");
 
     // Store final result here
     compute::vector<unsigned int> rows(ctx);
@@ -157,11 +170,17 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
                         p->mult->GetSource(),
                         queue);
 
+        PF_SCOPE_MARK(vxm, "transform");
+
         // Sort a[i] * b[i, j] products, so all j products stored in sequence
         SortByRow(J, V, tw->GetByteSize(), queue);
 
+        PF_SCOPE_MARK(vxm, "sort by row");
+
         // Reduce all produces a[i] * b[i, j] for j using provided add op
         ReduceByKey(J, V, rows, vals, tw->GetByteSize(), p->add->GetSource(), queue);
+
+        PF_SCOPE_MARK(vxm, "reduce by key");
 
         // Apply mask if required
         if (p->hasMask && mask.IsNotNull()) {
@@ -171,12 +190,18 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
             std::swap(rows, tmpRows);
             std::swap(vals, tmpVals);
         }
+
+        PF_SCOPE_MARK(vxm, "apply mask");
     } else {
         // Sort result indices
         compute::sort(J.begin(), J.end(), queue);
 
+        PF_SCOPE_MARK(vxm, "sort");
+
         // Reduce duplicates (keep only first entry)
         ReduceDuplicates(J, rows, queue);
+
+        PF_SCOPE_MARK(vxm, "reduce duplicates");
 
         // Apply mask to indices
         if (p->hasMask && mask.IsNotNull()) {
@@ -184,6 +209,8 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
             MaskKeys(mask->GetRows(), rows, tmpRows, complementMask, queue);
             std::swap(rows, tmpRows);
         }
+
+        PF_SCOPE_MARK(vxm, "apply mask");
     }
 
     // Store result

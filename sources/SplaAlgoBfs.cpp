@@ -25,21 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <compute/SplaIndicesToRowOffsets.hpp>
+#include <core/SplaError.hpp>
 #include <spla-algo/SplaAlgoBfs.hpp>
 #include <spla-cpp/Spla.hpp>
 
-#include <compute/SplaIndicesToRowOffsets.hpp>
-#include <core/SplaError.hpp>
-
+#include <iostream>
 #include <limits>
 #include <queue>
 #include <vector>
 
-#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    #include <iostream>
-#endif
-
-void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
+void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const AlgoDescriptor &descriptor) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(sp_A->GetNrows() == sp_A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(s < sp_A->GetNrows(), InvalidArgument, "Start index must be withing A bounds");
@@ -62,6 +58,10 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     auto sp_desc_comp = Descriptor::Make(library);
     sp_desc_comp->SetParam(Descriptor::Param::MaskComplement);
 
+    // Overall time of execution
+    CpuTimer overallTimer;
+    overallTimer.Start();
+
     // Set q[s]: start vertex
     auto sp_setup = Expression::Make(library);
     sp_setup->MakeDataWrite(sp_q, DataVector::Make(&s, nullptr, 1, library));
@@ -69,6 +69,11 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
 
     // Start for depth 1: v[s]=1
     std::int32_t depth = 1;
+
+    // Tight timer to measure iterations
+    CpuTimer tightTimer;
+    tightTimer.Start();
+    double tight = 0.0;
 
     while (sp_q->GetNvals() != 0) {
         auto sp_iter = Expression::Make(library);
@@ -81,12 +86,25 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
         sp_iter->Dependency(t2, t3);
         sp_iter->SubmitWait();
 
+        if (descriptor.DisplayTiming()) {
+            tightTimer.Stop();
+            std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
+                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
+            tight = tightTimer.GetElapsedMs();
+            tightTimer.Start();
+        }
+
         depth += 1;
     }
 
-#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    std::cout << "source " << s << " #iterations " << depth - 1 << "\n";
-#endif
+    tightTimer.Stop();
+    overallTimer.Stop();
+
+    if (descriptor.DisplayTiming()) {
+        std::cout << "Result: " << sp_v->GetNvals() << " reached\n";
+        std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
+        std::cout << " run overall: " << overallTimer.GetElapsedMs() << "\n";
+    }
 }
 
 void spla::Bfs(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s) {

@@ -168,6 +168,20 @@ namespace spla {
             if (!inputIndices2.empty())
                 resultIndices2.resize(resultNvals, queue);
 
+            // NOTE: Edge case - if result nnz is the same as input nnz,
+            // then nothing to do, simply copy result
+            if (resultNvals == inputIndices1.size()) {
+                if (!inputIndices1.empty())
+                    compute::copy(inputIndices1.begin(), inputIndices1.end(), resultIndices1.begin(), queue);
+                if (!inputIndices2.empty())
+                    compute::copy(inputIndices2.begin(), inputIndices2.end(), resultIndices2.begin(), queue);
+                if (!inputValues.empty()) {
+                    resultValues.resize(resultNvals * elementsInSequence, queue);
+                    compute::copy(inputValues.begin(), inputValues.end(), resultValues.begin(), queue);
+                }
+                return resultNvals;
+            }
+
             // Copy indices
             if (bothIndices) {
                 BOOST_COMPUTE_CLOSURE(

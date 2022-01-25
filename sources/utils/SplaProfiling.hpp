@@ -25,46 +25,41 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/SplaError.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaTaskBuilder.hpp>
-#include <spdlog/spdlog.h>
+#ifndef SPLA_SPLAPROFILING_H
+#define SPLA_SPLAPROFILING_H
 
-#ifdef SPLA_PROFILING_TASKS
+#ifdef SPLA_PROFILING
     #include <spla-cpp/SplaUtils.hpp>
+
+    #define PF_SCOPE(tm, header)     \
+        std::string tm##_h = header; \
+        CpuTimer tm;                 \
+        tm.Start();
+
+    #define PF_SCOPE_SHOW(tm, msg) \
+        std::cout << tm##_h << " (" << tm.GetElapsedMs() << ") " << msg << std::endl;
+
+    #define PF_SCOPE_MARK(tm, msg)                                                                                 \
+        queue.finish();                                                                                            \
+        tm.Stop();                                                                                                 \
+        std::cout << tm##_h << " (" << tm.GetElapsedMs() << ") " << msg << " " << tm.GetDurationMs() << std::endl; \
+        tm.Start();
+
+    #define PF_MARKER_START(tm, header) \
+        std::string tm##_h = header;    \
+        CpuTimer tm;                    \
+        tm.Start();
+
+    #define PF_MARKER_STOR(tm, msg) \
+        queue.finish();             \
+        tm.Stop();                  \
+        std::cout << tm##_h << msg << " " << tm.GetElapsedMs() << std::endl;
+#else
+    #define PF_SCOPE(tm, header)
+    #define PF_SCOPE_SHOW(tm, msg)
+    #define PF_SCOPE_MARK(tm, msg)
+    #define PF_MARKER_START(tm, header)
+    #define PF_MARKER_STOR(tm, msg)
 #endif
 
-tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
-    return Emplace("no-name", std::move(work));
-}
-
-tf::Task spla::TaskBuilder::Emplace(const std::string &workName, std::function<void()> work) {
-    auto taskId = mTaskID++;
-    auto task = [expression = mExpression, work = std::move(work), taskId, workName]() {
-        // If some error occurred earlier, no sense to continue
-        if (expression->GetState() == Expression::State::Aborted)
-            return;
-
-        try {
-#ifdef SPLA_PROFILING_TASKS
-            CpuTimer timer;
-            timer.Start();
-#endif
-            work();
-#ifdef SPLA_PROFILING_TASKS
-            timer.Stop();
-            std::cout << "[SplaTaskBuilder.cpp:53] task-" << taskId << " (" << workName << ") " << timer.GetElapsedMs() << " ms" << std::endl;
-#endif
-        } catch (std::exception &ex) {
-            expression->SetState(Expression::State::Aborted);
-            auto logger = expression->GetLibrary().GetPrivate().GetLogger();
-            SPDLOG_LOGGER_ERROR(logger, "Error inside expression node task-{} ({}). {}", taskId, workName, ex.what());
-        }
-    };
-
-    return mSubflow.emplace(std::move(task));
-}
-
-spla::TaskBuilder::TaskBuilder(spla::Expression *expression, tf::Subflow &subflow)
-    : mExpression(expression), mSubflow(subflow) {
-}
+#endif//SPLA_SPLAPROFILING_H

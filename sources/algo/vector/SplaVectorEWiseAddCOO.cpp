@@ -25,9 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <boost/compute/algorithm.hpp>
+
 #include <algo/SplaAlgorithmParams.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
-
 #include <compute/SplaCopyUtils.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
@@ -35,9 +36,10 @@
 #include <compute/SplaReduceDuplicates.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
+#include <spla-cpp/SplaUtils.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <utils/SplaProfiling.hpp>
 
-#include <boost/compute/algorithm.hpp>
 
 bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorEWiseAdd *>(&params);
@@ -51,11 +53,12 @@ bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const 
 void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
+    PF_SCOPE(eadd, "-veadd-");
+
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto &desc = p->desc;
-    auto &logger = library->GetLogger();
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -74,6 +77,9 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
+
+    PF_SCOPE_MARK(eadd, "setup");
+
     auto blockA = p->a.Cast<VectorCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;
     compute::vector<unsigned int> permA(ctx);
@@ -89,6 +95,8 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     // If mask is present, apply it to a and b blocks
     compute::vector<unsigned int> tmpRowsA(ctx);
     compute::vector<unsigned int> tmpRowsB(ctx);
+
+    PF_SCOPE_MARK(eadd, "fill perm indices");
 
     auto maskBlock = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
@@ -129,6 +137,8 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     applyMask(blockA, tmpRowsA, permA, rowsA);
     applyMask(blockB, tmpRowsB, permB, rowsB);
 
+    PF_SCOPE_MARK(eadd, "apply mask");
+
     // If some block is empty (or both, save result as is and finish without merge)
     auto aEmpty = !rowsA || rowsA->empty();
     auto bEmpty = !rowsB || rowsB->empty();
@@ -164,6 +174,8 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     if (typeHasValues)
         OffsetIndices(permB, blockA->GetNvals(), queue);
 
+    PF_SCOPE_MARK(eadd, "offset indices");
+
     // Merge a and b values
     auto mergeCount = rowsA->size() + rowsB->size();
     compute::vector<unsigned int> mergedRows(mergeCount, ctx);
@@ -181,12 +193,16 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                   mergedRows.begin(),
                   queue);
 
+    PF_SCOPE_MARK(eadd, "merge");
+
     // Copy values to single buffer
     compute::vector<unsigned char> mergedValues(ctx);
     if (typeHasValues) {
         mergedValues.resize(mergeCount * byteSize, queue);
         CopyMergedValues(mergedPerm, blockA->GetVals(), blockB->GetVals(), mergedValues, blockA->GetNvals(), byteSize, queue);
     }
+
+    PF_SCOPE_MARK(eadd, "copy merged values");
 
     // Reduce duplicates
     // NOTE: max 2 duplicated entries for each index
@@ -205,8 +221,10 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                                        resultRows,
                                        queue);
 
+    PF_SCOPE_MARK(eadd, "reduce duplicates");
+
     p->w = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals)).As<VectorBlock>();
-    SPDLOG_LOGGER_TRACE(logger, "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
+    SPDLOG_LOGGER_TRACE(library->GetLogger(), "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
 }
 
 spla::Algorithm::Type spla::VectorEWiseAddCOO::GetType() const {

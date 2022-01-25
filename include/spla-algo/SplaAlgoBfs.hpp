@@ -45,8 +45,9 @@ namespace spla {
      * @param[out] v Vector where to store levels of the reached vertices
      * @param A Input adjacency matrix of the graph; must be n x n
      * @param s Index of the source vertex to begin bfs
+     * @param descriptor Algorithm descriptor
      */
-    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s);
+    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const AlgoDescriptor &descriptor = {});
 
     /**
      * @brief Breadth-first search algorithm

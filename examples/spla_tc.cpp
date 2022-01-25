@@ -38,6 +38,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
     auto args = options.parse(argc, argv);
 
     if (args["help"].as<bool>()) {
@@ -49,6 +50,8 @@ int main(int argc, const char *const *argv) {
     int niters;
     int bsize;
     bool undirected;
+    bool removeLoops = true;
+    bool ignoreValues = true;
     bool verbose;
 
     try {
@@ -66,14 +69,17 @@ int main(int argc, const char *const *argv) {
     assert(bsize > 1);
 
     // Load data
-    spla::MatrixLoader<void> loader;
+    spla::MatrixLoader<int> loader;
 
     try {
-        loader.Load<void>(mtxpath, undirected, verbose);
+        loader.Load(mtxpath, undirected, removeLoops, ignoreValues, verbose);
     } catch (const std::exception &e) {
         std::cerr << "Failed load matrix: " << e.what();
         return 1;
     }
+
+    // Fill matrix uniformly with 1
+    loader.Fill(1);
 
     spla::Library::Config config;
     config.SetBlockSize(bsize);

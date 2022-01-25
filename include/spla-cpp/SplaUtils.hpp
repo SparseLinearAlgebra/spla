@@ -58,11 +58,30 @@ namespace spla {
         using Value = double;
 
     public:
-        void Start() { mStart = mEnd = Clock::now(); }
-        void Stop() { mEnd = Clock::now(); }
+        void Start() {
+            mStart = mEnd = Clock::now();
+        }
 
-        [[nodiscard]] Duration GetElapsed() const { return GetEnd() - GetStart(); }
-        [[nodiscard]] Value GetElapsedMs() const { return static_cast<double>(GetElapsed().count()) * 1e-6; }
+        void Stop() {
+            mEnd = Clock::now();
+            mElapsedMs += GetDurationMs();
+        }
+
+        Value Mark() {
+            Stop();
+            auto duration = GetDurationMs();
+            Start();
+            return duration;
+        }
+
+        void Reset() {
+            mElapsedMs = 0.0;
+            mStart = mEnd = TimePoint{};
+        }
+
+        [[nodiscard]] Duration GetDuration() const { return GetEnd() - GetStart(); }
+        [[nodiscard]] Value GetDurationMs() const { return static_cast<double>(GetDuration().count()) * 1e-6; }
+        [[nodiscard]] Value GetElapsedMs() const { return mElapsedMs; }
 
         [[nodiscard]] TimePoint GetStart() const noexcept { return mStart; }
         [[nodiscard]] TimePoint GetEnd() const noexcept { return mEnd; }
@@ -70,6 +89,8 @@ namespace spla {
     private:
         TimePoint mStart{};
         TimePoint mEnd{};
+
+        double mElapsedMs = 0.0;
     };
 
     /**
@@ -81,10 +102,6 @@ namespace spla {
     template<typename Value>
     class MatrixLoader {
     public:
-        static constexpr bool HasValue = !std::is_same_v<Value, void>;
-        using ValueCollectionType = std::conditional_t<std::is_same_v<Value, void>, nullptr_t, std::vector<Value>>;
-
-    public:
         MatrixLoader() = default;
 
         /**
@@ -93,16 +110,26 @@ namespace spla {
          * @tparam FileValue Type of value which is written in the file
          * @param is An input stream with .mtx matrix inside
          * @param makeUndirected Add backward edges for directed edges
+         * @param removeSelfLoops Remove loops (edges of type i -> i)
+         * @param ignoreValues Ignore values inside file
          * @param verbose Verbose std output info
          * @param source Source name to display
          * @return Reference at created matrix
          */
-        template<typename FileValue>
-        MatrixLoader &Load(std::istream &is, bool makeUndirected, bool verbose = true, const std::string &source = "") {
-            CpuTimer loading;
-            loading.Start();
+        MatrixLoader &Load(std::istream &is, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose = true, const std::string &source = "") {
+            if (verbose) {
+                std::cout << "Loading Matrix-market coordinate format graph...\n";
+                std::cout << " Reading from " << source << "\n";
 
-            static_assert(!(std::is_same_v<FileValue, void> && !std::is_same_v<Value, void>) );
+                if (removeSelfLoops)
+                    std::cout << " Removing self-loops\n";
+            }
+
+            CpuTimer timer;
+            CpuTimer total;
+            total.Start();
+            timer.Start();
+
             std::string line;
             std::size_t lineN = 0;
             while (std::getline(is, line)) {
@@ -113,15 +140,12 @@ namespace spla {
             std::stringstream headerLineStream(line);
             headerLineStream >> mNrows >> mNcols >> nnz;
 
-            if constexpr (HasValue) {
-                mVals.reserve(nnz);
-            }
             mRows.reserve(nnz);
             mCols.reserve(nnz);
+            mVals.reserve(nnz);
 
-            CpuTimer reading;
+            timer.Mark();
 
-            reading.Start();
             while (std::getline(is, line)) {
                 ++lineN;
                 std::stringstream lineStream(line);
@@ -136,22 +160,40 @@ namespace spla {
                     throw std::logic_error("Column index is out of bounds on the line " + std::to_string(lineN));
                 }
 
+                if (removeSelfLoops) {
+                    if (i == j) {
+                        nnz -= 1;
+                        continue;
+                    }
+                }
+
                 mRows.push_back(i);
                 mCols.push_back(j);
 
-                if constexpr (!std::is_same_v<FileValue, void>) {
-                    FileValue value;
-                    lineStream >> value;
-                    if constexpr (HasValue) {
-                        mVals.push_back(static_cast<Value>(value));
-                    }
+                if (!lineStream.eof() && !ignoreValues) {
+                    Value v;
+                    lineStream >> v;
+                    mVals.push_back(v);
                 }
             }
-            reading.Stop();
+
+            if (ignoreValues)
+                mVals.resize(mRows.size());
+
+            timer.Stop();
 
             if (mRows.size() != nnz) {
                 throw std::logic_error("Number of non zero values is not valid");
             }
+
+            if (verbose)
+                std::cout << " Parsing MTX file ("
+                          << mNrows << " rows, "
+                          << mNcols << " cols, "
+                          << nnz << " directed edges)"
+                          << " in " << timer.GetElapsedMs() << " ms\n";
+
+            timer.Start();
 
             // Offset indices
             for (std::size_t k = 0; k < mRows.size(); k++) {
@@ -159,38 +201,61 @@ namespace spla {
                 mCols[k] -= 1;
             }
 
-            CpuTimer doubling;
+            timer.Stop();
+
+            if (verbose)
+                std::cout << " Offset indices by -1 in "
+                          << timer.GetDurationMs() << " ms\n";
 
             if (makeUndirected) {
-                doubling.Start();
+                timer.Start();
                 DoubleEdges();
-                doubling.Stop();
+                timer.Stop();
+
+                if (verbose)
+                    std::cout << " Doubling edges: " << nnz
+                              << " to " << GetNvals()
+                              << " in " << timer.GetDurationMs() << " ms\n";
             }
 
-            loading.Stop();
+            double averageDegree;
+            std::size_t maxDegree;
+            std::size_t minDegree;
+
+            if (GetNrows() == GetNcols())
+                ComputeStats(minDegree, maxDegree, averageDegree);
+
+            total.Stop();
 
             if (verbose) {
-                std::cout << "Loading Matrix-market coordinate format graph\n";
-                std::cout << "  Reading from " << source << "\n";
-                std::cout << "  Parsing MTX file (" << mNrows << " rows, " << mNcols << " cols, " << nnz << " directed edges)"
-                          << " in " << reading.GetElapsedMs() << " ms\n";
-                if (makeUndirected) {
-                    std::cout << "  Doubling edges: " << nnz << " to " << GetNvals()
-                              << " in " << doubling.GetElapsedMs() << " ms\n";
-                }
-                std::cout << "  Loaded in " << loading.GetElapsedMs() << " ms\n";
+                std::cout << " Stats: min.deg " << minDegree
+                          << ", max.deg " << maxDegree
+                          << ", avg.deg " << averageDegree << "\n";
+                std::cout << " Loaded in " << total.GetElapsedMs() << " ms\n";
             }
 
             return *this;
         }
 
-        template<typename FileValue>
-        MatrixLoader &Load(const std::string &filename, bool makeUndirected, bool verbose = true) {
+        MatrixLoader &Load(const std::string &filename, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose = true) {
             std::ifstream file(filename);
             if (!file.is_open()) {
                 throw std::invalid_argument("Could not open '" + filename + "' to read matrix");
             }
-            return Load<FileValue>(file, makeUndirected, verbose, filename);
+            return Load(file, makeUndirected, removeSelfLoops, ignoreValues, verbose, filename);
+        }
+
+        void Fill(Value value) {
+            for (auto &v : mVals) {
+                v = value;
+            }
+        }
+
+        template<typename Generator>
+        void Generate(Generator &&generator) {
+            for (auto &v : mVals) {
+                v = generator();
+            }
         }
 
         [[nodiscard]] Size GetNrows() const { return mNrows; }
@@ -200,13 +265,11 @@ namespace spla {
 
         [[nodiscard]] const std::vector<Index> &GetRowIndices() const { return mRows; }
         [[nodiscard]] const std::vector<Index> &GetColIndices() const { return mCols; }
+        [[nodiscard]] const std::vector<Value> &GetValues() const { return mVals; }
 
         [[nodiscard]] std::vector<Index> &GetRowIndices() { return mRows; }
         [[nodiscard]] std::vector<Index> &GetColIndices() { return mCols; }
-
-        [[nodiscard]] std::conditional_t<HasValue, const ValueCollectionType &, nullptr_t> GetValues() const {
-            return mVals;
-        }
+        [[nodiscard]] std::vector<Value> &GetValues() { return mVals; }
 
     private:
         void DoubleEdges() {
@@ -215,15 +278,32 @@ namespace spla {
                 if (mRows[i] != mCols[i]) {
                     mRows.push_back(mCols[i]);
                     mCols.push_back(mRows[i]);
-
-                    if constexpr (HasValue) {
-                        mVals.push_back(mVals[i]);
-                    }
+                    mVals.push_back(mVals[i]);
                 }
             }
         }
 
-        ValueCollectionType mVals{};
+        void ComputeStats(std::size_t &minDegree, std::size_t &maxDegree, double &averageDegree) {
+            std::vector<std::size_t> degreePerVertex(GetNrows(), 0);
+
+            for (std::size_t k = 0; k < GetNvals(); k++) {
+                degreePerVertex[mRows[k]] += 1;
+            }
+
+            maxDegree = 0;
+            minDegree = GetNvals() + 1;
+            averageDegree = 0.0f;
+
+            for (auto d : degreePerVertex) {
+                maxDegree = std::max(maxDegree, d);
+                minDegree = std::min(minDegree, d);
+                averageDegree += static_cast<double>(d);
+            }
+
+            averageDegree = GetNrows() > 0 ? averageDegree / static_cast<double>(GetNrows()) : 0.0;
+        }
+
+        std::vector<Value> mVals{};
         std::vector<Index> mRows{};
         std::vector<Index> mCols{};
 
