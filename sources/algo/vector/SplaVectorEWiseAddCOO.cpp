@@ -25,11 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaUtils.hpp>
+#include <boost/compute/algorithm.hpp>
 
 #include <algo/SplaAlgorithmParams.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
-
 #include <compute/SplaCopyUtils.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
@@ -37,9 +36,10 @@
 #include <compute/SplaReduceDuplicates.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
+#include <spla-cpp/SplaUtils.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <utils/SplaProfiling.hpp>
 
-#include <boost/compute/algorithm.hpp>
 
 bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorEWiseAdd *>(&params);
@@ -57,7 +57,6 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
     auto &desc = p->desc;
-    auto &logger = library->GetLogger();
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
@@ -76,8 +75,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
-    CpuTimer timerFPI;
-    timerFPI.Start();
+    PF_SCOPE(eadd, " -veadd");
 
     auto blockA = p->a.Cast<VectorCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;
@@ -95,9 +93,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     compute::vector<unsigned int> tmpRowsA(ctx);
     compute::vector<unsigned int> tmpRowsB(ctx);
 
-    queue.finish();
-    timerFPI.Stop();
-    std::cout << " **** FillValuesPermutationIndices " << timerFPI.GetElapsedMs() << std::endl;
+    PF_SCOPE_MARK(eadd, "fill perm indices");
 
     auto maskBlock = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
@@ -135,15 +131,10 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         out = &tmpRows;
     };
 
-    CpuTimer timerAM;
-    timerAM.Start();
-
     applyMask(blockA, tmpRowsA, permA, rowsA);
     applyMask(blockB, tmpRowsB, permB, rowsB);
 
-    queue.finish();
-    timerAM.Stop();
-    std::cout << " **** ApplyMask " << timerAM.GetElapsedMs() << std::endl;
+    PF_SCOPE_MARK(eadd, "apply mask");
 
     // If some block is empty (or both, save result as is and finish without merge)
     auto aEmpty = !rowsA || rowsA->empty();
@@ -176,19 +167,11 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         return;
     }
 
-    CpuTimer timerOI;
-    timerOI.Start();
-
     // NOTE: offset b perm indices to preserve uniqueness
     if (typeHasValues)
         OffsetIndices(permB, blockA->GetNvals(), queue);
 
-    queue.finish();
-    timerOI.Stop();
-    std::cout << " **** OffsetIndices " << timerOI.GetElapsedMs() << std::endl;
-
-    CpuTimer timerMBK;
-    timerMBK.Start();
+    PF_SCOPE_MARK(eadd, "offset indices");
 
     // Merge a and b values
     auto mergeCount = rowsA->size() + rowsB->size();
@@ -207,12 +190,7 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                   mergedRows.begin(),
                   queue);
 
-    queue.finish();
-    timerMBK.Stop();
-    std::cout << " **** MergeByKeys " << timerMBK.GetElapsedMs() << std::endl;
-
-    CpuTimer timerCMV;
-    timerCMV.Start();
+    PF_SCOPE_MARK(eadd, "merge");
 
     // Copy values to single buffer
     compute::vector<unsigned char> mergedValues(ctx);
@@ -221,18 +199,13 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         CopyMergedValues(mergedPerm, blockA->GetVals(), blockB->GetVals(), mergedValues, blockA->GetNvals(), byteSize, queue);
     }
 
-    queue.finish();
-    timerCMV.Stop();
-    std::cout << " **** CopyMergedValues " << timerCMV.GetElapsedMs() << std::endl;
+    PF_SCOPE_MARK(eadd, "copy merged values");
 
     // Reduce duplicates
     // NOTE: max 2 duplicated entries for each index
     compute::vector<unsigned int> resultRows(ctx);
     compute::vector<unsigned char> resultVals(ctx);
     std::size_t resultNvals;
-
-    CpuTimer timerRD;
-    timerRD.Start();
 
     if (typeHasValues)
         resultNvals = ReduceDuplicates(mergedRows, mergedValues,
@@ -245,12 +218,10 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
                                        resultRows,
                                        queue);
 
-    queue.finish();
-    timerRD.Stop();
-    std::cout << " **** ReduceDuplicates " << timerRD.GetElapsedMs() << std::endl;
+    PF_SCOPE_MARK(eadd, "reduce duplicates");
 
     p->w = VectorCOO::Make(blockA->GetNrows(), resultNvals, std::move(resultRows), std::move(resultVals)).As<VectorBlock>();
-    SPDLOG_LOGGER_TRACE(logger, "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
+    SPDLOG_LOGGER_TRACE(library->GetLogger(), "Merge vectors size={} nnz={}", blockA->GetNrows(), resultNvals);
 }
 
 spla::Algorithm::Type spla::VectorEWiseAddCOO::GetType() const {

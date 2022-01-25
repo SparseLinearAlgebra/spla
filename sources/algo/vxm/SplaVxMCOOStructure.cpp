@@ -29,27 +29,16 @@
 #include <boost/compute/algorithm/scatter_if.hpp>
 
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
-#include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
-#include <compute/SplaReduceDuplicates.hpp>
-#include <compute/SplaSortByRow.hpp>
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCSR.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <utils/SplaProfiling.hpp>
 
-#include <spla-cpp/SplaUtils.hpp>
-
-#define PRF_S(tm) \
-    CpuTimer tm;  \
-    tm.Start();
-
-#define PRF_F(tm, msg) \
-    queue.finish();    \
-    tm.Stop();         \
-    std::cout << " ++++ " msg << " " << tm.GetElapsedMs() << std::endl;
+#include <numeric>
 
 bool spla::VxMCOOStructure::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVxM *>(&params);
@@ -90,30 +79,6 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
 
     assert(!p->tw->HasValues());
 
-    PRF_S(timerSM);
-    // Allocate vector mask structure
-    // Apply mask to define, which indices we are interested in
-    compute::vector<Index> selectionMask(N + 1, ctx);
-    if (p->hasMask) {
-        if (mask.IsNotNull()) {
-            if (complementMask) {
-                BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int i), (selectionMask), { selectionMask[i] = 0u; });
-                compute::fill_n(selectionMask.begin(), N, 1u, queue);
-                compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignZero, queue);
-            } else {
-                BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (selectionMask), { selectionMask[i] = 1u; });
-                compute::fill_n(selectionMask.begin(), N, 0u, queue);
-                compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignOne, queue);
-            }
-        } else {
-            assert(complementMask);
-            compute::fill_n(selectionMask.begin(), N, 1u, queue);
-        }
-    } else {
-        compute::fill_n(selectionMask.begin(), N, 1u, queue);
-    }
-    PRF_F(timerSM, "selectionMask");
-
     // Get row lengths and offsets for B
     const compute::vector<Index> *offsetsB;
     const compute::vector<Index> *lengthsB;
@@ -133,162 +98,149 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
         IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
     }
 
-    PRF_S(timerBS);
+    const std::size_t BUCKETS_COUNT = 7;
+    compute::vector<Index> buckets(BUCKETS_COUNT, ctx);
+    compute::vector<Index> bucketsOffsets(BUCKETS_COUNT, ctx);
+    compute::vector<Index> bucketsConfig(ctx);
+    std::vector<Index> bucketsHost(BUCKETS_COUNT);
+
+    PF_SCOPE(vxm, "-vxm-");
+
     auto &bLengths = *lengthsB;
-    std::vector<Index> bucketsHost(7);
-    compute::vector<Index> buckets(7, ctx);
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
     BOOST_COMPUTE_CLOSURE(void, countBuckets, (unsigned int rowId), (bLengths, buckets), {
         const length = bLengths[rowId];
-        if (length <= 8) {
-            atomic_add(&buckets[0], 1u);
-        } else if (length <= 16) {
-            atomic_add(&buckets[1], 1u);
-        } else if (length <= 32) {
-            atomic_add(&buckets[2], 1u);
-        } else if (length <= 64) {
-            atomic_add(&buckets[3], 1u);
-        } else if (length <= 128) {
-            atomic_add(&buckets[4], 1u);
-        } else if (length <= 256) {
-            atomic_add(&buckets[5], 1u);
-        } else {
-            atomic_add(&buckets[6], 1u);
-        }
+        if (length <= 0) return;
+        const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
+        atomic_add(&buckets[bucketId], 1u);
     });
     compute::for_each(a->GetRows().begin(), a->GetRows().end(), countBuckets, queue);
-
+    compute::exclusive_scan(buckets.begin(), buckets.end(), bucketsOffsets.begin(), queue);
     compute::copy(buckets.begin(), buckets.end(), bucketsHost.begin(), queue);
-    compute::vector<Index> group32_4(bucketsHost[0], ctx);
-    compute::vector<Index> group32_8(bucketsHost[1], ctx);
-    compute::vector<Index> group32_16(bucketsHost[2], ctx);
-    compute::vector<Index> group32_32(bucketsHost[3], ctx);
-    compute::vector<Index> group64(bucketsHost[4], ctx);
-    compute::vector<Index> group128(bucketsHost[5], ctx);
-    compute::vector<Index> group256(bucketsHost[6], ctx);
+
+    std::size_t rowsToProcess = std::reduce(bucketsHost.begin(), bucketsHost.end(), 0u);
+    bucketsConfig.resize(rowsToProcess);
 
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
-    BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rowId), (bLengths, buckets, group32_4, group32_8, group32_16, group32_32, group64, group128, group256), {
+    BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rowId), (bLengths, buckets, bucketsOffsets, bucketsConfig), {
         const length = bLengths[rowId];
-        if (length <= 8) {
-            const uint offset = atomic_add(&buckets[0], 1u);
-            group32_4[offset] = rowId;
-        } else if (length <= 16) {
-            const uint offset = atomic_add(&buckets[1], 1u);
-            group32_8[offset] = rowId;
-        } else if (length <= 32) {
-            const uint offset = atomic_add(&buckets[2], 1u);
-            group32_16[offset] = rowId;
-        } else if (length <= 64) {
-            const uint offset = atomic_add(&buckets[3], 1u);
-            group32_32[offset] = rowId;
-        } else if (length <= 128) {
-            const uint offset = atomic_add(&buckets[4], 1u);
-            group64[offset] = rowId;
-        } else if (length <= 256) {
-            const uint offset = atomic_add(&buckets[5], 1u);
-            group128[offset] = rowId;
-        } else {
-            const uint offset = atomic_add(&buckets[6], 1u);
-            group256[offset] = rowId;
-        }
+        if (length <= 0) return;
+        const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
+        const uint offset = atomic_add(&buckets[bucketId], 1u);
+        bucketsConfig[bucketsOffsets[bucketId] + offset] = rowId;
     });
     compute::for_each(a->GetRows().begin(), a->GetRows().end(), fillBuckets, queue);
-    PRF_F(timerBS, "buckets");
 
-    PRF_S(timerNNZ);
+    PF_SCOPE_MARK(vxm, "buckets");
+
     compute::detail::meta_kernel kernel("__spla_vxm_structured");
     auto argCount = kernel.add_arg<cl_uint>("count");
     auto argVpt = kernel.add_arg<cl_uint>("vpt");
     auto argRpt = kernel.add_arg<cl_uint>("rpt");
-    auto argGroup = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "group");
     auto argRowOffsets = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "rowOffsets");
     auto argColIndices = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "colIndices");
     auto argResult = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "result");
+    auto argBucketId = kernel.add_arg<cl_uint>("bucketId");
+    auto argBucketOffsets = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "bucketOffsets");
+    auto argBucketConfig = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "bucketConfig");
 
     kernel << "const uint gid = get_group_id(0) * rpt + get_local_id(0) / vpt;\n"
            << "const uint lid = get_local_id(0) % vpt;\n"
            << "if (gid < count) {\n"
-           << "    const uint rowId = group[gid];\n"
+           << "    const uint rowId = bucketConfig[bucketOffsets[bucketId] + gid];\n"
            << "    for (uint k = rowOffsets[rowId] + lid; k < rowOffsets[rowId + 1]; k += vpt) {\n"
            << "        result[colIndices[k]] = 1u;\n"
            << "    }\n"
            << "}\n";
 
-    compute::vector<Index> resultStructure(N, ctx);
+    compute::vector<Index> resultStructure(N + 1, ctx);
     compute::fill_n(resultStructure.begin(), N, 0u, queue);
 
     auto kernelCompiled = kernel.compile(ctx);
     kernelCompiled.set_arg(argRowOffsets, offsetsB->get_buffer());
     kernelCompiled.set_arg(argColIndices, b->GetCols().get_buffer());
     kernelCompiled.set_arg(argResult, resultStructure.get_buffer());
+    kernelCompiled.set_arg(argBucketOffsets, bucketsOffsets.get_buffer());
+    kernelCompiled.set_arg(argBucketConfig, bucketsConfig.get_buffer());
+
+    auto dispatchGroup = [&](compute::command_queue &q, std::size_t bucketId, std::size_t vpt, std::size_t tpb) {
+        std::size_t rowsToProcess = bucketsHost[bucketId];
+        if (rowsToProcess > 0) {
+            std::size_t rpt = tpb / vpt;
+            std::size_t workSize = (rowsToProcess / rpt + (rowsToProcess % rpt ? 1 : 0)) * tpb;
+            PF_SCOPE_SHOW(vxm, tpb << " " << vpt << " " << rowsToProcess);
+            kernelCompiled.set_arg(argCount, static_cast<cl_uint>(rowsToProcess));
+            kernelCompiled.set_arg(argVpt, static_cast<cl_uint>(vpt));
+            kernelCompiled.set_arg(argRpt, static_cast<cl_uint>(rpt));
+            kernelCompiled.set_arg(argBucketId, static_cast<cl_uint>(bucketId));
+            q.enqueue_1d_range_kernel(kernelCompiled, 0, workSize, tpb);
+        }
+    };
 
     struct GroupInfo {
-        compute::vector<Index> &group;
         compute::command_queue queue;
         std::size_t vpt;
         std::size_t tpb;
     };
 
-    auto dispatchGroup = [&](compute::command_queue &q, compute::vector<Index> &group, std::size_t vpt, std::size_t tpb) {
-        if (!group.empty()) {
-            std::size_t rpt = tpb / vpt;
-            std::size_t workSize = (group.size() / rpt + (group.size() % rpt ? 1 : 0)) * tpb;
-            std::cout << " ++++ group " << tpb << " " << vpt << " " << group.size() << std::endl;
-            kernelCompiled.set_arg(argCount, static_cast<cl_uint>(group.size()));
-            kernelCompiled.set_arg(argVpt, static_cast<cl_uint>(vpt));
-            kernelCompiled.set_arg(argRpt, static_cast<cl_uint>(rpt));
-            kernelCompiled.set_arg(argGroup, group.get_buffer());
-            q.enqueue_1d_range_kernel(kernelCompiled, 0, workSize, tpb);
-        }
-    };
-
     GroupInfo infos[] = {
-            {group32_4, compute::command_queue(ctx, device), 4, 32},
-            {group32_8, compute::command_queue(ctx, device), 8, 32},
-            {group32_16, compute::command_queue(ctx, device), 16, 32},
-            {group32_32, compute::command_queue(ctx, device), 32, 32},
-            {group64, compute::command_queue(ctx, device), 64, 64},
-            {group128, compute::command_queue(ctx, device), 128, 128},
-            {group256, compute::command_queue(ctx, device), 256, 256}};
+            {compute::command_queue(ctx, device), 4, 32},
+            {compute::command_queue(ctx, device), 8, 32},
+            {compute::command_queue(ctx, device), 16, 32},
+            {compute::command_queue(ctx, device), 32, 32},
+            {compute::command_queue(ctx, device), 64, 64},
+            {compute::command_queue(ctx, device), 128, 128},
+            {compute::command_queue(ctx, device), 256, 256}};
 
     auto before = queue.enqueue_marker();
 
-    for (auto &info : infos) {
+    for (std::size_t bucketId = 0; bucketId < BUCKETS_COUNT; bucketId++) {
+        auto &info = infos[bucketId];
         info.queue.enqueue_barrier(before);
-        dispatchGroup(info.queue, info.group, info.vpt, info.tpb);
+        dispatchGroup(info.queue, bucketId, info.vpt, info.tpb);
         queue.enqueue_barrier(info.queue.enqueue_marker());
     }
 
-    PRF_F(timerNNZ, "define nnz");
+    PF_SCOPE_MARK(vxm, "define nnz");
 
-    // Define final offsets
+    // Apply mask to define, which indices we are interested in
     compute::vector<Index> offsets(N + 1, ctx);
-    BOOST_COMPUTE_CLOSURE(unsigned int, applyMask, (unsigned int i), (resultStructure, selectionMask), { return resultStructure[i] & selectionMask[i]; });
+    if (p->hasMask && mask.IsNotNull()) {
+        if (complementMask) {
+            BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int i), (resultStructure), { resultStructure[i] = 0u; });
+            compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignZero, queue);
+            std::swap(resultStructure, offsets);
+        } else {
+            BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (resultStructure), { offsets[i] = resultStructure[i]; });
+            compute::fill(offsets.begin(), offsets.end(), 0u, queue);
+            compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignOne, queue);
+        }
+    } else {
+        std::swap(resultStructure, offsets);
+    }
 
-    PRF_S(timerTS);
-    compute::transform(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), offsets.begin(), applyMask, queue);
-    PRF_F(timerTS, "transform v & m");
-    PRF_S(timerESOF);
-    compute::exclusive_scan(offsets.begin(), offsets.end(), selectionMask.begin(), queue);
-    PRF_F(timerESOF, "exclusive_scan offsets");
-    std::swap(offsets, selectionMask);
+    PF_SCOPE_MARK(vxm, "apply mask");
+
+    // Define offsets to copy values
+    compute::exclusive_scan(offsets.begin(), offsets.end(), resultStructure.begin(), queue);
+    std::swap(offsets, resultStructure);
+
+    PF_SCOPE_MARK(vxm, "define offsets");
 
     // Get nnz
     std::size_t resultNnz = (offsets.end() - 1).read(queue);
 
     // Allocate buffer and store result
     if (resultNnz > 0) {
-        PRF_S(timerCR);
         compute::vector<Index> rows(resultNnz, ctx);
-        BOOST_COMPUTE_CLOSURE(void, copyResult, (unsigned int i), (rows, offsets, selectionMask), {
-            if (selectionMask[i]) {
+        BOOST_COMPUTE_CLOSURE(void, copyResult, (unsigned int i), (rows, offsets, resultStructure), {
+            if (resultStructure[i])
                 rows[offsets[i]] = i;
-            }
         });
         compute::for_each_n(compute::counting_iterator<unsigned int>(0), N, copyResult, queue);
         p->w = VectorCOO::Make(N, resultNnz, std::move(rows), compute::vector<unsigned char>(ctx)).As<VectorBlock>();
-        PRF_F(timerCR, "copyResult");
+
+        PF_SCOPE_MARK(vxm, "copy result");
     }
 }
 
