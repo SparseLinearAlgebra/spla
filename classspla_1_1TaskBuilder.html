@@ -82,7 +82,11 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a67bf3382fbb44046da229c6021b04f50"><td class="memItemLeft" align="right" valign="top">tf::Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">Emplace</a> (std::function&lt; void()&gt; work)</td></tr>
+<tr class="memdesc:a67bf3382fbb44046da229c6021b04f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emplace work to the subflow.  <a href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">More...</a><br /></td></tr>
 <tr class="separator:a67bf3382fbb44046da229c6021b04f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e84613e9e0396dea58735d2631df86"><td class="memItemLeft" align="right" valign="top">tf::Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TaskBuilder.html#ab9e84613e9e0396dea58735d2631df86">Emplace</a> (const std::string &amp;workName, std::function&lt; void()&gt; work)</td></tr>
+<tr class="memdesc:ab9e84613e9e0396dea58735d2631df86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emplace work to the subflow.  <a href="classspla_1_1TaskBuilder.html#ab9e84613e9e0396dea58735d2631df86">More...</a><br /></td></tr>
+<tr class="separator:ab9e84613e9e0396dea58735d2631df86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -93,8 +97,46 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Task builder for expression nodes. </p>
 <p>Allows to compose dynamically subflows inside expression node task flow graph. Automates exception handling, expression owner notification about errors, and cancellation of the computation if error occurs. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab9e84613e9e0396dea58735d2631df86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9e84613e9e0396dea58735d2631df86">&#9670;&nbsp;</a></span>Emplace() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tf::Task spla::TaskBuilder::Emplace </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>workName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void()&gt;&#160;</td>
+          <td class="paramname"><em>work</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Emplace work to the subflow. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">workName</td><td>Name of the task (for debugging and error handling) </td></tr>
+    <tr><td class="paramname">work</td><td>Function to execute as work inside task. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Taskflow task handle. </dd></dl>
+
+</div>
+</div>
 <a id="a67bf3382fbb44046da229c6021b04f50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67bf3382fbb44046da229c6021b04f50">&#9670;&nbsp;</a></span>Emplace()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67bf3382fbb44046da229c6021b04f50">&#9670;&nbsp;</a></span>Emplace() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -108,7 +150,8 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Emplace work to the subflow.</p>
+
+<p>Emplace work to the subflow. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">work</td><td>Function to execute as work inside task. </td></tr>

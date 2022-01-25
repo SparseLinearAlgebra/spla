@@ -66,10 +66,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classspla_1_1MatrixLoader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::MatrixLoader&lt; Value &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__API.html">API</a></div></div>  </div>
@@ -81,22 +79,20 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="SplaUtils_8hpp_source.html">SplaUtils.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:afb2ad7db32e89a9b304dd7104d931c3e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#afb2ad7db32e89a9b304dd7104d931c3e">ValueCollectionType</a> = std::conditional_t&lt; std::is_same_v&lt; Value, void &gt;, nullptr_t, std::vector&lt; Value &gt; &gt;</td></tr>
-<tr class="separator:afb2ad7db32e89a9b304dd7104d931c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad21b59def46af1b0c16120974b764559"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#ad21b59def46af1b0c16120974b764559">MatrixLoader</a> ()=default</td></tr>
 <tr class="separator:ad21b59def46af1b0c16120974b764559"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad0909f1244ac1ffd1777d459315c33e"><td class="memTemplParams" colspan="2">template&lt;typename FileValue &gt; </td></tr>
-<tr class="memitem:aad0909f1244ac1ffd1777d459315c33e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1MatrixLoader.html">MatrixLoader</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#aad0909f1244ac1ffd1777d459315c33e">Load</a> (std::istream &amp;is, bool makeUndirected, bool verbose=true, const std::string &amp;source=&quot;&quot;)</td></tr>
-<tr class="memdesc:aad0909f1244ac1ffd1777d459315c33e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads matrix from <code>is</code>.  <a href="classspla_1_1MatrixLoader.html#aad0909f1244ac1ffd1777d459315c33e">More...</a><br /></td></tr>
-<tr class="separator:aad0909f1244ac1ffd1777d459315c33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a411410766a62d3c8ff2dd7728fd0d739"><td class="memTemplParams" colspan="2">template&lt;typename FileValue &gt; </td></tr>
-<tr class="memitem:a411410766a62d3c8ff2dd7728fd0d739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1MatrixLoader.html">MatrixLoader</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a411410766a62d3c8ff2dd7728fd0d739">Load</a> (const std::string &amp;filename, bool makeUndirected, bool verbose=true)</td></tr>
-<tr class="separator:a411410766a62d3c8ff2dd7728fd0d739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d8b320d72f8e9c55f59a01070767091"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1MatrixLoader.html">MatrixLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a3d8b320d72f8e9c55f59a01070767091">Load</a> (std::istream &amp;is, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose=true, const std::string &amp;source=&quot;&quot;)</td></tr>
+<tr class="memdesc:a3d8b320d72f8e9c55f59a01070767091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads matrix from <code>is</code>.  <a href="classspla_1_1MatrixLoader.html#a3d8b320d72f8e9c55f59a01070767091">More...</a><br /></td></tr>
+<tr class="separator:a3d8b320d72f8e9c55f59a01070767091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec8e43af19ef6fefd5de80366932f69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1MatrixLoader.html">MatrixLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a8ec8e43af19ef6fefd5de80366932f69">Load</a> (const std::string &amp;filename, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose=true)</td></tr>
+<tr class="separator:a8ec8e43af19ef6fefd5de80366932f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae41c15cff3445a3ae41ade29cf79eab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#aae41c15cff3445a3ae41ade29cf79eab">Fill</a> (Value value)</td></tr>
+<tr class="separator:aae41c15cff3445a3ae41ade29cf79eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f2e63a618dc0e9b7e0a54a9d9007b56"><td class="memTemplParams" colspan="2">template&lt;typename Generator &gt; </td></tr>
+<tr class="memitem:a0f2e63a618dc0e9b7e0a54a9d9007b56"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a0f2e63a618dc0e9b7e0a54a9d9007b56">Generate</a> (Generator &amp;&amp;generator)</td></tr>
+<tr class="separator:a0f2e63a618dc0e9b7e0a54a9d9007b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe36c2383a4981745cbf848b746daad2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#afe36c2383a4981745cbf848b746daad2">GetNrows</a> () const</td></tr>
 <tr class="separator:afe36c2383a4981745cbf848b746daad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b6a8fbb1ba9ab7e5f7716eff815ff72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a2b6a8fbb1ba9ab7e5f7716eff815ff72">GetNcols</a> () const</td></tr>
@@ -107,22 +103,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4b0b823225ad9bcd4f0d3607e3edae68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d1749ab19e29a41b0712b6b83d2555f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a1d1749ab19e29a41b0712b6b83d2555f">GetColIndices</a> () const</td></tr>
 <tr class="separator:a1d1749ab19e29a41b0712b6b83d2555f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34cd408f12122318440c61928d4b20f7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; Value &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a34cd408f12122318440c61928d4b20f7">GetValues</a> () const</td></tr>
+<tr class="separator:a34cd408f12122318440c61928d4b20f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a085d9a650498cf100d610447389ea64c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a085d9a650498cf100d610447389ea64c">GetRowIndices</a> ()</td></tr>
 <tr class="separator:a085d9a650498cf100d610447389ea64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba3c0d2bdcafb4e3df11e95587336ecf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#aba3c0d2bdcafb4e3df11e95587336ecf">GetColIndices</a> ()</td></tr>
 <tr class="separator:aba3c0d2bdcafb4e3df11e95587336ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13809065f25c58a714acb6484d399737"><td class="memItemLeft" align="right" valign="top">std::conditional_t&lt; <a class="el" href="classspla_1_1MatrixLoader.html#a964b2ef4f7324463be54f18dcb567719">HasValue</a>, const <a class="el" href="classspla_1_1MatrixLoader.html#afb2ad7db32e89a9b304dd7104d931c3e">ValueCollectionType</a> &amp;, nullptr_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a13809065f25c58a714acb6484d399737">GetValues</a> () const</td></tr>
-<tr class="separator:a13809065f25c58a714acb6484d399737"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2d58be2443438df8f0706f4258a13b1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Value &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#aa2d58be2443438df8f0706f4258a13b1">GetValues</a> ()</td></tr>
+<tr class="separator:aa2d58be2443438df8f0706f4258a13b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a61608efcf8afb61d114d63d61f948f93"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacespla.html#a1077f01f0bb170ce125d99dafc943504">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a61608efcf8afb61d114d63d61f948f93">GetElementSize</a> ()</td></tr>
 <tr class="separator:a61608efcf8afb61d114d63d61f948f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a964b2ef4f7324463be54f18dcb567719"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixLoader.html#a964b2ef4f7324463be54f18dcb567719">HasValue</a> = !std::is_same_v&lt;Value, void&gt;</td></tr>
-<tr class="separator:a964b2ef4f7324463be54f18dcb567719"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename Value&gt;<br />
@@ -135,24 +128,7 @@ class spla::MatrixLoader&lt; Value &gt;</h3>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="afb2ad7db32e89a9b304dd7104d931c3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb2ad7db32e89a9b304dd7104d931c3e">&#9670;&nbsp;</a></span>ValueCollectionType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Value &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::<a class="el" href="classspla_1_1MatrixLoader.html#afb2ad7db32e89a9b304dd7104d931c3e">ValueCollectionType</a> =  std::conditional_t&lt;std::is_same_v&lt;Value, void&gt;, nullptr_t, std::vector&lt;Value&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad21b59def46af1b0c16120974b764559"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad21b59def46af1b0c16120974b764559">&#9670;&nbsp;</a></span>MatrixLoader()</h2>
 
@@ -181,6 +157,64 @@ template&lt;typename Value &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aae41c15cff3445a3ae41ade29cf79eab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae41c15cff3445a3ae41ade29cf79eab">&#9670;&nbsp;</a></span>Fill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::Fill </td>
+          <td>(</td>
+          <td class="paramtype">Value&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f2e63a618dc0e9b7e0a54a9d9007b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f2e63a618dc0e9b7e0a54a9d9007b56">&#9670;&nbsp;</a></span>Generate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value &gt; </div>
+<div class="memtemplate">
+template&lt;typename Generator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::Generate </td>
+          <td>(</td>
+          <td class="paramtype">Generator &amp;&amp;&#160;</td>
+          <td class="paramname"><em>generator</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aba3c0d2bdcafb4e3df11e95587336ecf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba3c0d2bdcafb4e3df11e95587336ecf">&#9670;&nbsp;</a></span>GetColIndices() <span class="overload">[1/2]</span></h2>
 
@@ -397,8 +431,8 @@ template&lt;typename Value &gt; </div>
 
 </div>
 </div>
-<a id="a13809065f25c58a714acb6484d399737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13809065f25c58a714acb6484d399737">&#9670;&nbsp;</a></span>GetValues()</h2>
+<a id="aa2d58be2443438df8f0706f4258a13b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2d58be2443438df8f0706f4258a13b1">&#9670;&nbsp;</a></span>GetValues() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -409,7 +443,34 @@ template&lt;typename Value &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::conditional_t&lt;<a class="el" href="classspla_1_1MatrixLoader.html#a964b2ef4f7324463be54f18dcb567719">HasValue</a>, const <a class="el" href="classspla_1_1MatrixLoader.html#afb2ad7db32e89a9b304dd7104d931c3e">ValueCollectionType</a> &amp;, nullptr_t&gt; <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::GetValues </td>
+          <td class="memname">std::vector&lt;Value&gt;&amp; <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::GetValues </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34cd408f12122318440c61928d4b20f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34cd408f12122318440c61928d4b20f7">&#9670;&nbsp;</a></span>GetValues() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;Value&gt;&amp; <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::GetValues </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -424,15 +485,13 @@ template&lt;typename Value &gt; </div>
 
 </div>
 </div>
-<a id="a411410766a62d3c8ff2dd7728fd0d739"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a411410766a62d3c8ff2dd7728fd0d739">&#9670;&nbsp;</a></span>Load() <span class="overload">[1/2]</span></h2>
+<a id="a8ec8e43af19ef6fefd5de80366932f69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ec8e43af19ef6fefd5de80366932f69">&#9670;&nbsp;</a></span>Load() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Value &gt; </div>
-<div class="memtemplate">
-template&lt;typename FileValue &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -448,6 +507,18 @@ template&lt;typename FileValue &gt; </div>
           <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>makeUndirected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>removeSelfLoops</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreValues</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -470,15 +541,13 @@ template&lt;typename FileValue &gt; </div>
 
 </div>
 </div>
-<a id="aad0909f1244ac1ffd1777d459315c33e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad0909f1244ac1ffd1777d459315c33e">&#9670;&nbsp;</a></span>Load() <span class="overload">[2/2]</span></h2>
+<a id="a3d8b320d72f8e9c55f59a01070767091"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d8b320d72f8e9c55f59a01070767091">&#9670;&nbsp;</a></span>Load() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Value &gt; </div>
-<div class="memtemplate">
-template&lt;typename FileValue &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -494,6 +563,18 @@ template&lt;typename FileValue &gt; </div>
           <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>makeUndirected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>removeSelfLoops</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreValues</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -531,37 +612,14 @@ template&lt;typename FileValue &gt; </div>
   <table class="params">
     <tr><td class="paramname">is</td><td>An input stream with .mtx matrix inside </td></tr>
     <tr><td class="paramname">makeUndirected</td><td>Add backward edges for directed edges </td></tr>
+    <tr><td class="paramname">removeSelfLoops</td><td>Remove loops (edges of type i -&gt; i) </td></tr>
+    <tr><td class="paramname">ignoreValues</td><td>Ignore values inside file </td></tr>
     <tr><td class="paramname">verbose</td><td>Verbose std output info </td></tr>
     <tr><td class="paramname">source</td><td>Source name to display </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference at created matrix </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a964b2ef4f7324463be54f18dcb567719"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a964b2ef4f7324463be54f18dcb567719">&#9670;&nbsp;</a></span>HasValue</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Value &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool <a class="el" href="classspla_1_1MatrixLoader.html">spla::MatrixLoader</a>&lt; Value &gt;::HasValue = !std::is_same_v&lt;Value, void&gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>

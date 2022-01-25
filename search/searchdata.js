@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "dfopstv",
   8: "acdefgilmnpstuv",
   9: "elmt",
-  10: "crs",
+  10: "cprs",
   11: "ai",
   12: "s"
 };

@@ -1,5 +1,5 @@
 <map id="spla::Algorithm" name="spla::Algorithm">
-<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="145,183,252,209"/>
+<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="145,208,252,235"/>
 <area shape="rect" id="node3" href="$classspla_1_1MatrixEWiseAddCOO.html" title=" " alt="" coords="311,5,487,32"/>
 <area shape="rect" id="node4" href="$classspla_1_1MatrixReduceScalarCOO.html" title=" " alt="" coords="300,56,497,83"/>
 <area shape="rect" id="node5" href="$classspla_1_1MatrixTransposeCOO.html" title=" " alt="" coords="310,107,487,133"/>
@@ -8,5 +8,6 @@
 <area shape="rect" id="node8" href="$classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="309,259,488,285"/>
 <area shape="rect" id="node9" href="$classspla_1_1VectorReduceCOO.html" title=" " alt="" coords="317,309,480,336"/>
 <area shape="rect" id="node10" href="$classspla_1_1VxMCOO.html" title=" " alt="" coords="345,360,452,387"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,183,97,209"/>
+<area shape="rect" id="node11" href="$classspla_1_1VxMCOOStructure.html" title=" " alt="" coords="319,411,479,437"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,208,97,235"/>
 </map>
