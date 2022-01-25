@@ -102,10 +102,6 @@ namespace spla {
     template<typename Value>
     class MatrixLoader {
     public:
-        static constexpr bool HasValue = !std::is_same_v<Value, void>;
-        using ValueCollectionType = std::conditional_t<std::is_same_v<Value, void>, nullptr_t, std::vector<Value>>;
-
-    public:
         MatrixLoader() = default;
 
         /**
@@ -120,7 +116,6 @@ namespace spla {
          * @param source Source name to display
          * @return Reference at created matrix
          */
-        template<typename FileValue>
         MatrixLoader &Load(std::istream &is, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose = true, const std::string &source = "") {
             if (verbose) {
                 std::cout << "Loading Matrix-market coordinate format graph...\n";
@@ -135,7 +130,6 @@ namespace spla {
             total.Start();
             timer.Start();
 
-            static_assert(!(std::is_same_v<FileValue, void> && !std::is_same_v<Value, void>) );
             std::string line;
             std::size_t lineN = 0;
             while (std::getline(is, line)) {
@@ -146,12 +140,9 @@ namespace spla {
             std::stringstream headerLineStream(line);
             headerLineStream >> mNrows >> mNcols >> nnz;
 
-            if constexpr (HasValue) {
-                mVals.reserve(nnz);
-            }
-
             mRows.reserve(nnz);
             mCols.reserve(nnz);
+            mVals.reserve(nnz);
 
             timer.Mark();
 
@@ -179,22 +170,15 @@ namespace spla {
                 mRows.push_back(i);
                 mCols.push_back(j);
 
-                if constexpr (!std::is_same_v<FileValue, void>) {
-                    FileValue value;
-                    lineStream >> value;
-                    if (!ignoreValues) {
-                        if constexpr (HasValue) {
-                            mVals.push_back(static_cast<Value>(value));
-                        }
-                    }
+                if (!lineStream.eof() && !ignoreValues) {
+                    Value v;
+                    lineStream >> v;
+                    mVals.push_back(v);
                 }
             }
 
-            if (ignoreValues) {
-                if constexpr (HasValue) {
-                    mVals.resize(mRows.size());
-                }
-            }
+            if (ignoreValues)
+                mVals.resize(mRows.size());
 
             timer.Stop();
 
@@ -253,17 +237,15 @@ namespace spla {
             return *this;
         }
 
-        template<typename FileValue>
         MatrixLoader &Load(const std::string &filename, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose = true) {
             std::ifstream file(filename);
             if (!file.is_open()) {
                 throw std::invalid_argument("Could not open '" + filename + "' to read matrix");
             }
-            return Load<FileValue>(file, makeUndirected, removeSelfLoops, ignoreValues, verbose, filename);
+            return Load(file, makeUndirected, removeSelfLoops, ignoreValues, verbose, filename);
         }
 
-        template<class FillValue>
-        void Fill(FillValue value) {
+        void Fill(Value value) {
             for (auto &v : mVals) {
                 v = value;
             }
@@ -283,13 +265,11 @@ namespace spla {
 
         [[nodiscard]] const std::vector<Index> &GetRowIndices() const { return mRows; }
         [[nodiscard]] const std::vector<Index> &GetColIndices() const { return mCols; }
+        [[nodiscard]] const std::vector<Value> &GetValues() const { return mVals; }
 
         [[nodiscard]] std::vector<Index> &GetRowIndices() { return mRows; }
         [[nodiscard]] std::vector<Index> &GetColIndices() { return mCols; }
-
-        [[nodiscard]] std::conditional_t<HasValue, const ValueCollectionType &, nullptr_t> GetValues() const {
-            return mVals;
-        }
+        [[nodiscard]] std::vector<Value> &GetValues() { return mVals; }
 
     private:
         void DoubleEdges() {
@@ -298,10 +278,7 @@ namespace spla {
                 if (mRows[i] != mCols[i]) {
                     mRows.push_back(mCols[i]);
                     mCols.push_back(mRows[i]);
-
-                    if constexpr (HasValue) {
-                        mVals.push_back(mVals[i]);
-                    }
+                    mVals.push_back(mVals[i]);
                 }
             }
         }
@@ -326,7 +303,7 @@ namespace spla {
             averageDegree = GetNrows() > 0 ? averageDegree / static_cast<double>(GetNrows()) : 0.0;
         }
 
-        ValueCollectionType mVals{};
+        std::vector<Value> mVals{};
         std::vector<Index> mRows{};
         std::vector<Index> mCols{};
 

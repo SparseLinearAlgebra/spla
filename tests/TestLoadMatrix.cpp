@@ -31,65 +31,60 @@
 
 #include <spla-cpp/SplaUtils.hpp>
 
+static const char *content =
+        "% hello, this\n"
+        "% is \n"
+        "% a comment :)\n"
+        "4 5 3\n"
+        "1  1  1\n"
+        "1 2  4\n"
+        "4 5 2\n";
+
 TEST(LoadMatrix, Int) {
-    std::string content =
-            "% hello, this\n"
-            "% is \n"
-            "% a comment :)\n"
-            "4 5 3\n"
-            "1  1  1\n"
-            "1 2  4\n"
-            "4 5 2\n";
-    {
-        std::istringstream is(content);
-        spla::MatrixLoader<int> loader;
-        loader.Load<int>(is, false, false, false, false);
-        EXPECT_EQ(loader.GetNvals(), 3);
-        EXPECT_EQ(loader.GetNcols(), 5);
-        EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
-        EXPECT_EQ(loader.GetValues(), (std::vector<int>{1, 4, 2}));
-    }
-    {
-            // // Should not compile
-            //        std::istrstream is(content);
-            //        spla::MatrixLoader<int> loader;
-            //        loader.Load<void>(is);
-    } {
-        std::istringstream is(content);
-        spla::MatrixLoader<void> loader;
-        loader.Load<void>(is, false, false, false, false);
-        EXPECT_EQ(loader.GetNvals(), 3);
-        EXPECT_EQ(loader.GetNcols(), 5);
-        EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
-        EXPECT_EQ(loader.GetValues(), nullptr);
-    }
+    std::istringstream is(content);
+    spla::MatrixLoader<int> loader;
+    loader.Load(is, false, false, false, false);
+    EXPECT_EQ(loader.GetNvals(), 3);
+    EXPECT_EQ(loader.GetNcols(), 5);
+    EXPECT_EQ(loader.GetNrows(), 4);
+    EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+    EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
+    EXPECT_EQ(loader.GetValues(), (std::vector<int>{1, 4, 2}));
 }
 
+TEST(LoadMatrix, IntIgnore) {
+    std::istringstream is(content);
+    spla::MatrixLoader<int> loader;
+    loader.Load(is, false, false, true, false);
+    EXPECT_EQ(loader.GetNvals(), 3);
+    EXPECT_EQ(loader.GetNcols(), 5);
+    EXPECT_EQ(loader.GetNrows(), 4);
+    EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+    EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
+}
 
 TEST(LoadMatrix, Void) {
-    std::string content =
-            "% hello, this\n"
-            "% is \n"
-            "% a comment :)\n"
-            "4 5 3\n"
-            "1 1\n"
-            "1 2\n"
-            "4 5";
-    {
-        std::istringstream is(content);
-        spla::MatrixLoader<void> loader;
-        loader.Load<void>(is, false, false, false, false);
-        EXPECT_EQ(loader.GetNvals(), 3);
-        EXPECT_EQ(loader.GetNcols(), 5);
-        EXPECT_EQ(loader.GetNrows(), 4);
-        EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
-        EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
-        EXPECT_EQ(loader.GetValues(), nullptr);
-    }
+    std::istringstream is(content);
+    spla::MatrixLoader<int> loader;
+    loader.Load(is, false, false, true, false);
+    EXPECT_EQ(loader.GetNvals(), 3);
+    EXPECT_EQ(loader.GetNcols(), 5);
+    EXPECT_EQ(loader.GetNrows(), 4);
+    EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+    EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
+}
+
+TEST(LoadMatrix, Fill) {
+    std::istringstream is(content);
+    spla::MatrixLoader<int> loader;
+    loader.Load(is, false, false, true, false);
+    loader.Fill(1);
+    EXPECT_EQ(loader.GetNvals(), 3);
+    EXPECT_EQ(loader.GetNcols(), 5);
+    EXPECT_EQ(loader.GetNrows(), 4);
+    EXPECT_EQ(loader.GetRowIndices(), (std::vector<spla::Index>{0, 0, 3}));
+    EXPECT_EQ(loader.GetColIndices(), (std::vector<spla::Index>{0, 1, 4}));
+    EXPECT_EQ(loader.GetValues(), (std::vector<int>{1, 1, 1}));
 }
 
 SPLA_GTEST_MAIN

@@ -75,10 +75,10 @@ int main(int argc, const char *const *argv) {
     assert(bsize > 1);
 
     // Load data
-    spla::MatrixLoader<void> loader;
+    spla::MatrixLoader<int> loader;
 
     try {
-        loader.Load<void>(mtxpath, undirected, removeLoops, ignoreValues, verbose);
+        loader.Load(mtxpath, undirected, removeLoops, ignoreValues, verbose);
     } catch (const std::exception &e) {
         std::cerr << "Failed load matrix: " << e.what();
         return 1;
