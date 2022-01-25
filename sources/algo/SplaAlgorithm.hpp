@@ -66,6 +66,8 @@ namespace spla {
             MatrixReduceScalar,
             /** Vector-scalar assignment */
             VectorAssign,
+            /** Vector read block data */
+            VectorRead,
             /** Vector nnz elements reduce */
             VectorReduce,
             /** Vector-vector element wise addition */
@@ -125,6 +127,8 @@ namespace spla {
                     return "VectorEWiseAdd";
                 case Algorithm::Type::VectorEWiseMult:
                     return "VectorEWiseMult";
+                case Algorithm::Type::VectorRead:
+                    return "VectorRead";
                 case Algorithm::Type::VectorReduce:
                     return "VectorReduce";
                 case Algorithm::Type::MxM:

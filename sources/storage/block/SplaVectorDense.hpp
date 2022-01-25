@@ -25,54 +25,43 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#ifndef SPLA_SPLAVECTORDENSE_H
+#define SPLA_SPLAVECTORDENSE_H
+
 #include <boost/compute.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaQueueFinisher.hpp>
-#include <expression/scalar/SplaScalarDataWrite.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#include <storage/SplaVectorBlock.hpp>
 
-bool spla::ScalarDataWrite::Select(std::size_t, const spla::Expression &) {
-    return true;
-}
+namespace spla {
 
-void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
-    auto &nodes = expression.GetNodes();
-    auto &node = nodes[nodeIdx];
-    auto &library = node->GetLibrary().GetPrivate();
+    /**
+     * @addtogroup Internal
+     * @{
+     */
 
-    auto scalar = node->GetArg(0).Cast<Scalar>();
-    auto data = node->GetArg(1).Cast<DataScalar>();
-    auto desc = node->GetDescriptor();
-    auto &type = scalar->GetType();
-    auto byteSize = type->GetByteSize();
-    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
+    class VectorDense final : public VectorBlock {
+    public:
+        using Values = boost::compute::vector<unsigned char>;
 
-    assert(scalar);
-    assert(data);
-    assert(desc);
-    assert(type->HasValues());
-    assert(hostValue);
+        ~VectorDense() override = default;
 
-    using namespace boost;
+        [[nodiscard]] const Values &GetVals() const noexcept;
 
-    auto &deviceMan = library.GetDeviceManager();
-    auto deviceId = deviceMan.FetchDevice(node);
+        std::size_t GetMemoryUsage() const override;
 
-    compute::device device = deviceMan.GetDevice(deviceId);
-    compute::context ctx = library.GetContext();
-    compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+        void Dump(std::ostream &stream, unsigned int baseI) const override;
 
-    compute::vector<unsigned char> deviceValue(byteSize, ctx);
-    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
+        static RefPtr<VectorDense> Make(std::size_t nrows, Values vals);
 
-    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
-    scalar->GetStorage()->SetValue(scalarValue);
+    private:
+        VectorDense(std::size_t nrows, Values vals);
 
-    SPDLOG_LOGGER_TRACE(library.GetLogger(), "Write value byteSize={}", byteSize);
-}
+        Values mVals;
+    };
 
-spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {
-    return ExpressionNode::Operation::ScalarDataWrite;
-}
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_SPLAVECTORDENSE_H

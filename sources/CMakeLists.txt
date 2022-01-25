@@ -34,6 +34,10 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
+        sources/algo/vector/SplaVectorReadCOO.cpp
+        sources/algo/vector/SplaVectorReadCOO.hpp
+        sources/algo/vector/SplaVectorReadDense.cpp
+        sources/algo/vector/SplaVectorReadDense.hpp
         sources/algo/vector/SplaVectorReduceCOO.cpp
         sources/algo/vector/SplaVectorReduceCOO.hpp
         sources/algo/vxm/SplaVxMCOO.cpp
@@ -126,6 +130,8 @@ set(SPLA_STORAGE_SOURCES
         sources/storage/block/SplaMatrixCSR.hpp
         sources/storage/block/SplaVectorCOO.cpp
         sources/storage/block/SplaVectorCOO.hpp
+        sources/storage/block/SplaVectorDense.cpp
+        sources/storage/block/SplaVectorDense.hpp
         sources/storage/SplaMatrixBlock.hpp
         sources/storage/SplaVectorBlock.hpp
         sources/storage/SplaMatrixStorage.cpp

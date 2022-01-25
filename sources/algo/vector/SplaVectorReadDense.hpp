@@ -25,54 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaQueueFinisher.hpp>
-#include <expression/scalar/SplaScalarDataWrite.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#ifndef SPLA_SPLAVECTORREADDENSE_HPP
+#define SPLA_SPLAVECTORREADDENSE_HPP
 
-bool spla::ScalarDataWrite::Select(std::size_t, const spla::Expression &) {
-    return true;
-}
+#include <algo/SplaAlgorithm.hpp>
 
-void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
-    auto &nodes = expression.GetNodes();
-    auto &node = nodes[nodeIdx];
-    auto &library = node->GetLibrary().GetPrivate();
+namespace spla {
+    class VectorReadDense final : public Algorithm {
+    public:
+        ~VectorReadDense() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
+}// namespace spla
 
-    auto scalar = node->GetArg(0).Cast<Scalar>();
-    auto data = node->GetArg(1).Cast<DataScalar>();
-    auto desc = node->GetDescriptor();
-    auto &type = scalar->GetType();
-    auto byteSize = type->GetByteSize();
-    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
-
-    assert(scalar);
-    assert(data);
-    assert(desc);
-    assert(type->HasValues());
-    assert(hostValue);
-
-    using namespace boost;
-
-    auto &deviceMan = library.GetDeviceManager();
-    auto deviceId = deviceMan.FetchDevice(node);
-
-    compute::device device = deviceMan.GetDevice(deviceId);
-    compute::context ctx = library.GetContext();
-    compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
-
-    compute::vector<unsigned char> deviceValue(byteSize, ctx);
-    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
-
-    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
-    scalar->GetStorage()->SetValue(scalarValue);
-
-    SPDLOG_LOGGER_TRACE(library.GetLogger(), "Write value byteSize={}", byteSize);
-}
-
-spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {
-    return ExpressionNode::Operation::ScalarDataWrite;
-}
+#endif//SPLA_SPLAVECTORREADDENSE_HPP

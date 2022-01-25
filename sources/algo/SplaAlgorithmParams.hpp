@@ -29,6 +29,7 @@
 #define SPLA_SPLAALGORITHMPARAMS_HPP
 
 #include <core/SplaDeviceManager.hpp>
+#include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaFunctionBinary.hpp>
 #include <spla-cpp/SplaRefCnt.hpp>
@@ -142,11 +143,23 @@ namespace spla {
         ~ParamsVectorAssign() override = default;
 
         std::size_t size;        // size of block
-        bool hasMask = false;    // true if must apply mask
+        bool hasMask = false;    // if must apply mask
         RefPtr<VectorBlock> w;   // type
         RefPtr<VectorBlock> mask;// if has mask, must apply this
         RefPtr<ScalarValue> s;   // type (or null)
         RefPtr<Type> type;
+    };
+
+    /** Read vector block data */
+    class ParamsVectorRead final : public AlgorithmParams {
+    public:
+        ~ParamsVectorRead() override = default;
+
+        std::size_t offset = 0;  // offset of rows in d to write
+        std::size_t byteSize = 0;// size of values
+        std::size_t baseI = 0;   // base row index to add to each v index
+        RefPtr<VectorBlock> v;   // block to read
+        RefPtr<DataVector> d;    // destination
     };
 
     /** Transpose matrix block */

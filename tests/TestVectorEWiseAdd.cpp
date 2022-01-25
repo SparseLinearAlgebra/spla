@@ -207,7 +207,7 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t nvals, std:
     spExpr->Wait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Vector<unsigned char> c = a.EWiseAdd(mask, false, b, [](unsigned char a, unsigned char b) { return 0; });
+    utils::Vector<unsigned char> c = a.EWiseAdd(mask, false, b, [](unsigned char, unsigned char) { return 0; });
     ASSERT_TRUE(c.EqualsStructure(spW));
 }
 

@@ -28,7 +28,7 @@
 #include <storage/block/SplaVectorCOO.hpp>
 
 spla::RefPtr<spla::VectorCOO> spla::VectorCOO::Make(std::size_t nrows, std::size_t nvals, Indices rows, Values vals) {
-    return spla::RefPtr<spla::VectorCOO>(new VectorCOO(nrows, nvals, std::move(rows), std::move(vals)));
+    return {new VectorCOO(nrows, nvals, std::move(rows), std::move(vals))};
 }
 
 spla::VectorCOO::VectorCOO(std::size_t nrows, std::size_t nvals, Indices rows, Values vals)
@@ -43,6 +43,10 @@ const spla::VectorCOO::Indices &spla::VectorCOO::GetRows() const noexcept {
 
 const spla::VectorCOO::Values &spla::VectorCOO::GetVals() const noexcept {
     return mVals;
+}
+
+std::size_t spla::VectorCOO::GetMemoryUsage() const {
+    return mRows.size() * sizeof(Index) + mVals.size();
 }
 
 void spla::VectorCOO::Dump(std::ostream &stream, unsigned int baseI) const {

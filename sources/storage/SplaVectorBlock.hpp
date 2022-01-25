@@ -72,6 +72,14 @@ namespace spla {
             return mFormat;
         }
 
+        /** @return Ratio of num of values and dim of the vector in range [0.0, 1.0] */
+        [[nodiscard]] double GetFillFactor() const noexcept {
+            return GetNrows() > 0 ? static_cast<double>(GetNvals()) / static_cast<double>(GetNrows()) : 0.0;
+        }
+
+        /** @return Memory usage in bytes by gpu buffers of the vector block */
+        virtual std::size_t GetMemoryUsage() const = 0;
+
         /** Dump vector content to provided stream */
         virtual void Dump(std::ostream &stream, unsigned int baseI) const = 0;
 

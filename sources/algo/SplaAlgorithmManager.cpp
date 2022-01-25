@@ -28,22 +28,29 @@
 #include <cassert>
 
 #include <algo/SplaAlgorithmManager.hpp>
+#include <core/SplaError.hpp>
+
 #include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <algo/matrix/SplaMatrixReduceScalarCOO.hpp>
 #include <algo/matrix/SplaMatrixTransposeCOO.hpp>
-#include <algo/mxm/SplaMxMCOO.hpp>
+
 #include <algo/vector/SplaVectorAssignCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
+#include <algo/vector/SplaVectorReadCOO.hpp>
+#include <algo/vector/SplaVectorReadDense.hpp>
 #include <algo/vector/SplaVectorReduceCOO.hpp>
+
+#include <algo/mxm/SplaMxMCOO.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
-#include <core/SplaError.hpp>
 
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());
     Register(new MatrixReduceScalarCOO());
     Register(new VectorAssignCOO());
+    Register(new VectorReadCOO());
+    Register(new VectorReadDense());
     Register(new VectorReduceCOO());
     Register(new VectorEWiseAddCOO());
     Register(new MxMCOO());

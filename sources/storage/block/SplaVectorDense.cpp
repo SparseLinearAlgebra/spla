@@ -25,54 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
-#include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaQueueFinisher.hpp>
-#include <expression/scalar/SplaScalarDataWrite.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#include <cassert>
 
-bool spla::ScalarDataWrite::Select(std::size_t, const spla::Expression &) {
-    return true;
+#include <storage/block/SplaVectorDense.hpp>
+
+spla::RefPtr<spla::VectorDense> spla::VectorDense::Make(std::size_t nrows, spla::VectorDense::Values vals) {
+    return {new VectorDense(nrows, std::move(vals))};
 }
 
-void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
-    auto &nodes = expression.GetNodes();
-    auto &node = nodes[nodeIdx];
-    auto &library = node->GetLibrary().GetPrivate();
+spla::VectorDense::VectorDense(std::size_t nrows, spla::VectorDense::Values vals)
+    : VectorBlock(nrows, nrows, Format::Dense), mVals(std::move(vals)) {
+}
 
-    auto scalar = node->GetArg(0).Cast<Scalar>();
-    auto data = node->GetArg(1).Cast<DataScalar>();
-    auto desc = node->GetDescriptor();
-    auto &type = scalar->GetType();
-    auto byteSize = type->GetByteSize();
-    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
+const spla::VectorDense::Values &spla::VectorDense::GetVals() const noexcept {
+    return mVals;
+}
 
-    assert(scalar);
-    assert(data);
-    assert(desc);
-    assert(type->HasValues());
-    assert(hostValue);
+std::size_t spla::VectorDense::GetMemoryUsage() const {
+    return mVals.size();
+}
 
+void spla::VectorDense::Dump(std::ostream &stream, unsigned int baseI) const {
     using namespace boost;
+    compute::context context = mVals.get_buffer().get_context();
+    compute::command_queue queue(context, context.get_device());
 
-    auto &deviceMan = library.GetDeviceManager();
-    auto deviceId = deviceMan.FetchDevice(node);
+    std::vector<unsigned char> vals;
 
-    compute::device device = deviceMan.GetDevice(deviceId);
-    compute::context ctx = library.GetContext();
-    compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+    auto hasValues = !mVals.empty();
 
-    compute::vector<unsigned char> deviceValue(byteSize, ctx);
-    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
+    if (hasValues) {
+        vals.resize(mVals.size());
+        compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
+    }
 
-    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
-    scalar->GetStorage()->SetValue(scalarValue);
+    auto byteSize = mVals.size() / GetNvals();
 
-    SPDLOG_LOGGER_TRACE(library.GetLogger(), "Write value byteSize={}", byteSize);
-}
+    stream << "Vector " << GetNrows()
+           << " nvals=" << GetNvals()
+           << " bsize=" << byteSize
+           << " format=dense" << std::endl;
 
-spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {
-    return ExpressionNode::Operation::ScalarDataWrite;
+    for (std::size_t i = 0; i < GetNvals(); i++) {
+        stream << "[" << i << "] " << baseI + i << " ";
+        stream << std::hex;
+
+        auto offset = i * byteSize;
+        for (std::size_t byte = 0; byte < byteSize; byte++) {
+            stream << static_cast<unsigned int>(vals[offset + byte]);
+        }
+
+        stream << std::endl
+               << std::dec;
+    }
 }
