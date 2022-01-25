@@ -37,12 +37,12 @@
         tm.Start();
 
     #define PF_SCOPE_SHOW(tm, msg) \
-        std::cout << tm##_h << " " << msg << std::endl;
+        std::cout << tm##_h << " (" << tm.GetElapsedMs() << ") " << msg << std::endl;
 
-    #define PF_SCOPE_MARK(tm, msg)                                                   \
-        queue.finish();                                                              \
-        tm.Stop();                                                                   \
-        std::cout << tm##_h << " " << msg << " " << tm.GetDurationMs() << std::endl; \
+    #define PF_SCOPE_MARK(tm, msg)                                                                                 \
+        queue.finish();                                                                                            \
+        tm.Stop();                                                                                                 \
+        std::cout << tm##_h << " (" << tm.GetElapsedMs() << ") " << msg << " " << tm.GetDurationMs() << std::endl; \
         tm.Start();
 
     #define PF_MARKER_START(tm, header) \
@@ -53,7 +53,7 @@
     #define PF_MARKER_STOR(tm, msg) \
         queue.finish();             \
         tm.Stop();                  \
-        std::cout << tm##_h << " " << msg << " " << tm.GetElapsedMs() << std::endl;
+        std::cout << tm##_h << msg << " " << tm.GetElapsedMs() << std::endl;
 #else
     #define PF_SCOPE(tm, header)
     #define PF_SCOPE_SHOW(tm, msg)

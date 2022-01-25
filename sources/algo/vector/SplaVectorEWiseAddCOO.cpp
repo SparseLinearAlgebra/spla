@@ -53,6 +53,8 @@ bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const 
 void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
+    PF_SCOPE(eadd, "-veadd-");
+
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;
     auto library = p->desc->GetLibrary().GetPrivatePtr();
@@ -75,7 +77,8 @@ void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
         }
     };
 
-    PF_SCOPE(eadd, "-veadd-");
+
+    PF_SCOPE_MARK(eadd, "setup");
 
     auto blockA = p->a.Cast<VectorCOO>();
     const compute::vector<unsigned int> *rowsA = nullptr;

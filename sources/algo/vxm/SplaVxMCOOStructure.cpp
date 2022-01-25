@@ -153,7 +153,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
            << "    }\n"
            << "}\n";
 
-    compute::vector<Index> resultStructure(N + 1, ctx);
+    compute::vector<Index> resultStructure(N, ctx);
     compute::fill_n(resultStructure.begin(), N, 0u, queue);
 
     auto kernelCompiled = kernel.compile(ctx);
@@ -204,43 +204,48 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     PF_SCOPE_MARK(vxm, "define nnz");
 
     // Apply mask to define, which indices we are interested in
-    compute::vector<Index> offsets(N + 1, ctx);
     if (p->hasMask && mask.IsNotNull()) {
         if (complementMask) {
             BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int i), (resultStructure), { resultStructure[i] = 0u; });
             compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignZero, queue);
-            std::swap(resultStructure, offsets);
         } else {
-            BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (resultStructure), { offsets[i] = resultStructure[i]; });
-            compute::fill(offsets.begin(), offsets.end(), 0u, queue);
+            compute::vector<Index> masked(N, ctx);
+            BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (masked, resultStructure), { masked[i] = resultStructure[i]; });
+            compute::fill(masked.begin(), masked.end(), 0u, queue);
             compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignOne, queue);
+            std::swap(masked, resultStructure);
         }
-    } else {
-        std::swap(resultStructure, offsets);
     }
 
     PF_SCOPE_MARK(vxm, "apply mask");
 
-    // Define offsets to copy values
-    compute::exclusive_scan(offsets.begin(), offsets.end(), resultStructure.begin(), queue);
-    std::swap(offsets, resultStructure);
-
-    PF_SCOPE_MARK(vxm, "define offsets");
+    // Define result number of values
+    compute::vector<Index> resultNnzVec(1, ctx);
+    compute::reduce(resultStructure.begin(), resultStructure.end(), resultNnzVec.begin(), queue);
 
     // Get nnz
-    std::size_t resultNnz = (offsets.end() - 1).read(queue);
+    std::size_t resultNnz = (resultNnzVec.begin()).read(queue);
+
+    PF_SCOPE_MARK(vxm, "count result nnz");
 
     // Allocate buffer and store result
     if (resultNnz > 0) {
         compute::vector<Index> rows(resultNnz, ctx);
-        BOOST_COMPUTE_CLOSURE(void, copyResult, (unsigned int i), (rows, offsets, resultStructure), {
-            if (resultStructure[i])
-                rows[offsets[i]] = i;
-        });
-        compute::for_each_n(compute::counting_iterator<unsigned int>(0), N, copyResult, queue);
-        p->w = VectorCOO::Make(N, resultNnz, std::move(rows), compute::vector<unsigned char>(ctx)).As<VectorBlock>();
+        compute::fill_n(resultNnzVec.begin(), 1, 0u, queue);
 
-        PF_SCOPE_MARK(vxm, "copy result");
+        BOOST_COMPUTE_CLOSURE(void, copyResult, (unsigned int i), (rows, resultNnzVec, resultStructure), {
+            if (resultStructure[i]) {
+                rows[atomic_add(&resultNnzVec[0], 1u)] = i;
+            }
+        });
+
+        compute::for_each_n(compute::counting_iterator<unsigned int>(0), N, copyResult, queue);
+        PF_SCOPE_MARK(vxm, "copy row indices");
+
+        compute::stable_sort(rows.begin(), rows.end(), queue);
+        PF_SCOPE_MARK(vxm, "sort row indices");
+
+        p->w = VectorCOO::Make(N, resultNnz, std::move(rows), compute::vector<unsigned char>(ctx)).As<VectorBlock>();
     }
 }
 
