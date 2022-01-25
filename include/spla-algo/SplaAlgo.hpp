@@ -51,5 +51,6 @@
 #include <spla-algo/SplaAlgoBfs.hpp>
 #include <spla-algo/SplaAlgoCommon.hpp>
 #include <spla-algo/SplaAlgoSssp.hpp>
+#include <spla-algo/SplaAlgoTc.hpp>
 
 #endif//SPLA_SPLAALGO_HPP

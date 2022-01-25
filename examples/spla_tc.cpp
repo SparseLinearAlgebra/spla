@@ -26,6 +26,8 @@
 /**********************************************************************************/
 
 #include <cxxopts.hpp>
+
+#include <spla-algo/SplaAlgo.hpp>
 #include <spla-cpp/Spla.hpp>
 
 int main(int argc, const char *const *argv) {
@@ -43,5 +45,69 @@ int main(int argc, const char *const *argv) {
         return 0;
     }
 
+    std::string mtxpath;
+    int niters;
+    int bsize;
+    bool undirected;
+    bool verbose;
+
+    try {
+        mtxpath = args["mtxpath"].as<std::string>();
+        niters = args["niters"].as<int>();
+        bsize = args["bsize"].as<int>();
+        undirected = args["undirected"].as<bool>();
+        verbose = args["verbose"].as<bool>();
+    } catch (const std::exception &e) {
+        std::cerr << "Invalid input arguments: " << e.what() << std::endl;
+        return 1;
+    }
+
+    assert(niters > 0);
+    assert(bsize > 1);
+
+    // Load data
+    spla::MatrixLoader<void> loader;
+
+    try {
+        loader.Load<void>(mtxpath, undirected, verbose);
+    } catch (const std::exception &e) {
+        std::cerr << "Failed load matrix: " << e.what();
+        return 1;
+    }
+
+    spla::Library::Config config;
+    config.SetBlockSize(bsize);
+    config.SetWorkersCount(1);// Force single worker thread for now
+
+    spla::Library library(config);
+
+    // A and B tc args
+    spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
+    spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
+    // Set ones as values in adjacency matrix A
+    std::vector<std::int32_t> values(loader.GetNvals(), 1);
+
+    // Prepare data and fill A
+    spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
+    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), values.data(), loader.GetNvals(), library));
+    prepareData->SubmitWait();
+
+    std::int32_t nTrins = 0;
+
+    // Warm up phase
+    spla::CpuTimer tWarmUp;
+    tWarmUp.Start();
+    spla::Tc(nTrins, B, A, !undirected);
+    tWarmUp.Stop();
+
+    // Main phase, measure iterations
+    std::vector<spla::CpuTimer> tIters(niters);
+    for (int i = 0; i < niters; i++) {
+        tIters[i].Start();
+        spla::Tc(nTrins, B, A, !undirected);
+        tIters[i].Stop();
+    }
+
+    spla::OutputMeasurements(tWarmUp, tIters);
     return 0;
 }

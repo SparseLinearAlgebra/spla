@@ -90,7 +90,7 @@ spla::LibraryPrivate::LibraryPrivate(
     mDefaultDesc = Descriptor::Make(library);
     mExprManager = RefPtr<ExpressionManager>(new ExpressionManager(library));
     mAlgoManager = RefPtr<AlgorithmManager>(new AlgorithmManager(library));
-    mExecutor = std::make_shared<tf::Executor>(config.GetWorkersCount());
+    mExecutor = std::make_shared<tf::Executor>(mContextConfig.GetWorkersCount());
 
 #if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
     std::cout << "Platform: " << mPlatform.name() << " device count: " << mDeviceManager.GetDevices().size() << '\n';

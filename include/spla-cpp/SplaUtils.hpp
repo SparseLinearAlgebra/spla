@@ -173,7 +173,7 @@ namespace spla {
                 std::cout << "Loading Matrix-market coordinate format graph\n";
                 std::cout << "  Reading from " << source << "\n";
                 std::cout << "  Parsing MTX file (" << mNrows << " rows, " << mNcols << " cols, " << nnz << " directed edges)"
-                          << "in " << reading.GetElapsedMs() << " ms\n";
+                          << " in " << reading.GetElapsedMs() << " ms\n";
                 if (makeUndirected) {
                     std::cout << "  Doubling edges: " << nnz << " to " << GetNvals()
                               << " in " << doubling.GetElapsedMs() << " ms\n";
