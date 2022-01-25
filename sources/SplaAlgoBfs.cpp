@@ -80,14 +80,6 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     double tight = 0.0;
 
     while (sp_q->GetNvals() != 0) {
-        if (descriptor.DisplayTiming()) {
-            tightTimer.Stop();
-            std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
-                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
-            tight = tightTimer.GetElapsedMs();
-            tightTimer.Start();
-        }
-
         auto sp_iter = Expression::Make(library);
 
         auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
@@ -97,6 +89,14 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
         sp_iter->Dependency(t1, t2);
         sp_iter->Dependency(t2, t3);
         sp_iter->SubmitWait();
+
+        if (descriptor.DisplayTiming()) {
+            tightTimer.Stop();
+            std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
+                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
+            tight = tightTimer.GetElapsedMs();
+            tightTimer.Start();
+        }
 
         depth += 1;
     }
