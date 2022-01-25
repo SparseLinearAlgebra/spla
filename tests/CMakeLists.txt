@@ -1,4 +1,5 @@
 function(spla_test_target target)
+    message(STATUS "Add test ${target}")
     add_executable(${target} ${target}.cpp)
     target_link_libraries(${target} PRIVATE spla)
     target_link_libraries(${target} PRIVATE gtest)

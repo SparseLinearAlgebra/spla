@@ -23,10 +23,12 @@ set(SPLA_TARGET_MACOSX NO)
 set(SPLA_ARCH)
 
 if (SPLA_PROFILING)
+    message(STATUS "Enable profiling of computational code")
     list(APPEND SPLA_DEFINES SPLA_PROFILING)
 endif (SPLA_PROFILING)
 
 if (SPLA_PROFILING_TASKS)
+    message(STATUS "Enable profiling of executed tasks")
     list(APPEND SPLA_DEFINES SPLA_PROFILING_TASKS)
 endif (SPLA_PROFILING_TASKS)
 
