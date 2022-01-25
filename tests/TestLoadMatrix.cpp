@@ -43,7 +43,7 @@ TEST(LoadMatrix, Int) {
     {
         std::istringstream is(content);
         spla::MatrixLoader<int> loader;
-        loader.Load<int>(is, false);
+        loader.Load<int>(is, false, false, false, false);
         EXPECT_EQ(loader.GetNvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);
@@ -59,7 +59,7 @@ TEST(LoadMatrix, Int) {
     } {
         std::istringstream is(content);
         spla::MatrixLoader<void> loader;
-        loader.Load<int>(is, false);
+        loader.Load<void>(is, false, false, false, false);
         EXPECT_EQ(loader.GetNvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);
@@ -82,7 +82,7 @@ TEST(LoadMatrix, Void) {
     {
         std::istringstream is(content);
         spla::MatrixLoader<void> loader;
-        loader.Load<void>(is, false);
+        loader.Load<void>(is, false, false, false, false);
         EXPECT_EQ(loader.GetNvals(), 3);
         EXPECT_EQ(loader.GetNcols(), 5);
         EXPECT_EQ(loader.GetNrows(), 4);

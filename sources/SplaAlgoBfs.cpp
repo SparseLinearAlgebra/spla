@@ -25,19 +25,15 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <compute/SplaIndicesToRowOffsets.hpp>
+#include <core/SplaError.hpp>
 #include <spla-algo/SplaAlgoBfs.hpp>
 #include <spla-cpp/Spla.hpp>
 
-#include <compute/SplaIndicesToRowOffsets.hpp>
-#include <core/SplaError.hpp>
-
+#include <iostream>
 #include <limits>
 #include <queue>
 #include <vector>
-
-#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    #include <iostream>
-#endif
 
 void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const AlgoDescriptor &descriptor) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");

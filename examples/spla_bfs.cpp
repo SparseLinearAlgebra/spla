@@ -52,6 +52,8 @@ int main(int argc, const char *const *argv) {
     int source;
     int bsize;
     bool undirected;
+    bool removeLoops = true;
+    bool ignoreValues = true;
     bool verbose;
     bool debugTiming;
 
@@ -76,7 +78,7 @@ int main(int argc, const char *const *argv) {
     spla::MatrixLoader<void> loader;
 
     try {
-        loader.Load<void>(mtxpath, undirected, verbose);
+        loader.Load<void>(mtxpath, undirected, removeLoops, ignoreValues, verbose);
     } catch (const std::exception &e) {
         std::cerr << "Failed load matrix: " << e.what();
         return 1;
