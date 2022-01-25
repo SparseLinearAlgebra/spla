@@ -25,32 +25,72 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAALGO_HPP
-#define SPLA_SPLAALGO_HPP
+#include <Testing.hpp>
+#include <compute/SplaStableSortByColumn.hpp>
 
-/**
- * @defgroup Algorithm
- *
- * @brief Public library algorithms interface
- *
- * @details Algorithm module provides interface to comment graph
- * algorithms, such as breadth-first search (bfs), single source
- * shortest paths (ssps), triangles counting (tc), page rank,
- * connected components and etc. implemented both using
- * spla library API (matrix, vectors, expressions) for multi-GPU evaluation
- * and using standard C++ primitives (for reference and conformance checks only).
- *
- * This algorithms can be safely used in user applications.
- *
- * Implementation details are hidden in private Internal sources module.
- * Header files has no other dependencies, except standard c++ library files and core SPLA API interface.
- *
- * File SplaAlgo.hpp provides access to all algorithm module components.
- */
+using Key = std::uint32_t;
+using Val = std::uint8_t;
 
-#include <spla-algo/SplaAlgoBfs.hpp>
-#include <spla-algo/SplaAlgoCommon.hpp>
-#include <spla-algo/SplaAlgoSssp.hpp>
-#include <spla-algo/SplaAlgoTc.hpp>
+void TestStableSortByColumn(
+        const std::vector<Key> &rows,
+        const std::vector<Key> &cols,
+        const std::vector<Val> &values,
 
-#endif//SPLA_SPLAALGO_HPP
+        const std::vector<Key> &rowsExpected,
+        const std::vector<Key> &colsExpected,
+        const std::vector<Val> &valsExpected) {
+    namespace compute = boost::compute;
+
+    // get the default compute device
+    compute::device gpu = compute::system::default_device();
+
+    // create a compute context and command queue
+    compute::context ctx(gpu);
+    compute::command_queue queue(ctx, gpu);
+
+    compute::vector<Key> dRows(rows, queue);
+    compute::vector<Key> dCols(cols, queue);
+    compute::vector<Val> dVals(values, queue);
+
+    spla::StableSortByColumn(
+            dRows, dCols, dVals,
+            sizeof(Val),
+            queue);
+
+    std::vector<Key> rowsActual(rows.size());
+    std::vector<Key> colsActual(cols.size());
+    std::vector<Val> valsActual(values.size());
+
+    compute::copy(dRows.begin(), dRows.end(), rowsActual.begin(), queue);
+    compute::copy(dCols.begin(), dCols.end(), colsActual.begin(), queue);
+    compute::copy(dVals.begin(), dVals.end(), valsActual.begin(), queue);
+
+    queue.finish();
+
+    EXPECT_EQ(rowsExpected, rowsActual);
+    EXPECT_EQ(colsExpected, colsActual);
+    EXPECT_EQ(valsExpected, valsActual);
+}
+
+TEST(TestStableSortByColumn, Basic) {
+    TestStableSortByColumn(
+            {0, 0, 0, 0, 1, 1, 1, 1, 2},
+            {3, 4, 2, 4, 2, 1, 5, 2, 2},
+            {1, 2, 3, 4, 5, 6, 7, 8, 9},
+
+            {0, 0, 0, 0, 1, 1, 1, 1, 2},
+            {2, 3, 4, 4, 1, 2, 2, 5, 2},
+            {3, 1, 2, 4, 6, 5, 8, 7, 9});
+}
+
+TEST(TestStableSortByColumn, Empty) {
+    TestStableSortByColumn(
+            {},
+            {},
+            {},
+            {},
+            {},
+            {});
+}
+
+SPLA_GTEST_MAIN

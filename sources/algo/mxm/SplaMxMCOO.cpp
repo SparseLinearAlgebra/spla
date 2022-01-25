@@ -32,6 +32,7 @@
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaReduceDuplicates.hpp>
 #include <compute/SplaSortByRowColumn.hpp>
+#include <compute/SplaStableSortByColumn.hpp>
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
@@ -127,7 +128,7 @@ namespace spla::detail {
                             queue);
 
             // sort (I,J,V) tuples by (I,J)
-            SortByRowColumn(I, J, V, wValueByteSize, queue);
+            StableSortByColumn(I, J, V, wValueByteSize, queue);
 
             return ReduceByPairKey(I, J, V,
                                    wRows, wCols, wVals,
@@ -136,7 +137,7 @@ namespace spla::detail {
                                    queue);
         } else {
             // sort (I,J,V) tuples by (I,J)
-            SortByRowColumn(I, J, V, wValueByteSize, queue);
+            StableSortByColumn(I, J, V, wValueByteSize, queue);
 
             // Only reduce duplicated indices, no values sum
             return ReduceDuplicates(I, J, wRows, wCols, queue);

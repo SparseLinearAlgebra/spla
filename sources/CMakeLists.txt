@@ -57,6 +57,7 @@ set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaReduce2.hpp
         sources/compute/SplaReduceByKey.hpp
         sources/compute/SplaReduceDuplicates.hpp
+        sources/compute/SplaStableSortByColumn.hpp
         sources/compute/SplaSortByRow.hpp
         sources/compute/SplaSortByRowColumn.hpp
         sources/compute/SplaTransformValues.hpp

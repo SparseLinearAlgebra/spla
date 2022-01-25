@@ -26,6 +26,8 @@
 /**********************************************************************************/
 
 #include <cxxopts.hpp>
+
+#include <spla-algo/SplaAlgo.hpp>
 #include <spla-cpp/Spla.hpp>
 
 int main(int argc, const char *const *argv) {
@@ -33,6 +35,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("h,help", "display help info", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("mtxpath", "path to matrix file", cxxopts::value<std::string>()));
     options.add_option("", cxxopts::Option("niters", "number of iterations to run", cxxopts::value<int>()->default_value("4")));
+    options.add_option("", cxxopts::Option("source", "source vertex to run bfs", cxxopts::value<int>()->default_value("0")));
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
@@ -43,5 +46,68 @@ int main(int argc, const char *const *argv) {
         return 0;
     }
 
+    std::string mtxpath;
+    int niters;
+    int source;
+    int bsize;
+    bool undirected;
+    bool verbose;
+
+    try {
+        mtxpath = args["mtxpath"].as<std::string>();
+        niters = args["niters"].as<int>();
+        source = args["source"].as<int>();
+        bsize = args["bsize"].as<int>();
+        undirected = args["undirected"].as<bool>();
+        verbose = args["verbose"].as<bool>();
+    } catch (const std::exception &e) {
+        std::cerr << "Invalid input arguments: " << e.what() << std::endl;
+        return 1;
+    }
+
+    assert(niters > 0);
+    assert(source >= 0);
+    assert(bsize > 1);
+
+    // Load data
+    spla::MatrixLoader<float> loader;
+
+    try {
+        loader.Load<float>(mtxpath, undirected, verbose);
+    } catch (const std::exception &e) {
+        std::cerr << "Failed load matrix: " << e.what();
+        return 1;
+    }
+
+    spla::Library::Config config;
+    config.SetBlockSize(bsize);
+    config.SetWorkersCount(1);// Force single worker thread for now
+
+    spla::Library library(config);
+
+    // v and M bfs args
+    spla::RefPtr<spla::Vector> v;
+    spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Float32(library), library);
+
+    // Prepare data and fill A
+    spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
+    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), (void *) (loader.GetValues().data()), loader.GetNvals(), library));
+    prepareData->SubmitWait();
+
+    // Warm up phase
+    spla::CpuTimer tWarmUp;
+    tWarmUp.Start();
+    spla::Sssp(v, A, source);
+    tWarmUp.Stop();
+
+    // Main phase, measure iterations
+    std::vector<spla::CpuTimer> tIters(niters);
+    for (int i = 0; i < niters; i++) {
+        tIters[i].Start();
+        spla::Sssp(v, A, source);
+        tIters[i].Stop();
+    }
+
+    spla::OutputMeasurements(tWarmUp, tIters);
     return 0;
 }
