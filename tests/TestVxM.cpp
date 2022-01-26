@@ -112,7 +112,7 @@ void testMasked(spla::Library &library,
     ASSERT_TRUE(c.Equals(spW));
 }
 
-void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, bool complement, std::size_t seed = 0) {
     utils::Vector a = utils::Vector<unsigned char>::Generate(M, nvals, seed).SortReduceDuplicates();
     utils::Matrix b = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 1).SortReduceDuplicates();
     utils::Vector mask = utils::Vector<unsigned char>::Generate(N, nvals, seed + 2).SortReduceDuplicates();
@@ -128,11 +128,16 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::siz
     spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
     spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
 
+    // Use complementary mask
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (complement)
+        spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
     auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
-    auto spVxM = spExpr->MakeVxM(spW, spMask, nullptr, nullptr, spA, spB);
+    auto spVxM = spExpr->MakeVxM(spW, spMask, nullptr, nullptr, spA, spB, spOpDesc);
     spExpr->Dependency(spWriteA, spVxM);
     spExpr->Dependency(spWriteB, spVxM);
     spExpr->Dependency(spWriteMask, spVxM);
@@ -141,8 +146,49 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::siz
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    auto dummy = [](unsigned char a, unsigned char b) { return 0; };
-    utils::Vector<unsigned char> c = utils::VxM(mask, false, a, b, dummy, dummy);
+    auto dummy = [](unsigned char, unsigned char) { return 0; };
+    utils::Vector<unsigned char> c = utils::VxM(mask, complement, a, b, dummy, dummy);
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
+void testNoValuesDenseMask(spla::Library &library, std::size_t M, std::size_t N, std::size_t nvals, bool complement, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<unsigned char>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Vector mask = utils::Vector<unsigned char>::Generate(N, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Matrix::Make(M, N, spT, library);
+    auto spW = spla::Vector::Make(N, spT, library);
+    auto spMask = spla::Vector::Make(N, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    // Use complementary mask
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (complement)
+        spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spSparse2Dense = spExpr->MakeToDense(spMask, spMask);
+    auto spVxM = spExpr->MakeVxM(spW, spMask, nullptr, nullptr, spA, spB, spOpDesc);
+    spExpr->Dependency(spWriteA, spVxM);
+    spExpr->Dependency(spWriteB, spVxM);
+    spExpr->Dependency(spWriteMask, spSparse2Dense);
+    spExpr->Dependency(spSparse2Dense, spVxM);
+    spExpr->Submit();
+    spExpr->Wait();
+
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    auto dummy = [](unsigned char, unsigned char) { return 0; };
+    utils::Vector<unsigned char> c = utils::VxM(mask, complement, a, b, dummy, dummy);
     ASSERT_TRUE(c.EqualsStructure(spW));
 }
 
@@ -198,7 +244,22 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testNoValues(library, M, N, nvals, i);
+            testNoValues(library, M, N, nvals, false, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValues(library, M, N, nvals, true, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValuesDenseMask(library, M, N, nvals, false, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValuesDenseMask(library, M, N, nvals, true, i);
         }
     });
 }

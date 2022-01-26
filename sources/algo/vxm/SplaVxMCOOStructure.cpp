@@ -220,7 +220,20 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
                 std::swap(masked, resultStructure);
             }
         } else if (p->mask->GetFormat() == VectorBlock::Format::Dense) {
-
+            auto mask = p->mask.Cast<VectorDense>();
+            auto &stencil = mask->GetMask();
+            if (complementMask) {
+                // Inverse mask application (remember, stencil value either 1 or 0)
+                // rs: x0 x1 x0 x1 x0 x0 x0 x1 | in
+                // st: x0 x0 x1 x1 x0 x1 x1 x0 | in
+                //~st: ff ff fe fe ff fe fe ff | tmp
+                // rs: x0 x1 x0 x0 x0 x0 x0 x1 | out
+                BOOST_COMPUTE_CLOSURE(void, maskInverse, (unsigned int i), (resultStructure, stencil), { resultStructure[i] = resultStructure[i] & (~stencil[i]); });
+                compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskInverse, queue);
+            } else {
+                BOOST_COMPUTE_CLOSURE(void, maskDirect, (unsigned int i), (resultStructure, stencil), { resultStructure[i] = resultStructure[i] & stencil[i]; });
+                compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskDirect, queue);
+            }
         } else
             RAISE_CRITICAL_ERROR(NotImplemented, "Other mask block type not supported yet");
     }
