@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAGATHER_HPP
-#define SPLA_SPLAGATHER_HPP
+#ifndef SPLA_SPLASCATTER_HPP
+#define SPLA_SPLASCATTER_HPP
 
 #include <boost/compute.hpp>
 #include <boost/compute/iterator/zip_iterator.hpp>
@@ -41,9 +41,9 @@ namespace spla {
     namespace detail {
 
         template<class InputIterator, class MapIterator, class OutputIterator>
-        class GatherKernel : public boost::compute::detail::meta_kernel {
+        class ScatterKernel : public boost::compute::detail::meta_kernel {
         public:
-            GatherKernel() : meta_kernel("__spla_gather_byte_size") {}
+            ScatterKernel() : meta_kernel("__spla_scatter_byte_size") {}
 
             void SetRange(MapIterator first,
                           MapIterator last,
@@ -54,8 +54,8 @@ namespace spla {
 
                 *this << "const uint i = get_global_id(0);\n"
                       << "const uint index = " << first[expr<boost::compute::uint_>("i")] << ";\n"
-                      << "const uint dst = i * " << elementsInSequence << ";\n"
-                      << "const uint src = index * " << elementsInSequence << ";\n"
+                      << "const uint dst = index * " << elementsInSequence << ";\n"
+                      << "const uint src = i * " << elementsInSequence << ";\n"
                       << "for (uint k = 0; k < " << elementsInSequence << "; k++) {\n"
                       << "  " << result[expr<boost::compute::uint_>("dst + k")] << "=" << input[expr<boost::compute::uint_>("src + k")] << ";\n"
                       << "}";
@@ -76,13 +76,13 @@ namespace spla {
     }// namespace detail
 
     /**
-     * Custom gather function. Allows to collect input values using permutation.
+     * Custom scatter function. Allows to scatter input values using permutation.
      * Uses `elementsInSequence` to collect several elements in row in sequence, i.e.
-     * result[elementsInSequence * i + k] = input[elementsInSequence * permutation[i] + k] for k in 0..elementsInSequence for i in map range
-     * 
+     * result[elementsInSequence * permutation[i] + k] = input[elementsInSequence * i + k] for k in 0..elementsInSequence for i in map range
+     *
      * @tparam InputIterator Type of input source values iterator
      * @tparam MapIterator Type of map (permutation iterator)
-     * @tparam OutputIterator Type of output (result) gathered values iterator
+     * @tparam OutputIterator Type of output (result) scatter values iterator
      *
      * @param first Begin of map range
      * @param last End of map range
@@ -92,33 +92,22 @@ namespace spla {
      * @param queue Execution queue
      */
     template<class InputIterator, class MapIterator, class OutputIterator>
-    inline boost::compute::event Gather(MapIterator first,
-                                        MapIterator last,
-                                        InputIterator input,
-                                        OutputIterator result,
-                                        std::size_t elementsInSequence,
-                                        boost::compute::command_queue &queue) {
+    inline boost::compute::event Scatter(MapIterator first,
+                                         MapIterator last,
+                                         InputIterator input,
+                                         OutputIterator result,
+                                         std::size_t elementsInSequence,
+                                         boost::compute::command_queue &queue) {
         using namespace boost;
 
         BOOST_STATIC_ASSERT(compute::is_device_iterator<InputIterator>::value);
         BOOST_STATIC_ASSERT(compute::is_device_iterator<MapIterator>::value);
         BOOST_STATIC_ASSERT(compute::is_device_iterator<OutputIterator>::value);
 
-        detail::GatherKernel<InputIterator, MapIterator, OutputIterator> kernel;
+        detail::ScatterKernel<InputIterator, MapIterator, OutputIterator> kernel;
 
         kernel.SetRange(first, last, input, result, elementsInSequence);
         return kernel.Exec(queue);
-    }
-
-    /**
-     * Overload
-     */
-    inline void Gather(const boost::compute::vector<unsigned int> &map,
-                       const boost::compute::vector<unsigned char> &values,
-                       boost::compute::vector<unsigned char> &result,
-                       std::size_t elementsInSequence,
-                       boost::compute::command_queue &queue) {
-        Gather(map.begin(), map.end(), values.begin(), result.begin(), elementsInSequence, queue);
     }
 
     /**
@@ -127,4 +116,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAGATHER_HPP
+#endif//SPLA_SPLASCATTER_HPP

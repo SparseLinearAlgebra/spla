@@ -27,6 +27,7 @@
 
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
+
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionTasks.hpp>
 #include <expression/matrix/SplaMatrixDataRead.hpp>
@@ -44,6 +45,7 @@
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <expression/vector/SplaVectorReduce.hpp>
+#include <expression/vector/SplaVectorToDense.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -59,6 +61,7 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());
     Register(new ScalarEWiseAdd());
+    Register(new VectorToDense());
     Register(new VectorAssign());
     Register(new VectorDataWrite());
     Register(new VectorDataRead());

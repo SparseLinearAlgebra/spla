@@ -207,6 +207,28 @@ spla::Expression::MakeDataRead(const RefPtr<Scalar> &scalar,
 }
 
 spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeToDense(const RefPtr<Vector> &w,
+                              const RefPtr<Vector> &v,
+                              const RefPtr<Scalar> &identity,
+                              const RefPtr<Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(v.IsNotNull(), NullPointer, "v can't be null");
+    CHECK_RAISE_ERROR(identity.IsNotNull(), NullPointer, "identity can't be null");
+    CHECK_RAISE_ERROR(w->GetType()->HasValues(), InvalidType, "Type must have values");
+    CHECK_RAISE_ERROR(w->GetType() == v->GetType(), InvalidType, "Type must be compatible");
+    CHECK_RAISE_ERROR(w->GetType() == identity->GetType(), InvalidType, "Type must be compatible");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            v.As<Object>(),
+            identity.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::VectorToDense,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeAssign(const spla::RefPtr<spla::Vector> &w,
                              const spla::RefPtr<spla::Vector> &mask,
                              const spla::RefPtr<FunctionBinary> &accum,

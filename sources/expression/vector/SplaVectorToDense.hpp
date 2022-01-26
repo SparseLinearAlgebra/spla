@@ -25,77 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLASCALAR_HPP
-#define SPLA_SPLASCALAR_HPP
+#ifndef SPLA_SPLAVECTORTODENSE_HPP
+#define SPLA_SPLAVECTORTODENSE_HPP
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+#include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup API
-     * @{
-     */
-
-    /**
-     * @class Scalar
-     * @brief Single scalar value of specified Type.
-     *
-     * Can be used in matrix and vector expressions as additional initial value or param.
-     *
-     * @note Can be empty, i.e. contain no value.
-     * @note Can be updated from the host using ScalarDataWrite expression node.
-     * @note Scalar content can be accessed from host using ScalarDataRead expression node.
-     *
-     * @details
-     *  Actual scalar values has type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`.
-     *
-     * @see Expression
-     * @see FunctionUnary
-     * @see FunctionBinary
-     */
-    class SPLA_API Scalar final : public TypedObject {
+    class VectorToDense final : public NodeProcessor {
     public:
-        ~Scalar() override;
-
-        /** @return True if scalar stores value */
-        bool HasValue() const;
-
-        /** @return Internal scalar storage (for private usage only) */
-        [[nodiscard]] const RefPtr<class ScalarStorage> &GetStorage() const;
-
-        /** Dump scalar content to provided stream */
-        void Dump(std::ostream &stream) const;
-
-        /** @copydoc Object::Clone() */
-        RefPtr<Object> Clone() const override;
-
-        /**
-         * Make new scalar with specified params
-         *
-         * @param type Type of stored value
-         * @param library Library global instance
-         *
-         * @return New scalar instance
-         */
-        static RefPtr<Scalar> Make(const RefPtr<Type> &type, class Library &library);
-
-    private:
-        Scalar(const RefPtr<Type> &type, class Library &library, RefPtr<class ScalarStorage> storage = nullptr);
-        RefPtr<Object> CloneEmpty() override;
-        void CopyData(const RefPtr<Object> &object) override;
-
-        // Separate storage for private impl
-        RefPtr<class ScalarStorage> mStorage;
+        ~VectorToDense() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
     };
-
-    /**
-     * @}
-     */
 
 }// namespace spla
 
-#endif//SPLA_SPLASCALAR_HPP
+#endif//SPLA_SPLAVECTORTODENSE_HPP

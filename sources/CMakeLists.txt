@@ -40,6 +40,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/vector/SplaVectorReadDense.hpp
         sources/algo/vector/SplaVectorReduceCOO.cpp
         sources/algo/vector/SplaVectorReduceCOO.hpp
+        sources/algo/vector/SplaVectorToDenseCOO.cpp
+        sources/algo/vector/SplaVectorToDenseCOO.hpp
         sources/algo/vxm/SplaVxMCOO.cpp
         sources/algo/vxm/SplaVxMCOO.hpp
         sources/algo/vxm/SplaVxMCOOStructure.cpp
@@ -62,8 +64,10 @@ set(SPLA_COMPUTE_SOURCES
         sources/compute/SplaReduceByKey.hpp
         sources/compute/SplaReduceDuplicates.hpp
         sources/compute/SplaStableSortByColumn.hpp
+        sources/compute/SplaScatter.hpp
         sources/compute/SplaSortByRow.hpp
         sources/compute/SplaSortByRowColumn.hpp
+        sources/compute/SplaStableSortByColumn.hpp
         sources/compute/SplaTransformValues.hpp
         )
 
@@ -110,6 +114,8 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/vector/SplaVectorEWiseAdd.hpp
         sources/expression/vector/SplaVectorReduce.cpp
         sources/expression/vector/SplaVectorReduce.hpp
+        sources/expression/vector/SplaVectorToDense.cpp
+        sources/expression/vector/SplaVectorToDense.hpp
         sources/expression/SplaExpressionFuture.hpp
         sources/expression/SplaExpressionManager.cpp
         sources/expression/SplaExpressionManager.hpp

@@ -64,6 +64,8 @@ namespace spla {
             MatrixEWiseMult,
             /** Matrix nnz elements reduce to scalar */
             MatrixReduceScalar,
+            /** Vector to dense convert */
+            VectorToDense,
             /** Vector-scalar assignment */
             VectorAssign,
             /** Vector read block data */
@@ -121,6 +123,8 @@ namespace spla {
                     return "MatrixEWiseMult";
                 case Algorithm::Type::MatrixReduceScalar:
                     return "MatrixReduceScalar";
+                case Algorithm::Type::VectorToDense:
+                    return "VectorToDense";
                 case Algorithm::Type::VectorAssign:
                     return "VectorAssign";
                 case Algorithm::Type::VectorEWiseAdd:

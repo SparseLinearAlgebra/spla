@@ -25,87 +25,69 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <algo/vector/SplaVectorAssignCOO.hpp>
+#include <algo/vector/SplaVectorToDenseCOO.hpp>
 #include <compute/SplaCopyUtils.hpp>
-#include <compute/SplaGather.hpp>
-#include <compute/SplaMaskByKey.hpp>
+#include <compute/SplaScatter.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <storage/block/SplaVectorDense.hpp>
+#include <utils/SplaProfiling.hpp>
 
-
-bool spla::VectorAssignCOO::Select(const spla::AlgorithmParams &params) const {
-    auto p = dynamic_cast<const ParamsVectorAssign *>(&params);
+bool spla::VectorToDenseCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVectorToDense *>(&params);
 
     return p &&
-           p->mask.Is<VectorCOO>();
+           p->v.Is<VectorCOO>();
 }
 
-void spla::VectorAssignCOO::Process(spla::AlgorithmParams &params) {
+void spla::VectorToDenseCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    auto p = dynamic_cast<ParamsVectorAssign *>(&params);
+    PF_SCOPE(ctd, "-coo2dense-");
+
+    auto p = dynamic_cast<ParamsVectorToDense *>(&params);
     auto library = p->desc->GetLibrary().GetPrivatePtr();
-    auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    auto s = p->s;
-    auto size = p->size;
-    auto type = p->type;
-    auto mask = p->mask.Cast<VectorCOO>();
-    auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
+    auto v = p->v.Cast<VectorCOO>();
+    auto s = p->identity;
+    auto &identity = s->GetVal();
+    auto nrows = v->GetNrows();
+    auto byteSize = identity.size();
 
-    // Indices and values of the result
-    compute::vector<unsigned int> rows(ctx);
-    compute::vector<unsigned char> vals(ctx);
+    assert(nrows > 0);
+    assert(byteSize > 0);
 
-    // Assign full result
-    if (!p->hasMask || (mask.IsNull() && complementMask)) {
-        rows.resize(size, queue);
-        compute::copy_n(compute::counting_iterator<unsigned int>(0), size, rows.begin(), queue);
-    }
-    // Has mask, must filter
-    else {
-        // Nothing to do
-        if (mask.IsNull())
-            return;
+    PF_SCOPE_MARK(ctd, "setup");
 
-        // Apply direct mask
-        if (!complementMask) {
-            auto maskSize = mask->GetNvals();
-            rows.resize(maskSize, queue);
-            compute::copy_n(mask->GetRows().begin(), maskSize, rows.begin(), queue);
-        }
-        // Apply complement mask
-        else {
-            // Tmp indices to filter
-            compute::vector<unsigned int> indices(size, ctx);
-            compute::copy_n(compute::counting_iterator<unsigned int>(0), size, indices.begin(), queue);
+    // Dense storage for all values
+    compute::vector<unsigned char> denseVals(ctx);
 
-            // Filter indices and save in rows result
-            MaskKeys(mask->GetRows(), indices, rows, complementMask, queue);
-        }
-    }
+    // Fill with identity
+    FillPattern(identity, denseVals, nrows, queue);
 
-    auto nvals = rows.size();
+    PF_SCOPE_MARK(ctd, "fill id");
 
-    // If type has values, gather it (for each nnz value assign scalar value)
-    if (nvals > 0 && type->HasValues())
-        FillPattern(s->GetVal(), vals, nvals, queue);
+    // Fill existing values
+    auto &cooRows = v->GetRows();
+    auto &cooVals = v->GetVals();
+    Scatter(cooRows.begin(), cooRows.end(), cooVals.begin(), denseVals.begin(), byteSize, queue);
 
-    // If after masking has values, store new block
-    if (nvals)
-        p->w = VectorCOO::Make(size, nvals, std::move(rows), std::move(vals)).As<VectorBlock>();
+    PF_SCOPE_MARK(ctd, "scatter coo");
+
+    // Save result as dense block
+    p->w = VectorDense::Make(nrows, std::move(denseVals)).As<VectorBlock>();
 }
 
-spla::Algorithm::Type spla::VectorAssignCOO::GetType() const {
-    return spla::Algorithm::Type::VectorAssign;
+spla::Algorithm::Type spla::VectorToDenseCOO::GetType() const {
+    return spla::Algorithm::Type::VectorToDense;
 }
 
-std::string spla::VectorAssignCOO::GetName() const {
-    return "VectorAssignCOO";
+std::string spla::VectorToDenseCOO::GetName() const {
+    return "SplaVectorToDenseCOO";
 }

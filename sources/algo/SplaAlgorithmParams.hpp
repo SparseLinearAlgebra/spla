@@ -137,6 +137,16 @@ namespace spla {
         RefPtr<Type> tw;
     };
 
+    /** Vector block to dense */
+    class ParamsVectorToDense final : public AlgorithmParams {
+    public:
+        ~ParamsVectorToDense() override = default;
+
+        RefPtr<VectorBlock> w;
+        RefPtr<VectorBlock> v;
+        RefPtr<ScalarValue> identity;
+    };
+
     /** Blocked vector-scalar assignment params */
     class ParamsVectorAssign final : public AlgorithmParams {
     public:

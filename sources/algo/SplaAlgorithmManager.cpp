@@ -39,6 +39,7 @@
 #include <algo/vector/SplaVectorReadCOO.hpp>
 #include <algo/vector/SplaVectorReadDense.hpp>
 #include <algo/vector/SplaVectorReduceCOO.hpp>
+#include <algo/vector/SplaVectorToDenseCOO.hpp>
 
 #include <algo/mxm/SplaMxMCOO.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
@@ -48,6 +49,7 @@ spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());
     Register(new MatrixReduceScalarCOO());
+    Register(new VectorToDenseCOO());
     Register(new VectorAssignCOO());
     Register(new VectorReadCOO());
     Register(new VectorReadDense());

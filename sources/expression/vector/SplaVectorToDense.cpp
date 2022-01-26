@@ -25,77 +25,60 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLASCALAR_HPP
-#define SPLA_SPLASCALAR_HPP
+#include <algo/SplaAlgorithmManager.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <expression/vector/SplaVectorToDense.hpp>
+#include <storage/SplaScalarStorage.hpp>
+#include <storage/SplaVectorStorage.hpp>
 
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaType.hpp>
+bool spla::VectorToDense::Select(std::size_t, const spla::Expression &) {
+    return true;
+}
 
-namespace spla {
+void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+    auto &nodes = expression.GetNodes();
+    auto &node = nodes[nodeIdx];
+    auto library = node->GetLibrary().GetPrivatePtr();
 
-    /**
-     * @addtogroup API
-     * @{
-     */
+    auto argW = node->GetArg(0).Cast<Vector>();
+    auto argV = node->GetArg(1).Cast<Vector>();
+    auto argIdentity = node->GetArg(2).Cast<Scalar>();
+    auto desc = node->GetDescriptor();
 
-    /**
-     * @class Scalar
-     * @brief Single scalar value of specified Type.
-     *
-     * Can be used in matrix and vector expressions as additional initial value or param.
-     *
-     * @note Can be empty, i.e. contain no value.
-     * @note Can be updated from the host using ScalarDataWrite expression node.
-     * @note Scalar content can be accessed from host using ScalarDataRead expression node.
-     *
-     * @details
-     *  Actual scalar values has type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`.
-     *
-     * @see Expression
-     * @see FunctionUnary
-     * @see FunctionBinary
-     */
-    class SPLA_API Scalar final : public TypedObject {
-    public:
-        ~Scalar() override;
+    assert(argW.IsNotNull());
+    assert(argV.IsNotNull());
+    assert(argIdentity.IsNotNull());
 
-        /** @return True if scalar stores value */
-        bool HasValue() const;
+    VectorStorage::EntryList entries;
 
-        /** @return Internal scalar storage (for private usage only) */
-        [[nodiscard]] const RefPtr<class ScalarStorage> &GetStorage() const;
+    argV->GetStorage()->GetBlocks(entries);
+    argW->GetStorage()->Clear();
 
-        /** Dump scalar content to provided stream */
-        void Dump(std::ostream &stream) const;
+    if (entries.empty())
+        return;
 
-        /** @copydoc Object::Clone() */
-        RefPtr<Object> Clone() const override;
+    auto devicesCount = entries.size();
+    auto devicesIds = library->GetDeviceManager().FetchDevices(devicesCount, node);
 
-        /**
-         * Make new scalar with specified params
-         *
-         * @param type Type of stored value
-         * @param library Library global instance
-         *
-         * @return New scalar instance
-         */
-        static RefPtr<Scalar> Make(const RefPtr<Type> &type, class Library &library);
+    for (std::size_t i = 0; i < entries.size(); i++) {
+        auto deviceId = devicesIds[i];
+        auto entry = entries[i];
+        builder.Emplace([=]() {
+            ParamsVectorToDense params;
+            params.deviceId = deviceId;
+            params.desc = desc;
+            params.v = entry.second;
+            params.identity = argIdentity->GetStorage()->GetValue();
+            library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorToDense, params);
 
-    private:
-        Scalar(const RefPtr<Type> &type, class Library &library, RefPtr<class ScalarStorage> storage = nullptr);
-        RefPtr<Object> CloneEmpty() override;
-        void CopyData(const RefPtr<Object> &object) override;
+            if (params.w.IsNotNull()) {
+                argW->GetStorage()->SetBlock(entry.first, params.w);
+                SPDLOG_LOGGER_TRACE(library->GetLogger(), "Convert block={} to dense", entry.first);
+            }
+        });
+    }
+}
 
-        // Separate storage for private impl
-        RefPtr<class ScalarStorage> mStorage;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_SPLASCALAR_HPP
+spla::ExpressionNode::Operation spla::VectorToDense::GetOperationType() const {
+    return spla::ExpressionNode::Operation::VectorToDense;
+}

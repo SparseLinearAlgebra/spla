@@ -225,6 +225,25 @@ namespace spla {
                                             const RefPtr<Descriptor> &desc = nullptr);
 
         /**
+         * @brief Make vector to dense convert expression.
+         *
+         * Converts explicitly internally vector storage to
+         * dense if vector is densely filled with data.
+         * Uses provides scalar as identity fir dense block.
+         *
+         * @param w Destination vector to store converted data
+         * @param v Source vector
+         * @param identity Identity for dense blocks
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeToDense(const RefPtr<Vector> &w,
+                                           const RefPtr<Vector> &v,
+                                           const RefPtr<Scalar> &identity,
+                                           const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
          * Make vector masked scalar value assignment node.
          * Operation is evaluated as `w<mask> = accum(w, s)`
          *
