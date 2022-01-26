@@ -142,9 +142,9 @@ namespace spla {
     public:
         ~ParamsVectorToDense() override = default;
 
+        std::size_t byteSize = 0;
         RefPtr<VectorBlock> w;
         RefPtr<VectorBlock> v;
-        RefPtr<ScalarValue> identity;
     };
 
     /** Blocked vector-scalar assignment params */

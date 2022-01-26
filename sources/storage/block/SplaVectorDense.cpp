@@ -29,12 +29,16 @@
 
 #include <storage/block/SplaVectorDense.hpp>
 
-spla::RefPtr<spla::VectorDense> spla::VectorDense::Make(std::size_t nrows, spla::VectorDense::Values vals) {
-    return {new VectorDense(nrows, std::move(vals))};
+spla::RefPtr<spla::VectorDense> spla::VectorDense::Make(std::size_t nrows, std::size_t nvals, Mask mask, Values vals) {
+    return {new VectorDense(nrows, nvals, std::move(mask), std::move(vals))};
 }
 
-spla::VectorDense::VectorDense(std::size_t nrows, spla::VectorDense::Values vals)
-    : VectorBlock(nrows, nrows, Format::Dense), mVals(std::move(vals)) {
+spla::VectorDense::VectorDense(std::size_t nrows, std::size_t nvals, Mask mask, Values vals)
+    : VectorBlock(nrows, nvals, Format::Dense), mMask(std::move(mask)), mVals(std::move(vals)) {
+}
+
+const spla::VectorDense::Mask &spla::VectorDense::GetMask() const noexcept {
+    return mMask;
 }
 
 const spla::VectorDense::Values &spla::VectorDense::GetVals() const noexcept {
@@ -42,7 +46,7 @@ const spla::VectorDense::Values &spla::VectorDense::GetVals() const noexcept {
 }
 
 std::size_t spla::VectorDense::GetMemoryUsage() const {
-    return mVals.size();
+    return mMask.size() * sizeof(Index) + mVals.size();
 }
 
 void spla::VectorDense::Dump(std::ostream &stream, unsigned int baseI) const {
@@ -50,32 +54,38 @@ void spla::VectorDense::Dump(std::ostream &stream, unsigned int baseI) const {
     compute::context context = mVals.get_buffer().get_context();
     compute::command_queue queue(context, context.get_device());
 
+    std::vector<unsigned int> mask(mMask.size());
     std::vector<unsigned char> vals;
 
+    compute::copy(mMask.begin(), mMask.end(), mask.begin(), queue);
+
     auto hasValues = !mVals.empty();
+    auto byteSize = mVals.size() / GetNvals();
 
     if (hasValues) {
         vals.resize(mVals.size());
         compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
     }
 
-    auto byteSize = mVals.size() / GetNvals();
-
     stream << "Vector " << GetNrows()
            << " nvals=" << GetNvals()
            << " bsize=" << byteSize
            << " format=dense" << std::endl;
 
-    for (std::size_t i = 0; i < GetNvals(); i++) {
-        stream << "[" << i << "] " << baseI + i << " ";
-        stream << std::hex;
+    std::size_t k = 0;
 
-        auto offset = i * byteSize;
-        for (std::size_t byte = 0; byte < byteSize; byte++) {
-            stream << static_cast<unsigned int>(vals[offset + byte]);
+    for (std::size_t i = 0; i < GetNrows(); i++) {
+        if (mask[i]) {
+            stream << "[" << k++ << "] " << baseI + i << " ";
+            stream << std::hex;
+
+            auto offset = i * byteSize;
+            for (std::size_t byte = 0; byte < byteSize; byte++) {
+                stream << static_cast<unsigned int>(vals[offset + byte]);
+            }
+
+            stream << std::endl
+                   << std::dec;
         }
-
-        stream << std::endl
-               << std::dec;
     }
 }

@@ -29,41 +29,21 @@
 
 template<typename Type>
 void testCase(spla::Library &library, std::size_t M, std::size_t nvals,
-              const spla::RefPtr<spla::Type> &spType, Type identity, std::size_t seed = 0) {
+              const spla::RefPtr<spla::Type> &spType, std::size_t seed = 0) {
     utils::Vector v = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
     v.Fill(utils::UniformGenerator<Type>());
 
-    std::vector<spla::Index> rows(M);
-    std::vector<Type> values(M);
-
     auto spV = spla::Vector::Make(M, spType, library);
     auto spI = spla::Scalar::Make(spType, library);
-    auto spVData = spla::DataVector::Make(rows.data(), values.data(), M, library);
 
     auto spExpr = spla::Expression::Make(library);
-    auto spWriteI = spExpr->MakeDataWrite(spI, spla::DataScalar::Make(&identity, library));
     auto spWriteV = spExpr->MakeDataWrite(spV, v.GetData(library));
-    auto spToDense = spExpr->MakeToDense(spV, spV, spI);
-    auto spReadV = spExpr->MakeDataRead(spV, spVData);
-    spExpr->Dependency(spWriteI, spToDense);
+    auto spToDense = spExpr->MakeToDense(spV, spV);
     spExpr->Dependency(spWriteV, spToDense);
-    spExpr->Dependency(spToDense, spReadV);
     spExpr->SubmitWait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
-    ASSERT_EQ(M, spV->GetNvals());
 
-    for (std::size_t i = 0; i < M; i++) {
-        EXPECT_EQ(rows[i], i);
-    }
-
-    for (std::size_t i = 0; i < v.GetNvals(); i++) {
-        EXPECT_EQ(values[v.GetRows()[i]], v.GetVals()[i]);
-        values[v.GetRows()[i]] = identity;
-    }
-
-    for (std::size_t i = 0; i < M; i++) {
-        EXPECT_EQ(values[i], identity);
-    }
+    EXPECT_TRUE(v.Equals(spV));
 }
 
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
@@ -73,12 +53,12 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCase<Type>(library, M, nvals, spT, 0, i);
+            testCase<Type>(library, M, nvals, spT, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCase<Type>(library, M, nvals, spT, 10, i);
+            testCase<Type>(library, M, nvals, spT, i);
         }
     });
 
@@ -88,12 +68,12 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCase<Type>(library, M, nvals, spT, 0.0f, i);
+            testCase<Type>(library, M, nvals, spT, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCase<Type>(library, M, nvals, spT, 5.0f, i);
+            testCase<Type>(library, M, nvals, spT, i);
         }
     });
 }

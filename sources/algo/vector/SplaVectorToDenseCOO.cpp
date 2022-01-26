@@ -55,33 +55,37 @@ void spla::VectorToDenseCOO::Process(spla::AlgorithmParams &params) {
     QueueFinisher finisher(queue);
 
     auto v = p->v.Cast<VectorCOO>();
-    auto s = p->identity;
-    auto &identity = s->GetVal();
     auto nrows = v->GetNrows();
-    auto byteSize = identity.size();
+    auto byteSize = p->byteSize;
+    auto cooNvals = v->GetNvals();
+    auto &cooRows = v->GetRows();
+    auto &cooVals = v->GetVals();
 
     assert(nrows > 0);
-    assert(byteSize > 0);
+    assert(cooNvals > 0);
 
     PF_SCOPE_MARK(ctd, "setup");
 
     // Dense storage for all values
+    compute::vector<Index> denseMask(nrows, ctx);
     compute::vector<unsigned char> denseVals(ctx);
 
-    // Fill with identity
-    FillPattern(identity, denseVals, nrows, queue);
+    BOOST_COMPUTE_CLOSURE(void, applyMask, (unsigned int rowId), (denseMask), { denseMask[rowId] = 1u; });
+    compute::fill_n(denseMask.begin(), nrows, 0u, queue);
+    compute::for_each(cooRows.begin(), cooRows.end(), applyMask, queue);
 
-    PF_SCOPE_MARK(ctd, "fill id");
+    PF_SCOPE_MARK(ctd, "gen mask");
 
     // Fill existing values
-    auto &cooRows = v->GetRows();
-    auto &cooVals = v->GetVals();
-    Scatter(cooRows.begin(), cooRows.end(), cooVals.begin(), denseVals.begin(), byteSize, queue);
+    if (byteSize > 0) {
+        denseVals.resize(nrows * byteSize, queue);
+        Scatter(cooRows.begin(), cooRows.end(), cooVals.begin(), denseVals.begin(), byteSize, queue);
+    }
 
     PF_SCOPE_MARK(ctd, "scatter coo");
 
     // Save result as dense block
-    p->w = VectorDense::Make(nrows, std::move(denseVals)).As<VectorBlock>();
+    p->w = VectorDense::Make(nrows, cooNvals, std::move(denseMask), std::move(denseVals)).As<VectorBlock>();
 }
 
 spla::Algorithm::Type spla::VectorToDenseCOO::GetType() const {

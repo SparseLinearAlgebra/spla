@@ -42,12 +42,10 @@ void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &e
 
     auto argW = node->GetArg(0).Cast<Vector>();
     auto argV = node->GetArg(1).Cast<Vector>();
-    auto argIdentity = node->GetArg(2).Cast<Scalar>();
     auto desc = node->GetDescriptor();
 
     assert(argW.IsNotNull());
     assert(argV.IsNotNull());
-    assert(argIdentity.IsNotNull());
 
     VectorStorage::EntryList entries;
 
@@ -63,12 +61,12 @@ void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &e
     for (std::size_t i = 0; i < entries.size(); i++) {
         auto deviceId = devicesIds[i];
         auto entry = entries[i];
-        builder.Emplace([=]() {
+        builder.Emplace("vec-sp2dn", [=]() {
             ParamsVectorToDense params;
             params.deviceId = deviceId;
             params.desc = desc;
             params.v = entry.second;
-            params.identity = argIdentity->GetStorage()->GetValue();
+            params.byteSize = argV->GetType()->GetByteSize();
             library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorToDense, params);
 
             if (params.w.IsNotNull()) {

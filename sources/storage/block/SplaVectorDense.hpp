@@ -40,9 +40,12 @@ namespace spla {
 
     class VectorDense final : public VectorBlock {
     public:
+        using Mask = boost::compute::vector<Index>;
         using Values = boost::compute::vector<unsigned char>;
 
         ~VectorDense() override = default;
+
+        [[nodiscard]] const Mask &GetMask() const noexcept;
 
         [[nodiscard]] const Values &GetVals() const noexcept;
 
@@ -50,11 +53,12 @@ namespace spla {
 
         void Dump(std::ostream &stream, unsigned int baseI) const override;
 
-        static RefPtr<VectorDense> Make(std::size_t nrows, Values vals);
+        static RefPtr<VectorDense> Make(std::size_t nrows, std::size_t nvals, Mask mask, Values vals);
 
     private:
-        VectorDense(std::size_t nrows, Values vals);
+        VectorDense(std::size_t nrows, std::size_t nvals, Mask mask, Values vals);
 
+        Mask mMask;
         Values mVals;
     };
 

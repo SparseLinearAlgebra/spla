@@ -50,6 +50,7 @@ void spla::VectorReadDense::Process(spla::AlgorithmParams &params) {
 
     auto v = p->v.Cast<VectorDense>();
     auto d = p->d;
+    auto byteSize = p->byteSize;
 
     auto hostRows = d->GetRows();
     auto hostVals = reinterpret_cast<unsigned char *>(d->GetVals());
@@ -59,14 +60,32 @@ void spla::VectorReadDense::Process(spla::AlgorithmParams &params) {
     SPDLOG_LOGGER_TRACE(library->GetLogger(), "Copy vector size={} storage nvals={} offset={}",
                         v->GetNrows(), v->GetNvals(), p->offset);
 
+    std::vector<Index> copiedMask(v->GetMask().size());
+    compute::copy(v->GetMask().begin(), v->GetMask().end(), copiedMask.begin(), queue);
+
     if (hostRows) {
-        for (std::size_t i = 0; i < v->GetNvals(); i++)
-            hostRows[p->offset + i] = p->baseI + i;
+        std::size_t k = 0;
+        for (std::size_t i = 0; i < copiedMask.size(); i++) {
+            if (copiedMask[i]) {
+                hostRows[p->offset + k] = p->baseI + i;
+                k += 1;
+            }
+        }
     }
 
-    if (hostVals && p->byteSize) {
-        auto &deviceVals = v->GetVals();
-        compute::copy(deviceVals.begin(), deviceVals.end(), &hostVals[p->offset * p->byteSize], queue);
+    if (hostVals && byteSize) {
+        std::vector<unsigned char> copiedValues(v->GetVals().size());
+        compute::copy(v->GetVals().begin(), v->GetVals().end(), copiedValues.begin(), queue);
+
+        std::size_t k = 0;
+        for (std::size_t i = 0; i < copiedMask.size(); i++) {
+            if (copiedMask[i]) {
+                for (std::size_t j = 0; j < byteSize; j++) {
+                    hostVals[p->offset * byteSize + k * byteSize + j] = copiedValues[i * byteSize + j];
+                }
+                k += 1;
+            }
+        }
     }
 }
 
