@@ -28,9 +28,11 @@
 #ifndef SPLA_SPLADESCRIPTOR_HPP
 #define SPLA_SPLADESCRIPTOR_HPP
 
-#include <spla-cpp/SplaObject.hpp>
+#include <sstream>
 #include <string>
 #include <unordered_map>
+
+#include <spla-cpp/SplaObject.hpp>
 
 namespace spla {
 
@@ -63,6 +65,8 @@ namespace spla {
             AccumResult,
             /** Profiles time of the operation and outputs result to the log */
             ProfileTime,
+            /** Factor used to transition to dense if possible */
+            DenseFactor,
             /** Transpose operation arg 1 matrix before operation */
             TransposeArg1,
             /** Transpose operation arg 2 matrix before operation */
@@ -95,7 +99,16 @@ namespace spla {
         void SetParam(Param param, std::string value = std::string());
 
         /**
-         * Get descriptor param value.
+         * @brief Set descriptor no-value param.
+         * Pass true to set of false to remove param.
+         *
+         * @param param Param name to set
+         * @param flag True to set, false to remove
+         */
+        void SetParam(Param param, bool flag);
+
+        /**
+         * @brief Get descriptor param value.
          * If param was set without value, returned string value is empty.
          *
          * @param param Param name to get
@@ -104,6 +117,15 @@ namespace spla {
          * @return True if this param was set in descriptor
          */
         bool GetParam(Param param, std::string &value) const;
+
+        /**
+         * @brief Remove param from desc
+         *
+         * @param param Param to remove
+         *
+         * @return True if params was in desc before removal
+         */
+        bool RemoveParam(Param param);
 
         /**
          * Check if specified param was set in descriptor.
@@ -122,6 +144,29 @@ namespace spla {
          * @return New descriptor instance
          */
         static RefPtr<Descriptor> Make(class Library &library);
+
+        /**
+         * @brief Get descriptor param value.
+         * If param was set without value, returned string value is empty.
+         *
+         * @tparam T Type of value to get
+         * @param param Param name to get
+         * @param[out] value Output param value
+         *
+         * @return True if this param was set in descriptor
+         */
+        template<typename T>
+        bool GetParamT(Param param, T &value) {
+            std::string text;
+            auto hasParam = GetParam(param, text);
+
+            if (hasParam) {
+                std::stringstream ss(text);
+                ss >> value;
+            }
+
+            return hasParam;
+        }
 
     private:
         explicit Descriptor(class Library &library);

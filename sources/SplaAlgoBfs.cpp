@@ -35,45 +35,45 @@
 #include <queue>
 #include <vector>
 
-void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const AlgoDescriptor &descriptor) {
+void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const RefPtr<Descriptor> &descriptor) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(sp_A->GetNrows() == sp_A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(s < sp_A->GetNrows(), InvalidArgument, "Start index must be withing A bounds");
 
+    bool timing = false;
+    float denseFactor = 1.0f;
+
+    if (descriptor.IsNotNull()) {
+        timing = descriptor->IsParamSet(Descriptor::Param::ProfileTime);
+        descriptor->GetParamT(Descriptor::Param::DenseFactor, denseFactor);
+    }
+
     auto &library = sp_A->GetLibrary();
     auto n = sp_A->GetNrows();
 
-    // Vector with reached levels
-    sp_v = Vector::Make(n, Types::Int32(library), library);
-    // Vector-front of the bfs
-    auto sp_q = Vector::Make(n, Types::Void(library), library);
-    // Scalar to update depth of the v
-    auto sp_depth = Scalar::Make(Types::Int32(library), library);
+    sp_v = Vector::Make(n, Types::Int32(library), library);      // Vector with reached levels
+    auto sp_q = Vector::Make(n, Types::Void(library), library);  // Vector-front of the bfs
+    auto sp_depth = Scalar::Make(Types::Int32(library), library);// Scalar to update depth of the v
 
-    // Used to assign to v new reached level and preserve v values
-    auto sp_desc_accum = Descriptor::Make(library);
+    auto sp_desc_accum = Descriptor::Make(library);// Used to assign to v new reached level and preserve v values
     sp_desc_accum->SetParam(Descriptor::Param::AccumResult);
 
-    // Used to apply !v mask when try to discover new values and ignore previously found
-    auto sp_desc_comp = Descriptor::Make(library);
+    auto sp_desc_comp = Descriptor::Make(library);// Used to apply !v mask when try to discover new values and ignore previously found
     sp_desc_comp->SetParam(Descriptor::Param::MaskComplement);
 
-    // Overall time of execution
-    CpuTimer overallTimer;
+    CpuTimer overallTimer;// Overall time of execution
     overallTimer.Start();
 
-    // Set q[s]: start vertex
-    auto sp_setup = Expression::Make(library);
+    auto sp_setup = Expression::Make(library);// Set q[s]: start vertex
     sp_setup->MakeDataWrite(sp_q, DataVector::Make(&s, nullptr, 1, library));
     sp_setup->SubmitWait();
 
-    // Start for depth 1: v[s]=1
-    std::int32_t depth = 1;
+    std::int32_t depth = 1;// Start for depth 1: v[s]=1
 
-    // Tight timer to measure iterations
-    CpuTimer tightTimer;
+    CpuTimer tightTimer;// Tight timer to measure iterations
     tightTimer.Start();
     double tight = 0.0;
+    bool sparseToDense = false;
 
     while (sp_q->GetNvals() != 0) {
         auto sp_iter = Expression::Make(library);
@@ -82,11 +82,20 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
         auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
         auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
 
+        // Check how dense is result vector v
+        // Explicitly transition to dense storage if is filled more than threshold
+        // NOTE: in future we need automatically transition to dense inside library
+        if (!sparseToDense && sp_v->GetFillFactor() >= denseFactor) {
+            auto tt = sp_iter->MakeToDense(sp_v, sp_v);
+            sp_iter->Dependency(tt, t2);
+            sparseToDense = true;
+        }
+
         sp_iter->Dependency(t1, t2);
         sp_iter->Dependency(t2, t3);
         sp_iter->SubmitWait();
 
-        if (descriptor.DisplayTiming()) {
+        if (timing) {
             tightTimer.Stop();
             std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
                       << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
@@ -100,7 +109,7 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     tightTimer.Stop();
     overallTimer.Stop();
 
-    if (descriptor.DisplayTiming()) {
+    if (timing) {
         std::cout << "Result: " << sp_v->GetNvals() << " reached\n";
         std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
         std::cout << " run overall: " << overallTimer.GetElapsedMs() << "\n";

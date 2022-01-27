@@ -47,11 +47,21 @@ void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &e
     assert(argW.IsNotNull());
     assert(argV.IsNotNull());
 
+    VectorStorage::EntryList entriesInMatrix;
     VectorStorage::EntryList entries;
 
-    argV->GetStorage()->GetBlocks(entries);
+    argV->GetStorage()->GetBlocks(entriesInMatrix);
     argW->GetStorage()->Clear();
 
+    // Determine which entries not in dense format to convert
+    for (auto& entry: entriesInMatrix) {
+        if (entry.second->GetFormat() != VectorBlock::Format::Dense)
+            entries.push_back(entry);
+        else
+            argW->GetStorage()->SetBlock(entry.first, entry.second);
+    }
+
+    // No entries => nothing to do
     if (entries.empty())
         return;
 

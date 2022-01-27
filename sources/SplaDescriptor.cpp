@@ -34,11 +34,29 @@ void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value
     mParams.emplace(param, std::move(value));
 }
 
+void spla::Descriptor::SetParam(Param param, bool flag) {
+    if (flag)
+        SetParam(param, std::string{});
+    else
+        RemoveParam(param);
+}
+
 bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
     auto query = mParams.find(param);
 
     if (query != mParams.end()) {
         value = query->second;
+        return true;
+    }
+
+    return false;
+}
+
+bool spla::Descriptor::RemoveParam(Param param) {
+    auto query = mParams.find(param);
+
+    if (query != mParams.end()) {
+        mParams.erase(query);
         return true;
     }
 

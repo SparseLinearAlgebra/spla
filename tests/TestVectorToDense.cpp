@@ -39,7 +39,9 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals,
     auto spExpr = spla::Expression::Make(library);
     auto spWriteV = spExpr->MakeDataWrite(spV, v.GetData(library));
     auto spToDense = spExpr->MakeToDense(spV, spV);
+    auto spToDense2 = spExpr->MakeToDense(spV, spV);
     spExpr->Dependency(spWriteV, spToDense);
+    spExpr->Dependency(spToDense, spToDense2);
     spExpr->SubmitWait();
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 

@@ -63,6 +63,9 @@ namespace spla {
     public:
         ~Vector() override;
 
+        /** @return Fill factor of the vector as ratio of number of values to vector dimension */
+        float GetFillFactor() const;
+
         /** @return Number of vector rows */
         std::size_t GetNrows() const;
 

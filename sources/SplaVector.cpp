@@ -28,6 +28,12 @@
 #include <spla-cpp/SplaVector.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
+float spla::Vector::GetFillFactor() const {
+    auto N = GetNrows();
+    auto Nnz = GetNvals();
+    return N > 0 ? static_cast<float>(Nnz) / static_cast<float>(N) : 0.0f;
+}
+
 std::size_t spla::Vector::GetNrows() const {
     return mStorage->GetNrows();
 }

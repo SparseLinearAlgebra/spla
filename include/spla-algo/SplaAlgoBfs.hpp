@@ -29,6 +29,7 @@
 #define SPLA_SPLAALGOBFS_HPP
 
 #include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
@@ -47,7 +48,7 @@ namespace spla {
      * @param s Index of the source vertex to begin bfs
      * @param descriptor Algorithm descriptor
      */
-    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const AlgoDescriptor &descriptor = {});
+    SPLA_API void Bfs(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const RefPtr<Descriptor> &descriptor = nullptr);
 
     /**
      * @brief Breadth-first search algorithm
