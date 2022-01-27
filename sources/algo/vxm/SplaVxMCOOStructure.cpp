@@ -248,7 +248,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
         compute::for_each_n(compute::counting_iterator<unsigned int>(0), N, copyResult, queue);
         PF_SCOPE_MARK(vxm, "copy row indices");
 
-        compute::stable_sort(rows.begin(), rows.end(), queue);
+        compute::sort(rows.begin(), rows.end(), queue);
         PF_SCOPE_MARK(vxm, "sort row indices");
 
         p->w = VectorCOO::Make(N, resultNnz, std::move(rows), compute::vector<unsigned char>(ctx)).As<VectorBlock>();
