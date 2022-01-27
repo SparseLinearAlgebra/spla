@@ -31,14 +31,25 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace {
-    std::vector<boost::compute::device> FindAllDevices(const std::vector<std::string> &names) {
+    std::vector<boost::compute::device> FindAllDevices(const std::vector<spla::Library::ClDeviceId> &ids) {
+        std::set<spla::Library::ClDeviceId> notFoundIds(ids.begin(), ids.end());
         std::vector<boost::compute::device> foundDevices;
-        for (const std::string &name : names) {
-            try {
-                foundDevices.push_back(boost::compute::system::find_device(name));
-            } catch (const boost::compute::no_device_found &) {
-                RAISE_ERROR(DeviceNotPresent, ("Device does not exist: '" + name + "'").c_str())
+        std::vector<boost::compute::device> allDevices = boost::compute::system::devices();
+        for (const boost::compute::device &someDevice : allDevices) {
+            if (notFoundIds.empty()) {
+                break;
             }
+            if (auto it = notFoundIds.find(static_cast<spla::Library::ClDeviceId>(someDevice.id())); it != notFoundIds.end()) {
+                foundDevices.push_back(someDevice);
+                notFoundIds.erase(it);
+            }
+        }
+        if (!notFoundIds.empty()) {
+            std::stringstream ss;
+            for (auto d : notFoundIds) {
+                ss << d << ", ";
+            }
+            RAISE_ERROR(DeviceNotPresent, ("Couldn't find some devices: " + ss.str()).c_str())
         }
         return foundDevices;
     }
@@ -82,7 +93,7 @@ namespace {
 spla::LibraryPrivate::LibraryPrivate(
         spla::Library &library,
         spla::Library::Config config)
-    : mDeviceManager(FindAllDevices(config.GetDevicesNames())),
+    : mDeviceManager(FindAllDevices(config.GetDevicesIds())),
       mPlatform(GetDevicesPlatform(mDeviceManager.GetDevices())),
       mContext(mDeviceManager.GetDevices()),
       mContextConfig(std::move(config)) {

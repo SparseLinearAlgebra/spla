@@ -113,44 +113,61 @@ spla::Library::Config &spla::Library::Config::SetWorkersCount(std::size_t worker
     return *this;
 }
 
-std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
-    std::vector<std::string> devicesNames;
+std::vector<boost::compute::device> GetDevices(const spla::Library::Config &config) {
+    std::vector<boost::compute::device> devices;
 
     auto platforms = boost::compute::system::platforms();
     if (platforms.empty()) {
         RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
     }
 
-    if (!mDeviceType.has_value() &&
-        !mPlatformName.has_value() &&
-        mDeviceAmount.value() == 1U) {
-        return {boost::compute::system::default_device().name()};
+    if (!config.GetDeviceType().has_value() &&
+        !config.GetPlatformName().has_value() &&
+        config.GetDeviceAmount() == 1) {
+        return {boost::compute::system::default_device()};
     }
 
     for (const boost::compute::platform &platform : platforms) {
-        bool matchPlatform = !mPlatformName.has_value() || platform.name().find(mPlatformName.value()) != std::string::npos;
+        bool matchPlatform = !config.GetPlatformName().has_value() || platform.name().find(config.GetPlatformName().value()) != std::string::npos;
+
         if (!matchPlatform)
             continue;
 
+        const auto &deviceType = config.GetDeviceType();
+
         for (const boost::compute::device &device : platform.devices()) {
-            bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
-                                                          (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
-                                                          (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator));
+            bool matchType = !deviceType.has_value() || ((deviceType.value() == spla::Library::Config::GPU && device.type() == boost::compute::device::type::gpu) ||
+                                                         (deviceType.value() == spla::Library::Config::CPU && device.type() == boost::compute::device::type::cpu) ||
+                                                         (deviceType.value() == spla::Library::Config::Accelerator && device.type() == boost::compute::device::type::accelerator));
             if (matchType) {
-                devicesNames.push_back(device.name());
+                devices.push_back(device);
             }
         }
     }
 
-    if (devicesNames.empty()) {
-        devicesNames.push_back(boost::compute::system::default_device().name());
+    if (config.GetDeviceAmount().has_value() && devices.size() > config.GetDeviceAmount().value()) {
+        devices.resize(config.GetDeviceAmount().value());
     }
 
-    if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
-        devicesNames.resize(mDeviceAmount.value());
-    }
+    return devices;
+}
 
-    return devicesNames;
+std::vector<spla::Library::ClDeviceId> spla::Library::Config::GetDevicesIds() const {
+    std::vector<spla::Library::ClDeviceId> ids;
+    for (const boost::compute::device &device : GetDevices(*this)) {
+        ids.push_back(static_cast<void *>(device.id()));
+    }
+    return ids;
+}
+
+std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
+    std::vector<std::string> names;
+    for (const boost::compute::device &device : GetDevices(*this)) {
+        std::stringstream nameSs;
+        nameSs << device.name() << ' ' << '(' << device.id() << ')';
+        names.push_back(nameSs.str());
+    }
+    return names;
 }
 
 std::size_t spla::Library::Config::GetBlockSize() const {
@@ -163,4 +180,16 @@ std::size_t spla::Library::Config::GetWorkersCount() const {
 
 const std::optional<spla::Filename> &spla::Library::Config::GetLogFilename() const {
     return mLogFilename;
+}
+
+std::optional<std::string> spla::Library::Config::GetPlatformName() const {
+    return mPlatformName;
+}
+
+std::optional<spla::Library::Config::DeviceType> spla::Library::Config::GetDeviceType() const {
+    return mDeviceType;
+}
+
+std::optional<std::size_t> spla::Library::Config::GetDeviceAmount() const {
+    return mDeviceAmount;
 }
