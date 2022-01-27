@@ -29,6 +29,7 @@
 #include <boost/compute/algorithm/scatter_if.hpp>
 
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
+#include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaTransformValues.hpp>
@@ -207,35 +208,19 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     // Apply mask to define, which indices we are interested in
     if (p->hasMask && p->mask.IsNotNull()) {
         assert(p->mask->GetFormat() == VectorBlock::Format::COO || p->mask->GetFormat() == VectorBlock::Format::Dense);
+        CHECK_RAISE_ERROR(p->mask->GetFormat() == VectorBlock::Format::COO || p->mask->GetFormat() == VectorBlock::Format::Dense,
+                          NotImplemented, "Other mask block type not supported yet");
+
         if (p->mask->GetFormat() == VectorBlock::Format::COO) {
             auto mask = p->mask.Cast<VectorCOO>();
-            if (complementMask) {
-                BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int i), (resultStructure), { resultStructure[i] = 0u; });
-                compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignZero, queue);
-            } else {
-                compute::vector<Index> masked(N, ctx);
-                BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (masked, resultStructure), { masked[i] = resultStructure[i]; });
-                compute::fill(masked.begin(), masked.end(), 0u, queue);
-                compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignOne, queue);
-                std::swap(masked, resultStructure);
-            }
-        } else if (p->mask->GetFormat() == VectorBlock::Format::Dense) {
+            assert(mask.IsNotNull());
+            ApplyMaskDenseSparse(resultStructure, mask->GetRows(), complementMask, queue);
+        } else {
             auto mask = p->mask.Cast<VectorDense>();
+            assert(mask.IsNotNull());
             auto &stencil = mask->GetMask();
-            if (complementMask) {
-                // Inverse mask application (remember, stencil value either 1 or 0)
-                // rs: x0 x1 x0 x1 x0 x0 x0 x1 | in
-                // st: x0 x0 x1 x1 x0 x1 x1 x0 | in
-                //~st: ff ff fe fe ff fe fe ff | tmp
-                // rs: x0 x1 x0 x0 x0 x0 x0 x1 | out
-                BOOST_COMPUTE_CLOSURE(void, maskInverse, (unsigned int i), (resultStructure, stencil), { resultStructure[i] = resultStructure[i] & (~stencil[i]); });
-                compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskInverse, queue);
-            } else {
-                BOOST_COMPUTE_CLOSURE(void, maskDirect, (unsigned int i), (resultStructure, stencil), { resultStructure[i] = resultStructure[i] & stencil[i]; });
-                compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskDirect, queue);
-            }
-        } else
-            RAISE_CRITICAL_ERROR(NotImplemented, "Other mask block type not supported yet");
+            ApplyMaskDenseDense(resultStructure, stencil, complementMask, queue);
+        }
     }
 
     PF_SCOPE_MARK(vxm, "apply mask");

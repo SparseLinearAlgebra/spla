@@ -34,6 +34,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp
         sources/algo/vector/SplaVectorEWiseAddCOO.hpp
+        sources/algo/vector/SplaVectorEWiseAddDense.cpp
+        sources/algo/vector/SplaVectorEWiseAddDense.hpp
         sources/algo/vector/SplaVectorReadCOO.cpp
         sources/algo/vector/SplaVectorReadCOO.hpp
         sources/algo/vector/SplaVectorReadDense.cpp

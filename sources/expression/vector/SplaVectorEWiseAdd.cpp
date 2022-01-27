@@ -58,7 +58,7 @@ void spla::VectorEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
 
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         auto deviceId = deviceIds[i];
-        builder.Emplace([=]() {
+        builder.Emplace("veadd", [=]() {
             ParamsVectorEWiseAdd params;
             params.desc = desc;
             params.deviceId = deviceId;

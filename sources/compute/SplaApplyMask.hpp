@@ -161,6 +161,70 @@ namespace spla {
     }
 
     /**
+     * @brief Apply to dense vector sparse mask
+     *
+     * @param v Dense vector to mask
+     * @param m Sparse mask (list of indices)
+     * @param complement True if complement mask
+     * @param queue Queue to perform operation on
+     */
+    inline void ApplyMaskDenseSparse(boost::compute::vector<Index> &v,
+                                     const boost::compute::vector<Index> &m,
+                                     bool complement,
+                                     boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        assert(!v.empty());
+        assert(v.size() >= m.size());
+
+        auto N = v.size();
+
+        if (complement) {
+            BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int rowId), (v), { v[rowId] = 0u; });
+            compute::for_each(m.begin(), m.end(), assignZero, queue);
+        } else {
+            compute::vector<Index> masked(N, queue.get_context());
+            BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int rowId), (masked, v), { masked[rowId] = v[rowId]; });
+            compute::fill(masked.begin(), masked.end(), 0u, queue);
+            compute::for_each(m.begin(), m.end(), assignOne, queue);
+            std::swap(masked, v);
+        }
+    }
+
+    /**
+     * @brief Apply to dense vector dense mask
+     *
+     * @param v Dense vector to mask
+     * @param m Dense vector mask
+     * @param complement True if complement mask
+     * @param queue Queue to perform operation on
+     */
+    inline void ApplyMaskDenseDense(boost::compute::vector<Index> &v,
+                                    const boost::compute::vector<Index> &m,
+                                    bool complement,
+                                    boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        assert(!v.empty());
+        assert(v.size() == m.size());
+
+        auto N = v.size();
+
+        if (complement) {
+            // Inverse mask application (remember, stencil value either 1 or 0)
+            // in  |      rs | x0 x1 x0 x1 x0 x0 x0 x1 |
+            // in  |      st | x0 x0 x1 x1 x0 x1 x1 x0 |
+            // tmp | ff + st | ff ff 00 00 00 00 00 ff |
+            // out |      rs | x0 x1 x0 x0 x0 x0 x0 x1 |
+            BOOST_COMPUTE_CLOSURE(void, maskInverse, (unsigned int i), (v, m), { v[i] = v[i] & (0xffffffffu + m[i]); });
+            compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskInverse, queue);
+        } else {
+            BOOST_COMPUTE_CLOSURE(void, maskDirect, (unsigned int i), (v, m), { v[i] = v[i] & m[i]; });
+            compute::for_each(compute::counting_iterator<unsigned int>(0), compute::counting_iterator<unsigned int>(N), maskDirect, queue);
+        }
+    }
+
+    /**
      * @}
      */
 

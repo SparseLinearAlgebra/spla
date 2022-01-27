@@ -211,56 +211,192 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t nvals, std:
     ASSERT_TRUE(c.EqualsStructure(spW));
 }
 
+template<typename Type, typename BinaryOp>
+void testMaskedDense(spla::Library &library, std::size_t M, std::size_t nvals,
+                     const spla::RefPtr<spla::Type> &spT,
+                     const spla::RefPtr<spla::FunctionBinary> &spOp,
+                     BinaryOp op,
+                     bool firstDense, bool secondDense, bool maskDense, bool complement,
+                     std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<Type>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector b = utils::Vector<Type>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
+    utils::Vector mask = utils::Vector<unsigned short>::Generate(M, nvals, seed + 2).SortReduceDuplicates();
+
+    a.Fill(utils::UniformGenerator<Type>());
+    b.Fill(utils::UniformGenerator<Type>());
+
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Vector::Make(M, spT, library);
+    auto spW = spla::Vector::Make(M, spT, library);
+    auto spMask = spla::Vector::Make(M, spla::Types::Void(library), library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (complement)
+        spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+
+    auto spExprWrite = spla::Expression::Make(library);
+    spExprWrite->MakeDataWrite(spA, a.GetData(library), spDesc);
+    spExprWrite->MakeDataWrite(spB, b.GetData(library), spDesc);
+    spExprWrite->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    spExprWrite->SubmitWait();
+    ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
+
+    auto spExprToDense = spla::Expression::Make(library);
+    if (firstDense)
+        spExprToDense->MakeToDense(spA, spA);
+    if (secondDense)
+        spExprToDense->MakeToDense(spB, spB);
+    if (maskDense)
+        spExprToDense->MakeToDense(spMask, spMask);
+    spExprToDense->SubmitWait();
+    ASSERT_EQ(spExprToDense->GetState(), spla::Expression::State::Evaluated);
+
+    auto spExprAdd = spla::Expression::Make(library);
+    spExprAdd->MakeEWiseAdd(spW, spMask, spOp, spA, spB, spOpDesc);
+    spExprAdd->SubmitWait();
+    ASSERT_EQ(spExprAdd->GetState(), spla::Expression::State::Evaluated);
+
+    utils::Vector<Type> c = a.EWiseAdd(mask, complement, b, op);
+    ASSERT_TRUE(c.Equals(spW));
+}
+
+void testNoValuesDense(spla::Library &library, std::size_t M, std::size_t nvals, bool firstDense, bool secondDense, bool maskDense, bool complement, std::size_t seed = 0) {
+    utils::Vector a = utils::Vector<unsigned char>::Generate(M, nvals, seed).SortReduceDuplicates();
+    utils::Vector b = utils::Vector<unsigned char>::Generate(M, nvals, seed + 1).SortReduceDuplicates();
+    utils::Vector mask = utils::Vector<unsigned char>::Generate(M, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Vector::Make(M, spT, library);
+    auto spB = spla::Vector::Make(M, spT, library);
+    auto spW = spla::Vector::Make(M, spT, library);
+    auto spMask = spla::Vector::Make(M, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spOpDesc = spla::Descriptor::Make(library);
+    if (complement)
+        spOpDesc->SetParam(spla::Descriptor::Param::MaskComplement);
+
+    auto spExprWrite = spla::Expression::Make(library);
+    spExprWrite->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    spExprWrite->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    spExprWrite->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    spExprWrite->SubmitWait();
+    ASSERT_EQ(spExprWrite->GetState(), spla::Expression::State::Evaluated);
+
+    auto spExprToDense = spla::Expression::Make(library);
+    if (firstDense)
+        spExprToDense->MakeToDense(spA, spA);
+    if (secondDense)
+        spExprToDense->MakeToDense(spB, spB);
+    if (maskDense)
+        spExprToDense->MakeToDense(spMask, spMask);
+    spExprToDense->SubmitWait();
+    ASSERT_EQ(spExprToDense->GetState(), spla::Expression::State::Evaluated);
+
+    auto spExprAdd = spla::Expression::Make(library);
+    spExprAdd->MakeEWiseAdd(spW, spMask, nullptr, spA, spB, spOpDesc);
+    spExprAdd->SubmitWait();
+    ASSERT_EQ(spExprAdd->GetState(), spla::Expression::State::Evaluated);
+
+    utils::Vector<unsigned char> c = a.EWiseAdd(mask, complement, b, [](unsigned char, unsigned char) { return 0; });
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
 void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, const std::vector<std::size_t> &blocksSizes) {
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = float;
         auto spT = spla::Types::Float32(library);
         auto spOp = spla::Functions::PlusFloat32(library);
-        auto op = [](float x, float y) { return x + y; };
+        auto op = [](Type x, Type y) { return x + y; };
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<float>(library, M, nvals, spT, spOp, op, i);
+            testCommon<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<float>(library, M, nvals, spT, spOp, op, i);
+            testMasked<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMaskedComplement<float>(library, M, nvals, spT, spOp, op, i);
+            testMaskedComplement<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testOneIsEmpty<float>(library, M, nvals, spT, spOp, op, i);
+            testOneIsEmpty<Type>(library, M, nvals, spT, spOp, op, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, true, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, true, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, true, false, i);
+
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, true, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, true, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, true, true, i);
         }
     });
 
     utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        using Type = std::int32_t;
         auto spT = spla::Types::Int32(library);
         auto spOp = spla::Functions::PlusInt32(library);
-        auto op = [](std::int32_t x, std::int32_t y) { return x + y; };
+        auto op = [](Type x, Type y) { return x + y; };
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testCommon<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+            testCommon<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+            testMasked<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMaskedComplement<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+            testMaskedComplement<Type>(library, M, nvals, spT, spOp, op, i);
         }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testOneIsEmpty<std::int32_t>(library, M, nvals, spT, spOp, op, i);
+            testOneIsEmpty<Type>(library, M, nvals, spT, spOp, op, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, false, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, true, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, true, false, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, true, false, i);
+
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, false, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, false, true, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, false, true, true, true, i);
+            testMaskedDense<Type>(library, M, nvals, spT, spOp, op, true, true, true, true, i);
         }
     });
 
@@ -268,6 +404,24 @@ void test(std::size_t M, std::size_t base, std::size_t step, std::size_t iter, c
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
             testNoValues(library, M, nvals, i);
+        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+
+            testNoValuesDense(library, M, nvals, true, false, false, false, i);
+            testNoValuesDense(library, M, nvals, false, true, false, false, i);
+            testNoValuesDense(library, M, nvals, true, true, false, false, i);
+            testNoValuesDense(library, M, nvals, true, false, true, false, i);
+            testNoValuesDense(library, M, nvals, false, true, true, false, i);
+            testNoValuesDense(library, M, nvals, true, true, true, false, i);
+
+            testNoValuesDense(library, M, nvals, true, false, false, true, i);
+            testNoValuesDense(library, M, nvals, false, true, false, true, i);
+            testNoValuesDense(library, M, nvals, true, true, false, true, i);
+            testNoValuesDense(library, M, nvals, true, false, true, true, i);
+            testNoValuesDense(library, M, nvals, false, true, true, true, i);
+            testNoValuesDense(library, M, nvals, true, true, true, true, i);
         }
     });
 }
