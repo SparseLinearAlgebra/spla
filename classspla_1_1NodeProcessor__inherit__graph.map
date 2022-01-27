@@ -1,5 +1,5 @@
 <map id="spla::NodeProcessor" name="spla::NodeProcessor">
-<area shape="rect" id="node1" title="Interface to the expression node processor class." alt="" coords="145,360,288,387"/>
+<area shape="rect" id="node1" title="Interface to the expression node processor class." alt="" coords="145,385,288,412"/>
 <area shape="rect" id="node3" href="$classspla_1_1MatrixDataRead.html" title=" " alt="" coords="348,5,492,32"/>
 <area shape="rect" id="node4" href="$classspla_1_1MatrixDataWrite.html" title=" " alt="" coords="348,56,492,83"/>
 <area shape="rect" id="node5" href="$classspla_1_1MatrixEWiseAdd.html" title=" " alt="" coords="347,107,493,133"/>
@@ -14,6 +14,7 @@
 <area shape="rect" id="node14" href="$classspla_1_1VectorDataWrite.html" title=" " alt="" coords="347,563,493,589"/>
 <area shape="rect" id="node15" href="$classspla_1_1VectorEWiseAdd.html" title=" " alt="" coords="345,613,495,640"/>
 <area shape="rect" id="node16" href="$classspla_1_1VectorReduce.html" title=" " alt="" coords="353,664,487,691"/>
-<area shape="rect" id="node17" href="$classspla_1_1VxM.html" title=" " alt="" coords="381,715,459,741"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,360,97,387"/>
+<area shape="rect" id="node17" href="$classspla_1_1VectorToDense.html" title=" " alt="" coords="349,715,491,741"/>
+<area shape="rect" id="node18" href="$classspla_1_1VxM.html" title=" " alt="" coords="381,765,459,792"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,385,97,412"/>
 </map>

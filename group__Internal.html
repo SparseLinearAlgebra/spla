@@ -95,7 +95,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsVxM.html">spla::ParamsVxM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsVectorToDense.html">spla::ParamsVectorToDense</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsVectorAssign.html">spla::ParamsVectorAssign</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsVectorRead.html">spla::ParamsVectorRead</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ParamsTranspose.html">spla::ParamsTranspose</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +140,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixCSR.html">spla::MatrixCSR</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorCOO.html">spla::VectorCOO</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1VectorDense.html">spla::VectorDense</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1MatrixBlock.html">spla::MatrixBlock</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +205,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">spla::ApplyMask</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;maskRows, const boost::compute::vector&lt; unsigned int &gt; &amp;maskCols, const boost::compute::vector&lt; unsigned int &gt; &amp;inputRows, const boost::compute::vector&lt; unsigned int &gt; &amp;inputCols, const boost::compute::vector&lt; unsigned char &gt; &amp;inputVals, boost::compute::vector&lt; unsigned int &gt; &amp;outputRows, boost::compute::vector&lt; unsigned int &gt; &amp;outputCols, boost::compute::vector&lt; unsigned char &gt; &amp;outputVals, std::size_t byteSize, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply mask to coo matrix.  <a href="group__Internal.html#ga253e4c02d64c7faa8ccc9b7b957ade87">More...</a><br /></td></tr>
 <tr class="separator:ga253e4c02d64c7faa8ccc9b7b957ade87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12633cccb68fbb7be03be4d5f3388837"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga12633cccb68fbb7be03be4d5f3388837">spla::ApplyMaskDenseSparse</a> (boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;v, const boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;m, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga12633cccb68fbb7be03be4d5f3388837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply to dense vector sparse mask.  <a href="group__Internal.html#ga12633cccb68fbb7be03be4d5f3388837">More...</a><br /></td></tr>
+<tr class="separator:ga12633cccb68fbb7be03be4d5f3388837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d2549d855cf123ad06255030041957a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga2d2549d855cf123ad06255030041957a">spla::ApplyMaskDenseDense</a> (boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;v, const boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;m, bool complement, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="memdesc:ga2d2549d855cf123ad06255030041957a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply to dense vector dense mask.  <a href="group__Internal.html#ga2d2549d855cf123ad06255030041957a">More...</a><br /></td></tr>
+<tr class="separator:ga2d2549d855cf123ad06255030041957a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
 <tr class="memitem:ga0d5127217f33cc7dec534efb6417496e"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga0d5127217f33cc7dec534efb6417496e">spla::Gather</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="separator:ga0d5127217f33cc7dec534efb6417496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,6 +277,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3fbc66f32ba851d7a14f6213d3814214"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga3fbc66f32ba851d7a14f6213d3814214">spla::ReduceDuplicates</a> (const boost::compute::vector&lt; unsigned int &gt; &amp;inputIndices, boost::compute::vector&lt; unsigned int &gt; &amp;resultIndices, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:ga3fbc66f32ba851d7a14f6213d3814214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduce duplicates in sorted sequence of elements Reduces duplicated values in sorted sequence of key elements, where one or two duplicated keys are presented.  <a href="group__Internal.html#ga3fbc66f32ba851d7a14f6213d3814214">More...</a><br /></td></tr>
 <tr class="separator:ga3fbc66f32ba851d7a14f6213d3814214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8762ba8e00425ed444b3109b47610d94"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </td></tr>
+<tr class="memitem:ga8762ba8e00425ed444b3109b47610d94"><td class="memTemplItemLeft" align="right" valign="top">boost::compute::event&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Internal.html#ga8762ba8e00425ed444b3109b47610d94">spla::Scatter</a> (MapIterator first, MapIterator last, InputIterator input, OutputIterator result, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
+<tr class="separator:ga8762ba8e00425ed444b3109b47610d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Internal.html#gac64f1cbf26dce358c1c0d056ea04db6d">spla::SortByRow</a> (boost::compute::vector&lt; unsigned int &gt; &amp;rows, boost::compute::vector&lt; unsigned char &gt; &amp;vals, std::size_t elementsInSequence, boost::compute::command_queue &amp;queue)</td></tr>
 <tr class="memdesc:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort vector data in coo format in row order.  <a href="group__Internal.html#gac64f1cbf26dce358c1c0d056ea04db6d">More...</a><br /></td></tr>
 <tr class="separator:gac64f1cbf26dce358c1c0d056ea04db6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -655,6 +670,124 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga2d2549d855cf123ad06255030041957a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2d2549d855cf123ad06255030041957a">&#9670;&nbsp;</a></span>ApplyMaskDenseDense()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::ApplyMaskDenseDense </td>
+          <td>(</td>
+          <td class="paramtype">boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply to dense vector dense mask. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>Dense vector to mask </td></tr>
+    <tr><td class="paramname">m</td><td>Dense vector mask </td></tr>
+    <tr><td class="paramname">complement</td><td>True if complement mask </td></tr>
+    <tr><td class="paramname">queue</td><td>Queue to perform operation on </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga12633cccb68fbb7be03be4d5f3388837"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12633cccb68fbb7be03be4d5f3388837">&#9670;&nbsp;</a></span>ApplyMaskDenseSparse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::ApplyMaskDenseSparse </td>
+          <td>(</td>
+          <td class="paramtype">boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const boost::compute::vector&lt; <a class="el" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>complement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply to dense vector sparse mask. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>Dense vector to mask </td></tr>
+    <tr><td class="paramname">m</td><td>Sparse mask (list of indices) </td></tr>
+    <tr><td class="paramname">complement</td><td>True if complement mask </td></tr>
+    <tr><td class="paramname">queue</td><td>Queue to perform operation on </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga3cff90a19fe0e6e913ab4933eb8ff25a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3cff90a19fe0e6e913ab4933eb8ff25a">&#9670;&nbsp;</a></span>Gather() <span class="overload">[1/2]</span></h2>
 
@@ -769,7 +902,7 @@ template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Custom gather function. Allows to collect input values using permutation. Uses <code>elementsInSequence</code> to collect several elements in row in sequence, i.e. result[i + k] = input[permutation[i] + k] for k in 0..elementsInSequence for i in map range</p>
+<p>Custom gather function. Allows to collect input values using permutation. Uses <code>elementsInSequence</code> to collect several elements in row in sequence, i.e. result[elementsInSequence * i + k] = input[elementsInSequence * permutation[i] + k] for k in 0..elementsInSequence for i in map range</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">InputIterator</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of input source values iterator </td></tr>
@@ -2296,6 +2429,88 @@ Result containers automatically resized to store result count values.</dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Size of the resulting key sequence </dd></dl>
+
+</div>
+</div>
+<a id="ga8762ba8e00425ed444b3109b47610d94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8762ba8e00425ed444b3109b47610d94">&#9670;&nbsp;</a></span>Scatter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputIterator , class MapIterator , class OutputIterator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::compute::event spla::Scatter </td>
+          <td>(</td>
+          <td class="paramtype">MapIterator&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">MapIterator&#160;</td>
+          <td class="paramname"><em>last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIterator&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputIterator&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>elementsInSequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::compute::command_queue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Custom scatter function. Allows to scatter input values using permutation. Uses <code>elementsInSequence</code> to collect several elements in row in sequence, i.e. result[elementsInSequence * permutation[i] + k] = input[elementsInSequence * i + k] for k in 0..elementsInSequence for i in map range</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputIterator</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of input source values iterator </td></tr>
+    <tr><td class="paramname">MapIterator</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of map (permutation iterator) </td></tr>
+    <tr><td class="paramname">OutputIterator</td><td><a class="el" href="classspla_1_1Type.html">Type</a> of output (result) scatter values iterator</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">first</td><td>Begin of map range </td></tr>
+    <tr><td class="paramname">last</td><td>End of map range </td></tr>
+    <tr><td class="paramname">input</td><td>Values to map </td></tr>
+    <tr><td class="paramname">result</td><td>Where to store result </td></tr>
+    <tr><td class="paramname">elementsInSequence</td><td>How much values in sequence to copy </td></tr>
+    <tr><td class="paramname">queue</td><td>Execution queue </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

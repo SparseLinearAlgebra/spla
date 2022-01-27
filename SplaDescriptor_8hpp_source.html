@@ -99,57 +99,78 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLADESCRIPTOR_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLADESCRIPTOR_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaObject_8hpp.html">spla-cpp/SplaObject.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaObject_8hpp.html">spla-cpp/SplaObject.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html">   51</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a4a859eb915864e3e14e36974b69ab8a2">   53</a></span>&#160;        <a class="code" href="classspla_1_1Descriptor.html#a4a859eb915864e3e14e36974b69ab8a2">~Descriptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">   55</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            ValuesSorted,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            NoDuplicates,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            MaskComplement,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            AccumResult,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            ProfileTime,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            TransposeArg1,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            TransposeArg2,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            DeviceId0,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            DeviceId1,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            DeviceId2,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            DeviceId3,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            DeviceId4,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            DeviceId5,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            DeviceId6,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            DeviceId7</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        };</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">void</span> SetParam(Param param, std::string value = std::string());</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordtype">bool</span> GetParam(Param param, std::string &amp;value) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordtype">bool</span> IsParamSet(Param param) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> Make(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="comment">// Map of desc configurable params and its values</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        std::unordered_map&lt;Param, std::string&gt; mParams;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    };</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html">   53</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a4a859eb915864e3e14e36974b69ab8a2">   55</a></span>&#160;        <a class="code" href="classspla_1_1Descriptor.html#a4a859eb915864e3e14e36974b69ab8a2">~Descriptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">   57</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            ValuesSorted,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            NoDuplicates,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            MaskComplement,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            AccumResult,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            ProfileTime,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            DenseFactor,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            TransposeArg1,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            TransposeArg2,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            DeviceId0,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            DeviceId1,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            DeviceId2,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            DeviceId3,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            DeviceId4,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            DeviceId5,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            DeviceId6,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            DeviceId7</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        };</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">void</span> SetParam(Param param, std::string value = std::string());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">void</span> SetParam(Param param, <span class="keywordtype">bool</span> flag);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordtype">bool</span> GetParam(Param param, std::string &amp;value) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordtype">bool</span> RemoveParam(Param param);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordtype">bool</span> IsParamSet(Param param) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLADESCRIPTOR_HPP</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keyword">static</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> Make(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="classspla_1_1Descriptor.html#a892f3ebc4e350e3bbbb1833b535ca84d">  159</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classspla_1_1Descriptor.html#a892f3ebc4e350e3bbbb1833b535ca84d">GetParamT</a>(<a class="code" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param, T &amp;value) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            std::string text;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keyword">auto</span> hasParam = GetParam(param, text);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">if</span> (hasParam) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                std::stringstream ss(text);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                ss &gt;&gt; value;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="keywordflow">return</span> hasParam;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>(<span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="comment">// Map of desc configurable params and its values</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        std::unordered_map&lt;Param, std::string&gt; mParams;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    };</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLADESCRIPTOR_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaObject_8hpp_html"><div class="ttname"><a href="SplaObject_8hpp.html">SplaObject.hpp</a></div></div>
-<div class="ttc" id="aclassspla_1_1Descriptor_html"><div class="ttname"><a href="classspla_1_1Descriptor.html">spla::Descriptor</a></div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:51</div></div>
-<div class="ttc" id="aclassspla_1_1Descriptor_html_a29d3332f5a6911bc7818dfcda33ffa78"><div class="ttname"><a href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">spla::Descriptor::Param</a></div><div class="ttdeci">Param</div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:55</div></div>
+<div class="ttc" id="aclassspla_1_1Descriptor_html"><div class="ttname"><a href="classspla_1_1Descriptor.html">spla::Descriptor</a></div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:53</div></div>
+<div class="ttc" id="aclassspla_1_1Descriptor_html_a29d3332f5a6911bc7818dfcda33ffa78"><div class="ttname"><a href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">spla::Descriptor::Param</a></div><div class="ttdeci">Param</div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:57</div></div>
 <div class="ttc" id="aclassspla_1_1Descriptor_html_a4a859eb915864e3e14e36974b69ab8a2"><div class="ttname"><a href="classspla_1_1Descriptor.html#a4a859eb915864e3e14e36974b69ab8a2">spla::Descriptor::~Descriptor</a></div><div class="ttdeci">~Descriptor() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1Descriptor_html_a892f3ebc4e350e3bbbb1833b535ca84d"><div class="ttname"><a href="classspla_1_1Descriptor.html#a892f3ebc4e350e3bbbb1833b535ca84d">spla::Descriptor::GetParamT</a></div><div class="ttdeci">bool GetParamT(Param param, T &amp;value)</div><div class="ttdoc">Get descriptor param value. If param was set without value, returned string value is empty.</div><div class="ttdef"><b>Definition:</b> SplaDescriptor.hpp:159</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:46</div></div>
 <div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>

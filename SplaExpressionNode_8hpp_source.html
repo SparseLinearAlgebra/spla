@@ -117,107 +117,111 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1VectorDataWrite.html">VectorDataWrite</a>,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <a class="code" href="classspla_1_1ScalarDataRead.html">ScalarDataRead</a>,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="classspla_1_1ScalarDataWrite.html">ScalarDataWrite</a>,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classspla_1_1VectorAssign.html">VectorAssign</a>,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="classspla_1_1MatrixEWiseAdd.html">MatrixEWiseAdd</a>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="classspla_1_1VectorEWiseAdd.html">VectorEWiseAdd</a>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="classspla_1_1ScalarEWiseAdd.html">ScalarEWiseAdd</a>,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="classspla_1_1VectorReduce.html">VectorReduce</a>,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="classspla_1_1MatrixReduceScalar.html">MatrixReduceScalar</a>,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classspla_1_1MxM.html">MxM</a>,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <a class="code" href="classspla_1_1VxM.html">VxM</a>,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            MxV,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            Transpose</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        };</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> &amp;GetArg(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> idx) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;GetDescriptor() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        Operation GetNodeOp() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        std::size_t GetIdx() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classspla_1_1ExpressionNode.html#ab239d4c3d545803e42de811cae1213bf">  103</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1Expression.html">Expression</a>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classspla_1_1ExpressionNode.html#a30ef2d6bcac108f42e6493e88bfe1fcb">  104</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a>(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">Operation</a> operation, <span class="keyword">class</span> <a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;expression, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classspla_1_1VectorToDense.html">VectorToDense</a>,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="classspla_1_1VectorAssign.html">VectorAssign</a>,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="classspla_1_1MatrixEWiseAdd.html">MatrixEWiseAdd</a>,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="classspla_1_1VectorEWiseAdd.html">VectorEWiseAdd</a>,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="classspla_1_1ScalarEWiseAdd.html">ScalarEWiseAdd</a>,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="classspla_1_1VectorReduce.html">VectorReduce</a>,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classspla_1_1MatrixReduceScalar.html">MatrixReduceScalar</a>,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <a class="code" href="classspla_1_1MxM.html">MxM</a>,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <a class="code" href="classspla_1_1VxM.html">VxM</a>,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            MxV,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            Transpose</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        };</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> &amp;GetArg(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> idx) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;GetDescriptor() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        Operation GetNodeOp() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        std::size_t GetIdx() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="classspla_1_1ExpressionNode.html#ab239d4c3d545803e42de811cae1213bf">  105</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1Expression.html">Expression</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classspla_1_1ExpressionNode.html#a30ef2d6bcac108f42e6493e88bfe1fcb">  106</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">void</span> Link(<a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> *next);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">void</span> SetIdx(std::size_t idx);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordtype">bool</span> Belongs(<span class="keyword">class</span> <a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;expression) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">void</span> SetArgs(std::vector&lt;<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a>&gt; &amp;&amp;args);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">void</span> SetDescriptor(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        std::vector&lt;RefPtr&lt;Object&gt;&gt; &amp;GetArgs();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;Object&gt;&gt; &amp;GetArgs() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keyword">const</span> std::vector&lt;ExpressionNode *&gt; &amp;GetPrev() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keyword">const</span> std::vector&lt;ExpressionNode *&gt; &amp;GetNext() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="comment">// Node private content</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        std::vector&lt;RefPtr&lt;Object&gt;&gt; mArgs;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> mDescriptor;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">Operation</a> mNodeOp;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        std::size_t mIdx;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="comment">// Expression impl related</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;mParent;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        std::vector&lt;ExpressionNode *&gt; mPrev;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        std::vector&lt;ExpressionNode *&gt; mNext;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    };</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">namespace </span>{</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *ExpressionNodeOpToStr(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">ExpressionNode::Operation</a> op) {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">switch</span> (op) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa8cd25a24b1a0cedd29e541f2b9d15ab">ExpressionNode::Operation::MatrixDataRead</a>:</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixDataRead&quot;</span>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faabae3f88d56bcbbf497cfa921c73817a">ExpressionNode::Operation::MatrixDataWrite</a>:</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixDataWrite&quot;</span>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa7318a8d59697b2d31dc42a6768f109a">ExpressionNode::Operation::MatrixReduceScalar</a>:</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixReduceScalar&quot;</span>;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa65080258d7f53eb57f6aa25973362191">ExpressionNode::Operation::VectorDataRead</a>:</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorDataRead&quot;</span>;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fad619d6e980ecfd7b0b69050508b88a35">ExpressionNode::Operation::VectorDataWrite</a>:</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorDataWrite&quot;</span>;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52">ExpressionNode::Operation::ScalarDataRead</a>:</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataRead&quot;</span>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775">ExpressionNode::Operation::ScalarDataWrite</a>:</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataWrite&quot;</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fae83f2179785e3f91f06a5707386fd5fb">ExpressionNode::Operation::VectorAssign</a>:</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorAssign&quot;</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5">ExpressionNode::Operation::VectorReduce</a>:</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorReduce&quot;</span>;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">ExpressionNode::Operation::MatrixEWiseAdd</a>:</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixEWiseAdd&quot;</span>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">ExpressionNode::Operation::VectorEWiseAdd</a>:</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorEWiseAdd&quot;</span>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa94a754eba4d3d3f1a02f03da44c9cef7">ExpressionNode::Operation::ScalarEWiseAdd</a>:</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarEWiseAdd&quot;</span>;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fabc428cdf0b4717f6e2dc35213b9e5ec4">ExpressionNode::Operation::MxM</a>:</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MxM&quot;</span>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa8beb564f83b050ee554f87baaea84208">ExpressionNode::Operation::VxM</a>:</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VxM&quot;</span>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faf5419c7ad3580147f9a637339115ecc0">ExpressionNode::Operation::MxV</a>:</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MxV&quot;</span>;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faaf70b1ac863830a4e1ce6268c8399f54">ExpressionNode::Operation::Transpose</a>:</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Transpose&quot;</span>;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }<span class="comment">// namespace</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAEXPRESSIONNODE_HPP</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a>(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">Operation</a> operation, <span class="keyword">class</span> <a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;expression, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordtype">void</span> Link(<a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> *next);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">void</span> SetIdx(std::size_t idx);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">bool</span> Belongs(<span class="keyword">class</span> <a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;expression) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">void</span> SetArgs(std::vector&lt;<a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a>&gt; &amp;&amp;args);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordtype">void</span> SetDescriptor(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> &amp;desc);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        std::vector&lt;RefPtr&lt;Object&gt;&gt; &amp;GetArgs();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keyword">const</span> std::vector&lt;RefPtr&lt;Object&gt;&gt; &amp;GetArgs() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">const</span> std::vector&lt;ExpressionNode *&gt; &amp;GetPrev() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">const</span> std::vector&lt;ExpressionNode *&gt; &amp;GetNext() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="comment">// Node private content</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        std::vector&lt;RefPtr&lt;Object&gt;&gt; mArgs;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Descriptor&gt;</a> mDescriptor;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">Operation</a> mNodeOp;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        std::size_t mIdx;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="comment">// Expression impl related</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Expression.html">Expression</a> &amp;mParent;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        std::vector&lt;ExpressionNode *&gt; mPrev;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        std::vector&lt;ExpressionNode *&gt; mNext;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    };</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">namespace </span>{</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *ExpressionNodeOpToStr(<a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">ExpressionNode::Operation</a> op) {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">switch</span> (op) {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa8cd25a24b1a0cedd29e541f2b9d15ab">ExpressionNode::Operation::MatrixDataRead</a>:</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixDataRead&quot;</span>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faabae3f88d56bcbbf497cfa921c73817a">ExpressionNode::Operation::MatrixDataWrite</a>:</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixDataWrite&quot;</span>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faa7318a8d59697b2d31dc42a6768f109a">ExpressionNode::Operation::MatrixReduceScalar</a>:</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixReduceScalar&quot;</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa65080258d7f53eb57f6aa25973362191">ExpressionNode::Operation::VectorDataRead</a>:</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorDataRead&quot;</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fad619d6e980ecfd7b0b69050508b88a35">ExpressionNode::Operation::VectorDataWrite</a>:</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorDataWrite&quot;</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa5a974d544d52a2e1ac4b00470d4f7e52">ExpressionNode::Operation::ScalarDataRead</a>:</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataRead&quot;</span>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa752784a233651b4aef9ecfe15e5d4775">ExpressionNode::Operation::ScalarDataWrite</a>:</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarDataWrite&quot;</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa025bfe86de6eea0af8ec54fabb5c3ace">ExpressionNode::Operation::VectorToDense</a>:</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorToDense&quot;</span>;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fae83f2179785e3f91f06a5707386fd5fb">ExpressionNode::Operation::VectorAssign</a>:</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorAssign&quot;</span>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5">ExpressionNode::Operation::VectorReduce</a>:</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorReduce&quot;</span>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">ExpressionNode::Operation::MatrixEWiseAdd</a>:</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MatrixEWiseAdd&quot;</span>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">ExpressionNode::Operation::VectorEWiseAdd</a>:</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VectorEWiseAdd&quot;</span>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa94a754eba4d3d3f1a02f03da44c9cef7">ExpressionNode::Operation::ScalarEWiseAdd</a>:</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;ScalarEWiseAdd&quot;</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fabc428cdf0b4717f6e2dc35213b9e5ec4">ExpressionNode::Operation::MxM</a>:</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MxM&quot;</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa8beb564f83b050ee554f87baaea84208">ExpressionNode::Operation::VxM</a>:</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;VxM&quot;</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faf5419c7ad3580147f9a637339115ecc0">ExpressionNode::Operation::MxV</a>:</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;MxV&quot;</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39faaf70b1ac863830a4e1ce6268c8399f54">ExpressionNode::Operation::Transpose</a>:</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Transpose&quot;</span>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }<span class="comment">// namespace</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAEXPRESSIONNODE_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaDescriptor_8hpp_html"><div class="ttname"><a href="SplaDescriptor_8hpp.html">SplaDescriptor.hpp</a></div></div>
 <div class="ttc" id="aSplaObject_8hpp_html"><div class="ttname"><a href="SplaObject_8hpp.html">SplaObject.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionManager_html"><div class="ttname"><a href="classspla_1_1ExpressionManager.html">spla::ExpressionManager</a></div><div class="ttdoc">ExpressionManager.</div><div class="ttdef"><b>Definition:</b> SplaExpressionManager.hpp:58</div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html"><div class="ttname"><a href="classspla_1_1ExpressionNode.html">spla::ExpressionNode</a></div><div class="ttdef"><b>Definition:</b> SplaExpressionNode.hpp:50</div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39f"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39f">spla::ExpressionNode::Operation</a></div><div class="ttdeci">Operation</div><div class="ttdef"><b>Definition:</b> SplaExpressionNode.hpp:55</div></div>
+<div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39fa025bfe86de6eea0af8ec54fabb5c3ace"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa025bfe86de6eea0af8ec54fabb5c3ace">spla::ExpressionNode::Operation::VectorToDense</a></div><div class="ttdeci">@ VectorToDense</div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa14cbcab6a0e75f86ebd5b5f5d4d8787a">spla::ExpressionNode::Operation::VectorEWiseAdd</a></div><div class="ttdeci">@ VectorEWiseAdd</div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa17335c02c86e7a0a2b46540df1e45eb5">spla::ExpressionNode::Operation::VectorReduce</a></div><div class="ttdeci">@ VectorReduce</div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionNode_html_a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e"><div class="ttname"><a href="classspla_1_1ExpressionNode.html#a167b26d5aa4562ed9d6b178fe2a3b39fa2ef63891f20bd47306716d68f6a58c8e">spla::ExpressionNode::Operation::MatrixEWiseAdd</a></div><div class="ttdeci">@ MatrixEWiseAdd</div></div>
@@ -252,6 +256,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1VectorDataWrite_html"><div class="ttname"><a href="classspla_1_1VectorDataWrite.html">spla::VectorDataWrite</a></div><div class="ttdef"><b>Definition:</b> SplaVectorDataWrite.hpp:35</div></div>
 <div class="ttc" id="aclassspla_1_1VectorEWiseAdd_html"><div class="ttname"><a href="classspla_1_1VectorEWiseAdd.html">spla::VectorEWiseAdd</a></div><div class="ttdef"><b>Definition:</b> SplaVectorEWiseAdd.hpp:35</div></div>
 <div class="ttc" id="aclassspla_1_1VectorReduce_html"><div class="ttname"><a href="classspla_1_1VectorReduce.html">spla::VectorReduce</a></div><div class="ttdef"><b>Definition:</b> SplaVectorReduce.hpp:35</div></div>
+<div class="ttc" id="aclassspla_1_1VectorToDense_html"><div class="ttname"><a href="classspla_1_1VectorToDense.html">spla::VectorToDense</a></div><div class="ttdef"><b>Definition:</b> SplaVectorToDense.hpp:35</div></div>
 <div class="ttc" id="aclassspla_1_1VxM_html"><div class="ttname"><a href="classspla_1_1VxM.html">spla::VxM</a></div><div class="ttdef"><b>Definition:</b> SplaVxM.hpp:35</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->

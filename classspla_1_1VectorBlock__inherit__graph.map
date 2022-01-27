@@ -1,5 +1,6 @@
 <map id="spla::VectorBlock" name="spla::VectorBlock">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,128,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1VectorCOO.html" title=" " alt="" coords="7,155,126,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="21,5,113,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="77,80,199,107"/>
+<area shape="rect" id="node3" href="$classspla_1_1VectorCOO.html" title=" " alt="" coords="5,155,124,181"/>
+<area shape="rect" id="node4" href="$classspla_1_1VectorDense.html" title=" " alt="" coords="148,155,275,181"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="92,5,184,32"/>
 </map>
