@@ -73,7 +73,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
                 compute::context ctx = library->GetContext();
                 compute::device device = library->GetDeviceManager().GetDevice(deviceId);
                 compute::command_queue queue(ctx, device);
-                QueueFinisher finisher(queue);
+                QueueFinisher finisher(queue, logger);
 
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

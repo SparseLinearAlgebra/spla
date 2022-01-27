@@ -106,7 +106,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
             auto device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
-            QueueFinisher finisher(queue);
+            QueueFinisher finisher(queue, logger);
 
             // Where to start copy process
             std::size_t NblockCols = storage->GetNblockCols();

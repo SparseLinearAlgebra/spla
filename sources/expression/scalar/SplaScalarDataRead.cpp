@@ -62,7 +62,7 @@ void spla::ScalarDataRead::Process(std::size_t nodeIdx, const spla::Expression &
         compute::device device = deviceMan.GetDevice(deviceId);
         compute::context ctx = library.GetContext();
         compute::command_queue queue(ctx, device);
-        QueueFinisher finisher(queue);
+        QueueFinisher finisher(queue, library.GetLogger());
 
         compute::copy(deviceValue->GetVal().begin(), deviceValue->GetVal().end(), hostValue, queue);
     }

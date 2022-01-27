@@ -61,7 +61,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+    QueueFinisher finisher(queue, library->GetLogger());
 
     auto a = p->a.Cast<VectorCOO>();
     auto b = p->b.Cast<MatrixCOO>();

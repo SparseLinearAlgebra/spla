@@ -59,7 +59,7 @@ void spla::VectorReduceCOO::Process(spla::AlgorithmParams &params) {
 
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+    QueueFinisher finisher(queue, library->GetLogger());
 
     compute::vector<unsigned char> result = Reduce2(vector->GetVals(), valueByteSize, reduceOp->GetSource(), queue);
 

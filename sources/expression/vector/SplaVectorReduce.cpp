@@ -93,7 +93,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
         auto &ctx = library->GetContext();
         auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
-        QueueFinisher finisher(queue);
+        QueueFinisher finisher(queue, logger);
         argS->GetStorage()->SetValue(ScalarValue::Make(intermediateBuffer->Reduce(argOp, queue)));
         SPDLOG_LOGGER_TRACE(logger, "Final reduce of intermediate buffer, nnz={}", intermediateBuffer->GetNScalars());
     });

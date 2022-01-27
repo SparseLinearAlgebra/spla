@@ -60,7 +60,7 @@ void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
         boost::compute::context ctx = library->GetContext();
         boost::compute::command_queue queue(ctx, device);
 
-        QueueFinisher finisher(queue);
+        QueueFinisher finisher(queue, logger);
         argResult->GetStorage()->SetValue(ScalarValue::Make(
                 Add(argA->GetStorage()->GetValue()->GetVal(),
                     argB->GetStorage()->GetValue()->GetVal(),
