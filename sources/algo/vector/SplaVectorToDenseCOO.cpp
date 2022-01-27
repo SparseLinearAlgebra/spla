@@ -25,54 +25,73 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
+#include <algo/vector/SplaVectorToDenseCOO.hpp>
+#include <compute/SplaCopyUtils.hpp>
+#include <compute/SplaScatter.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <expression/scalar/SplaScalarDataWrite.hpp>
-#include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#include <storage/block/SplaVectorCOO.hpp>
+#include <storage/block/SplaVectorDense.hpp>
+#include <utils/SplaProfiling.hpp>
 
-bool spla::ScalarDataWrite::Select(std::size_t, const spla::Expression &) {
-    return true;
+bool spla::VectorToDenseCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVectorToDense *>(&params);
+
+    return p &&
+           p->v.Is<VectorCOO>();
 }
 
-void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
-    auto &nodes = expression.GetNodes();
-    auto &node = nodes[nodeIdx];
-    auto &library = node->GetLibrary().GetPrivate();
-
-    auto scalar = node->GetArg(0).Cast<Scalar>();
-    auto data = node->GetArg(1).Cast<DataScalar>();
-    auto desc = node->GetDescriptor();
-    auto &type = scalar->GetType();
-    auto byteSize = type->GetByteSize();
-    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
-
-    assert(scalar);
-    assert(data);
-    assert(desc);
-    assert(type->HasValues());
-    assert(hostValue);
-
+void spla::VectorToDenseCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    auto &deviceMan = library.GetDeviceManager();
-    auto deviceId = deviceMan.FetchDevice(node);
+    PF_SCOPE(ctd, "-coo2dense-");
 
-    compute::device device = deviceMan.GetDevice(deviceId);
-    compute::context ctx = library.GetContext();
+    auto p = dynamic_cast<ParamsVectorToDense *>(&params);
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
+
+    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue);
 
-    compute::vector<unsigned char> deviceValue(byteSize, ctx);
-    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
+    auto v = p->v.Cast<VectorCOO>();
+    auto nrows = v->GetNrows();
+    auto byteSize = p->byteSize;
+    auto cooNvals = v->GetNvals();
+    auto &cooRows = v->GetRows();
+    auto &cooVals = v->GetVals();
 
-    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
-    scalar->GetStorage()->SetValue(scalarValue);
+    assert(nrows > 0);
+    assert(cooNvals > 0);
 
-    SPDLOG_LOGGER_TRACE(library.GetLogger(), "Write value byteSize={}", byteSize);
+    PF_SCOPE_MARK(ctd, "setup");
+
+    // Dense storage for all values
+    compute::vector<Index> denseMask(nrows, ctx);
+    compute::vector<unsigned char> denseVals(ctx);
+
+    BOOST_COMPUTE_CLOSURE(void, applyMask, (unsigned int rowId), (denseMask), { denseMask[rowId] = 1u; });
+    compute::fill_n(denseMask.begin(), nrows, 0u, queue);
+    compute::for_each(cooRows.begin(), cooRows.end(), applyMask, queue);
+
+    PF_SCOPE_MARK(ctd, "gen mask");
+
+    // Fill existing values
+    if (byteSize > 0) {
+        denseVals.resize(nrows * byteSize, queue);
+        Scatter(cooRows.begin(), cooRows.end(), cooVals.begin(), denseVals.begin(), byteSize, queue);
+    }
+
+    PF_SCOPE_MARK(ctd, "scatter coo");
+
+    // Save result as dense block
+    p->w = VectorDense::Make(nrows, cooNvals, std::move(denseMask), std::move(denseVals)).As<VectorBlock>();
 }
 
-spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {
-    return ExpressionNode::Operation::ScalarDataWrite;
+spla::Algorithm::Type spla::VectorToDenseCOO::GetType() const {
+    return spla::Algorithm::Type::VectorToDense;
+}
+
+std::string spla::VectorToDenseCOO::GetName() const {
+    return "SplaVectorToDenseCOO";
 }

@@ -25,54 +25,68 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <boost/compute.hpp>
+#include <algo/SplaAlgorithmManager.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <core/SplaQueueFinisher.hpp>
-#include <expression/scalar/SplaScalarDataWrite.hpp>
+#include <expression/vector/SplaVectorToDense.hpp>
 #include <storage/SplaScalarStorage.hpp>
-#include <storage/SplaScalarValue.hpp>
+#include <storage/SplaVectorStorage.hpp>
 
-bool spla::ScalarDataWrite::Select(std::size_t, const spla::Expression &) {
+bool spla::VectorToDense::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
-void spla::ScalarDataWrite::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
+void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
-    auto &library = node->GetLibrary().GetPrivate();
+    auto library = node->GetLibrary().GetPrivatePtr();
 
-    auto scalar = node->GetArg(0).Cast<Scalar>();
-    auto data = node->GetArg(1).Cast<DataScalar>();
+    auto argW = node->GetArg(0).Cast<Vector>();
+    auto argV = node->GetArg(1).Cast<Vector>();
     auto desc = node->GetDescriptor();
-    auto &type = scalar->GetType();
-    auto byteSize = type->GetByteSize();
-    auto hostValue = reinterpret_cast<const unsigned char *>(data->GetValue());
 
-    assert(scalar);
-    assert(data);
-    assert(desc);
-    assert(type->HasValues());
-    assert(hostValue);
+    assert(argW.IsNotNull());
+    assert(argV.IsNotNull());
 
-    using namespace boost;
+    VectorStorage::EntryList entriesInMatrix;
+    VectorStorage::EntryList entries;
 
-    auto &deviceMan = library.GetDeviceManager();
-    auto deviceId = deviceMan.FetchDevice(node);
+    argV->GetStorage()->GetBlocks(entriesInMatrix);
+    argW->GetStorage()->Clear();
 
-    compute::device device = deviceMan.GetDevice(deviceId);
-    compute::context ctx = library.GetContext();
-    compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+    // Determine which entries not in dense format to convert
+    for (auto &entry : entriesInMatrix) {
+        if (entry.second->GetFormat() != VectorBlock::Format::Dense)
+            entries.push_back(entry);
+        else
+            argW->GetStorage()->SetBlock(entry.first, entry.second);
+    }
 
-    compute::vector<unsigned char> deviceValue(byteSize, ctx);
-    compute::copy(hostValue, hostValue + byteSize, deviceValue.begin(), queue);
+    // No entries => nothing to do
+    if (entries.empty())
+        return;
 
-    auto scalarValue = ScalarValue::Make(std::move(deviceValue));
-    scalar->GetStorage()->SetValue(scalarValue);
+    auto devicesCount = entries.size();
+    auto devicesIds = library->GetDeviceManager().FetchDevices(devicesCount, node);
 
-    SPDLOG_LOGGER_TRACE(library.GetLogger(), "Write value byteSize={}", byteSize);
+    for (std::size_t i = 0; i < entries.size(); i++) {
+        auto deviceId = devicesIds[i];
+        auto entry = entries[i];
+        builder.Emplace("vec-sp2dn", [=]() {
+            ParamsVectorToDense params;
+            params.deviceId = deviceId;
+            params.desc = desc;
+            params.v = entry.second;
+            params.byteSize = argV->GetType()->GetByteSize();
+            library->GetAlgoManager()->Dispatch(Algorithm::Type::VectorToDense, params);
+
+            if (params.w.IsNotNull()) {
+                argW->GetStorage()->SetBlock(entry.first, params.w);
+                SPDLOG_LOGGER_TRACE(library->GetLogger(), "Convert block={} to dense", entry.first);
+            }
+        });
+    }
 }
 
-spla::ExpressionNode::Operation spla::ScalarDataWrite::GetOperationType() const {
-    return ExpressionNode::Operation::ScalarDataWrite;
+spla::ExpressionNode::Operation spla::VectorToDense::GetOperationType() const {
+    return spla::ExpressionNode::Operation::VectorToDense;
 }

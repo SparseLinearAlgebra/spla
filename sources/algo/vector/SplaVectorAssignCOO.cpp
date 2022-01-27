@@ -26,11 +26,13 @@
 /**********************************************************************************/
 
 #include <algo/vector/SplaVectorAssignCOO.hpp>
+#include <compute/SplaCopyUtils.hpp>
 #include <compute/SplaGather.hpp>
 #include <compute/SplaMaskByKey.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+
 
 bool spla::VectorAssignCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVectorAssign *>(&params);
@@ -92,12 +94,8 @@ void spla::VectorAssignCOO::Process(spla::AlgorithmParams &params) {
     auto nvals = rows.size();
 
     // If type has values, gather it (for each nnz value assign scalar value)
-    if (nvals > 0 && type->HasValues()) {
-        vals.resize(nvals * type->GetByteSize(), queue);
-        auto mapIdBegin = compute::constant_iterator<unsigned int>(0, 0);
-        auto mapIdEnd = compute::constant_iterator<unsigned int>(0, nvals);
-        Gather(mapIdBegin, mapIdEnd, s->GetVal().begin(), vals.begin(), type->GetByteSize(), queue);
-    }
+    if (nvals > 0 && type->HasValues())
+        FillPattern(s->GetVal(), vals, nvals, queue);
 
     // If after masking has values, store new block
     if (nvals)

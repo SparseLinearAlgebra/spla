@@ -32,6 +32,8 @@
 #include <boost/compute/container/vector.hpp>
 #include <boost/compute/detail/meta_kernel.hpp>
 
+#include <compute/SplaGather.hpp>
+
 #include <cassert>
 #include <iostream>
 
@@ -110,6 +112,22 @@ namespace spla {
         compiledKernel.set_arg(argIndices, indices.get_buffer());
 
         return queue.enqueue_1d_range_kernel(compiledKernel, 0, indices.size(), 0);
+    }
+
+    inline boost::compute::event FillPattern(const boost::compute::vector<unsigned char> &pattern,
+                                             boost::compute::vector<unsigned char> &output,
+                                             std::size_t nvals,
+                                             boost::compute::command_queue &queue) {
+        using namespace boost;
+
+        assert(nvals > 0);
+        assert(!pattern.empty());
+
+        output.resize(nvals * pattern.size());
+
+        auto mapIdBegin = compute::constant_iterator<unsigned int>(0, 0);
+        auto mapIdEnd = compute::constant_iterator<unsigned int>(0, nvals);
+        return Gather(mapIdBegin, mapIdEnd, pattern.begin(), output.begin(), pattern.size(), queue);
     }
 
 }// namespace spla

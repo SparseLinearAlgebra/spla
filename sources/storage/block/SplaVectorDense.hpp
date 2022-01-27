@@ -25,48 +25,47 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaDescriptor.hpp>
+#ifndef SPLA_SPLAVECTORDENSE_H
+#define SPLA_SPLAVECTORDENSE_H
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
-}
+#include <boost/compute.hpp>
+#include <storage/SplaVectorBlock.hpp>
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
-    mParams.emplace(param, std::move(value));
-}
+namespace spla {
 
-void spla::Descriptor::SetParam(Param param, bool flag) {
-    if (flag)
-        SetParam(param, std::string{});
-    else
-        RemoveParam(param);
-}
+    /**
+     * @addtogroup Internal
+     * @{
+     */
 
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
-    auto query = mParams.find(param);
+    class VectorDense final : public VectorBlock {
+    public:
+        using Mask = boost::compute::vector<Index>;
+        using Values = boost::compute::vector<unsigned char>;
 
-    if (query != mParams.end()) {
-        value = query->second;
-        return true;
-    }
+        ~VectorDense() override = default;
 
-    return false;
-}
+        [[nodiscard]] const Mask &GetMask() const noexcept;
 
-bool spla::Descriptor::RemoveParam(Param param) {
-    auto query = mParams.find(param);
+        [[nodiscard]] const Values &GetVals() const noexcept;
 
-    if (query != mParams.end()) {
-        mParams.erase(query);
-        return true;
-    }
+        std::size_t GetMemoryUsage() const override;
 
-    return false;
-}
+        void Dump(std::ostream &stream, unsigned int baseI) const override;
 
-bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
-    return mParams.find(param) != mParams.end();
-}
+        static RefPtr<VectorDense> Make(std::size_t nrows, std::size_t nvals, Mask mask, Values vals);
 
-spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
-    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
-}
+    private:
+        VectorDense(std::size_t nrows, std::size_t nvals, Mask mask, Values vals);
+
+        Mask mMask;
+        Values mVals;
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_SPLAVECTORDENSE_H

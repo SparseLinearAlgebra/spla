@@ -25,48 +25,30 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaDescriptor.hpp>
+#ifndef SPLA_SPLAVECTOREWISEADDDENSE_HPP
+#define SPLA_SPLAVECTOREWISEADDDENSE_HPP
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
-}
+#include <algo/SplaAlgorithm.hpp>
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
-    mParams.emplace(param, std::move(value));
-}
+namespace spla {
+    /**
+     * @class VectorEWiseAddDense
+     * @brief VectorEWiseAddDense
+     *
+     * Element-wise vector addition for sparse and dense blocks.
+     * Supports following input params cases:
+     *   - dense w = sparse a +  dense b
+     *   - dense w = dense a  +  sparse b
+     *   - dense w = dense a  +  dense b
+     */
+    class VectorEWiseAddDense final : public Algorithm {
+    public:
+        ~VectorEWiseAddDense() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
+}// namespace spla
 
-void spla::Descriptor::SetParam(Param param, bool flag) {
-    if (flag)
-        SetParam(param, std::string{});
-    else
-        RemoveParam(param);
-}
-
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
-    auto query = mParams.find(param);
-
-    if (query != mParams.end()) {
-        value = query->second;
-        return true;
-    }
-
-    return false;
-}
-
-bool spla::Descriptor::RemoveParam(Param param) {
-    auto query = mParams.find(param);
-
-    if (query != mParams.end()) {
-        mParams.erase(query);
-        return true;
-    }
-
-    return false;
-}
-
-bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
-    return mParams.find(param) != mParams.end();
-}
-
-spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
-    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
-}
+#endif//SPLA_SPLAVECTOREWISEADDDENSE_HPP

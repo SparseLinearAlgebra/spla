@@ -65,6 +65,8 @@ namespace spla {
             ScalarDataRead,
             /** Write scalar data from the host buffers */
             ScalarDataWrite,
+            /** Vector to dense convert */
+            VectorToDense,
             /** Vector scalar assignment */
             VectorAssign,
             /** Matrix element-wise addition */
@@ -148,6 +150,8 @@ namespace spla {
                     return "ScalarDataRead";
                 case ExpressionNode::Operation::ScalarDataWrite:
                     return "ScalarDataWrite";
+                case ExpressionNode::Operation::VectorToDense:
+                    return "VectorToDense";
                 case ExpressionNode::Operation::VectorAssign:
                     return "VectorAssign";
                 case ExpressionNode::Operation::VectorReduce:

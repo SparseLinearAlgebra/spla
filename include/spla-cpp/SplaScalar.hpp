@@ -40,8 +40,8 @@ namespace spla {
 
     /**
      * @class Scalar
+     * @brief Single scalar value of specified Type.
      *
-     * Single scalar value of specified Type.
      * Can be used in matrix and vector expressions as additional initial value or param.
      *
      * @note Can be empty, i.e. contain no value.

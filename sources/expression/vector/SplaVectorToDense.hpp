@@ -25,48 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaDescriptor.hpp>
+#ifndef SPLA_SPLAVECTORTODENSE_HPP
+#define SPLA_SPLAVECTORTODENSE_HPP
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
-}
+#include <expression/SplaNodeProcessor.hpp>
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
-    mParams.emplace(param, std::move(value));
-}
+namespace spla {
 
-void spla::Descriptor::SetParam(Param param, bool flag) {
-    if (flag)
-        SetParam(param, std::string{});
-    else
-        RemoveParam(param);
-}
+    class VectorToDense final : public NodeProcessor {
+    public:
+        ~VectorToDense() override = default;
+        bool Select(std::size_t nodeIdx, const Expression &expression) override;
+        void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
+        ExpressionNode::Operation GetOperationType() const override;
+    };
 
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
-    auto query = mParams.find(param);
+}// namespace spla
 
-    if (query != mParams.end()) {
-        value = query->second;
-        return true;
-    }
-
-    return false;
-}
-
-bool spla::Descriptor::RemoveParam(Param param) {
-    auto query = mParams.find(param);
-
-    if (query != mParams.end()) {
-        mParams.erase(query);
-        return true;
-    }
-
-    return false;
-}
-
-bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
-    return mParams.find(param) != mParams.end();
-}
-
-spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
-    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
-}
+#endif//SPLA_SPLAVECTORTODENSE_HPP

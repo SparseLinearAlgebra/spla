@@ -121,7 +121,10 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
 
         const std::size_t valueByteSize = argType->GetByteSize();
         boost::compute::vector<unsigned char> reduced = intermediateBuffer->Reduce(argReduce, queue);
+
+#ifdef SPLA_DEBUG
         const std::size_t reducedBufferSize = reduced.size();
+#endif
 
         if (hasAccum) {
             argScalar->GetStorage()->SetValue(ScalarValue::Make(
@@ -134,10 +137,8 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
             argScalar->GetStorage()->SetValue(ScalarValue::Make(std::move(reduced)));
         }
 
-        SPDLOG_LOGGER_TRACE(logger,
-                            "Reduce final reduce of intermediate buffer, nnz={}, accum: {}",
-                            reducedBufferSize / valueByteSize,
-                            hasAccum ? "true" : "false");
+        SPDLOG_LOGGER_TRACE(logger, "Reduce final reduce of intermediate buffer, nnz={}, accum: {}",
+                            reducedBufferSize / valueByteSize, hasAccum ? "true" : "false");
     });
 
     for (auto &blockReduce : reduceBlocksTasks) {

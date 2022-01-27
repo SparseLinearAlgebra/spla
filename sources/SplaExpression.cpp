@@ -207,6 +207,23 @@ spla::Expression::MakeDataRead(const RefPtr<Scalar> &scalar,
 }
 
 spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeToDense(const RefPtr<Vector> &w,
+                              const RefPtr<Vector> &v,
+                              const RefPtr<Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(v.IsNotNull(), NullPointer, "v can't be null");
+    CHECK_RAISE_ERROR(w->GetType() == v->GetType(), InvalidType, "Type must be compatible");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            v.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::VectorToDense,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
 spla::Expression::MakeAssign(const spla::RefPtr<spla::Vector> &w,
                              const spla::RefPtr<spla::Vector> &mask,
                              const spla::RefPtr<FunctionBinary> &accum,

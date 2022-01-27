@@ -25,48 +25,67 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaDescriptor.hpp>
+#include <cassert>
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
+#include <storage/block/SplaVectorDense.hpp>
+
+spla::RefPtr<spla::VectorDense> spla::VectorDense::Make(std::size_t nrows, std::size_t nvals, Mask mask, Values vals) {
+    return {new VectorDense(nrows, nvals, std::move(mask), std::move(vals))};
 }
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
-    mParams.emplace(param, std::move(value));
+spla::VectorDense::VectorDense(std::size_t nrows, std::size_t nvals, Mask mask, Values vals)
+    : VectorBlock(nrows, nvals, Format::Dense), mMask(std::move(mask)), mVals(std::move(vals)) {
 }
 
-void spla::Descriptor::SetParam(Param param, bool flag) {
-    if (flag)
-        SetParam(param, std::string{});
-    else
-        RemoveParam(param);
+const spla::VectorDense::Mask &spla::VectorDense::GetMask() const noexcept {
+    return mMask;
 }
 
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
-    auto query = mParams.find(param);
+const spla::VectorDense::Values &spla::VectorDense::GetVals() const noexcept {
+    return mVals;
+}
 
-    if (query != mParams.end()) {
-        value = query->second;
-        return true;
+std::size_t spla::VectorDense::GetMemoryUsage() const {
+    return mMask.size() * sizeof(Index) + mVals.size();
+}
+
+void spla::VectorDense::Dump(std::ostream &stream, unsigned int baseI) const {
+    using namespace boost;
+    compute::context context = mVals.get_buffer().get_context();
+    compute::command_queue queue(context, context.get_device());
+
+    std::vector<unsigned int> mask(mMask.size());
+    std::vector<unsigned char> vals;
+
+    compute::copy(mMask.begin(), mMask.end(), mask.begin(), queue);
+
+    auto hasValues = !mVals.empty();
+    auto byteSize = mVals.size() / GetNvals();
+
+    if (hasValues) {
+        vals.resize(mVals.size());
+        compute::copy(mVals.begin(), mVals.end(), vals.begin(), queue);
     }
 
-    return false;
-}
+    stream << "Vector " << GetNrows()
+           << " nvals=" << GetNvals()
+           << " bsize=" << byteSize
+           << " format=dense" << std::endl;
 
-bool spla::Descriptor::RemoveParam(Param param) {
-    auto query = mParams.find(param);
+    std::size_t k = 0;
 
-    if (query != mParams.end()) {
-        mParams.erase(query);
-        return true;
+    for (std::size_t i = 0; i < GetNrows(); i++) {
+        if (mask[i]) {
+            stream << "[" << k++ << "] " << baseI + i << " ";
+            stream << std::hex;
+
+            auto offset = i * byteSize;
+            for (std::size_t byte = 0; byte < byteSize; byte++) {
+                stream << static_cast<unsigned int>(vals[offset + byte]);
+            }
+
+            stream << std::endl
+                   << std::dec;
+        }
     }
-
-    return false;
-}
-
-bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
-    return mParams.find(param) != mParams.end();
-}
-
-spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
-    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
 }

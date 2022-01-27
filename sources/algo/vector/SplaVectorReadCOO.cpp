@@ -25,48 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla-cpp/SplaDescriptor.hpp>
+#include <algo/vector/SplaVectorReadCOO.hpp>
+#include <core/SplaLibraryPrivate.hpp>
+#include <core/SplaQueueFinisher.hpp>
+#include <storage/block/SplaVectorCOO.hpp>
 
-spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
+bool spla::VectorReadCOO::Select(const spla::AlgorithmParams &params) const {
+    auto p = dynamic_cast<const ParamsVectorRead *>(&params);
+
+    return p &&
+           p->v.Is<VectorCOO>();
 }
 
-void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
-    mParams.emplace(param, std::move(value));
-}
+void spla::VectorReadCOO::Process(spla::AlgorithmParams &params) {
+    using namespace boost;
 
-void spla::Descriptor::SetParam(Param param, bool flag) {
-    if (flag)
-        SetParam(param, std::string{});
-    else
-        RemoveParam(param);
-}
+    auto p = dynamic_cast<ParamsVectorRead *>(&params);
+    auto library = p->desc->GetLibrary().GetPrivatePtr();
 
-bool spla::Descriptor::GetParam(spla::Descriptor::Param param, std::string &value) const {
-    auto query = mParams.find(param);
+    auto device = library->GetDeviceManager().GetDevice(p->deviceId);
+    compute::context ctx = library->GetContext();
+    compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
 
-    if (query != mParams.end()) {
-        value = query->second;
-        return true;
+    auto v = p->v.Cast<VectorCOO>();
+    auto d = p->d;
+
+    auto hostRows = d->GetRows();
+    auto hostVals = reinterpret_cast<unsigned char *>(d->GetVals());
+
+    assert(hostRows || hostVals);
+
+    SPDLOG_LOGGER_TRACE(library->GetLogger(), "Copy vector size={} storage nvals={} offset={}",
+                        v->GetNrows(), v->GetNvals(), p->offset);
+
+    if (hostRows) {
+        auto &deviceRows = v->GetRows();
+        compute::copy(deviceRows.begin(), deviceRows.end(), &hostRows[p->offset], queue);
+        for (std::size_t i = 0; i < deviceRows.size(); i++)
+            hostRows[p->offset + i] += p->baseI;
     }
 
-    return false;
-}
-
-bool spla::Descriptor::RemoveParam(Param param) {
-    auto query = mParams.find(param);
-
-    if (query != mParams.end()) {
-        mParams.erase(query);
-        return true;
+    if (hostVals && p->byteSize) {
+        auto &deviceVals = v->GetVals();
+        compute::copy(deviceVals.begin(), deviceVals.end(), &hostVals[p->offset * p->byteSize], queue);
     }
-
-    return false;
 }
 
-bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
-    return mParams.find(param) != mParams.end();
+spla::Algorithm::Type spla::VectorReadCOO::GetType() const {
+    return spla::Algorithm::Type::VectorRead;
 }
 
-spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {
-    return spla::RefPtr<spla::Descriptor>(new Descriptor(library));
+std::string spla::VectorReadCOO::GetName() const {
+    return "VectorReadCOO";
 }

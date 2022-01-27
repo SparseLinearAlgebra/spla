@@ -36,7 +36,6 @@
 #include <compute/SplaReduceDuplicates.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
-#include <spla-cpp/SplaUtils.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
 #include <utils/SplaProfiling.hpp>
 
@@ -53,7 +52,7 @@ bool spla::VectorEWiseAddCOO::Select(const spla::AlgorithmParams &params) const 
 void spla::VectorEWiseAddCOO::Process(spla::AlgorithmParams &params) {
     using namespace boost;
 
-    PF_SCOPE(eadd, "-veadd-");
+    PF_SCOPE(eadd, "-veadd-coo-");
 
     auto p = dynamic_cast<ParamsVectorEWiseAdd *>(&params);
     auto w = p->w;

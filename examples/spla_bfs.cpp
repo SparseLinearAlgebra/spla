@@ -39,6 +39,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options.add_option("", cxxopts::Option("dense-factor", "factor used to dense transition", cxxopts::value<float>()->default_value("1.0f")));
     options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
     auto args = options.parse(argc, argv);
 
@@ -56,6 +57,7 @@ int main(int argc, const char *const *argv) {
     bool ignoreValues = true;
     bool verbose;
     bool debugTiming;
+    float denseFactor;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -65,6 +67,7 @@ int main(int argc, const char *const *argv) {
         undirected = args["undirected"].as<bool>();
         verbose = args["verbose"].as<bool>();
         debugTiming = args["debug-timing"].as<bool>();
+        denseFactor = args["dense-factor"].as<float>();
     } catch (const std::exception &e) {
         std::cerr << "Invalid input arguments: " << e.what();
         return 1;
@@ -100,20 +103,21 @@ int main(int argc, const char *const *argv) {
     prepareData->MakeDataWrite(M, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), nullptr, loader.GetNvals(), library));
     prepareData->SubmitWait();
 
-    spla::AlgoDescriptor descriptor;
-    descriptor.timing = debugTiming;
+    spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
+    desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
+    desc->SetParam(spla::Descriptor::Param::DenseFactor, std::to_string(denseFactor));
 
     // Warm up phase
     spla::CpuTimer tWarmUp;
     tWarmUp.Start();
-    spla::Bfs(v, M, source, descriptor);
+    spla::Bfs(v, M, source, desc);
     tWarmUp.Stop();
 
     // Main phase, measure iterations
     std::vector<spla::CpuTimer> tIters(niters);
     for (int i = 0; i < niters; i++) {
         tIters[i].Start();
-        spla::Bfs(v, M, source, descriptor);
+        spla::Bfs(v, M, source, desc);
         tIters[i].Stop();
     }
 

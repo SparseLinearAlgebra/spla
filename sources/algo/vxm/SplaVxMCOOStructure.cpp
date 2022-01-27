@@ -29,13 +29,16 @@
 #include <boost/compute/algorithm/scatter_if.hpp>
 
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
+#include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaTransformValues.hpp>
+#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCSR.hpp>
 #include <storage/block/SplaVectorCOO.hpp>
+#include <storage/block/SplaVectorDense.hpp>
 #include <utils/SplaProfiling.hpp>
 
 #include <numeric>
@@ -46,9 +49,9 @@ bool spla::VxMCOOStructure::Select(const spla::AlgorithmParams &params) const {
     return p &&
            !p->tw->HasValues() &&
            p->w.Is<VectorCOO>() &&
-           p->mask.Is<VectorCOO>() &&
            p->a.Is<VectorCOO>() &&
-           p->b.Is<MatrixCOO>();
+           p->b.Is<MatrixCOO>() &&
+           (p->mask.Is<VectorCOO>() || p->mask.Is<VectorDense>());
 }
 
 void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
@@ -65,10 +68,9 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
 
     auto a = p->a.Cast<VectorCOO>();
     auto b = p->b.Cast<MatrixCOO>();
-    auto mask = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
-    if (p->hasMask && !complementMask && mask.IsNull())
+    if (p->hasMask && !complementMask && p->mask.IsNull())
         return;
 
     if (a->GetNvals() == 0 || b->GetNvals() == 0)
@@ -204,16 +206,20 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     PF_SCOPE_MARK(vxm, "define nnz");
 
     // Apply mask to define, which indices we are interested in
-    if (p->hasMask && mask.IsNotNull()) {
-        if (complementMask) {
-            BOOST_COMPUTE_CLOSURE(void, assignZero, (unsigned int i), (resultStructure), { resultStructure[i] = 0u; });
-            compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignZero, queue);
+    if (p->hasMask && p->mask.IsNotNull()) {
+        assert(p->mask->GetFormat() == VectorBlock::Format::COO || p->mask->GetFormat() == VectorBlock::Format::Dense);
+        CHECK_RAISE_ERROR(p->mask->GetFormat() == VectorBlock::Format::COO || p->mask->GetFormat() == VectorBlock::Format::Dense,
+                          NotImplemented, "Other mask block type not supported yet");
+
+        if (p->mask->GetFormat() == VectorBlock::Format::COO) {
+            auto mask = p->mask.Cast<VectorCOO>();
+            assert(mask.IsNotNull());
+            ApplyMaskDenseSparse(resultStructure, mask->GetRows(), complementMask, queue);
         } else {
-            compute::vector<Index> masked(N, ctx);
-            BOOST_COMPUTE_CLOSURE(void, assignOne, (unsigned int i), (masked, resultStructure), { masked[i] = resultStructure[i]; });
-            compute::fill(masked.begin(), masked.end(), 0u, queue);
-            compute::for_each(mask->GetRows().begin(), mask->GetRows().end(), assignOne, queue);
-            std::swap(masked, resultStructure);
+            auto mask = p->mask.Cast<VectorDense>();
+            assert(mask.IsNotNull());
+            auto &stencil = mask->GetMask();
+            ApplyMaskDenseDense(resultStructure, stencil, complementMask, queue);
         }
     }
 
@@ -242,7 +248,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
         compute::for_each_n(compute::counting_iterator<unsigned int>(0), N, copyResult, queue);
         PF_SCOPE_MARK(vxm, "copy row indices");
 
-        compute::stable_sort(rows.begin(), rows.end(), queue);
+        compute::sort(rows.begin(), rows.end(), queue);
         PF_SCOPE_MARK(vxm, "sort row indices");
 
         p->w = VectorCOO::Make(N, resultNnz, std::move(rows), compute::vector<unsigned char>(ctx)).As<VectorBlock>();

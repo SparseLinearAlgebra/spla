@@ -40,7 +40,7 @@ namespace spla {
 
     class VectorCOO final : public VectorBlock {
     public:
-        using Indices = boost::compute::vector<unsigned int>;
+        using Indices = boost::compute::vector<Index>;
         using Values = boost::compute::vector<unsigned char>;
 
         ~VectorCOO() override = default;
@@ -48,6 +48,8 @@ namespace spla {
         [[nodiscard]] const Indices &GetRows() const noexcept;
 
         [[nodiscard]] const Values &GetVals() const noexcept;
+
+        std::size_t GetMemoryUsage() const override;
 
         void Dump(std::ostream &stream, unsigned int baseI) const override;
 
