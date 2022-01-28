@@ -1,39 +1,40 @@
 <map id="sources/utils/SplaScalarBuffer.cpp" name="sources/utils/SplaScalarBuffer.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="1350,5,1513,47"/>
-<area shape="rect" id="node2" href="$SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="765,95,965,121"/>
-<area shape="rect" id="node31" href="$SplaReduce2_8hpp.html" title=" " alt="" coords="1780,259,1957,285"/>
-<area shape="rect" id="node35" href="$SplaQueueFinisher_8hpp.html" title=" " alt="" coords="1549,95,1735,121"/>
-<area shape="rect" id="node37" href="$SplaScalarBuffer_8hpp.html" title=" " alt="" coords="1110,177,1281,203"/>
-<area shape="rect" id="node3" href="$SplaDeviceManager_8hpp.html" title=" " alt="" coords="240,177,431,203"/>
-<area shape="rect" id="node8" href="$SplaDescriptor_8hpp.html" title=" " alt="" coords="1279,341,1463,367"/>
-<area shape="rect" id="node13" href="$SplaRefCnt_8hpp.html" title=" " alt="" coords="799,497,965,524"/>
-<area shape="rect" id="node18" href="$SplaData_8hpp.html" title=" " alt="" coords="845,177,997,203"/>
-<area shape="rect" id="node20" href="$SplaFunctionBinary_8hpp.html" title=" " alt="" coords="1213,259,1423,285"/>
-<area shape="rect" id="node23" href="$SplaMatrixBlock_8hpp.html" title=" " alt="" coords="789,423,975,449"/>
-<area shape="rect" id="node24" href="$SplaScalarStorage_8hpp.html" title=" " alt="" coords="5,177,207,203"/>
-<area shape="rect" id="node28" href="$SplaScalarValue_8hpp.html" title=" " alt="" coords="999,259,1189,285"/>
-<area shape="rect" id="node30" href="$SplaVectorBlock_8hpp.html" title=" " alt="" coords="528,177,719,203"/>
-<area shape="rect" id="node4" title=" " alt="" coords="248,259,423,285"/>
-<area shape="rect" id="node5" title=" " alt="" coords="159,259,224,285"/>
-<area shape="rect" id="node6" title=" " alt="" coords="77,259,135,285"/>
-<area shape="rect" id="node7" href="$SplaExpressionNode_8hpp.html" title=" " alt="" coords="447,259,666,285"/>
-<area shape="rect" id="node10" title=" " alt="" coords="1120,647,1175,673"/>
-<area shape="rect" id="node12" href="$SplaObject_8hpp.html" title=" " alt="" coords="1050,423,1213,449"/>
-<area shape="rect" id="node17" title=" " alt="" coords="513,497,571,524"/>
-<area shape="rect" id="node9" title=" " alt="" coords="1569,423,1638,449"/>
-<area shape="rect" id="node11" title=" " alt="" coords="1315,423,1425,449"/>
-<area shape="rect" id="node14" title=" " alt="" coords="919,572,981,599"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1123,572,1188,599"/>
-<area shape="rect" id="node16" href="$SplaConfig_8hpp.html" title=" " alt="" coords="733,572,895,599"/>
-<area shape="rect" id="node19" title=" " alt="" coords="845,259,924,285"/>
-<area shape="rect" id="node21" href="$SplaType_8hpp.html" title=" " alt="" coords="1101,341,1255,367"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1237,423,1289,449"/>
-<area shape="rect" id="node25" href="$SplaLibrary_8hpp.html" title=" " alt="" coords="321,423,485,449"/>
-<area shape="rect" id="node26" title=" " alt="" coords="369,497,437,524"/>
-<area shape="rect" id="node27" title=" " alt="" coords="227,497,294,524"/>
-<area shape="rect" id="node29" title=" " alt="" coords="1487,333,1653,375"/>
-<area shape="rect" id="node32" href="$SplaMetaUtil_8hpp.html" title=" " alt="" coords="1778,333,1959,375"/>
-<area shape="rect" id="node33" title=" " alt="" coords="2034,341,2205,367"/>
-<area shape="rect" id="node34" title=" " alt="" coords="2229,341,2287,367"/>
-<area shape="rect" id="node36" title=" " alt="" coords="1557,169,1727,211"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1628,5,1791,47"/>
+<area shape="rect" id="node2" href="$SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="911,95,1111,121"/>
+<area shape="rect" id="node31" href="$SplaReduce2_8hpp.html" title=" " alt="" coords="1763,259,1941,285"/>
+<area shape="rect" id="node35" href="$SplaQueueFinisher_8hpp.html" title=" " alt="" coords="1778,95,1963,121"/>
+<area shape="rect" id="node38" href="$SplaScalarBuffer_8hpp.html" title=" " alt="" coords="1532,177,1703,203"/>
+<area shape="rect" id="node3" href="$SplaDeviceManager_8hpp.html" title=" " alt="" coords="283,177,474,203"/>
+<area shape="rect" id="node8" href="$SplaDescriptor_8hpp.html" title=" " alt="" coords="631,341,815,367"/>
+<area shape="rect" id="node13" href="$SplaRefCnt_8hpp.html" title=" " alt="" coords="1040,497,1205,524"/>
+<area shape="rect" id="node18" href="$SplaData_8hpp.html" title=" " alt="" coords="775,177,927,203"/>
+<area shape="rect" id="node20" href="$SplaFunctionBinary_8hpp.html" title=" " alt="" coords="1013,259,1224,285"/>
+<area shape="rect" id="node23" href="$SplaMatrixBlock_8hpp.html" title=" " alt="" coords="1220,341,1407,367"/>
+<area shape="rect" id="node24" href="$SplaScalarStorage_8hpp.html" title=" " alt="" coords="498,177,699,203"/>
+<area shape="rect" id="node28" href="$SplaScalarValue_8hpp.html" title=" " alt="" coords="1501,259,1691,285"/>
+<area shape="rect" id="node30" href="$SplaVectorBlock_8hpp.html" title=" " alt="" coords="1266,423,1457,449"/>
+<area shape="rect" id="node4" title=" " alt="" coords="249,259,423,285"/>
+<area shape="rect" id="node5" title=" " alt="" coords="447,259,513,285"/>
+<area shape="rect" id="node6" title=" " alt="" coords="537,259,594,285"/>
+<area shape="rect" id="node7" href="$SplaExpressionNode_8hpp.html" title=" " alt="" coords="5,259,224,285"/>
+<area shape="rect" id="node10" title=" " alt="" coords="618,647,673,673"/>
+<area shape="rect" id="node12" href="$SplaObject_8hpp.html" title=" " alt="" coords="807,423,969,449"/>
+<area shape="rect" id="node17" title=" " alt="" coords="432,497,491,524"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1121,423,1191,449"/>
+<area shape="rect" id="node11" title=" " alt="" coords="671,423,782,449"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1092,572,1153,599"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1709,572,1774,599"/>
+<area shape="rect" id="node16" href="$SplaConfig_8hpp.html" title=" " alt="" coords="801,572,962,599"/>
+<area shape="rect" id="node19" title=" " alt="" coords="786,259,865,285"/>
+<area shape="rect" id="node21" href="$SplaType_8hpp.html" title=" " alt="" coords="1042,341,1195,367"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1045,423,1097,449"/>
+<area shape="rect" id="node25" href="$SplaLibrary_8hpp.html" title=" " alt="" coords="483,423,647,449"/>
+<area shape="rect" id="node26" title=" " alt="" coords="657,497,725,524"/>
+<area shape="rect" id="node27" title=" " alt="" coords="565,497,632,524"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1583,333,1748,375"/>
+<area shape="rect" id="node32" href="$SplaMetaUtil_8hpp.html" title=" " alt="" coords="1956,333,2137,375"/>
+<area shape="rect" id="node33" title=" " alt="" coords="2161,341,2332,367"/>
+<area shape="rect" id="node34" title=" " alt="" coords="1823,341,1881,367"/>
+<area shape="rect" id="node36" title=" " alt="" coords="1933,169,2102,211"/>
+<area shape="rect" id="node37" title=" " alt="" coords="1796,177,1908,203"/>
 </map>
