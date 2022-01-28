@@ -31,13 +31,13 @@
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
 #include <compute/SplaReduceDuplicates.hpp>
-#include <compute/SplaSortByRowColumn.hpp>
 #include <compute/SplaStableSortByColumn.hpp>
 #include <compute/SplaTransformValues.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
+#include <utils/SplaProfiling.hpp>
 
 using IndeciesVector = boost::compute::vector<unsigned int>;
 using ValuesVector = boost::compute::vector<unsigned char>;
@@ -159,6 +159,8 @@ bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
 void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     using namespace boost;
 
+    PF_SCOPE(mxm, "-mxm-");
+
     auto params = dynamic_cast<ParamsMxM *>(&algoParams);
     auto library = params->desc->GetLibrary().GetPrivatePtr();
     auto device = library->GetDeviceManager().GetDevice(params->deviceId);
@@ -190,10 +192,14 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     const std::size_t valueByteSize = typeW->GetByteSize();
     assert(a.GetNcols() == b.GetNrows());
 
+    PF_SCOPE_MARK(mxm, "setup");
+
     // compute row offsets and row lengths for B
     compute::vector<unsigned int> bRowOffsets(ctx);
     compute::vector<unsigned int> bRowLengths(ctx);
     IndicesToRowOffsets(b.GetRows(), bRowOffsets, bRowLengths, b.GetNrows(), queue);
+
+    PF_SCOPE_MARK(mxm, "to row offsets");
 
     // for each element A(i,j) compute the number of nonzero elements in B(j,:)
     compute::vector<unsigned int> segmentLengths(a.GetNvals() + 1, ctx);
@@ -202,12 +208,16 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                     segmentLengths.begin(),
                     queue);
 
+    PF_SCOPE_MARK(mxm, "segments lengths");
+
     // output pointer
     compute::vector<unsigned int> outputPtr(a.GetNvals() + 1, ctx);
     compute::exclusive_scan(segmentLengths.begin(), segmentLengths.end(),
                             outputPtr.begin(),
                             0u,
                             queue);
+
+    PF_SCOPE_MARK(mxm, "output ptr");
 
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
@@ -239,6 +249,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> wRows(ctx), wCols(ctx);
     compute::vector<unsigned char> wVals(ctx);
 
+    PF_SCOPE_MARK(mxm, "strategy");
+
     std::size_t wTmpNnz = 0;
 
     if (cooNumNonZeros <= workspaceCapacity) {
@@ -256,6 +268,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                         I, J, V,
                                         params->mult, params->add,
                                         queue, logger);
+
+        PF_SCOPE_MARK(mxm, "single step");
     } else {
         // decompose C = A * B into several C[slice,:] = A[slice,:] * B operations
 
@@ -322,6 +336,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
             beginRow = endRow;
         }
 
+        PF_SCOPE_MARK(mxm, "slices eval");
+
         // resize output
         wRows.resize(wTmpNnz, queue);
         wCols.resize(wTmpNnz, queue);
@@ -340,6 +356,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
             }
             base += static_cast<std::ptrdiff_t>(it->GetNvals());
         }
+
+        PF_SCOPE_MARK(mxm, "slices merge");
     }
 
     if (wTmpNnz == 0) {
@@ -371,6 +389,9 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         std::swap(wTmpCols, wCols);
         std::swap(wTmpVals, wVals);
     }
+
+    PF_SCOPE_MARK(mxm, "apply mask");
+
     /**
      * Else Covered mask cases:
      *

@@ -92,7 +92,7 @@ void spla::VectorDataRead::Process(std::size_t nodeIdx, const spla::Expression &
 
     // Copy data of each block to the vectorData
     for (std::size_t i = 0; i < shared->entries.size(); i++) {
-        builder.Emplace([=]() {
+        builder.Emplace("vec-read", [=]() {
             auto entry = shared->entries[i];
             ParamsVectorRead params;
             params.deviceId = deviceId;

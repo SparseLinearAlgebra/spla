@@ -71,7 +71,7 @@ void spla::VectorToDense::Process(std::size_t nodeIdx, const spla::Expression &e
     for (std::size_t i = 0; i < entries.size(); i++) {
         auto deviceId = devicesIds[i];
         auto entry = entries[i];
-        builder.Emplace("vec-sp2dn", [=]() {
+        builder.Emplace("vec-to-dense", [=]() {
             ParamsVectorToDense params;
             params.deviceId = deviceId;
             params.desc = desc;

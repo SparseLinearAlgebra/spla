@@ -54,25 +54,22 @@ void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
     assert(desc.IsNotNull());
 
     auto deviceId = library->GetDeviceManager().FetchDevice(node);
+    auto device = library->GetDeviceManager().GetDevice(deviceId);
+    boost::compute::context ctx = library->GetContext();
+    boost::compute::command_queue queue(ctx, device);
 
-    builder.Emplace([=]() {
-        auto device = library->GetDeviceManager().GetDevice(deviceId);
-        boost::compute::context ctx = library->GetContext();
-        boost::compute::command_queue queue(ctx, device);
+    QueueFinisher finisher(queue);
+    argResult->GetStorage()->SetValue(ScalarValue::Make(
+            Add(argA->GetStorage()->GetValue()->GetVal(),
+                argB->GetStorage()->GetValue()->GetVal(),
+                argResult->GetType()->GetByteSize(),
+                argAdd->GetSource(),
+                queue)));
 
-        QueueFinisher finisher(queue);
-        argResult->GetStorage()->SetValue(ScalarValue::Make(
-                Add(argA->GetStorage()->GetValue()->GetVal(),
-                    argB->GetStorage()->GetValue()->GetVal(),
-                    argResult->GetType()->GetByteSize(),
-                    argAdd->GetSource(),
-                    queue)));
-
-        SPDLOG_LOGGER_TRACE(logger, "Scalar addition: [{}] x [{}] -> [{}]",
-                            argAdd->GetA()->GetByteSize(),
-                            argAdd->GetB()->GetByteSize(),
-                            argResult->GetType()->GetByteSize());
-    });
+    SPDLOG_LOGGER_TRACE(logger, "Scalar addition: [{}] x [{}] -> [{}]",
+                        argAdd->GetA()->GetByteSize(),
+                        argAdd->GetB()->GetByteSize(),
+                        argResult->GetType()->GetByteSize());
 }
 
 spla::ExpressionNode::Operation spla::ScalarEWiseAdd::GetOperationType() const {

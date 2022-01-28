@@ -72,7 +72,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
         auto blockVec = argV->GetStorage()->GetBlock(i);
 
         if (blockVec.IsNotNull()) {
-            tf::Task reduceIthBlock = builder.Emplace([=]() {
+            tf::Task reduceIthBlock = builder.Emplace("vec-reduce", [=]() {
                 ParamsVectorReduce params;
                 params.desc = desc;
                 params.deviceId = deviceId;
@@ -90,7 +90,7 @@ void spla::VectorReduce::Process(std::size_t nodeIdx, const spla::Expression &ex
     }
 
     auto lastReduceDeviceId = deviceIds[blocksInVector];
-    tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
+    tf::Task reduceIntermediateBuffer = builder.Emplace("reduce-intermediate", [=]() {
         auto &ctx = library->GetContext();
         auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
         QueueFinisher finisher(queue);

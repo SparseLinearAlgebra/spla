@@ -69,7 +69,7 @@ void spla::MatrixTranspose::Process(std::size_t nodeIdx, const spla::Expression 
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         for (std::size_t j = 0; j < w->GetStorage()->GetNblockCols(); j++) {
             auto deviceId = deviceIds[i * w->GetStorage()->GetNblockCols() + j];
-            auto taskTranspose = builder.Emplace([=]() {
+            auto taskTranspose = builder.Emplace("transpose", [=]() {
                 MatrixStorage::Index aIndex{static_cast<unsigned int>(j), static_cast<unsigned int>(i)};
                 MatrixStorage::Index wIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
 
@@ -90,7 +90,7 @@ void spla::MatrixTranspose::Process(std::size_t nodeIdx, const spla::Expression 
             });
 
             if (applyAccum) {
-                auto taskAccum = builder.Emplace([=]() {
+                auto taskAccum = builder.Emplace("mat-accum", [=]() {
                     MatrixStorage::Index wIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
 
                     ParamsMatrixEWiseAdd params;

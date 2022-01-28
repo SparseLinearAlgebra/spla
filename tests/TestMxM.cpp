@@ -145,7 +145,7 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::siz
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    auto dummy = [](unsigned char a, unsigned char b) { return 0; };
+    auto dummy = [](unsigned char, unsigned char) { return 0; };
 
     utils::Matrix<unsigned char> c = a.template MxM<unsigned char>(mask, false, b, dummy, dummy);
     ASSERT_TRUE(c.EqualsStructure(spW));

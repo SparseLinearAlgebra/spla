@@ -88,7 +88,7 @@ void spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::Re
 tf::Task spla::AlgorithmManager::Dispatch(spla::Algorithm::Type type, const spla::RefPtr<spla::AlgorithmParams> &params, TaskBuilder &builder) {
     assert(params.IsNotNull());
     auto algorithm = SelectAlgorithm(type, *params);
-    return builder.Emplace([=]() {
+    return builder.Emplace(AlgorithmTypeToStr(type), [=]() {
         algorithm->Process(*params);
     });
 }

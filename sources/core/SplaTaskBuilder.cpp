@@ -34,10 +34,6 @@
     #include <spla-cpp/SplaUtils.hpp>
 #endif
 
-tf::Task spla::TaskBuilder::Emplace(std::function<void()> work) {
-    return Emplace("no-name", std::move(work));
-}
-
 tf::Task spla::TaskBuilder::Emplace(const std::string &workName, std::function<void()> work) {
     auto taskId = mTaskID++;
     auto task = [expression = mExpression, work = std::move(work), taskId, workName]() {
