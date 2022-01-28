@@ -73,6 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="SplaAlgoCommon_8hpp_source.html">spla-algo/SplaAlgoCommon.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="SplaDescriptor_8hpp_source.html">spla-cpp/SplaDescriptor.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaMatrix_8hpp_source.html">spla-cpp/SplaMatrix.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SplaVector_8hpp_source.html">spla-cpp/SplaVector.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -80,22 +81,25 @@ Include dependency graph for SplaAlgoSssp.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SplaAlgoSssp_8hpp__incl.png" border="0" usemap="#ainclude_2spla-algo_2SplaAlgoSssp_8hpp" alt=""/></div>
 <map name="ainclude_2spla-algo_2SplaAlgoSssp_8hpp" id="ainclude_2spla-algo_2SplaAlgoSssp_8hpp">
-<area shape="rect" title=" " alt="" coords="329,5,504,47"/>
-<area shape="rect" href="SplaAlgoCommon_8hpp.html" title=" " alt="" coords="89,95,296,121"/>
-<area shape="rect" href="SplaMatrix_8hpp.html" title=" " alt="" coords="530,95,690,121"/>
-<area shape="rect" href="SplaVector_8hpp.html" title=" " alt="" coords="335,95,498,121"/>
-<area shape="rect" href="SplaConfig_8hpp.html" title=" " alt="" coords="5,393,167,420"/>
-<area shape="rect" href="SplaData_8hpp.html" title=" " alt="" coords="109,169,261,196"/>
-<area shape="rect" title=" " alt="" coords="285,169,343,196"/>
-<area shape="rect" title=" " alt="" coords="205,468,260,495"/>
-<area shape="rect" title=" " alt="" coords="145,244,224,271"/>
-<area shape="rect" href="SplaObject_8hpp.html" title=" " alt="" coords="299,244,462,271"/>
-<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="158,319,323,345"/>
-<area shape="rect" title=" " alt="" coords="191,393,253,420"/>
-<area shape="rect" title=" " alt="" coords="277,393,343,420"/>
-<area shape="rect" title=" " alt="" coords="698,169,767,196"/>
-<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="419,169,572,196"/>
-<area shape="rect" title=" " alt="" coords="560,244,612,271"/>
+<area shape="rect" title=" " alt="" coords="395,5,570,47"/>
+<area shape="rect" href="SplaAlgoCommon_8hpp.html" title=" " alt="" coords="269,95,475,121"/>
+<area shape="rect" href="SplaDescriptor_8hpp.html" title=" " alt="" coords="77,169,261,196"/>
+<area shape="rect" href="SplaMatrix_8hpp.html" title=" " alt="" coords="703,95,863,121"/>
+<area shape="rect" href="SplaVector_8hpp.html" title=" " alt="" coords="516,95,679,121"/>
+<area shape="rect" href="SplaConfig_8hpp.html" title=" " alt="" coords="389,393,550,420"/>
+<area shape="rect" href="SplaData_8hpp.html" title=" " alt="" coords="419,169,571,196"/>
+<area shape="rect" title=" " alt="" coords="336,169,395,196"/>
+<area shape="rect" title=" " alt="" coords="323,468,378,495"/>
+<area shape="rect" title=" " alt="" coords="423,244,502,271"/>
+<area shape="rect" href="SplaObject_8hpp.html" title=" " alt="" coords="527,244,689,271"/>
+<area shape="rect" href="SplaRefCnt_8hpp.html" title=" " alt="" coords="524,319,689,345"/>
+<area shape="rect" title=" " alt="" coords="664,393,725,420"/>
+<area shape="rect" title=" " alt="" coords="574,393,639,420"/>
+<area shape="rect" title=" " alt="" coords="5,244,75,271"/>
+<area shape="rect" title=" " alt="" coords="99,244,210,271"/>
+<area shape="rect" title=" " alt="" coords="875,169,944,196"/>
+<area shape="rect" href="SplaType_8hpp.html" title=" " alt="" coords="697,169,850,196"/>
+<area shape="rect" title=" " alt="" coords="851,244,903,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -118,9 +122,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">spla::Sssp</a> (RefPtr&lt; Vector &gt; &amp;v, const RefPtr&lt; Matrix &gt; &amp;A, Index s)</td></tr>
-<tr class="memdesc:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">More...</a><br /></td></tr>
-<tr class="separator:ga29faf0d8abeec2f54e86c40500fe75c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81b489b3058817699d4276db3542dffc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga81b489b3058817699d4276db3542dffc">spla::Sssp</a> (RefPtr&lt; Vector &gt; &amp;v, const RefPtr&lt; Matrix &gt; &amp;A, Index s, const RefPtr&lt; Descriptor &gt; &amp;descriptor=nullptr)</td></tr>
+<tr class="memdesc:ga81b489b3058817699d4276db3542dffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga81b489b3058817699d4276db3542dffc">More...</a><br /></td></tr>
+<tr class="separator:ga81b489b3058817699d4276db3542dffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8ef083028f6779cca83fff114d61b95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">spla::Sssp</a> (RefPtr&lt; HostVector &gt; &amp;v, const RefPtr&lt; HostMatrix &gt; &amp;A, Index s)</td></tr>
 <tr class="memdesc:ga8ef083028f6779cca83fff114d61b95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path.  <a href="group__Algorithm.html#ga8ef083028f6779cca83fff114d61b95b">More...</a><br /></td></tr>
 <tr class="separator:ga8ef083028f6779cca83fff114d61b95b"><td class="memSeparator" colspan="2">&#160;</td></tr>

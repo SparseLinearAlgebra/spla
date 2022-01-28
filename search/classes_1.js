@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['balancedpathkernel_889',['BalancedPathKernel',['../classspla_1_1detail_1_1BalancedPathKernel.html',1,'spla::detail']]]
+  ['balancedpathkernel_895',['BalancedPathKernel',['../classspla_1_1detail_1_1BalancedPathKernel.html',1,'spla::detail']]]
 ];

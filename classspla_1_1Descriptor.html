@@ -162,6 +162,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa2815a673610aa8ec8c3385b21f798d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a170315e556403cafe78aaa9b9f2c7cc6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Descriptor.html#a170315e556403cafe78aaa9b9f2c7cc6">IsParamSet</a> (<a class="el" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param) const</td></tr>
 <tr class="separator:a170315e556403cafe78aaa9b9f2c7cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008c1e0cd278cdbd5406a6e137a6bbe5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Descriptor.html#a008c1e0cd278cdbd5406a6e137a6bbe5">Dup</a> () const</td></tr>
+<tr class="memdesc:a008c1e0cd278cdbd5406a6e137a6bbe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duplicate descriptor.  <a href="classspla_1_1Descriptor.html#a008c1e0cd278cdbd5406a6e137a6bbe5">More...</a><br /></td></tr>
+<tr class="separator:a008c1e0cd278cdbd5406a6e137a6bbe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a892f3ebc4e350e3bbbb1833b535ca84d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a892f3ebc4e350e3bbbb1833b535ca84d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classspla_1_1Descriptor.html#a892f3ebc4e350e3bbbb1833b535ca84d">GetParamT</a> (<a class="el" href="classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78">Param</a> param, T &amp;value)</td></tr>
 <tr class="memdesc:a892f3ebc4e350e3bbbb1833b535ca84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get descriptor param value. If param was set without value, returned string value is empty.  <a href="classspla_1_1Descriptor.html#a892f3ebc4e350e3bbbb1833b535ca84d">More...</a><br /></td></tr>
@@ -284,6 +287,27 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a008c1e0cd278cdbd5406a6e137a6bbe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a008c1e0cd278cdbd5406a6e137a6bbe5">&#9670;&nbsp;</a></span>Dup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">spla::Descriptor</a> &gt; spla::Descriptor::Dup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Duplicate descriptor. </p>
+<p>Creates exact copy of the descriptor as new descriptor object. Mutation of this and copied descriptor is safe and done independently.</p>
+<dl class="section return"><dt>Returns</dt><dd>Duplicated descriptor </dd></dl>
+
+</div>
+</div>
 <a id="a38e40888cd76dcdc5d3faec7b997b015"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38e40888cd76dcdc5d3faec7b997b015">&#9670;&nbsp;</a></span>GetParam()</h2>
 

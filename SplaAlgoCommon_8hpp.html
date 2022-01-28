@@ -67,7 +67,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">SplaAlgoCommon.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -124,7 +125,36 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aed0b170e9154c7a834b26eeac30bcf1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SplaAlgoCommon_8hpp.html#aed0b170e9154c7a834b26eeac30bcf1d">SPLA_ALGO_CHECK</a>(expr)</td></tr>
+<tr class="separator:aed0b170e9154c7a834b26eeac30bcf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aed0b170e9154c7a834b26eeac30bcf1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed0b170e9154c7a834b26eeac30bcf1d">&#9670;&nbsp;</a></span>SPLA_ALGO_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SPLA_ALGO_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">expr</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">if</span> (expr-&gt;GetState() != <a class="code" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9ad603de8be2ed385509ef70a6c0099623">spla::Expression::State::Evaluated</a>) { \</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Filed to evaluate expression\n&quot;</span>;            \</div>
+<div class="line">    } <span class="keywordflow">else</span> {                                                      \</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclassspla_1_1Expression_html_a21a79f2b5a99245b7acacac1505d5ab9ad603de8be2ed385509ef70a6c0099623"><div class="ttname"><a href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9ad603de8be2ed385509ef70a6c0099623">spla::Expression::State::Evaluated</a></div><div class="ttdeci">@ Evaluated</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

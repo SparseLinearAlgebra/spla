@@ -100,23 +100,25 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAALGOSSSP_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaAlgoCommon_8hpp.html">spla-algo/SplaAlgoCommon.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaMatrix_8hpp.html">spla-cpp/SplaMatrix.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaVector_8hpp.html">spla-cpp/SplaVector.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keywordtype">void</span> <a class="code" href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">Sssp</a>(RefPtr&lt;Vector&gt; &amp;v, <span class="keyword">const</span> RefPtr&lt;Matrix&gt; &amp;A, <a class="code" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keywordtype">void</span> <a class="code" href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">Sssp</a>(RefPtr&lt;HostVector&gt; &amp;v, <span class="keyword">const</span> RefPtr&lt;HostMatrix&gt; &amp;A, <a class="code" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAALGOSSSP_HPP</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaDescriptor_8hpp.html">spla-cpp/SplaDescriptor.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaMatrix_8hpp.html">spla-cpp/SplaMatrix.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaVector_8hpp.html">spla-cpp/SplaVector.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keywordtype">void</span> <a class="code" href="group__Algorithm.html#ga81b489b3058817699d4276db3542dffc">Sssp</a>(RefPtr&lt;Vector&gt; &amp;v, <span class="keyword">const</span> RefPtr&lt;Matrix&gt; &amp;A, <a class="code" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s, <span class="keyword">const</span> RefPtr&lt;Descriptor&gt; &amp;descriptor = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keywordtype">void</span> <a class="code" href="group__Algorithm.html#ga81b489b3058817699d4276db3542dffc">Sssp</a>(RefPtr&lt;HostVector&gt; &amp;v, <span class="keyword">const</span> RefPtr&lt;HostMatrix&gt; &amp;A, <a class="code" href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">Index</a> s);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAALGOSSSP_HPP</span></div>
 <div class="ttc" id="aSplaAlgoCommon_8hpp_html"><div class="ttname"><a href="SplaAlgoCommon_8hpp.html">SplaAlgoCommon.hpp</a></div></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
+<div class="ttc" id="aSplaDescriptor_8hpp_html"><div class="ttname"><a href="SplaDescriptor_8hpp.html">SplaDescriptor.hpp</a></div></div>
 <div class="ttc" id="aSplaMatrix_8hpp_html"><div class="ttname"><a href="SplaMatrix_8hpp.html">SplaMatrix.hpp</a></div></div>
 <div class="ttc" id="aSplaVector_8hpp_html"><div class="ttname"><a href="SplaVector_8hpp.html">SplaVector.hpp</a></div></div>
-<div class="ttc" id="agroup__Algorithm_html_ga29faf0d8abeec2f54e86c40500fe75c6"><div class="ttname"><a href="group__Algorithm.html#ga29faf0d8abeec2f54e86c40500fe75c6">spla::Sssp</a></div><div class="ttdeci">SPLA_API void Sssp(RefPtr&lt; Vector &gt; &amp;v, const RefPtr&lt; Matrix &gt; &amp;A, Index s)</div><div class="ttdoc">Single-source shortest path.</div><div class="ttdef"><b>Definition:</b> SplaAlgoSssp.cpp:38</div></div>
+<div class="ttc" id="agroup__Algorithm_html_ga81b489b3058817699d4276db3542dffc"><div class="ttname"><a href="group__Algorithm.html#ga81b489b3058817699d4276db3542dffc">spla::Sssp</a></div><div class="ttdeci">SPLA_API void Sssp(RefPtr&lt; Vector &gt; &amp;v, const RefPtr&lt; Matrix &gt; &amp;A, Index s, const RefPtr&lt; Descriptor &gt; &amp;descriptor=nullptr)</div><div class="ttdoc">Single-source shortest path.</div><div class="ttdef"><b>Definition:</b> SplaAlgoSssp.cpp:38</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 <div class="ttc" id="anamespacespla_html_aa4ce2878429fe10dd01b1365c090a51c"><div class="ttname"><a href="namespacespla.html#aa4ce2878429fe10dd01b1365c090a51c">spla::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Index of matrix/vector values.</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:72</div></div>
 </div><!-- fragment --></div><!-- contents -->

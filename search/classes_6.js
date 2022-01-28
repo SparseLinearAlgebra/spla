@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gatherkernel_913',['GatherKernel',['../classspla_1_1detail_1_1GatherKernel.html',1,'spla::detail']]]
+  ['gatherkernel_919',['GatherKernel',['../classspla_1_1detail_1_1GatherKernel.html',1,'spla::detail']]]
 ];

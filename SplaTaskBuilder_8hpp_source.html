@@ -110,28 +110,26 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1TaskBuilder.html">   53</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1TaskBuilder.html">TaskBuilder</a> {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        tf::Task <a class="code" href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">Emplace</a>(std::function&lt;<span class="keywordtype">void</span>()&gt; work);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        tf::Task <a class="code" href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">Emplace</a>(<span class="keyword">const</span> std::string &amp;workName, std::function&lt;<span class="keywordtype">void</span>()&gt; work);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classspla_1_1TaskBuilder.html#a30ef2d6bcac108f42e6493e88bfe1fcb">   73</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="classspla_1_1TaskBuilder.html">TaskBuilder</a>(<a class="code" href="classspla_1_1Expression.html">Expression</a> *expression, tf::Subflow &amp;subflow);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="classspla_1_1Expression.html">Expression</a> *mExpression;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        tf::Subflow &amp;mSubflow;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        std::size_t mTaskID = 0;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLATASKBUILDER_HPP</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        tf::Task <a class="code" href="classspla_1_1TaskBuilder.html#ab9e84613e9e0396dea58735d2631df86">Emplace</a>(<span class="keyword">const</span> std::string &amp;workName, std::function&lt;<span class="keywordtype">void</span>()&gt; work);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classspla_1_1TaskBuilder.html#a30ef2d6bcac108f42e6493e88bfe1fcb">   65</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classspla_1_1TaskBuilder.html">TaskBuilder</a>(<a class="code" href="classspla_1_1Expression.html">Expression</a> *expression, tf::Subflow &amp;subflow);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="classspla_1_1Expression.html">Expression</a> *mExpression;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        tf::Subflow &amp;mSubflow;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        std::size_t mTaskID = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    };</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLATASKBUILDER_HPP</span></div>
 <div class="ttc" id="aSplaExpressionNode_8hpp_html"><div class="ttname"><a href="SplaExpressionNode_8hpp.html">SplaExpressionNode.hpp</a></div></div>
 <div class="ttc" id="aSplaExpression_8hpp_html"><div class="ttname"><a href="SplaExpression_8hpp.html">SplaExpression.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1ExpressionManager_html"><div class="ttname"><a href="classspla_1_1ExpressionManager.html">spla::ExpressionManager</a></div><div class="ttdoc">ExpressionManager.</div><div class="ttdef"><b>Definition:</b> SplaExpressionManager.hpp:58</div></div>
 <div class="ttc" id="aclassspla_1_1Expression_html"><div class="ttname"><a href="classspla_1_1Expression.html">spla::Expression</a></div><div class="ttdoc">Computational expression for submission.</div><div class="ttdef"><b>Definition:</b> SplaExpression.hpp:66</div></div>
 <div class="ttc" id="aclassspla_1_1TaskBuilder_html"><div class="ttname"><a href="classspla_1_1TaskBuilder.html">spla::TaskBuilder</a></div><div class="ttdoc">Task builder for expression nodes.</div><div class="ttdef"><b>Definition:</b> SplaTaskBuilder.hpp:53</div></div>
-<div class="ttc" id="aclassspla_1_1TaskBuilder_html_a67bf3382fbb44046da229c6021b04f50"><div class="ttname"><a href="classspla_1_1TaskBuilder.html#a67bf3382fbb44046da229c6021b04f50">spla::TaskBuilder::Emplace</a></div><div class="ttdeci">tf::Task Emplace(std::function&lt; void()&gt; work)</div><div class="ttdoc">Emplace work to the subflow.</div><div class="ttdef"><b>Definition:</b> SplaTaskBuilder.cpp:37</div></div>
+<div class="ttc" id="aclassspla_1_1TaskBuilder_html_ab9e84613e9e0396dea58735d2631df86"><div class="ttname"><a href="classspla_1_1TaskBuilder.html#ab9e84613e9e0396dea58735d2631df86">spla::TaskBuilder::Emplace</a></div><div class="ttdeci">tf::Task Emplace(const std::string &amp;workName, std::function&lt; void()&gt; work)</div><div class="ttdoc">Emplace work to the subflow.</div><div class="ttdef"><b>Definition:</b> SplaTaskBuilder.cpp:37</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
