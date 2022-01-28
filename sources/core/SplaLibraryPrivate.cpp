@@ -31,27 +31,47 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace {
-    std::vector<boost::compute::device> FindAllDevices(const std::vector<spla::Library::ClDeviceId> &ids) {
-        std::set<spla::Library::ClDeviceId> notFoundIds(ids.begin(), ids.end());
-        std::vector<boost::compute::device> foundDevices;
-        std::vector<boost::compute::device> allDevices = boost::compute::system::devices();
-        for (const boost::compute::device &someDevice : allDevices) {
-            if (notFoundIds.empty()) {
-                break;
-            }
-            if (auto it = notFoundIds.find(static_cast<spla::Library::ClDeviceId>(someDevice.id())); it != notFoundIds.end()) {
-                foundDevices.push_back(someDevice);
-                notFoundIds.erase(it);
+    std::vector<boost::compute::device> FindAllDevices(const spla::Library::Config &config) {
+        std::vector<boost::compute::device> devices;
+
+        auto platforms = boost::compute::system::platforms();
+        if (platforms.empty()) {
+            RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
+        }
+
+        if (!config.GetDeviceType().has_value() &&
+            !config.GetPlatformName().has_value() &&
+            config.GetDeviceAmount() == 1) {
+            return {boost::compute::system::default_device()};
+        }
+
+        for (const boost::compute::platform &platform : platforms) {
+            bool matchPlatform = !config.GetPlatformName().has_value() || platform.name().find(config.GetPlatformName().value()) != std::string::npos;
+
+            if (!matchPlatform)
+                continue;
+
+            const auto &deviceType = config.GetDeviceType();
+
+            for (const boost::compute::device &device : platform.devices()) {
+                bool matchType = !deviceType.has_value() || ((deviceType.value() == spla::Library::Config::GPU && device.type() == boost::compute::device::type::gpu) ||
+                                                             (deviceType.value() == spla::Library::Config::CPU && device.type() == boost::compute::device::type::cpu) ||
+                                                             (deviceType.value() == spla::Library::Config::Accelerator && device.type() == boost::compute::device::type::accelerator));
+                if (matchType) {
+                    devices.push_back(device);
+                }
             }
         }
-        if (!notFoundIds.empty()) {
-            std::stringstream ss;
-            for (auto d : notFoundIds) {
-                ss << d << ", ";
-            }
-            RAISE_ERROR(DeviceNotPresent, ("Couldn't find some devices: " + ss.str()).c_str())
+
+        if (config.GetDeviceAmount().has_value() && devices.size() > config.GetDeviceAmount().value()) {
+            devices.resize(config.GetDeviceAmount().value());
         }
-        return foundDevices;
+
+        if (devices.empty()) {
+            RAISE_ERROR(DeviceNotPresent, "No set of devices fits given constraints");
+        }
+
+        return devices;
     }
 
     boost::compute::platform GetDevicesPlatform(const std::vector<boost::compute::device> &devices) {
@@ -93,7 +113,7 @@ namespace {
 spla::LibraryPrivate::LibraryPrivate(
         spla::Library &library,
         spla::Library::Config config)
-    : mDeviceManager(FindAllDevices(config.GetDevicesIds())),
+    : mDeviceManager(FindAllDevices(config)),
       mPlatform(GetDevicesPlatform(mDeviceManager.GetDevices())),
       mContext(mDeviceManager.GetDevices()),
       mContextConfig(std::move(config)) {

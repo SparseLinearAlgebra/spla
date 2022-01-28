@@ -113,63 +113,6 @@ spla::Library::Config &spla::Library::Config::SetWorkersCount(std::size_t worker
     return *this;
 }
 
-std::vector<boost::compute::device> GetDevices(const spla::Library::Config &config) {
-    std::vector<boost::compute::device> devices;
-
-    auto platforms = boost::compute::system::platforms();
-    if (platforms.empty()) {
-        RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
-    }
-
-    if (!config.GetDeviceType().has_value() &&
-        !config.GetPlatformName().has_value() &&
-        config.GetDeviceAmount() == 1) {
-        return {boost::compute::system::default_device()};
-    }
-
-    for (const boost::compute::platform &platform : platforms) {
-        bool matchPlatform = !config.GetPlatformName().has_value() || platform.name().find(config.GetPlatformName().value()) != std::string::npos;
-
-        if (!matchPlatform)
-            continue;
-
-        const auto &deviceType = config.GetDeviceType();
-
-        for (const boost::compute::device &device : platform.devices()) {
-            bool matchType = !deviceType.has_value() || ((deviceType.value() == spla::Library::Config::GPU && device.type() == boost::compute::device::type::gpu) ||
-                                                         (deviceType.value() == spla::Library::Config::CPU && device.type() == boost::compute::device::type::cpu) ||
-                                                         (deviceType.value() == spla::Library::Config::Accelerator && device.type() == boost::compute::device::type::accelerator));
-            if (matchType) {
-                devices.push_back(device);
-            }
-        }
-    }
-
-    if (config.GetDeviceAmount().has_value() && devices.size() > config.GetDeviceAmount().value()) {
-        devices.resize(config.GetDeviceAmount().value());
-    }
-
-    return devices;
-}
-
-std::vector<spla::Library::ClDeviceId> spla::Library::Config::GetDevicesIds() const {
-    std::vector<spla::Library::ClDeviceId> ids;
-    for (const boost::compute::device &device : GetDevices(*this)) {
-        ids.push_back(static_cast<void *>(device.id()));
-    }
-    return ids;
-}
-
-std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
-    std::vector<std::string> names;
-    for (const boost::compute::device &device : GetDevices(*this)) {
-        std::stringstream nameSs;
-        nameSs << device.name() << ' ' << '(' << device.id() << ')';
-        names.push_back(nameSs.str());
-    }
-    return names;
-}
-
 std::size_t spla::Library::Config::GetBlockSize() const {
     return mBlockSize;
 }

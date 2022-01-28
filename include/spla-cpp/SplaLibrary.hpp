@@ -157,12 +157,6 @@ namespace spla {
              */
             Config &SetWorkersCount(std::size_t workersCount);
 
-            /** @return List of available devices names for specified config settings */
-            [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
-
-            /** @return List of available devices ids for specified config settings */
-            [[nodiscard]] std::vector<ClDeviceId> GetDevicesIds() const;
-
             /** @return Log filename */
             [[nodiscard]] const std::optional<Filename> &GetLogFilename() const;
 
