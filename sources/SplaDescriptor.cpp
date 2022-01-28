@@ -30,6 +30,9 @@
 spla::Descriptor::Descriptor(class spla::Library &library) : Object(Object::TypeName::Descriptor, library) {
 }
 
+spla::Descriptor::Descriptor(const Descriptor &d) : Object(Object::TypeName::Descriptor, d.GetLibrary()), mParams(d.mParams) {
+}
+
 void spla::Descriptor::SetParam(spla::Descriptor::Param param, std::string value) {
     mParams.emplace(param, std::move(value));
 }
@@ -65,6 +68,10 @@ bool spla::Descriptor::RemoveParam(Param param) {
 
 bool spla::Descriptor::IsParamSet(spla::Descriptor::Param param) const {
     return mParams.find(param) != mParams.end();
+}
+
+spla::RefPtr<spla::Descriptor> spla::Descriptor::Dup() const {
+    return {new Descriptor(*this)};
 }
 
 spla::RefPtr<spla::Descriptor> spla::Descriptor::Make(class spla::Library &library) {

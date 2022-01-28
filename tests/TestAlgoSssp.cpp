@@ -35,6 +35,9 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
     utils::Matrix A = utils::Matrix<float>::Generate(M, M, nvals).SortReduceDuplicates();
     A.Fill(utils::UniformRealGenerator<float>());
 
+    auto sp_desc = spla::Descriptor::Make(library);
+    sp_desc->SetParam(spla::Descriptor::Param::ProfileTime);
+
     auto sp_v = spla::Vector::Make(M, sp_Float32, library);
     auto sp_A = spla::Matrix::Make(M, M, sp_Float32, library);
 
@@ -45,7 +48,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     for (std::size_t k = 0; k < repeats; k++) {
         SPLA_TIME_BEGIN(sssp_spla);
-        spla::Sssp(sp_v, sp_A, sp_s);
+        spla::Sssp(sp_v, sp_A, sp_s, sp_desc);
         SPLA_TIME_END(sssp_spla, "spla");
 
         auto host_A = A.ToHostMatrix();

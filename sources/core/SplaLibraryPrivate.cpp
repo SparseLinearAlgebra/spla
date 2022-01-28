@@ -60,10 +60,14 @@ namespace {
         std::vector<spdlog::sink_ptr> sinks;
 
 #ifdef SPLA_DEBUG
-        auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        consoleSink->set_level(spdlog::level::trace);
-        sinks.push_back(consoleSink);
+        auto consoleSinkLevel = spdlog::level::trace;
+#else
+        auto consoleSinkLevel = spdlog::level::err;
 #endif
+
+        auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        consoleSink->set_level(consoleSinkLevel);
+        sinks.push_back(consoleSink);
 
         auto &filename = config.GetLogFilename();
         if (filename.has_value()) {

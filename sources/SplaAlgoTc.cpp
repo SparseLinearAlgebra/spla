@@ -71,6 +71,7 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &s
     spTcExpr->Dependency(spNodeAccum, spNodeReadNTriangles);
 
     spTcExpr->SubmitWait();
+    SPLA_ALGO_CHECK(spTcExpr);
 
     if (!dir) {
         ntrins /= 6;

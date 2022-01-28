@@ -39,6 +39,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options.add_option("", cxxopts::Option("dense-factor", "factor used to dense transition", cxxopts::value<float>()->default_value("1.0f")));
     options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
     auto args = options.parse(argc, argv);
 
@@ -55,6 +56,8 @@ int main(int argc, const char *const *argv) {
     bool removeLoops = true;
     bool ignoreValues = true;
     bool verbose;
+    bool debugTiming;
+    float denseFactor;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -63,8 +66,10 @@ int main(int argc, const char *const *argv) {
         bsize = args["bsize"].as<int>();
         undirected = args["undirected"].as<bool>();
         verbose = args["verbose"].as<bool>();
+        debugTiming = args["debug-timing"].as<bool>();
+        denseFactor = args["dense-factor"].as<float>();
     } catch (const std::exception &e) {
-        std::cerr << "Invalid input arguments: " << e.what() << std::endl;
+        std::cerr << "Invalid input arguments: " << e.what();
         return 1;
     }
 
@@ -97,20 +102,25 @@ int main(int argc, const char *const *argv) {
 
     // Prepare data and fill A
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
-    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), (void *) (loader.GetValues().data()), loader.GetNvals(), library));
+    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library));
     prepareData->SubmitWait();
+    SPLA_ALGO_CHECK(prepareData);
+
+    spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
+    desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
+    desc->SetParam(spla::Descriptor::Param::DenseFactor, std::to_string(denseFactor));
 
     // Warm up phase
     spla::CpuTimer tWarmUp;
     tWarmUp.Start();
-    spla::Sssp(v, A, source);
+    spla::Sssp(v, A, source, desc);
     tWarmUp.Stop();
 
     // Main phase, measure iterations
     std::vector<spla::CpuTimer> tIters(niters);
     for (int i = 0; i < niters; i++) {
         tIters[i].Start();
-        spla::Sssp(v, A, source);
+        spla::Sssp(v, A, source, desc);
         tIters[i].Stop();
     }
 

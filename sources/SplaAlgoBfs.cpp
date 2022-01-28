@@ -67,17 +67,16 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     auto sp_setup = Expression::Make(library);// Set q[s]: start vertex
     sp_setup->MakeDataWrite(sp_q, DataVector::Make(&s, nullptr, 1, library));
     sp_setup->SubmitWait();
+    SPLA_ALGO_CHECK(sp_setup);
 
     std::int32_t depth = 1;// Start for depth 1: v[s]=1
 
     CpuTimer tightTimer;// Tight timer to measure iterations
     tightTimer.Start();
-    double tight = 0.0;
     bool sparseToDense = false;
 
     while (sp_q->GetNvals() != 0) {
         auto sp_iter = Expression::Make(library);
-
         auto t1 = sp_iter->MakeDataWrite(sp_depth, DataScalar::Make(&depth, library));     // Update depth scalar
         auto t2 = sp_iter->MakeAssign(sp_v, sp_q, nullptr, sp_depth, sp_desc_accum);       // New reached vertices v[q] = depth
         auto t3 = sp_iter->MakeVxM(sp_q, sp_v, nullptr, nullptr, sp_q, sp_A, sp_desc_comp);// Discover new front q[!v] = q x A
@@ -94,12 +93,12 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
         sp_iter->Dependency(t1, t2);
         sp_iter->Dependency(t2, t3);
         sp_iter->SubmitWait();
+        SPLA_ALGO_CHECK(sp_iter);
 
         if (timing) {
             tightTimer.Stop();
             std::cout << " - iter: " << depth << ", src: " << s << ", visit: "
-                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetElapsedMs() - tight << "\n";
-            tight = tightTimer.GetElapsedMs();
+                      << sp_q->GetNvals() << "/" << n << ", " << tightTimer.GetDurationMs() << "\n";
             tightTimer.Start();
         }
 

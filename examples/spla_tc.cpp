@@ -69,7 +69,7 @@ int main(int argc, const char *const *argv) {
     assert(bsize > 1);
 
     // Load data
-    spla::MatrixLoader<int> loader;
+    spla::MatrixLoader<std::int32_t> loader;
 
     try {
         loader.Load(mtxpath, undirected, removeLoops, ignoreValues, verbose);
@@ -90,13 +90,12 @@ int main(int argc, const char *const *argv) {
     // A and B tc args
     spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
     spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
-    // Set ones as values in adjacency matrix A
-    std::vector<std::int32_t> values(loader.GetNvals(), 1);
 
     // Prepare data and fill A
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
-    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), values.data(), loader.GetNvals(), library));
+    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library));
     prepareData->SubmitWait();
+    SPLA_ALGO_CHECK(prepareData);
 
     std::int32_t nTrins = 0;
 

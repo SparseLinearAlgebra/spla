@@ -35,10 +35,18 @@
 #include <queue>
 #include <vector>
 
-void spla::Sssp(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
+void spla::Sssp(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const RefPtr<Descriptor> &descriptor) {
     CHECK_RAISE_ERROR(sp_A.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(sp_A->GetNrows() == sp_A->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(s < sp_A->GetNrows(), InvalidArgument, "Start index must be withing A bounds");
+
+    bool timing = false;
+    float denseFactor = 1.0f;
+
+    if (descriptor.IsNotNull()) {
+        timing = descriptor->IsParamSet(Descriptor::Param::ProfileTime);
+        descriptor->GetParamT(Descriptor::Param::DenseFactor, denseFactor);
+    }
 
     auto &library = sp_A->GetLibrary();
     auto type = sp_A->GetType();
@@ -63,37 +71,55 @@ void spla::Sssp(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s) {
     // Scalar to store reduce succ
     auto sp_succ = Scalar::Make(type, library);
 
+    CpuTimer overallTimer;// Overall time of execution
+    overallTimer.Start();
+
     // Set v[s] = w[s] = 0.0f - so start is reached in 0.0
     auto sp_setup = Expression::Make(library);
     sp_setup->MakeDataWrite(sp_v, DataVector::Make(&s, &zero, 1, library));
     sp_setup->MakeDataWrite(sp_w, DataVector::Make(&s, &zero, 1, library));
     sp_setup->SubmitWait();
+    SPLA_ALGO_CHECK(sp_setup);
 
     std::size_t iterations = 0;
     float succLast = 0.0f;
     float succ = 1.0f;
 
+    CpuTimer tightTimer;// Tight timer to measure iterations
+    tightTimer.Start();
+
     while (iterations < n && succ != succLast) {
         succLast = succ;
 
         auto sp_iter = Expression::Make(library);
-
         auto t1 = sp_iter->MakeVxM(sp_w, nullptr, multOp, addOp, sp_w, sp_A);
         auto t2 = sp_iter->MakeEWiseAdd(sp_v, nullptr, addOp, sp_v, sp_w);
         auto t3 = sp_iter->MakeReduce(sp_succ, reduceOp, sp_v);
         auto t4 = sp_iter->MakeDataRead(sp_succ, DataScalar::Make(&succ, library));
-
         sp_iter->Dependency(t1, t2);
         sp_iter->Dependency(t2, t3);
         sp_iter->Dependency(t3, t4);
         sp_iter->SubmitWait();
+        SPLA_ALGO_CHECK(sp_iter);
+
+        if (timing) {
+            tightTimer.Stop();
+            std::cout << " - iter: " << iterations << ", src: " << s << ", visit: "
+                      << sp_w->GetNvals() << "/" << n << ", " << tightTimer.GetDurationMs() << "\n";
+            tightTimer.Start();
+        }
 
         iterations += 1;
     }
 
-#if defined(SPLA_DEBUG) || defined(SPLA_DEBUG_RELEASE)
-    std::cout << "Exec iterations: " << iterations << "\n";
-#endif
+    tightTimer.Stop();
+    overallTimer.Stop();
+
+    if (timing) {
+        std::cout << "Result: " << sp_v->GetNvals() << " reached\n";
+        std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
+        std::cout << " run overall: " << overallTimer.GetElapsedMs() << "\n";
+    }
 }
 
 void spla::Sssp(RefPtr<HostVector> &v, const RefPtr<HostMatrix> &A, Index s) {

@@ -137,6 +137,17 @@ namespace spla {
         bool IsParamSet(Param param) const;
 
         /**
+         * @brief Duplicate descriptor
+         *
+         * Creates exact copy of the descriptor as
+         * new descriptor object. Mutation of this and
+         * copied descriptor is safe and done independently.
+         *
+         * @return Duplicated descriptor
+         */
+        RefPtr<Descriptor> Dup() const;
+
+        /**
          * Make new descriptor instance for specified library.
          *
          * @param library Library instance
@@ -170,6 +181,7 @@ namespace spla {
 
     private:
         explicit Descriptor(class Library &library);
+        Descriptor(const Descriptor&);
 
         // Map of desc configurable params and its values
         std::unordered_map<Param, std::string> mParams;
