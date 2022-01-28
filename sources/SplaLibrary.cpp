@@ -113,46 +113,6 @@ spla::Library::Config &spla::Library::Config::SetWorkersCount(std::size_t worker
     return *this;
 }
 
-std::vector<std::string> spla::Library::Config::GetDevicesNames() const {
-    std::vector<std::string> devicesNames;
-
-    auto platforms = boost::compute::system::platforms();
-    if (platforms.empty()) {
-        RAISE_ERROR(DeviceNotPresent, "No OpenCL platform found");
-    }
-
-    if (!mDeviceType.has_value() &&
-        !mPlatformName.has_value() &&
-        mDeviceAmount.value() == 1U) {
-        return {boost::compute::system::default_device().name()};
-    }
-
-    for (const boost::compute::platform &platform : platforms) {
-        bool matchPlatform = !mPlatformName.has_value() || platform.name().find(mPlatformName.value()) != std::string::npos;
-        if (!matchPlatform)
-            continue;
-
-        for (const boost::compute::device &device : platform.devices()) {
-            bool matchType = !mDeviceType.has_value() || ((mDeviceType.value() == GPU && device.type() == boost::compute::device::type::gpu) ||
-                                                          (mDeviceType.value() == CPU && device.type() == boost::compute::device::type::cpu) ||
-                                                          (mDeviceType.value() == Accelerator && device.type() == boost::compute::device::type::accelerator));
-            if (matchType) {
-                devicesNames.push_back(device.name());
-            }
-        }
-    }
-
-    if (devicesNames.empty()) {
-        devicesNames.push_back(boost::compute::system::default_device().name());
-    }
-
-    if (mDeviceAmount.has_value() && devicesNames.size() > mDeviceAmount.value()) {
-        devicesNames.resize(mDeviceAmount.value());
-    }
-
-    return devicesNames;
-}
-
 std::size_t spla::Library::Config::GetBlockSize() const {
     return mBlockSize;
 }
@@ -163,4 +123,16 @@ std::size_t spla::Library::Config::GetWorkersCount() const {
 
 const std::optional<spla::Filename> &spla::Library::Config::GetLogFilename() const {
     return mLogFilename;
+}
+
+std::optional<std::string> spla::Library::Config::GetPlatformName() const {
+    return mPlatformName;
+}
+
+std::optional<spla::Library::Config::DeviceType> spla::Library::Config::GetDeviceType() const {
+    return mDeviceType;
+}
+
+std::optional<std::size_t> spla::Library::Config::GetDeviceAmount() const {
+    return mDeviceAmount;
 }

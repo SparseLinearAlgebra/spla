@@ -51,6 +51,8 @@ namespace spla {
      */
     class SPLA_API Library {
     public:
+        using ClDeviceId = void *;
+
         /**
          * @class Config
          *
@@ -155,9 +157,6 @@ namespace spla {
              */
             Config &SetWorkersCount(std::size_t workersCount);
 
-            /** @return List of available devices for specified config settings */
-            [[nodiscard]] std::vector<std::string> GetDevicesNames() const;
-
             /** @return Log filename */
             [[nodiscard]] const std::optional<Filename> &GetLogFilename() const;
 
@@ -166,6 +165,15 @@ namespace spla {
 
             /** @return Workers count */
             [[nodiscard]] std::size_t GetWorkersCount() const;
+
+            /** @return Platform name */
+            [[nodiscard]] std::optional<std::string> GetPlatformName() const;
+
+            /** @return Device type */
+            [[nodiscard]] std::optional<DeviceType> GetDeviceType() const;
+
+            /** @return Device amount */
+            [[nodiscard]] std::optional<std::size_t> GetDeviceAmount() const;
 
         private:
             std::optional<std::string> mPlatformName;
