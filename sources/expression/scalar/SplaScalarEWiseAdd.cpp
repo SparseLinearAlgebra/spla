@@ -35,7 +35,7 @@ bool spla::ScalarEWiseAdd::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
-void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+void spla::ScalarEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &) {
     auto &nodes = expression.GetNodes();
     auto node = nodes[nodeIdx];
     auto library = expression.GetLibrary().GetPrivatePtr();

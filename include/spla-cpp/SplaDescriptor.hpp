@@ -181,7 +181,7 @@ namespace spla {
 
     private:
         explicit Descriptor(class Library &library);
-        Descriptor(const Descriptor&);
+        Descriptor(const Descriptor &);
 
         // Map of desc configurable params and its values
         std::unordered_map<Param, std::string> mParams;

@@ -30,10 +30,11 @@
 
 #include <memory>
 #include <optional>
-#include <spla-cpp/SplaConfig.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
 #include <string>
 #include <vector>
+
+#include <spla-cpp/SplaConfig.hpp>
+#include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {
 

@@ -32,7 +32,6 @@
 #include <boost/compute/device.hpp>
 #include <boost/compute/system.hpp>
 
-#include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <spla-cpp/SplaLibrary.hpp>
 #include <spla-cpp/SplaTypes.hpp>
