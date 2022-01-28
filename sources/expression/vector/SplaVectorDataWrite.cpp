@@ -70,7 +70,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
             compute::device device = library->GetDeviceManager().GetDevice(deviceId);
             compute::context ctx = library->GetContext();
             compute::command_queue queue(ctx, device);
-            QueueFinisher finisher(queue);
+            QueueFinisher finisher(queue, logger);
 
             auto blockIndex = VectorStorage::Index{static_cast<unsigned int>(i)};
             auto blockNrows = math::GetBlockActualSize(i, nrows, blockSize);

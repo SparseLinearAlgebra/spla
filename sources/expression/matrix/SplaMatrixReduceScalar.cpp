@@ -117,7 +117,7 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
 
         auto &ctx = library->GetContext();
         auto queue = boost::compute::command_queue(ctx, library->GetDeviceManager().GetDevice(lastReduceDeviceId));
-        QueueFinisher finisher(queue);
+        QueueFinisher finisher(queue, logger);
 
         const std::size_t valueByteSize = argType->GetByteSize();
         boost::compute::vector<unsigned char> reduced = intermediateBuffer->Reduce(argReduce, queue);

@@ -166,7 +166,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     auto device = library->GetDeviceManager().GetDevice(params->deviceId);
     compute::context ctx = library->GetContext();
     compute::command_queue queue(ctx, device);
-    QueueFinisher finisher(queue);
+    QueueFinisher finisher(queue, library->GetLogger());
 
     MatrixCOO &a = *params->a.Cast<MatrixCOO>();
     MatrixCOO &b = *params->b.Cast<MatrixCOO>();

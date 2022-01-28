@@ -30,6 +30,8 @@
 
 #include <boost/compute/command_queue.hpp>
 
+#include <spdlog/spdlog.h>
+
 namespace spla {
 
     /**
@@ -46,8 +48,8 @@ namespace spla {
      */
     class QueueFinisher {
     public:
-        explicit QueueFinisher(boost::compute::command_queue &queue)
-            : mQueue(queue) {}
+        explicit QueueFinisher(boost::compute::command_queue &queue, std::shared_ptr<spdlog::logger> logger)
+            : mQueue(queue), mLogger(std::move(logger)) {}
 
         QueueFinisher(const QueueFinisher &) = delete;
         QueueFinisher(QueueFinisher &&) = delete;
@@ -55,11 +57,18 @@ namespace spla {
         QueueFinisher &operator=(QueueFinisher &&) = delete;
 
         ~QueueFinisher() {
-            mQueue.finish();
+            try {
+                mQueue.finish();
+            } catch (const std::exception &e) {
+                SPDLOG_LOGGER_ERROR(mLogger, "QueueFinisher: {}", e.what());
+            } catch (...) {
+                SPDLOG_LOGGER_ERROR(mLogger, "QueueFinisher: unknown error");
+            }
         }
 
     private:
         boost::compute::command_queue &mQueue;
+        std::shared_ptr<spdlog::logger> mLogger;
     };
 
     /**

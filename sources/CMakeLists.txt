@@ -126,7 +126,6 @@ set(SPLA_EXPRESSION_SOURCES
 
 set(SPLA_UTILS_SOURCES
         sources/utils/SplaAlgo.hpp
-        sources/utils/SplaIgnore.hpp
         sources/utils/SplaProfiling.hpp
         sources/utils/SplaScalarBuffer.cpp
         sources/utils/SplaScalarBuffer.hpp)
