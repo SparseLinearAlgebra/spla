@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['raise_5fcritical_5ferror_425',['RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#adde239ef21ecbdad94fd9859beb775df',1,'SplaError.hpp']]],
-  ['raise_5ferror_426',['RAISE_ERROR',['../SplaError_8hpp.html#aedc91891937319eef48224447f657444',1,'SplaError.hpp']]],
-  ['readme_2emd_427',['README.md',['../README_8md.html',1,'']]],
-  ['reduce_428',['Reduce',['../classspla_1_1detail_1_1ScalarBuffer.html#ace1e40f8c1d8676d13aa1514a5480233',1,'spla::detail::ScalarBuffer']]],
+  ['raise_5fcritical_5ferror_426',['RAISE_CRITICAL_ERROR',['../SplaError_8hpp.html#adde239ef21ecbdad94fd9859beb775df',1,'SplaError.hpp']]],
+  ['raise_5ferror_427',['RAISE_ERROR',['../SplaError_8hpp.html#aedc91891937319eef48224447f657444',1,'SplaError.hpp']]],
+  ['readme_2emd_428',['README.md',['../README_8md.html',1,'']]],
   ['reduce_429',['reduce',['../classspla_1_1ParamsMatrixReduceScalar.html#a484a3c4f379f08f61c5eae0e2ab448fb',1,'spla::ParamsMatrixReduceScalar::reduce()'],['../classspla_1_1ParamsVectorReduce.html#a300b26b059b24fe3d972cdf3581b215e',1,'spla::ParamsVectorReduce::reduce()']]],
-  ['reduce_430',['Reduce',['../namespacespla_1_1detail.html#acf13c4d4bd32427b1caf09888f3a5da3',1,'spla::detail::Reduce()'],['../namespacespla.html#ad1234e2d728ff6b65ece431f340dc07c',1,'spla::Reduce(const boost::compute::vector&lt; unsigned char &gt; &amp;values, std::size_t valueByteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)']]],
+  ['reduce_430',['Reduce',['../classspla_1_1detail_1_1ScalarBuffer.html#ace1e40f8c1d8676d13aa1514a5480233',1,'spla::detail::ScalarBuffer::Reduce()'],['../namespacespla_1_1detail.html#acf13c4d4bd32427b1caf09888f3a5da3',1,'spla::detail::Reduce()'],['../namespacespla.html#ad1234e2d728ff6b65ece431f340dc07c',1,'spla::Reduce(const boost::compute::vector&lt; unsigned char &gt; &amp;values, std::size_t valueByteSize, const std::string &amp;reduceOp, boost::compute::command_queue &amp;queue)']]],
   ['reduce2_431',['Reduce2',['../namespacespla.html#abe918e96a7d64b88e92a6d0905fa5a0f',1,'spla']]],
   ['reduceapplication_432',['ReduceApplication',['../classspla_1_1detail_1_1meta_1_1ReduceApplication.html#a4251fd3df5ab4c8adba6620a2619ef69',1,'spla::detail::meta::ReduceApplication::ReduceApplication()'],['../classspla_1_1detail_1_1meta_1_1ReduceApplicationRestrict.html#a4251fd3df5ab4c8adba6620a2619ef69',1,'spla::detail::meta::ReduceApplicationRestrict::ReduceApplication()'],['../classspla_1_1detail_1_1meta_1_1ReduceApplication.html',1,'spla::detail::meta::ReduceApplication']]],
   ['reduceapplicationnonrestrict_433',['ReduceApplicationNonRestrict',['../classspla_1_1detail_1_1meta_1_1ReduceApplicationNonRestrict.html#aa0e406f591184030a58edd3ffd0c6d83',1,'spla::detail::meta::ReduceApplicationNonRestrict::ReduceApplicationNonRestrict()'],['../classspla_1_1detail_1_1meta_1_1ReduceApplicationNonRestrict.html',1,'spla::detail::meta::ReduceApplicationNonRestrict']]],

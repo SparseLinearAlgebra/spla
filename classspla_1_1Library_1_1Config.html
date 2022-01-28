@@ -107,14 +107,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a56dad4c293cf60428732d319681d1661"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library_1_1Config.html">Config</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a56dad4c293cf60428732d319681d1661">SetWorkersCount</a> (std::size_t workersCount)</td></tr>
 <tr class="memdesc:a56dad4c293cf60428732d319681d1661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set workers count for task executor.  <a href="classspla_1_1Library_1_1Config.html#a56dad4c293cf60428732d319681d1661">More...</a><br /></td></tr>
 <tr class="separator:a56dad4c293cf60428732d319681d1661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15dccdfeef83a00ba979994501947780"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a15dccdfeef83a00ba979994501947780">GetDevicesNames</a> () const</td></tr>
-<tr class="separator:a15dccdfeef83a00ba979994501947780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c465eeb0a24226197175ddbefff2698"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; Filename &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a8c465eeb0a24226197175ddbefff2698">GetLogFilename</a> () const</td></tr>
 <tr class="separator:a8c465eeb0a24226197175ddbefff2698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bc95c9d87b09da13456699a0e7f5d61"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a6bc95c9d87b09da13456699a0e7f5d61">GetBlockSize</a> () const</td></tr>
 <tr class="separator:a6bc95c9d87b09da13456699a0e7f5d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2041219d2b7a8607068a2b23b80ca997"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a2041219d2b7a8607068a2b23b80ca997">GetWorkersCount</a> () const</td></tr>
 <tr class="separator:a2041219d2b7a8607068a2b23b80ca997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb16f5d99d3ff59ee2cc158d5dd1561d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#aeb16f5d99d3ff59ee2cc158d5dd1561d">GetPlatformName</a> () const</td></tr>
+<tr class="separator:aeb16f5d99d3ff59ee2cc158d5dd1561d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc62df0f08a09db2428318b67a2409c8"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#adc62df0f08a09db2428318b67a2409c8">GetDeviceType</a> () const</td></tr>
+<tr class="separator:adc62df0f08a09db2428318b67a2409c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e62cf8cca1208555b6fe23b1b7c9c0d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library_1_1Config.html#a3e62cf8cca1208555b6fe23b1b7c9c0d">GetDeviceAmount</a> () const</td></tr>
+<tr class="separator:a3e62cf8cca1208555b6fe23b1b7c9c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -190,21 +194,39 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a15dccdfeef83a00ba979994501947780"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15dccdfeef83a00ba979994501947780">&#9670;&nbsp;</a></span>GetDevicesNames()</h2>
+<a id="a3e62cf8cca1208555b6fe23b1b7c9c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e62cf8cca1208555b6fe23b1b7c9c0d">&#9670;&nbsp;</a></span>GetDeviceAmount()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; spla::Library::Config::GetDevicesNames </td>
+          <td class="memname">std::optional&lt; std::size_t &gt; spla::Library::Config::GetDeviceAmount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>List of available devices for specified config settings </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Device amount </dd></dl>
+
+</div>
+</div>
+<a id="adc62df0f08a09db2428318b67a2409c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc62df0f08a09db2428318b67a2409c8">&#9670;&nbsp;</a></span>GetDeviceType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="classspla_1_1Library_1_1Config.html#ae9c06614083b2661687a75a60e226a2e">spla::Library::Config::DeviceType</a> &gt; spla::Library::Config::GetDeviceType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Device type </dd></dl>
 
 </div>
 </div>
@@ -223,6 +245,24 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Log filename </dd></dl>
+
+</div>
+</div>
+<a id="aeb16f5d99d3ff59ee2cc158d5dd1561d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb16f5d99d3ff59ee2cc158d5dd1561d">&#9670;&nbsp;</a></span>GetPlatformName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; std::string &gt; spla::Library::Config::GetPlatformName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Platform name </dd></dl>
 
 </div>
 </div>
