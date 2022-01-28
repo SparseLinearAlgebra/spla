@@ -85,7 +85,7 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
             auto block = argMatrix->GetStorage()->GetBlock(blockIdx);
 
             if (block.IsNotNull()) {
-                tf::Task reduceAnotherBlock = builder.Emplace([=]() {
+                tf::Task reduceAnotherBlock = builder.Emplace("mat-red-scalar", [=]() {
                     ParamsMatrixReduceScalar params;
                     params.desc = desc;
                     params.deviceId = deviceId;
@@ -109,7 +109,7 @@ void spla::MatrixReduceScalar::Process(std::size_t nodeIdx, const spla::Expressi
     }
 
     auto lastReduceDeviceId = deviceIds.back();
-    tf::Task reduceIntermediateBuffer = builder.Emplace([=]() {
+    tf::Task reduceIntermediateBuffer = builder.Emplace("reduce-intermediate", [=]() {
         if (intermediateBuffer->GetNScalars() == 0) {
             argScalar->GetStorage()->RemoveValue();
             return;

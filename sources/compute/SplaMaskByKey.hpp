@@ -333,12 +333,8 @@ namespace spla {
             compute::vector<compute::uint_> tileA((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::vector<compute::uint_> tileB((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
 
-            PF_SCOPE_MARK(mask, "alloc tiles");
-
             fill_n(tileA.begin(), 1, 0, queue);
             fill_n(tileB.begin(), 1, 0, queue);
-
-            PF_SCOPE_MARK(mask, "fill begin");
 
             // Tile the sets
             detail::BalancedPathKernel balancedPathKernel;
@@ -354,8 +350,6 @@ namespace spla {
 
             fill_n(tileA.end() - 1, 1, maskCount, queue);
             fill_n(tileB.end() - 1, 1, keyCount, queue);
-
-            PF_SCOPE_MARK(mask, "fill end");
 
             compute::vector<compute::uint_> counts((maskCount + keyCount + tileSize - 1) / tileSize + 1, queue.get_context());
             compute::fill_n(counts.end() - 1, 1, 0, queue);

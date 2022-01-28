@@ -76,7 +76,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
                           "Supported only COO matrix block format");
     }
 
-    auto collectNnz = builder.Emplace([=]() {
+    auto collectNnz = builder.Emplace("mat-read-struct", [=]() {
         auto &blockRowsNvals = shared->blockRowsNvals;
         auto &blockRowsOffsets = shared->blockRowsOffsets;
 
@@ -100,7 +100,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
 
     for (std::size_t i = 0; i < storage->GetNblockRows(); i++) {
         auto deviceId = devicesIds[i];
-        auto copyBlocksInRow = builder.Emplace([=]() {
+        auto copyBlocksInRow = builder.Emplace("mat-read-rows", [=]() {
             using namespace boost;
 
             auto device = library->GetDeviceManager().GetDevice(deviceId);

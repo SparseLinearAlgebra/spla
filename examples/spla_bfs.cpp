@@ -78,7 +78,7 @@ int main(int argc, const char *const *argv) {
     assert(bsize > 1);
 
     // Load data
-    spla::MatrixLoader<int> loader;
+    spla::MatrixLoader<std::int32_t> loader;
 
     try {
         loader.Load(mtxpath, undirected, removeLoops, ignoreValues, verbose);
@@ -102,6 +102,7 @@ int main(int argc, const char *const *argv) {
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
     prepareData->MakeDataWrite(M, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), nullptr, loader.GetNvals(), library));
     prepareData->SubmitWait();
+    SPLA_ALGO_CHECK(prepareData);
 
     spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
     desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);

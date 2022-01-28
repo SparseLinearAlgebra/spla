@@ -100,7 +100,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
         IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
     }
 
-    PF_SCOPE(vxm, " -vxm");
+    PF_SCOPE(vxm, "-vxm-");
 
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);

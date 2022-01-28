@@ -200,7 +200,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
         auto &toProcess = blockProducts[j];
         if (!toProcess.empty()) {
             auto deviceId = devicesForFinalMerge[deviceToFetch];
-            auto task = builder.Emplace("mat-red-blocks", [=]() {
+            auto task = builder.Emplace("vec-red-blocks", [=]() {
                 std::vector<RefPtr<VectorBlock>> blocks;
                 products->GetBlocks(j, blocks);
 

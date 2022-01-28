@@ -67,7 +67,7 @@ void spla::MatrixDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
     for (std::size_t i = 0; i < blocksCountInRow; i++) {
         for (std::size_t j = 0; j < blocksCountInCol; j++) {
             auto deviceId = devicesIds[i * blocksCountInCol + j];
-            builder.Emplace([=]() {
+            builder.Emplace("mat-write", [=]() {
                 using namespace boost;
 
                 compute::context ctx = library->GetContext();

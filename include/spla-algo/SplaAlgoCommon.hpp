@@ -33,6 +33,12 @@
 
 #include <vector>
 
+#define SPLA_ALGO_CHECK(expr)                                     \
+    if (expr->GetState() != spla::Expression::State::Evaluated) { \
+        std::cout << "Filed to evaluate expression\n";            \
+    } else {                                                      \
+    }
+
 namespace spla {
 
     /**

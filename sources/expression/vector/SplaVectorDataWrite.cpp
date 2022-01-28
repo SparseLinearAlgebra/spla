@@ -64,7 +64,7 @@ void spla::VectorDataWrite::Process(std::size_t nodeIdx, const spla::Expression 
 
     for (std::size_t i = 0; i < blockCountInRow; i++) {
         auto deviceId = devicesIds[i];
-        builder.Emplace([=]() {
+        builder.Emplace("vec-write", [=]() {
             using namespace boost;
 
             compute::device device = library->GetDeviceManager().GetDevice(deviceId);

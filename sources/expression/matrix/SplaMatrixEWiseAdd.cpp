@@ -60,7 +60,7 @@ void spla::MatrixEWiseAdd::Process(std::size_t nodeIdx, const spla::Expression &
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         for (std::size_t j = 0; j < w->GetStorage()->GetNblockCols(); j++) {
             auto deviceId = deviceIds[i * w->GetStorage()->GetNblockCols() + j];
-            builder.Emplace([=]() {
+            builder.Emplace("mat-eadd", [=]() {
                 auto blockIndex = MatrixStorage::Index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                 ParamsMatrixEWiseAdd params;
                 params.desc = desc;

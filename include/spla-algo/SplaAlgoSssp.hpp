@@ -29,6 +29,7 @@
 #define SPLA_SPLAALGOSSSP_HPP
 
 #include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
@@ -47,8 +48,9 @@ namespace spla {
      * @param[out] v Vector where to store shortest paths of the reached vertices
      * @param A Input adjacency matrix of the graph; must be n x n;
      * @param s Index of the source vertex to begin paths search
+     * @param descriptor Algorithm descriptor
      */
-    SPLA_API void Sssp(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s);
+    SPLA_API void Sssp(RefPtr<Vector> &v, const RefPtr<Matrix> &A, Index s, const RefPtr<Descriptor> &descriptor = nullptr);
 
     /**
      * @brief Single-source shortest path

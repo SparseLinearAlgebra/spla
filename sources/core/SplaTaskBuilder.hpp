@@ -55,14 +55,6 @@ namespace spla {
         /**
          * @brief Emplace work to the subflow.
          *
-         * @param work Function to execute as work inside task.
-         * @return Taskflow task handle.
-         */
-        tf::Task Emplace(std::function<void()> work);
-
-        /**
-         * @brief Emplace work to the subflow.
-         *
          * @param workName Name of the task (for debugging and error handling)
          * @param work Function to execute as work inside task.
          * @return Taskflow task handle.

@@ -100,10 +100,10 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 nBlockK = aStorage->GetNblockCols(),
                 nBlockN = bStorage->GetNblockCols();
 
-    using Index = MatrixStorage::Index;
+    using SIndex = MatrixStorage::Index;
     struct ToProcess {
-        Index a;
-        Index b;
+        SIndex a;
+        SIndex b;
     };
 
     // Fetch blocks and store locally
@@ -125,8 +125,8 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
         for (std::size_t j = 0; j < nBlockN; j++) {
             auto &toProcess = blockProducts[i * nBlockN + j];
             for (std::size_t k = 0; k < nBlockK; k++) {
-                Index aIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(k)};
-                Index bIndex{static_cast<unsigned int>(k), static_cast<unsigned int>(j)};
+                SIndex aIndex{static_cast<unsigned int>(i), static_cast<unsigned int>(k)};
+                SIndex bIndex{static_cast<unsigned int>(k), static_cast<unsigned int>(j)};
                 auto aBlock = aBlocks.find(aIndex);
                 auto bBlock = bBlocks.find(bIndex);
 
@@ -164,8 +164,8 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 auto bIdx = toProcess.b;
                 auto aBlock = aBlocks.find(aIdx)->second;
                 auto bBlock = bBlocks.find(bIdx)->second;
-                auto maskBlock = GetMaskBlock(maskBlocks, Index{aIdx.first, bIdx.second});
-                auto task = builder.Emplace([=]() {
+                auto maskBlock = GetMaskBlock(maskBlocks, SIndex{aIdx.first, bIdx.second});
+                auto task = builder.Emplace("mxm", [=]() {
                     assert(aBlock->GetNcols() == bBlock->GetNrows());
                     ParamsMxM params;
                     params.desc = desc;
@@ -205,7 +205,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
             auto &toProcess = blockProducts[i * nBlockN + j];
             if (!toProcess.empty()) {
                 auto deviceId = devicesForFinalMerge[deviceToFetch];
-                auto task = builder.Emplace([=]() {
+                auto task = builder.Emplace("mat-red-blocks", [=]() {
                     std::vector<RefPtr<MatrixBlock>> blocks;
                     products->GetBlocks(i, j, blocks);
 
@@ -232,7 +232,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                     }
 
                     // Store final result
-                    Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
+                    SIndex index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
                     w->GetStorage()->SetBlock(index, block);
                 });
 
