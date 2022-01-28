@@ -37,6 +37,7 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("niters", "number of iterations to run", cxxopts::value<int>()->default_value("4")));
     options.add_option("", cxxopts::Option("source", "source vertex to run bfs", cxxopts::value<int>()->default_value("0")));
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
+    options.add_option("", cxxopts::Option("devices-count", "amount of devices for execution", cxxopts::value<int>()->default_value("1")));
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
     options.add_option("", cxxopts::Option("dense-factor", "factor used to dense transition", cxxopts::value<float>()->default_value("1.0f")));
@@ -52,6 +53,7 @@ int main(int argc, const char *const *argv) {
     int niters;
     int source;
     int bsize;
+    int devicesCount;
     bool undirected;
     bool removeLoops = true;
     bool ignoreValues = true;
@@ -64,6 +66,7 @@ int main(int argc, const char *const *argv) {
         niters = args["niters"].as<int>();
         source = args["source"].as<int>();
         bsize = args["bsize"].as<int>();
+        devicesCount = args["devices-count"].as<int>();
         undirected = args["undirected"].as<bool>();
         verbose = args["verbose"].as<bool>();
         debugTiming = args["debug-timing"].as<bool>();
@@ -76,6 +79,7 @@ int main(int argc, const char *const *argv) {
     assert(niters > 0);
     assert(source >= 0);
     assert(bsize > 1);
+    assert(devicesCount >= 1);
 
     // Load data
     spla::MatrixLoader<float> loader;
@@ -87,13 +91,15 @@ int main(int argc, const char *const *argv) {
         return 1;
     }
 
+    assert(loader.GetNrows() == loader.GetNcols());
+
     // Fill matrix uniformly with 1
     loader.Fill(1.0f);
 
     spla::Library::Config config;
     config.SetBlockSize(bsize);
-    config.SetWorkersCount(1);// Force single worker thread for now
-
+    config.SetWorkersCount(devicesCount * devicesCount);
+    config.LimitAmount(devicesCount);
     spla::Library library(config);
 
     // v and M bfs args
