@@ -31,6 +31,10 @@ const std::vector<spla::RefPtr<spla::Object>> &spla::ExpressionNode::GetArgs() c
     return mArgs;
 }
 
+class spla::Expression *spla::ExpressionNode::GetParent() const {
+    return &mParent;
+}
+
 const spla::RefPtr<spla::Object> &spla::ExpressionNode::GetArg(unsigned int idx) const {
     assert(idx < mArgs.size());
     return mArgs[idx];

@@ -80,6 +80,18 @@ namespace spla {
         };
 
         /**
+         * @brief Sets global expression descriptor
+         *
+         * This descriptor allows to defines specs and params for
+         * expression and its nodes executions. Properties of this
+         * descriptor can be extended or overridden in descriptors
+         * of each node inside expression.
+         *
+         * @param desc Expression descriptor to set
+         */
+        void SetDescriptor(const RefPtr<Descriptor> &desc);
+
+        /**
          * Submit expression for the execution.
          *
          * @note Expression asynchronously submitted for execution
@@ -424,6 +436,9 @@ namespace spla {
                                              const RefPtr<Matrix> &a,
                                              const RefPtr<Descriptor> &desc = nullptr);
 
+        /** @return Expression descriptor */
+        const RefPtr<Descriptor> &GetDescriptor() const;
+
         /** @return Current expression state */
         State GetState() const;
 
@@ -459,6 +474,8 @@ namespace spla {
         std::unique_ptr<class ExpressionFuture> mFuture;
         std::unique_ptr<class ExpressionTasks> mTasks;
         std::atomic<State> mState;
+
+        RefPtr<Descriptor> mDesc;
     };
 
     /**

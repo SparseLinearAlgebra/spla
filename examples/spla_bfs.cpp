@@ -113,7 +113,7 @@ int main(int argc, const char *const *argv) {
 
     spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
     desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
-    desc->SetParam(spla::Descriptor::Param::DenseFactor, std::to_string(denseFactor));
+    desc->SetParamT(spla::Descriptor::Param::DenseFactor, denseFactor);
 
     // Warm up phase
     spla::CpuTimer tWarmUp;

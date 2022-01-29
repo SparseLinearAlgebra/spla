@@ -33,7 +33,7 @@
 
 
 spla::Expression::~Expression() {
-    // Before destruction we must wait until it is executed
+    // Before destruction, we must wait until it is executed
     // NOTE: if was not submitted, nothing to do
     if (GetState() != State::Default)
         Wait();
@@ -43,11 +43,16 @@ spla::Expression::~Expression() {
 }
 
 spla::RefPtr<spla::Expression> spla::Expression::Make(spla::Library &library) {
-    return spla::RefPtr<spla::Expression>(new Expression(library));
+    return {new Expression(library)};
 }
 
-spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::Expression, library) {
-    SetState(State::Default);
+spla::Expression::Expression(spla::Library &library) : Object(Object::TypeName::Expression, library), mState(State::Default) {
+    mDesc = GetLibrary().GetPrivate().GetDefaultDesc();
+}
+
+void spla::Expression::SetDescriptor(const RefPtr<Descriptor> &desc) {
+    CHECK_RAISE_ERROR(desc.IsNotNull(), NullPointer, "Passed null desc to set");
+    mDesc = desc;
 }
 
 void spla::Expression::Submit() {
@@ -80,6 +85,10 @@ void spla::Expression::Dependency(const spla::RefPtr<spla::ExpressionNode> &pred
 
     // NOTE: Cycles check is done later
     pred->Link(succ.Get());
+}
+
+const spla::RefPtr<spla::Descriptor> &spla::Expression::GetDescriptor() const {
+    return mDesc;
 }
 
 spla::Expression::State spla::Expression::GetState() const {

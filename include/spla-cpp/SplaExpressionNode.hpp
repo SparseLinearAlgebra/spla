@@ -89,6 +89,9 @@ namespace spla {
             Transpose
         };
 
+        /** @return Expression this node belongs to */
+        class Expression *GetParent() const;
+
         /** @return Node argument at specified index */
         const RefPtr<Object> &GetArg(unsigned int idx) const;
 
