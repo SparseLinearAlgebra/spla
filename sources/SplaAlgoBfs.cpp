@@ -41,10 +41,12 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     CHECK_RAISE_ERROR(s < sp_A->GetNrows(), InvalidArgument, "Start index must be withing A bounds");
 
     bool timing = false;
+    bool fixedDeviceAllocation = false;
     float denseFactor = 1.0f;
 
     if (descriptor.IsNotNull()) {
         timing = descriptor->IsParamSet(Descriptor::Param::ProfileTime);
+        fixedDeviceAllocation = descriptor->IsParamSet(Descriptor::Param::DeviceFixedStrategy);
         descriptor->GetParamT(Descriptor::Param::DenseFactor, denseFactor);
     }
 
@@ -54,6 +56,9 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     sp_v = Vector::Make(n, Types::Int32(library), library);      // Vector with reached levels
     auto sp_q = Vector::Make(n, Types::Void(library), library);  // Vector-front of the bfs
     auto sp_depth = Scalar::Make(Types::Int32(library), library);// Scalar to update depth of the v
+
+    auto sp_expr_desc = Descriptor::Make(library);
+    sp_expr_desc->SetParam(Descriptor::Param::DeviceFixedStrategy, fixedDeviceAllocation);
 
     auto sp_desc_accum = Descriptor::Make(library);// Used to assign to v new reached level and preserve v values
     sp_desc_accum->SetParam(Descriptor::Param::AccumResult);
@@ -65,6 +70,7 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
     overallTimer.Start();
 
     auto sp_setup = Expression::Make(library);// Set q[s]: start vertex
+    sp_setup->SetDescriptor(sp_expr_desc);
     sp_setup->MakeDataWrite(sp_q, DataVector::Make(&s, nullptr, 1, library));
     sp_setup->SubmitWait();
     SPLA_ALGO_CHECK(sp_setup);
@@ -90,6 +96,7 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
             sparseToDense = true;
         }
 
+        sp_iter->SetDescriptor(sp_expr_desc);
         sp_iter->Dependency(t1, t2);
         sp_iter->Dependency(t2, t3);
         sp_iter->SubmitWait();
@@ -112,6 +119,7 @@ void spla::Bfs(RefPtr<Vector> &sp_v, const RefPtr<Matrix> &sp_A, Index s, const 
         std::cout << "Result: " << sp_v->GetNvals() << " reached\n";
         std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
         std::cout << " run overall: " << overallTimer.GetElapsedMs() << "\n";
+        std::cout << " device allocation: " << (fixedDeviceAllocation ? "fixed" : "uniform") << "\n";
     }
 }
 
