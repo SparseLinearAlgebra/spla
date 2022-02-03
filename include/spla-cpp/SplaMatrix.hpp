@@ -29,9 +29,11 @@
 #define SPLA_SPLAMATRIX_HPP
 
 #include <ostream>
+#include <utility>
+
+#include <spla-cpp/SplaDecorated.hpp>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
-#include <utility>
 
 namespace spla {
 
@@ -61,7 +63,7 @@ namespace spla {
      * @see FunctionUnary
      * @see FunctionBinary
      */
-    class SPLA_API Matrix final : public TypedObject {
+    class SPLA_API Matrix final : public TypedObject, public Decorated {
     public:
         ~Matrix() override;
 

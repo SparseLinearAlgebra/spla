@@ -28,8 +28,11 @@
 #ifndef SPLA_SPLAOBJECT_HPP
 #define SPLA_SPLAOBJECT_HPP
 
-#include <spla-cpp/SplaRefCnt.hpp>
+#include <mutex>
 #include <string>
+#include <unordered_map>
+
+#include <spla-cpp/SplaRefCnt.hpp>
 
 namespace spla {
 
@@ -95,12 +98,9 @@ namespace spla {
         virtual void CopyData(const RefPtr<Object> &object);
 
     private:
-        // User defined text label (for profiling/debugging)
-        std::string mLabel;
-        // Type of the object
-        TypeName mTypeName = TypeName::Unknown;
-        // Global library instance
-        class Library &mLibrary;
+        std::string mLabel;                     /** User defined text label (for profiling/debugging) */
+        TypeName mTypeName = TypeName::Unknown; /** Type of the object */
+        class Library &mLibrary;                /** Global library instance */
     };
 
     namespace {
@@ -138,6 +138,7 @@ namespace spla {
                     return "Unknown";
             }
         }
+
     }// namespace
 
     /**
