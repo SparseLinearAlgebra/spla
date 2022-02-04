@@ -25,43 +25,39 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
-
-/**
- * @defgroup API
- *
- * @brief Public library interface
- *
- * @details API module provides access to all common library primitives.
- * Primitives are exposed as a number of Object reference-counted classes.
- * Reference-counting is used to automate objects life-time checks and
- * to pass around this objects as expressions params in a safe way.
- *
- * Implementation details are hidden in private Internal sources module.
- * Header files has no other dependencies, except standard c++ library files.
- *
- * File Spla.hpp provides access to all API components.
- */
-
-#include <spla-cpp/SplaConfig.hpp>
-#include <spla-cpp/SplaData.hpp>
 #include <spla-cpp/SplaDecorated.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaExpression.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionSelect.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
-#include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaMatrix.hpp>
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaScalar.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <spla-cpp/SplaUtils.hpp>
-#include <spla-cpp/SplaVector.hpp>
 
-#endif//SPLA_SPLA_HPP
+#include <core/SplaError.hpp>
+
+spla::Decorated::Decorated() {
+    mDecorations.resize(static_cast<unsigned int>(Decoration::Max));
+}
+
+void spla::Decorated::SetDecoration(spla::Decorated::Decoration decoration,
+                                    const spla::RefPtr<spla::Object> &object) {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+    CHECK_RAISE_ERROR(static_cast<unsigned int>(decoration) < static_cast<unsigned int>(Decoration::Max),
+                      InvalidArgument, "Invalid decoration type");
+    mDecorations[static_cast<int>(decoration)] = object;
+}
+
+void spla::Decorated::RemoveDecoration(spla::Decorated::Decoration decoration) {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+    CHECK_RAISE_ERROR(static_cast<unsigned int>(decoration) < static_cast<unsigned int>(Decoration::Max),
+                      InvalidArgument, "Invalid decoration type");
+    mDecorations[static_cast<int>(decoration)].Reset();
+}
+
+bool spla::Decorated::HasDecoration(spla::Decorated::Decoration decoration) const {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+    CHECK_RAISE_ERROR(static_cast<unsigned int>(decoration) < static_cast<unsigned int>(Decoration::Max),
+                      InvalidArgument, "Invalid decoration type");
+    return mDecorations[static_cast<int>(decoration)].IsNotNull();
+}
+
+spla::RefPtr<spla::Object> spla::Decorated::GetDecoration(spla::Decorated::Decoration decoration) const {
+    std::lock_guard<std::mutex> lockGuard(mMutex);
+    CHECK_RAISE_ERROR(static_cast<unsigned int>(decoration) < static_cast<unsigned int>(Decoration::Max),
+                      InvalidArgument, "Invalid decoration type");
+    return mDecorations[static_cast<int>(decoration)];
+}

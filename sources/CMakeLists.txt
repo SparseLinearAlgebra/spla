@@ -1,5 +1,6 @@
 set(SPLA_CPP_SOURCES
         sources/SplaData.cpp
+        sources/SplaDecorated.cpp
         sources/SplaDescriptor.cpp
         sources/SplaExpression.cpp
         sources/SplaExpressionNode.cpp
