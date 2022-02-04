@@ -1,6 +1,7 @@
 <map id="spla::Vector" name="spla::Vector">
-<area shape="rect" id="node1" title=" " alt="" coords="23,229,113,256"/>
+<area shape="rect" id="node1" title=" " alt="" coords="93,229,184,256"/>
 <area shape="rect" id="node2" href="$classspla_1_1TypedObject.html" title=" " alt="" coords="5,155,131,181"/>
 <area shape="rect" id="node3" href="$classspla_1_1Object.html" title=" " alt="" coords="23,80,113,107"/>
 <area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="22,5,114,32"/>
+<area shape="rect" id="node5" href="$classspla_1_1Decorated.html" title="Generic object which supports decorations." alt="" coords="155,155,266,181"/>
 </map>

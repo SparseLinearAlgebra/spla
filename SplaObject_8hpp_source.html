@@ -99,54 +99,54 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_SPLAOBJECT_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_SPLAOBJECT_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaRefCnt_8hpp.html">spla-cpp/SplaRefCnt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html">   46</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Object.html">Object</a> : <span class="keyword">public</span> <a class="code" href="classspla_1_1RefCnt.html">RefCnt</a> {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">   48</a></span>&#160;        <a class="code" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">~Object</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">   51</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">TypeName</a> {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="classspla_1_1Type.html">Type</a>,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <a class="code" href="classspla_1_1Matrix.html">Matrix</a>,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="classspla_1_1Vector.html">Vector</a>,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="classspla_1_1Scalar.html">Scalar</a>,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a>,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="classspla_1_1FunctionBinary.html">FunctionBinary</a>,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="classspla_1_1FunctionSelect.html">FunctionSelect</a>,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <a class="code" href="classspla_1_1Expression.html">Expression</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a>,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="classspla_1_1DataMatrix.html">DataMatrix</a>,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1DataVector.html">DataVector</a>,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <a class="code" href="classspla_1_1DataScalar.html">DataScalar</a>,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            Unknown</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        };</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Object.html">Object</a>(TypeName typeName, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">const</span> std::string &amp;GetLabel() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SplaRefCnt_8hpp.html">spla-cpp/SplaRefCnt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html">   49</a></span>&#160;    <span class="keyword">class </span><a class="code" href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Object.html">Object</a> : <span class="keyword">public</span> <a class="code" href="classspla_1_1RefCnt.html">RefCnt</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">   51</a></span>&#160;        <a class="code" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">~Object</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">   54</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">TypeName</a> {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="classspla_1_1Type.html">Type</a>,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <a class="code" href="classspla_1_1Matrix.html">Matrix</a>,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="classspla_1_1Vector.html">Vector</a>,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="classspla_1_1Scalar.html">Scalar</a>,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="classspla_1_1Descriptor.html">Descriptor</a>,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <a class="code" href="classspla_1_1FunctionUnary.html">FunctionUnary</a>,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="classspla_1_1FunctionBinary.html">FunctionBinary</a>,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="classspla_1_1FunctionSelect.html">FunctionSelect</a>,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1Expression.html">Expression</a>,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <a class="code" href="classspla_1_1ExpressionNode.html">ExpressionNode</a>,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <a class="code" href="classspla_1_1DataMatrix.html">DataMatrix</a>,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <a class="code" href="classspla_1_1DataVector.html">DataVector</a>,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="classspla_1_1DataScalar.html">DataScalar</a>,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            Unknown</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classspla_1_1Object.html">Object</a>(TypeName typeName, <span class="keyword">class</span> <a class="code" href="classspla_1_1Library.html">Library</a> &amp;library);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        TypeName GetTypeName() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">const</span> std::string &amp;GetLabel() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Library.html">Library</a> &amp;GetLibrary() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        TypeName GetTypeName() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> Clone() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#a30ef2d6bcac108f42e6493e88bfe1fcb">   93</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> CloneEmpty();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> CopyData(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> &amp;<span class="keywordtype">object</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="comment">// User defined text label (for profiling/debugging)</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        std::string mLabel;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="comment">// Type of the object</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">TypeName</a> mTypeName = TypeName::Unknown;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="comment">// Global library instance</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Library.html">Library</a> &amp;mLibrary;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Library.html">Library</a> &amp;GetLibrary() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> Clone() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#a30ef2d6bcac108f42e6493e88bfe1fcb">   96</a></span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classspla_1_1ExpressionManager.html">ExpressionManager</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> CloneEmpty();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> CopyData(<span class="keyword">const</span> <a class="code" href="classspla_1_1RefPtr.html">RefPtr&lt;Object&gt;</a> &amp;<span class="keywordtype">object</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        std::string mLabel;                     </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">TypeName</a> mTypeName = TypeName::Unknown; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">class </span><a class="code" href="classspla_1_1Library.html">Library</a> &amp;mLibrary;                </div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    };</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">namespace </span>{</div>
@@ -183,11 +183,12 @@ $(function() {
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            }</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }<span class="comment">// namespace</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAOBJECT_HPP</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }<span class="comment">// namespace</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_SPLAOBJECT_HPP</span></div>
 <div class="ttc" id="aSplaConfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="SplaConfig_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:40</div></div>
 <div class="ttc" id="aSplaRefCnt_8hpp_html"><div class="ttname"><a href="SplaRefCnt_8hpp.html">SplaRefCnt.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1DataMatrix_html"><div class="ttname"><a href="classspla_1_1DataMatrix.html">spla::DataMatrix</a></div><div class="ttdoc">Matrix host coo data.</div><div class="ttdef"><b>Definition:</b> SplaData.hpp:75</div></div>
@@ -201,10 +202,10 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1FunctionSelect_html"><div class="ttname"><a href="classspla_1_1FunctionSelect.html">spla::FunctionSelect</a></div><div class="ttdoc">Typed element function f: a -&gt; bool.</div><div class="ttdef"><b>Definition:</b> SplaFunctionSelect.hpp:55</div></div>
 <div class="ttc" id="aclassspla_1_1FunctionUnary_html"><div class="ttname"><a href="classspla_1_1FunctionUnary.html">spla::FunctionUnary</a></div><div class="ttdoc">Unary Typed element function f: a -&gt; b.</div><div class="ttdef"><b>Definition:</b> SplaFunctionUnary.hpp:55</div></div>
 <div class="ttc" id="aclassspla_1_1Library_html"><div class="ttname"><a href="classspla_1_1Library.html">spla::Library</a></div><div class="ttdef"><b>Definition:</b> SplaLibrary.hpp:53</div></div>
-<div class="ttc" id="aclassspla_1_1Matrix_html"><div class="ttname"><a href="classspla_1_1Matrix.html">spla::Matrix</a></div><div class="ttdef"><b>Definition:</b> SplaMatrix.hpp:64</div></div>
-<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:46</div></div>
+<div class="ttc" id="aclassspla_1_1Matrix_html"><div class="ttname"><a href="classspla_1_1Matrix.html">spla::Matrix</a></div><div class="ttdef"><b>Definition:</b> SplaMatrix.hpp:66</div></div>
+<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:49</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html_a08981364d4e0c26b69705decb6398f95"><div class="ttname"><a href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">spla::Object::~Object</a></div><div class="ttdeci">~Object() override=default</div></div>
-<div class="ttc" id="aclassspla_1_1Object_html_ad995a4845a1aec2f4a8356f28c62939c"><div class="ttname"><a href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">spla::Object::TypeName</a></div><div class="ttdeci">TypeName</div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:51</div></div>
+<div class="ttc" id="aclassspla_1_1Object_html_ad995a4845a1aec2f4a8356f28c62939c"><div class="ttname"><a href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939c">spla::Object::TypeName</a></div><div class="ttdeci">TypeName</div><div class="ttdef"><b>Definition:</b> SplaObject.hpp:54</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html_ad995a4845a1aec2f4a8356f28c62939ca3e42679c3ef1078aa95a9a8ffa5f8abb"><div class="ttname"><a href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca3e42679c3ef1078aa95a9a8ffa5f8abb">spla::Object::TypeName::ExpressionNode</a></div><div class="ttdeci">@ ExpressionNode</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html_ad995a4845a1aec2f4a8356f28c62939ca57dea6f5039281b7fee517fc43bf3110"><div class="ttname"><a href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca57dea6f5039281b7fee517fc43bf3110">spla::Object::TypeName::Vector</a></div><div class="ttdeci">@ Vector</div></div>
 <div class="ttc" id="aclassspla_1_1Object_html_ad995a4845a1aec2f4a8356f28c62939ca77b90cceaada15c2767933b3d5db0f8a"><div class="ttname"><a href="classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca77b90cceaada15c2767933b3d5db0f8a">spla::Object::TypeName::Descriptor</a></div><div class="ttdeci">@ Descriptor</div></div>
@@ -222,7 +223,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1RefPtr_html"><div class="ttname"><a href="classspla_1_1RefPtr.html">spla::RefPtr</a></div><div class="ttdef"><b>Definition:</b> SplaRefCnt.hpp:116</div></div>
 <div class="ttc" id="aclassspla_1_1Scalar_html"><div class="ttname"><a href="classspla_1_1Scalar.html">spla::Scalar</a></div><div class="ttdoc">Single scalar value of specified Type.</div><div class="ttdef"><b>Definition:</b> SplaScalar.hpp:60</div></div>
 <div class="ttc" id="aclassspla_1_1Type_html"><div class="ttname"><a href="classspla_1_1Type.html">spla::Type</a></div><div class="ttdef"><b>Definition:</b> SplaType.hpp:50</div></div>
-<div class="ttc" id="aclassspla_1_1Vector_html"><div class="ttname"><a href="classspla_1_1Vector.html">spla::Vector</a></div><div class="ttdef"><b>Definition:</b> SplaVector.hpp:62</div></div>
+<div class="ttc" id="aclassspla_1_1Vector_html"><div class="ttname"><a href="classspla_1_1Vector.html">spla::Vector</a></div><div class="ttdef"><b>Definition:</b> SplaVector.hpp:66</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> SplaConfig.hpp:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
