@@ -86,6 +86,9 @@ void testCpu(std::size_t n,
              const std::vector<std::int32_t> &trinsPerEdge) {
     std::int32_t actualNTrins = 0;
 
+    assert(to.size() == from.size());
+    assert(from.size() == trinsPerEdge.size());
+
     const std::size_t nVals = from.size();
     assert(to.size() == nVals);
 
@@ -129,16 +132,12 @@ void testCpu(std::size_t n,
 TEST(TC, CpuShallowDirectedDir) {
     testCpu(3, {1, 1, 2}, {0, 2, 0}, true, 1, {0, 1, 0});
     testCpu(3, {0, 1, 2}, {1, 2, 0}, true, 0, {0, 0, 0});
-    testCpu(5,
-            {2, 2, 2, 3, 3, 3, 4},
-            {0, 1, 3, 0, 1, 4, 1}, true, 3,
-            {0, 0, 2, 0, 0, 1, 0});
+    testCpu(5, {2, 2, 2, 3, 3, 3, 4}, {0, 1, 3, 0, 1, 4, 1}, true, 3, {0, 0, 2, 0, 0, 1, 0});
 }
 
-// todo: fix CpuShallowDirectedNonDir fails on third testCpu-call case
 TEST(TC, CpuShallowDirectedNonDir) {
-    testCpu(3, {0, 0, 1, 1, 2, 2}, {1, 2, 0, 2, 0, 1}, false, 1, {1, 1, 1});
-    testCpu(3, {0, 1, 1, 2}, {1, 0, 2, 1}, false, 0, {0, 0, 0});
+    testCpu(3, {0, 0, 1, 1, 2, 2}, {1, 2, 0, 2, 0, 1}, false, 1, {1, 1, 1, 1, 1, 1});
+    testCpu(3, {0, 1, 1, 2}, {1, 0, 2, 1}, false, 0, {0, 0, 0, 0});
     testCpu(6,
             {0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5},
             {1, 2, 0, 2, 3, 0, 1, 1, 4, 5, 3, 5, 3, 4},

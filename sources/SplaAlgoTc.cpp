@@ -35,7 +35,41 @@
 #include <unordered_set>
 #include <vector>
 
+void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, const RefPtr<Descriptor> &descriptor) {
+    CHECK_RAISE_ERROR(spB.IsNotNull(), NullPointer, "Passed null argument");
+    CHECK_RAISE_ERROR(spA.IsNotNull(), NullPointer, "Passed null argument");
+    CHECK_RAISE_ERROR(spA->GetNrows() == spA->GetNcols(), DimensionMismatch, "Matrix must be nxn");
+    CHECK_RAISE_ERROR(spA->HasDecoration(Decorated::Decoration::TransposedMatrix), InvalidArgument, "Matrix must have Transposed decoration");
+
+    ntrins = 0;
+
+    auto &library = spA->GetLibrary();
+    auto type = spA->GetType();
+
+    CHECK_RAISE_ERROR(type->IsBuiltIn(), InvalidArgument, "Must be built-in type");
+    CHECK_RAISE_ERROR(type == Types::Int32(library), InvalidArgument, "Must be int32 type");
+
+    auto multOp = Functions::MultInt32(library);
+    auto addOp = Functions::PlusInt32(library);
+
+    auto spATransposed = spA->GetDecoration(Decorated::Decoration::TransposedMatrix).Cast<Matrix>();
+    auto spNTriangles = Scalar::Make(type, library);
+    auto spNTrianglesData = DataScalar::Make(&ntrins, library);
+
+    auto spTcExpr = Expression::Make(library);
+    auto spNodeMxM = spTcExpr->MakeMxM(spB, spA, multOp, addOp, spA, spATransposed, nullptr);
+    auto spNodeAccum = spTcExpr->MakeReduceScalar(spNTriangles, nullptr, nullptr, addOp, spB, nullptr);
+    auto spNodeReadNTriangles = spTcExpr->MakeDataRead(spNTriangles, spNTrianglesData);
+
+    spTcExpr->Dependency(spNodeMxM, spNodeAccum);
+    spTcExpr->Dependency(spNodeAccum, spNodeReadNTriangles);
+
+    spTcExpr->SubmitWait();
+    SPLA_ALGO_CHECK(spTcExpr);
+}
+
 void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, bool dir) {
+    CHECK_RAISE_ERROR(spB.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(spA.IsNotNull(), NullPointer, "Passed null argument");
     CHECK_RAISE_ERROR(spA->GetNrows() == spA->GetNcols(), DimensionMismatch, "Matrix must be nxn");
 

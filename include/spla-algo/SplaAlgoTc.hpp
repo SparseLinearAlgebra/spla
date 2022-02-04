@@ -28,6 +28,7 @@
 #define SPLA_SPLAALGOTC_HPP
 
 #include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
@@ -37,6 +38,23 @@ namespace spla {
      * @addtogroup Algorithm
      * @{
      */
+
+    /**
+     * @brief Triangle counting
+     *
+     * As input algorithm expects lower triangular adjacency matrix @p spA,
+     * with additional Transposed decoration, used in triangles counting.
+     *
+     * As an output algorithm produces number of triangles @p ntrins in the graph
+     * as well as buffer matrix @p spB with triangles per vertex.
+     *
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] spB  Matrix b with number of triangles per vertex
+     * @param[in] spA Input lower triangular adjacency matrix of directed graph with
+     *                values of type int32_t, with 1 stored where has edge between i and j
+     * @param[in] descriptor Algorithm descriptor
+     */
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, const RefPtr<Descriptor> &descriptor);
 
     /**
      * @brief Triangle counting
@@ -61,11 +79,11 @@ namespace spla {
      *   because each triangle was counted 6 times.
      *
      *
-     * @param [out] ntris - number of triangles in the graph
-     * @param [out] spB - matrix b with number of triangles per vertex
-     * @param [in]  spA - input adjacency matrix of directed graph with values of type int32_t,
-     *                   with 1 stored where has edge between i and j
-     * @param [in]  dir - is input graph directed or not
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] spB  Matrix b with number of triangles per vertex
+     * @param[in] spA Input adjacency matrix of directed graph with values of type int32_t,
+     *                with 1 stored where has edge between i and j
+     * @param[in] dir Is input graph directed or not
      */
     SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, bool dir);
 
@@ -94,11 +112,11 @@ namespace spla {
      *
      * @note Naive cpu reference algo implementation for correctness only
      *
-     * @param [out] ntris - number of triangles in the graph
-     * @param [out] B - matrix b with number of triangles per vertex
-     * @param [in]  A - input adjacency matrix of directed graph with values of type int32_t,
-     *                 with 1 stored where has edge between i and j
-     * @param [in]  dir - is input graph directed or not
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] B Matrix b with number of triangles per vertex
+     * @param[in] A Input adjacency matrix of directed graph with values of type int32_t,
+     *              with 1 stored where has edge between i and j
+     * @param[in] dir Is input graph directed or not
      */
     SPLA_API void Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A, bool dir);
 
