@@ -184,6 +184,18 @@ namespace spla {
         RefPtr<Type> type;       // t
     };
 
+    /** Lower triangular matrix block */
+    class ParamsTria final : public AlgorithmParams {
+    public:
+        ~ParamsTria() override = default;
+
+        Size firstI;          // Offset row indices of block
+        Size firstJ;          // Offset col indices of block
+        RefPtr<MatrixBlock> w;// of type t
+        RefPtr<MatrixBlock> a;// of type t
+        RefPtr<Type> type;    // t
+    };
+
     /** Vector reduce params */
     class ParamsVectorReduce final : public AlgorithmParams {
     public:

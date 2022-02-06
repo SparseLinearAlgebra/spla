@@ -72,7 +72,7 @@ void spla::MatrixDataRead::Process(std::size_t nodeIdx, const spla::Expression &
     storage->GetBlocks(shared->entries);
 
     for (const auto &entry : shared->entries) {
-        CHECK_RAISE_ERROR(entry.second->GetFormat() == MatrixBlock::Format::COO, NotImplemented,
+        CHECK_RAISE_ERROR(entry.second.Cast<MatrixCOO>(), NotImplemented,
                           "Supported only COO matrix block format");
     }
 

@@ -86,7 +86,9 @@ namespace spla {
             /** Matrix-vector multiplication */
             MxV,
             /** Transpose matrix */
-            Transpose
+            Transpose,
+            /** Make lower triangular matrix */
+            Tria
         };
 
         /** @return Node argument at specified index */
@@ -170,6 +172,8 @@ namespace spla {
                     return "MxV";
                 case ExpressionNode::Operation::Transpose:
                     return "Transpose";
+                case ExpressionNode::Operation::Tria:
+                    return "Tria";
                 default:
                     return "Unknown";
             }

@@ -533,6 +533,26 @@ namespace utils {
             return Matrix<T>(N, M, std::move(rowsT), std::move(colsT), std::move(valsT));
         }
 
+        Matrix<T> Tria() const {
+            std::size_t M = GetNrows();
+            std::size_t N = GetNcols();
+            std::size_t nvals = GetNvals();
+
+            std::vector<Index> rowsTria;
+            std::vector<Index> colsTria;
+            std::vector<T> valsTria;
+
+            for (std::size_t k = 0; k < nvals; k++) {
+                if (GetRows()[k] > GetCols()[k]) {
+                    rowsTria.push_back(GetRows()[k]);
+                    colsTria.push_back(GetCols()[k]);
+                    valsTria.push_back(GetVals()[k]);
+                }
+            }
+
+            return Matrix<T>(M, N, std::move(rowsTria), std::move(colsTria), std::move(valsTria));
+        }
+
         template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>
         [[nodiscard]] R Reduce(ReduceT reduce) {
             if (mVals.empty()) {
