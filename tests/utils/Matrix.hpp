@@ -287,6 +287,22 @@ namespace utils {
             return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
         }
 
+        [[nodiscard]] Matrix RemoveLoops() const {
+            std::vector<Index> rows;
+            std::vector<Index> cols;
+            std::vector<T> vals;
+
+            for (std::size_t k = 0; k < GetNvals(); k++) {
+                if (GetRows()[k] != GetCols()[k]) {
+                    rows.push_back(GetRows()[k]);
+                    cols.push_back(GetCols()[k]);
+                    vals.push_back(GetVals()[k]);
+                }
+            }
+
+            return Matrix<T>(GetNrows(), GetNcols(), std::move(rows), std::move(cols), std::move(vals));
+        }
+
         static Matrix Generate(size_t nrows, size_t ncols, size_t nvals, size_t seed = 0, const T &value = T()) {
             std::vector<Index> rows;
             std::vector<Index> cols;
@@ -533,7 +549,8 @@ namespace utils {
             return Matrix<T>(N, M, std::move(rowsT), std::move(colsT), std::move(valsT));
         }
 
-        Matrix<T> Tria() const {
+        template<typename Selector>
+        Matrix<T> Select(Selector selector) const {
             std::size_t M = GetNrows();
             std::size_t N = GetNcols();
             std::size_t nvals = GetNvals();
@@ -543,7 +560,7 @@ namespace utils {
             std::vector<T> valsTria;
 
             for (std::size_t k = 0; k < nvals; k++) {
-                if (GetRows()[k] > GetCols()[k]) {
+                if (selector(GetRows()[k], GetCols()[k])) {
                     rowsTria.push_back(GetRows()[k]);
                     colsTria.push_back(GetCols()[k]);
                     valsTria.push_back(GetVals()[k]);
@@ -551,6 +568,14 @@ namespace utils {
             }
 
             return Matrix<T>(M, N, std::move(rowsTria), std::move(colsTria), std::move(valsTria));
+        }
+
+        Matrix<T> Tril() const {
+            return Select([](Index i, Index j) { return i > j; });
+        }
+
+        Matrix<T> Triu() const {
+            return Select([](Index i, Index j) { return i < j; });
         }
 
         template<typename ReduceT, typename R = std::invoke_result_t<ReduceT, T, T>>

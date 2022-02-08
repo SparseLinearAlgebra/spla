@@ -472,7 +472,7 @@ spla::Expression::MakeTranspose(const spla::RefPtr<spla::Matrix> &w,
 }
 
 spla::RefPtr<spla::ExpressionNode>
-spla::Expression::MakeTria(const spla::RefPtr<spla::Matrix> &w,
+spla::Expression::MakeTril(const spla::RefPtr<spla::Matrix> &w,
                            const spla::RefPtr<spla::Matrix> &a,
                            const spla::RefPtr<spla::Descriptor> &desc) {
     CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
@@ -484,7 +484,25 @@ spla::Expression::MakeTria(const spla::RefPtr<spla::Matrix> &w,
             w.As<Object>(),
             a.As<Object>()};
 
-    return MakeNode(ExpressionNode::Operation::Tria,
+    return MakeNode(ExpressionNode::Operation::Tril,
+                    std::move(args),
+                    desc);
+}
+
+spla::RefPtr<spla::ExpressionNode>
+spla::Expression::MakeTriu(const spla::RefPtr<spla::Matrix> &w,
+                           const spla::RefPtr<spla::Matrix> &a,
+                           const spla::RefPtr<spla::Descriptor> &desc) {
+    CHECK_RAISE_ERROR(w.IsNotNull(), NullPointer, "w can't be null");
+    CHECK_RAISE_ERROR(a.IsNotNull(), NullPointer, "a can't be null");
+    CHECK_RAISE_ERROR(w->IsCompatible(*a), InvalidType, "w and a must have the same type");
+    CHECK_RAISE_ERROR(w->GetDim() == a->GetDim(), DimensionMismatch, "Incompatible size");
+
+    std::vector<RefPtr<Object>> args = {
+            w.As<Object>(),
+            a.As<Object>()};
+
+    return MakeNode(ExpressionNode::Operation::Triu,
                     std::move(args),
                     desc);
 }

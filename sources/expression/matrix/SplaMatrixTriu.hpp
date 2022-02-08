@@ -25,16 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIXTRIA_HPP
-#define SPLA_SPLAMATRIXTRIA_HPP
+#ifndef SPLA_SPLAMATRIXTRIU_HPP
+#define SPLA_SPLAMATRIXTRIU_HPP
 
 #include <expression/SplaNodeProcessor.hpp>
 
 namespace spla {
 
-    class MatrixTria final : public NodeProcessor {
+    class MatrixTriu final : public NodeProcessor {
     public:
-        ~MatrixTria() override = default;
+        ~MatrixTriu() override = default;
         bool Select(std::size_t nodeIdx, const Expression &expression) override;
         void Process(std::size_t nodeIdx, const Expression &expression, TaskBuilder &builder) override;
         ExpressionNode::Operation GetOperationType() const override;
@@ -42,4 +42,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIXTRIA_HPP
+#endif//SPLA_SPLAMATRIXTRIU_HPP

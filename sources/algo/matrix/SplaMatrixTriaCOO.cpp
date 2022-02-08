@@ -91,7 +91,7 @@ void spla::MatrixTriaCOO::Process(spla::AlgorithmParams &params) {
                << "if (i < count) {\n"
                << "    const uint rowId = offsetI + rows[i];\n"
                << "    const uint colId = offsetJ + cols[i];\n"
-               << "    if (rowId > colId) {\n"
+               << "    if (" << (p->mode == ParamsTria::Mode::Lower ? "rowId > colId" : "rowId < colId") << ") {\n"
                << "        indices[atomic_add(&indicesCount[0], 1u)] = i;\n"
                << "    }\n"
                << "}\n";

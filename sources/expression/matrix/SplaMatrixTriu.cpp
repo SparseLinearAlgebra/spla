@@ -27,15 +27,15 @@
 
 #include <algo/SplaAlgorithmManager.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-#include <expression/matrix/SplaMatrixTria.hpp>
+#include <expression/matrix/SplaMatrixTriu.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/SplaVectorStorage.hpp>
 
-bool spla::MatrixTria::Select(std::size_t, const spla::Expression &) {
+bool spla::MatrixTriu::Select(std::size_t, const spla::Expression &) {
     return true;
 }
 
-void spla::MatrixTria::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
+void spla::MatrixTriu::Process(std::size_t nodeIdx, const spla::Expression &expression, spla::TaskBuilder &builder) {
     auto &nodes = expression.GetNodes();
     auto &node = nodes[nodeIdx];
     auto library = node->GetLibrary().GetPrivatePtr();
@@ -57,7 +57,7 @@ void spla::MatrixTria::Process(std::size_t nodeIdx, const spla::Expression &expr
     for (std::size_t i = 0; i < w->GetStorage()->GetNblockRows(); i++) {
         for (std::size_t j = 0; j < w->GetStorage()->GetNblockCols(); j++) {
             auto deviceId = deviceIds[i * w->GetStorage()->GetNblockCols() + j];
-            builder.Emplace("tria", [=]() {
+            builder.Emplace("triu", [=]() {
                 MatrixStorage::Index index{static_cast<unsigned int>(i), static_cast<unsigned int>(j)};
 
                 ParamsTria params;
@@ -67,6 +67,7 @@ void spla::MatrixTria::Process(std::size_t nodeIdx, const spla::Expression &expr
                 params.firstJ = blockSize * j;
                 params.a = a->GetStorage()->GetBlock(index);
                 params.type = w->GetType();
+                params.mode = ParamsTria::Mode::Upper;
                 library->GetAlgoManager()->Dispatch(Algorithm::Type::Tria, params);
 
                 if (params.w.IsNotNull()) {
@@ -78,6 +79,6 @@ void spla::MatrixTria::Process(std::size_t nodeIdx, const spla::Expression &expr
     }
 }
 
-spla::ExpressionNode::Operation spla::MatrixTria::GetOperationType() const {
-    return spla::ExpressionNode::Operation::Tria;
+spla::ExpressionNode::Operation spla::MatrixTriu::GetOperationType() const {
+    return spla::ExpressionNode::Operation::Triu;
 }

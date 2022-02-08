@@ -43,13 +43,13 @@ void testCommon(spla::Library &library, std::size_t M, std::size_t N, std::size_
 
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetData(library), spDesc);
-    auto spTria = spExpr->MakeTria(spA, spA);
+    auto spTria = spExpr->MakeTriu(spA, spA);
     spExpr->Dependency(spWriteA, spTria);
     spExpr->SubmitWait();
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix result = a.Tria();
+    utils::Matrix result = a.Triu();
     EXPECT_TRUE(result.Equals(spA));
 }
 
@@ -68,13 +68,13 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t N, std::siz
 
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
-    auto spTria = spExpr->MakeTria(spA, spA);
+    auto spTria = spExpr->MakeTriu(spA, spA);
     spExpr->Dependency(spWriteA, spTria);
     spExpr->SubmitWait();
 
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
-    utils::Matrix result = a.Tria();
+    utils::Matrix result = a.Triu();
     EXPECT_TRUE(result.EqualsStructure(spA));
 }
 
@@ -107,28 +107,28 @@ void test(std::size_t M, std::size_t N, std::size_t base, std::size_t step, std:
     });
 }
 
-TEST(Tria, Small) {
+TEST(Triu, Small) {
     std::vector<std::size_t> blocksSizes{100, 1000};
     std::size_t M = 100;
     std::size_t N = 120;
     test(M, N, M, M, 10, blocksSizes);
 }
 
-TEST(Tria, Medium) {
+TEST(Triu, Medium) {
     std::vector<std::size_t> blocksSizes{1000, 10000};
     std::size_t M = 900;
     std::size_t N = 1200;
     test(M, N, M, M, 10, blocksSizes);
 }
 
-TEST(Tria, Large) {
+TEST(Triu, Large) {
     std::vector<std::size_t> blocksSizes{10000, 100000};
     std::size_t M = 8800;
     std::size_t N = 12700;
     test(M, N, M, M, 5, blocksSizes);
 }
 
-TEST(Tria, MegaLarge) {
+TEST(Triu, MegaLarge) {
     std::vector<std::size_t> blocksSizes{1000000};
     std::size_t M = 900100;
     std::size_t N = 970500;

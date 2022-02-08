@@ -38,7 +38,8 @@
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
 #include <expression/matrix/SplaMatrixReduceScalar.hpp>
 #include <expression/matrix/SplaMatrixTranspose.hpp>
-#include <expression/matrix/SplaMatrixTria.hpp>
+#include <expression/matrix/SplaMatrixTril.hpp>
+#include <expression/matrix/SplaMatrixTriu.hpp>
 
 #include <expression/prod/SplaMxM.hpp>
 #include <expression/prod/SplaVxM.hpp>
@@ -61,7 +62,8 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixDataWrite());
     Register(new MatrixEWiseAdd());
     Register(new MatrixTranspose());
-    Register(new MatrixTria());
+    Register(new MatrixTril());
+    Register(new MatrixTriu());
     Register(new MatrixReduceScalar());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());

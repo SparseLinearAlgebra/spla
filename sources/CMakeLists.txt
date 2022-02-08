@@ -99,8 +99,10 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixReduceScalar.cpp
         sources/expression/matrix/SplaMatrixTranspose.cpp
         sources/expression/matrix/SplaMatrixTranspose.hpp
-        sources/expression/matrix/SplaMatrixTria.cpp
-        sources/expression/matrix/SplaMatrixTria.hpp
+        sources/expression/matrix/SplaMatrixTril.cpp
+        sources/expression/matrix/SplaMatrixTril.hpp
+        sources/expression/matrix/SplaMatrixTriu.cpp
+        sources/expression/matrix/SplaMatrixTriu.hpp
         sources/expression/prod/SplaMxM.cpp
         sources/expression/prod/SplaMxM.hpp
         sources/expression/prod/SplaVxM.cpp
