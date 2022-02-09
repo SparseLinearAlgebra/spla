@@ -48,7 +48,6 @@ void spla::MatrixTriaCOO::Process(spla::AlgorithmParams &params) {
 
     auto p = dynamic_cast<ParamsTria *>(&params);
     auto library = p->desc->GetLibrary().GetPrivatePtr();
-    auto &desc = p->desc;
 
     auto device = library->GetDeviceManager().GetDevice(p->deviceId);
     compute::context ctx = library->GetContext();

@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include <algo/mxm/SplaMxMCOO.hpp>
-#include <boost/compute/algorithm/scatter_if.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
 #include <compute/SplaReduceByKey.hpp>
@@ -37,6 +36,7 @@
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 #include <utils/SplaProfiling.hpp>
 
 using IndeciesVector = boost::compute::vector<unsigned int>;
@@ -150,10 +150,9 @@ bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsMxM *>(&params);
 
     return p &&
-           p->w.Is<MatrixCOO>() &&
-           p->mask.Is<MatrixCOO>() &&
-           p->a.Is<MatrixCOO>() &&
-           p->b.Is<MatrixCOO>();
+           p->mask.Is<MatrixCSR>() &&
+           p->a.Is<MatrixCSR>() &&
+           p->b.Is<MatrixCSR>();
 }
 
 void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
@@ -168,8 +167,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue, library->GetLogger());
 
-    MatrixCOO &a = *params->a.Cast<MatrixCOO>();
-    MatrixCOO &b = *params->b.Cast<MatrixCOO>();
+    MatrixCSR &a = *params->a.Cast<MatrixCSR>();
+    MatrixCSR &b = *params->b.Cast<MatrixCSR>();
 
     const std::size_t wValueByteSize = params->tw->GetByteSize();
     const bool maskIsComplement = params->desc->IsParamSet(Descriptor::Param::MaskComplement);
@@ -193,9 +192,8 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     PF_SCOPE_MARK(mxm, "setup");
 
     // compute row offsets and row lengths for B
-    compute::vector<unsigned int> bRowOffsets(ctx);
-    compute::vector<unsigned int> bRowLengths(ctx);
-    IndicesToRowOffsets(b.GetRows(), bRowOffsets, bRowLengths, b.GetNrows(), queue);
+    const compute::vector<unsigned int> &bRowOffsets = b.GetRowsOffsets();
+    const compute::vector<unsigned int> &bRowLengths = b.GetRowLengths();
 
     PF_SCOPE_MARK(mxm, "to row offsets");
 
@@ -292,8 +290,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         std::deque<MatrixSlice> slices;
 
         // compute row offsets for A
-        compute::vector<unsigned int> aRowOffsets(ctx);
-        IndicesToRowOffsets(a.GetRows(), aRowOffsets, a.GetNrows(), queue);
+        const compute::vector<unsigned int> &aRowOffsets = a.GetRowsOffsets();
 
         // compute workspace requirements for each row
         compute::vector<unsigned int> cumulativeRowWorkspace(a.GetNrows(), ctx);
