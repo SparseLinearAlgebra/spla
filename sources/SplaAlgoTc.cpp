@@ -43,6 +43,11 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &s
     CHECK_RAISE_ERROR(spU->GetNrows() == spU->GetNcols(), DimensionMismatch, "Matrix must be nxn");
     CHECK_RAISE_ERROR(spL->GetDim() == spU->GetDim(), DimensionMismatch, "Must be of the same size");
 
+    bool timing = false;
+
+    if (descriptor.IsNotNull())
+        timing = descriptor->IsParamSet(Descriptor::Param::ProfileTime);
+
     ntrins = 0;
 
     auto &library = spL->GetLibrary();
@@ -56,6 +61,9 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &s
     auto spNTriangles = Scalar::Make(Types::Int32(library), library);
     auto spNTrianglesData = DataScalar::Make(&ntrins, library);
 
+    CpuTimer tightTimer;// Tight timer to measure iterations
+    tightTimer.Start();
+
     auto spTcExpr = Expression::Make(library);
     auto spNodeMxM = spTcExpr->MakeMxM(spB, spL, multOp, addOp, spL, spU, nullptr);
     auto spNodeAccum = spTcExpr->MakeReduceScalar(spNTriangles, nullptr, nullptr, addOp, spB, nullptr);
@@ -64,6 +72,13 @@ void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &s
     spTcExpr->Dependency(spNodeAccum, spNodeReadNTriangles);
     spTcExpr->SubmitWait();
     SPLA_ALGO_CHECK(spTcExpr);
+
+    tightTimer.Stop();
+
+    if (timing) {
+        std::cout << "Result: " << ntrins << " ntrins\n";
+        std::cout << " run tight: " << tightTimer.GetElapsedMs() << "\n";
+    }
 }
 
 void spla::Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA) {

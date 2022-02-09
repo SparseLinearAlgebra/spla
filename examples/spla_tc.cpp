@@ -53,6 +53,7 @@ int main(int argc, const char *const *argv) {
     bool removeLoops = true;
     bool ignoreValues = true;
     bool verbose;
+    bool debugTiming;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -60,8 +61,9 @@ int main(int argc, const char *const *argv) {
         bsize = args["bsize"].as<int>();
         devicesCount = args["devices-count"].as<int>();
         verbose = args["verbose"].as<bool>();
+        debugTiming = args["debug-timing"].as<bool>();
     } catch (const std::exception &e) {
-        std::cerr << "Invalid input arguments: " << e.what() << std::endl;
+        std::cerr << "Invalid input arguments: " << e.what();
         return 1;
     }
 
@@ -84,35 +86,46 @@ int main(int argc, const char *const *argv) {
     // Fill matrix uniformly with 1
     loader.Fill(1);
 
+    // Configure library
     spla::Library::Config config;
+    config.SetDeviceType(spla::Library::Config::DeviceType::GPU);
     config.SetBlockSize(bsize);
     config.SetWorkersCount(devicesCount * devicesCount);
     config.LimitAmount(devicesCount);
     spla::Library library(config);
 
     // A and B tc args
-    spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
-    spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Int32(library), library);
+    auto M = loader.GetNrows(), N = loader.GetNcols();
+    auto T = spla::Types::Int32(library);
+    spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(M, N, T, library);
+    spla::RefPtr<spla::Matrix> L = spla::Matrix::Make(M, N, T, library);
+    spla::RefPtr<spla::Matrix> U = spla::Matrix::Make(M, N, T, library);
+    spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(M, N, T, library);
 
-    // Prepare data and fill A
+    // Prepare data, fill A, and get L and U matrices
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
-    prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library));
+    auto writeA = prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library));
+    prepareData->Dependency(writeA, prepareData->MakeTril(L, A));
+    prepareData->Dependency(writeA, prepareData->MakeTriu(U, A));
     prepareData->SubmitWait();
     SPLA_ALGO_CHECK(prepareData);
+
+    spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
+    desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
 
     std::int32_t nTrins = 0;
 
     // Warm up phase
     spla::CpuTimer tWarmUp;
     tWarmUp.Start();
-    spla::Tc(nTrins, B, A);
+    spla::Tc(nTrins, B, L, U, desc);
     tWarmUp.Stop();
 
     // Main phase, measure iterations
     std::vector<spla::CpuTimer> tIters(niters);
     for (int i = 0; i < niters; i++) {
         tIters[i].Start();
-        spla::Tc(nTrins, B, A);
+        spla::Tc(nTrins, B, L, U, desc);
         tIters[i].Stop();
     }
 
