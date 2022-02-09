@@ -100,7 +100,6 @@ int main(int argc, const char *const *argv) {
     spla::RefPtr<spla::Matrix> A = spla::Matrix::Make(M, N, T, library);
     spla::RefPtr<spla::Matrix> L = spla::Matrix::Make(M, N, T, library);
     spla::RefPtr<spla::Matrix> U = spla::Matrix::Make(M, N, T, library);
-    spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(M, N, T, library);
 
     // Prepare data, fill A, and get L and U matrices
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
@@ -110,6 +109,9 @@ int main(int argc, const char *const *argv) {
     prepareData->SubmitWait();
     SPLA_ALGO_CHECK(prepareData);
 
+    // Release A to free used memory
+    A.Reset();
+
     spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
     desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
 
@@ -117,16 +119,23 @@ int main(int argc, const char *const *argv) {
 
     // Warm up phase
     spla::CpuTimer tWarmUp;
-    tWarmUp.Start();
-    spla::Tc(nTrins, B, L, U, desc);
-    tWarmUp.Stop();
+    {
+        spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(M, N, T, library);
+        tWarmUp.Start();
+        spla::Tc(nTrins, B, L, U, desc);
+        tWarmUp.Stop();
+    }
 
     // Main phase, measure iterations
     std::vector<spla::CpuTimer> tIters(niters);
     for (int i = 0; i < niters; i++) {
-        tIters[i].Start();
-        spla::Tc(nTrins, B, L, U, desc);
-        tIters[i].Stop();
+        spla::CpuTimer &tIter = tIters[i];
+        {
+            spla::RefPtr<spla::Matrix> B = spla::Matrix::Make(M, N, T, library);
+            tIter.Start();
+            spla::Tc(nTrins, B, L, U, desc);
+            tIter.Stop();
+        }
     }
 
     spla::OutputMeasurements(tWarmUp, tIters);

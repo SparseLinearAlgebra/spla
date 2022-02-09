@@ -185,8 +185,6 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
         return;
     }
 
-    auto &logger = library->GetLogger();
-
     const auto &typeW = params->tw;
     const bool hasValues = typeW->HasValues();
     const std::size_t valueByteSize = typeW->GetByteSize();
@@ -222,25 +220,27 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
     std::size_t cooNumNonZeros = (outputPtr.end() - 1).read(queue);
     std::size_t workspaceCapacity = cooNumNonZeros;
     {
-        const auto maxGlobalMem = device.global_memory_size();
-        const auto maxAllocSize = device.get_info<cl_ulong>(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
-
         // See issue #97 for more info https://github.com/JetBrains-Research/spla/issues/97
         // - CL_DEVICE_MAX_MEM_ALLOC_SIZE (max single allocation, nearly max single buffer size, CL_DEVICE_MAX_MEM_ALLOC_SIZE <= CL_DEVICE_GLOBAL_MEM_SIZE)
         // - CL_DEVICE_GLOBAL_MEM_SIZE (total device memory, might be virtualized)
-        const std::size_t factor = std::max<std::size_t>(maxGlobalMem / maxAllocSize, 3);
-        const std::size_t free = maxGlobalMem;
-        const std::size_t maxWorkspaceCapacity = free / (6 * sizeof(unsigned int) + valueByteSize);
-        const std::size_t maxWorkspaceCapacityToSelect = maxWorkspaceCapacity / factor;
 
-        // use at most one third of the remaining capacity
-        workspaceCapacity = std::min(maxWorkspaceCapacityToSelect, workspaceCapacity);
+        // query info from OpenCL
+        const auto maxGlobalMem = device.global_memory_size();
+        const auto maxAllocSize = device.get_info<cl_ulong>(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
+
+        // use at most one fourth of the remaining capacity
+        const std::size_t factor = 4;
+        const std::size_t maxWorkspaceByGlobalMem = (maxGlobalMem / factor) / (6 * sizeof(unsigned int) + valueByteSize);
+        const std::size_t maxWorkspaceByAllocSize = maxAllocSize / std::max(valueByteSize, sizeof(unsigned int));
+        const std::size_t maxWorkspace = std::min(maxWorkspaceByGlobalMem, maxWorkspaceByAllocSize);
+
+        workspaceCapacity = std::min(workspaceCapacity, maxWorkspace);
 
         // Log for info only
-        SPDLOG_LOGGER_TRACE(logger, "Global mem={} KiB alloc={} KiB ({}%) required={} selected={} available={}",
+        SPDLOG_LOGGER_TRACE(library->GetLogger(), "Global mem={} KiB alloc={} KiB ({}%) required={} selected={} available={}",
                             maxGlobalMem / 1024, maxAllocSize / 1024,
                             static_cast<double>(maxAllocSize) / static_cast<double>(maxGlobalMem) * 100.0f,
-                            cooNumNonZeros, workspaceCapacity, maxWorkspaceCapacityToSelect);
+                            cooNumNonZeros, workspaceCapacity, maxWorkspace);
     }
 
     compute::vector<unsigned int> aGatherLocations(ctx), bGatherLocations(ctx);
@@ -267,7 +267,7 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                         aGatherLocations, bGatherLocations,
                                         I, J, V,
                                         params->mult, params->add,
-                                        queue, logger);
+                                        queue, library->GetLogger());
 
         PF_SCOPE_MARK(mxm, "single step");
     } else {
@@ -329,11 +329,16 @@ void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {
                                              aGatherLocations, bGatherLocations,
                                              I, J, V,
                                              params->mult, params->add,
-                                             queue, logger);
+                                             queue, library->GetLogger());
             slices.emplace_back(std::move(wSliceRows),
                                 std::move(wSliceCols),
                                 std::move(wSliceVals));
             beginRow = endRow;
+
+            PF_SCOPE_MARK(mxm, "slice");
+
+            SPDLOG_LOGGER_TRACE(library->GetLogger(), "Slice {}/{} nnz={}",
+                                workspaceSize, cooNumNonZeros, wTmpNnz);
         }
 
         PF_SCOPE_MARK(mxm, "slices eval");
