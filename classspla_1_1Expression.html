@@ -136,6 +136,9 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa4f7193f27117d86a7b836a4f9b05b5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#aa4f7193f27117d86a7b836a4f9b05b5d">~Expression</a> () override</td></tr>
 <tr class="separator:aa4f7193f27117d86a7b836a4f9b05b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c7761b48fcfedf7c0a918ee2b853cee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a7c7761b48fcfedf7c0a918ee2b853cee">SetDescriptor</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc)</td></tr>
+<tr class="memdesc:a7c7761b48fcfedf7c0a918ee2b853cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets global expression descriptor.  <a href="classspla_1_1Expression.html#a7c7761b48fcfedf7c0a918ee2b853cee">More...</a><br /></td></tr>
+<tr class="separator:a7c7761b48fcfedf7c0a918ee2b853cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae86aada7d382cfb1a6786a259e2ccd65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#ae86aada7d382cfb1a6786a259e2ccd65">Submit</a> ()</td></tr>
 <tr class="separator:ae86aada7d382cfb1a6786a259e2ccd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71d2c339369f18a9460c4435214bf2ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a71d2c339369f18a9460c4435214bf2ec">Wait</a> ()</td></tr>
@@ -184,6 +187,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4880df2515380928f4657d287b5e2b8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a4880df2515380928f4657d287b5e2b8e">MakeTriu</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;w, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;a, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
 <tr class="memdesc:a4880df2515380928f4657d287b5e2b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make upper-triangular matrix expression node.  <a href="classspla_1_1Expression.html#a4880df2515380928f4657d287b5e2b8e">More...</a><br /></td></tr>
 <tr class="separator:a4880df2515380928f4657d287b5e2b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cda64c39d0eab34b99cb4b73d6ea851"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a1cda64c39d0eab34b99cb4b73d6ea851">GetDescriptor</a> () const</td></tr>
+<tr class="separator:a1cda64c39d0eab34b99cb4b73d6ea851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a28977cb6a8958b145f5ab1a0af206c2e">GetState</a> () const</td></tr>
 <tr class="separator:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e3be412c4633ec34d2f869cf42f4f22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a4e3be412c4633ec34d2f869cf42f4f22">Empty</a> () const</td></tr>
@@ -351,6 +356,24 @@ If expression is released, it implicitly calls <a class="el" href="classspla_1_1
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if this is empty expression (has no nodes for computation) </dd></dl>
+
+</div>
+</div>
+<a id="a1cda64c39d0eab34b99cb4b73d6ea851"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cda64c39d0eab34b99cb4b73d6ea851">&#9670;&nbsp;</a></span>GetDescriptor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">spla::Descriptor</a> &gt; &amp; spla::Expression::GetDescriptor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Expression.html" title="Computational expression for submission.">Expression</a> descriptor </dd></dl>
 
 </div>
 </div>
@@ -1410,6 +1433,33 @@ Add must have signature <code>f: tw x tw -&gt; tw</code></dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Created expression node </dd></dl>
+
+</div>
+</div>
+<a id="a7c7761b48fcfedf7c0a918ee2b853cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c7761b48fcfedf7c0a918ee2b853cee">&#9670;&nbsp;</a></span>SetDescriptor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Expression::SetDescriptor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets global expression descriptor. </p>
+<p>This descriptor allows to defines specs and params for expression and its nodes executions. Properties of this descriptor can be extended or overridden in descriptors of each node inside expression.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">desc</td><td><a class="el" href="classspla_1_1Expression.html" title="Computational expression for submission.">Expression</a> descriptor to set </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

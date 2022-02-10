@@ -1,21 +1,15 @@
 var searchData=
 [
-  ['datamatrix_1818',['DataMatrix',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caf3daebafc7692dab30ab4c0810d83bfa',1,'spla::Object']]],
-  ['datascalar_1819',['DataScalar',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939cad91b7ef65119254c00cd9cb86e1af488',1,'spla::Object']]],
-  ['datavector_1820',['DataVector',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca9f48c21d46142cd8c9fbc6f3331b437c',1,'spla::Object']]],
-  ['default_1821',['Default',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a7a1920d61156abc05a60135aefe8bc67',1,'spla::Expression']]],
-  ['dense_1822',['Dense',['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9a71a13863c84ba34fc41595fc2ee0c6',1,'spla::MatrixBlock::Dense()'],['../classspla_1_1VectorBlock.html#ae9348ed0e40b4f94cb1650ce2eee0d5ea9a71a13863c84ba34fc41595fc2ee0c6',1,'spla::VectorBlock::Dense()']]],
-  ['densefactor_1823',['DenseFactor',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad11d8e0e4f1946dd76bbffa85c200411',1,'spla::Descriptor']]],
-  ['descriptor_1824',['Descriptor',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca77b90cceaada15c2767933b3d5db0f8a',1,'spla::Object']]],
-  ['deviceerror_1825',['DeviceError',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962abe252e5b290c865b4d033fe4c4f88e9a',1,'spla']]],
-  ['deviceid0_1826',['DeviceId0',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a694a171075383aec21114b3fc34af5f3',1,'spla::Descriptor']]],
-  ['deviceid1_1827',['DeviceId1',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a3576013324bfdca7defecb1a7c89e4be',1,'spla::Descriptor']]],
-  ['deviceid2_1828',['DeviceId2',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78af4508406d386c704a9015584fdb16039',1,'spla::Descriptor']]],
-  ['deviceid3_1829',['DeviceId3',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78aadc79e361a4c2fc7215785e6bbbc3b58',1,'spla::Descriptor']]],
-  ['deviceid4_1830',['DeviceId4',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a36d3cc900d3ee27ec144ee025b318637',1,'spla::Descriptor']]],
-  ['deviceid5_1831',['DeviceId5',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad83f00532e86f8abd5230f1759a21e1d',1,'spla::Descriptor']]],
-  ['deviceid6_1832',['DeviceId6',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a102adb9b3aad21fc6dd28d9d1a609953',1,'spla::Descriptor']]],
-  ['deviceid7_1833',['DeviceId7',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78a68c9d7427576144de114e1d8e72f7645',1,'spla::Descriptor']]],
-  ['devicenotpresent_1834',['DeviceNotPresent',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a7521f6b5a7670dff6bb1d35275d757b3',1,'spla']]],
-  ['dimensionmismatch_1835',['DimensionMismatch',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a2664c241558d7674e8ed4d5f63d2e463',1,'spla']]]
+  ['datamatrix_1822',['DataMatrix',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939caf3daebafc7692dab30ab4c0810d83bfa',1,'spla::Object']]],
+  ['datascalar_1823',['DataScalar',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939cad91b7ef65119254c00cd9cb86e1af488',1,'spla::Object']]],
+  ['datavector_1824',['DataVector',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca9f48c21d46142cd8c9fbc6f3331b437c',1,'spla::Object']]],
+  ['default_1825',['Default',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9a7a1920d61156abc05a60135aefe8bc67',1,'spla::Expression']]],
+  ['dense_1826',['Dense',['../classspla_1_1MatrixBlock.html#a98b7431cd5652535ae011f7ff81c6ab1a9a71a13863c84ba34fc41595fc2ee0c6',1,'spla::MatrixBlock::Dense()'],['../classspla_1_1VectorBlock.html#ae9348ed0e40b4f94cb1650ce2eee0d5ea9a71a13863c84ba34fc41595fc2ee0c6',1,'spla::VectorBlock::Dense()']]],
+  ['densefactor_1827',['DenseFactor',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad11d8e0e4f1946dd76bbffa85c200411',1,'spla::Descriptor']]],
+  ['descriptor_1828',['Descriptor',['../classspla_1_1Object.html#ad995a4845a1aec2f4a8356f28c62939ca77b90cceaada15c2767933b3d5db0f8a',1,'spla::Object']]],
+  ['deviceerror_1829',['DeviceError',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962abe252e5b290c865b4d033fe4c4f88e9a',1,'spla']]],
+  ['devicefixedstrategy_1830',['DeviceFixedStrategy',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78abf7345dd68e3e0089aba9225439f7f92',1,'spla::Descriptor']]],
+  ['deviceid_1831',['DeviceId',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78ad0263c6cf0769cabc86cfe88226d204b',1,'spla::Descriptor']]],
+  ['devicenotpresent_1832',['DeviceNotPresent',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a7521f6b5a7670dff6bb1d35275d757b3',1,'spla']]],
+  ['dimensionmismatch_1833',['DimensionMismatch',['../group__Internal.html#gga5251dcc549917ecb7b44ad073c479962a2664c241558d7674e8ed4d5f63d2e463',1,'spla']]]
 ];
