@@ -33,6 +33,7 @@
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/SplaMatrixStorage.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
+#include <storage/block/SplaMatrixCSR.hpp>
 
 bool spla::MatrixTransposeCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsTranspose *>(&params);
@@ -105,7 +106,7 @@ void spla::MatrixTransposeCOO::Process(spla::AlgorithmParams &params) {
         auto nrowsT = a->GetNcols();
         auto ncolsT = a->GetNrows();
         auto nvalsT = rows.size();
-        p->w = MatrixCOO::Make(nrowsT, ncolsT, nvalsT, std::move(rows), std::move(cols), std::move(vals)).As<MatrixBlock>();
+        p->w = MatrixCSR::Make(nrowsT, ncolsT, nvalsT, std::move(rows), std::move(cols), std::move(vals), queue).As<MatrixBlock>();
     }
 }
 

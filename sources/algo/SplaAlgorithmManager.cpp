@@ -44,6 +44,7 @@
 #include <algo/vector/SplaVectorToDenseCOO.hpp>
 
 #include <algo/mxm/SplaMxMCOO.hpp>
+#include <algo/mxm/SplaMxMMaskedCSRCSC.hpp>
 #include <algo/vxm/SplaVxMCOO.hpp>
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
 
@@ -59,6 +60,7 @@ spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new VectorReduceCOO());
     Register(new VectorEWiseAddCOO());
     Register(new VectorEWiseAddDense());
+    Register(new MxMMaskedCSRCSC());
     Register(new MxMCOO());
     Register(new VxMCOOStructure());
     Register(new VxMCOO());

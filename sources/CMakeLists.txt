@@ -33,6 +33,8 @@ set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixTriaCOO.hpp
         sources/algo/mxm/SplaMxMCOO.cpp
         sources/algo/mxm/SplaMxMCOO.hpp
+        sources/algo/mxm/SplaMxMMaskedCSRCSC.cpp
+        sources/algo/mxm/SplaMxMMaskedCSRCSC.hpp
         sources/algo/vector/SplaVectorAssignCOO.cpp
         sources/algo/vector/SplaVectorAssignCOO.hpp
         sources/algo/vector/SplaVectorEWiseAddCOO.cpp

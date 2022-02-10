@@ -149,10 +149,13 @@ namespace spla::detail {
 bool spla::MxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsMxM *>(&params);
 
+    // Requires a and b be presented in csr format
     return p &&
            p->mask.Is<MatrixCSR>() &&
            p->a.Is<MatrixCSR>() &&
-           p->b.Is<MatrixCSR>();
+           p->b.Is<MatrixCSR>() &&
+           p->a.IsNotNull() &&
+           p->b.IsNotNull();
 }
 
 void spla::MxMCOO::Process(spla::AlgorithmParams &algoParams) {

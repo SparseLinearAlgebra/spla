@@ -115,6 +115,7 @@ namespace spla {
         RefPtr<FunctionBinary> add; // f: tw x tw -> tw
         RefPtr<MatrixBlock> a;      // ta
         RefPtr<MatrixBlock> b;      // tb
+        RefPtr<MatrixBlock> bT;     // transposed, type tb
         RefPtr<Type> ta;
         RefPtr<Type> tb;
         RefPtr<Type> tw;
