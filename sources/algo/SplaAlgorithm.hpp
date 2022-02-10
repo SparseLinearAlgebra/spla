@@ -83,7 +83,9 @@ namespace spla {
             /** Vector-matrix multiplication */
             VxM,
             /** Matrix block transpose */
-            Transpose
+            Transpose,
+            /** Matrix block lower triangular matrix */
+            Tria
         };
 
         /**
@@ -143,6 +145,8 @@ namespace spla {
                     return "VxM";
                 case Algorithm::Type::Transpose:
                     return "Transpose";
+                case Algorithm::Type::Tria:
+                    return "Tria";
                 default:
                     return "Unknown";
             }

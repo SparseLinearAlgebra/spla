@@ -25,30 +25,35 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <algorithm>
+#include <vector>
+
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
-
 #include <expression/SplaExpressionFuture.hpp>
 #include <expression/SplaExpressionTasks.hpp>
+
 #include <expression/matrix/SplaMatrixDataRead.hpp>
 #include <expression/matrix/SplaMatrixDataWrite.hpp>
 #include <expression/matrix/SplaMatrixEWiseAdd.hpp>
 #include <expression/matrix/SplaMatrixReduceScalar.hpp>
 #include <expression/matrix/SplaMatrixTranspose.hpp>
+#include <expression/matrix/SplaMatrixTril.hpp>
+#include <expression/matrix/SplaMatrixTriu.hpp>
+
 #include <expression/prod/SplaMxM.hpp>
 #include <expression/prod/SplaVxM.hpp>
+
 #include <expression/scalar/SplaScalarDataRead.hpp>
 #include <expression/scalar/SplaScalarDataWrite.hpp>
 #include <expression/scalar/SplaScalarEWiseAdd.hpp>
+
 #include <expression/vector/SplaVectorAssign.hpp>
 #include <expression/vector/SplaVectorDataRead.hpp>
 #include <expression/vector/SplaVectorDataWrite.hpp>
 #include <expression/vector/SplaVectorEWiseAdd.hpp>
 #include <expression/vector/SplaVectorReduce.hpp>
 #include <expression/vector/SplaVectorToDense.hpp>
-
-#include <algorithm>
-#include <vector>
 
 spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(library) {
     // Here we can register built-in processors, one by on
@@ -57,6 +62,8 @@ spla::ExpressionManager::ExpressionManager(spla::Library &library) : mLibrary(li
     Register(new MatrixDataWrite());
     Register(new MatrixEWiseAdd());
     Register(new MatrixTranspose());
+    Register(new MatrixTril());
+    Register(new MatrixTriu());
     Register(new MatrixReduceScalar());
     Register(new ScalarDataRead());
     Register(new ScalarDataWrite());

@@ -33,6 +33,7 @@
 #include <algo/matrix/SplaMatrixEWiseAddCOO.hpp>
 #include <algo/matrix/SplaMatrixReduceScalarCOO.hpp>
 #include <algo/matrix/SplaMatrixTransposeCOO.hpp>
+#include <algo/matrix/SplaMatrixTriaCOO.hpp>
 
 #include <algo/vector/SplaVectorAssignCOO.hpp>
 #include <algo/vector/SplaVectorEWiseAddCOO.hpp>
@@ -49,6 +50,7 @@
 spla::AlgorithmManager::AlgorithmManager(Library &library) : mLibrary(library) {
     Register(new MatrixEWiseAddCOO());
     Register(new MatrixTransposeCOO());
+    Register(new MatrixTriaCOO());
     Register(new MatrixReduceScalarCOO());
     Register(new VectorToDenseCOO());
     Register(new VectorAssignCOO());

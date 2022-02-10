@@ -45,10 +45,9 @@ bool spla::VxMCOO::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsVxM *>(&params);
 
     return p &&
-           p->w.Is<VectorCOO>() &&
            p->mask.Is<VectorCOO>() &&
            p->a.Is<VectorCOO>() &&
-           p->b.Is<MatrixCOO>();
+           p->b.Is<MatrixCSR>();
 }
 
 void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
@@ -64,7 +63,7 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     QueueFinisher finisher(queue, library->GetLogger());
 
     auto a = p->a.Cast<VectorCOO>();
-    auto b = p->b.Cast<MatrixCOO>();
+    auto b = p->b.Cast<MatrixCSR>();
     auto mask = p->mask.Cast<VectorCOO>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
@@ -78,33 +77,17 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     const auto &tb = p->tb;
     const auto &tw = p->tw;
     auto hasValues = tw->HasValues();
-    auto M = a->GetNrows();
     auto N = b->GetNcols();
 
-    // todo: beautify and avoid pinters usage?
-    const compute::vector<Index> *offsets;
-    const compute::vector<Index> *lengths;
-
-    compute::vector<Index> offsetsBuffer(ctx);
-    compute::vector<Index> lengthsBuffer(ctx);
-
-    if (b.Is<MatrixCSR>()) {
-        // Get rows offsets and rows lengths for matrix b
-        auto bCSR = b.Cast<MatrixCSR>();
-        offsets = &bCSR->GetRowsOffsets();
-        lengths = &bCSR->GetRowLengths();
-    } else {
-        // Compute new rows offsets and rows lengths for matrix b
-        offsets = &offsetsBuffer;
-        lengths = &lengthsBuffer;
-        IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
-    }
+    // Get row lengths and offsets for B
+    const compute::vector<Index> &offsets = b->GetRowsOffsets();
+    const compute::vector<Index> &lengths = b->GetRowLengths();
 
     PF_SCOPE(vxm, "-vxm-");
 
     // Compute number of products for each a[i] x b[i,:]
     compute::vector<unsigned int> segmentLengths(a->GetNvals() + 1, ctx);
-    compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths->begin(), segmentLengths.begin(), queue);
+    compute::gather(a->GetRows().begin(), a->GetRows().end(), lengths.begin(), segmentLengths.begin(), queue);
 
     PF_SCOPE_MARK(vxm, "segment lengths");
 
@@ -138,11 +121,10 @@ void spla::VxMCOO::Process(spla::AlgorithmParams &params) {
     PF_SCOPE_MARK(vxm, "a-loc scan");
 
     auto &aRows = a->GetRows();
-    auto &offsetsRef = *offsets;
-    BOOST_COMPUTE_CLOSURE(unsigned int, unfoldSegment, (unsigned int i), (outputPtr, offsetsRef, aRows, aLocations), {
+    BOOST_COMPUTE_CLOSURE(unsigned int, unfoldSegment, (unsigned int i), (outputPtr, offsets, aRows, aLocations), {
         uint locationOfRowIndex = aLocations[i];
         uint rowIdx = aRows[locationOfRowIndex];
-        uint rowBaseOffset = offsetsRef[rowIdx];
+        uint rowBaseOffset = offsets[rowIdx];
         uint offsetOfRowSegment = outputPtr[locationOfRowIndex];
         return rowBaseOffset + (i - offsetOfRowSegment);
     });
