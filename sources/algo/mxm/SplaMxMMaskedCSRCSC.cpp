@@ -26,13 +26,7 @@
 /**********************************************************************************/
 
 #include <algo/mxm/SplaMxMMaskedCSRCSC.hpp>
-#include <compute/SplaApplyMask.hpp>
-#include <compute/SplaIndicesToRowOffsets.hpp>
-#include <compute/SplaReduceByKey.hpp>
-#include <compute/SplaReduceDuplicates.hpp>
-#include <compute/SplaStableSortByColumn.hpp>
-#include <compute/SplaTransformValues.hpp>
-#include <core/SplaError.hpp>
+#include <compute/metautil/SplaMetaUtil.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
 #include <storage/block/SplaMatrixCOO.hpp>
@@ -43,6 +37,9 @@ bool spla::MxMMaskedCSRCSC::Select(const spla::AlgorithmParams &params) const {
     auto p = dynamic_cast<const ParamsMxM *>(&params);
 
     // Requires a and bT be in csr format with mask in csr
+    // todo: support complement mask (its seems easy,
+    //  need to iterate over the row [0, N) and skip (i,j),
+    //  which belong to the mask)
     return p &&
            !p->desc->IsParamSet(Descriptor::Param::MaskComplement) &&
            p->mask.Is<MatrixCSR>() &&
@@ -90,8 +87,8 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
 
     // Auxiliary binary search to find bCol in the bT row by aCol
     std::stringstream binSearch;
-    binSearch << "uint binary_search(const uint x, __global const uint* buffer, const uint range) {\n"
-              << "    int l = 0, r = range - 1;\n"
+    binSearch << "uint binary_search(const uint x, __global const uint* buffer, const uint start, const uint range) {\n"
+              << "    int l = start, r = start + range - 1;\n"
               << "    while (l <= r) {\n"
               << "        int k = (l + r) / 2;\n"
               << "        if (buffer[k] < x) l = k + 1;\n"
@@ -116,7 +113,7 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         auto argColsB = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "colsB");
         auto argRowsLenC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "rowsLenC");
 
-        kernel << "#define tpb " << static_cast<cl_uint>(tpb) << "\n"
+        kernel << "#define TPB " << static_cast<cl_uint>(tpb) << "\n"
                << "const uint rid = get_group_id(0);\n"
                << "const uint tid = get_local_id(0);\n"
                << "__local uint hasValue;\n"
@@ -132,11 +129,13 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
                << "    const uint bRowEnd = rowsPtrB[cid + 1];\n"
                << "    const uint bRowLen = bRowEnd - bRowStart;\n"
                << "    if (bRowLen > 0) {\n"
-               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += tpb) {\n"
+               << "        uint seenValue = 0;\n"
+               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += TPB) {\n"
                << "            const uint aCol = colsA[aIdx];\n"
-               << "            const uint bIdx = binary_search(aCol, &colsB[bRowStart], bRowLen);\n"
-               << "            if (bIdx != 0xffffffff) hasValue = 1;\n"
+               << "            const uint bIdx = binary_search(aCol, colsB, bRowStart, bRowLen);\n"
+               << "            if (bIdx != 0xffffffff) seenValue = 1;\n"
                << "        }\n"
+               << "        atomic_or(&hasValue, seenValue);\n"
                << "        barrier(CLK_LOCAL_MEM_FENCE);\n"
                << "        if (hasValue && tid == 0) atomic_inc(&rowsLenC[rid]);\n"
                << "    }\n"
@@ -160,8 +159,6 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     // Get nnz of the result
     std::size_t nvalsC = (rowsPtrC.end() - 1).read(queue);
 
-    SPDLOG_LOGGER_TRACE(library->GetLogger(), "Result size {} nnz", nvalsC);
-
     // Early exit, nothing to do
     if (nvalsC <= 0)
         return;
@@ -171,6 +168,11 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> colsC(nvalsC, ctx);
     compute::vector<unsigned char> valsC(params->tw->HasValues() ? nvalsC * params->tw->GetByteSize() : 0, ctx);
     {
+        auto hasValues = params->tw->HasValues();
+
+#define HAS_VALUES_BEGIN if (hasValues) {
+#define HAS_VALUES_END }
+
         compute::detail::meta_kernel kernel("__spla_masked_csr_csc_prod");
         kernel.add_function("binary_search", binSearch.str());
 
@@ -184,14 +186,50 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         auto argRowsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "rowsC");
         auto argColsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "colsC");
 
-        kernel << "#define tpb " << static_cast<cl_uint>(tpb) << "\n"
-               << "const uint rid = get_group_id(0);\n"
+        std::size_t argValsA;
+        std::size_t argValsB;
+        std::size_t argValsC;
+
+        HAS_VALUES_BEGIN
+        argValsA = kernel.add_arg<const cl_uchar *>(compute::memory_object::global_memory, "valsA");
+        argValsB = kernel.add_arg<const cl_uchar *>(compute::memory_object::global_memory, "valsB");
+        argValsC = kernel.add_arg<cl_uchar *>(compute::memory_object::global_memory, "valsC");
+
+        kernel.add_function("mult_op", detail::meta::MakeFunction("mult_op",
+                                                                  params->mult->GetSource(),
+                                                                  detail::meta::Visibility::Global,
+                                                                  detail::meta::Visibility::Global,
+                                                                  detail::meta::Visibility::Unspecified));
+
+        kernel.add_function("add_op", detail::meta::MakeFunction("add_op",
+                                                                 params->add->GetSource(),
+                                                                 detail::meta::Visibility::Unspecified,
+                                                                 detail::meta::Visibility::Unspecified,
+                                                                 detail::meta::Visibility::Unspecified));
+
+        kernel.add_function("reduce_op", detail::meta::MakeFunction("reduce_op",
+                                                                    params->add->GetSource(),
+                                                                    detail::meta::Visibility::Local,
+                                                                    detail::meta::Visibility::Local,
+                                                                    detail::meta::Visibility::Local));
+        HAS_VALUES_END
+
+        kernel << "#define TPB " << static_cast<cl_uint>(tpb) << "\n";
+        HAS_VALUES_BEGIN
+        kernel << "#define BYTE_SIZE_A " << static_cast<cl_uint>(params->ta->GetByteSize()) << "\n"
+               << "#define BYTE_SIZE_B " << static_cast<cl_uint>(params->tb->GetByteSize()) << "\n"
+               << "#define BYTE_SIZE_C " << static_cast<cl_uint>(params->tw->GetByteSize()) << "\n"
+               << "__local ulong buff_reduce[(TPB * BYTE_SIZE_C) /" << static_cast<cl_uint>(sizeof(cl_ulong)) << "];\n"
+               << "__local uchar* p_reduce = (__local uchar*)buff_reduce;\n"
+               << "__local uint p_reduce_flag[TPB];\n"
+               << "uchar p_accum[BYTE_SIZE_C];\n";
+        HAS_VALUES_END
+        kernel << "const uint rid = get_group_id(0);\n"
                << "const uint tid = get_local_id(0);\n"
                << "__local uint hasValue;\n"
-               << "uint writePos = 0;\n"
                << "const uint mRowStart = rowsPtrM[rid];\n"
                << "const uint mRowEnd = rowsPtrM[rid + 1];\n"
-               << "const uint cRowStart = rowsPtrC[rid];\n"
+               << "uint writePos = rowsPtrC[rid];\n"
                << "for (uint mIdx = mRowStart; mIdx < mRowEnd; mIdx++) {\n"
                << "    if (tid == 0) hasValue = 0;\n"
                << "    barrier(CLK_LOCAL_MEM_FENCE);\n"
@@ -202,16 +240,52 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
                << "    const uint bRowEnd = rowsPtrB[cid + 1];\n"
                << "    const uint bRowLen = bRowEnd - bRowStart;\n"
                << "    if (bRowLen > 0) {\n"
-               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += tpb) {\n"
+               << "        uint seenValue = 0;\n"
+               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += TPB) {\n"
                << "            const uint aCol = colsA[aIdx];\n"
-               << "            const uint bIdx = binary_search(aCol, &colsB[bRowStart], bRowLen);\n"
-               << "            if (bIdx != 0xffffffff) hasValue = 1;\n"
+               << "            const uint bIdx = binary_search(aCol, colsB, bRowStart, bRowLen);\n"
+               << "            if (bIdx != 0xffffffff) {\n ";
+        HAS_VALUES_BEGIN
+        kernel << "                if (seenValue == 0) {\n"
+               << "                    mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &p_accum[0]);\n"
+               << "                } else {\n"
+               << "                    uchar tmp[BYTE_SIZE_C];\n"
+               << "                    mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &tmp[0]);\n"
+               << "                    add_op(&p_accum[0], &tmp[0], &p_accum[0]);\n"
+               << "                }\n";
+        HAS_VALUES_END
+        kernel << "                seenValue = 1;\n"
+               << "            }\n"
                << "        }\n"
+               << "        atomic_or(&hasValue, seenValue);\n"
                << "        barrier(CLK_LOCAL_MEM_FENCE);\n"
-               << "        if (hasValue && tid == 0) {\n"
-               << "            rowsC[cRowStart + writePos] = rid;\n"
-               << "            colsC[cRowStart + writePos] = cid;\n"
-               << "            writePos += 1;\n"
+               << "        if (hasValue) {\n";
+        HAS_VALUES_BEGIN
+        kernel << "            p_reduce_flag[tid] = seenValue;\n"
+               << "            for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                p_reduce[tid * BYTE_SIZE_C + i] = p_accum[i];\n"
+               << "            for (uint stride = TPB/2; stride > 0; stride = stride / 2) {\n"
+               << "                barrier(CLK_LOCAL_MEM_FENCE);"
+               << "                if (tid < stride) {\n"
+               << "                    if (p_reduce_flag[tid] && p_reduce_flag[tid + stride])\n"
+               << "                        reduce_op(&p_reduce[tid * BYTE_SIZE_C], &p_reduce[(tid + stride) * BYTE_SIZE_C], &p_reduce[tid * BYTE_SIZE_C]);\n"
+               << "                    else if (p_reduce_flag[tid + stride]) {\n"
+               << "                        p_reduce_flag[tid] = 1;\n"
+               << "                        for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                            p_reduce[tid * BYTE_SIZE_C + i] = p_reduce[(tid + stride) * BYTE_SIZE_C + i];\n"
+               << "                    }\n"
+               << "                }\n"
+               << "            }\n";
+        HAS_VALUES_END
+        kernel << "            if (tid == 0) {\n"
+               << "                rowsC[writePos] = rid;\n"
+               << "                colsC[writePos] = cid;\n";
+        HAS_VALUES_BEGIN
+        kernel << "                for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                    valsC[writePos * BYTE_SIZE_C + i] = p_reduce[0 * BYTE_SIZE_C + i];\n";
+        HAS_VALUES_END
+        kernel << "                writePos += 1;\n"
+               << "            }\n"
                << "        }\n"
                << "    }\n"
                << "}\n";
@@ -226,7 +300,17 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         compiledKernel.set_arg(argRowsPtrC, rowsPtrC.get_buffer());
         compiledKernel.set_arg(argRowsC, rowsC.get_buffer());
         compiledKernel.set_arg(argColsC, colsC.get_buffer());
+
+        HAS_VALUES_BEGIN
+        compiledKernel.set_arg(argValsA, a.GetVals().get_buffer());
+        compiledKernel.set_arg(argValsB, bT.GetVals().get_buffer());
+        compiledKernel.set_arg(argValsC, valsC.get_buffer());
+        HAS_VALUES_END
+
         queue.enqueue_1d_range_kernel(compiledKernel, 0, workSize, tpb);
+
+#undef HAS_VALUES_BEGIN
+#undef HAS_VALUES_END
     }
 
     params->w = MatrixCSR::Make(M, N, nvalsC,
