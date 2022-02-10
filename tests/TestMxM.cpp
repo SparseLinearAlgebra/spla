@@ -169,6 +169,7 @@ void testMaskedCSRCSC(spla::Library &library,
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<Type> c = a.template MxM<Type>(mask, maskComplement, b, multOp, addOp);
+    std::cout << "Expected nnz " << c.GetNvals() << std::endl;
     //ASSERT_TRUE(c.Equals(spW));
 }
 
@@ -216,62 +217,62 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
         auto mult = [](Type a, Type b) { return a * b; };
         auto add = [](Type a, Type b) { return a + b; };
 
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCommon<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
-        }
+        //        for (std::size_t i = 0; i < iter; i++) {
+        //            std::size_t nvals = base + i * step;
+        //            testCommon<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i));
+        //        }
+        //
+        //        for (std::size_t i = 0; i < iter; i++) {
+        //            std::size_t nvals = base + i * step;
+        //            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), false);
+        //        }
+        //
+        //        for (std::size_t i = 0; i < iter; i++) {
+        //            std::size_t nvals = base + i * step;
+        //            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), true);
+        //        }
 
         for (std::size_t i = 0; i < iter; i++) {
             std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), false);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), true);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMaskedCSRCSC<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), true);
-        }
-    });
-
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        using Type = std::int32_t;
-        auto spT = spla::Types::Int32(library);
-        auto spMult = spla::Functions::MultInt32(library);
-        auto spAdd = spla::Functions::PlusInt32(library);
-        auto mult = [](Type a, Type b) { return a * b; };
-        auto add = [](Type a, Type b) { return a + b; };
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testCommon<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, false);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, true);
-        }
-
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testMaskedCSRCSC<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, true);
+            testMaskedCSRCSC<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, utils::UniformRealGenerator<float>(i), false);
         }
     });
 
-    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-        for (std::size_t i = 0; i < iter; i++) {
-            std::size_t nvals = base + i * step;
-            testNoValues(library, M, K, N, nvals, i * i);
-        }
-    });
+    //    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+    //        using Type = std::int32_t;
+    //        auto spT = spla::Types::Int32(library);
+    //        auto spMult = spla::Functions::MultInt32(library);
+    //        auto spAdd = spla::Functions::PlusInt32(library);
+    //        auto mult = [](Type a, Type b) { return a * b; };
+    //        auto add = [](Type a, Type b) { return a + b; };
+    //
+    //        for (std::size_t i = 0; i < iter; i++) {
+    //            std::size_t nvals = base + i * step;
+    //            testCommon<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen);
+    //        }
+    //
+    //        for (std::size_t i = 0; i < iter; i++) {
+    //            std::size_t nvals = base + i * step;
+    //            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, false);
+    //        }
+    //
+    //        for (std::size_t i = 0; i < iter; i++) {
+    //            std::size_t nvals = base + i * step;
+    //            testMasked<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, true);
+    //        }
+    //
+    //        for (std::size_t i = 0; i < iter; i++) {
+    //            std::size_t nvals = base + i * step;
+    //            testMaskedCSRCSC<Type>(library, M, K, N, nvals, spT, spMult, spAdd, mult, add, i, intGen, false);
+    //        }
+    //    });
+    //
+    //    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+    //        for (std::size_t i = 0; i < iter; i++) {
+    //            std::size_t nvals = base + i * step;
+    //            testNoValues(library, M, K, N, nvals, i * i);
+    //        }
+    //    });
 }
 
 TEST(MxM, Tiny) {
@@ -287,7 +288,7 @@ TEST(MxM, Tiny) {
 }
 
 TEST(MxM, Small) {
-    std::vector<std::size_t> blockSizes = {100, 1000};
+    std::vector<std::size_t> blockSizes = {1000};
     std::size_t M = 80, K = 140, N = 120;
     test(M, K, N, M, M, 10, blockSizes);
 }
