@@ -178,6 +178,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a45c041e5eddaf83ebac2ac67b8f50895"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a45c041e5eddaf83ebac2ac67b8f50895">MakeTranspose</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;w, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;mask, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1FunctionBinary.html">FunctionBinary</a> &gt; &amp;accum, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;a, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
 <tr class="memdesc:a45c041e5eddaf83ebac2ac67b8f50895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make masked matrix transpose expression node. Operation is evaluated as <code>w&lt;mask&gt; = accum(w, a^T)</code>.  <a href="classspla_1_1Expression.html#a45c041e5eddaf83ebac2ac67b8f50895">More...</a><br /></td></tr>
 <tr class="separator:a45c041e5eddaf83ebac2ac67b8f50895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d671ff93370391d0f3952a6f07dc65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a62d671ff93370391d0f3952a6f07dc65">MakeTril</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;w, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;a, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
+<tr class="memdesc:a62d671ff93370391d0f3952a6f07dc65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make lower-triangular matrix expression node.  <a href="classspla_1_1Expression.html#a62d671ff93370391d0f3952a6f07dc65">More...</a><br /></td></tr>
+<tr class="separator:a62d671ff93370391d0f3952a6f07dc65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4880df2515380928f4657d287b5e2b8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">ExpressionNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a4880df2515380928f4657d287b5e2b8e">MakeTriu</a> (const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;w, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;a, const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;desc=nullptr)</td></tr>
+<tr class="memdesc:a4880df2515380928f4657d287b5e2b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make upper-triangular matrix expression node.  <a href="classspla_1_1Expression.html#a4880df2515380928f4657d287b5e2b8e">More...</a><br /></td></tr>
+<tr class="separator:a4880df2515380928f4657d287b5e2b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a28977cb6a8958b145f5ab1a0af206c2e">GetState</a> () const</td></tr>
 <tr class="separator:a28977cb6a8958b145f5ab1a0af206c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e3be412c4633ec34d2f869cf42f4f22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Expression.html#a4e3be412c4633ec34d2f869cf42f4f22">Empty</a> () const</td></tr>
@@ -1232,6 +1238,96 @@ Add must have signature <code>f: tw x tw -&gt; tw</code></dd></dl>
     <tr><td class="paramname">mask</td><td>Mask to filter result; may be null </td></tr>
     <tr><td class="paramname">accum</td><td>Binary function used to accum old and new values; may be null </td></tr>
     <tr><td class="paramname">a</td><td>Input matrix to transpose </td></tr>
+    <tr><td class="paramname">desc</td><td>Operation descriptor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Created expression node </dd></dl>
+
+</div>
+</div>
+<a id="a62d671ff93370391d0f3952a6f07dc65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62d671ff93370391d0f3952a6f07dc65">&#9670;&nbsp;</a></span>MakeTril()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">spla::ExpressionNode</a> &gt; spla::Expression::MakeTril </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make lower-triangular matrix expression node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">w</td><td><a class="el" href="classspla_1_1Matrix.html">Matrix</a> to store result </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="classspla_1_1Matrix.html">Matrix</a> source to take lower triangular part </td></tr>
+    <tr><td class="paramname">desc</td><td>Operation descriptor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Created expression node </dd></dl>
+
+</div>
+</div>
+<a id="a4880df2515380928f4657d287b5e2b8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4880df2515380928f4657d287b5e2b8e">&#9670;&nbsp;</a></span>MakeTriu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1RefPtr.html">spla::RefPtr</a>&lt; <a class="el" href="classspla_1_1ExpressionNode.html">spla::ExpressionNode</a> &gt; spla::Expression::MakeTriu </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1RefPtr.html">RefPtr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make upper-triangular matrix expression node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">w</td><td><a class="el" href="classspla_1_1Matrix.html">Matrix</a> to store result </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="classspla_1_1Matrix.html">Matrix</a> source to take upper triangular part </td></tr>
     <tr><td class="paramname">desc</td><td>Operation descriptor</td></tr>
   </table>
   </dd>

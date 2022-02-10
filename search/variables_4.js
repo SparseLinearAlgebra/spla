@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hasmask_1691',['hasMask',['../classspla_1_1ParamsMatrixEWiseAdd.html#a481148a02c372508f2e9668a988ff7b7',1,'spla::ParamsMatrixEWiseAdd::hasMask()'],['../classspla_1_1ParamsVectorEWiseAdd.html#a0d952c5d9a09244f3b7dfc72d2e5d3cb',1,'spla::ParamsVectorEWiseAdd::hasMask()'],['../classspla_1_1ParamsMxM.html#af739eb3f275f57509206ef77f49e2065',1,'spla::ParamsMxM::hasMask()'],['../classspla_1_1ParamsVxM.html#aceda14fc29a90588c2513d3c68b3ffb5',1,'spla::ParamsVxM::hasMask()'],['../classspla_1_1ParamsVectorAssign.html#a950e8ed875cbee8a37facb3f9433c788',1,'spla::ParamsVectorAssign::hasMask()'],['../classspla_1_1ParamsTranspose.html#a4d278cda617189405132be11dca6001d',1,'spla::ParamsTranspose::hasMask()'],['../classspla_1_1ParamsMatrixReduceScalar.html#a8d33a58405e3a2dce5f0c6cda1367284',1,'spla::ParamsMatrixReduceScalar::hasMask()']]]
+  ['firsti_1732',['firstI',['../classspla_1_1ParamsTria.html#ab1ed6ad91117b209a539f74a5b89b828',1,'spla::ParamsTria']]],
+  ['firstj_1733',['firstJ',['../classspla_1_1ParamsTria.html#af6fe2ba9597934945d83aa42e5724bc7',1,'spla::ParamsTria']]]
 ];

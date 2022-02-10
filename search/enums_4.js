@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['state_1762',['State',['../classspla_1_1Expression.html#a21a79f2b5a99245b7acacac1505d5ab9',1,'spla::Expression']]],
-  ['status_1763',['Status',['../group__Internal.html#ga5251dcc549917ecb7b44ad073c479962',1,'spla']]]
+  ['param_1806',['Param',['../classspla_1_1Descriptor.html#a29d3332f5a6911bc7818dfcda33ffa78',1,'spla::Descriptor']]]
 ];

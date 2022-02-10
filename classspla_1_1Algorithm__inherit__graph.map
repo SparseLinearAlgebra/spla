@@ -1,17 +1,18 @@
 <map id="spla::Algorithm" name="spla::Algorithm">
-<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="145,309,252,336"/>
+<area shape="rect" id="node1" title="Algorithm interface." alt="" coords="145,335,252,361"/>
 <area shape="rect" id="node3" href="$classspla_1_1MatrixEWiseAddCOO.html" title=" " alt="" coords="311,5,487,32"/>
 <area shape="rect" id="node4" href="$classspla_1_1MatrixReduceScalarCOO.html" title=" " alt="" coords="300,56,497,83"/>
 <area shape="rect" id="node5" href="$classspla_1_1MatrixTransposeCOO.html" title=" " alt="" coords="310,107,487,133"/>
-<area shape="rect" id="node6" href="$classspla_1_1MxMCOO.html" title=" " alt="" coords="344,157,453,184"/>
-<area shape="rect" id="node7" href="$classspla_1_1VectorAssignCOO.html" title=" " alt="" coords="319,208,478,235"/>
-<area shape="rect" id="node8" href="$classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="309,259,488,285"/>
-<area shape="rect" id="node9" href="$classspla_1_1VectorEWiseAddDense.html" title="VectorEWiseAddDense." alt="" coords="305,309,492,336"/>
-<area shape="rect" id="node10" href="$classspla_1_1VectorReadCOO.html" title=" " alt="" coords="324,360,473,387"/>
-<area shape="rect" id="node11" href="$classspla_1_1VectorReadDense.html" title=" " alt="" coords="320,411,477,437"/>
-<area shape="rect" id="node12" href="$classspla_1_1VectorReduceCOO.html" title=" " alt="" coords="317,461,480,488"/>
-<area shape="rect" id="node13" href="$classspla_1_1VectorToDenseCOO.html" title=" " alt="" coords="313,512,484,539"/>
-<area shape="rect" id="node14" href="$classspla_1_1VxMCOO.html" title=" " alt="" coords="345,563,452,589"/>
-<area shape="rect" id="node15" href="$classspla_1_1VxMCOOStructure.html" title=" " alt="" coords="319,613,479,640"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,309,97,336"/>
+<area shape="rect" id="node6" href="$classspla_1_1MatrixTriaCOO.html" title=" " alt="" coords="329,157,468,184"/>
+<area shape="rect" id="node7" href="$classspla_1_1MxMCOO.html" title=" " alt="" coords="344,208,453,235"/>
+<area shape="rect" id="node8" href="$classspla_1_1VectorAssignCOO.html" title=" " alt="" coords="319,259,478,285"/>
+<area shape="rect" id="node9" href="$classspla_1_1VectorEWiseAddCOO.html" title=" " alt="" coords="309,309,488,336"/>
+<area shape="rect" id="node10" href="$classspla_1_1VectorEWiseAddDense.html" title="VectorEWiseAddDense." alt="" coords="305,360,492,387"/>
+<area shape="rect" id="node11" href="$classspla_1_1VectorReadCOO.html" title=" " alt="" coords="324,411,473,437"/>
+<area shape="rect" id="node12" href="$classspla_1_1VectorReadDense.html" title=" " alt="" coords="320,461,477,488"/>
+<area shape="rect" id="node13" href="$classspla_1_1VectorReduceCOO.html" title=" " alt="" coords="317,512,480,539"/>
+<area shape="rect" id="node14" href="$classspla_1_1VectorToDenseCOO.html" title=" " alt="" coords="313,563,484,589"/>
+<area shape="rect" id="node15" href="$classspla_1_1VxMCOO.html" title=" " alt="" coords="345,613,452,640"/>
+<area shape="rect" id="node16" href="$classspla_1_1VxMCOOStructure.html" title=" " alt="" coords="319,664,479,691"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title=" " alt="" coords="5,335,97,361"/>
 </map>
