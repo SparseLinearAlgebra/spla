@@ -50,11 +50,13 @@ namespace spla {
 
         [[nodiscard]] const Indices &GetRowLengths() const noexcept;
 
+        static RefPtr<MatrixCSR> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, Indices rowOffsets, Indices rowLengths);
         static RefPtr<MatrixCSR> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue &queue);
         static RefPtr<MatrixCSR> Make(const RefPtr<MatrixCOO> &block, boost::compute::command_queue &queue);
 
     private:
         MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue &queue);
+        MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, Indices rowOffsets, Indices rowLengths);
 
         Indices mRowOffsets;
         Indices mRowLengths;

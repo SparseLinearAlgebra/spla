@@ -116,6 +116,41 @@ void testMasked(spla::Library &library,
     ASSERT_TRUE(c.Equals(spW));
 }
 
+void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+    utils::Matrix a = utils::Matrix<unsigned char>::Generate(M, K, nvals, seed).SortReduceDuplicates();
+    utils::Matrix b = utils::Matrix<unsigned char>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
+    utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
+
+    auto spT = spla::Types::Void(library);
+    auto spA = spla::Matrix::Make(M, K, spT, library);
+    auto spB = spla::Matrix::Make(K, N, spT, library);
+    auto spW = spla::Matrix::Make(M, N, spT, library);
+    auto spMask = spla::Matrix::Make(M, N, spT, library);
+
+    // Specify, that values already in row order + no duplicates
+    auto spDesc = spla::Descriptor::Make(library);
+    spDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    spDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
+    auto spExpr = spla::Expression::Make(library);
+    auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
+    auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
+    auto spMxM = spExpr->MakeMxM(spW, spMask, nullptr, nullptr, spA, spB);
+    spExpr->Dependency(spWriteA, spMxM);
+    spExpr->Dependency(spWriteB, spMxM);
+    spExpr->Dependency(spWriteMask, spMxM);
+    spExpr->Submit();
+    spExpr->Wait();
+
+    ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
+
+    auto dummy = [](unsigned char, unsigned char) { return 0; };
+
+    utils::Matrix<unsigned char> c = a.template MxM<unsigned char>(mask, false, b, dummy, dummy);
+    ASSERT_TRUE(c.EqualsStructure(spW));
+}
+
 template<typename Type, typename MultOp, typename AddOp, typename Random>
 void testMaskedCSRCSC(spla::Library &library,
                       std::size_t M, std::size_t K, std::size_t N, std::size_t nvals,
@@ -165,15 +200,13 @@ void testMaskedCSRCSC(spla::Library &library,
     spExpr->Dependency(spWriteMask, spMxM);
     spExpr->Submit();
     spExpr->Wait();
-
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     utils::Matrix<Type> c = a.template MxM<Type>(mask, maskComplement, b, multOp, addOp);
-    std::cout << "Expected nnz " << c.GetNvals() << std::endl;
     //ASSERT_TRUE(c.Equals(spW));
 }
 
-void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
+void testNoValuesMaskedCSRCSC(spla::Library &library, std::size_t M, std::size_t K, std::size_t N, std::size_t nvals, std::size_t seed = 0) {
     utils::Matrix a = utils::Matrix<unsigned char>::Generate(M, K, nvals, seed).SortReduceDuplicates();
     utils::Matrix b = utils::Matrix<unsigned char>::Generate(K, N, nvals, seed + 1).SortReduceDuplicates();
     utils::Matrix mask = utils::Matrix<unsigned char>::Generate(M, N, nvals, seed + 2).SortReduceDuplicates();
@@ -181,8 +214,12 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::siz
     auto spT = spla::Types::Void(library);
     auto spA = spla::Matrix::Make(M, K, spT, library);
     auto spB = spla::Matrix::Make(K, N, spT, library);
+    auto spBT = spla::Matrix::Make(N, K, spT, library);
     auto spW = spla::Matrix::Make(M, N, spT, library);
     auto spMask = spla::Matrix::Make(M, N, spT, library);
+
+    // Specify transposed B version
+    spB->SetDecoration(spla::Decorated::Decoration::TransposedMatrix, spBT.As<spla::Object>());
 
     // Specify, that values already in row order + no duplicates
     auto spDesc = spla::Descriptor::Make(library);
@@ -192,14 +229,15 @@ void testNoValues(spla::Library &library, std::size_t M, std::size_t K, std::siz
     auto spExpr = spla::Expression::Make(library);
     auto spWriteA = spExpr->MakeDataWrite(spA, a.GetDataIndices(library), spDesc);
     auto spWriteB = spExpr->MakeDataWrite(spB, b.GetDataIndices(library), spDesc);
+    auto spTransposeB = spExpr->MakeTranspose(spBT, nullptr, nullptr, spB);
     auto spWriteMask = spExpr->MakeDataWrite(spMask, mask.GetDataIndices(library), spDesc);
     auto spMxM = spExpr->MakeMxM(spW, spMask, nullptr, nullptr, spA, spB);
     spExpr->Dependency(spWriteA, spMxM);
-    spExpr->Dependency(spWriteB, spMxM);
+    spExpr->Dependency(spWriteB, spTransposeB);
+    spExpr->Dependency(spTransposeB, spMxM);
     spExpr->Dependency(spWriteMask, spMxM);
     spExpr->Submit();
     spExpr->Wait();
-
     ASSERT_EQ(spExpr->GetState(), spla::Expression::State::Evaluated);
 
     auto dummy = [](unsigned char, unsigned char) { return 0; };
@@ -267,12 +305,17 @@ void test(std::size_t M, std::size_t K, std::size_t N, std::size_t base, std::si
     //        }
     //    });
     //
-    //    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
-    //        for (std::size_t i = 0; i < iter; i++) {
-    //            std::size_t nvals = base + i * step;
-    //            testNoValues(library, M, K, N, nvals, i * i);
-    //        }
-    //    });
+    utils::testBlocks(blocksSizes, [=](spla::Library &library) {
+        //        for (std::size_t i = 0; i < iter; i++) {
+        //            std::size_t nvals = base + i * step;
+        //            testNoValues(library, M, K, N, nvals, i * i);
+        //        }
+
+        for (std::size_t i = 0; i < iter; i++) {
+            std::size_t nvals = base + i * step;
+            testNoValuesMaskedCSRCSC(library, M, K, N, nvals, i * i);
+        }
+    });
 }
 
 TEST(MxM, Tiny) {

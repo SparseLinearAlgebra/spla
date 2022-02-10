@@ -88,6 +88,7 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     assert(m.GetNcols() == N);
     assert(bT.GetNcols() == K);
 
+    // Auxiliary binary search to find bCol in the bT row by aCol
     std::stringstream binSearch;
     binSearch << "uint binary_search(const uint x, __global const uint* buffer, const uint range) {\n"
               << "    int l = 0, r = range - 1;\n"
@@ -118,7 +119,7 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         kernel << "#define tpb " << static_cast<cl_uint>(tpb) << "\n"
                << "const uint rid = get_group_id(0);\n"
                << "const uint tid = get_local_id(0);\n"
-               << "__local uint hasValue;"
+               << "__local uint hasValue;\n"
                << "const uint mRowStart = rowsPtrM[rid];\n"
                << "const uint mRowEnd = rowsPtrM[rid + 1];\n"
                << "for (uint mIdx = mRowStart; mIdx < mRowEnd; mIdx++) {\n"
@@ -160,6 +161,78 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     std::size_t nvalsC = (rowsPtrC.end() - 1).read(queue);
 
     SPDLOG_LOGGER_TRACE(library->GetLogger(), "Result size {} nnz", nvalsC);
+
+    // Early exit, nothing to do
+    if (nvalsC <= 0)
+        return;
+
+    // Evaluate actual result
+    compute::vector<unsigned int> rowsC(nvalsC, ctx);
+    compute::vector<unsigned int> colsC(nvalsC, ctx);
+    compute::vector<unsigned char> valsC(params->tw->HasValues() ? nvalsC * params->tw->GetByteSize() : 0, ctx);
+    {
+        compute::detail::meta_kernel kernel("__spla_masked_csr_csc_prod");
+        kernel.add_function("binary_search", binSearch.str());
+
+        auto argRowsPtrM = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "rowsPtrM");
+        auto argColsM = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "colsM");
+        auto argRowsPtrA = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "rowsPtrA");
+        auto argColsA = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "colsA");
+        auto argRowsPtrB = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "rowsPtrB");
+        auto argColsB = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "colsB");
+        auto argRowsPtrC = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "rowsPtrC");
+        auto argRowsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "rowsC");
+        auto argColsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "colsC");
+
+        kernel << "#define tpb " << static_cast<cl_uint>(tpb) << "\n"
+               << "const uint rid = get_group_id(0);\n"
+               << "const uint tid = get_local_id(0);\n"
+               << "__local uint hasValue;\n"
+               << "uint writePos = 0;\n"
+               << "const uint mRowStart = rowsPtrM[rid];\n"
+               << "const uint mRowEnd = rowsPtrM[rid + 1];\n"
+               << "const uint cRowStart = rowsPtrC[rid];\n"
+               << "for (uint mIdx = mRowStart; mIdx < mRowEnd; mIdx++) {\n"
+               << "    if (tid == 0) hasValue = 0;\n"
+               << "    barrier(CLK_LOCAL_MEM_FENCE);\n"
+               << "    const uint cid = colsM[mIdx];\n"
+               << "    const uint aRowStart = rowsPtrA[rid];\n"
+               << "    const uint aRowEnd = rowsPtrA[rid + 1];\n"
+               << "    const uint bRowStart = rowsPtrB[cid];\n"
+               << "    const uint bRowEnd = rowsPtrB[cid + 1];\n"
+               << "    const uint bRowLen = bRowEnd - bRowStart;\n"
+               << "    if (bRowLen > 0) {\n"
+               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += tpb) {\n"
+               << "            const uint aCol = colsA[aIdx];\n"
+               << "            const uint bIdx = binary_search(aCol, &colsB[bRowStart], bRowLen);\n"
+               << "            if (bIdx != 0xffffffff) hasValue = 1;\n"
+               << "        }\n"
+               << "        barrier(CLK_LOCAL_MEM_FENCE);\n"
+               << "        if (hasValue && tid == 0) {\n"
+               << "            rowsC[cRowStart + writePos] = rid;\n"
+               << "            colsC[cRowStart + writePos] = cid;\n"
+               << "            writePos += 1;\n"
+               << "        }\n"
+               << "    }\n"
+               << "}\n";
+
+        auto compiledKernel = kernel.compile(ctx);
+        compiledKernel.set_arg(argRowsPtrM, m.GetRowsOffsets().get_buffer());
+        compiledKernel.set_arg(argColsM, m.GetCols().get_buffer());
+        compiledKernel.set_arg(argRowsPtrA, a.GetRowsOffsets().get_buffer());
+        compiledKernel.set_arg(argColsA, a.GetCols().get_buffer());
+        compiledKernel.set_arg(argRowsPtrB, bT.GetRowsOffsets().get_buffer());
+        compiledKernel.set_arg(argColsB, bT.GetCols().get_buffer());
+        compiledKernel.set_arg(argRowsPtrC, rowsPtrC.get_buffer());
+        compiledKernel.set_arg(argRowsC, rowsC.get_buffer());
+        compiledKernel.set_arg(argColsC, colsC.get_buffer());
+        queue.enqueue_1d_range_kernel(compiledKernel, 0, workSize, tpb);
+    }
+
+    params->w = MatrixCSR::Make(M, N, nvalsC,
+                                std::move(rowsC), std::move(colsC), std::move(valsC),
+                                std::move(rowsPtrC), std::move(rowsLenC))
+                        .As<MatrixBlock>();
 }
 
 spla::Algorithm::Type spla::MxMMaskedCSRCSC::GetType() const {
