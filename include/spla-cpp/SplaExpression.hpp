@@ -464,7 +464,7 @@ namespace spla {
 
         /** @return Expression descriptor */
         const RefPtr<Descriptor> &GetDescriptor() const;
-  
+
         /** @return Current expression state */
         State GetState() const;
 
