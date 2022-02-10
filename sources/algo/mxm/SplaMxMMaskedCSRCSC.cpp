@@ -62,8 +62,6 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     compute::command_queue queue(ctx, device);
     QueueFinisher finisher(queue, library->GetLogger());
 
-    SPDLOG_LOGGER_TRACE(library->GetLogger(), "Select masked csrxcsc");
-
     // Algorithm strategy:
     // 1. For each mask value (i,j) define product of A[i,:] x B^T[j,:]
     // 2. Allocate required memory for rows cols and indices
@@ -75,7 +73,6 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     MatrixCSR &bT = *params->bT.Cast<MatrixCSR>();
 
     std::size_t M = a.GetNrows(),
-                K = a.GetNcols(),
                 N = bT.GetNrows();
 
     std::size_t tpb = 32;
@@ -97,6 +94,8 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
               << "    }\n"
               << "    return 0xffffffff;\n"
               << "}\n";
+
+    PF_SCOPE_MARK(mxm, "setup");
 
     // Evaluate exact size of the result to allocate buffers
     compute::vector<unsigned int> rowsLenC(M + 1, ctx);
@@ -130,7 +129,7 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
                << "    const uint bRowLen = bRowEnd - bRowStart;\n"
                << "    if (bRowLen > 0) {\n"
                << "        uint seenValue = 0;\n"
-               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += TPB) {\n"
+               << "        for (uint aIdx = aRowStart + tid; !seenValue && aIdx < aRowEnd; aIdx += TPB) {\n"
                << "            const uint aCol = colsA[aIdx];\n"
                << "            const uint bIdx = binary_search(aCol, colsB, bRowStart, bRowLen);\n"
                << "            if (bIdx != 0xffffffff) seenValue = 1;\n"
@@ -152,9 +151,13 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         queue.enqueue_1d_range_kernel(compiledKernel, 0, workSize, tpb);
     }
 
+    PF_SCOPE_MARK(mxm, "structure");
+
     // Evaluate offsets for each row of the result
     compute::vector<unsigned int> rowsPtrC(M + 1, ctx);
     compute::exclusive_scan(rowsLenC.begin(), rowsLenC.end(), rowsPtrC.begin(), 0u, queue);
+
+    PF_SCOPE_MARK(mxm, "offsets");
 
     // Get nnz of the result
     std::size_t nvalsC = (rowsPtrC.end() - 1).read(queue);
@@ -168,6 +171,8 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     compute::vector<unsigned int> colsC(nvalsC, ctx);
     compute::vector<unsigned char> valsC(params->tw->HasValues() ? nvalsC * params->tw->GetByteSize() : 0, ctx);
     {
+        PF_SCOPE_MARK(mxm, "allocate");
+
         auto hasValues = params->tw->HasValues();
 
 #define HAS_VALUES_BEGIN if (hasValues) {
@@ -312,6 +317,8 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
 #undef HAS_VALUES_BEGIN
 #undef HAS_VALUES_END
     }
+
+    PF_SCOPE_MARK(mxm, "evaluate");
 
     params->w = MatrixCSR::Make(M, N, nvalsC,
                                 std::move(rowsC), std::move(colsC), std::move(valsC),

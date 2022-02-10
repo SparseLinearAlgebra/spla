@@ -331,7 +331,7 @@ TEST(MxM, Tiny) {
 }
 
 TEST(MxM, Small) {
-    std::vector<std::size_t> blockSizes = {1000};
+    std::vector<std::size_t> blockSizes = {100, 1000};
     std::size_t M = 80, K = 140, N = 120;
     test(M, K, N, M, M, 10, blockSizes);
 }
