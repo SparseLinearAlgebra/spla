@@ -117,6 +117,10 @@ std::size_t spla::MatrixStorage::GetNblockCols() const noexcept {
     return mNblockCols;
 }
 
+std::size_t spla::MatrixStorage::GetBlockSize() const noexcept {
+    return mBlockSize;
+}
+
 void spla::MatrixStorage::Dump(std::ostream &stream) const {
     std::lock_guard<std::mutex> lock(mMutex);
 

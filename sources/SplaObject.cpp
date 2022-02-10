@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <core/SplaError.hpp>
+
 #include <spla-cpp/SplaObject.hpp>
 
 spla::Object::Object(spla::Object::TypeName typeName, class Library &library)

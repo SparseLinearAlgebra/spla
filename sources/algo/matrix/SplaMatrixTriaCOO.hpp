@@ -25,43 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_SPLAMATRIXTRIACOO_HPP
+#define SPLA_SPLAMATRIXTRIACOO_HPP
 
-/**
- * @defgroup API
- *
- * @brief Public library interface
- *
- * @details API module provides access to all common library primitives.
- * Primitives are exposed as a number of Object reference-counted classes.
- * Reference-counting is used to automate objects life-time checks and
- * to pass around this objects as expressions params in a safe way.
- *
- * Implementation details are hidden in private Internal sources module.
- * Header files has no other dependencies, except standard c++ library files.
- *
- * File Spla.hpp provides access to all API components.
- */
+#include <algo/SplaAlgorithm.hpp>
 
-#include <spla-cpp/SplaConfig.hpp>
-#include <spla-cpp/SplaData.hpp>
-#include <spla-cpp/SplaDecorated.hpp>
-#include <spla-cpp/SplaDescriptor.hpp>
-#include <spla-cpp/SplaExpression.hpp>
-#include <spla-cpp/SplaExpressionNode.hpp>
-#include <spla-cpp/SplaFunctionBinary.hpp>
-#include <spla-cpp/SplaFunctionSelect.hpp>
-#include <spla-cpp/SplaFunctionUnary.hpp>
-#include <spla-cpp/SplaFunctions.hpp>
-#include <spla-cpp/SplaLibrary.hpp>
-#include <spla-cpp/SplaMatrix.hpp>
-#include <spla-cpp/SplaObject.hpp>
-#include <spla-cpp/SplaRefCnt.hpp>
-#include <spla-cpp/SplaScalar.hpp>
-#include <spla-cpp/SplaType.hpp>
-#include <spla-cpp/SplaTypes.hpp>
-#include <spla-cpp/SplaUtils.hpp>
-#include <spla-cpp/SplaVector.hpp>
+namespace spla {
+    class MatrixTriaCOO final : public Algorithm {
+    public:
+        ~MatrixTriaCOO() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
+    };
+}// namespace spla
 
-#endif//SPLA_SPLA_HPP
+#endif//SPLA_SPLAMATRIXTRIACOO_HPP

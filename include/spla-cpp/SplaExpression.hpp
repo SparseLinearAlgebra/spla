@@ -436,9 +436,35 @@ namespace spla {
                                              const RefPtr<Matrix> &a,
                                              const RefPtr<Descriptor> &desc = nullptr);
 
+        /**
+         * @brief Make lower-triangular matrix expression node
+         *
+         * @param w Matrix to store result
+         * @param a Matrix source to take lower triangular part
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeTril(const RefPtr<Matrix> &w,
+                                        const RefPtr<Matrix> &a,
+                                        const RefPtr<Descriptor> &desc = nullptr);
+
+        /**
+         * @brief Make upper-triangular matrix expression node
+         *
+         * @param w Matrix to store result
+         * @param a Matrix source to take upper triangular part
+         * @param desc Operation descriptor
+         *
+         * @return Created expression node
+         */
+        RefPtr<ExpressionNode> MakeTriu(const RefPtr<Matrix> &w,
+                                        const RefPtr<Matrix> &a,
+                                        const RefPtr<Descriptor> &desc = nullptr);
+
         /** @return Expression descriptor */
         const RefPtr<Descriptor> &GetDescriptor() const;
-
+  
         /** @return Current expression state */
         State GetState() const;
 

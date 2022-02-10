@@ -1,5 +1,6 @@
 set(SPLA_CPP_SOURCES
         sources/SplaData.cpp
+        sources/SplaDecorated.cpp
         sources/SplaDescriptor.cpp
         sources/SplaExpression.cpp
         sources/SplaExpressionNode.cpp
@@ -24,10 +25,12 @@ set(SPLA_ALGO_SOURCES
 set(SPLA_ALGORITHM_SOURCES
         sources/algo/matrix/SplaMatrixEWiseAddCOO.cpp
         sources/algo/matrix/SplaMatrixEWiseAddCOO.hpp
-        sources/algo/matrix/SplaMatrixTransposeCOO.cpp
-        sources/algo/matrix/SplaMatrixTransposeCOO.hpp
         sources/algo/matrix/SplaMatrixReduceScalarCOO.cpp
         sources/algo/matrix/SplaMatrixReduceScalarCOO.hpp
+        sources/algo/matrix/SplaMatrixTransposeCOO.cpp
+        sources/algo/matrix/SplaMatrixTransposeCOO.hpp
+        sources/algo/matrix/SplaMatrixTriaCOO.cpp
+        sources/algo/matrix/SplaMatrixTriaCOO.hpp
         sources/algo/mxm/SplaMxMCOO.cpp
         sources/algo/mxm/SplaMxMCOO.hpp
         sources/algo/vector/SplaVectorAssignCOO.cpp
@@ -92,10 +95,14 @@ set(SPLA_EXPRESSION_SOURCES
         sources/expression/matrix/SplaMatrixDataWrite.hpp
         sources/expression/matrix/SplaMatrixEWiseAdd.cpp
         sources/expression/matrix/SplaMatrixEWiseAdd.hpp
-        sources/expression/matrix/SplaMatrixTranspose.cpp
-        sources/expression/matrix/SplaMatrixTranspose.hpp
         sources/expression/matrix/SplaMatrixReduceScalar.hpp
         sources/expression/matrix/SplaMatrixReduceScalar.cpp
+        sources/expression/matrix/SplaMatrixTranspose.cpp
+        sources/expression/matrix/SplaMatrixTranspose.hpp
+        sources/expression/matrix/SplaMatrixTril.cpp
+        sources/expression/matrix/SplaMatrixTril.hpp
+        sources/expression/matrix/SplaMatrixTriu.cpp
+        sources/expression/matrix/SplaMatrixTriu.hpp
         sources/expression/prod/SplaMxM.cpp
         sources/expression/prod/SplaMxM.hpp
         sources/expression/prod/SplaVxM.cpp

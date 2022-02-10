@@ -28,6 +28,10 @@
 #ifndef SPLA_SPLAVECTOR_HPP
 #define SPLA_SPLAVECTOR_HPP
 
+#include <ostream>
+#include <utility>
+
+#include <spla-cpp/SplaDecorated.hpp>
 #include <spla-cpp/SplaObject.hpp>
 #include <spla-cpp/SplaType.hpp>
 
@@ -59,7 +63,7 @@ namespace spla {
      * @see FunctionUnary
      * @see FunctionBinary
      */
-    class SPLA_API Vector final : public TypedObject {
+    class SPLA_API Vector final : public TypedObject, public Decorated {
     public:
         ~Vector() override;
 

@@ -48,9 +48,8 @@ bool spla::VxMCOOStructure::Select(const spla::AlgorithmParams &params) const {
 
     return p &&
            !p->tw->HasValues() &&
-           p->w.Is<VectorCOO>() &&
            p->a.Is<VectorCOO>() &&
-           p->b.Is<MatrixCOO>() &&
+           p->b.Is<MatrixCSR>() &&
            (p->mask.Is<VectorCOO>() || p->mask.Is<VectorDense>());
 }
 
@@ -67,7 +66,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     QueueFinisher finisher(queue, library->GetLogger());
 
     auto a = p->a.Cast<VectorCOO>();
-    auto b = p->b.Cast<MatrixCOO>();
+    auto b = p->b.Cast<MatrixCSR>();
     auto complementMask = desc->IsParamSet(Descriptor::Param::MaskComplement);
 
     if (p->hasMask && !complementMask && p->mask.IsNull())
@@ -76,29 +75,11 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     if (a->GetNvals() == 0 || b->GetNvals() == 0)
         return;
 
-    auto M = a->GetNrows();
     auto N = b->GetNcols();
 
-    assert(!p->tw->HasValues());
-
     // Get row lengths and offsets for B
-    const compute::vector<Index> *offsetsB;
-    const compute::vector<Index> *lengthsB;
-
-    compute::vector<Index> offsetsBuffer(ctx);
-    compute::vector<Index> lengthsBuffer(ctx);
-
-    if (b.Is<MatrixCSR>()) {
-        // Get rows offsets and rows lengths for matrix b
-        auto bCSR = b.Cast<MatrixCSR>();
-        offsetsB = &bCSR->GetRowsOffsets();
-        lengthsB = &bCSR->GetRowLengths();
-    } else {
-        // Compute new rows offsets and rows lengths for matrix b
-        offsetsB = &offsetsBuffer;
-        lengthsB = &lengthsBuffer;
-        IndicesToRowOffsets(b->GetRows(), offsetsBuffer, lengthsBuffer, M, queue);
-    }
+    const compute::vector<Index> &offsets = b->GetRowsOffsets();
+    const compute::vector<Index> &lengths = b->GetRowLengths();
 
     const std::size_t BUCKETS_COUNT = 7;
     compute::vector<Index> buckets(BUCKETS_COUNT, ctx);
@@ -108,10 +89,9 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
 
     PF_SCOPE(vxm, "-vxm-");
 
-    auto &bLengths = *lengthsB;
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
-    BOOST_COMPUTE_CLOSURE(void, countBuckets, (unsigned int rowId), (bLengths, buckets), {
-        const length = bLengths[rowId];
+    BOOST_COMPUTE_CLOSURE(void, countBuckets, (unsigned int rowId), (lengths, buckets), {
+        const length = lengths[rowId];
         if (length <= 0) return;
         const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
         atomic_add(&buckets[bucketId], 1u);
@@ -124,8 +104,8 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     bucketsConfig.resize(rowsToProcess);
 
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
-    BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rowId), (bLengths, buckets, bucketsOffsets, bucketsConfig), {
-        const length = bLengths[rowId];
+    BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rowId), (lengths, buckets, bucketsOffsets, bucketsConfig), {
+        const length = lengths[rowId];
         if (length <= 0) return;
         const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
         const uint offset = atomic_add(&buckets[bucketId], 1u);
@@ -159,7 +139,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     compute::fill_n(resultStructure.begin(), N, 0u, queue);
 
     auto kernelCompiled = kernel.compile(ctx);
-    kernelCompiled.set_arg(argRowOffsets, offsetsB->get_buffer());
+    kernelCompiled.set_arg(argRowOffsets, offsets.get_buffer());
     kernelCompiled.set_arg(argColIndices, b->GetCols().get_buffer());
     kernelCompiled.set_arg(argResult, resultStructure.get_buffer());
     kernelCompiled.set_arg(argBucketOffsets, bucketsOffsets.get_buffer());

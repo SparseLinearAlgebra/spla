@@ -28,6 +28,7 @@
 #define SPLA_SPLAALGOTC_HPP
 
 #include <spla-algo/SplaAlgoCommon.hpp>
+#include <spla-cpp/SplaDescriptor.hpp>
 #include <spla-cpp/SplaMatrix.hpp>
 #include <spla-cpp/SplaVector.hpp>
 
@@ -41,66 +42,64 @@ namespace spla {
     /**
      * @brief Triangle counting
      *
-     * @note If graph is
-     *  - Directed, then a triangle is a set of edges
-     *      - a -> b
-     *      - a -> c
-     *      - b -> c
-     *   and in the resulting matrix @p spB in the position [a, b]
-     *   will be the number of such triangles
-     *   And in the @p ntrins will be total number of triangles.
+     * As an input algorithm expects undirected graph in form of adjacency matrix
+     * with values of type int32_t with 1 in the cells (i,j) when graph has eject (i,j).
+     * Adjacency matrix must passed as lower and upper triangular parts @p spL and @p spU.
      *
-     *  - Undirected, than a triangle is a set of edges
-     *      - a <-> b
-     *      - b <-> c
-     *      - c <-> a
-     *   and in the resulting matrix in the position [a, b]
-     *   will be the number of such triangles. But
-     *   total number of triangles @p ntrins will not be the sum of
-     *   elements of @p spB. Instead, it will be the sum divided by 6,
-     *   because each triangle was counted 6 times.
+     * As an output algorithm produces number of triangles @p ntrins in the graph
+     * as well as buffer matrix @p spB with triangles per vertex.
      *
-     *
-     * @param [out] ntris - number of triangles in the graph
-     * @param [out] spB - matrix b with number of triangles per vertex
-     * @param [in]  spA - input adjacency matrix of directed graph with values of type int32_t,
-     *                   with 1 stored where has edge between i and j
-     * @param [in]  dir - is input graph directed or not
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] spB  Matrix b with number of triangles per vertex
+     * @param[in] spL Lower triangular part of adjacency matrix
+     * @param[in] spU Upper triangular part of adjacency matrix
+     * @param[in] descriptor Algorithm descriptor
      */
-    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA, bool dir);
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spL, const RefPtr<Matrix> &spU, const RefPtr<Descriptor> &descriptor);
 
     /**
      * @brief Triangle counting
      *
-     * @note If graph is
-     *  - Directed, then a triangle is a set of edges
-     *      - a -> b
-     *      - a -> c
-     *      - b -> c
-     *   and in the resulting matrix @p spB in the position [a, b]
-     *   will be the number of such triangles
-     *   And in the @p ntrins will be total number of triangles.
-     *
-     *  - Undirected, than a triangle is a set of edges
+     * As an input expects undirected graph.
+     * Triangle is a set of edges:
      *      - a <-> b
      *      - b <-> c
      *      - c <-> a
-     *   and in the resulting matrix in the position [a, b]
-     *   will be the number of such triangles. But
-     *   total number of triangles @p ntrins will not be the sum of
-     *   elements of @p spB. Instead, it will be the sum divided by 6,
-     *   because each triangle was counted 6 times.
+     * and in the resulting matrix in the position [a, b]
+     * will be the number of such triangles. But
+     * total number of triangles @p ntrins will not be the sum of
+     * elements of @p spB. Instead, it will be the sum divided by 6,
+     * because each triangle was counted 6 times.
      *
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] spB  Matrix b with number of triangles per vertex
+     * @param[in] spA Input adjacency matrix of directed graph with values of type int32_t,
+     *                with 1 stored where has edge between i and j
+     */
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<Matrix> &spB, const RefPtr<Matrix> &spA);
+
+    /**
+     * @brief Triangle counting
+     *
+     * As an input expects undirected graph.
+     * Triangle is a set of edges:
+     *      - a <-> b
+     *      - b <-> c
+     *      - c <-> a
+     * and in the resulting matrix in the position [a, b]
+     * will be the number of such triangles. But
+     * total number of triangles @p ntrins will not be the sum of
+     * elements of @p spB. Instead, it will be the sum divided by 6,
+     * because each triangle was counted 6 times.
      *
      * @note Naive cpu reference algo implementation for correctness only
      *
-     * @param [out] ntris - number of triangles in the graph
-     * @param [out] B - matrix b with number of triangles per vertex
-     * @param [in]  A - input adjacency matrix of directed graph with values of type int32_t,
-     *                 with 1 stored where has edge between i and j
-     * @param [in]  dir - is input graph directed or not
+     * @param[out] ntris Number of triangles in the graph
+     * @param[out] B Matrix b with number of triangles per vertex
+     * @param[in] A Input adjacency matrix of directed graph with values of type int32_t,
+     *              with 1 stored where has edge between i and j
      */
-    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A, bool dir);
+    SPLA_API void Tc(std::int32_t &ntrins, RefPtr<HostMatrix> &B, const RefPtr<HostMatrix> &A);
 
     /**
      * @}
