@@ -109,9 +109,13 @@ int main(int argc, const char *const *argv) {
     prepareData->SubmitWait();
     SPLA_ALGO_CHECK(prepareData);
 
-    // Release A to free used memory
+    // Release A to free unused in algo memory
     A.Reset();
 
+    // Set for U transposed decoration U^T (in case of undirected graph exactly L)
+    U->SetDecoration(spla::Decorated::Decoration::TransposedMatrix, L.As<spla::Object>());
+
+    // Descriptor to profile time if required
     spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
     desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
 
