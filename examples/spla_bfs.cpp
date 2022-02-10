@@ -112,8 +112,9 @@ int main(int argc, const char *const *argv) {
     SPLA_ALGO_CHECK(prepareData);
 
     spla::RefPtr<spla::Descriptor> desc = spla::Descriptor::Make(library);
-    desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming);
-    desc->SetParam(spla::Descriptor::Param::DenseFactor, std::to_string(denseFactor));
+    desc->SetParam(spla::Descriptor::Param::DeviceFixedStrategy, true);// Force fixed device allocation for all blocks
+    desc->SetParam(spla::Descriptor::Param::ProfileTime, debugTiming); // Show timing per iteration and tight measurements
+    desc->SetParamT(spla::Descriptor::Param::DenseFactor, denseFactor);// When transition sparse to dense v depth
 
     // Warm up phase
     spla::CpuTimer tWarmUp;

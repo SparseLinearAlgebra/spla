@@ -129,7 +129,7 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
             auto aBlock = aBlocks.find(aIndex);
             auto bBlock = bBlocks.find(bIndex);
 
-            // If has something to multiply in both a[i,k] and b[k,j] blocks
+            // If has something to multiply in both a[i] and b[i,j] blocks
             if (aBlock != aBlocks.end() && bBlock != bBlocks.end()) {
                 toProcess.push_back(ToProcess{aIndex, bIndex});
                 totalProducts += 1;
@@ -146,9 +146,23 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
 
     // Shared thread-safe storage to aggregate results of products
     auto products = std::make_shared<ProductsResults>(nBlockN);
+    std::vector<DeviceManager::DeviceId> devicesPerRow;
+    std::vector<DeviceManager::DeviceId> devicesForProducts;
 
-    // Query required number of devices (strategy: device per product)
-    auto devicesForProducts = deviceMan.FetchDevices(totalProducts, node);
+    // If fixed device allocation strategy is requested,
+    // then fetch a device per column of matrix blocks
+    auto fixedStrategy = node->GetDescriptor()->IsParamSet(Descriptor::Param::DeviceFixedStrategy) ||
+                         expression.GetDescriptor()->IsParamSet(Descriptor::Param::DeviceFixedStrategy);
+
+    if (fixedStrategy) {
+        devicesPerRow = deviceMan.FetchDevices(nBlockN, node);
+        for (std::size_t j = 0; j < nBlockN; j++) {
+            for (std::size_t tmpProductsInRow = 0; tmpProductsInRow < blockProducts[j].size(); tmpProductsInRow++)
+                devicesForProducts.push_back(devicesPerRow[j]);
+        }
+    } else
+        // Query required number of devices (strategy: device per product)
+        devicesForProducts = deviceMan.FetchDevices(totalProducts, node);
 
     // Dispatch tasks to compute a.block[i] x b.block[i,j] products
     std::size_t deviceToFetch = 0;
@@ -191,7 +205,8 @@ void spla::VxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
     }
 
     // Query required number of devices (strategy: device per not empty w[j])
-    auto devicesForFinalMerge = deviceMan.FetchDevices(totalBlocks, node);
+    auto devicesForFinalMerge =
+            fixedStrategy ? devicesPerRow : deviceMan.FetchDevices(totalBlocks, node);
 
     // Finally, for each block w[i,j] we must aggregate intermediate
     // blocks multiplications results as a series of element-wise additions of blocks

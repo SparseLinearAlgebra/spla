@@ -28,6 +28,7 @@
 #ifndef SPLA_SPLADESCRIPTOR_HPP
 #define SPLA_SPLADESCRIPTOR_HPP
 
+#include <cassert>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -71,23 +72,16 @@ namespace spla {
             TransposeArg1,
             /** Transpose operation arg 2 matrix before operation */
             TransposeArg2,
-            /** Force `device-0` for expression node computation */
-            DeviceId0,
-            /** Force `device-1` for expression node computation */
-            DeviceId1,
-            /** Force `device-2` for expression node computation */
-            DeviceId2,
-            /** Force `device-3` for expression node computation */
-            DeviceId3,
-            /** Force `device-4` for expression node computation */
-            DeviceId4,
-            /** Force `device-5` for expression node computation */
-            DeviceId5,
-            /** Force `device-6` for expression node computation */
-            DeviceId6,
-            /** Force `device-7` for expression node computation */
-            DeviceId7
+            /** Force device with specified id for computation (pass int as param) */
+            DeviceId,
+            /** Force use fixed device distribution strategy */
+            DeviceFixedStrategy
         };
+
+        /** @return True if param expects value to be set */
+        static inline bool ParamExpectsValue(Param param) {
+            return param == Param::DeviceId || param == Param::DenseFactor;
+        }
 
         /**
          * Set descriptor param value.
@@ -158,7 +152,7 @@ namespace spla {
 
         /**
          * @brief Get descriptor param value.
-         * If param was set without value, returned string value is empty.
+         * If param was set without value, returned value is empty.
          *
          * @tparam T Type of value to get
          * @param param Param name to get
@@ -167,7 +161,7 @@ namespace spla {
          * @return True if this param was set in descriptor
          */
         template<typename T>
-        bool GetParamT(Param param, T &value) {
+        bool GetParamT(Param param, T &value) const {
             std::string text;
             auto hasParam = GetParam(param, text);
 
@@ -177,6 +171,20 @@ namespace spla {
             }
 
             return hasParam;
+        }
+
+        /**
+         * @brief Set descriptor param with value
+         * Uses default `std::to_string` to serialize value;
+         *
+         * @tparam T Type of value to set
+         * @param param Param name to set; must accept value
+         * @param value Value to set
+         */
+        template<typename T>
+        void SetParamT(Param param, T value) {
+            assert(ParamExpectsValue(param));
+            SetParam(param, std::to_string(value));
         }
 
     private:

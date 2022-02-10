@@ -26,30 +26,20 @@
 /**********************************************************************************/
 
 #include <core/SplaDeviceManager.hpp>
+#include <spla-cpp/SplaExpression.hpp>
 
 namespace spla {
     namespace {
         bool FetchSpecifiedDevice(Descriptor &desc, DeviceManager::DeviceId &id) {
-            if (desc.IsParamSet(Descriptor::Param::DeviceId0))
-                id = 0;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId1))
-                id = 1;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId2))
-                id = 2;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId3))
-                id = 3;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId4))
-                id = 4;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId5))
-                id = 5;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId6))
-                id = 6;
-            else if (desc.IsParamSet(Descriptor::Param::DeviceId7))
-                id = 7;
-            else
-                return false;
-
-            return true;
+            return desc.GetParamT(Descriptor::Param::DeviceId, id);
+        }
+        bool FetchSpecifiedDevice(const RefPtr<ExpressionNode> &node, DeviceManager::DeviceId &id) {
+            return FetchSpecifiedDevice(*node->GetDescriptor(), id) ||
+                   FetchSpecifiedDevice(*node->GetParent()->GetDescriptor(), id);
+        }
+        bool FixedAllocationStrategy(const RefPtr<ExpressionNode> &node) {
+            return node->GetDescriptor()->IsParamSet(Descriptor::Param::DeviceFixedStrategy) ||
+                   node->GetParent()->GetDescriptor()->IsParamSet(Descriptor::Param::DeviceFixedStrategy);
         }
     }// namespace
 }// namespace spla
@@ -63,14 +53,15 @@ spla::DeviceManager::DeviceId spla::DeviceManager::FetchDevice(const spla::RefPt
 
     DeviceId id;
 
-    // Try to fetch device id from desc
-    auto fetched = FetchSpecifiedDevice(*desc, id);
+    auto fixedAllocationStrategy = FixedAllocationStrategy(node);// Try to get allocation strategy
+    auto fetched = FetchSpecifiedDevice(node, id);               // Try to fetch device id from desc
 
-    // If it does not fetched or specified id is too large, we can simply use next suitable
-    if (!fetched || id >= mDevices.size())
-        id = NextDevice();
-
-    return id;
+    if (fetched && id < mDevices.size())
+        return id;
+    else if (fixedAllocationStrategy)
+        return 0;
+    else
+        return NextDevice();
 }
 
 std::vector<spla::DeviceManager::DeviceId> spla::DeviceManager::FetchDevices(std::size_t required, const spla::RefPtr<spla::ExpressionNode> &node) {
@@ -86,15 +77,16 @@ std::vector<spla::DeviceManager::DeviceId> spla::DeviceManager::FetchDevices(std
     DeviceId id;
     std::vector<DeviceId> result;
 
-    // Try to fetch device id from desc
-    auto fetched = FetchSpecifiedDevice(*desc, id);
+    auto fixedAllocationStrategy = FixedAllocationStrategy(node);// Try to get allocation strategy
+    auto fetched = FetchSpecifiedDevice(node, id);               // Try to fetch device id from desc
 
-    // If fetched, single device is used for all required tasks
-    if (fetched) {
-        // If specified id is too large, we can simply use next suitable
-        if (id >= mDevices.size())
-            id = NextDevice();
+    if (fetched && id < mDevices.size())
         result.resize(required, id);
+    else if (fixedAllocationStrategy) {
+        // FIll devices starting from 0
+        result.reserve(required);
+        for (std::size_t i = 0; i < required; i++)
+            result.push_back(i % mDevices.size());
     } else {
         // Use even work distribution for all tasks
         result.reserve(required);
