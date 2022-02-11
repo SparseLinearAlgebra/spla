@@ -25,47 +25,21 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLAMATRIXCSR_HPP
-#define SPLA_SPLAMATRIXCSR_HPP
+#ifndef SPLA_SPLAMXMMASKEDCSRCSC_HPP
+#define SPLA_SPLAMXMMASKEDCSRCSC_HPP
 
-#include <storage/block/SplaMatrixCOO.hpp>
-
-#include <boost/compute/command_queue.hpp>
+#include <algo/SplaAlgorithm.hpp>
 
 namespace spla {
-
-    /**
-     * @addtogroup Internal
-     * @{
-     */
-
-    class MatrixCSR final : public MatrixCOO {
+    class MxMMaskedCSRCSC final : public Algorithm {
     public:
-        using Indices = MatrixCOO::Indices;
-        using Values = MatrixCOO::Values;
-
-        ~MatrixCSR() override = default;
-
-        [[nodiscard]] const Indices &GetRowsOffsets() const noexcept;
-
-        [[nodiscard]] const Indices &GetRowLengths() const noexcept;
-
-        static RefPtr<MatrixCSR> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, Indices rowOffsets, Indices rowLengths);
-        static RefPtr<MatrixCSR> Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue &queue);
-        static RefPtr<MatrixCSR> Make(const RefPtr<MatrixCOO> &block, boost::compute::command_queue &queue);
-
-    private:
-        MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, boost::compute::command_queue &queue);
-        MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, Indices rows, Indices cols, Values vals, Indices rowOffsets, Indices rowLengths);
-
-        Indices mRowOffsets;
-        Indices mRowLengths;
+        ~MxMMaskedCSRCSC() override = default;
+        bool Select(const AlgorithmParams &params) const override;
+        void Process(AlgorithmParams &params) override;
+        Type GetType() const override;
+        std::string GetName() const override;
     };
-
-    /**
-     * @}
-     */
 
 }// namespace spla
 
-#endif//SPLA_SPLAMATRIXCSR_HPP
+#endif//SPLA_SPLAMXMMASKEDCSRCSC_HPP

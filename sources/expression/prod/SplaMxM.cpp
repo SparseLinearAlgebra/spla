@@ -33,7 +33,7 @@
 namespace spla {
     namespace {
         /** Utility to fetch mask block from entry map */
-        inline RefPtr<MatrixBlock> GetMaskBlock(MatrixStorage::EntryMap &map, const MatrixStorage::Index &idx) {
+        inline RefPtr<MatrixBlock> GetBlock(MatrixStorage::EntryMap &map, const MatrixStorage::Index &idx) {
             auto found = map.find(idx);
             return found != map.end() ? found->second : RefPtr<MatrixBlock>{};
         }
@@ -88,6 +88,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
     // Clear w, so by default empty result returned
     w->GetStorage()->Clear();
 
+    auto bT = b->GetDecoration(Decorated::Decoration::TransposedMatrix).Cast<Matrix>();
     auto ta = a->GetType();
     auto tb = b->GetType();
     auto tw = w->GetType();
@@ -109,9 +110,13 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
     // Fetch blocks and store locally
     MatrixStorage::EntryMap aBlocks;
     MatrixStorage::EntryMap bBlocks;
+    MatrixStorage::EntryMap bTBlocks;
     MatrixStorage::EntryMap maskBlocks;
     aStorage->GetBlocks(aBlocks);
     bStorage->GetBlocks(bBlocks);
+    // If has b transposed, fetch its blocks
+    if (bT.IsNotNull())
+        bT->GetStorage()->GetBlocks(bTBlocks);
 
     if (hasMask)
         // If mask empty => does not apply mask at all
@@ -162,9 +167,11 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                 auto deviceId = devicesForProducts[deviceToFetch];
                 auto aIdx = toProcess.a;
                 auto bIdx = toProcess.b;
+                auto bTIdx = SIndex{bIdx.second, bIdx.first};
                 auto aBlock = aBlocks.find(aIdx)->second;
                 auto bBlock = bBlocks.find(bIdx)->second;
-                auto maskBlock = GetMaskBlock(maskBlocks, SIndex{aIdx.first, bIdx.second});
+                auto bTBlock = GetBlock(bTBlocks, bTIdx);
+                auto maskBlock = GetBlock(maskBlocks, SIndex{aIdx.first, bIdx.second});
                 auto task = builder.Emplace("mxm", [=]() {
                     assert(aBlock->GetNcols() == bBlock->GetNrows());
                     ParamsMxM params;
@@ -176,6 +183,7 @@ void spla::MxM::Process(std::size_t nodeIdx, const spla::Expression &expression,
                     params.add = add;
                     params.a = aBlock;
                     params.b = bBlock;
+                    params.bT = bTBlock;
                     params.ta = ta;
                     params.tb = tb;
                     params.tw = tw;

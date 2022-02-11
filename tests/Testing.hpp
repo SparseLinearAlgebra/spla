@@ -45,7 +45,7 @@
     auto timer = std::chrono::steady_clock::now();
 
 #define SPLA_TIME_END(timer, message)                                           \
-    std::cout << std::setw(10)                                                  \
+    std::cout << std::setw(12)                                                  \
               << message << " "                                                 \
               << std::setw(10)                                                  \
               << std::setprecision(9)                                           \

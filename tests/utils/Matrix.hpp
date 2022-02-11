@@ -236,6 +236,7 @@ namespace utils {
                 auto b = spVals[i];
 
                 if (!utils::EqWithError(a, b)) {
+                    std::cout << "Values not equal at " << i << " a=" << a << " b=" << b << std::endl;
                     return false;
                 }
             }

@@ -43,7 +43,7 @@ namespace spla {
      * @brief Triangle counting
      *
      * As an input algorithm expects undirected graph in form of adjacency matrix
-     * with values of type int32_t with 1 in the cells (i,j) when graph has eject (i,j).
+     * with values of type int32_t with 1 in the cells (i,j) when graph has edge (i,j).
      * Adjacency matrix must passed as lower and upper triangular parts @p spL and @p spU.
      *
      * As an output algorithm produces number of triangles @p ntrins in the graph

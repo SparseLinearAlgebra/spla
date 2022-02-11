@@ -36,6 +36,10 @@ const spla::MatrixCSR::Indices &spla::MatrixCSR::GetRowLengths() const noexcept 
     return mRowLengths;
 }
 
+spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, spla::MatrixCSR::Indices rowOffsets, spla::MatrixCSR::Indices rowLengths) {
+    return spla::RefPtr<spla::MatrixCSR>(new MatrixCSR(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals), std::move(rowOffsets), std::move(rowLengths)));
+}
+
 spla::RefPtr<spla::MatrixCSR> spla::MatrixCSR::Make(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, boost::compute::command_queue &queue) {
     return spla::RefPtr<spla::MatrixCSR>(new MatrixCSR(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals), queue));
 }
@@ -53,4 +57,8 @@ spla::MatrixCSR::MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nva
     mFormat = Format::CSR;
     // Compute and cache offsets and rows lengths (frequently used in vxm mxm operations)
     IndicesToRowOffsets(GetRows(), mRowOffsets, mRowLengths, GetNrows(), queue);
+}
+
+spla::MatrixCSR::MatrixCSR(std::size_t nrows, std::size_t ncols, std::size_t nvals, spla::MatrixCSR::Indices rows, spla::MatrixCSR::Indices cols, spla::MatrixCSR::Values vals, spla::MatrixCSR::Indices rowOffsets, spla::MatrixCSR::Indices rowLengths)
+    : MatrixCOO(nrows, ncols, nvals, std::move(rows), std::move(cols), std::move(vals)), mRowOffsets(std::move(rowOffsets)), mRowLengths(std::move(rowLengths)) {
 }

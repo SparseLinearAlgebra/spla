@@ -37,10 +37,15 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
 
     auto sp_B = spla::Matrix::Make(M, M, sp_Int32, library);
     auto sp_B_tria = spla::Matrix::Make(M, M, sp_Int32, library);
+    auto sp_B_tria_t = spla::Matrix::Make(M, M, sp_Int32, library);
 
     auto sp_A = spla::Matrix::Make(M, M, sp_Int32, library);
     auto sp_L = spla::Matrix::Make(M, M, sp_Int32, library);
     auto sp_U = spla::Matrix::Make(M, M, sp_Int32, library);
+    auto sp_UT = spla::Matrix::Make(M, M, sp_Int32, library);
+
+    // UT has additional transposed decoration (matrix L)
+    sp_UT->SetDecoration(spla::Decorated::Decoration::TransposedMatrix, sp_L.As<spla::Object>());
 
     auto sp_setup = spla::Expression::Make(library);
     sp_setup->MakeDataWrite(sp_A, A.GetData(library));
@@ -50,8 +55,19 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
     auto sp_setup_tria = spla::Expression::Make(library);
     sp_setup_tria->MakeTril(sp_L, sp_A);
     sp_setup_tria->MakeTriu(sp_U, sp_A);
+    sp_setup_tria->MakeTriu(sp_UT, sp_A);
     sp_setup_tria->SubmitWait();
     ASSERT_EQ(sp_setup_tria->GetState(), spla::Expression::State::Evaluated);
+
+    std::int32_t nTrinsCpu = 0;
+    auto host_A = A.ToHostMatrix();
+    auto host_B = spla::RefPtr<spla::HostMatrix>();
+
+    SPLA_TIME_BEGIN(tc_cpu);
+    spla::Tc(nTrinsCpu, host_B, host_A);
+    SPLA_TIME_END(tc_cpu, "cpu");
+
+    auto result = utils::Matrix<int>::FromHostMatrix(host_B);
 
     for (std::size_t k = 0; k < repeats; k++) {
         std::int32_t nTrinsSpla = 0;
@@ -64,16 +80,10 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
         spla::Tc(nTrinsSplaTria, sp_B_tria, sp_L, sp_U, nullptr);
         SPLA_TIME_END(tc_spla_tria, "spla-tria");
 
-        auto host_A = A.ToHostMatrix();
-        auto host_B = spla::RefPtr<spla::HostMatrix>();
-
-        std::int32_t nTrinsCpu = 0;
-
-        SPLA_TIME_BEGIN(tc_cpu);
-        spla::Tc(nTrinsCpu, host_B, host_A);
-        SPLA_TIME_END(tc_cpu, "cpu");
-
-        auto result = utils::Matrix<int>::FromHostMatrix(host_B);
+        std::int32_t nTrinsSplaTriaT = 0;
+        SPLA_TIME_BEGIN(tc_spla_tria_t);
+        spla::Tc(nTrinsSplaTriaT, sp_B_tria_t, sp_L, sp_UT, nullptr);
+        SPLA_TIME_END(tc_spla_tria_t, "spla-tria-t");
 
         EXPECT_TRUE(result.Equals(sp_B));
         EXPECT_EQ(nTrinsCpu, nTrinsSpla);
@@ -81,6 +91,7 @@ void testCase(spla::Library &library, std::size_t M, std::size_t nvals, std::siz
         // Note: cannot check B, since it has another structure
         // EXPECT_TRUE(result.Equals(sp_B_tria));
         EXPECT_EQ(nTrinsCpu, nTrinsSplaTria);
+        EXPECT_EQ(nTrinsCpu, nTrinsSplaTriaT);
     }
 }
 
