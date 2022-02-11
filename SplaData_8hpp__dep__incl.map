@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$Spla_8hpp.html" title=" " alt="" coords="3917,177,4088,203"/>
 <area shape="rect" id="node6" href="$SplaExpression_8hpp.html" title=" " alt="" coords="3615,87,3849,114"/>
 <area shape="rect" id="node33" href="$SplaAlgoCommon_8hpp.html" title=" " alt="" coords="4435,80,4610,121"/>
-<area shape="rect" id="node39" href="$SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="5035,169,5216,211"/>
+<area shape="rect" id="node39" href="$SplaAlgorithmParams_8hpp.html" title=" " alt="" coords="5048,169,5229,211"/>
 <area shape="rect" id="node50" href="$SplaData_8cpp.html" title=" " alt="" coords="4685,87,4835,114"/>
 <area shape="rect" id="node3" href="$SplaAlgoBfs_8cpp.html" title=" " alt="" coords="4307,266,4475,293"/>
 <area shape="rect" id="node4" href="$SplaAlgoSssp_8cpp.html" title=" " alt="" coords="3917,266,4096,293"/>
@@ -16,7 +16,7 @@
 <area shape="rect" id="node9" href="$SplaAlgorithmManager_8hpp.html" title=" " alt="" coords="4029,348,4211,389"/>
 <area shape="rect" id="node12" href="$SplaTaskBuilder_8cpp.html" title=" " alt="" coords="3735,534,3955,561"/>
 <area shape="rect" id="node10" href="$SplaLibraryPrivate_8hpp.html" title=" " alt="" coords="3827,437,3994,479"/>
-<area shape="rect" id="node11" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="4607,527,4809,568"/>
+<area shape="rect" id="node11" href="$SplaVectorEWiseAddCOO_8cpp.html" title=" " alt="" coords="4601,527,4804,568"/>
 <area shape="rect" id="node15" href="$SplaMatrixDataRead_8hpp.html" title=" " alt="" coords="2445,348,2651,389"/>
 <area shape="rect" id="node16" href="$SplaMatrixDataWrite_8hpp.html" title=" " alt="" coords="2675,348,2882,389"/>
 <area shape="rect" id="node17" href="$SplaMatrixEWiseAdd_8hpp.html" title=" " alt="" coords="2907,348,3117,389"/>
@@ -39,14 +39,14 @@
 <area shape="rect" id="node36" href="$SplaAlgoSssp_8hpp.html" title=" " alt="" coords="4337,169,4511,211"/>
 <area shape="rect" id="node37" href="$SplaAlgoTc_8hpp.html" title=" " alt="" coords="4535,169,4710,211"/>
 <area shape="rect" id="node38" href="$SplaAlgoCommon_8cpp.html" title=" " alt="" coords="4112,177,4312,203"/>
-<area shape="rect" id="node40" href="$SplaAlgorithm_8hpp.html" title=" " alt="" coords="5048,266,5253,293"/>
-<area shape="rect" id="node49" href="$SplaScalarBuffer_8cpp.html" title=" " alt="" coords="5277,259,5440,300"/>
-<area shape="rect" id="node41" href="$SplaMatrixEWiseAddCOO_8hpp.html" title=" " alt="" coords="5501,348,5701,389"/>
-<area shape="rect" id="node42" href="$SplaMatrixReduceScalarCOO_8hpp.html" title=" " alt="" coords="5725,348,5947,389"/>
-<area shape="rect" id="node43" href="$SplaMatrixTransposeCOO_8hpp.html" title=" " alt="" coords="5971,348,6173,389"/>
-<area shape="rect" id="node44" href="$SplaMatrixTriaCOO_8hpp.html" title=" " alt="" coords="6197,348,6360,389"/>
-<area shape="rect" id="node45" href="$SplaMxMCOO_8hpp.html" title=" " alt="" coords="4797,355,5035,382"/>
-<area shape="rect" id="node46" href="$SplaVectorAssignCOO_8hpp.html" title=" " alt="" coords="5059,348,5242,389"/>
-<area shape="rect" id="node47" href="$SplaVectorEWiseAddCOO_8hpp.html" title=" " alt="" coords="4745,437,4948,479"/>
-<area shape="rect" id="node48" href="$SplaVectorEWiseAddDense_8hpp.html" title=" " alt="" coords="5267,348,5477,389"/>
+<area shape="rect" id="node40" href="$SplaAlgorithm_8hpp.html" title=" " alt="" coords="5068,266,5273,293"/>
+<area shape="rect" id="node49" href="$SplaScalarBuffer_8cpp.html" title=" " alt="" coords="5297,259,5460,300"/>
+<area shape="rect" id="node41" href="$SplaMatrixEWiseAddCOO_8hpp.html" title=" " alt="" coords="5519,348,5719,389"/>
+<area shape="rect" id="node42" href="$SplaMatrixReduceScalarCOO_8hpp.html" title=" " alt="" coords="5743,348,5964,389"/>
+<area shape="rect" id="node43" href="$SplaMatrixTransposeCOO_8hpp.html" title=" " alt="" coords="5989,348,6190,389"/>
+<area shape="rect" id="node44" href="$SplaMatrixTriaCOO_8hpp.html" title=" " alt="" coords="6215,348,6377,389"/>
+<area shape="rect" id="node45" href="$SplaMxMCOO_8hpp.html" title=" " alt="" coords="4791,355,5030,382"/>
+<area shape="rect" id="node46" href="$SplaMxMMaskedCSRCSC_8hpp.html" title=" " alt="" coords="5055,348,5287,389"/>
+<area shape="rect" id="node47" href="$SplaVectorAssignCOO_8hpp.html" title=" " alt="" coords="5311,348,5494,389"/>
+<area shape="rect" id="node48" href="$SplaVectorEWiseAddCOO_8hpp.html" title=" " alt="" coords="4740,437,4943,479"/>
 </map>
