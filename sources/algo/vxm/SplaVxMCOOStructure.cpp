@@ -31,8 +31,6 @@
 #include <algo/vxm/SplaVxMCOOStructure.hpp>
 #include <compute/SplaApplyMask.hpp>
 #include <compute/SplaIndicesToRowOffsets.hpp>
-#include <compute/SplaReduceByKey.hpp>
-#include <compute/SplaTransformValues.hpp>
 #include <core/SplaError.hpp>
 #include <core/SplaLibraryPrivate.hpp>
 #include <core/SplaQueueFinisher.hpp>
@@ -91,7 +89,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
 
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
     BOOST_COMPUTE_CLOSURE(void, countBuckets, (unsigned int rowId), (lengths, buckets), {
-        const length = lengths[rowId];
+        const uint length = lengths[rowId];
         if (length <= 0) return;
         const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
         atomic_add(&buckets[bucketId], 1u);
@@ -101,11 +99,11 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     compute::copy(buckets.begin(), buckets.end(), bucketsHost.begin(), queue);
 
     std::size_t rowsToProcess = std::reduce(bucketsHost.begin(), bucketsHost.end(), 0u);
-    bucketsConfig.resize(rowsToProcess);
+    bucketsConfig.resize(rowsToProcess, queue);
 
     compute::fill(buckets.begin(), buckets.end(), 0u, queue);
     BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rowId), (lengths, buckets, bucketsOffsets, bucketsConfig), {
-        const length = lengths[rowId];
+        const uint length = lengths[rowId];
         if (length <= 0) return;
         const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 3.0f, 0.0f, 6.0f));
         const uint offset = atomic_add(&buckets[bucketId], 1u);
@@ -160,7 +158,7 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     };
 
     struct GroupInfo {
-        compute::command_queue queue;
+        boost::compute::command_queue queue;
         std::size_t vpt;
         std::size_t tpb;
     };

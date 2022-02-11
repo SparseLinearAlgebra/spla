@@ -101,6 +101,39 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
 
     PF_SCOPE_MARK(mxm, "setup");
 
+    const std::size_t BUCKETS_COUNT = 5;
+    compute::vector<Index> buckets(BUCKETS_COUNT, ctx);
+    compute::vector<Index> bucketsOffsets(BUCKETS_COUNT, ctx);
+    compute::vector<Index> bucketsConfig(ctx);
+    std::vector<Index> bucketsHost(BUCKETS_COUNT);
+
+    auto &rowsLenM = m.GetRowLengths();
+    BOOST_COMPUTE_CLOSURE(void, countBuckets, (unsigned int rid), (rowsLenM, buckets), {
+        const uint length = rowsLenM[rid];
+        if (length <= 0) return;
+        const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 1.0f, 0.0f, 4.0f));
+        atomic_add(&buckets[bucketId], 1u);
+    });
+    compute::fill(buckets.begin(), buckets.end(), 0u, queue);
+    compute::for_each_n(compute::counting_iterator<unsigned int>(0), M, countBuckets, queue);
+    compute::exclusive_scan(buckets.begin(), buckets.end(), bucketsOffsets.begin(), queue);
+    compute::copy(buckets.begin(), buckets.end(), bucketsHost.begin(), queue);
+
+    std::size_t rowsToProcess = std::reduce(bucketsHost.begin(), bucketsHost.end(), 0u);
+    bucketsConfig.resize(rowsToProcess, queue);
+
+    BOOST_COMPUTE_CLOSURE(void, fillBuckets, (unsigned int rid), (rowsLenM, buckets, bucketsOffsets, bucketsConfig), {
+        const uint length = rowsLenM[rid];
+        if (length <= 0) return;
+        const uint bucketId = (uint) (clamp(ceil(log2((float) length)) - 1.0f, 0.0f, 4.0f));
+        const uint offset = atomic_add(&buckets[bucketId], 1u);
+        bucketsConfig[bucketsOffsets[bucketId] + offset] = rid;
+    });
+    compute::fill(buckets.begin(), buckets.end(), 0u, queue);
+    compute::for_each_n(compute::counting_iterator<unsigned int>(0), M, fillBuckets, queue);
+
+    PF_SCOPE_MARK(mxm, "buckets");
+
     // Rows len to evaluate exact size of each row (can be less or equal to the same mask row)
     compute::vector<unsigned int> rowsLenC(M + 1, ctx);
     compute::fill(rowsLenC.begin(), rowsLenC.end(), 0u, queue);
@@ -124,6 +157,12 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         auto argRowsLenC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "rowsLenC");
         auto argRowsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "rowsC");
         auto argColsC = kernel.add_arg<cl_uint *>(compute::memory_object::global_memory, "colsC");
+
+        auto argCount = kernel.add_arg<cl_uint>("count");
+        auto argRptb = kernel.add_arg<cl_uint>("rptb");
+        auto argBucketId = kernel.add_arg<cl_uint>("bucketId");
+        auto argBucketOffsets = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "bucketOffsets");
+        auto argBucketConfig = kernel.add_arg<const cl_uint *>(compute::memory_object::global_memory, "bucketConfig");
 
         std::size_t argValsA;
         std::size_t argValsB;
@@ -163,68 +202,71 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
                << "__local uint p_reduce_flag[TPB];\n"
                << "uchar p_accum[BYTE_SIZE_C];\n";
         HAS_VALUES_END
-        kernel << "const uint rid = get_group_id(0);\n"
+        kernel << "const uint gid = get_group_id(0) * rptb;\n"
                << "const uint tid = get_local_id(0);\n"
                << "__local uint hasValue;\n"
-               << "const uint mRowStart = rowsPtrM[rid];\n"
-               << "const uint mRowEnd = rowsPtrM[rid + 1];\n"
-               << "uint writePos = mRowStart;\n"
-               << "for (uint mIdx = mRowStart; mIdx < mRowEnd; mIdx++) {\n"
-               << "    if (tid == 0) hasValue = 0;\n"
-               << "    barrier(CLK_LOCAL_MEM_FENCE);\n"
-               << "    const uint cid = colsM[mIdx];\n"
-               << "    const uint aRowStart = rowsPtrA[rid];\n"
-               << "    const uint aRowEnd = rowsPtrA[rid + 1];\n"
-               << "    const uint bRowStart = rowsPtrB[cid];\n"
-               << "    const uint bRowEnd = rowsPtrB[cid + 1];\n"
-               << "    const uint bRowLen = bRowEnd - bRowStart;\n"
-               << "    if (bRowLen > 0) {\n"
-               << "        uint seenValue = 0;\n"
-               << "        for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += TPB) {\n"
-               << "            const uint aCol = colsA[aIdx];\n"
-               << "            const uint bIdx = binary_search(aCol, colsB, bRowStart, bRowLen);\n"
-               << "            if (bIdx != 0xffffffff) {\n ";
+               << "for (uint rtp = gid; rtp < count && rtp < gid + rptb; rtp++) {\n"
+               << "    const rid = bucketConfig[bucketOffsets[bucketId] + rtp];\n"
+               << "    const uint mRowStart = rowsPtrM[rid];\n"
+               << "    const uint mRowEnd = rowsPtrM[rid + 1];\n"
+               << "    uint writePos = mRowStart;\n"
+               << "    for (uint mIdx = mRowStart; mIdx < mRowEnd; mIdx++) {\n"
+               << "        if (tid == 0) hasValue = 0;\n"
+               << "        barrier(CLK_LOCAL_MEM_FENCE);\n"
+               << "        const uint cid = colsM[mIdx];\n"
+               << "        const uint aRowStart = rowsPtrA[rid];\n"
+               << "        const uint aRowEnd = rowsPtrA[rid + 1];\n"
+               << "        const uint bRowStart = rowsPtrB[cid];\n"
+               << "        const uint bRowEnd = rowsPtrB[cid + 1];\n"
+               << "        const uint bRowLen = bRowEnd - bRowStart;\n"
+               << "        if (bRowLen > 0) {\n"
+               << "            uint seenValue = 0;\n"
+               << "            for (uint aIdx = aRowStart + tid; aIdx < aRowEnd; aIdx += TPB) {\n"
+               << "                const uint aCol = colsA[aIdx];\n"
+               << "                const uint bIdx = binary_search(aCol, colsB, bRowStart, bRowLen);\n"
+               << "                if (bIdx != 0xffffffff) {\n ";
         HAS_VALUES_BEGIN
-        kernel << "                if (seenValue == 0) {\n"
-               << "                    mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &p_accum[0]);\n"
-               << "                } else {\n"
-               << "                    uchar tmp[BYTE_SIZE_C];\n"
-               << "                    mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &tmp[0]);\n"
-               << "                    add_op(&p_accum[0], &tmp[0], &p_accum[0]);\n"
+        kernel << "                    if (seenValue == 0) {\n"
+               << "                        mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &p_accum[0]);\n"
+               << "                    } else {\n"
+               << "                        uchar tmp[BYTE_SIZE_C];\n"
+               << "                        mult_op(&valsA[aIdx * BYTE_SIZE_A], &valsB[bIdx * BYTE_SIZE_B], &tmp[0]);\n"
+               << "                        add_op(&p_accum[0], &tmp[0], &p_accum[0]);\n"
+               << "                    }\n";
+        HAS_VALUES_END
+        kernel << "                    seenValue = 1;\n"
+               << "                }\n"
+               << "            }\n"
+               << "            atomic_or(&hasValue, seenValue);\n"
+               << "            barrier(CLK_LOCAL_MEM_FENCE);\n"
+               << "            if (hasValue) {\n";
+        HAS_VALUES_BEGIN
+        kernel << "                p_reduce_flag[tid] = seenValue;\n"
+               << "                for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                    p_reduce[tid * BYTE_SIZE_C + i] = p_accum[i];\n"
+               << "                for (uint stride = TPB/2; stride > 0; stride = stride / 2) {\n"
+               << "                    barrier(CLK_LOCAL_MEM_FENCE);"
+               << "                    if (tid < stride) {\n"
+               << "                        if (p_reduce_flag[tid] && p_reduce_flag[tid + stride])\n"
+               << "                            reduce_op(&p_reduce[tid * BYTE_SIZE_C], &p_reduce[(tid + stride) * BYTE_SIZE_C], &p_reduce[tid * BYTE_SIZE_C]);\n"
+               << "                        else if (p_reduce_flag[tid + stride]) {\n"
+               << "                            p_reduce_flag[tid] = 1;\n"
+               << "                            for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                                p_reduce[tid * BYTE_SIZE_C + i] = p_reduce[(tid + stride) * BYTE_SIZE_C + i];\n"
+               << "                        }\n"
+               << "                    }\n"
                << "                }\n";
         HAS_VALUES_END
-        kernel << "                seenValue = 1;\n"
-               << "            }\n"
-               << "        }\n"
-               << "        atomic_or(&hasValue, seenValue);\n"
-               << "        barrier(CLK_LOCAL_MEM_FENCE);\n"
-               << "        if (hasValue) {\n";
+        kernel << "                if (tid == 0) {\n"
+               << "                    rowsC[writePos] = rid;\n"
+               << "                    colsC[writePos] = cid;\n";
         HAS_VALUES_BEGIN
-        kernel << "            p_reduce_flag[tid] = seenValue;\n"
-               << "            for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
-               << "                p_reduce[tid * BYTE_SIZE_C + i] = p_accum[i];\n"
-               << "            for (uint stride = TPB/2; stride > 0; stride = stride / 2) {\n"
-               << "                barrier(CLK_LOCAL_MEM_FENCE);"
-               << "                if (tid < stride) {\n"
-               << "                    if (p_reduce_flag[tid] && p_reduce_flag[tid + stride])\n"
-               << "                        reduce_op(&p_reduce[tid * BYTE_SIZE_C], &p_reduce[(tid + stride) * BYTE_SIZE_C], &p_reduce[tid * BYTE_SIZE_C]);\n"
-               << "                    else if (p_reduce_flag[tid + stride]) {\n"
-               << "                        p_reduce_flag[tid] = 1;\n"
-               << "                        for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
-               << "                            p_reduce[tid * BYTE_SIZE_C + i] = p_reduce[(tid + stride) * BYTE_SIZE_C + i];\n"
-               << "                    }\n"
+        kernel << "                    for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
+               << "                        valsC[writePos * BYTE_SIZE_C + i] = p_reduce[0 * BYTE_SIZE_C + i];\n";
+        HAS_VALUES_END
+        kernel << "                    writePos += 1;\n"
+               << "                    atomic_inc(&rowsLenC[rid]);\n"
                << "                }\n"
-               << "            }\n";
-        HAS_VALUES_END
-        kernel << "            if (tid == 0) {\n"
-               << "                rowsC[writePos] = rid;\n"
-               << "                colsC[writePos] = cid;\n";
-        HAS_VALUES_BEGIN
-        kernel << "                for (uint i = 0; i < BYTE_SIZE_C; i++)\n"
-               << "                    valsC[writePos * BYTE_SIZE_C + i] = p_reduce[0 * BYTE_SIZE_C + i];\n";
-        HAS_VALUES_END
-        kernel << "                writePos += 1;\n"
-               << "                atomic_inc(&rowsLenC[rid]);\n"
                << "            }\n"
                << "        }\n"
                << "    }\n"
@@ -247,7 +289,42 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         compiledKernel.set_arg(argValsC, valsC.get_buffer());
         HAS_VALUES_END
 
-        queue.enqueue_1d_range_kernel(compiledKernel, 0, workSize, tpb);
+        compiledKernel.set_arg(argBucketConfig, bucketsConfig.get_buffer());
+        compiledKernel.set_arg(argBucketOffsets, bucketsOffsets.get_buffer());
+
+        auto dispatchGroup = [&](compute::command_queue &q, std::size_t bucketId, std::size_t rptb) {
+            std::size_t rowsToProcess = bucketsHost[bucketId];
+            if (rowsToProcess > 0) {
+                std::size_t workSize = (rowsToProcess / rptb + (rowsToProcess % rptb ? 1 : 0)) * tpb;
+                PF_SCOPE_SHOW(mxm, tpb << " " << rptb << " " << rowsToProcess);
+                compiledKernel.set_arg(argCount, static_cast<cl_uint>(rowsToProcess));
+                compiledKernel.set_arg(argRptb, static_cast<cl_uint>(rptb));
+                compiledKernel.set_arg(argBucketId, static_cast<cl_uint>(bucketId));
+                q.enqueue_1d_range_kernel(compiledKernel, 0, workSize, tpb);
+            }
+        };
+
+        struct GroupInfo {
+            boost::compute::command_queue queue;
+            std::size_t rptb;
+        };
+
+        GroupInfo infos[] = {
+                {compute::command_queue(ctx, device), 16},
+                {compute::command_queue(ctx, device), 8},
+                {compute::command_queue(ctx, device), 4},
+                {compute::command_queue(ctx, device), 2},
+                {compute::command_queue(ctx, device), 1}};
+
+        auto before = queue.enqueue_marker();
+
+        for (std::size_t bucketId = 0; bucketId < BUCKETS_COUNT; bucketId++) {
+            auto &info = infos[bucketId];
+            info.queue.enqueue_barrier(before);
+            dispatchGroup(info.queue, bucketId, info.rptb);
+            queue.enqueue_barrier(info.queue.enqueue_marker());
+        }
+
         PF_SCOPE_MARK(mxm, "evaluate");
     }
 
