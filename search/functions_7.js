@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['hasdecoration_1400',['HasDecoration',['../classspla_1_1Decorated.html#af7372a41ffcfebb5f2e7c8a7ed18605f',1,'spla::Decorated']]],
-  ['hasvalue_1401',['HasValue',['../classspla_1_1Scalar.html#a1ffa2aeff631c9c550998aeb8c384360',1,'spla::Scalar::HasValue()'],['../classspla_1_1ScalarStorage.html#ac8d283c1b98bd1c7fb5f1dbef8cff0ed',1,'spla::ScalarStorage::HasValue()']]],
-  ['hasvalues_1402',['HasValues',['../classspla_1_1Type.html#a1e06d2e6d261f790d25520ed326a7c2d',1,'spla::Type::HasValues()'],['../classspla_1_1HostVector.html#af0cf0854142a337805e186e44ebbeab4',1,'spla::HostVector::HasValues()'],['../classspla_1_1HostMatrix.html#aa1b773bcbddcc7af1440d8243b6d5650',1,'spla::HostMatrix::HasValues() const']]],
-  ['hostmatrix_1403',['HostMatrix',['../classspla_1_1HostMatrix.html#a66cf037214a9355de56bdb41f7212ba4',1,'spla::HostMatrix']]],
-  ['hostvector_1404',['HostVector',['../classspla_1_1HostVector.html#a7722d168a3506068041cfe8c339f0910',1,'spla::HostVector']]]
+  ['hasdecoration_1402',['HasDecoration',['../classspla_1_1Decorated.html#af7372a41ffcfebb5f2e7c8a7ed18605f',1,'spla::Decorated']]],
+  ['hasvalue_1403',['HasValue',['../classspla_1_1Scalar.html#a1ffa2aeff631c9c550998aeb8c384360',1,'spla::Scalar::HasValue()'],['../classspla_1_1ScalarStorage.html#ac8d283c1b98bd1c7fb5f1dbef8cff0ed',1,'spla::ScalarStorage::HasValue()']]],
+  ['hasvalues_1404',['HasValues',['../classspla_1_1Type.html#a1e06d2e6d261f790d25520ed326a7c2d',1,'spla::Type::HasValues()'],['../classspla_1_1HostVector.html#af0cf0854142a337805e186e44ebbeab4',1,'spla::HostVector::HasValues()'],['../classspla_1_1HostMatrix.html#aa1b773bcbddcc7af1440d8243b6d5650',1,'spla::HostMatrix::HasValues() const']]],
+  ['hostmatrix_1405',['HostMatrix',['../classspla_1_1HostMatrix.html#a66cf037214a9355de56bdb41f7212ba4',1,'spla::HostMatrix']]],
+  ['hostvector_1406',['HostVector',['../classspla_1_1HostVector.html#a7722d168a3506068041cfe8c339f0910',1,'spla::HostVector']]]
 ];
