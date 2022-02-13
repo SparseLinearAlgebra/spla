@@ -75,11 +75,16 @@ std::string spla::Library::PrintContextConfig() const noexcept {
 spla::Library::Config::Config() = default;
 
 spla::Library::Config &spla::Library::Config::SetPlatform(std::string platformName) {
-    mPlatformName.emplace(std::move(platformName));
+    // Empty platform name allowed, but simply ignored
+    if (platformName.empty())
+        mPlatformName.reset();
+    else
+        mPlatformName.emplace(std::move(platformName));
     return *this;
 }
 
 spla::Library::Config &spla::Library::Config::LimitAmount(std::size_t amount) {
+    assert(amount > 0);
     mDeviceAmount = std::optional{amount};
     return *this;
 }

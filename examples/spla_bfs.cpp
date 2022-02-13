@@ -40,9 +40,17 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options.add_option("", cxxopts::Option("devices-count", "amount of devices for execution", cxxopts::value<int>()->default_value("1")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
-    options.add_option("", cxxopts::Option("dense-factor", "factor used to dense transition", cxxopts::value<float>()->default_value("1.0f")));
+    options.add_option("", cxxopts::Option("platform", "opencl platform to select", cxxopts::value<std::string>()->default_value("")));
+    options.add_option("", cxxopts::Option("dense-factor", "factor used to dense transition", cxxopts::value<float>()->default_value("0.1f")));
     options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
-    auto args = options.parse(argc, argv);
+    cxxopts::ParseResult args;
+
+    try {
+        args = std::move(options.parse(argc, argv));
+    } catch (const std::exception &e) {
+        std::cerr << "Failed parse input arguments: " << e.what();
+        return 1;
+    }
 
     if (args["help"].as<bool>()) {
         std::cout << options.help();
@@ -60,6 +68,7 @@ int main(int argc, const char *const *argv) {
     bool verbose;
     bool debugTiming;
     float denseFactor;
+    std::string platform;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -71,6 +80,7 @@ int main(int argc, const char *const *argv) {
         verbose = args["verbose"].as<bool>();
         debugTiming = args["debug-timing"].as<bool>();
         denseFactor = args["dense-factor"].as<float>();
+        platform = args["platform"].as<std::string>();
     } catch (const std::exception &e) {
         std::cerr << "Invalid input arguments: " << e.what();
         return 1;
@@ -99,7 +109,12 @@ int main(int argc, const char *const *argv) {
     config.SetBlockSize(bsize);
     config.SetWorkersCount(devicesCount * devicesCount);
     config.LimitAmount(devicesCount);
+    config.SetPlatform(platform);
     spla::Library library(config);
+
+    // Output info about devices for evaluation
+    if (verbose)
+        std::cout << library.PrintContextConfig() << std::endl;
 
     // v and M bfs args
     spla::RefPtr<spla::Vector> v;

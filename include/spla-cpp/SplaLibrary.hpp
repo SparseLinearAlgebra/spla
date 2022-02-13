@@ -52,8 +52,6 @@ namespace spla {
      */
     class SPLA_API Library {
     public:
-        using ClDeviceId = void *;
-
         /**
          * @class Config
          *

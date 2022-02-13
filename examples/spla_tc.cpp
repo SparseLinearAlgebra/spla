@@ -38,8 +38,16 @@ int main(int argc, const char *const *argv) {
     options.add_option("", cxxopts::Option("bsize", "size of block to store matrix/vector", cxxopts::value<int>()->default_value("10000000")));
     options.add_option("", cxxopts::Option("devices-count", "amount of devices for execution", cxxopts::value<int>()->default_value("1")));
     options.add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options.add_option("", cxxopts::Option("platform", "opencl platform to select", cxxopts::value<std::string>()->default_value("")));
     options.add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
-    auto args = options.parse(argc, argv);
+    cxxopts::ParseResult args;
+
+    try {
+        args = std::move(options.parse(argc, argv));
+    } catch (const std::exception &e) {
+        std::cerr << "Failed parse input arguments: " << e.what();
+        return 1;
+    }
 
     if (args["help"].as<bool>()) {
         std::cout << options.help();
@@ -54,6 +62,7 @@ int main(int argc, const char *const *argv) {
     bool ignoreValues = true;
     bool verbose;
     bool debugTiming;
+    std::string platform;
 
     try {
         mtxpath = args["mtxpath"].as<std::string>();
@@ -62,6 +71,7 @@ int main(int argc, const char *const *argv) {
         devicesCount = args["devices-count"].as<int>();
         verbose = args["verbose"].as<bool>();
         debugTiming = args["debug-timing"].as<bool>();
+        platform = args["platform"].as<std::string>();
     } catch (const std::exception &e) {
         std::cerr << "Invalid input arguments: " << e.what();
         return 1;
@@ -92,7 +102,12 @@ int main(int argc, const char *const *argv) {
     config.SetBlockSize(bsize);
     config.SetWorkersCount(devicesCount * devicesCount);
     config.LimitAmount(devicesCount);
+    config.SetPlatform(platform);
     spla::Library library(config);
+
+    // Output info about devices for evaluation
+    if (verbose)
+        std::cout << library.PrintContextConfig() << std::endl;
 
     // A and B tc args
     auto M = loader.GetNrows(), N = loader.GetNcols();
