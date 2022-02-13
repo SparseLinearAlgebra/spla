@@ -46,7 +46,7 @@ int main(int argc, const char *const *argv) {
     cxxopts::ParseResult args;
 
     try {
-        args = std::move(options.parse(argc, argv));
+        args = options.parse(argc, argv);
     } catch (const std::exception &e) {
         std::cerr << "Failed parse input arguments: " << e.what();
         return 1;

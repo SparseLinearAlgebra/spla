@@ -280,6 +280,7 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(spla_bfs)
     spla_example_application(spla_sssp)
     spla_example_application(spla_tc)
+    spla_example_application(spla_data)
 endif ()
 
 ######################################################################

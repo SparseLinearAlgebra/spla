@@ -33,6 +33,7 @@
 #include <iomanip>
 #include <iostream>
 #include <istream>
+#include <ostream>
 #include <sstream>
 #include <type_traits>
 #include <vector>
@@ -104,6 +105,13 @@ namespace spla {
     public:
         MatrixLoader() = default;
 
+        void Save(std::ostream &out) const {
+            out << GetNrows() << " " << GetNcols() << " " << GetNvals() << "\n";
+            for (std::size_t i = 0; i < GetNvals(); i++) {
+                out << mRows[i] + 1 << " " << mCols[i] + 1 << "\n";
+            }
+        }
+
         /**
          * @brief Loads matrix from @p is
          *
@@ -114,6 +122,7 @@ namespace spla {
          * @param ignoreValues Ignore values inside file
          * @param verbose Verbose std output info
          * @param source Source name to display
+         *
          * @return Reference at created matrix
          */
         MatrixLoader &Load(std::istream &is, bool makeUndirected, bool removeSelfLoops, bool ignoreValues, bool verbose = true, const std::string &source = "") {
