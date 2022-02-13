@@ -120,9 +120,14 @@ int main(int argc, const char *const *argv) {
     spla::RefPtr<spla::Vector> v;
     spla::RefPtr<spla::Matrix> M = spla::Matrix::Make(loader.GetNrows(), loader.GetNcols(), spla::Types::Void(library), library);
 
+    // Data is sorted without duplicated values
+    spla::RefPtr<spla::Descriptor> dataDesc = spla::Descriptor::Make(library);
+    dataDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    dataDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
     // Prepare data and fill M
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
-    prepareData->MakeDataWrite(M, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), nullptr, loader.GetNvals(), library));
+    prepareData->MakeDataWrite(M, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), nullptr, loader.GetNvals(), library), dataDesc);
     prepareData->SubmitWait();
     SPLA_ALGO_CHECK(prepareData);
 

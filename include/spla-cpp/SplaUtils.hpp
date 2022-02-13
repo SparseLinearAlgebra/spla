@@ -218,9 +218,25 @@ namespace spla {
                               << " in " << timer.GetDurationMs() << " ms\n";
             }
 
+            {
+                timer.Start();
+                auto oldNnz = GetNvals();
+                SortReduceDuplicates();
+                auto newNnz = GetNvals();
+                timer.Stop();
+
+                if (verbose)
+                    std::cout << " Sort values and reduce duplicates:"
+                              << " old " << oldNnz
+                              << " new " << newNnz
+                              << " diff " << oldNnz - newNnz
+                              << " in " << timer.GetDurationMs() << " ms\n";
+            }
+
+
             double averageDegree;
-            std::size_t maxDegree;
-            std::size_t minDegree;
+            std::size_t maxDegree = 0;
+            std::size_t minDegree = 0;
 
             if (GetNrows() == GetNcols())
                 ComputeStats(minDegree, maxDegree, averageDegree);
@@ -231,7 +247,10 @@ namespace spla {
                 std::cout << " Stats: min.deg " << minDegree
                           << ", max.deg " << maxDegree
                           << ", avg.deg " << averageDegree << "\n";
-                std::cout << " Loaded in " << total.GetElapsedMs() << " ms\n";
+                std::cout << " Loaded graph"
+                          << " vertices " << GetNrows()
+                          << " edges " << GetNvals()
+                          << " in " << total.GetElapsedMs() << " ms\n";
             }
 
             return *this;
@@ -281,6 +300,42 @@ namespace spla {
                     mVals.push_back(mVals[i]);
                 }
             }
+        }
+
+        void SortReduceDuplicates() {
+            struct Entry {
+                Index i;
+                Index j;
+                Value v;
+
+                bool operator!=(const Entry &e) const {
+                    return i != e.i || j != e.j;
+                }
+            };
+            std::vector<Entry> entries(GetNvals());
+
+            for (std::size_t i = 0; i < GetNvals(); i++)
+                entries[i] = Entry{mRows[i], mCols[i], mVals[i]};
+
+            std::sort(entries.begin(), entries.end(), [](const Entry &a, const Entry &b) { return a.i < b.i || (a.i == b.i && a.j < b.j); });
+
+            std::vector<Value> newVals;
+            std::vector<Index> newRows;
+            std::vector<Index> newCols;
+
+            Entry prev{0xffffffff, 0xffffffff, Value()};
+            for (const auto &e : entries) {
+                if (prev != e) {
+                    prev = e;
+                    newVals.push_back(e.v);
+                    newRows.push_back(e.i);
+                    newCols.push_back(e.j);
+                }
+            }
+
+            std::swap(newVals, mVals);
+            std::swap(newRows, mRows);
+            std::swap(newCols, mCols);
         }
 
         void ComputeStats(std::size_t &minDegree, std::size_t &maxDegree, double &averageDegree) {

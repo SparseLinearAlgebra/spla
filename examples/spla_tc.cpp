@@ -116,9 +116,14 @@ int main(int argc, const char *const *argv) {
     spla::RefPtr<spla::Matrix> L = spla::Matrix::Make(M, N, T, library);
     spla::RefPtr<spla::Matrix> U = spla::Matrix::Make(M, N, T, library);
 
+    // Data is sorted without duplicated values
+    spla::RefPtr<spla::Descriptor> dataDesc = spla::Descriptor::Make(library);
+    dataDesc->SetParam(spla::Descriptor::Param::ValuesSorted);
+    dataDesc->SetParam(spla::Descriptor::Param::NoDuplicates);
+
     // Prepare data, fill A, and get L and U matrices
     spla::RefPtr<spla::Expression> prepareData = spla::Expression::Make(library);
-    auto writeA = prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library));
+    auto writeA = prepareData->MakeDataWrite(A, spla::DataMatrix::Make(loader.GetRowIndices().data(), loader.GetColIndices().data(), loader.GetValues().data(), loader.GetNvals(), library), dataDesc);
     prepareData->Dependency(writeA, prepareData->MakeTril(L, A));
     prepareData->Dependency(writeA, prepareData->MakeTriu(U, A));
     prepareData->SubmitWait();
