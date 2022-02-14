@@ -80,7 +80,17 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
     std::size_t M = a.GetNrows(),
                 N = bT.GetNrows();
 
+    auto platform = library->GetPlatform().name();
+    auto npos = std::string::npos;
+
     std::size_t tpb = 32;
+
+    if (platform.find("AMD") != npos ||
+        platform.find("Amd") != npos ||
+        platform.find("amd") != npos ||
+        platform.find("Advanced Micro Devices") != npos)
+        tpb = 64;
+
     std::size_t workSize = M * tpb;
 
     assert(m.GetNrows() == M);
@@ -310,11 +320,11 @@ void spla::MxMMaskedCSRCSC::Process(spla::AlgorithmParams &algoParams) {
         };
 
         GroupInfo infos[] = {
-                {compute::command_queue(ctx, device), 16},
-                {compute::command_queue(ctx, device), 8},
-                {compute::command_queue(ctx, device), 4},
-                {compute::command_queue(ctx, device), 2},
-                {compute::command_queue(ctx, device), 1}};
+                {compute::command_queue(ctx, device), tpb / 2},
+                {compute::command_queue(ctx, device), tpb / 4},
+                {compute::command_queue(ctx, device), tpb / 8},
+                {compute::command_queue(ctx, device), tpb / 16},
+                {compute::command_queue(ctx, device), tpb / 32}};
 
         auto before = queue.enqueue_marker();
 

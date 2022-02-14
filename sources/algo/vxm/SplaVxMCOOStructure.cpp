@@ -164,10 +164,10 @@ void spla::VxMCOOStructure::Process(spla::AlgorithmParams &params) {
     };
 
     GroupInfo infos[] = {
-            {compute::command_queue(ctx, device), 4, 32},
-            {compute::command_queue(ctx, device), 8, 32},
-            {compute::command_queue(ctx, device), 16, 32},
-            {compute::command_queue(ctx, device), 32, 32},
+            {compute::command_queue(ctx, device), 4, 64},
+            {compute::command_queue(ctx, device), 8, 64},
+            {compute::command_queue(ctx, device), 16, 64},
+            {compute::command_queue(ctx, device), 32, 64},
             {compute::command_queue(ctx, device), 64, 64},
             {compute::command_queue(ctx, device), 128, 128},
             {compute::command_queue(ctx, device), 256, 256}};
