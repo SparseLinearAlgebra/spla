@@ -108,7 +108,7 @@ namespace spla {
         void Save(std::ostream &out) const {
             out << "%%MatrixMarket matrix coordinate pattern general\n";
             out << "%-------------------------------------------------------------------------------\n";
-            out << "% kind: undirected graph\n;";
+            out << "% kind: undirected graph\n";
             out << "%-------------------------------------------------------------------------------\n";
             out << GetNrows() << " " << GetNcols() << " " << GetNvals() << "\n";
             for (std::size_t i = 0; i < GetNvals(); i++) {
