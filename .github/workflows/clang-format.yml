@@ -5,8 +5,7 @@ on:
     branches: [ main ]
     paths:
       - '.github/**'
-      - 'sources/**'
-      - 'include/**'
+      - 'spla/**'
       - 'tests/**'
       - '.clang-format'
   pull_request:
@@ -20,8 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         path:
-          - 'sources'
-          - 'include'
+          - 'spla'
           - 'tests'
     steps:
     - uses: actions/checkout@v2

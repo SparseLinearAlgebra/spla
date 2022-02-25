@@ -5,8 +5,7 @@ on:
     branches: [ main ]
     paths:
       - '.github/**'
-      - 'include/**'
-      - 'sources/**'
+      - 'spla/**'
       - 'Doxyfile'
       - 'README.md'
 

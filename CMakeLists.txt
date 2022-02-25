@@ -6,11 +6,9 @@ project(spla LANGUAGES CXX)
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
-option(SPLA_PROFILING "Enable time profiling of computational code" NO)
-option(SPLA_PROFILING_TASKS "Enable time profiling of executed tasks" NO)
 
 ######################################################################
-## internal definitions
+## Internal definitions
 
 set(SPLA_DEFINES)
 set(SPLA_DEFINES_DEBUG)
@@ -21,16 +19,6 @@ set(SPLA_TARGET_LINUX NO)
 set(SPLA_TARGET_WINDOWS NO)
 set(SPLA_TARGET_MACOSX NO)
 set(SPLA_ARCH)
-
-if (SPLA_PROFILING)
-    message(STATUS "Enable profiling of computational code")
-    list(APPEND SPLA_DEFINES SPLA_PROFILING)
-endif (SPLA_PROFILING)
-
-if (SPLA_PROFILING_TASKS)
-    message(STATUS "Enable profiling of executed tasks")
-    list(APPEND SPLA_DEFINES SPLA_PROFILING_TASKS)
-endif (SPLA_PROFILING_TASKS)
 
 ####################################################################
 ## Define platform
@@ -115,30 +103,30 @@ endif ()
 
 function(spla_target_compile_definitions target)
     foreach (DEFINITION ${SPLA_DEFINES})
-        target_compile_definitions(${target} PUBLIC ${DEFINITION})
+        target_compile_definitions(${target} INTERFACE ${DEFINITION})
     endforeach ()
 
     if (SPLA_DEBUG)
         foreach (DEFINITION ${SPLA_DEFINES_DEBUG})
-            target_compile_definitions(${target} PUBLIC ${DEFINITION})
+            target_compile_definitions(${target} INTERFACE ${DEFINITION})
         endforeach ()
     endif ()
 
     if (SPLA_RELEASE)
         foreach (DEFINITION ${SPLA_DEFINES_RELEASE})
-            target_compile_definitions(${target} PUBLIC ${DEFINITION})
+            target_compile_definitions(${target} INTERFACE ${DEFINITION})
         endforeach ()
     endif ()
 
     if (SPLA_TARGET_WINDOWS)
         target_compile_definitions(${target}
-                PUBLIC WIN32
-                PUBLIC _WIN32
-                PUBLIC _WINDOWS
-                PUBLIC UNICODE
-                PUBLIC _UNICODE
-                PUBLIC _CRT_SECURE_NO_WARNINGS
-                PUBLIC _SCL_SECURE_NO_WARNINGS)
+                INTERFACE WIN32
+                INTERFACE _WIN32
+                INTERFACE _WINDOWS
+                INTERFACE UNICODE
+                INTERFACE _UNICODE
+                INTERFACE _CRT_SECURE_NO_WARNINGS
+                INTERFACE _SCL_SECURE_NO_WARNINGS)
     endif ()
 endfunction()
 
@@ -148,59 +136,36 @@ function(spla_target_compile_options target)
         set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
 
         target_compile_options(${target}
-                PUBLIC /W1
-                PUBLIC /std:c++17
-                PUBLIC /source-charset:utf-8)
+                INTERFACE /W1
+                INTERFACE /std:c++17
+                INTERFACE /source-charset:utf-8)
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${target}
-                PUBLIC -Wall
-                PUBLIC -Wextra
-                PUBLIC -Wpedantic)
+                INTERFACE -Wall
+                INTERFACE -Wextra
+                INTERFACE -Wpedantic)
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_compile_options(${target}
-                PUBLIC -Wall
-                PUBLIC -Wextra
-                PUBLIC -Wpedantic
-                PUBLIC -Wno-inconsistent-missing-override)
+                INTERFACE -Wall
+                INTERFACE -Wextra
+                INTERFACE -Wpedantic
+                INTERFACE -Wno-inconsistent-missing-override)
     endif ()
 endfunction()
 
 function(spla_target_link_options target)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_link_options(${target}
-                PUBLIC /INCREMENTAL:NO
-                PUBLIC /machine:X64)
+                INTERFACE /INCREMENTAL:NO
+                INTERFACE /machine:X64)
     endif ()
 endfunction()
 
 ######################################################################
 ## Dependencies config
 
-message(STATUS "Add Boost headers, required for Boost.Compute")
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME ON)
-set(Boost_NO_WARN_NEW_VERSIONS OFF)
-set(Boost_DEBUG ON)
-find_package(Boost REQUIRED)
-list(APPEND SPLA_DEFINES BOOST_COMPUTE_HAVE_THREAD_LOCAL)
-list(APPEND SPLA_DEFINES BOOST_COMPUTE_THREAD_SAFE)
-list(APPEND SPLA_DEFINES BOOST_COMPUTE_NO_BOOST_CHRONO)
-list(APPEND SPLA_DEFINES BOOST_COMPUTE_USE_CPP11)
-list(APPEND SPLA_DEFINES_DEBUG BOOST_COMPUTE_DEBUG_KERNEL_COMPILATION)
-
 message(STATUS "Add OpenCL package required header files")
 find_package(OpenCL REQUIRED)
-
-message(STATUS "Add spdlog library")
-add_library(spdlog INTERFACE)
-target_include_directories(spdlog INTERFACE ${CMAKE_SOURCE_DIR}/deps/spdlog/include)
-list(APPEND SPLA_DEFINES_DEBUG SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE)
-list(APPEND SPLA_DEFINES_RELEASE SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_ERROR)
-if (SPLA_TARGET_WINDOWS)
-    list(APPEND SPLA_DEFINES SPDLOG_WCHAR_TO_UTF8_SUPPORT)
-    list(APPEND SPLA_DEFINES SPDLOG_WCHAR_FILENAMES)
-endif ()
 
 message(STATUS "Add Taskflow library")
 set(TF_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
@@ -233,32 +198,14 @@ endif ()
 ######################################################################
 ## Source code configuration
 
-include(include/CMakeLists.txt)
-include(sources/CMakeLists.txt)
+add_library(spla INTERFACE)
 
-add_library(spla SHARED
-        ${SPLA_ALGO_HEADERS}
-        ${SPLA_CPP_HEADERS}
-        ${SPLA_ALGO_SOURCES}
-        ${SPLA_CPP_SOURCES}
-        ${SPLA_ALGORITHM_SOURCES}
-        ${SPLA_COMPUTE_SOURCES}
-        ${SPLA_CORE_SOURCES}
-        ${SPLA_EXPRESSION_SOURCES}
-        ${SPLA_STORAGE_SOURCES}
-        ${SPLA_UTILS_SOURCES})
+target_include_directories(spla INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(spla INTERFACE ${OpenCL_INCLUDE_DIRS})
+target_link_libraries(spla INTERFACE ${OpenCL_LIBRARIES})
+target_link_libraries(spla INTERFACE Taskflow)
 
-target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
-target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/sources)
-target_include_directories(spla PUBLIC ${Boost_INCLUDE_DIR})
-target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
-target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
-target_link_libraries(spla PRIVATE Taskflow)
-target_link_libraries(spla PRIVATE spdlog)
-
-set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
-target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
-target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
+target_compile_definitions(spla INTERFACE CL_TARGET_OPENCL_VERSION=120)
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)
@@ -277,10 +224,7 @@ if (SPLA_BUILD_EXAMPLES)
         target_link_libraries(${target} PRIVATE cxxopts)
     endfunction()
 
-    spla_example_application(spla_bfs)
-    spla_example_application(spla_sssp)
-    spla_example_application(spla_tc)
-    spla_example_application(spla_data)
+    spla_example_application(bfs)
 endif ()
 
 ######################################################################
@@ -289,20 +233,4 @@ endif ()
 if (SPLA_BUILD_TESTS)
     message(STATUS "Add tests directory")
     add_subdirectory(tests)
-
-    if (SPLA_TARGET_WINDOWS)
-        set(COMMON_NAME "${CMAKE_BINARY_DIR}/spla_${SPLA_ARCH}")
-        set(TARGET_FILES "${COMMON_NAME}.dll")
-        message(STATUS "${TARGET_FILES}")
-
-        foreach (TARGET_FILE ${TARGET_FILES})
-            add_custom_command(
-                    TARGET spla POST_BUILD
-                    COMMAND "${CMAKE_COMMAND}" -E
-                    copy
-                    ${TARGET_FILE}
-                    "${CMAKE_BINARY_DIR}/tests"
-                    COMMENT "Copy ${TARGET_FILE} into test directory")
-        endforeach ()
-    endif ()
 endif ()
