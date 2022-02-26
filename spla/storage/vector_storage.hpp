@@ -25,60 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_HPP
-#define SPLA_VECTOR_HPP
+#ifndef SPLA_VECTOR_STORAGE_HPP
+#define SPLA_VECTOR_STORAGE_HPP
 
-#include <spla/config.hpp>
-#include <spla/library.hpp>
-#include <spla/storage/vector_storage.hpp>
+#include <cassert>
+#include <cstddef>
+#include <mutex>
 
-#ifdef SPLA_BACKEND_REFERENCE
-    #include <spla/backend/reference/storage/vector_storage.hpp>
-#endif
+#include <spla/detail/ref.hpp>
+#include <spla/storage/vector_block.hpp>
 
 namespace spla {
 
     /**
-     * @class Vector
-     * @brief Vector object to represent a mathematical dim M vector with values of specified Type.
+     * @class VectorStorage
+     * @brief Storage for vector data
      *
-     * Uses blocked storage schema internally.
-     * Can be used as mask (only indices without values) if Type has zero no values.
-     * Can be updated from the host using data write expression node.
-     * Vector content can be accessed from host using data read expression node.
-     *
-     * @details
-     *  Uses explicit values storage schema, so actual values of the vector has
-     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`. If provided binary function, it
-     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
-     *
-     * @tparam T Type of stored values
+     * @tparam T Type of values
      */
     template<typename T>
-    class Vector {
+    class VectorStorage : public RefCnt {
     public:
-        explicit Vector(std::size_t nrows) {
-            auto backend = get_library().get_backend();
+        /** @brief Active storage schema of the storage */
+        enum class Schema {
+            /** Sparse blocks are used */
+            Sparse,
+            /** Dense blocks are used */
+            Dense
+        };
 
-#ifdef SPLA_BACKEND_REFERENCE
-            if (backend == Backend::Reference) {
-                m_storage.acquire(new reference::VectorStorage<T>(nrows));
-                return;
-            }
-#endif
-            throw std::runtime_error("no storage found for backend: " + to_string(backend));
+        explicit VectorStorage(std::size_t nrows) : m_nrows(nrows) {
+            assert(nrows > 0 && "Vector must have non-zero number of rows");
         }
 
-        [[nodiscard]] std::size_t get_nrows() const { return m_storage->get_nrows(); }
-        [[nodiscard]] std::size_t get_nvals() const { return m_storage->get_nvals(); }
-        [[nodiscard]] const Ref<VectorStorage<T>> &get_storage() { return m_storage; }
+        ~VectorStorage() override = default;
 
-    private:
-        Ref<VectorStorage<T>> m_storage;
+        /** @return Storage size */
+        std::size_t get_nrows() const { return m_nrows; }
+
+        /** @return Storage number of non-zero values */
+        std::size_t get_nvals() const {
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
+            return m_nvals;
+        }
+
+    protected:
+        std::size_t m_nrows;
+        std::size_t m_nvals = 0;
+
+        mutable std::mutex m_mutex;
     };
 
 }// namespace spla
 
-#endif//SPLA_VECTOR_HPP
+#endif//SPLA_VECTOR_STORAGE_HPP

@@ -28,7 +28,11 @@
 #ifndef SPLA_SPLA_HPP
 #define SPLA_SPLA_HPP
 
-#include "matrix.hpp"
-#include "vector.hpp"
+#include <spla/config.hpp>
+#include <spla/descriptor.hpp>
+#include <spla/library.hpp>
+#include <spla/matrix.hpp>
+#include <spla/types.hpp>
+#include <spla/vector.hpp>
 
 #endif//SPLA_SPLA_HPP

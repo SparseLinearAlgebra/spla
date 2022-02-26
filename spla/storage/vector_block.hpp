@@ -25,6 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <test_utils.hpp>
+#ifndef SPLA_VECTOR_BLOCK_HPP
+#define SPLA_VECTOR_BLOCK_HPP
 
-SPLA_GTEST_MAIN
+#include <spla/detail/ref.hpp>
+
+namespace spla {
+    template<typename T>
+    class VectorBlock : public RefCnt {
+    public:
+        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
+
+        ~VectorBlock() override = default;
+
+        std::size_t get_nrows() const { return m_nrows; }
+        std::size_t get_nvals() const { return m_nvals; }
+
+    protected:
+        std::size_t m_nrows;
+        std::size_t m_nvals;
+    };
+}// namespace spla
+
+#endif//SPLA_VECTOR_BLOCK_HPP

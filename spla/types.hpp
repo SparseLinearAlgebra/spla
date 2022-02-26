@@ -25,60 +25,63 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_HPP
-#define SPLA_VECTOR_HPP
+#ifndef SPLA_TYPES_HPP
+#define SPLA_TYPES_HPP
 
 #include <spla/config.hpp>
-#include <spla/library.hpp>
-#include <spla/storage/vector_storage.hpp>
-
-#ifdef SPLA_BACKEND_REFERENCE
-    #include <spla/backend/reference/storage/vector_storage.hpp>
-#endif
 
 namespace spla {
 
     /**
-     * @class Vector
-     * @brief Vector object to represent a mathematical dim M vector with values of specified Type.
+     * @addtogroup spla
+     * @{
+     */
+
+    /**
+     * @brief Check if type has actual values
      *
-     * Uses blocked storage schema internally.
-     * Can be used as mask (only indices without values) if Type has zero no values.
-     * Can be updated from the host using data write expression node.
-     * Vector content can be accessed from host using data read expression node.
-     *
-     * @details
-     *  Uses explicit values storage schema, so actual values of the vector has
-     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`. If provided binary function, it
-     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
-     *
-     * @tparam T Type of stored values
+     * @tparam T Actual type param
+     * @return True if has values
      */
     template<typename T>
-    class Vector {
-    public:
-        explicit Vector(std::size_t nrows) {
-            auto backend = get_library().get_backend();
+    inline bool type_has_values() {
+        return true;
+    }
 
-#ifdef SPLA_BACKEND_REFERENCE
-            if (backend == Backend::Reference) {
-                m_storage.acquire(new reference::VectorStorage<T>(nrows));
-                return;
-            }
-#endif
-            throw std::runtime_error("no storage found for backend: " + to_string(backend));
-        }
+    /**
+     * @brief Get type actual size in bytes
+     *
+     * @tparam T Actual type param
+     * @return Size
+     */
+    template<typename T>
+    inline std::size_t type_size() {
+        return sizeof(T);
+    }
 
-        [[nodiscard]] std::size_t get_nrows() const { return m_storage->get_nrows(); }
-        [[nodiscard]] std::size_t get_nvals() const { return m_storage->get_nvals(); }
-        [[nodiscard]] const Ref<VectorStorage<T>> &get_storage() { return m_storage; }
+    /**
+     * @class Unit
+     * @brief Built-in void type
+     *
+     * Unit type has no actual stored values.
+     * Can be used only as a structural graph information.
+     */
+    using Unit = unsigned char;
 
-    private:
-        Ref<VectorStorage<T>> m_storage;
-    };
+    template<>
+    inline bool type_has_values<Unit>() {
+        return false;
+    }
+
+    template<>
+    inline std::size_t type_size<Unit>() {
+        return 0;
+    }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_VECTOR_HPP
+#endif//SPLA_TYPES_HPP

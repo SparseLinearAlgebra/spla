@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/**'
       - 'deps/**'
-      - 'spla/**'
+      - 'include/**'
       - 'tests/**'
       - 'package/**'
       - '.gitignore'

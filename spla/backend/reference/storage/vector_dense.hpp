@@ -25,60 +25,35 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_HPP
-#define SPLA_VECTOR_HPP
+#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
+#define SPLA_REFERENCE_VECTOR_DENSE_HPP
 
-#include <spla/config.hpp>
-#include <spla/library.hpp>
-#include <spla/storage/vector_storage.hpp>
+#include <cassert>
+#include <vector>
 
-#ifdef SPLA_BACKEND_REFERENCE
-    #include <spla/backend/reference/storage/vector_storage.hpp>
-#endif
+#include <spla/storage/vector_block.hpp>
 
-namespace spla {
+namespace spla::reference {
 
-    /**
-     * @class Vector
-     * @brief Vector object to represent a mathematical dim M vector with values of specified Type.
-     *
-     * Uses blocked storage schema internally.
-     * Can be used as mask (only indices without values) if Type has zero no values.
-     * Can be updated from the host using data write expression node.
-     * Vector content can be accessed from host using data read expression node.
-     *
-     * @details
-     *  Uses explicit values storage schema, so actual values of the vector has
-     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
-     *  and null values are not stored (`Nothing`). In expressions actual operations
-     *  are applied only to values `Just Value`. If provided binary function, it
-     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
-     *
-     * @tparam T Type of stored values
-     */
     template<typename T>
-    class Vector {
+    class VectorDense : public VectorBlock<T> {
     public:
-        explicit Vector(std::size_t nrows) {
-            auto backend = get_library().get_backend();
-
-#ifdef SPLA_BACKEND_REFERENCE
-            if (backend == Backend::Reference) {
-                m_storage.acquire(new reference::VectorStorage<T>(nrows));
-                return;
-            }
-#endif
-            throw std::runtime_error("no storage found for backend: " + to_string(backend));
+        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
+            : VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
+            assert(m_mask.size() == nrows);
+            assert(m_values.size() == nrows || !type_has_values<T>());
         }
 
-        [[nodiscard]] std::size_t get_nrows() const { return m_storage->get_nrows(); }
-        [[nodiscard]] std::size_t get_nvals() const { return m_storage->get_nvals(); }
-        [[nodiscard]] const Ref<VectorStorage<T>> &get_storage() { return m_storage; }
+        ~VectorDense() override = default;
+
+        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
+        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
 
     private:
-        Ref<VectorStorage<T>> m_storage;
+        std::vector<Index> m_mask;
+        std::vector<T> m_values;
     };
 
-}// namespace spla
+}// namespace spla::reference
 
-#endif//SPLA_VECTOR_HPP
+#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP

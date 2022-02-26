@@ -6,6 +6,9 @@ project(spla LANGUAGES CXX)
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
+option(SPLA_BUILD_CUDA "Build library CUDA backend (not supported yet)" YES)
+option(SPLA_BUILD_OPENCL "Build library OpenCL backend" YES)
+option(SPLA_BUILD_REFERENCE "Build library reference (CPU) backend" YES)
 
 ######################################################################
 ## Internal definitions
@@ -198,9 +201,24 @@ endif ()
 ######################################################################
 ## Source code configuration
 
+if (SPLA_BUILD_CUDA)
+    message(STATUS "Add library CUDA backend")
+    list(APPEND SPLA_DEFINES SPLA_BACKEND_CUDA)
+endif ()
+
+if (SPLA_BUILD_OPENCL)
+    message(STATUS "Add library OpenCL backend")
+    list(APPEND SPLA_DEFINES SPLA_BACKEND_OPENCL)
+endif ()
+
+if (SPLA_BUILD_REFERENCE)
+    message(STATUS "Add library reference (CPU) backend")
+    list(APPEND SPLA_DEFINES SPLA_BACKEND_REFERENCE)
+endif ()
+
 add_library(spla INTERFACE)
 
-target_include_directories(spla INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(spla INTERFACE "${CMAKE_CURRENT_LIST_DIR}/.")
 target_include_directories(spla INTERFACE ${OpenCL_INCLUDE_DIRS})
 target_link_libraries(spla INTERFACE ${OpenCL_LIBRARIES})
 target_link_libraries(spla INTERFACE Taskflow)

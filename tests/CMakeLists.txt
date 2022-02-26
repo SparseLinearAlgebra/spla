@@ -6,4 +6,4 @@ function(spla_test_target target)
     target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 endfunction()
 
-spla_test_target(test_vector_data)
+spla_test_target(test_vector_storage)
