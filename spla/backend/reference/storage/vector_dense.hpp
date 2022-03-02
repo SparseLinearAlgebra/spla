@@ -33,7 +33,7 @@
 
 #include <spla/storage/vector_block.hpp>
 
-namespace spla::reference {
+namespace spla::backend {
 
     template<typename T>
     class VectorDense : public VectorBlock<T> {
@@ -54,6 +54,6 @@ namespace spla::reference {
         std::vector<T> m_values;
     };
 
-}// namespace spla::reference
+}// namespace spla::backend
 
 #endif//SPLA_REFERENCE_VECTOR_DENSE_HPP

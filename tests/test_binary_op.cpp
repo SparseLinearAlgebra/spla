@@ -25,8 +25,47 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_MATRIX_HPP
-#define SPLA_MATRIX_HPP
+#include <test_utils.hpp>
 
+#include <spla/spla.hpp>
 
-#endif//SPLA_MATRIX_HPP
+TEST(BinaryOp, Invoke) {
+    using namespace spla;
+
+    EXPECT_EQ(3 + (-20), binary_op::plus<int>::invoke_host(3, -20));
+    EXPECT_EQ(2 * -3, binary_op::times<int>::invoke_host(2, -3));
+    EXPECT_EQ(30 - 4, binary_op::minus<int>::invoke_host(30, 4));
+
+    EXPECT_TRUE(std::abs((3.0 + (-20.1)) - binary_op::plus<float>::invoke_host(3.0, -20.1)) <= 0.0005f);
+    EXPECT_TRUE(std::abs((2.5 * -3.9) - binary_op::times<float>::invoke_host(2.5, -3.9)) <= 0.0005f);
+    EXPECT_TRUE(std::abs((30.1 - 4.5) - binary_op::minus<float>::invoke_host(30.1, 4.5)) <= 0.0005f);
+
+    EXPECT_EQ(333.0f, binary_op::first<float>::invoke_host(333.0f, 123414.0f));
+    EXPECT_EQ(666.6f, binary_op::second<float>::invoke_host(0.4f, 666.6f));
+}
+
+TEST(BinaryOp, Source) {
+    using namespace spla;
+
+    std::cout << binary_op::plus<int>::source() << std::endl;
+    std::cout << binary_op::plus<unsigned int>::source() << std::endl;
+    std::cout << binary_op::plus<float>::source() << std::endl;
+
+    std::cout << binary_op::div<int>::source() << std::endl;
+    std::cout << binary_op::div<unsigned int>::source() << std::endl;
+    std::cout << binary_op::div<float>::source() << std::endl;
+
+    std::cout << binary_op::first<int>::source() << std::endl;
+    std::cout << binary_op::first<unsigned int>::source() << std::endl;
+    std::cout << binary_op::first<float>::source() << std::endl;
+
+    std::cout << binary_op::second<int>::source() << std::endl;
+    std::cout << binary_op::second<unsigned int>::source() << std::endl;
+    std::cout << binary_op::second<float>::source() << std::endl;
+
+    std::cout << binary_op::rminus<int>::source() << std::endl;
+    std::cout << binary_op::rminus<unsigned int>::source() << std::endl;
+    std::cout << binary_op::rminus<float>::source() << std::endl;
+}
+
+SPLA_GTEST_MAIN

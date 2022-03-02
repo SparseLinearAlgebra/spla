@@ -25,8 +25,33 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_MATRIX_HPP
-#define SPLA_MATRIX_HPP
+#ifndef SPLA_EXPRESSION_HPP
+#define SPLA_EXPRESSION_HPP
 
+#include <spla/descriptor.hpp>
+#include <spla/expression/expression_node.hpp>
+#include <spla/vector.hpp>
 
-#endif//SPLA_MATRIX_HPP
+namespace spla {
+
+    /**
+     * @class Expression
+     * @brief Computational expression for compilation
+     *
+     * Represents single self-sufficient set of computational nodes with dependencies,
+     * which can be compiled and submitted for the execution at once and then asynchronously
+     * checked state of computation or waited (blocked) until completion.
+     */
+    class Expression {
+    public:
+    private:
+        template<typename T, typename ReduceOp>
+        Ref<ExpressionNode> build(const Vector<T> &vector,
+                                  std::vector<Index> rows,
+                                  std::vector<T> values,
+                                  const Descriptor &descriptor);
+    };
+
+}// namespace spla
+
+#endif//SPLA_EXPRESSION_HPP

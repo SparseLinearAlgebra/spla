@@ -25,8 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_MATRIX_HPP
-#define SPLA_MATRIX_HPP
+#ifndef SPLA_STORAGE_SCHEMA_HPP
+#define SPLA_STORAGE_SCHEMA_HPP
 
+namespace spla {
+    /** @brief Active storage schema of the storage */
+    enum class StorageSchema {
+        /** Sparse blocks are used */
+        Sparse,
+        /** Dense blocks are used */
+        Dense
+    };
+}// namespace spla
 
-#endif//SPLA_MATRIX_HPP
+#endif//SPLA_STORAGE_SCHEMA_HPP

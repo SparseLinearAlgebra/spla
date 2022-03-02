@@ -53,18 +53,6 @@ namespace spla {
     class Library {
     public:
         explicit Library(const Config &config = Config()) {
-            // Check, at least 1 backend must be supported
-            if (get_backends().empty())
-                throw std::runtime_error("no supported backend to init library");
-
-            assert(!get_backends().empty());
-
-            // Select backend, from config or default
-            if (config.get_backend().has_value())
-                m_backend = config.get_backend().value();
-            if (m_backend == Backend::NoOp)
-                m_backend = get_backends().front();
-
             // Default listener for std output
             get_log().add_listener([](const Log::Entry &entry) {
                 std::stringstream output;
@@ -82,17 +70,13 @@ namespace spla {
             assert(config.get_workers_count().has_value());
             m_executor = std::make_unique<tf::Executor>(config.get_workers_count().value());
 
-            SPLA_LOG_INFO("init library backend: " << to_string(m_backend));
+            SPLA_LOG_INFO("init library backend: " << to_string(get_backend()));
         }
-
-        /** @return Library backend */
-        [[nodiscard]] Backend get_backend() const { return m_backend; }
 
         /** @return Library executor for tasking */
         [[nodiscard]] tf::Executor &get_executor() const { return *m_executor; }
 
     private:
-        Backend m_backend = Backend::NoOp;
         std::unique_ptr<tf::Executor> m_executor;
     };
 

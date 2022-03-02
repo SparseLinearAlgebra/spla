@@ -56,8 +56,7 @@ namespace spla {
      * @brief Type of available backend for computations
      *
      * Library supports several distinct backends for computation.
-     * Backend must be configured before library usage.
-     * Only single backend can be used at type for computations
+     * Only single backend can be used for computations
      */
     enum class Backend {
         /** @brief Reference naive CPU backend for computations */
@@ -65,9 +64,7 @@ namespace spla {
         /** @brief Cuda-based GPU backend */
         Cuda,
         /** @brief OpenCL-based GPU backend */
-        OpenCL,
-        /** @brief No backend available in the system */
-        NoOp
+        OpenCL
     };
 
     /**
@@ -90,26 +87,19 @@ namespace spla {
     }
 
     /**
-     * @brief List of supported backends for execution
-     * @return List of backends
+     * @brief Get supported backend for execution
+     * @return Backend
      */
-    inline const std::vector<Backend> &get_backends() {
-        static std::unique_ptr<std::vector<Backend>> backends;
-
-        if (!backends) {
-            backends = std::make_unique<std::vector<Backend>>();
-#ifdef SPLA_BACKEND_REFERENCE
-            backends->push_back(Backend::Reference);
-#endif//SPLA_BACKEND_REFERENCE
-#ifdef SPLA_BACKEND_OPENCL
-            backends->push_back(Backend::OpenCL);
-#endif//SPLA_BACKEND_OPENCL
-#ifdef SPLA_BACKEND_CUDA
-            backends->push_back(Backend::Cuda);
-#endif//SPLA_BACKEND_CUDA
-        }
-
-        return *backends;
+    inline Backend get_backend() {
+#if defined(SPLA_BACKEND_REFERENCE)
+        return Backend::Reference;
+#elif defined(SPLA_BACKEND_OPENCL)
+        return Backend::OpenCL;
+#elif defined(SPLA_BACKEND_CUDA)
+        return Backend::Cuda;
+#else
+    #error "No backend for build"
+#endif
     }
 
     /**
@@ -118,21 +108,6 @@ namespace spla {
      */
     class Config {
     public:
-        /**
-         * @brief Set desired backend for execution
-         * @param backend Backend to select
-         *
-         * @return This config
-         */
-        Config &set_backend(Backend backend) {
-            assert(backend != Backend::NoOp);
-            auto &backends = get_backends();
-            auto entry = std::find(backends.begin(), backends.end(), backend);
-            if (entry == backends.end())
-                throw std::runtime_error("Library does not support this backend: " + to_string(backend));
-            m_backend.emplace(backend);
-        }
-
         Config &set_workers_count(std::size_t workers) {
             assert(workers > 0);
             m_workers_count.emplace(workers);
@@ -162,7 +137,6 @@ namespace spla {
             return *this;
         }
 
-        [[nodiscard]] const std::optional<Backend> &get_backend() const { return m_backend; }
         [[nodiscard]] const std::optional<std::size_t> &get_workers_count() const { return m_workers_count; }
         [[nodiscard]] const std::optional<std::size_t> &get_block_factor() const { return m_block_factor; }
         [[nodiscard]] const std::optional<std::string> &get_opencl_vendor() const { return m_opencl_vendor; }
@@ -171,7 +145,6 @@ namespace spla {
 
     private:
         /* Common configuration */
-        std::optional<Backend> m_backend;
         std::optional<std::size_t> m_workers_count{1};
         std::optional<std::size_t> m_block_factor{1};
 

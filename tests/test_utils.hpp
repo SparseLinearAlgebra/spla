@@ -28,6 +28,8 @@
 #ifndef SPLA_TEST_UTILS_HPP
 #define SPLA_TEST_UTILS_HPP
 
+#include <cmath>
+
 #include <gtest/gtest.h>
 
 #ifndef SPLA_GTEST_MAIN

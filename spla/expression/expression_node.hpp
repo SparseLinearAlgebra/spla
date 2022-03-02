@@ -25,8 +25,46 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_MATRIX_HPP
-#define SPLA_MATRIX_HPP
+#ifndef SPLA_EXPRESSION_NODE_HPP
+#define SPLA_EXPRESSION_NODE_HPP
 
+#include <vector>
 
-#endif//SPLA_MATRIX_HPP
+#include <spla/detail/ref.hpp>
+#include <spla/detail/task_builder.hpp>
+
+namespace spla {
+
+    /**
+     * @class ExpressionNode
+     * @brief Represents and operation in the expression.
+     *
+     * Stores operation type and required arguments for evaluation.
+     * Expression nodes form a computational expression (or dag) with specific dependencies ordering.
+     */
+    class ExpressionNode : public RefCnt {
+    public:
+        explicit ExpressionNode(class Expression &expression) : m_expression(&expression) {}
+        ~ExpressionNode() override = default;
+
+        [[nodiscard]] class Expression *expression() const { return m_expression; }
+        [[nodiscard]] const std::vector<ExpressionNode *> &predecessors() const { return m_predecessors; }
+        [[nodiscard]] const std::vector<ExpressionNode *> &successors() const { return m_successors; }
+
+    private:
+        friend class Expression;
+
+        void link(ExpressionNode *next) {
+            m_successors.push_back(next);
+            next->m_predecessors.push_back(this);
+        }
+
+    private:
+        class Expression *m_expression;
+        std::vector<ExpressionNode *> m_predecessors;
+        std::vector<ExpressionNode *> m_successors;
+    };
+
+}// namespace spla
+
+#endif//SPLA_EXPRESSION_NODE_HPP

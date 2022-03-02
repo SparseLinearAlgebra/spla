@@ -28,24 +28,40 @@
 #ifndef SPLA_REFERENCE_VECTOR_STORAGE_HPP
 #define SPLA_REFERENCE_VECTOR_STORAGE_HPP
 
+#include <cassert>
+#include <cstddef>
+#include <mutex>
+
 #include <spla/backend/reference/storage/vector_coo.hpp>
 #include <spla/backend/reference/storage/vector_dense.hpp>
-#include <spla/storage/vector_storage.hpp>
+#include <spla/storage/storage_schema.hpp>
 
-namespace spla::reference {
+namespace spla::backend {
 
     template<typename T>
-    class VectorStorage final : public ::spla::VectorStorage<T> {
+    class VectorStorage final : public RefCnt {
     public:
-        explicit VectorStorage(std::size_t nrows) : ::spla::VectorStorage<T>(nrows) {}
+        explicit VectorStorage(std::size_t nrows) : m_nrows(nrows) {}
 
         ~VectorStorage() override = default;
 
+        std::size_t nrows() const { return m_nrows; }
+
+        std::size_t nvals() const {
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
+            return m_nvals;
+        }
+
     private:
+        std::size_t m_nrows;
+        std::size_t m_nvals = 0;
+
         std::unordered_map<std::size_t, Ref<VectorBlock<T>>> m_sparse;
         std::unordered_map<std::size_t, Ref<VectorBlock<T>>> m_dense;
+
+        mutable std::mutex m_mutex;
     };
 
-}// namespace spla::reference
+}// namespace spla::backend
 
 #endif//SPLA_REFERENCE_VECTOR_STORAGE_HPP

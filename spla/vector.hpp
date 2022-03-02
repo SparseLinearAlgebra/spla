@@ -28,13 +28,9 @@
 #ifndef SPLA_VECTOR_HPP
 #define SPLA_VECTOR_HPP
 
+#include <spla/backend.hpp>
 #include <spla/config.hpp>
 #include <spla/library.hpp>
-#include <spla/storage/vector_storage.hpp>
-
-#ifdef SPLA_BACKEND_REFERENCE
-    #include <spla/backend/reference/storage/vector_storage.hpp>
-#endif
 
 namespace spla {
 
@@ -59,24 +55,19 @@ namespace spla {
     template<typename T>
     class Vector {
     public:
-        explicit Vector(std::size_t nrows) {
-            auto backend = get_library().get_backend();
+        explicit Vector(std::size_t nrows) : m_storage(new backend::VectorStorage<T>(nrows)) {}
 
-#ifdef SPLA_BACKEND_REFERENCE
-            if (backend == Backend::Reference) {
-                m_storage.acquire(new reference::VectorStorage<T>(nrows));
-                return;
-            }
-#endif
-            throw std::runtime_error("no storage found for backend: " + to_string(backend));
-        }
+        /** @return Storage size */
+        [[nodiscard]] std::size_t nrows() const { return m_storage->get_nrows(); }
 
-        [[nodiscard]] std::size_t get_nrows() const { return m_storage->get_nrows(); }
-        [[nodiscard]] std::size_t get_nvals() const { return m_storage->get_nvals(); }
-        [[nodiscard]] const Ref<VectorStorage<T>> &get_storage() { return m_storage; }
+        /** @return Storage number of non-zero values */
+        [[nodiscard]] std::size_t nvals() const { return m_storage->get_nvals(); }
+
+        /** @return Backend vector storage */
+        [[nodiscard]] const Ref<backend::VectorStorage<T>> &storage() { return m_storage; }
 
     private:
-        Ref<VectorStorage<T>> m_storage;
+        Ref<backend::VectorStorage<T>> m_storage;
     };
 
 }// namespace spla

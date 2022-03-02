@@ -29,6 +29,7 @@
 #define SPLA_VECTOR_BLOCK_HPP
 
 #include <spla/detail/ref.hpp>
+#include <spla/types.hpp>
 
 namespace spla {
     template<typename T>
@@ -38,8 +39,8 @@ namespace spla {
 
         ~VectorBlock() override = default;
 
-        std::size_t get_nrows() const { return m_nrows; }
-        std::size_t get_nvals() const { return m_nvals; }
+        std::size_t nrows() const { return m_nrows; }
+        std::size_t nvals() const { return m_nvals; }
 
     protected:
         std::size_t m_nrows;

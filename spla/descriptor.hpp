@@ -47,8 +47,48 @@ namespace spla {
      */
     class Descriptor {
     public:
-    private:
+        using FieldCustom = std::string;
 
+        /**
+         * @brief Set custom descriptor param from value
+         * Value must provide `std::to_string()` to serialize its data.
+         *
+         * @tparam T Type of value to set
+         *
+         * @param field Name of the custom field
+         * @param value Value to set
+         */
+        template<typename T>
+        void set_custom(const FieldCustom &field, const T &value) {
+            m_custom[field] = std::to_string(value);
+        }
+
+        /**
+         * @brief Get custom value
+         * Value must provide `std::stringstream operator >>` to deserialize its data.
+         *
+         * @tparam T Type of value to get
+         *
+         * @param field Name of custom field
+         * @param value Value to read
+         *
+         * @return True if value in descriptor
+         */
+        template<typename T>
+        bool get_custom(const FieldCustom &field, T &value) const {
+            auto query = m_custom.find(field);
+
+            if (query != m_custom.end()) {
+                std::stringstream value_str(query->second);
+                value_str >> value;
+                return true;
+            }
+
+            return false;
+        }
+
+    private:
+        std::unordered_map<FieldCustom, std::string> m_custom;
     };
 
     /**

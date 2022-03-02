@@ -28,8 +28,11 @@
 #ifndef SPLA_SPLA_HPP
 #define SPLA_SPLA_HPP
 
+#include <spla/backend.hpp>
+#include <spla/binary_op.hpp>
 #include <spla/config.hpp>
 #include <spla/descriptor.hpp>
+#include <spla/expression.hpp>
 #include <spla/library.hpp>
 #include <spla/matrix.hpp>
 #include <spla/types.hpp>

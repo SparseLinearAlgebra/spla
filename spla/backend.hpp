@@ -25,8 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_MATRIX_HPP
-#define SPLA_MATRIX_HPP
+#ifndef SPLA_BACKEND_HPP
+#define SPLA_BACKEND_HPP
 
+#if defined(SPLA_BACKEND_REFERENCE)
+    #include <spla/backend/reference/storage/vector_coo.hpp>
+    #include <spla/backend/reference/storage/vector_dense.hpp>
+    #include <spla/backend/reference/storage/vector_storage.hpp>
+#elif defined(SPLA_BACKEND_OPENCL)
+#elif defined(SPLA_BACKEND_CUDA)
+#else
+    #error "No backend for build"
+#endif
 
-#endif//SPLA_MATRIX_HPP
+#endif//SPLA_BACKEND_HPP

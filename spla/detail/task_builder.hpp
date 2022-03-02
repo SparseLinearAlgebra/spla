@@ -25,57 +25,13 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_STORAGE_HPP
-#define SPLA_VECTOR_STORAGE_HPP
-
-#include <cassert>
-#include <cstddef>
-#include <mutex>
-
-#include <spla/detail/ref.hpp>
-#include <spla/storage/vector_block.hpp>
+#ifndef SPLA_TASK_BUILDER_HPP
+#define SPLA_TASK_BUILDER_HPP
 
 namespace spla {
 
-    /**
-     * @class VectorStorage
-     * @brief Storage for vector data
-     *
-     * @tparam T Type of values
-     */
-    template<typename T>
-    class VectorStorage : public RefCnt {
-    public:
-        /** @brief Active storage schema of the storage */
-        enum class Schema {
-            /** Sparse blocks are used */
-            Sparse,
-            /** Dense blocks are used */
-            Dense
-        };
 
-        explicit VectorStorage(std::size_t nrows) : m_nrows(nrows) {
-            assert(nrows > 0 && "Vector must have non-zero number of rows");
-        }
 
-        ~VectorStorage() override = default;
+}
 
-        /** @return Storage size */
-        std::size_t get_nrows() const { return m_nrows; }
-
-        /** @return Storage number of non-zero values */
-        std::size_t get_nvals() const {
-            std::lock_guard<std::mutex> lockGuard(m_mutex);
-            return m_nvals;
-        }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals = 0;
-
-        mutable std::mutex m_mutex;
-    };
-
-}// namespace spla
-
-#endif//SPLA_VECTOR_STORAGE_HPP
+#endif//SPLA_TASK_BUILDER_HPP
