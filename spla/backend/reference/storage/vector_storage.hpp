@@ -28,39 +28,137 @@
 #ifndef SPLA_REFERENCE_VECTOR_STORAGE_HPP
 #define SPLA_REFERENCE_VECTOR_STORAGE_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <mutex>
+#include <numeric>
+#include <shared_mutex>
+#include <unordered_map>
 
+#include <spla/library.hpp>
+#include <spla/types.hpp>
+
+#include <spla/backend/reference/backend.hpp>
 #include <spla/backend/reference/storage/vector_coo.hpp>
 #include <spla/backend/reference/storage/vector_dense.hpp>
+
 #include <spla/storage/storage_schema.hpp>
+#include <spla/storage/storage_utils.hpp>
 
 namespace spla::backend {
 
+    /**
+     * @addtogroup backend
+     * @{
+     * @addtogroup reference
+     * @{
+     */
+
+    /**
+     * @class VectorStorage
+     * @brief Reference host backend blocked vector storage
+     *
+     * @tparam T Type of stored values
+     */
     template<typename T>
-    class VectorStorage final : public RefCnt {
+    class VectorStorage final : public detail::RefCnt {
     public:
-        explicit VectorStorage(std::size_t nrows) : m_nrows(nrows) {}
+        typedef std::vector<detail::Ref<VectorCoo<T>>> BlocksSparse;
+        typedef std::vector<detail::Ref<VectorDense<T>>> BlocksDense;
+
+        explicit VectorStorage(std::size_t nrows)
+            : m_nrows(nrows) {
+            m_block_size = storage::block_size(nrows, library().block_factor(), device_count());
+            m_block_count_rows = storage::block_count(nrows, m_block_size);
+            m_sparse.resize(m_block_count_rows);
+            m_dense.resize(m_block_count_rows);
+        }
 
         ~VectorStorage() override = default;
 
-        std::size_t nrows() const { return m_nrows; }
+        [[nodiscard]] std::size_t nrows() const { return m_nrows; }
+        [[nodiscard]] std::size_t block_size() const { return m_block_size; }
+        [[nodiscard]] std::size_t block_count_rows() const { return m_block_count_rows; }
 
-        std::size_t nvals() const {
-            std::lock_guard<std::mutex> lockGuard(m_mutex);
+        void build(BlocksSparse sparse) {
+            assert(sparse.size() == block_count_rows());
+            m_schema = StorageSchema::Sparse;
+            m_sparse = std::move(sparse);
+            m_nvals = 0;
+
+            for (const auto &b : m_sparse)
+                if (b.is_not_null()) m_nvals += b->nvals();
+        }
+
+        [[nodiscard]] std::size_t nvals() const {
+            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
             return m_nvals;
+        }
+
+        [[nodiscard]] StorageSchema storage_schema() {
+            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+            return m_schema;
+        }
+
+        [[nodiscard]] detail::Ref<VectorCoo<T>> block_sparse(std::size_t i) {
+            assert(i < block_count_rows());
+
+            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+
+            if (m_schema != StorageSchema::Sparse)
+                throw std::runtime_error("invalid storage schema");
+
+            return m_sparse[i];
+        }
+
+        [[nodiscard]] detail::Ref<VectorDense<T>> block_dense(std::size_t i) {
+            assert(i < block_count_rows());
+
+            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+
+            if (m_schema != StorageSchema::Dense)
+                throw std::runtime_error("invalid storage schema");
+
+            return m_dense[i];
+        }
+
+        [[nodiscard]] BlocksSparse blocks_sparse() const {
+            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+
+            if (m_schema != StorageSchema::Sparse)
+                throw std::runtime_error("invalid storage schema");
+
+            return m_sparse;
+        }
+
+        void lock_output() {
+            m_output_mutex.lock();
+        }
+
+        void unlock_output() {
+            m_output_mutex.unlock();
         }
 
     private:
         std::size_t m_nrows;
         std::size_t m_nvals = 0;
+        std::size_t m_block_size = 0;
+        std::size_t m_block_count_rows = 0;
 
-        std::unordered_map<std::size_t, Ref<VectorBlock<T>>> m_sparse;
-        std::unordered_map<std::size_t, Ref<VectorBlock<T>>> m_dense;
+        StorageSchema m_schema = StorageSchema::Sparse;
 
-        mutable std::mutex m_mutex;
+        BlocksSparse m_sparse;
+        BlocksDense m_dense;
+
+        mutable std::shared_mutex m_mutex;
+        mutable std::mutex m_output_mutex;
     };
+
+    /**
+     * @}
+     * @}
+     */
 
 }// namespace spla::backend
 

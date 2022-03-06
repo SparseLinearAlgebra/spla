@@ -25,44 +25,36 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_STORAGE_LOCK_HPP
+#define SPLA_STORAGE_LOCK_HPP
 
-#include <spla/detail/ref.hpp>
-#include <spla/types.hpp>
-
-namespace spla {
+namespace spla::storage {
 
     /**
-     * @addtogroup spla
+     * @addtogroup internal
      * @{
      */
 
     /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
+     * @class Lock
+     * @brief Lock storage for exclusive update
      *
-     * @tparam T Type of stored vector values
+     * @tparam T Storage type
      */
     template<typename T>
-    class VectorBlock : public detail::RefCnt {
+    class Lock {
     public:
-        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
+        explicit Lock(T &storage) : m_storage(storage) { m_storage.lock_output(); }
+        ~Lock() { m_storage.unlock_output(); }
 
-        ~VectorBlock() override = default;
-
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
+    private:
+        T &m_storage;
     };
 
     /**
      * @}
      */
 
-}// namespace spla
+}// namespace spla::storage
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_STORAGE_LOCK_HPP

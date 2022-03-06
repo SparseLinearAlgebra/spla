@@ -25,97 +25,72 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_DESCRIPTOR_HPP
-#define SPLA_DESCRIPTOR_HPP
+#ifndef SPLA_SUBTASK_BUILDER_HPP
+#define SPLA_SUBTASK_BUILDER_HPP
 
-#include <sstream>
-#include <string>
-#include <unordered_map>
+#include <mutex>
+#include <stdexcept>
 
-#include <spla/config.hpp>
+#include <taskflow/taskflow.hpp>
 
-namespace spla {
+#include <spla/expression/expression_submission.hpp>
+#include <spla/io/log.hpp>
+
+namespace spla::expression {
 
     /**
-     * @addtogroup spla
+     * @addtogroup internal
      * @{
      */
 
     /**
-     * @class Descriptor
-     * @brief Descriptor object controls operations execution
+     * @class SubtaskBuilder
+     * @brief Wrapper for tf::Subflow for tasks proxy
      */
-    class Descriptor {
+    class SubtaskBuilder {
     public:
-        /**
-         * @class FieldCustom
-         * @brief Custom field for user-defined params
-         */
-        using FieldCustom = std::string;
+        SubtaskBuilder(tf::Subflow &subflow, ExpressionSubmission::Private *private_ptr)
+            : m_subflow(subflow), m_private_ptr(private_ptr) {}
 
         /**
-         * @brief Set custom descriptor param from value
-         * Value must provide `std::to_string()` to serialize its data.
+         * @brief Emplace new task in subflow
+         * @tparam Task Task callable type
          *
-         * @tparam T Type of value to set
+         * @param task_name Task name for profiling/debugging
+         * @param task Task to emplace
          *
-         * @param field Name of the custom field
-         * @param value Value to set
+         * @return Taskflow task to make dependencies
          */
-        template<typename T>
-        void set_custom(const FieldCustom &field, const T &value) {
-            m_custom[field] = std::to_string(value);
+        template<typename Task>
+        tf::Task emplace(std::string task_name, Task &&task) {
+            auto task_id = m_task_id++;
+            auto task_func = [task, task_id, task_name = std::move(task_name), private_ptr = m_private_ptr]() {
+                if (private_ptr->m_state.load() == ExpressionState::Aborted)
+                    return;
+                try {
+                    task();
+                } catch (const std::exception &exception) {
+                    private_ptr->m_state.store(ExpressionState::Aborted);
+                    std::lock_guard<std::mutex> lockGuard(private_ptr->m_mutex);
+                    private_ptr->m_error = exception.what();
+                    SPLA_LOG_ERROR("error inside task-" << task_id
+                                                        << " '" << task_name << "'"
+                                                        << " what: " << exception.what());
+                }
+            };
+            return m_subflow.emplace(std::move(task_func));
         }
-
-        /**
-         * @brief Get custom value
-         * Value must provide `std::stringstream operator >>` to deserialize its data.
-         *
-         * @tparam T Type of value to get
-         *
-         * @param field Name of custom field
-         * @param value Value to read
-         *
-         * @return True if value in descriptor
-         */
-        template<typename T>
-        bool get_custom(const FieldCustom &field, T &value) const {
-            auto query = m_custom.find(field);
-
-            if (query != m_custom.end()) {
-                std::stringstream value_str(query->second);
-                value_str >> value;
-                return true;
-            }
-
-            return false;
-        }
-
-        /**
-         * @brief Show if passed values for build are row-column sorted
-         * @return Param value
-         */
-        [[nodiscard]] bool sorted() const { return m_sorted; }
-        [[nodiscard]] bool &sorted() { return m_sorted; }
-
-        /**
-         * @brief Show if passed values for build has no duplicates
-         * @return Param value
-         */
-        [[nodiscard]] bool no_duplicates() const { return m_no_duplicates; }
-        [[nodiscard]] bool &no_duplicates() { return m_no_duplicates; }
 
     private:
-        std::unordered_map<FieldCustom, std::string> m_custom;
-
-        bool m_sorted = false;
-        bool m_no_duplicates = false;
+        std::size_t m_task_id = 0;
+        tf::Subflow &m_subflow;
+        ExpressionSubmission::Private *m_private_ptr;
     };
 
     /**
      * @}
      */
 
-}// namespace spla
+}// namespace spla::expression
 
-#endif//SPLA_DESCRIPTOR_HPP
+#endif//SPLA_SUBTASK_BUILDER_HPP

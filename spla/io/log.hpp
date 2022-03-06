@@ -142,7 +142,7 @@ namespace spla {
      *
      * @return Log ptr
      */
-    inline std::unique_ptr<Log> &get_log_ptr() {
+    inline std::unique_ptr<Log> &log_ptr() {
         static std::unique_ptr<Log> log;
         return log;
     }
@@ -153,8 +153,8 @@ namespace spla {
      *
      * @return Library log
      */
-    inline Log &get_log() {
-        auto &log = get_log_ptr();
+    inline Log &log() {
+        auto &log = log_ptr();
 
         if (!log)
             log = std::make_unique<Log>();
@@ -166,11 +166,11 @@ namespace spla {
      * @}
      */
 
-#define SPLA_LOG(level, message)                                                                                              \
-    do {                                                                                                                      \
-        std::stringstream __log_stream;                                                                                       \
-        __log_stream << message;                                                                                              \
-        ::spla::get_log().log_message(level, __log_stream.str(), __FILE__, __FUNCTION__, static_cast<std::size_t>(__LINE__)); \
+#define SPLA_LOG(level, message)                                                                                          \
+    do {                                                                                                                  \
+        std::stringstream __log_stream;                                                                                   \
+        __log_stream << message;                                                                                          \
+        ::spla::log().log_message(level, __log_stream.str(), __FILE__, __FUNCTION__, static_cast<std::size_t>(__LINE__)); \
     } while (false);
 
 #ifdef SPLA_DEBUG

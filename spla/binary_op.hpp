@@ -65,8 +65,14 @@ namespace spla::binary_op {
         template<typename T>
         struct MakeTypeDecl {};
 
+        SPLA_MAKE_TYPE_DECL(char, char);
+        SPLA_MAKE_TYPE_DECL(short, short);
         SPLA_MAKE_TYPE_DECL(int, int);
+
+        SPLA_MAKE_TYPE_DECL(unsigned char, uchar);
+        SPLA_MAKE_TYPE_DECL(unsigned short, ushort);
         SPLA_MAKE_TYPE_DECL(unsigned int, uint);
+
         SPLA_MAKE_TYPE_DECL(float, float);
         SPLA_MAKE_TYPE_DECL(double, double);
 

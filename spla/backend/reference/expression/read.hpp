@@ -25,44 +25,48 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_REFERENCE_READ_HPP
+#define SPLA_REFERENCE_READ_HPP
 
-#include <spla/detail/ref.hpp>
+#include <algorithm>
+#include <vector>
+
+#include <spla/descriptor.hpp>
+#include <spla/io/log.hpp>
 #include <spla/types.hpp>
 
-namespace spla {
+#include <spla/backend/reference/storage/vector_coo.hpp>
+#include <spla/backend/reference/storage/vector_dense.hpp>
 
-    /**
-     * @addtogroup spla
-     * @{
-     */
+namespace spla::backend {
 
-    /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
-     *
-     * @tparam T Type of stored vector values
-     */
-    template<typename T>
-    class VectorBlock : public detail::RefCnt {
-    public:
-        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
-
-        ~VectorBlock() override = default;
-
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
+    struct ReadParams {
+        std::size_t firstIndex;
+        std::size_t offset;
     };
 
-    /**
-     * @}
-     */
+    template<typename T>
+    inline void read(const detail::Ref<VectorCoo<T>> &w,
+                     std::vector<Index> &rows,
+                     std::vector<T> &values,
+                     const Descriptor &,
+                     const ReadParams &readParams,
+                     std::size_t id) {
+        auto nvals = w->nvals();
+        const auto &w_rows = w->rows();
+        const auto &w_values = w->values();
 
-}// namespace spla
+        for (std::size_t i = 0; i < nvals; i++) {
+            rows[readParams.offset + i] = w_rows[i] + readParams.firstIndex;
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+            if (type_has_values<T>()) {
+                values[readParams.offset + i] = w_values[i];
+            }
+        }
+
+        SPLA_LOG_INFO("read block id=" << id);
+    }
+
+}// namespace spla::backend
+
+#endif//SPLA_REFERENCE_READ_HPP

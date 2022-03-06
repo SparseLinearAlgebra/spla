@@ -39,6 +39,7 @@ namespace spla {
 
     /**
      * @brief Check if type has actual values
+     * @see Unit
      *
      * @tparam T Actual type param
      * @return True if has values
@@ -50,6 +51,7 @@ namespace spla {
 
     /**
      * @brief Get type actual size in bytes
+     * @see Unit
      *
      * @tparam T Actual type param
      * @return Size
@@ -58,6 +60,12 @@ namespace spla {
     inline std::size_t type_size() {
         return sizeof(T);
     }
+
+    /**
+     * @class Index
+     * @brief Integral type for primitives indices representation
+     */
+    using Index = unsigned int;
 
     /**
      * @class Unit
@@ -76,6 +84,29 @@ namespace spla {
     template<>
     inline std::size_t type_size<Unit>() {
         return 0;
+    }
+
+    /**
+     * @class NullOp
+     * @brief Operation used to signal null (no) binary/unary/select op
+     */
+    class NullOp {};
+
+    /**
+     * @brief Check if passed op is null
+     * @see NullOp
+     *
+     * @tparam T Type of op
+     * @return True if passed op is null
+     */
+    template<typename T>
+    bool null_op() {
+        return false;
+    }
+
+    template<>
+    bool null_op<NullOp>() {
+        return true;
     }
 
     /**

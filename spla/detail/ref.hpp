@@ -32,7 +32,7 @@
 #include <cassert>
 #include <cinttypes>
 
-namespace spla {
+namespace spla::detail {
 
     /**
      * @addtogroup spla
@@ -132,7 +132,7 @@ namespace spla {
 
         Ref<T> &operator=(const Ref &other) {
             if (this != &other)
-                this->reset(safe_ref(other.Get()));
+                this->reset(safe_ref(other.get()));
             return *this;
         }
 
@@ -211,6 +211,6 @@ namespace spla {
      * @}
      */
 
-}// namespace spla
+}// namespace spla::detail
 
 #endif//SPLA_REF_HPP

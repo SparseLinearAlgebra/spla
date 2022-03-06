@@ -46,12 +46,6 @@ namespace spla {
      */
 
     /**
-     * @class Index
-     * @brief Integral type for primitives indices representation
-     */
-    using Index = unsigned int;
-
-    /**
      * @class Backend
      * @brief Type of available backend for computations
      *
@@ -90,7 +84,7 @@ namespace spla {
      * @brief Get supported backend for execution
      * @return Backend
      */
-    inline Backend get_backend() {
+    inline Backend supported_backend() {
 #if defined(SPLA_BACKEND_REFERENCE)
         return Backend::Reference;
 #elif defined(SPLA_BACKEND_OPENCL)

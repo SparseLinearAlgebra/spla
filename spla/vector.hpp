@@ -64,10 +64,10 @@ namespace spla {
         [[nodiscard]] std::size_t nvals() const { return m_storage->get_nvals(); }
 
         /** @return Backend vector storage */
-        [[nodiscard]] const Ref<backend::VectorStorage<T>> &storage() { return m_storage; }
+        [[nodiscard]] const detail::Ref<backend::VectorStorage<T>> &storage() { return m_storage; }
 
     private:
-        Ref<backend::VectorStorage<T>> m_storage;
+        detail::Ref<backend::VectorStorage<T>> m_storage;
     };
 
 }// namespace spla

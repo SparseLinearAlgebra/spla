@@ -36,6 +36,16 @@
 #include <spla/config.hpp>
 #include <spla/io/log.hpp>
 
+#if defined(SPLA_BACKEND_REFERENCE)
+    #include <spla/backend/reference/backend.hpp>
+#elif defined(SPLA_BACKEND_OPENCL)
+    #error "No backend for build"
+#elif defined(SPLA_BACKEND_CUDA)
+    #error "No backend for build"
+#else
+    #error "No backend for build"
+#endif
+
 namespace spla {
 
     /**
@@ -52,9 +62,11 @@ namespace spla {
      */
     class Library {
     public:
-        explicit Library(const Config &config = Config()) {
+        explicit Library(const Config &config = Config())
+            : m_config(config), m_block_factor(config.get_block_factor().value()) {
+
             // Default listener for std output
-            get_log().add_listener([](const Log::Entry &entry) {
+            log().add_listener([](const Log::Entry &entry) {
                 std::stringstream output;
                 output << "[" << to_string(entry.level) << "] "
                        << "[" << entry.file.substr(entry.file.find_last_of("/\\") + 1) << ":" << entry.line << "] "
@@ -70,13 +82,24 @@ namespace spla {
             assert(config.get_workers_count().has_value());
             m_executor = std::make_unique<tf::Executor>(config.get_workers_count().value());
 
-            SPLA_LOG_INFO("init library backend: " << to_string(get_backend()));
+            // Initialize backend
+            backend::initialize(config);
+
+            SPLA_LOG_INFO("init library backend: " << to_string(supported_backend()));
         }
 
+        /** @return Storage split factor */
+        [[nodiscard]] std::size_t block_factor() const { return m_block_factor; }
+
+        /** @return Config used to init library */
+        [[nodiscard]] const Config &config() const { return m_config; }
+
         /** @return Library executor for tasking */
-        [[nodiscard]] tf::Executor &get_executor() const { return *m_executor; }
+        [[nodiscard]] tf::Executor &executor() const { return *m_executor; }
 
     private:
+        Config m_config;
+        std::size_t m_block_factor;
         std::unique_ptr<tf::Executor> m_executor;
     };
 
@@ -86,7 +109,7 @@ namespace spla {
      *
      * @return Library ptr
      */
-    inline std::unique_ptr<Library> &get_library_ptr() {
+    inline std::unique_ptr<Library> &library_ptr() {
         static std::unique_ptr<Library> library;
         return library;
     }
@@ -99,8 +122,8 @@ namespace spla {
      *
      * @return Library instance
      */
-    inline Library &get_library() {
-        auto &library = get_library_ptr();
+    inline Library &library() {
+        auto &library = library_ptr();
 
         if (!library)
             library = std::make_unique<Library>();

@@ -28,12 +28,20 @@
 #ifndef SPLA_EXPRESSION_NODE_HPP
 #define SPLA_EXPRESSION_NODE_HPP
 
+#include <utility>
 #include <vector>
 
 #include <spla/detail/ref.hpp>
-#include <spla/detail/task_builder.hpp>
+#include <spla/expression/subtask_builder.hpp>
 
 namespace spla {
+
+    class Expression;
+
+    /**
+     * @addtogroup spla
+     * @{
+     */
 
     /**
      * @class ExpressionNode
@@ -42,12 +50,21 @@ namespace spla {
      * Stores operation type and required arguments for evaluation.
      * Expression nodes form a computational expression (or dag) with specific dependencies ordering.
      */
-    class ExpressionNode : public RefCnt {
+    class ExpressionNode : public detail::RefCnt {
     public:
-        explicit ExpressionNode(class Expression &expression) : m_expression(&expression) {}
+        explicit ExpressionNode(Descriptor desc, std::size_t id, Expression &expression)
+            : m_desc(std::move(desc)), m_id(id), m_expression(&expression) {}
+
         ~ExpressionNode() override = default;
 
-        [[nodiscard]] class Expression *expression() const { return m_expression; }
+        void set_name(std::string name) { m_name = std::move(name); }
+
+        [[nodiscard]] virtual std::string type() const = 0;
+
+        [[nodiscard]] std::size_t id() const { return m_id; }
+        [[nodiscard]] Expression *expression() const { return m_expression; }
+        [[nodiscard]] const Descriptor &desc() const { return m_desc; }
+        [[nodiscard]] const std::string &name() const { return m_name; }
         [[nodiscard]] const std::vector<ExpressionNode *> &predecessors() const { return m_predecessors; }
         [[nodiscard]] const std::vector<ExpressionNode *> &successors() const { return m_successors; }
 
@@ -59,11 +76,23 @@ namespace spla {
             next->m_predecessors.push_back(this);
         }
 
+        virtual void prepare() = 0;
+        virtual void finalize() = 0;
+        virtual void execute(expression::SubtaskBuilder &builder) = 0;
+
     private:
-        class Expression *m_expression;
+        Expression *m_expression;
+        Descriptor m_desc;
+
+        std::size_t m_id;
+        std::string m_name;
         std::vector<ExpressionNode *> m_predecessors;
         std::vector<ExpressionNode *> m_successors;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

@@ -25,44 +25,43 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_REFERENCE_BACKEND_HPP
+#define SPLA_REFERENCE_BACKEND_HPP
 
-#include <spla/detail/ref.hpp>
-#include <spla/types.hpp>
+#include <spla/config.hpp>
 
-namespace spla {
+namespace spla::backend {
 
     /**
-     * @addtogroup spla
+     * @addtogroup backend
+     * @{
+     * @addtogroup reference
      * @{
      */
 
+    inline std::size_t &device_count_ref() {
+        static std::size_t s_device_count = 1;
+        return s_device_count;
+    }
+
+    inline std::size_t device_count() {
+        return device_count_ref();
+    }
+
     /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
-     *
-     * @tparam T Type of stored vector values
+     * @brief Initialize reference backend
+     * @param config
      */
-    template<typename T>
-    class VectorBlock : public detail::RefCnt {
-    public:
-        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
-
-        ~VectorBlock() override = default;
-
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
-    };
+    inline void initialize(const Config &config) {
+        if (config.get_workers_count().has_value())
+            device_count_ref() = config.get_workers_count().value();
+    }
 
     /**
      * @}
+     * @}
      */
 
-}// namespace spla
+}// namespace spla::backend
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_REFERENCE_BACKEND_HPP

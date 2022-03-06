@@ -30,9 +30,17 @@
 #include <spla/spla.hpp>
 
 TEST(Vector, Setup) {
-    spla::Vector<int> b(10);
     spla::Vector<float> v(100);
-    spla::Vector<spla::Unit> d(40);
+
+    std::vector<spla::Index> rows = {0, 1, 3, 53, 53, 7, 9, 22, 93, 93};
+    std::vector<float> values = {0.1, 0.2, 10.0, -3.0, -10, 4, 5, 0, 8, 103.0f};
+
+    spla::Expression expression;
+    expression.build(v, spla::binary_op::plus<float>(), rows, values);
+    expression.read(v, [&](auto &r, auto &v) { rows=std::move(r); values=std::move(v); });
+
+    auto submission = expression.submit();
+    submission.wait();
 }
 
 SPLA_GTEST_MAIN
