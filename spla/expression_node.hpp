@@ -32,7 +32,7 @@
 #include <vector>
 
 #include <spla/detail/ref.hpp>
-#include <spla/expression/subtask_builder.hpp>
+#include <spla/detail/subtask_builder.hpp>
 
 namespace spla {
 
@@ -78,7 +78,7 @@ namespace spla {
 
         virtual void prepare() = 0;
         virtual void finalize() = 0;
-        virtual void execute(expression::SubtaskBuilder &builder) = 0;
+        virtual void execute(detail::SubtaskBuilder &builder) = 0;
 
     private:
         Expression *m_expression;

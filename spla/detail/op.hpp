@@ -25,36 +25,70 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_STORAGE_LOCK_HPP
-#define SPLA_STORAGE_LOCK_HPP
+#ifndef SPLA_OP_HPP
+#define SPLA_OP_HPP
 
-namespace spla::storage {
+#define SPLA_MAKE_TYPE_DECL(type, decl)                         \
+    template<>                                                  \
+    struct MakeTypeDecl<type> {                                 \
+        inline std::string operator()() const { return #decl; } \
+    };
+
+namespace spla::detail {
 
     /**
      * @addtogroup internal
      * @{
      */
 
-    /**
-     * @class Lock
-     * @brief Lock storage for exclusive update
-     *
-     * @tparam T Storage type
-     */
     template<typename T>
-    class Lock {
-    public:
-        explicit Lock(T &storage) : m_storage(storage) { m_storage.lock_output(); }
-        ~Lock() { m_storage.unlock_output(); }
+    struct MakeTypeDecl {};
 
-    private:
-        T &m_storage;
+    SPLA_MAKE_TYPE_DECL(char, char);
+    SPLA_MAKE_TYPE_DECL(short, short);
+    SPLA_MAKE_TYPE_DECL(int, int);
+
+    SPLA_MAKE_TYPE_DECL(unsigned char, uchar);
+    SPLA_MAKE_TYPE_DECL(unsigned short, ushort);
+    SPLA_MAKE_TYPE_DECL(unsigned int, uint);
+
+    SPLA_MAKE_TYPE_DECL(float, float);
+    SPLA_MAKE_TYPE_DECL(double, double);
+
+    template<typename Signature>
+    struct MakeFunctionDeclaration {};
+
+    template<typename R, typename A, typename B>
+    struct MakeFunctionDeclaration<R(A, B)> {
+        std::string operator()(const std::string &name, std::string signature) const {
+            std::stringstream declaration;
+
+            signature.replace(signature.find_first_of(','), 1, " ");
+            signature.replace(signature.find_first_of('('), 1, " ");
+            signature.replace(signature.find_first_of(')'), 1, " ");
+
+            std::stringstream signature_ss(signature);
+            std::string arg1;
+            std::string arg2;
+
+            signature_ss >> arg1 >> arg1;
+            signature_ss >> arg2 >> arg2;
+
+            declaration << MakeTypeDecl<R>()() << " "
+                        << name
+                        << "("
+                        << MakeTypeDecl<A>()() << " " << arg1 << ", "
+                        << MakeTypeDecl<B>()() << " " << arg2
+                        << ")";
+
+            return declaration.str();
+        }
     };
 
     /**
      * @}
      */
 
-}// namespace spla::storage
+}// namespace spla::detail
 
-#endif//SPLA_STORAGE_LOCK_HPP
+#endif//SPLA_OP_HPP

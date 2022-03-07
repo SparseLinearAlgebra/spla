@@ -29,6 +29,12 @@
 #define SPLA_STORAGE_SCHEMA_HPP
 
 namespace spla {
+
+    /**
+     * @addtogroup spla
+     * @{
+     */
+
     /** @brief Active storage schema of the storage */
     enum class StorageSchema {
         /** Sparse blocks are used */
@@ -36,6 +42,11 @@ namespace spla {
         /** Dense blocks are used */
         Dense
     };
+
+    /**
+     * @}
+     */
+
 }// namespace spla
 
 #endif//SPLA_STORAGE_SCHEMA_HPP

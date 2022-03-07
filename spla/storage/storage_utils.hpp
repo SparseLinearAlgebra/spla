@@ -34,6 +34,11 @@
 
 namespace spla::storage {
 
+    /**
+     * @addtogroup internal
+     * @{
+     */
+
     inline std::size_t block_size(std::size_t rows, std::size_t factor, std::size_t device_count) {
         std::size_t split = factor * device_count;
         return rows <= 4 * split || split == 1 ? rows : (rows - (rows % split)) / (split - 1);
@@ -63,6 +68,10 @@ namespace spla::storage {
     inline std::size_t block_offset(std::size_t block_size, std::size_t i) {
         return block_size * i;
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla::storage
 

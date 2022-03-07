@@ -33,13 +33,17 @@
 
 #include <spla/backend.hpp>
 #include <spla/descriptor.hpp>
+#include <spla/expression_node.hpp>
 #include <spla/types.hpp>
 
-#include <spla/expression/expression_node.hpp>
-#include <spla/storage/storage_lock.hpp>
 #include <spla/storage/storage_utils.hpp>
 
 namespace spla::expression {
+
+    /**
+     * @addtogroup internal
+     * @{
+     */
 
     template<typename T, typename Callback>
     class ReadVector final : public ExpressionNode {
@@ -56,7 +60,7 @@ namespace spla::expression {
     private:
         void prepare() override {}
         void finalize() override {}
-        void execute(SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) override {
             auto storage = m_vector.storage();
             auto nvals = storage->nvals();
             auto nblocks = storage->block_count_rows();
@@ -83,6 +87,10 @@ namespace spla::expression {
         Vector<T> m_vector;
         Callback m_callback;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla::expression
 

@@ -31,10 +31,10 @@
 #include <spla/detail/ref.hpp>
 #include <spla/types.hpp>
 
-namespace spla {
+namespace spla::storage {
 
     /**
-     * @addtogroup spla
+     * @addtogroup internal
      * @{
      */
 
@@ -63,6 +63,6 @@ namespace spla {
      * @}
      */
 
-}// namespace spla
+}// namespace spla::storage
 
 #endif//SPLA_VECTOR_BLOCK_HPP

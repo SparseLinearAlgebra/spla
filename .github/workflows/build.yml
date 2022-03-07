@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/**'
       - 'deps/**'
-      - 'include/**'
+      - 'spla/**'
       - 'tests/**'
       - 'package/**'
       - '.gitignore'
@@ -46,20 +46,12 @@ jobs:
           nuget install opencl-nug -Version ${{ env.ocl_nug_version }} -OutputDirectory $NUGETDIR
           choco install opencl-intel-cpu-runtime
 
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.0.0
-        id: install-boost
-        with:
-          boost_version: 1.77.0
-
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
 
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
@@ -91,16 +83,8 @@ jobs:
       - name: OpenCL Info
         run: clinfo
 
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.0.0
-        id: install-boost
-        with:
-          boost_version: 1.77.0
-
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
@@ -121,24 +105,14 @@ jobs:
 
       - uses: seanmiddleditch/gha-setup-ninja@master
 
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.0.0
-        id: install-boost
-        with:
-          boost_version: 1.77.0
-
       - name: Configure CMake x64
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=x86_64
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources x64
         run: cmake --build ${{ env.build_dir }} --verbose
 
       - name: Configure CMake arm64
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=arm64
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources arm64
         run: cmake --build ${{ env.build_dir }} --verbose

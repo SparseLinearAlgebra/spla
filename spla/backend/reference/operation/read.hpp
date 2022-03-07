@@ -40,6 +40,11 @@
 
 namespace spla::backend {
 
+    /**
+     * @addtogroup reference
+     * @{
+     */
+
     struct ReadParams {
         std::size_t firstIndex;
         std::size_t offset;
@@ -66,6 +71,10 @@ namespace spla::backend {
 
         SPLA_LOG_INFO("read block id=" << id);
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla::backend
 

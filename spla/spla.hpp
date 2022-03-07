@@ -33,6 +33,8 @@
 #include <spla/config.hpp>
 #include <spla/descriptor.hpp>
 #include <spla/expression.hpp>
+#include <spla/expression_node.hpp>
+#include <spla/expression_submission.hpp>
 #include <spla/library.hpp>
 #include <spla/matrix.hpp>
 #include <spla/types.hpp>

@@ -75,7 +75,7 @@ namespace spla {
         }
     }
 
-    namespace expression {
+    namespace detail {
         class SubtaskBuilder;
     }
 
@@ -126,7 +126,7 @@ namespace spla {
 
     private:
         friend class Expression;
-        friend class expression::SubtaskBuilder;
+        friend class detail::SubtaskBuilder;
 
         ExpressionSubmission() : m_private(new Private) {}
 

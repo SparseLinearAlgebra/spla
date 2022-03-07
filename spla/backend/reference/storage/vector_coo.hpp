@@ -35,11 +35,22 @@
 
 namespace spla::backend {
 
+    /**
+     * @addtogroup reference
+     * @{
+     */
+
+    /**
+     * @class VectorCoo
+     * @brief Lists of non-zero values vector representation
+     *
+     * @tparam T Type of stored values
+     */
     template<typename T>
-    class VectorCoo : public VectorBlock<T> {
+    class VectorCoo : public storage::VectorBlock<T> {
     public:
         VectorCoo(std::size_t nrows, std::size_t nvals, std::vector<Index> rows, std::vector<T> values)
-            : VectorBlock<T>(nrows, nvals), m_rows(std::move(rows)), m_values(std::move(values)) {
+            : storage::VectorBlock<T>(nrows, nvals), m_rows(std::move(rows)), m_values(std::move(values)) {
             assert(m_rows.size() == nvals);
             assert(m_values.size() == nvals || !type_has_values<T>());
         }
@@ -53,6 +64,10 @@ namespace spla::backend {
         std::vector<Index> m_rows;
         std::vector<T> m_values;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla::backend
 

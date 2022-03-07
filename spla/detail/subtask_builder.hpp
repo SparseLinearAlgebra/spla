@@ -33,10 +33,10 @@
 
 #include <taskflow/taskflow.hpp>
 
-#include <spla/expression/expression_submission.hpp>
+#include <spla/expression_submission.hpp>
 #include <spla/io/log.hpp>
 
-namespace spla::expression {
+namespace spla::detail {
 
     /**
      * @addtogroup internal
@@ -91,6 +91,6 @@ namespace spla::expression {
      * @}
      */
 
-}// namespace spla::expression
+}// namespace spla::detail
 
 #endif//SPLA_SUBTASK_BUILDER_HPP

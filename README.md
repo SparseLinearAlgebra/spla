@@ -6,10 +6,9 @@
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
-**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL`
-and `boost.compute` technologies. It provides linear algebra primitives, such as matrices, vectors and scalars, supports
-wide variety of operations, and gives an ability to customize underlying values types and parametrise operations using
-arbitrary user defined functions.
+**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL` and `Cuda`. It provides 
+linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of operations, and gives an 
+ability to customize underlying values types and parametrise operations using arbitrary user defined functions.
 
 > Note: project under heavy development! Not ready for usage.
 
@@ -27,8 +26,8 @@ arbitrary user defined functions.
     - Git (to get source code)
     - CMake (the latest version)
     - Ninja (as build files generator)
-    - Boost library (the latest version)
     - OpenCL 1.2+ SDK
+    - Cuda SDK
     - Python 3.7+
 - Windows 10:
     - Microsoft Visual C++ Compiler (MSVC) with C++ 17 support
@@ -86,21 +85,21 @@ spla
 ├── .github - GitHub Actions CI/CD setup 
 ├── docs - documents, text files and various helpful stuff
 ├── scripts - short utility programs 
-├── include 
-│   ├── spla-c - library public C API
-│   ├── spla-cpp - library public C++ API
-│   └── spla-algo - library public C++ algortihms API
-├── sources - source code for library implementation
-│   ├── algo - algortihms implementation for math operations
-│   ├── bindings - c api bindings
-│   ├── compute - extension to boost compute
-│   ├── core - library foundation
-│   ├── expression - expression nodes processing
-│   └── storage - data storage 
+├── spla - library source files (header-only)
+│   ├── backend - library implementation for a specific platform
+│   │   ├── reference - naive host backend implemenatation
+│   │   ├── opencl - opencl based library backend implemenatation
+│   │   └── cuda - cuda based library backend implemenatation
+│   ├── algorithms - library based common liinear algebra algoruthms
+│   ├── detail - internal classes
+│   ├── expression - computational expressions implementation
+│   ├── io - input/output operations for data manipulation
+│   ├── storage - liberary storage classes
+│   └── spla.hpp - all in one place library interface
 ├── examples - example applications with library usage
-│   ├── spla_bfs - bfs application
-│   ├── spla_sssp - sssp application
-│   └── spla_tc - tc application
+│   ├── bfs - bfs application
+│   ├── sssp - sssp application
+│   └── tc - tc application
 ├── tests - gtest-based unit-tests collection
 ├── package - python-package files
 │   ├── pyspla - library python wrapper source code
@@ -108,7 +107,6 @@ spla
 ├── deps - project dependencies
 │   ├── cxxopts - lightweight C++ command line option parser
 │   ├── gtest - google test framework for unit testing
-│   ├── spdlog - spdlog library for debug/release loggging features
 │   └── taskflow - taskflow library for parallel tasks execution
 └── CMakeLists.txt - library cmake config, add this as sub-directory to your project
 ```

@@ -34,13 +34,17 @@
 
 #include <spla/backend.hpp>
 #include <spla/descriptor.hpp>
+#include <spla/expression_node.hpp>
 #include <spla/types.hpp>
 
-#include <spla/expression/expression_node.hpp>
-#include <spla/storage/storage_lock.hpp>
 #include <spla/storage/storage_utils.hpp>
 
 namespace spla::expression {
+
+    /**
+     * @addtogroup internal
+     * @{
+     */
 
     template<typename T, typename ReduceOp>
     class BuildVector final : public ExpressionNode {
@@ -68,7 +72,7 @@ namespace spla::expression {
             m_vector.storage()->unlock_output();
         }
 
-        void execute(SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) override {
             auto storage = m_vector.storage();
             auto blocks = std::make_shared<typename backend::VectorStorage<T>::BlocksSparse>(storage->block_count_rows());
             auto build = builder.emplace("build-storage", [blocks, storage]() { storage->build(std::move(*blocks)); });
@@ -91,6 +95,10 @@ namespace spla::expression {
         std::vector<Index> m_rows;
         std::vector<T> m_values;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla::expression
 

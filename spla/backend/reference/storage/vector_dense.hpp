@@ -35,11 +35,22 @@
 
 namespace spla::backend {
 
+    /**
+     * @addtogroup reference
+     * @{
+     */
+
+    /**
+     * @class VectorDense
+     * @brief Dense vector representation with explicit non-zero values storage
+     *
+     * @tparam T Type of stored values
+     */
     template<typename T>
-    class VectorDense : public VectorBlock<T> {
+    class VectorDense : public storage::VectorBlock<T> {
     public:
         VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
+            : storage::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
             assert(m_mask.size() == nrows);
             assert(m_values.size() == nrows || !type_has_values<T>());
         }
@@ -53,6 +64,10 @@ namespace spla::backend {
         std::vector<Index> m_mask;
         std::vector<T> m_values;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla::backend
 

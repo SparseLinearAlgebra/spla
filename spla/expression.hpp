@@ -38,9 +38,8 @@
 #include <spla/library.hpp>
 #include <spla/vector.hpp>
 
-#include <spla/expression/expression_node.hpp>
-#include <spla/expression/expression_submission.hpp>
-#include <spla/expression/subtask_builder.hpp>
+#include <spla/expression_node.hpp>
+#include <spla/expression_submission.hpp>
 
 #include <spla/expression/build.hpp>
 #include <spla/expression/read.hpp>
@@ -197,7 +196,7 @@ namespace spla {
                     if (submission_private->m_state.load() == ExpressionState::Aborted)
                         return;
 
-                    expression::SubtaskBuilder subtaskBuilder(subflow, submission_private);
+                    detail::SubtaskBuilder subtaskBuilder(subflow, submission_private);
 
                     try {
                         // Prepare used to acquire resources

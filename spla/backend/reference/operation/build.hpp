@@ -40,6 +40,11 @@
 
 namespace spla::backend {
 
+    /**
+     * @addtogroup reference
+     * @{
+     */
+
     struct BuildParams {
         std::size_t firstIndex;
         std::size_t size;
@@ -132,6 +137,10 @@ namespace spla::backend {
 
         w.acquire(new VectorCoo<T>(buildParams.size, nvals, std::move(vectorRows), std::move(vectorValues)));
     }
+
+    /**
+     * @}
+     */
 
 }// namespace spla::backend
 

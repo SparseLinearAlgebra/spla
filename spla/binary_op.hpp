@@ -31,11 +31,8 @@
 #include <sstream>
 #include <string>
 
-#define SPLA_MAKE_TYPE_DECL(type, decl)                         \
-    template<>                                                  \
-    struct MakeTypeDecl<type> {                                 \
-        inline std::string operator()() const { return #decl; } \
-    };
+#include <spla/detail/op.hpp>
+
 
 #define SPLA_BINARY_OP(func_name, type, arguments, ...)                                    \
     class func_name {                                                                      \
@@ -61,51 +58,6 @@
     };
 
 namespace spla::binary_op {
-    namespace detail {
-        template<typename T>
-        struct MakeTypeDecl {};
-
-        SPLA_MAKE_TYPE_DECL(char, char);
-        SPLA_MAKE_TYPE_DECL(short, short);
-        SPLA_MAKE_TYPE_DECL(int, int);
-
-        SPLA_MAKE_TYPE_DECL(unsigned char, uchar);
-        SPLA_MAKE_TYPE_DECL(unsigned short, ushort);
-        SPLA_MAKE_TYPE_DECL(unsigned int, uint);
-
-        SPLA_MAKE_TYPE_DECL(float, float);
-        SPLA_MAKE_TYPE_DECL(double, double);
-
-        template<typename Signature>
-        struct MakeFunctionDeclaration {};
-
-        template<typename R, typename A, typename B>
-        struct MakeFunctionDeclaration<R(A, B)> {
-            std::string operator()(const std::string &name, std::string signature) const {
-                std::stringstream declaration;
-
-                signature.replace(signature.find_first_of(','), 1, " ");
-                signature.replace(signature.find_first_of('('), 1, " ");
-                signature.replace(signature.find_first_of(')'), 1, " ");
-
-                std::stringstream signature_ss(signature);
-                std::string arg1;
-                std::string arg2;
-
-                signature_ss >> arg1 >> arg1;
-                signature_ss >> arg2 >> arg2;
-
-                declaration << MakeTypeDecl<R>()() << " "
-                            << name
-                            << "("
-                            << MakeTypeDecl<A>()() << " " << arg1 << ", "
-                            << MakeTypeDecl<B>()() << " " << arg2
-                            << ")";
-
-                return declaration.str();
-            }
-        };
-    }// namespace detail
 
     /**
      * @addtogroup spla

@@ -30,8 +30,8 @@
 
 #if defined(SPLA_BACKEND_REFERENCE)
     #include <spla/backend/reference/backend.hpp>
-    #include <spla/backend/reference/expression/build.hpp>
-    #include <spla/backend/reference/expression/read.hpp>
+    #include <spla/backend/reference/operation/build.hpp>
+    #include <spla/backend/reference/operation/read.hpp>
     #include <spla/backend/reference/storage/vector_coo.hpp>
     #include <spla/backend/reference/storage/vector_dense.hpp>
     #include <spla/backend/reference/storage/vector_storage.hpp>

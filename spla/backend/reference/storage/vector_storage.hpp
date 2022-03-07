@@ -49,8 +49,6 @@
 namespace spla::backend {
 
     /**
-     * @addtogroup backend
-     * @{
      * @addtogroup reference
      * @{
      */
@@ -156,7 +154,6 @@ namespace spla::backend {
     };
 
     /**
-     * @}
      * @}
      */
 
