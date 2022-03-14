@@ -36,8 +36,10 @@
 #include <spla/descriptor.hpp>
 #include <spla/expression_node.hpp>
 #include <spla/types.hpp>
+#include <spla/vector.hpp>
 
-#include <spla/storage/storage_utils.hpp>
+#include <spla/detail/backend_utils.hpp>
+#include <spla/detail/storage_utils.hpp>
 
 namespace spla::expression {
 
@@ -63,26 +65,27 @@ namespace spla::expression {
 
     private:
         void prepare() override {
-            SPLA_LOG_INFO("lock-vector");
-            m_vector.storage()->lock_output();
+            m_vector.storage()->lock_write();
         }
 
         void finalize() override {
-            SPLA_LOG_INFO("unlock-vector");
-            m_vector.storage()->unlock_output();
+            m_vector.storage()->unlock_write();
         }
 
         void execute(detail::SubtaskBuilder &builder) override {
             auto storage = m_vector.storage();
-            auto blocks = std::make_shared<typename backend::VectorStorage<T>::BlocksSparse>(storage->block_count_rows());
+
+            auto blocks = detail::make_vector_blocks_sparse(storage);
+
             auto build = builder.emplace("build-storage", [blocks, storage]() { storage->build(std::move(*blocks)); });
+
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
                 builder.emplace("build-block", [storage, blocks, i, this]() {
                            auto nrows = storage->nrows();
                            auto blockSize = storage->block_size();
                            detail::Ref<backend::VectorCoo<T>> w;
-                           backend::BuildParams buildParams{storage::block_offset(blockSize, i), storage::block_size_at(nrows, blockSize, i), nrows};
-                           backend::build(w, m_reduceOp, m_rows, m_values, desc(), buildParams, i);
+                           backend::BuildParams buildParams{detail::block_offset(blockSize, i), detail::block_size_at(nrows, blockSize, i), nrows};
+                           backend::build(w, m_reduceOp, m_rows, m_values, desc(), buildParams, {i, i});
                            (*blocks)[i] = w;
                        })
                         .precede(build);

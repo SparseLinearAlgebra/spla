@@ -36,8 +36,8 @@ TEST(Vector, Setup) {
     std::vector<float> values = {0.1, 0.2, 10.0, -3.0, -10, 4, 5, 0, 8, 103.0f};
 
     spla::Expression expression;
-    expression.build(v, spla::binary_op::plus<float>(), rows, values);
-    expression.read(v, [&](auto &r, auto &v) { rows=std::move(r); values=std::move(v); });
+    expression.build(v, spla::binary_op::plus<float>(), rows, values)
+            ->precede(expression.read(v, [&](auto &r, auto &v) { rows=std::move(r); values=std::move(v); }));
 
     auto submission = expression.submit();
     submission.wait();

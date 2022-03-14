@@ -35,8 +35,9 @@
 #include <spla/descriptor.hpp>
 #include <spla/expression_node.hpp>
 #include <spla/types.hpp>
+#include <spla/vector.hpp>
 
-#include <spla/storage/storage_utils.hpp>
+#include <spla/detail/storage_utils.hpp>
 
 namespace spla::expression {
 
@@ -58,26 +59,37 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {}
-        void finalize() override {}
+        void prepare() override {
+            m_vector.storage()->lock_read();
+        }
+
+        void finalize() override {
+            m_vector.storage()->unlock_read();
+        }
+
         void execute(detail::SubtaskBuilder &builder) override {
             auto storage = m_vector.storage();
             auto nvals = storage->nvals();
-            auto nblocks = storage->block_count_rows();
             auto host_rows = std::make_shared<std::vector<Index>>(nvals);
             auto host_values = std::make_shared<std::vector<T>>(type_has_values<T>() ? nvals : 0);
 
-            std::vector<std::size_t> offsets(nblocks);
-            auto blocks = storage->blocks_sparse();
-            for (std::size_t i = 0; i < nblocks; i++) offsets[i] = blocks[i]->nvals();
-            std::exclusive_scan(offsets.begin(), offsets.end(), offsets.begin(), std::size_t{0});
+            auto offsets = detail::storage_block_offsets(storage->blocks());
 
             auto notify = builder.emplace("read-notify", [host_rows, host_values, this]() { m_callback(*host_rows, *host_values); });
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
                 builder.emplace("read-block", [storage, host_rows, host_values, i, offsets, this]() {
                            auto blockSize = storage->block_size();
-                           backend::ReadParams readParams{storage::block_offset(blockSize, i), offsets[i]};
-                           backend::read(storage->block_sparse(i), *host_rows, *host_values, desc(), readParams, i);
+                           auto schema = storage->storage_schema();
+
+                           backend::ReadParams readParams{detail::block_offset(blockSize, i), offsets[i]};
+                           backend::DispatchParams dispatchParams{i, i};
+
+                           if (schema == StorageSchema::Sparse)
+                               backend::read(storage->block_sparse(i), *host_rows, *host_values, desc(), readParams, dispatchParams);
+                           else if (schema == StorageSchema::Dense)
+                               backend::read(storage->block_dense(i), *host_rows, *host_values, desc(), readParams, dispatchParams);
+                           else
+                               throw std::runtime_error("unknown storage schema");
                        })
                         .precede(notify);
             }

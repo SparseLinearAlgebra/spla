@@ -25,48 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
-#define SPLA_REFERENCE_VECTOR_DENSE_HPP
+#ifndef SPLA_SHARED_REDUCE_HPP
+#define SPLA_SHARED_REDUCE_HPP
 
-#include <cassert>
 #include <vector>
 
-#include <spla/detail/vector_block.hpp>
+#include <spla/types.hpp>
 
 namespace spla::backend {
 
     /**
-     * @addtogroup reference
+     * @addtogroup shared
      * @{
      */
 
-    /**
-     * @class VectorDense
-     * @brief Dense vector representation with explicit non-zero values storage
-     *
-     * @tparam T Type of stored values
-     */
-    template<typename T>
-    class VectorDense : public detail::VectorBlock<T> {
-    public:
-        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : detail::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
-            assert(m_mask.size() == nrows);
-            assert(m_values.size() == nrows || !type_has_values<T>());
+    template<typename T, typename ReduceOp>
+    inline void reduce(const std::vector<Index> &indices,
+                       const std::vector<T> &values,
+                       const ReduceOp &reduceOp,
+                       std::vector<Index> &out_indices,
+                       std::vector<T> &out_values) {
+        std::size_t dst_pos = 0;
+        std::size_t nvals = indices.size();
+        std::vector<Index> reduced_indices = indices;
+        std::vector<T> reduced_values = values;
+
+        for (std::size_t src_pos = 1; src_pos < nvals; src_pos += 1) {
+            if (reduced_indices[dst_pos] != reduced_indices[src_pos]) {
+                dst_pos += 1;
+                reduced_indices[dst_pos] = reduced_indices[src_pos];
+                if constexpr (type_has_values<T>()) reduced_values[dst_pos] = reduced_values[src_pos];
+            } else {
+                reduced_values[dst_pos] = reduceOp.invoke_host(reduced_values[dst_pos], reduced_values[src_pos]);
+            }
         }
 
-        ~VectorDense() override = default;
+        if (!indices.empty())
+            dst_pos += 1;
 
-        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
-        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
+        reduced_indices.resize(dst_pos);
+        reduced_values.resize(type_has_values<T>() ? dst_pos : 0);
 
-        [[nodiscard]] std::vector<Index> &mask() { return m_mask; }
-        [[nodiscard]] std::vector<T> &values() { return m_values; }
-
-    private:
-        std::vector<Index> m_mask;
-        std::vector<T> m_values;
-    };
+        out_indices = std::move(reduced_indices);
+        out_values = std::move(reduced_values);
+    }
 
     /**
      * @}
@@ -74,4 +76,4 @@ namespace spla::backend {
 
 }// namespace spla::backend
 
-#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP
+#endif//SPLA_SHARED_REDUCE_HPP

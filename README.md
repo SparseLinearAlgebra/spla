@@ -6,7 +6,7 @@
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
-**spla** is a sparse linear algebra framework for multi-GPU computations based on `OpenCL` and `Cuda`. It provides 
+**spla** is a sparse linear algebra framework for multi-GPU computations. It provides 
 linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of operations, and gives an 
 ability to customize underlying values types and parametrise operations using arbitrary user defined functions.
 
@@ -91,8 +91,6 @@ spla
 │   │   ├── opencl - opencl based library backend implemenatation
 │   │   └── cuda - cuda based library backend implemenatation
 │   ├── algorithms - library based common liinear algebra algoruthms
-│   ├── detail - internal classes
-│   ├── expression - computational expressions implementation
 │   ├── io - input/output operations for data manipulation
 │   ├── storage - liberary storage classes
 │   └── spla.hpp - all in one place library interface

@@ -25,53 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
-#define SPLA_REFERENCE_VECTOR_DENSE_HPP
+#include <test_utils.hpp>
 
-#include <cassert>
-#include <vector>
+#include <spla/spla.hpp>
 
-#include <spla/detail/vector_block.hpp>
+TEST(Vector, Small) {
+    spla::Vector<int> v(100);
+    spla::Vector<spla::Unit> mask(100);
 
-namespace spla::backend {
+    std::vector<spla::Index> rows = {0, 1, 3, 22, 46, 97};
+    std::vector<int> values = {1, 2, 3, 1, 1, 4};
 
-    /**
-     * @addtogroup reference
-     * @{
-     */
+    spla::Expression expression;
 
-    /**
-     * @class VectorDense
-     * @brief Dense vector representation with explicit non-zero values storage
-     *
-     * @tparam T Type of stored values
-     */
-    template<typename T>
-    class VectorDense : public detail::VectorBlock<T> {
-    public:
-        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : detail::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
-            assert(m_mask.size() == nrows);
-            assert(m_values.size() == nrows || !type_has_values<T>());
-        }
+    expression.build(v, spla::NullOp(), rows, values) >>
+            expression.build(mask, spla::NullOp(), {0, 2, 8, 9, 78}, {}) >>
+            expression.assign(v, std::make_optional(mask), spla::NullOp(), 5) >>
+            expression.read(v, [&](auto &r, auto &v) { rows=std::move(r); values=std::move(v); });
 
-        ~VectorDense() override = default;
+    auto submission = expression.submit();
+    submission.wait();
+}
 
-        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
-        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
-
-        [[nodiscard]] std::vector<Index> &mask() { return m_mask; }
-        [[nodiscard]] std::vector<T> &values() { return m_values; }
-
-    private:
-        std::vector<Index> m_mask;
-        std::vector<T> m_values;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla::backend
-
-#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP
+SPLA_GTEST_MAIN

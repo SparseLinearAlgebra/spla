@@ -28,5 +28,35 @@
 #ifndef SPLA_MATRIX_HPP
 #define SPLA_MATRIX_HPP
 
+#include <spla/backend.hpp>
+#include <spla/config.hpp>
+#include <spla/library.hpp>
+
+namespace spla {
+
+    /**
+     * @class Matrix
+     * @brief Matrix object to represent a mathematical dim MxN matrix with values of specified Type.
+     *
+     * Uses blocked storage schema internally.
+     * Can be used as mask (only indices without values) if Type has zero no values.
+     * Can be updated from the host using data write expression node.
+     * Matrix content can be accessed from host using data read expression node.
+     *
+     * @details
+     *  Uses explicit values storage schema, so actual values of the matrix has
+     *  mathematical type `Maybe Type`, where non-zero values stored as is (`Just Value`),
+     *  and null values are not stored (`Nothing`). In expressions actual operations
+     *  are applied only to values `Just Value`. If provided binary function, it
+     *  is applied only if both of arguments are `Just Arg1` and `Just Arg2`.
+     *
+     * @tparam T Type of stored values
+     */
+    template<typename T>
+    class Matrix {
+    public:
+    };
+
+}// namespace spla
 
 #endif//SPLA_MATRIX_HPP

@@ -35,6 +35,8 @@
 #include <spla/io/log.hpp>
 #include <spla/types.hpp>
 
+#include <spla/backend/shared/params.hpp>
+
 #include <spla/backend/reference/storage/vector_coo.hpp>
 #include <spla/backend/reference/storage/vector_dense.hpp>
 
@@ -45,18 +47,13 @@ namespace spla::backend {
      * @{
      */
 
-    struct ReadParams {
-        std::size_t firstIndex;
-        std::size_t offset;
-    };
-
     template<typename T>
     inline void read(const detail::Ref<VectorCoo<T>> &w,
                      std::vector<Index> &rows,
                      std::vector<T> &values,
                      const Descriptor &,
                      const ReadParams &readParams,
-                     std::size_t id) {
+                     const DispatchParams &dispatchParams) {
         auto nvals = w->nvals();
         const auto &w_rows = w->rows();
         const auto &w_values = w->values();
@@ -69,7 +66,37 @@ namespace spla::backend {
             }
         }
 
-        SPLA_LOG_INFO("read block id=" << id);
+        SPLA_LOG_INFO("read block id=" << dispatchParams.id);
+    }
+
+    template<typename T>
+    inline void read(const detail::Ref<VectorDense<T>> &w,
+                     std::vector<Index> &rows,
+                     std::vector<T> &values,
+                     const Descriptor &,
+                     const ReadParams &readParams,
+                     const DispatchParams &dispatchParams) {
+        auto nrows = w->nrows();
+        const auto &w_rows = w->mask();
+        const auto &w_values = w->values();
+
+        std::size_t idx = 0;
+
+        for (std::size_t i = 0; i < nrows; i++) {
+            if (w_rows[i]) {
+                rows[readParams.offset + idx] = w_rows[i] + readParams.firstIndex;
+
+                if (type_has_values<T>()) {
+                    values[readParams.offset + idx] = w_values[i];
+                }
+
+                idx += 1;
+            }
+        }
+
+        assert(idx == w->nvals());
+
+        SPLA_LOG_INFO("read block id=" << dispatchParams.id);
     }
 
     /**

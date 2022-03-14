@@ -25,54 +25,46 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_STORAGE_UTILS_HPP
-#define SPLA_STORAGE_UTILS_HPP
+#ifndef SPLA_VECTOR_BLOCK_HPP
+#define SPLA_VECTOR_BLOCK_HPP
 
-#include <cmath>
-#include <cstddef>
-#include <utility>
+#include <spla/detail/ref.hpp>
+#include <spla/types.hpp>
 
-namespace spla::storage {
+namespace spla::detail {
 
     /**
      * @addtogroup internal
      * @{
      */
 
-    inline std::size_t block_size(std::size_t rows, std::size_t factor, std::size_t device_count) {
-        std::size_t split = factor * device_count;
-        return rows <= 4 * split || split == 1 ? rows : (rows - (rows % split)) / (split - 1);
-    }
+    /**
+     * @class VectorBlock
+     * @brief Base class for a block of vector data inside vector storage
+     *
+     * @tparam T Type of stored vector values
+     */
+    template<typename T>
+    class VectorBlock : public detail::RefCnt {
+    public:
+        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
 
-    inline std::size_t block_size(std::size_t rows, std::size_t cols, std::size_t factor, std::size_t device_count) {
-        return std::max(block_size(rows, factor, device_count), block_size(cols, factor, device_count));
-    }
+        ~VectorBlock() override = default;
 
-    inline std::size_t block_count(std::size_t rows, std::size_t block_size) {
-        return rows / block_size + (rows % block_size ? 1 : 0);
-    }
+        std::size_t nrows() const { return m_nrows; }
+        std::size_t nvals() const { return m_nvals; }
 
-    inline std::pair<std::size_t, std::size_t> block_count(std::size_t rows, std::size_t cols, std::size_t block_size) {
-        return {block_count(rows, block_size), block_count(cols, block_size)};
-    }
+        std::size_t &nvals() { return m_nvals; }
 
-    inline std::size_t block_size_at(std::size_t rows, std::size_t block_size, std::size_t i) {
-        std::size_t count = block_count(rows, block_size);
-        return i + 1 < count ? block_size : rows - (count - 1) * block_size;
-    }
-
-    inline std::pair<std::size_t, std::size_t> block_size_at(std::size_t rows, std::size_t cols, std::size_t block_size, std::size_t i, std::size_t j) {
-        return {block_size_at(rows, block_size, i), block_size_at(cols, block_size, j)};
-    }
-
-    inline std::size_t block_offset(std::size_t block_size, std::size_t i) {
-        return block_size * i;
-    }
+    protected:
+        std::size_t m_nrows;
+        std::size_t m_nvals;
+    };
 
     /**
      * @}
      */
 
-}// namespace spla::storage
+}// namespace spla::detail
 
-#endif//SPLA_STORAGE_UTILS_HPP
+#endif//SPLA_VECTOR_BLOCK_HPP

@@ -45,7 +45,7 @@ namespace spla {
      * @return True if has values
      */
     template<typename T>
-    inline bool type_has_values() {
+    constexpr inline bool type_has_values() {
         return true;
     }
 
@@ -57,7 +57,7 @@ namespace spla {
      * @return Size
      */
     template<typename T>
-    inline std::size_t type_size() {
+    constexpr inline std::size_t type_size() {
         return sizeof(T);
     }
 
@@ -77,12 +77,12 @@ namespace spla {
     using Unit = unsigned char;
 
     template<>
-    inline bool type_has_values<Unit>() {
+    constexpr inline bool type_has_values<Unit>() {
         return false;
     }
 
     template<>
-    inline std::size_t type_size<Unit>() {
+    constexpr inline std::size_t type_size<Unit>() {
         return 0;
     }
 
@@ -100,12 +100,12 @@ namespace spla {
      * @return True if passed op is null
      */
     template<typename T>
-    bool null_op() {
+    constexpr bool null_op() {
         return false;
     }
 
     template<>
-    bool null_op<NullOp>() {
+    constexpr bool null_op<NullOp>() {
         return true;
     }
 

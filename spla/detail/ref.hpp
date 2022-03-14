@@ -136,6 +136,13 @@ namespace spla::detail {
             return *this;
         }
 
+        template<typename G>
+        Ref<T> &operator=(const Ref<G> &other) {
+            if (get() != other.get())
+                this->reset(safe_ref(other.get()));
+            return *this;
+        }
+
         Ref<T> &operator=(Ref &&other) noexcept {
             if (this != &other)
                 this->reset(other.release());

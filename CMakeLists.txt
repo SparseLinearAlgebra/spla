@@ -4,11 +4,9 @@ project(spla LANGUAGES CXX)
 ######################################################################
 ## Public options
 
-option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
-option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
-option(SPLA_BUILD_CUDA "Build library CUDA backend (not supported yet)" YES)
-option(SPLA_BUILD_OPENCL "Build library OpenCL backend" YES)
-option(SPLA_BUILD_REFERENCE "Build library reference (CPU) backend" YES)
+set(SPLA_BUILD_TESTS YES CACHE BOOL "Build test folder with modules tests")
+set(SPLA_BUILD_EXAMPLES YES CACHE BOOL "Build library example applications with algorithms")
+set(SPLA_BUILD_BACKEND "reference" CACHE STRING "Backend name to build")
 
 ######################################################################
 ## Internal definitions
@@ -201,17 +199,17 @@ endif ()
 ######################################################################
 ## Source code configuration
 
-if (SPLA_BUILD_CUDA)
+if (SPLA_BUILD_BACKEND STREQUAL "cuda")
     message(STATUS "Add library CUDA backend")
     list(APPEND SPLA_DEFINES SPLA_BACKEND_CUDA)
 endif ()
 
-if (SPLA_BUILD_OPENCL)
+if (SPLA_BUILD_BACKEND STREQUAL "opencl")
     message(STATUS "Add library OpenCL backend")
     list(APPEND SPLA_DEFINES SPLA_BACKEND_OPENCL)
 endif ()
 
-if (SPLA_BUILD_REFERENCE)
+if (SPLA_BUILD_BACKEND STREQUAL "reference")
     message(STATUS "Add library reference (CPU) backend")
     list(APPEND SPLA_DEFINES SPLA_BACKEND_REFERENCE)
 endif ()

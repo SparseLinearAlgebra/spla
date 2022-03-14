@@ -25,53 +25,34 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
-#define SPLA_REFERENCE_VECTOR_DENSE_HPP
+#ifndef SPLA_BACKEND_UTILS_HPP
+#define SPLA_BACKEND_UTILS_HPP
 
-#include <cassert>
-#include <vector>
+#include <memory>
 
-#include <spla/detail/vector_block.hpp>
+#include <spla/backend.hpp>
 
-namespace spla::backend {
+namespace spla::detail {
 
     /**
-     * @addtogroup reference
+     * @addtogroup internal
      * @{
      */
 
-    /**
-     * @class VectorDense
-     * @brief Dense vector representation with explicit non-zero values storage
-     *
-     * @tparam T Type of stored values
-     */
     template<typename T>
-    class VectorDense : public detail::VectorBlock<T> {
-    public:
-        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : detail::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
-            assert(m_mask.size() == nrows);
-            assert(m_values.size() == nrows || !type_has_values<T>());
-        }
+    std::shared_ptr<typename backend::VectorStorage<T>::BlocksSparse> make_vector_blocks_sparse(const detail::Ref<backend::VectorStorage<T>> &storage) {
+        return std::make_shared<typename backend::VectorStorage<T>::BlocksSparse>(storage->block_count_rows());
+    }
 
-        ~VectorDense() override = default;
-
-        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
-        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
-
-        [[nodiscard]] std::vector<Index> &mask() { return m_mask; }
-        [[nodiscard]] std::vector<T> &values() { return m_values; }
-
-    private:
-        std::vector<Index> m_mask;
-        std::vector<T> m_values;
-    };
+    template<typename T>
+    std::shared_ptr<typename backend::VectorStorage<T>::BlocksDense> make_vector_blocks_dense(const detail::Ref<backend::VectorStorage<T>> &storage) {
+        return std::make_shared<typename backend::VectorStorage<T>::BlocksDense>(storage->block_count_rows());
+    }
 
     /**
      * @}
      */
 
-}// namespace spla::backend
+}// namespace spla::detail
 
-#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP
+#endif//SPLA_BACKEND_UTILS_HPP

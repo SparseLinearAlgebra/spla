@@ -31,7 +31,7 @@
 #include <cassert>
 #include <vector>
 
-#include <spla/storage/vector_block.hpp>
+#include <spla/detail/vector_block.hpp>
 
 namespace spla::backend {
 
@@ -47,10 +47,10 @@ namespace spla::backend {
      * @tparam T Type of stored values
      */
     template<typename T>
-    class VectorCoo : public storage::VectorBlock<T> {
+    class VectorCoo : public detail::VectorBlock<T> {
     public:
         VectorCoo(std::size_t nrows, std::size_t nvals, std::vector<Index> rows, std::vector<T> values)
-            : storage::VectorBlock<T>(nrows, nvals), m_rows(std::move(rows)), m_values(std::move(values)) {
+            : detail::VectorBlock<T>(nrows, nvals), m_rows(std::move(rows)), m_values(std::move(values)) {
             assert(m_rows.size() == nvals);
             assert(m_values.size() == nvals || !type_has_values<T>());
         }

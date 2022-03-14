@@ -25,48 +25,70 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
-#define SPLA_REFERENCE_VECTOR_DENSE_HPP
+#ifndef SPLA_SHARED_MERGE_HPP
+#define SPLA_SHARED_MERGE_HPP
 
-#include <cassert>
 #include <vector>
 
-#include <spla/detail/vector_block.hpp>
+#include <spla/types.hpp>
 
 namespace spla::backend {
 
     /**
-     * @addtogroup reference
+     * @addtogroup shared
      * @{
      */
 
-    /**
-     * @class VectorDense
-     * @brief Dense vector representation with explicit non-zero values storage
-     *
-     * @tparam T Type of stored values
-     */
     template<typename T>
-    class VectorDense : public detail::VectorBlock<T> {
-    public:
-        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : detail::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
-            assert(m_mask.size() == nrows);
-            assert(m_values.size() == nrows || !type_has_values<T>());
+    inline void merge(const std::vector<Index> &indices1,
+                      const std::vector<T> &values1,
+                      const std::vector<Index> &indices2,
+                      const std::vector<T> &values2,
+                      std::vector<Index> &out_indices,
+                      std::vector<T> &out_values) {
+        auto count1 = indices1.size();
+        auto count2 = indices2.size();
+
+        std::vector<Index> indices;
+        std::vector<T> values;
+
+        indices.reserve(count1 + count2);
+        values.reserve(type_has_values<T>() ? count1 + count2 : 0);
+
+        std::size_t i = 0;
+        std::size_t j = 0;
+
+        while (i < count1 && j < count2) {
+            if (indices1[i] < indices2[j]) {
+                indices.push_back(indices1[i]);
+                if constexpr (type_has_values<T>()) values.push_back(values1[i]);
+                i += 1;
+            } else if (indices2[j] < indices1[i]) {
+                indices.push_back(indices2[j]);
+                if constexpr (type_has_values<T>()) values.push_back(values2[j]);
+                j += 1;
+            } else {
+                indices.push_back(indices1[i]);
+                if constexpr (type_has_values<T>()) values.push_back(values1[i]);
+                i += 1;
+            }
         }
 
-        ~VectorDense() override = default;
+        while (i < count1) {
+            indices.push_back(indices1[i]);
+            if constexpr (type_has_values<T>()) values.push_back(values1[i]);
+            i += 1;
+        }
 
-        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
-        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
+        while (j < count2) {
+            indices.push_back(indices2[j]);
+            if constexpr (type_has_values<T>()) values.push_back(values2[j]);
+            j += 1;
+        }
 
-        [[nodiscard]] std::vector<Index> &mask() { return m_mask; }
-        [[nodiscard]] std::vector<T> &values() { return m_values; }
-
-    private:
-        std::vector<Index> m_mask;
-        std::vector<T> m_values;
-    };
+        out_indices = std::move(indices);
+        out_values = std::move(values);
+    }
 
     /**
      * @}
@@ -74,4 +96,4 @@ namespace spla::backend {
 
 }// namespace spla::backend
 
-#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP
+#endif//SPLA_SHARED_MERGE_HPP

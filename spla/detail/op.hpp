@@ -91,4 +91,27 @@ namespace spla::detail {
 
 }// namespace spla::detail
 
+#define SPLA_BINARY_OP(func_name, type, arguments, ...)                                    \
+    class func_name {                                                                      \
+    public:                                                                                \
+        static type invoke_host arguments __VA_ARGS__;                                     \
+        static const std::string &name() {                                                 \
+            static const std::string s_name = #func_name;                                  \
+            return s_name;                                                                 \
+        }                                                                                  \
+        static const std::string &body() {                                                 \
+            static const std::string s_body = #__VA_ARGS__;                                \
+            return s_body;                                                                 \
+        }                                                                                  \
+        static const std::string &declaration() {                                          \
+            static const std::string s_declaration =                                       \
+                    detail::MakeFunctionDeclaration<type arguments>()(name(), #arguments); \
+            return s_declaration;                                                          \
+        }                                                                                  \
+        static const std::string &source() {                                               \
+            static const std::string s_source = declaration() + body();                    \
+            return s_source;                                                               \
+        }                                                                                  \
+    };
+
 #endif//SPLA_OP_HPP

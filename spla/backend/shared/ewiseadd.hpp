@@ -25,44 +25,77 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_SHARED_EWISEADD_HPP
+#define SPLA_SHARED_EWISEADD_HPP
 
-#include <spla/detail/ref.hpp>
+#include <vector>
+
 #include <spla/types.hpp>
 
-namespace spla::storage {
+namespace spla::backend {
 
     /**
-     * @addtogroup internal
+     * @addtogroup shared
      * @{
      */
 
-    /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
-     *
-     * @tparam T Type of stored vector values
-     */
-    template<typename T>
-    class VectorBlock : public detail::RefCnt {
-    public:
-        VectorBlock(std::size_t nrows, std::size_t nvals) : m_nrows(nrows), m_nvals(nvals) {}
+    template<typename T, typename ReduceOp>
+    inline void ewiseadd(const std::vector<Index> &indices1,
+                         const std::vector<T> &values1,
+                         const std::vector<Index> &indices2,
+                         const std::vector<T> &values2,
+                         const ReduceOp &reduceOp,
+                         std::vector<Index> &out_indices,
+                         std::vector<T> &out_values) {
+        auto count1 = indices1.size();
+        auto count2 = indices2.size();
 
-        ~VectorBlock() override = default;
+        std::vector<Index> indices;
+        std::vector<T> values;
 
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
+        indices.reserve(count1 + count2);
+        values.reserve(type_has_values<T>() ? count1 + count2 : 0);
 
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
-    };
+        std::size_t i = 0;
+        std::size_t j = 0;
+
+        while (i < count1 && j < count2) {
+            if (indices1[i] < indices2[j]) {
+                indices.push_back(indices1[i]);
+                if constexpr (type_has_values<T>()) values.push_back(values1[i]);
+                i += 1;
+            } else if (indices2[j] < indices1[i]) {
+                indices.push_back(indices2[j]);
+                if constexpr (type_has_values<T>()) values.push_back(values2[j]);
+                j += 1;
+            } else {
+                indices.push_back(indices1[i]);
+                if constexpr (type_has_values<T>()) values.push_back(reduceOp.invoke_host(values1[i], values2[j]));
+                i += 1;
+                j += 1;
+            }
+        }
+
+        while (i < count1) {
+            indices.push_back(indices1[i]);
+            if constexpr (type_has_values<T>()) values.push_back(values1[i]);
+            i += 1;
+        }
+
+        while (j < count2) {
+            indices.push_back(indices2[j]);
+            if constexpr (type_has_values<T>()) values.push_back(values2[j]);
+            j += 1;
+        }
+
+        out_indices = std::move(indices);
+        out_values = std::move(values);
+    }
 
     /**
      * @}
      */
 
-}// namespace spla::storage
+}// namespace spla::backend
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_SHARED_EWISEADD_HPP

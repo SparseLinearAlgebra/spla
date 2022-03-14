@@ -25,53 +25,64 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_DENSE_HPP
-#define SPLA_REFERENCE_VECTOR_DENSE_HPP
+#ifndef SPLA_STORAGE_UTILS_HPP
+#define SPLA_STORAGE_UTILS_HPP
 
-#include <cassert>
+#include <cmath>
+#include <cstddef>
+#include <numeric>
+#include <utility>
 #include <vector>
 
-#include <spla/detail/vector_block.hpp>
-
-namespace spla::backend {
+namespace spla::detail {
 
     /**
-     * @addtogroup reference
+     * @addtogroup internal
      * @{
      */
 
-    /**
-     * @class VectorDense
-     * @brief Dense vector representation with explicit non-zero values storage
-     *
-     * @tparam T Type of stored values
-     */
+    inline std::size_t block_size(std::size_t rows, std::size_t factor, std::size_t device_count) {
+        std::size_t split = factor * device_count;
+        return rows <= 4 * split || split == 1 ? rows : (rows - (rows % split)) / (split - 1);
+    }
+
+    inline std::size_t block_size(std::size_t rows, std::size_t cols, std::size_t factor, std::size_t device_count) {
+        return std::max(block_size(rows, factor, device_count), block_size(cols, factor, device_count));
+    }
+
+    inline std::size_t block_count(std::size_t rows, std::size_t block_size) {
+        return rows / block_size + (rows % block_size ? 1 : 0);
+    }
+
+    inline std::pair<std::size_t, std::size_t> block_count(std::size_t rows, std::size_t cols, std::size_t block_size) {
+        return {block_count(rows, block_size), block_count(cols, block_size)};
+    }
+
+    inline std::size_t block_size_at(std::size_t rows, std::size_t block_size, std::size_t i) {
+        std::size_t count = block_count(rows, block_size);
+        return i + 1 < count ? block_size : rows - (count - 1) * block_size;
+    }
+
+    inline std::pair<std::size_t, std::size_t> block_size_at(std::size_t rows, std::size_t cols, std::size_t block_size, std::size_t i, std::size_t j) {
+        return {block_size_at(rows, block_size, i), block_size_at(cols, block_size, j)};
+    }
+
+    inline std::size_t block_offset(std::size_t block_size, std::size_t i) {
+        return block_size * i;
+    }
+
     template<typename T>
-    class VectorDense : public detail::VectorBlock<T> {
-    public:
-        VectorDense(std::size_t nrows, std::size_t nvals, std::vector<Index> mask, std::vector<T> values)
-            : detail::VectorBlock<T>(nrows, nvals), m_mask(std::move(mask)), m_values(std::move(values)) {
-            assert(m_mask.size() == nrows);
-            assert(m_values.size() == nrows || !type_has_values<T>());
-        }
-
-        ~VectorDense() override = default;
-
-        [[nodiscard]] const std::vector<Index> &mask() const { return m_mask; }
-        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
-
-        [[nodiscard]] std::vector<Index> &mask() { return m_mask; }
-        [[nodiscard]] std::vector<T> &values() { return m_values; }
-
-    private:
-        std::vector<Index> m_mask;
-        std::vector<T> m_values;
-    };
+    inline std::vector<std::size_t> storage_block_offsets(const std::vector<detail::Ref<T>> &blocks) {
+        std::vector<std::size_t> offsets(blocks.size());
+        for (std::size_t i = 0; i < blocks.size(); i++) offsets[i] = blocks[i]->nvals();
+        std::exclusive_scan(offsets.begin(), offsets.end(), offsets.begin(), std::size_t{0});
+        return offsets;
+    }
 
     /**
      * @}
      */
 
-}// namespace spla::backend
+}// namespace spla::detail
 
-#endif//SPLA_REFERENCE_VECTOR_DENSE_HPP
+#endif//SPLA_STORAGE_UTILS_HPP

@@ -105,11 +105,27 @@ namespace spla {
         [[nodiscard]] bool no_duplicates() const { return m_no_duplicates; }
         [[nodiscard]] bool &no_duplicates() { return m_no_duplicates; }
 
+        /**
+         * @brief Show if must use mask structure complement pattern for mask application
+         * @return Param value
+         */
+        [[nodiscard]] bool scmp() const { return m_scmp; }
+        [[nodiscard]] bool &scmp() { return m_scmp; }
+
+        /**
+         * @brief Show if must replace all previous content in the output vector
+         * @return Param value
+         */
+        [[nodiscard]] bool replace() const { return m_replace; }
+        [[nodiscard]] bool &replace() { return m_replace; }
+
     private:
         std::unordered_map<FieldCustom, std::string> m_custom;
 
         bool m_sorted = false;
         bool m_no_duplicates = false;
+        bool m_scmp = false;
+        bool m_replace = false;
     };
 
     /**

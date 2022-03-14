@@ -30,17 +30,18 @@
 
 #include <cassert>
 #include <functional>
+#include <optional>
 #include <stdexcept>
-
-#include <taskflow/taskflow.hpp>
 
 #include <spla/descriptor.hpp>
 #include <spla/library.hpp>
+#include <spla/matrix.hpp>
 #include <spla/vector.hpp>
 
 #include <spla/expression_node.hpp>
 #include <spla/expression_submission.hpp>
 
+#include <spla/expression/assign.hpp>
 #include <spla/expression/build.hpp>
 #include <spla/expression/read.hpp>
 
@@ -96,7 +97,8 @@ namespace spla {
          *
          * @return Expression node
          */
-        template<typename T, typename ReduceOp>
+        template<typename T,
+                 typename ReduceOp>
         Node build(const Vector<T> &vector,
                    ReduceOp reduceOp,
                    std::vector<Index> rows,
@@ -122,43 +124,54 @@ namespace spla {
          *
          * @return Expression node
          */
-        template<typename T, typename Callback>
+        template<typename T,
+                 typename Callback>
         Node read(const Vector<T> &vector,
                   Callback callback,
                   const Descriptor &descriptor = Descriptor()) {
             RETURN_NEW_NODE ReadVector<T, Callback> WITH_ARGS(vector, std::move(callback));
         }
 
-        template<typename T, typename AccumOp, typename BinaryOp>
-        Node ewiseadd(const Vector<T> &w,
-                      AccumOp accumOp,
-                      BinaryOp binaryOp,
-                      const Vector<T> &a,
-                      const Vector<T> &b,
-                      const Descriptor &descriptor = Descriptor()) {
+        /**
+         * @brief Assign vector value using mask
+         *
+         * @tparam T Type of vector values
+         * @tparam M Type of mask values (not used)
+         * @tparam AccumOp Binary op of type t x t -> t
+         *
+         * @param w Vector to assign values
+         * @param mask Optional mask structure used to select values
+         * @param accumOp Binary op used to accum new and existing values
+         * @param value Value to assign
+         * @param descriptor Operation descriptor
+         *
+         * @return Expression node
+         */
+        template<typename T,
+                 typename M,
+                 typename AccumOp>
+        Node assign(const Vector<T> &w,
+                    const std::optional<Vector<M>> &mask,
+                    AccumOp accumOp,
+                    T value,
+                    const Descriptor &descriptor = Descriptor()) {
+            RETURN_NEW_NODE AssignVector<T, M, AccumOp> WITH_ARGS(w, mask, std::move(accumOp), std::move(value));
         }
 
-        /**
-         * @brief Makes dependency between provided expression nodes.
-         * Next `succ` node will be evaluated only after `pred` node evaluation is finished.
-         *
-         * @param pred Expression node
-         * @param succ Expression node, which evaluation depends on `pred` node.
-         */
-        void dependency(const Node &pred, const Node &succ) {
-            assert(pred);
-            assert(succ);
-
-            assert(pred->expression() == this);
-            assert(succ->expression() == this);
-
-            if (pred.is_null() || succ.is_null())
-                throw std::runtime_error("passed null pointer node");
-
-            if (pred->expression() != this || succ->expression() != this)
-                throw std::runtime_error("passed expression nodes does not belong this expression");
-
-            pred->link(succ.get());
+        template<typename T,
+                 typename M,
+                 typename AccumOp,
+                 typename MultiplyOp,
+                 typename ReduceOp>
+        Node vxm(const Vector<T> &w,
+                 const std::optional<Vector<M>> &mask,
+                 AccumOp accumOp,
+                 MultiplyOp multiplyOp,
+                 ReduceOp reduceOp,
+                 const Vector<T> &a,
+                 const Matrix<T> &m,
+                 const Descriptor &descriptor = Descriptor()) {
+            // ...
         }
 
         /**

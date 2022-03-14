@@ -31,9 +31,13 @@
 #include <algorithm>
 #include <vector>
 
+#include <spla/binary_op.hpp>
 #include <spla/descriptor.hpp>
 #include <spla/io/log.hpp>
 #include <spla/types.hpp>
+
+#include <spla/backend/shared/params.hpp>
+#include <spla/backend/shared/reduce.hpp>
 
 #include <spla/backend/reference/storage/vector_coo.hpp>
 #include <spla/backend/reference/storage/vector_dense.hpp>
@@ -45,20 +49,14 @@ namespace spla::backend {
      * @{
      */
 
-    struct BuildParams {
-        std::size_t firstIndex;
-        std::size_t size;
-        std::size_t bounds;
-    };
-
     template<typename T, typename ReduceOp>
     inline void build(detail::Ref<VectorCoo<T>> &w,
-                      ReduceOp reduceOp,
+                      const ReduceOp &reduceOp,
                       const std::vector<Index> &rows,
                       const std::vector<T> &values,
                       const Descriptor &descriptor,
                       const BuildParams &buildParams,
-                      std::size_t id) {
+                      const DispatchParams &dispatchParams) {
         std::size_t nvals = 0;
 
         for (auto i : rows) {
@@ -91,7 +89,7 @@ namespace spla::backend {
         assert(vectorValues.empty() || vectorValues.size() == nvals);
 
         if (!descriptor.sorted() && nvals > 1) {
-            SPLA_LOG_INFO("sort values id=" << id);
+            SPLA_LOG_INFO("sort values id=" << dispatchParams.id);
 
             if (type_has_values<T>()) {
                 // Pack indices and values, sort and unpack
@@ -115,24 +113,18 @@ namespace spla::backend {
         }
 
         if (!descriptor.no_duplicates() && nvals > 1) {
-            SPLA_LOG_INFO("reduce duplicates id=" << id);
-            std::size_t pos = 0;
-            for (std::size_t i = 1; i < nvals; i++) {
-                if (vectorRows[pos] != vectorRows[i]) {
-                    // Offset pos and copy index
-                    pos += 1;
-                    vectorRows[pos] = vectorRows[i];
-                    if (type_has_values<T>()) {
-                        vectorValues[pos] = vectorValues[i];
-                    }
-                } else if (!null_op<ReduceOp>()) {
-                    // If has reduce op, can reduce duplicated values (store at the same prev pos)
-                    vectorValues[pos] = reduceOp.invoke_host(vectorValues[pos], vectorValues[i]);
-                }
-            }
-            nvals = pos + 1;
-            vectorRows.resize(nvals);
-            vectorValues.resize(type_has_values<T>() ? nvals : 0);
+            SPLA_LOG_INFO("reduce duplicates id=" << dispatchParams.id);
+            std::vector<Index> reducedRows;
+            std::vector<T> reducedValues;
+
+            if constexpr (null_op<ReduceOp>())
+                reduce(vectorRows, vectorValues, binary_op::first<T>(), reducedRows, reducedValues);
+            else
+                reduce(vectorRows, vectorValues, reduceOp, reducedRows, reducedValues);
+
+            nvals = reducedRows.size();
+            std::swap(reducedRows, vectorRows);
+            std::swap(reducedValues, vectorValues);
         }
 
         w.acquire(new VectorCoo<T>(buildParams.size, nvals, std::move(vectorRows), std::move(vectorValues)));
