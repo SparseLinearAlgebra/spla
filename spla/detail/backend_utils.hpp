@@ -40,13 +40,8 @@ namespace spla::detail {
      */
 
     template<typename T>
-    std::shared_ptr<typename backend::VectorStorage<T>::BlocksSparse> make_vector_blocks_sparse(const detail::Ref<backend::VectorStorage<T>> &storage) {
-        return std::make_shared<typename backend::VectorStorage<T>::BlocksSparse>(storage->block_count_rows());
-    }
-
-    template<typename T>
-    std::shared_ptr<typename backend::VectorStorage<T>::BlocksDense> make_vector_blocks_dense(const detail::Ref<backend::VectorStorage<T>> &storage) {
-        return std::make_shared<typename backend::VectorStorage<T>::BlocksDense>(storage->block_count_rows());
+    std::shared_ptr<typename VectorStorage<T>::Blocks> make_blocks(const detail::Ref<VectorStorage<T>> &storage) {
+        return std::make_shared<typename VectorStorage<T>::Blocks>(storage->block_count_rows());
     }
 
     /**

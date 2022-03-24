@@ -76,30 +76,27 @@ namespace spla::expression {
 
             auto use_mask = m_mask.has_value();
             auto use_scmp = desc().scmp();
+            auto use_replace = desc().replace();
 
             if (!use_mask)
                 throw std::runtime_error("unmasked assignment not supported yet");
             if (use_scmp)
                 throw std::runtime_error("structure complement not supported");
+            if (use_replace)
+                throw std::runtime_error("replace not supported yet");
 
-            auto b_sparse = detail::make_vector_blocks_sparse(storage);
-            auto b_dense = detail::make_vector_blocks_dense(storage);
+            auto blocks = detail::make_blocks(storage);
 
             auto w_schema = storage->storage_schema();
             auto m_schema = storage->storage_schema();
             auto r_schema = w_schema == StorageSchema::Sparse && m_schema == StorageSchema::Dense ? StorageSchema::Dense : w_schema;
 
-            auto build = builder.emplace("set-blocks", [=]() {
-                if (r_schema == StorageSchema::Sparse)
-                    storage->build(std::move(*b_sparse));
-                else if (r_schema == StorageSchema::Dense)
-                    storage->build(std::move(*b_dense));
-                else
-                    throw std::runtime_error("undefined storage schema");
+            auto build = builder.emplace("set-blocks", [r_schema, storage, blocks]() {
+                storage->build(r_schema, std::move(*blocks));
             });
 
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
-                builder.emplace("assign-block", [i, b_sparse, b_dense, w_storage = storage, this]() {
+                builder.emplace("assign-block", [i, blocks, w_storage = storage, this]() {
                            backend::DispatchParams dispatchParams{i, i};
                            backend::AssignParams assignParams{};
 
@@ -108,30 +105,32 @@ namespace spla::expression {
                            auto use_scmp = desc().scmp();
                            auto use_replace = desc().replace();
 
-                           auto mask_storage = m_mask.value().storage();
+                           auto m_storage = m_mask.value().storage();
                            auto w_schema = w_storage->storage_schema();
-                           auto mask_schema = mask_storage->storage_schema();
+                           auto m_schema = m_storage->storage_schema();
 
-                           if (w_schema == StorageSchema::Sparse) {
-                               auto w_block = w_storage->block_sparse(i);
-
-                               if (mask_schema == StorageSchema::Sparse) {
-                                   backend::assign(w_block, mask_storage->block_sparse(i), m_accumOp, m_value, desc(), assignParams, dispatchParams);
-                                   (*b_sparse)[i] = w_block;
-                               } else {
-                                   // transition w to dense vector
-                               }
+                           if (w_schema == StorageSchema::Sparse &&
+                               m_schema == StorageSchema::Dense) {
+                               // todo: transition w to dense vector
+                               SPLA_LOG_ERROR("not conversion from sparse to dense yet");
                            }
-
-                           if (w_schema == StorageSchema::Dense) {
-                               auto w_block = w_storage->block_dense(i);
-
-                               if (mask_schema == StorageSchema::Sparse)
-                                   backend::assign(w_block, mask_storage->block_sparse(i), m_accumOp, m_value, desc(), assignParams, dispatchParams);
-                               else
-                                   backend::assign(w_block, mask_storage->block_dense(i), m_accumOp, m_value, desc(), assignParams, dispatchParams);
-
-                               (*b_dense)[i] = w_block;
+                           if (w_schema == StorageSchema::Sparse &&
+                               m_schema == StorageSchema::Sparse) {
+                               auto block = w_storage->block(i).template cast<backend::VectorCoo<T>>();
+                               backend::assign(block, m_storage->block(i).template cast<backend::VectorCoo<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
+                               (*blocks)[i] = block;
+                           }
+                           if (w_schema == StorageSchema::Dense &&
+                               m_schema == StorageSchema::Sparse) {
+                               auto block = w_storage->block(i).template cast<backend::VectorDense<T>>();
+                               backend::assign(block, m_storage->block(i).template cast<backend::VectorCoo<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
+                               (*blocks)[i] = block;
+                           }
+                           if (w_schema == StorageSchema::Dense &&
+                               m_schema == StorageSchema::Sparse) {
+                               auto block = w_storage->block(i).template cast<backend::VectorDense<T>>();
+                               backend::assign(block, m_storage->block(i).template cast<backend::VectorDense<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
+                               (*blocks)[i] = block;
                            }
                        })
                         .precede(build);

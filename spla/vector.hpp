@@ -32,6 +32,8 @@
 #include <spla/config.hpp>
 #include <spla/library.hpp>
 
+#include <spla/storage/vector_storage.hpp>
+
 namespace spla {
 
     /**
@@ -55,7 +57,7 @@ namespace spla {
     template<typename T>
     class Vector {
     public:
-        explicit Vector(std::size_t nrows) : m_storage(new backend::VectorStorage<T>(nrows)) {}
+        explicit Vector(std::size_t nrows) : m_storage(new VectorStorage<T>(nrows)) {}
 
         /** @return Storage size */
         [[nodiscard]] std::size_t nrows() const { return m_storage->get_nrows(); }
@@ -64,10 +66,10 @@ namespace spla {
         [[nodiscard]] std::size_t nvals() const { return m_storage->get_nvals(); }
 
         /** @return Backend vector storage */
-        [[nodiscard]] const detail::Ref<backend::VectorStorage<T>> &storage() { return m_storage; }
+        [[nodiscard]] const detail::Ref<VectorStorage<T>> &storage() { return m_storage; }
 
     private:
-        detail::Ref<backend::VectorStorage<T>> m_storage;
+        detail::Ref<VectorStorage<T>> m_storage;
     };
 
 }// namespace spla

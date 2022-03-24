@@ -72,24 +72,28 @@ namespace spla::expression {
             auto nvals = storage->nvals();
             auto host_rows = std::make_shared<std::vector<Index>>(nvals);
             auto host_values = std::make_shared<std::vector<T>>(type_has_values<T>() ? nvals : 0);
-
             auto offsets = detail::storage_block_offsets(storage->blocks());
 
-            auto notify = builder.emplace("read-notify", [host_rows, host_values, this]() { m_callback(*host_rows, *host_values); });
+            auto notify = builder.emplace("read-notify", [this, host_rows, host_values]() {
+                m_callback(*host_rows, *host_values);
+            });
+
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
-                builder.emplace("read-block", [storage, host_rows, host_values, i, offsets, this]() {
+                builder.emplace("read-block", [storage, host_rows, host_values, offsets, i, this]() {
+                           auto block = storage->block(i);
+
+                           if (block.is_null())
+                               return;
+
                            auto blockSize = storage->block_size();
                            auto schema = storage->storage_schema();
-
                            backend::ReadParams readParams{detail::block_offset(blockSize, i), offsets[i]};
                            backend::DispatchParams dispatchParams{i, i};
 
                            if (schema == StorageSchema::Sparse)
-                               backend::read(storage->block_sparse(i), *host_rows, *host_values, desc(), readParams, dispatchParams);
-                           else if (schema == StorageSchema::Dense)
-                               backend::read(storage->block_dense(i), *host_rows, *host_values, desc(), readParams, dispatchParams);
-                           else
-                               throw std::runtime_error("unknown storage schema");
+                               backend::read(block.template cast<backend::VectorCoo<T>>(), *host_rows, *host_values, desc(), readParams, dispatchParams);
+                           if (schema == StorageSchema::Dense)
+                               backend::read(block.template cast<backend::VectorDense<T>>(), *host_rows, *host_values, desc(), readParams, dispatchParams);
                        })
                         .precede(notify);
             }

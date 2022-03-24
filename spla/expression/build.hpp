@@ -74,13 +74,14 @@ namespace spla::expression {
 
         void execute(detail::SubtaskBuilder &builder) override {
             auto storage = m_vector.storage();
+            auto blocks = detail::make_blocks(storage);
 
-            auto blocks = detail::make_vector_blocks_sparse(storage);
-
-            auto build = builder.emplace("build-storage", [blocks, storage]() { storage->build(std::move(*blocks)); });
+            auto build = builder.emplace("build-storage", [blocks, storage]() {
+                storage->build(StorageSchema::Sparse, std::move(*blocks));
+            });
 
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
-                builder.emplace("build-block", [storage, blocks, i, this]() {
+                builder.emplace("build-block", [=]() {
                            auto nrows = storage->nrows();
                            auto blockSize = storage->block_size();
                            detail::Ref<backend::VectorCoo<T>> w;

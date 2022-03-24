@@ -46,16 +46,16 @@
 #include <spla/detail/storage_utils.hpp>
 #include <spla/storage/storage_schema.hpp>
 
-namespace spla::backend {
+namespace spla {
 
     /**
-     * @addtogroup reference
+     * @addtogroup spla
      * @{
      */
 
     /**
      * @class VectorStorage
-     * @brief Reference host backend blocked vector storage
+     * @brief Backend blocked vector storage
      *
      * @tparam T Type of stored values
      */
@@ -63,42 +63,31 @@ namespace spla::backend {
     class VectorStorage final : public detail::RefCnt {
     public:
         typedef std::vector<detail::Ref<detail::VectorBlock<T>>> Blocks;
-        typedef std::vector<detail::Ref<VectorCoo<T>>> BlocksSparse;
-        typedef std::vector<detail::Ref<VectorDense<T>>> BlocksDense;
 
         explicit VectorStorage(std::size_t nrows)
             : m_nrows(nrows) {
-            m_block_size = detail::block_size(nrows, library().block_factor(), device_count());
+            m_block_size = detail::block_size(nrows, library().block_factor(), backend::device_count());
             m_block_count_rows = detail::block_count(nrows, m_block_size);
-            m_sparse.resize(m_block_count_rows);
-            m_dense.resize(m_block_count_rows);
+
+            // Allocate empty blocks for default schema
+            build(m_schema, Blocks(m_block_count_rows));
         }
 
         ~VectorStorage() override = default;
 
+        void build(StorageSchema schema, Blocks blocks) {
+            assert(blocks.size() == block_count_rows());
+            m_schema = schema;
+            m_nvals = 0;
+            m_blocks[schema] = std::move(blocks);
+
+            for (const auto &b : m_blocks[schema])
+                if (b.is_not_null()) m_nvals += b->nvals();
+        }
+
         [[nodiscard]] std::size_t nrows() const { return m_nrows; }
         [[nodiscard]] std::size_t block_size() const { return m_block_size; }
         [[nodiscard]] std::size_t block_count_rows() const { return m_block_count_rows; }
-
-        void build(BlocksSparse sparse) {
-            assert(sparse.size() == block_count_rows());
-            m_schema = StorageSchema::Sparse;
-            m_sparse = std::move(sparse);
-            m_nvals = 0;
-
-            for (const auto &b : m_sparse)
-                if (b.is_not_null()) m_nvals += b->nvals();
-        }
-
-        void build(BlocksDense sparse) {
-            assert(sparse.size() == block_count_rows());
-            m_schema = StorageSchema::Dense;
-            m_dense = std::move(sparse);
-            m_nvals = 0;
-
-            for (const auto &b : m_dense)
-                if (b.is_not_null()) m_nvals += b->nvals();
-        }
 
         [[nodiscard]] std::size_t nvals() const {
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
@@ -110,56 +99,15 @@ namespace spla::backend {
             return m_schema;
         }
 
-        [[nodiscard]] detail::Ref<VectorCoo<T>> block_sparse(std::size_t i) {
+        [[nodiscard]] detail::Ref<detail::VectorBlock<T>> block(std::size_t i) {
             assert(i < block_count_rows());
-
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-
-            if (m_schema != StorageSchema::Sparse)
-                throw std::runtime_error("invalid storage schema");
-
-            return m_sparse[i];
-        }
-
-        [[nodiscard]] detail::Ref<VectorDense<T>> block_dense(std::size_t i) {
-            assert(i < block_count_rows());
-
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-
-            if (m_schema != StorageSchema::Dense)
-                throw std::runtime_error("invalid storage schema");
-
-            return m_dense[i];
-        }
-
-        [[nodiscard]] BlocksSparse blocks_sparse() const {
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-
-            if (m_schema != StorageSchema::Sparse)
-                throw std::runtime_error("invalid storage schema");
-
-            return m_sparse;
-        }
-
-        [[nodiscard]] BlocksDense blocks_dense() const {
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-
-            if (m_schema != StorageSchema::Dense)
-                throw std::runtime_error("invalid storage schema");
-
-            return m_dense;
+            return m_blocks[m_schema][i];
         }
 
         [[nodiscard]] Blocks blocks() const {
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-            Blocks blocks_list(block_count_rows());
-
-            if (m_schema == StorageSchema::Sparse)
-                std::copy(m_sparse.begin(), m_sparse.end(), blocks_list.begin());
-            if (m_schema == StorageSchema::Dense)
-                std::copy(m_sparse.begin(), m_sparse.end(), blocks_list.begin());
-
-            return blocks_list;
+            return m_blocks[m_schema];
         }
 
         void lock_write() {}
@@ -169,15 +117,19 @@ namespace spla::backend {
         void unlock_read() {}
 
     private:
+        /** Vector dim */
         std::size_t m_nrows;
+        /** Total number of non-zero values */
         std::size_t m_nvals = 0;
+        /** Size of block (except the edge case) */
         std::size_t m_block_size = 0;
+        /** Number of blocks after decomposition */
         std::size_t m_block_count_rows = 0;
 
+        /** Active storage schema of the vector (used to query blocks) */
         StorageSchema m_schema = StorageSchema::Sparse;
-
-        BlocksSparse m_sparse;
-        BlocksDense m_dense;
+        /** Blocks of the vector per schema (some may be cached) */
+        mutable std::unordered_map<StorageSchema, Blocks> m_blocks;
 
         mutable std::shared_mutex m_mutex;
     };
@@ -186,6 +138,6 @@ namespace spla::backend {
      * @}
      */
 
-}// namespace spla::backend
+}// namespace spla
 
 #endif//SPLA_REFERENCE_VECTOR_STORAGE_HPP

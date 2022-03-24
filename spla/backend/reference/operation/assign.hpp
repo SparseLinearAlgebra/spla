@@ -88,8 +88,8 @@ namespace spla::backend {
                        const AssignParams &,
                        const DispatchParams &) {
         const auto nrows = m->nrows();
-        const auto &rows = m->rows();
-        const auto &values = m->values();
+        const auto &m_rows = m->rows();
+        const auto &m_values = m->values();
 
         // If no block, allocate empty dense vector
         if (w.is_null())
@@ -97,20 +97,21 @@ namespace spla::backend {
                                          std::vector<Index>(nrows, 0),
                                          std::vector<T>(type_has_values<T>() ? nrows : 0)));
 
-        auto &dense_mask = w->mask();
-        auto &dense_values = w->values();
+        auto &w_mask = w->mask();
+        auto &w_values = w->values();
 
         // Fill values inside dense block using
         for (std::size_t k = 0; k < m->nvals(); k++) {
-            auto i = rows[k];
-            if (!dense_mask[i]) {
-                if constexpr (type_has_values<T>()) dense_values[i] = values[k];
+            auto i = m_rows[k];
+            if (!w_mask[i]) {
+                w_mask[i] = 1;
                 w->nvals() += 1;
+                if constexpr (type_has_values<T>()) w_values[i] = m_values[k];
             } else if constexpr (type_has_values<T>()) {
                 if constexpr (null_op<AccumOp>())
-                    dense_values[i] = values[k];
+                    w_values[i] = m_values[k];
                 else
-                    dense_values[i] = accumOp.invoke_host(dense_values[i], values[k]);
+                    w_values[i] = accumOp.invoke_host(w_values[i], m_values[k]);
             }
         }
     }
@@ -123,6 +124,34 @@ namespace spla::backend {
                        const Descriptor &,
                        const AssignParams &,
                        const DispatchParams &) {
+        const auto nrows = m->nrows();
+        const auto &m_mask = m->mask();
+        const auto &m_values = m->values();
+
+        // If no block, allocate empty dense vector
+        if (w.is_null())
+            w.acquire(new VectorDense<T>(nrows, 0,
+                                         std::vector<Index>(nrows, 0),
+                                         std::vector<T>(type_has_values<T>() ? nrows : 0)));
+
+        auto &w_mask = w->mask();
+        auto &w_values = w->values();
+
+        for (std::size_t i = 0; i < nrows; i++) {
+            if (m_mask[i]) {
+                if (!w_mask[i]) {
+                    w_mask[i] = 1;
+                    w->nvals() += 1;
+                    if constexpr (type_has_values<T>()) w_values[i] = m_values[i];
+                } else if constexpr (type_has_values<T>()) {
+                    if constexpr (null_op<AccumOp>()) {
+                        w_values[i] = m_values[i];
+                    } else {
+                        w_values[i] = accumOp.invoke_host(w_values[i], m_values[i]);
+                    }
+                }
+            }
+        }
     }
 
 

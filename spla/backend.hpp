@@ -35,7 +35,6 @@
     #include <spla/backend/reference/operation/read.hpp>
     #include <spla/backend/reference/storage/vector_coo.hpp>
     #include <spla/backend/reference/storage/vector_dense.hpp>
-    #include <spla/backend/reference/storage/vector_storage.hpp>
 #elif defined(SPLA_BACKEND_OPENCL)
     #error "Backend not implemented yet"
 #elif defined(SPLA_BACKEND_CUDA)
