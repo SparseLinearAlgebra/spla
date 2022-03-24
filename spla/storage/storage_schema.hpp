@@ -35,12 +35,18 @@ namespace spla {
      * @{
      */
 
-    /** @brief Active storage schema of the storage */
-    enum class StorageSchema {
-        /** Sparse blocks are used */
+    /** @brief Active schema of the vector storage */
+    enum class VectorSchema {
+        /** Sparse (coo) blocks are used */
         Sparse,
         /** Dense blocks are used */
         Dense
+    };
+
+    /** @brief Active schema of the matrix storage */
+    enum class MatrixSchema {
+        /** Sparse (csr with optional csc cached) blocks are used */
+        Csr
     };
 
     /**

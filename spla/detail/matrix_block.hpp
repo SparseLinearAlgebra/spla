@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_MATRIX_BLOCK_HPP
+#define SPLA_MATRIX_BLOCK_HPP
 
 #include <spla/detail/ref.hpp>
 #include <spla/types.hpp>
@@ -39,26 +39,28 @@ namespace spla::detail {
      */
 
     /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
+     * @class MatrixBlock
+     * @brief Base class for a block of matrix data inside matrix storage
      *
-     * @tparam T Type of stored vector values
+     * @tparam T Type of stored matrix values
      */
     template<typename T>
-    class VectorBlock : public detail::RefCnt {
+    class MatrixBlock : public detail::RefCnt {
     public:
-        VectorBlock(std::size_t nrows, std::size_t nvals)
-            : m_nrows(nrows), m_nvals(nvals) {}
+        MatrixBlock(std::size_t nrows, std::size_t ncols, std::size_t nvals)
+            : m_nrows(nrows), m_ncols(ncols), m_nvals(nvals) {}
 
-        ~VectorBlock() override = default;
+        ~MatrixBlock() override = default;
 
         std::size_t nrows() const { return m_nrows; }
+        std::size_t ncols() const { return m_ncols; }
         std::size_t nvals() const { return m_nvals; }
 
         std::size_t &nvals() { return m_nvals; }
 
     protected:
         std::size_t m_nrows;
+        std::size_t m_ncols;
         std::size_t m_nvals;
     };
 
@@ -68,4 +70,4 @@ namespace spla::detail {
 
 }// namespace spla::detail
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_MATRIX_BLOCK_HPP

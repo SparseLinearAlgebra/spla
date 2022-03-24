@@ -7,5 +7,6 @@ function(spla_test_target target)
 endfunction()
 
 spla_test_target(test_binary_op)
+spla_test_target(test_matrix_storage)
 spla_test_target(test_vector_assign)
 spla_test_target(test_vector_storage)

@@ -57,19 +57,19 @@ namespace spla {
     template<typename T>
     class Vector {
     public:
-        explicit Vector(std::size_t nrows) : m_storage(new VectorStorage<T>(nrows)) {}
+        explicit Vector(std::size_t nrows) : m_storage(new detail::VectorStorage<T>(nrows)) {}
 
         /** @return Storage size */
-        [[nodiscard]] std::size_t nrows() const { return m_storage->get_nrows(); }
+        [[nodiscard]] std::size_t nrows() const { return m_storage->nrows(); }
 
         /** @return Storage number of non-zero values */
-        [[nodiscard]] std::size_t nvals() const { return m_storage->get_nvals(); }
+        [[nodiscard]] std::size_t nvals() const { return m_storage->nvals(); }
 
         /** @return Backend vector storage */
-        [[nodiscard]] const detail::Ref<VectorStorage<T>> &storage() { return m_storage; }
+        [[nodiscard]] const detail::Ref<detail::VectorStorage<T>> &storage() { return m_storage; }
 
     private:
-        detail::Ref<VectorStorage<T>> m_storage;
+        detail::Ref<detail::VectorStorage<T>> m_storage;
     };
 
 }// namespace spla

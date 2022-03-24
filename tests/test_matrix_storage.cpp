@@ -25,47 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#include <test_utils.hpp>
 
-#include <spla/detail/ref.hpp>
-#include <spla/types.hpp>
+#include <spla/spla.hpp>
 
-namespace spla::detail {
+TEST(Matrix, Setup) {
+    spla::Matrix<float> m(100, 120);
+}
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
-     *
-     * @tparam T Type of stored vector values
-     */
-    template<typename T>
-    class VectorBlock : public detail::RefCnt {
-    public:
-        VectorBlock(std::size_t nrows, std::size_t nvals)
-            : m_nrows(nrows), m_nvals(nvals) {}
-
-        ~VectorBlock() override = default;
-
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
-
-        std::size_t &nvals() { return m_nvals; }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla::detail
-
-#endif//SPLA_VECTOR_BLOCK_HPP
+SPLA_GTEST_MAIN

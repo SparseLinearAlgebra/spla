@@ -86,13 +86,13 @@ namespace spla::expression {
                                return;
 
                            auto blockSize = storage->block_size();
-                           auto schema = storage->storage_schema();
+                           auto schema = storage->schema();
                            backend::ReadParams readParams{detail::block_offset(blockSize, i), offsets[i]};
                            backend::DispatchParams dispatchParams{i, i};
 
-                           if (schema == StorageSchema::Sparse)
+                           if (schema == VectorSchema::Sparse)
                                backend::read(block.template cast<backend::VectorCoo<T>>(), *host_rows, *host_values, desc(), readParams, dispatchParams);
-                           if (schema == StorageSchema::Dense)
+                           if (schema == VectorSchema::Dense)
                                backend::read(block.template cast<backend::VectorDense<T>>(), *host_rows, *host_values, desc(), readParams, dispatchParams);
                        })
                         .precede(notify);

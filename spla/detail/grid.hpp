@@ -25,11 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
+#ifndef SPLA_GRID_HPP
+#define SPLA_GRID_HPP
 
-#include <spla/detail/ref.hpp>
-#include <spla/types.hpp>
+#include <cstddef>
+#include <unordered_map>
+#include <utility>
 
 namespace spla::detail {
 
@@ -39,27 +40,66 @@ namespace spla::detail {
      */
 
     /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
+     * @class Grid
+     * @brief Two-dimensional grid of elements
      *
-     * @tparam T Type of stored vector values
+     * @tparam T Type of stored elements inside grid
      */
     template<typename T>
-    class VectorBlock : public detail::RefCnt {
+    class Grid {
     public:
-        VectorBlock(std::size_t nrows, std::size_t nvals)
-            : m_nrows(nrows), m_nvals(nvals) {}
+        /**
+         * @class Index
+         * @brief Auxilary to index elements of the grid
+         */
+        typedef std::pair<std::size_t, std::size_t> Index;
 
-        ~VectorBlock() override = default;
+        /**
+         * @class Slice
+         * @brief Represents slice of the grid in one row
+         */
+        class Slice {
+        public:
+            Slice(std::size_t row, std::pair<std::size_t, std::size_t> dim, std::unordered_map<Index, T> &elements)
+                : m_row(row), m_dim(std::move(dim)), m_elements(elements) {}
 
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
+            [[nodiscard]] bool has(std::size_t col) const {
+                assert(col < m_dim.second);
+                return m_elements.find({m_row, col}) != m_elements.end();
+            }
 
-        std::size_t &nvals() { return m_nvals; }
+            T &operator[](std::size_t col) {
+                assert(col < m_dim.second);
+                return m_elements[{m_row, col}];
+            }
 
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
+        private:
+            std::size_t m_row;
+            std::pair<std::size_t, std::size_t> m_dim;
+            std::unordered_map<Index, T> &m_elements;
+        };
+
+        explicit Grid(std::pair<std::size_t, std::size_t> dim) : m_dim(std::move(dim)) {}
+
+        Slice operator[](std::size_t row) {
+            assert(row < m_dim.first);
+            return Slice(row, m_dim, m_elements);
+        }
+
+        T operator[](const Index &idx) {
+            assert(idx.first < m_dim.first);
+            assert(idx.second < m_dim.second);
+
+            auto query = m_elements.template find(idx);
+            return query != m_elements.end() ? query.second : T();
+        }
+
+        [[nodiscard]] std::pair<std::size_t, std::size_t> dim() const { return m_dim; }
+        [[nodiscard]] const std::unordered_map<Index, T> &elements() const { return m_elements; }
+
+    private:
+        std::pair<std::size_t, std::size_t> m_dim;
+        std::unordered_map<Index, T> m_elements;
     };
 
     /**
@@ -68,4 +108,4 @@ namespace spla::detail {
 
 }// namespace spla::detail
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_GRID_HPP

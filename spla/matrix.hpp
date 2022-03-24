@@ -32,6 +32,8 @@
 #include <spla/config.hpp>
 #include <spla/library.hpp>
 
+#include <spla/storage/matrix_storage.hpp>
+
 namespace spla {
 
     /**
@@ -55,6 +57,22 @@ namespace spla {
     template<typename T>
     class Matrix {
     public:
+        explicit Matrix(std::size_t nrows, std::size_t ncols) : m_storage(new detail::MatrixStorage<T>(nrows, ncols)) {}
+
+        /** @return Storage size */
+        [[nodiscard]] std::size_t nrows() const { return m_storage->nrows(); }
+
+        /** @return Storage size */
+        [[nodiscard]] std::size_t ncols() const { return m_storage->ncols(); }
+
+        /** @return Storage number of non-zero values */
+        [[nodiscard]] std::size_t nvals() const { return m_storage->nvals(); }
+
+        /** @return Backend vector storage */
+        [[nodiscard]] const detail::Ref<detail::MatrixStorage<T>> &storage() { return m_storage; }
+
+    private:
+        detail::Ref<detail::MatrixStorage<T>> m_storage;
     };
 
 }// namespace spla

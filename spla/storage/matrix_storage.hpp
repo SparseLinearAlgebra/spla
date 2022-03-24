@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_REFERENCE_VECTOR_STORAGE_HPP
-#define SPLA_REFERENCE_VECTOR_STORAGE_HPP
+#ifndef SPLA_MATRIX_STORAGE_HPP
+#define SPLA_MATRIX_STORAGE_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -40,9 +40,10 @@
 #include <spla/library.hpp>
 #include <spla/types.hpp>
 
+#include <spla/detail/grid.hpp>
+#include <spla/detail/matrix_block.hpp>
 #include <spla/detail/resource.hpp>
 #include <spla/detail/storage_utils.hpp>
-#include <spla/detail/vector_block.hpp>
 #include <spla/storage/storage_schema.hpp>
 
 namespace spla::detail {
@@ -53,30 +54,28 @@ namespace spla::detail {
      */
 
     /**
-     * @class VectorStorage
-     * @brief Backend blocked vector storage
+     * @class MatrixStorage
+     * @brief Backend blocked matrix storage
      *
      * @tparam T Type of stored values
      */
     template<typename T>
-    class VectorStorage final : public RefCnt, public Resource {
+    class MatrixStorage final : public RefCnt, Resource {
     public:
-        typedef std::vector<Ref<VectorBlock<T>>> Blocks;
+        typedef Grid<Ref<MatrixBlock<T>>> Blocks;
+        typedef typename Grid<Ref<MatrixBlock<T>>>::Index Index;
 
-        explicit VectorStorage(std::size_t nrows)
-            : m_nrows(nrows) {
+        MatrixStorage(std::size_t nrows, std::size_t ncols)
+            : m_dim(nrows, ncols) {
             assert(nrows > 0);
-            m_block_size = detail::block_size(nrows, library().block_factor(), backend::device_count());
-            m_block_count_rows = detail::block_count(nrows, m_block_size);
-
-            // Allocate empty blocks for default schema
-            build(m_schema, Blocks(m_block_count_rows));
+            assert(ncols > 0);
+            m_block_size = detail::block_size(nrows, ncols, library().block_factor(), backend::device_count());
+            m_block_count = detail::block_count(nrows, ncols, m_block_size);
         }
 
-        ~VectorStorage() override = default;
-
-        void build(VectorSchema schema, Blocks blocks) {
-            assert(blocks.size() == block_count_rows());
+        void build(MatrixSchema schema, Blocks blocks) {
+            assert(blocks.dim().first == m_dim.first);
+            assert(blocks.dim().second == m_dim.second);
 
             std::lock_guard<std::shared_mutex> lockGuard(m_mutex);
 
@@ -84,28 +83,31 @@ namespace spla::detail {
             m_nvals = 0;
             m_blocks[schema] = std::move(blocks);
 
-            for (const auto &b : m_blocks[schema])
-                if (b.is_not_null()) m_nvals += b->nvals();
+            for (const auto &b : m_blocks[schema].elements())
+                if (b.second.is_not_null()) m_nvals += b.second->nvals();
         }
 
-        [[nodiscard]] std::size_t nrows() const { return m_nrows; }
+        [[nodiscard]] std::size_t nrows() const { return m_dim.first; }
+        [[nodiscard]] std::size_t ncols() const { return m_dim.second; }
         [[nodiscard]] std::size_t block_size() const { return m_block_size; }
-        [[nodiscard]] std::size_t block_count_rows() const { return m_block_count_rows; }
+        [[nodiscard]] std::pair<std::size_t, std::size_t> dim() const { return m_dim; }
+        [[nodiscard]] std::pair<std::size_t, std::size_t> block_count() const { return m_block_count; }
 
         [[nodiscard]] std::size_t nvals() const {
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
             return m_nvals;
         }
 
-        [[nodiscard]] VectorSchema schema() {
+        [[nodiscard]] MatrixSchema schema() {
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
             return m_schema;
         }
 
-        [[nodiscard]] Ref<VectorBlock<T>> block(std::size_t i) {
-            assert(i < block_count_rows());
+        [[nodiscard]] Ref<MatrixBlock<T>> block(const Index &idx) {
+            assert(idx.first < block_count().first);
+            assert(idx.second < block_count().second);
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-            return m_blocks[m_schema][i];
+            return m_blocks[m_schema][idx];
         }
 
         [[nodiscard]] Blocks blocks() const {
@@ -114,19 +116,19 @@ namespace spla::detail {
         }
 
     private:
-        /** Vector dim */
-        std::size_t m_nrows;
+        /** Matrix dim */
+        std::pair<std::size_t, std::size_t> m_dim;
         /** Total number of non-zero values */
         std::size_t m_nvals = 0;
         /** Size of block (except the edge case) */
         std::size_t m_block_size = 0;
         /** Number of blocks after decomposition */
-        std::size_t m_block_count_rows = 0;
+        std::pair<std::size_t, std::size_t> m_block_count{0, 0};
 
-        /** Active storage schema of the vector (used to query blocks) */
-        VectorSchema m_schema = VectorSchema::Sparse;
-        /** Blocks of the vector per schema (some may be cached) */
-        mutable std::unordered_map<VectorSchema, Blocks> m_blocks;
+        /** Active storage schema of the matrix (used to query blocks) */
+        MatrixSchema m_schema = MatrixSchema::Csr;
+        /** Blocks of the matrix per schema (some may be cached) */
+        mutable std::unordered_map<MatrixSchema, Blocks> m_blocks;
 
         mutable std::shared_mutex m_mutex;
     };
@@ -137,4 +139,4 @@ namespace spla::detail {
 
 }// namespace spla::detail
 
-#endif//SPLA_REFERENCE_VECTOR_STORAGE_HPP
+#endif//SPLA_MATRIX_STORAGE_HPP

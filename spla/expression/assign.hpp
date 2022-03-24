@@ -87,9 +87,9 @@ namespace spla::expression {
 
             auto blocks = detail::make_blocks(storage);
 
-            auto w_schema = storage->storage_schema();
-            auto m_schema = storage->storage_schema();
-            auto r_schema = w_schema == StorageSchema::Sparse && m_schema == StorageSchema::Dense ? StorageSchema::Dense : w_schema;
+            auto w_schema = storage->schema();
+            auto m_schema = storage->schema();
+            auto r_schema = m_schema == VectorSchema::Dense ? VectorSchema::Dense : w_schema;
 
             auto build = builder.emplace("set-blocks", [r_schema, storage, blocks]() {
                 storage->build(r_schema, std::move(*blocks));
@@ -106,28 +106,28 @@ namespace spla::expression {
                            auto use_replace = desc().replace();
 
                            auto m_storage = m_mask.value().storage();
-                           auto w_schema = w_storage->storage_schema();
-                           auto m_schema = m_storage->storage_schema();
+                           auto w_schema = w_storage->schema();
+                           auto m_schema = m_storage->schema();
 
-                           if (w_schema == StorageSchema::Sparse &&
-                               m_schema == StorageSchema::Dense) {
+                           if (w_schema == VectorSchema::Sparse &&
+                               m_schema == VectorSchema::Dense) {
                                // todo: transition w to dense vector
                                SPLA_LOG_ERROR("not conversion from sparse to dense yet");
                            }
-                           if (w_schema == StorageSchema::Sparse &&
-                               m_schema == StorageSchema::Sparse) {
+                           if (w_schema == VectorSchema::Sparse &&
+                               m_schema == VectorSchema::Sparse) {
                                auto block = w_storage->block(i).template cast<backend::VectorCoo<T>>();
                                backend::assign(block, m_storage->block(i).template cast<backend::VectorCoo<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
                                (*blocks)[i] = block;
                            }
-                           if (w_schema == StorageSchema::Dense &&
-                               m_schema == StorageSchema::Sparse) {
+                           if (w_schema == VectorSchema::Dense &&
+                               m_schema == VectorSchema::Sparse) {
                                auto block = w_storage->block(i).template cast<backend::VectorDense<T>>();
                                backend::assign(block, m_storage->block(i).template cast<backend::VectorCoo<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
                                (*blocks)[i] = block;
                            }
-                           if (w_schema == StorageSchema::Dense &&
-                               m_schema == StorageSchema::Sparse) {
+                           if (w_schema == VectorSchema::Dense &&
+                               m_schema == VectorSchema::Dense) {
                                auto block = w_storage->block(i).template cast<backend::VectorDense<T>>();
                                backend::assign(block, m_storage->block(i).template cast<backend::VectorDense<M>>(), m_accumOp, m_value, desc(), assignParams, dispatchParams);
                                (*blocks)[i] = block;

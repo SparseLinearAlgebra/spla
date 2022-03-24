@@ -25,11 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_BLOCK_HPP
-#define SPLA_VECTOR_BLOCK_HPP
-
-#include <spla/detail/ref.hpp>
-#include <spla/types.hpp>
+#ifndef SPLA_RESOURCE_HPP
+#define SPLA_RESOURCE_HPP
 
 namespace spla::detail {
 
@@ -39,27 +36,16 @@ namespace spla::detail {
      */
 
     /**
-     * @class VectorBlock
-     * @brief Base class for a block of vector data inside vector storage
-     *
-     * @tparam T Type of stored vector values
+     * @class Resource
+     * @brief Generic resource with ability to lock read or modify access
      */
-    template<typename T>
-    class VectorBlock : public detail::RefCnt {
+    class Resource {
     public:
-        VectorBlock(std::size_t nrows, std::size_t nvals)
-            : m_nrows(nrows), m_nvals(nvals) {}
+        void lock_write() {}
+        void unlock_write() {}
 
-        ~VectorBlock() override = default;
-
-        std::size_t nrows() const { return m_nrows; }
-        std::size_t nvals() const { return m_nvals; }
-
-        std::size_t &nvals() { return m_nvals; }
-
-    protected:
-        std::size_t m_nrows;
-        std::size_t m_nvals;
+        void lock_read() {}
+        void unlock_read() {}
     };
 
     /**
@@ -68,4 +54,4 @@ namespace spla::detail {
 
 }// namespace spla::detail
 
-#endif//SPLA_VECTOR_BLOCK_HPP
+#endif//SPLA_RESOURCE_HPP

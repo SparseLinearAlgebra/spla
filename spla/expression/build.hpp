@@ -77,7 +77,7 @@ namespace spla::expression {
             auto blocks = detail::make_blocks(storage);
 
             auto build = builder.emplace("build-storage", [blocks, storage]() {
-                storage->build(StorageSchema::Sparse, std::move(*blocks));
+                storage->build(VectorSchema::Sparse, std::move(*blocks));
             });
 
             for (std::size_t i = 0; i < storage->block_count_rows(); i++) {
