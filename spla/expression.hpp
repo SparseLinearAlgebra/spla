@@ -133,6 +133,31 @@ namespace spla {
         }
 
         /**
+         *  @brief Read matrix to host using callback
+         *
+         * @details
+         *  Uses user provided callback function to consume matrix data.
+         *  Callback must accept three vector of type Index, Index and T respectively.
+         *  Vectors can be consumed by copy, by const or non-const reference.
+         *
+         * @tparam T Type of values
+         * @tparam Callback callback function to consume matrix row, col index and values data
+         *
+         * @param matrix Matrix to read
+         * @param callback Callback function to consume data
+         * @param descriptor Operation descriptor
+         *
+         * @return Expression node
+         */
+        template<typename T,
+                 typename Callback>
+        Node read(const Matrix<T> &matrix,
+                  Callback callback,
+                  const Descriptor &descriptor = Descriptor()) {
+            RETURN_NEW_NODE ReadMatrix<T, Callback> WITH_ARGS(matrix, std::move(callback));
+        }
+
+        /**
          * @brief Read vector to host using callback
          *
          * @details

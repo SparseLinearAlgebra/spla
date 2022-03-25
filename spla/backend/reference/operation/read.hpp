@@ -37,6 +37,7 @@
 
 #include <spla/backend/shared/params.hpp>
 
+#include <spla/backend/reference/storage/matrix_csr.hpp>
 #include <spla/backend/reference/storage/vector_coo.hpp>
 #include <spla/backend/reference/storage/vector_dense.hpp>
 
@@ -89,6 +90,38 @@ namespace spla::backend {
                 if (type_has_values<T>()) {
                     values[readParams.offset + idx] = w_values[i];
                 }
+
+                idx += 1;
+            }
+        }
+
+        assert(idx == w->nvals());
+
+        SPLA_LOG_INFO("read block id=" << dispatchParams.id);
+    }
+
+    template<typename T>
+    inline void read(const detail::Ref<MatrixCsr<T>> &w,
+                     std::vector<Index> &rows,
+                     std::vector<Index> &cols,
+                     std::vector<T> &values,
+                     const Descriptor &,
+                     const ReadParamsMat &readParams,
+                     const DispatchParams &dispatchParams) {
+        auto nrows = w->nrows();
+        const auto &w_rows_ptr = w->rows_ptr();
+        const auto &w_cols_index = w->cols_index();
+        const auto &w_values = w->values();
+
+        std::size_t idx = 0;
+
+        for (std::size_t i = 0; i < nrows; i++) {
+            for (Index k = w_rows_ptr[i]; k < w_rows_ptr[i + 1]; k++) {
+                rows[readParams.offset + idx] = i + readParams.firstIndexRow;
+                cols[readParams.offset + idx] = w_cols_index[k] + readParams.firstIndexCol;
+
+                if constexpr (type_has_values<T>())
+                    values[readParams.offset + idx] = w_values[k];
 
                 idx += 1;
             }

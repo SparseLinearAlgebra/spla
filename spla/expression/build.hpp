@@ -116,7 +116,7 @@ namespace spla::expression {
         ~BuildMatrix() override = default;
 
         std::string type() const override {
-            return "build-vector";
+            return "build-matrix";
         }
 
     private:
@@ -152,7 +152,7 @@ namespace spla::expression {
                                        ncols};
                                backend::build(w, m_reduceOp, m_rows, m_cols, m_values, desc(), buildParams, {i, j, i});
 
-                               if (w.is_null())
+                               if (w.is_not_null())
                                    (*blocks)[i][j] = w;
                            })
                             .precede(build);

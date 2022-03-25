@@ -63,6 +63,12 @@ namespace spla::backend {
         std::size_t offset;
     };
 
+    struct ReadParamsMat {
+        std::size_t firstIndexRow;
+        std::size_t firstIndexCol;
+        std::size_t offset;
+    };
+
     struct AssignParams {
     };
 

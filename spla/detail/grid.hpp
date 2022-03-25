@@ -95,8 +95,8 @@ namespace spla::detail {
             assert(idx.first < m_dim.first);
             assert(idx.second < m_dim.second);
 
-            auto query = m_elements.template find(idx);
-            return query != m_elements.end() ? query.second : T();
+            auto query = m_elements.find(idx);
+            return query != m_elements.end() ? query->second : T();
         }
 
         [[nodiscard]] std::pair<std::size_t, std::size_t> dim() const { return m_dim; }

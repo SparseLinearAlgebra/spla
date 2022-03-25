@@ -39,6 +39,8 @@
 
 #include <spla/detail/storage_utils.hpp>
 
+#include <spla/backend/shared/sort.hpp>
+
 namespace spla::expression {
 
     /**
@@ -101,6 +103,74 @@ namespace spla::expression {
 
     private:
         Vector<T> m_vector;
+        Callback m_callback;
+    };
+
+    template<typename T, typename Callback>
+    class ReadMatrix final : public ExpressionNode {
+    public:
+        ReadMatrix(Matrix<T> matrix, Callback callback, const Descriptor &desc, std::size_t id, Expression &expression)
+            : ExpressionNode(desc, id, expression), m_matrix(std::move(matrix)), m_callback(std::move(callback)) {}
+
+        ~ReadMatrix() override = default;
+
+        std::string type() const override {
+            return "read-matrix";
+        }
+
+    private:
+        void prepare() override {
+            m_matrix.storage()->lock_read();
+        }
+
+        void finalize() override {
+            m_matrix.storage()->unlock_read();
+        }
+
+        void execute(detail::SubtaskBuilder &builder) override {
+            auto storage = m_matrix.storage();
+            auto nvals = storage->nvals();
+            auto host_rows = std::make_shared<std::vector<Index>>(nvals);
+            auto host_cols = std::make_shared<std::vector<Index>>(nvals);
+            auto host_values = std::make_shared<std::vector<T>>(type_has_values<T>() ? nvals : 0);
+
+            auto notify = builder.emplace("read-notify", [this, host_rows, host_cols, host_values]() {
+                // Sort data, since blocks can go in any order
+                backend::sort(*host_rows, *host_cols, *host_values);
+                // Notify user with read matrix values data
+                m_callback(*host_rows, *host_cols, *host_values);
+            });
+
+            std::size_t offset = 0;
+
+            for (std::size_t i = 0; i < storage->block_count().first; i++) {
+                for (std::size_t j = 0; j < storage->block_count().second; j++) {
+                    auto block = storage->block({i, j});
+
+                    if (block.is_null())
+                        continue;
+
+                    builder.emplace("read-block", [block, storage, offset, i, j, host_rows, host_cols, host_values, this]() {
+                               auto blockSize = storage->block_size();
+                               auto schema = storage->schema();
+                               backend::ReadParamsMat readParams{
+                                       detail::block_offset(blockSize, i),
+                                       detail::block_offset(blockSize, j),
+                                       offset};
+                               backend::DispatchParams dispatchParams(i, j, i);
+
+                               if (schema == MatrixSchema::Csr)
+                                   backend::read(block.template cast<backend::MatrixCsr<T>>(), *host_rows, *host_cols, *host_values, desc(), readParams, dispatchParams);
+                           })
+                            .precede(notify);
+
+                    offset += block->nvals();
+                }
+            }
+        }
+
+    private:
+        Matrix<T> m_matrix;
         Callback m_callback;
     };
 
