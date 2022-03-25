@@ -70,6 +70,45 @@ namespace spla::backend {
         out_values = std::move(reduced_values);
     }
 
+    template<typename T, typename ReduceOp>
+    inline void reduce(const std::vector<Index> &rows,
+                       const std::vector<Index> &cols,
+                       const std::vector<T> &values,
+                       const ReduceOp &reduceOp,
+                       std::vector<Index> &out_rows,
+                       std::vector<Index> &out_cols,
+                       std::vector<T> &out_values) {
+        std::size_t dst_pos = 0;
+        std::size_t nvals = rows.size();
+        std::vector<Index> reduced_rows = rows;
+        std::vector<Index> reduced_cols = cols;
+        std::vector<T> reduced_values = values;
+
+        auto eq = [](Index a1, Index a2, Index b1, Index b2) { return a1 == b1 && a2 == b2; };
+
+        for (std::size_t src_pos = 1; src_pos < nvals; src_pos += 1) {
+            if (!eq(reduced_rows[dst_pos], reduced_cols[dst_pos], reduced_rows[src_pos], reduced_cols[src_pos])) {
+                dst_pos += 1;
+                reduced_rows[dst_pos] = reduced_rows[src_pos];
+                reduced_cols[dst_pos] = reduced_cols[src_pos];
+                if constexpr (type_has_values<T>()) reduced_values[dst_pos] = reduced_values[src_pos];
+            } else {
+                reduced_values[dst_pos] = reduceOp.invoke_host(reduced_values[dst_pos], reduced_values[src_pos]);
+            }
+        }
+
+        if (!rows.empty())
+            dst_pos += 1;
+
+        reduced_rows.resize(dst_pos);
+        reduced_cols.resize(dst_pos);
+        reduced_values.resize(type_has_values<T>() ? dst_pos : 0);
+
+        out_rows = std::move(reduced_rows);
+        out_cols = std::move(reduced_cols);
+        out_values = std::move(reduced_values);
+    }
+
     /**
      * @}
      */

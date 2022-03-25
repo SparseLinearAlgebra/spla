@@ -25,45 +25,48 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_PARAMS_HPP
-#define SPLA_PARAMS_HPP
+#ifndef SPLA_REFERENCE_MATRIX_CSR_HPP
+#define SPLA_REFERENCE_MATRIX_CSR_HPP
+
+#include <cassert>
+#include <utility>
+#include <vector>
+
+#include <spla/detail/matrix_block.hpp>
 
 namespace spla::backend {
 
     /**
-     * @addtogroup shared
+     * @addtogroup reference
      * @{
      */
 
-    struct DispatchParams {
-        DispatchParams(std::size_t id, std::size_t device_id) : id(id, 0), device_id(device_id) {}
-        DispatchParams(std::size_t id1, std::size_t id2, std::size_t device_id) : id(id1, id2), device_id(device_id) {}
+    template<typename T>
+    class MatrixCsr final : public detail::MatrixBlock<T> {
+    public:
+        MatrixCsr(std::size_t nrows, std::size_t ncols, std::size_t nvals,
+                  std::vector<Index> rows_ptr,
+                  std::vector<Index> cols_index,
+                  std::vector<T> values)
+            : detail::MatrixBlock<T>(nrows, ncols, nvals),
+              m_rows_ptr(std::move(rows_ptr)),
+              m_cols_index(std::move(cols_index)),
+              m_values(values) {
+            assert(m_rows_ptr.size() == nrows + 1);
+            assert(m_cols_index.size() == nvals);
+            assert(m_values.size() == nvals || !type_has_values<T>());
+        }
 
-        std::pair<std::size_t, std::size_t> id;
-        std::size_t device_id;
-    };
+        ~MatrixCsr() override = default;
 
-    struct BuildParams {
-        std::size_t firstIndex;
-        std::size_t size;
-        std::size_t bounds;
-    };
+        [[nodiscard]] const std::vector<Index> &rows_ptr() const { return m_rows_ptr; }
+        [[nodiscard]] const std::vector<Index> &cols_index() const { return m_cols_index; }
+        [[nodiscard]] const std::vector<T> &values() const { return m_values; }
 
-    struct BuildParamsMat {
-        std::size_t firstIndexRow;
-        std::size_t firstIndexCol;
-        std::size_t sizeRow;
-        std::size_t sizeCol;
-        std::size_t boundsRow;
-        std::size_t boundsCol;
-    };
-
-    struct ReadParams {
-        std::size_t firstIndex;
-        std::size_t offset;
-    };
-
-    struct AssignParams {
+    private:
+        std::vector<Index> m_rows_ptr;
+        std::vector<Index> m_cols_index;
+        std::vector<T> m_values;
     };
 
     /**
@@ -72,4 +75,4 @@ namespace spla::backend {
 
 }// namespace spla::backend
 
-#endif//SPLA_PARAMS_HPP
+#endif//SPLA_REFERENCE_MATRIX_CSR_HPP

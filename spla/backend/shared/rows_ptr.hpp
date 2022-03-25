@@ -25,8 +25,13 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_PARAMS_HPP
-#define SPLA_PARAMS_HPP
+#ifndef SPLA_ROWS_PTR_HPP
+#define SPLA_ROWS_PTR_HPP
+
+#include <numeric>
+#include <vector>
+
+#include <spla/types.hpp>
 
 namespace spla::backend {
 
@@ -35,36 +40,15 @@ namespace spla::backend {
      * @{
      */
 
-    struct DispatchParams {
-        DispatchParams(std::size_t id, std::size_t device_id) : id(id, 0), device_id(device_id) {}
-        DispatchParams(std::size_t id1, std::size_t id2, std::size_t device_id) : id(id1, id2), device_id(device_id) {}
+    inline void rows_offsets(std::size_t nrows, const std::vector<Index> &rows, std::vector<Index> &rows_ptr) {
+        std::vector<Index> lengths(nrows + 1, 0);
+        std::vector<Index> offsets(nrows + 1);
 
-        std::pair<std::size_t, std::size_t> id;
-        std::size_t device_id;
-    };
+        for (auto i : rows) lengths[i] += 1;
+        std::exclusive_scan(lengths.begin(), lengths.end(), offsets.begin(), Index{0});
 
-    struct BuildParams {
-        std::size_t firstIndex;
-        std::size_t size;
-        std::size_t bounds;
-    };
-
-    struct BuildParamsMat {
-        std::size_t firstIndexRow;
-        std::size_t firstIndexCol;
-        std::size_t sizeRow;
-        std::size_t sizeCol;
-        std::size_t boundsRow;
-        std::size_t boundsCol;
-    };
-
-    struct ReadParams {
-        std::size_t firstIndex;
-        std::size_t offset;
-    };
-
-    struct AssignParams {
-    };
+        std::swap(rows_ptr, offsets);
+    }
 
     /**
      * @}
@@ -72,4 +56,4 @@ namespace spla::backend {
 
 }// namespace spla::backend
 
-#endif//SPLA_PARAMS_HPP
+#endif//SPLA_ROWS_PTR_HPP

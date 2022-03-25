@@ -31,6 +31,8 @@
 #include <memory>
 
 #include <spla/backend.hpp>
+#include <spla/storage/matrix_storage.hpp>
+#include <spla/storage/vector_storage.hpp>
 
 namespace spla::detail {
 
@@ -40,8 +42,13 @@ namespace spla::detail {
      */
 
     template<typename T>
-    std::shared_ptr<typename VectorStorage<T>::Blocks> make_blocks(const detail::Ref<VectorStorage<T>> &storage) {
+    std::shared_ptr<typename VectorStorage<T>::Blocks> make_blocks(const Ref<VectorStorage<T>> &storage) {
         return std::make_shared<typename VectorStorage<T>::Blocks>(storage->block_count_rows());
+    }
+
+    template<typename T>
+    std::shared_ptr<typename MatrixStorage<T>::Blocks> make_blocks(const Ref<MatrixStorage<T>> &storage) {
+        return std::make_shared<typename MatrixStorage<T>::Blocks>(storage->block_count());
     }
 
     /**

@@ -82,6 +82,31 @@ namespace spla {
         template<typename T>
         using VectorReadCallback = std::function<void(const std::vector<Index> &, const std::vector<T> &)>;
 
+        /**
+         * @brief Build matrix from host data
+         *
+         * @tparam T Type of values
+         * @tparam ReduceOp Binary op of type TxT->T
+         *
+         * @param matrix Matrix to build
+         * @param reduceOp Reduce op used to reduce duplicates in input data
+         * @param rows Matrix row indices
+         * @param cols Matrix column indices
+         * @param values Matrix values
+         * @param descriptor Operation descriptor
+         *
+         * @return Expression node
+         */
+        template<typename T,
+                 typename ReduceOp>
+        Node build(const Matrix<T> &matrix,
+                   ReduceOp reduceOp,
+                   std::vector<Index> rows,
+                   std::vector<Index> cols,
+                   std::vector<T> values,
+                   const Descriptor &descriptor = Descriptor()) {
+            RETURN_NEW_NODE BuildMatrix<T, ReduceOp> WITH_ARGS(matrix, std::move(reduceOp), std::move(rows), std::move(cols), std::move(values));
+        }
 
         /**
          * @brief Build vector from host data

@@ -60,10 +60,10 @@ namespace spla::detail {
      * @tparam T Type of stored values
      */
     template<typename T>
-    class MatrixStorage final : public RefCnt, Resource {
+    class MatrixStorage final : public RefCnt, public Resource {
     public:
         typedef Grid<Ref<MatrixBlock<T>>> Blocks;
-        typedef typename Grid<Ref<MatrixBlock<T>>>::Index Index;
+        typedef typename Grid<Ref<MatrixBlock<T>>>::Coord Coord;
 
         MatrixStorage(std::size_t nrows, std::size_t ncols)
             : m_dim(nrows, ncols) {
@@ -74,8 +74,8 @@ namespace spla::detail {
         }
 
         void build(MatrixSchema schema, Blocks blocks) {
-            assert(blocks.dim().first == m_dim.first);
-            assert(blocks.dim().second == m_dim.second);
+            assert(blocks.dim().first == m_block_count.first);
+            assert(blocks.dim().second == m_block_count.second);
 
             std::lock_guard<std::shared_mutex> lockGuard(m_mutex);
 
@@ -103,7 +103,7 @@ namespace spla::detail {
             return m_schema;
         }
 
-        [[nodiscard]] Ref<MatrixBlock<T>> block(const Index &idx) {
+        [[nodiscard]] Ref<MatrixBlock<T>> block(const Coord &idx) {
             assert(idx.first < block_count().first);
             assert(idx.second < block_count().second);
             std::shared_lock<std::shared_mutex> lockGuard(m_mutex);

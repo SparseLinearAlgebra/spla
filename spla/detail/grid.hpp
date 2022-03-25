@@ -32,6 +32,8 @@
 #include <unordered_map>
 #include <utility>
 
+#include <spla/detail/pair_utils.hpp>
+
 namespace spla::detail {
 
     /**
@@ -50,9 +52,10 @@ namespace spla::detail {
     public:
         /**
          * @class Index
-         * @brief Auxilary to index elements of the grid
+         * @brief Auxiliary to index elements of the grid
          */
-        typedef std::pair<std::size_t, std::size_t> Index;
+        typedef std::pair<std::size_t, std::size_t> Coord;
+        typedef std::unordered_map<Coord, T, PairHash> Elements;
 
         /**
          * @class Slice
@@ -60,24 +63,26 @@ namespace spla::detail {
          */
         class Slice {
         public:
-            Slice(std::size_t row, std::pair<std::size_t, std::size_t> dim, std::unordered_map<Index, T> &elements)
+            Slice(std::size_t row, std::pair<std::size_t, std::size_t> dim, Elements &elements)
                 : m_row(row), m_dim(std::move(dim)), m_elements(elements) {}
 
             [[nodiscard]] bool has(std::size_t col) const {
                 assert(col < m_dim.second);
-                return m_elements.find({m_row, col}) != m_elements.end();
+                return m_elements.find(Coord{m_row, col}) != m_elements.end();
             }
 
             T &operator[](std::size_t col) {
                 assert(col < m_dim.second);
-                return m_elements[{m_row, col}];
+                return m_elements[Coord{m_row, col}];
             }
 
         private:
             std::size_t m_row;
             std::pair<std::size_t, std::size_t> m_dim;
-            std::unordered_map<Index, T> &m_elements;
+            Elements &m_elements;
         };
+
+        Grid() = default;
 
         explicit Grid(std::pair<std::size_t, std::size_t> dim) : m_dim(std::move(dim)) {}
 
@@ -86,7 +91,7 @@ namespace spla::detail {
             return Slice(row, m_dim, m_elements);
         }
 
-        T operator[](const Index &idx) {
+        T operator[](const Coord &idx) const {
             assert(idx.first < m_dim.first);
             assert(idx.second < m_dim.second);
 
@@ -95,11 +100,11 @@ namespace spla::detail {
         }
 
         [[nodiscard]] std::pair<std::size_t, std::size_t> dim() const { return m_dim; }
-        [[nodiscard]] const std::unordered_map<Index, T> &elements() const { return m_elements; }
+        [[nodiscard]] const Elements &elements() const { return m_elements; }
 
     private:
-        std::pair<std::size_t, std::size_t> m_dim;
-        std::unordered_map<Index, T> m_elements;
+        std::pair<std::size_t, std::size_t> m_dim{0, 0};
+        Elements m_elements;
     };
 
     /**

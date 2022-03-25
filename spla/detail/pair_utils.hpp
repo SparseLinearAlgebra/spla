@@ -25,51 +25,45 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_PARAMS_HPP
-#define SPLA_PARAMS_HPP
+#ifndef SPLA_PAIR_UTILS_HPP
+#define SPLA_PAIR_UTILS_HPP
 
-namespace spla::backend {
+#include <functional>
+#include <utility>
+
+namespace spla::detail {
 
     /**
-     * @addtogroup shared
+     * @addtogroup internal
      * @{
      */
 
-    struct DispatchParams {
-        DispatchParams(std::size_t id, std::size_t device_id) : id(id, 0), device_id(device_id) {}
-        DispatchParams(std::size_t id1, std::size_t id2, std::size_t device_id) : id(id1, id2), device_id(device_id) {}
-
-        std::pair<std::size_t, std::size_t> id;
-        std::size_t device_id;
-    };
-
-    struct BuildParams {
-        std::size_t firstIndex;
-        std::size_t size;
-        std::size_t bounds;
-    };
-
-    struct BuildParamsMat {
-        std::size_t firstIndexRow;
-        std::size_t firstIndexCol;
-        std::size_t sizeRow;
-        std::size_t sizeCol;
-        std::size_t boundsRow;
-        std::size_t boundsCol;
-    };
-
-    struct ReadParams {
-        std::size_t firstIndex;
-        std::size_t offset;
-    };
-
-    struct AssignParams {
+    /**
+     * @class Pair Hash
+     * @brief Library has for pair (2-dim coords)
+     */
+    struct PairHash {
+    public:
+        template<typename T, typename U>
+        std::size_t operator()(const std::pair<T, U> &x) const {
+            return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+        }
     };
 
     /**
      * @}
      */
 
-}// namespace spla::backend
+}// namespace spla::detail
 
-#endif//SPLA_PARAMS_HPP
+namespace spla {
+
+    template<typename Stream, typename T, typename U>
+    Stream &operator<<(Stream &stream, const std::pair<T, U> &p) {
+        stream << "(" << p.first << ", " << p.second << ")";
+        return stream;
+    }
+
+}// namespace spla
+
+#endif//SPLA_PAIR_UTILS_HPP

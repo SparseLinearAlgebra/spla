@@ -33,6 +33,7 @@
     #include <spla/backend/reference/operation/assign.hpp>
     #include <spla/backend/reference/operation/build.hpp>
     #include <spla/backend/reference/operation/read.hpp>
+    #include <spla/backend/reference/storage/matrix_csr.hpp>
     #include <spla/backend/reference/storage/vector_coo.hpp>
     #include <spla/backend/reference/storage/vector_dense.hpp>
 #elif defined(SPLA_BACKEND_OPENCL)

@@ -31,6 +31,16 @@
 
 TEST(Matrix, Setup) {
     spla::Matrix<float> m(100, 120);
+
+    std::vector<spla::Index> rows = {2, 2, 5, 7, 9, 98, 0, 0, 0};
+    std::vector<spla::Index> cols = {1, 1, 119, 3, 4, 1, 90, 80, 80};
+    std::vector<float> values = {50, 50, 0, 4, -0.2, -0.1, 10, -0.05, -0.05};
+
+    spla::Expression expression;
+    expression.build(m, spla::binary_op::plus<float>(), rows, cols, values);
+
+    auto submission = expression.submit();
+    submission.wait();
 }
 
 SPLA_GTEST_MAIN
