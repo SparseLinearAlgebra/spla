@@ -44,6 +44,7 @@
 #include <spla/expression/assign.hpp>
 #include <spla/expression/build.hpp>
 #include <spla/expression/read.hpp>
+#include <spla/expression/vxm.hpp>
 
 #define RETURN_NEW_NODE \
     return add_node(new expression::
@@ -105,7 +106,8 @@ namespace spla {
                    std::vector<Index> cols,
                    std::vector<T> values,
                    const Descriptor &descriptor = Descriptor()) {
-            RETURN_NEW_NODE BuildMatrix<T, ReduceOp> WITH_ARGS(matrix, std::move(reduceOp), std::move(rows), std::move(cols), std::move(values));
+            RETURN_NEW_NODE BuildMatrix<T, ReduceOp>
+                    WITH_ARGS(matrix, std::move(reduceOp), std::move(rows), std::move(cols), std::move(values));
         }
 
         /**
@@ -129,7 +131,8 @@ namespace spla {
                    std::vector<Index> rows,
                    std::vector<T> values,
                    const Descriptor &descriptor = Descriptor()) {
-            RETURN_NEW_NODE BuildVector<T, ReduceOp> WITH_ARGS(vector, std::move(reduceOp), std::move(rows), std::move(values));
+            RETURN_NEW_NODE BuildVector<T, ReduceOp>
+                    WITH_ARGS(vector, std::move(reduceOp), std::move(rows), std::move(values));
         }
 
         /**
@@ -154,7 +157,8 @@ namespace spla {
         Node read(const Matrix<T> &matrix,
                   Callback callback,
                   const Descriptor &descriptor = Descriptor()) {
-            RETURN_NEW_NODE ReadMatrix<T, Callback> WITH_ARGS(matrix, std::move(callback));
+            RETURN_NEW_NODE ReadMatrix<T, Callback>
+                    WITH_ARGS(matrix, std::move(callback));
         }
 
         /**
@@ -179,7 +183,8 @@ namespace spla {
         Node read(const Vector<T> &vector,
                   Callback callback,
                   const Descriptor &descriptor = Descriptor()) {
-            RETURN_NEW_NODE ReadVector<T, Callback> WITH_ARGS(vector, std::move(callback));
+            RETURN_NEW_NODE ReadVector<T, Callback>
+                    WITH_ARGS(vector, std::move(callback));
         }
 
         /**
@@ -205,11 +210,36 @@ namespace spla {
                     AccumOp accumOp,
                     T value,
                     const Descriptor &descriptor = Descriptor()) {
-            RETURN_NEW_NODE AssignVector<T, M, AccumOp> WITH_ARGS(w, mask, std::move(accumOp), std::move(value));
+            RETURN_NEW_NODE AssignVector<T, M, AccumOp>
+                    WITH_ARGS(w, mask, std::move(accumOp), std::move(value));
         }
 
+        /**
+         * @brief Masked vector-matrix multiplication
+         *
+         * @tparam T Type of the result vector values
+         * @tparam M Type of the mask vector values
+         * @tparam U Type of the a vector values
+         * @tparam V Type of the matrix m values
+         * @tparam AccumOp Binary op of type t x t -> t
+         * @tparam MultiplyOp Binary op of type u x v -> t
+         * @tparam ReduceOp Binary op of type t x t -> t
+         *
+         * @param w Output vector
+         * @param mask Optional mask to filter result
+         * @param accumOp Option to accum with result vector
+         * @param multiplyOp Element-wise multiplication op
+         * @param reduceOp Element-wise add op
+         * @param a Vector to multiply
+         * @param m Matrix to multiply
+         * @param descriptor Operation descriptor
+         *
+         * @return Expression node
+         */
         template<typename T,
                  typename M,
+                 typename U,
+                 typename V,
                  typename AccumOp,
                  typename MultiplyOp,
                  typename ReduceOp>
@@ -218,10 +248,11 @@ namespace spla {
                  AccumOp accumOp,
                  MultiplyOp multiplyOp,
                  ReduceOp reduceOp,
-                 const Vector<T> &a,
-                 const Matrix<T> &m,
+                 const Vector<U> &a,
+                 const Matrix<V> &m,
                  const Descriptor &descriptor = Descriptor()) {
-            // ...
+            RETURN_NEW_NODE VxM<T, M, U, V, AccumOp, MultiplyOp, ReduceOp>
+                    WITH_ARGS(w, mask, std::move(accumOp), std::move(multiplyOp), std::move(reduceOp), a, m);
         }
 
         /**

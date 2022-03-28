@@ -67,9 +67,9 @@ namespace spla::backend {
             std::vector<T> result_values;
 
             if constexpr (null_op<AccumOp>())
-                ewiseadd(w->rows(), w->values(), indices, values, binary_op::second<T>(), result_indices, result_values);
+                ewiseadd_coo(w->rows(), w->values(), indices, values, binary_op::second<T>(), result_indices, result_values);
             else
-                ewiseadd(w->rows(), w->values(), result_indices, result_values, accumOp, result_indices, result_values);
+                ewiseadd_coo(w->rows(), w->values(), result_indices, result_values, accumOp, result_indices, result_values);
 
             nvals = result_indices.size();
             std::swap(result_indices, indices);

@@ -40,13 +40,13 @@ namespace spla::backend {
      */
 
     template<typename T, typename ReduceOp>
-    inline void ewiseadd(const std::vector<Index> &indices1,
-                         const std::vector<T> &values1,
-                         const std::vector<Index> &indices2,
-                         const std::vector<T> &values2,
-                         const ReduceOp &reduceOp,
-                         std::vector<Index> &out_indices,
-                         std::vector<T> &out_values) {
+    inline void ewiseadd_coo(const std::vector<Index> &indices1,
+                             const std::vector<T> &values1,
+                             const std::vector<Index> &indices2,
+                             const std::vector<T> &values2,
+                             const ReduceOp &reduceOp,
+                             std::vector<Index> &out_indices,
+                             std::vector<T> &out_values) {
         auto count1 = indices1.size();
         auto count2 = indices2.size();
 
@@ -90,6 +90,49 @@ namespace spla::backend {
 
         out_indices = std::move(indices);
         out_values = std::move(values);
+    }
+
+    template<typename T, typename ReduceOp>
+    inline void ewiseadd_dense(const std::vector<Index> &mask1,
+                               const std::vector<T> &values1,
+                               const std::vector<Index> &mask2,
+                               const std::vector<T> &values2,
+                               const ReduceOp &reduceOp,
+                               std::vector<Index> &out_mask,
+                               std::vector<T> &out_values,
+                               std::size_t &count) {
+        auto size = mask1.size();
+
+        std::vector<Index> mask;
+        std::vector<T> values;
+
+        mask.resize(size, Index{0});
+        values.resize(type_has_values<T>() ? size : 0);
+
+        count = 0;
+
+        for (std::size_t i = 0; i < size; i++) {
+            auto m1 = mask1[i];
+            auto m2 = mask2[i];
+
+            if (m1 || m2) {
+                mask[i] = 1;
+                count += 1;
+
+                if constexpr (type_has_values<T>()) {
+                    if (m1 && m2) {
+                        values[i] = reduceOp.invoke_host(values1[i], values2[i]);
+                    } else if (m1) {
+                        values[i] = values1[i];
+                    } else {
+                        values[i] = values2[i];
+                    }
+                }
+            }
+        }
+
+        std::swap(out_mask, mask);
+        std::swap(out_values, values);
     }
 
     /**

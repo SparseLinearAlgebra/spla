@@ -40,4 +40,6 @@
 #include <spla/types.hpp>
 #include <spla/vector.hpp>
 
+#include <spla/algorithm/bfs.hpp>
+
 #endif//SPLA_SPLA_HPP

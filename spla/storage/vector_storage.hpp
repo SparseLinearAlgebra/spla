@@ -88,6 +88,11 @@ namespace spla::detail {
                 if (b.is_not_null()) m_nvals += b->nvals();
         }
 
+        void clear() {
+            std::lock_guard<std::shared_mutex> lockGuard(m_mutex);
+            build(VectorSchema::Sparse, Blocks(m_block_count_rows));
+        }
+
         [[nodiscard]] std::size_t nrows() const { return m_nrows; }
         [[nodiscard]] std::size_t block_size() const { return m_block_size; }
         [[nodiscard]] std::size_t block_count_rows() const { return m_block_count_rows; }

@@ -51,8 +51,18 @@ namespace spla::expression {
     template<typename T, typename M, typename AccumOp>
     class AssignVector final : public ExpressionNode {
     public:
-        AssignVector(Vector<T> w, std::optional<Vector<M>> mask, AccumOp accumOp, T value, const Descriptor &desc, std::size_t id, Expression &expression)
-            : ExpressionNode(desc, id, expression), m_w(std::move(w)), m_mask(std::move(mask)), m_accumOp(std::move(accumOp)), m_value(std::move(value)) {}
+        AssignVector(Vector<T> w,
+                     std::optional<Vector<M>> mask,
+                     AccumOp accumOp,
+                     T value,
+                     const Descriptor &desc,
+                     std::size_t id,
+                     Expression &expression)
+            : ExpressionNode(desc, id, expression),
+              m_w(std::move(w)),
+              m_mask(std::move(mask)),
+              m_accumOp(std::move(accumOp)),
+              m_value(std::move(value)) {}
 
         ~AssignVector() override = default;
 

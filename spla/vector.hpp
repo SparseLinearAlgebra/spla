@@ -59,6 +59,12 @@ namespace spla {
     public:
         explicit Vector(std::size_t nrows) : m_storage(new detail::VectorStorage<T>(nrows)) {}
 
+        /** Clear vector (makes vector empty) */
+        void clear() { storage()->clear(); }
+
+        /** @return True if vector empty (has no values inside) */
+        [[nodiscard]] bool empty() const { return nvals() == 0; }
+
         /** @return Storage size */
         [[nodiscard]] std::size_t nrows() const { return m_storage->nrows(); }
 
