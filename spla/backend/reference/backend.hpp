@@ -46,6 +46,10 @@ namespace spla::backend {
         return device_count_ref();
     }
 
+    inline std::size_t device_for_task(std::size_t task_id) {
+        return task_id % device_count();
+    }
+
     /**
      * @brief Initialize reference backend
      * @param config

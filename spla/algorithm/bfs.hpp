@@ -44,7 +44,7 @@ namespace spla {
     inline int bfs(Vector<int> &v,
                    const Matrix<int> &A,
                    Index source,
-                   const Descriptor &descriptor) {
+                   const Descriptor &descriptor = Descriptor()) {
         assert(A.nrows() == A.ncols());
         assert(A.nrows() == v.nrows());
         assert(source < v.nrows());
@@ -82,7 +82,7 @@ namespace spla {
     inline int bfs_naive(Vector<int> &v,
                          const Matrix<int> &A,
                          Index source,
-                         const Descriptor &descriptor) {
+                         const Descriptor &descriptor = Descriptor()) {
         assert(A.nrows() == A.ncols());
         assert(A.nrows() == v.nrows());
         assert(source < v.nrows());

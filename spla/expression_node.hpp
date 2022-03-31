@@ -150,9 +150,9 @@ namespace spla {
             next->m_predecessors.push_back(this);
         }
 
-        virtual void prepare() = 0;
-        virtual void finalize() = 0;
-        virtual void execute(detail::SubtaskBuilder &builder) = 0;
+        virtual void prepare() const = 0;
+        virtual void finalize() const = 0;
+        virtual void execute(detail::SubtaskBuilder &builder) const = 0;
 
     private:
         Descriptor m_desc;

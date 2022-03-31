@@ -61,7 +61,8 @@ namespace spla::detail {
     template<typename T>
     class VectorStorage final : public RefCnt, public Resource {
     public:
-        typedef std::vector<Ref<VectorBlock<T>>> Blocks;
+        typedef Ref<VectorBlock<T>> Block;
+        typedef std::vector<Block> Blocks;
 
         explicit VectorStorage(std::size_t nrows)
             : m_nrows(nrows) {
@@ -88,8 +89,23 @@ namespace spla::detail {
                 if (b.is_not_null()) m_nvals += b->nvals();
         }
 
-        void clear() {
+        void set_block(VectorSchema schema, std::size_t i, Block block) {
             std::lock_guard<std::shared_mutex> lockGuard(m_mutex);
+
+            assert(schema == m_schema);
+            assert(i < block_count_rows());
+
+            if (schema != m_schema)
+                throw std::runtime_error("set block only allowed for active storage schema");
+
+            auto &prev = m_blocks[m_schema][i];
+
+            m_nvals -= prev.is_not_null() ? prev->nvals() : 0;
+            m_nvals += block.is_not_null() ? block->nvals() : 0;
+            prev = std::move(block);
+        }
+
+        void clear() {
             build(VectorSchema::Sparse, Blocks(m_block_count_rows));
         }
 

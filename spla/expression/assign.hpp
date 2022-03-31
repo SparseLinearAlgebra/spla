@@ -71,17 +71,17 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {
+        void prepare() const override {
             m_w.storage()->lock_write();
             if (m_mask) m_mask.value().storage()->lock_read();
         }
 
-        void finalize() override {
+        void finalize() const override {
             m_w.storage()->unlock_write();
             if (m_mask) m_mask.value().storage()->unlock_read();
         }
 
-        void execute(detail::SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) const override {
             auto storage = m_w.storage();
 
             auto use_mask = m_mask.has_value();

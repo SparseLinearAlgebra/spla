@@ -65,15 +65,15 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {
+        void prepare() const override {
             m_vector.storage()->lock_write();
         }
 
-        void finalize() override {
+        void finalize() const override {
             m_vector.storage()->unlock_write();
         }
 
-        void execute(detail::SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) const override {
             auto storage = m_vector.storage();
             auto blocks = detail::make_blocks(storage);
 
@@ -120,15 +120,15 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {
+        void prepare() const override {
             m_matrix.storage()->lock_write();
         }
 
-        void finalize() override {
+        void finalize() const override {
             m_matrix.storage()->unlock_write();
         }
 
-        void execute(detail::SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) const override {
             auto storage = m_matrix.storage();
             auto blocks = detail::make_blocks(storage);
 

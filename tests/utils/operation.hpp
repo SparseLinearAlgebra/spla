@@ -25,26 +25,51 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TEST_UTILS_HPP
-#define SPLA_TEST_UTILS_HPP
+#ifndef SPLA_TEST_UTILS_OPERATION_HPP
+#define SPLA_TEST_UTILS_OPERATION_HPP
 
-#include <cmath>
-
-#include <gtest/gtest.h>
+#include <vector>
 
 #include <utils/matrix.hpp>
-#include <utils/operation.hpp>
-#include <utils/random.hpp>
 #include <utils/vector.hpp>
 
-#ifndef SPLA_GTEST_MAIN
-    // Put in the end of the unit test file
-    #define SPLA_GTEST_MAIN                                  \
-        int main(int argc, char *argv[]) {                   \
-            ::testing::GTEST_FLAG(catch_exceptions) = false; \
-            ::testing::InitGoogleTest(&argc, argv);          \
-            return RUN_ALL_TESTS();                          \
-        }
-#endif
+#include <spla/spla.hpp>
 
-#endif//SPLA_TEST_UTILS_HPP
+namespace testing {
+
+    template<typename T>
+    bool equals(const spla::Vector<T> &a, const spla::Vector<T> &b) {
+        if (a.nvals() != b.nvals())
+            return false;
+
+        std::vector<spla::Index> a_rows;
+        std::vector<spla::Index> a_values;
+
+        std::vector<spla::Index> b_rows;
+        std::vector<spla::Index> b_values;
+
+        spla::Expression read_data;
+        read_data.read(a, [&](auto &r, auto &v) {a_rows=std::move(r); a_values=std::move(a_values); });
+        read_data.read(b, [&](auto &r, auto &v) {b_rows=std::move(r); b_values=std::move(a_values); });
+        read_data.submit().wait();
+
+        auto size = a.nvals();
+
+        for (std::size_t i = 0; i < size; i++) {
+            if (a_rows[i] != b_rows[i])
+                return false;
+        }
+
+        if (!a_values.empty() && !b_values.empty()) {
+            for (std::size_t i = 0; i < size; i++) {
+                if (a_values[i] != b_values[i])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+}// namespace testing
+
+#endif//SPLA_TEST_UTILS_OPERATION_HPP

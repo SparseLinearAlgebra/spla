@@ -31,9 +31,9 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <memory>
 #include <mutex>
 #include <numeric>
-#include <shared_mutex>
 #include <unordered_map>
 
 #include <spla/backend.hpp>
@@ -62,7 +62,9 @@ namespace spla::detail {
     template<typename T>
     class MatrixStorage final : public RefCnt, public Resource {
     public:
-        typedef Grid<Ref<MatrixBlock<T>>> Blocks;
+        typedef Ref<MatrixBlock<T>> Block;
+        typedef Grid<Block> Blocks;
+        typedef std::shared_ptr<Blocks> BlocksPtr;
         typedef typename Grid<Ref<MatrixBlock<T>>>::Coord Coord;
 
         MatrixStorage(std::size_t nrows, std::size_t ncols)
@@ -71,19 +73,20 @@ namespace spla::detail {
             assert(ncols > 0);
             m_block_size = detail::block_size(nrows, ncols, library().block_factor(), backend::device_count());
             m_block_count = detail::block_count(nrows, ncols, m_block_size);
+            build(MatrixSchema::Csr, Blocks(m_block_count));
         }
 
         void build(MatrixSchema schema, Blocks blocks) {
             assert(blocks.dim().first == m_block_count.first);
             assert(blocks.dim().second == m_block_count.second);
 
-            std::lock_guard<std::shared_mutex> lockGuard(m_mutex);
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
 
             m_schema = schema;
             m_nvals = 0;
-            m_blocks[schema] = std::move(blocks);
+            m_blocks[schema] = std::make_shared<Blocks>(std::move(blocks));
 
-            for (const auto &b : m_blocks[schema].elements())
+            for (const auto &b : m_blocks[schema]->elements())
                 if (b.second.is_not_null()) m_nvals += b.second->nvals();
         }
 
@@ -94,25 +97,26 @@ namespace spla::detail {
         [[nodiscard]] std::pair<std::size_t, std::size_t> block_count() const { return m_block_count; }
 
         [[nodiscard]] std::size_t nvals() const {
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
             return m_nvals;
         }
 
         [[nodiscard]] MatrixSchema schema() {
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
             return m_schema;
         }
 
         [[nodiscard]] Ref<MatrixBlock<T>> block(const Coord &idx) {
             assert(idx.first < block_count().first);
             assert(idx.second < block_count().second);
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-            return m_blocks[m_schema][idx];
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
+            return (*m_blocks[m_schema])[idx];
         }
 
-        [[nodiscard]] Blocks blocks() const {
-            std::shared_lock<std::shared_mutex> lockGuard(m_mutex);
-            return m_blocks[m_schema];
+        [[nodiscard]] BlocksPtr blocks() const {
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
+            auto query = m_blocks.find(m_schema);
+            return query != m_blocks.end() ? query->second : nullptr;
         }
 
     private:
@@ -128,9 +132,9 @@ namespace spla::detail {
         /** Active storage schema of the matrix (used to query blocks) */
         MatrixSchema m_schema = MatrixSchema::Csr;
         /** Blocks of the matrix per schema (some may be cached) */
-        mutable std::unordered_map<MatrixSchema, Blocks> m_blocks;
+        std::unordered_map<MatrixSchema, BlocksPtr> m_blocks;
 
-        mutable std::shared_mutex m_mutex;
+        mutable std::mutex m_mutex;
     };
 
     /**

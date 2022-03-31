@@ -25,26 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TEST_UTILS_HPP
-#define SPLA_TEST_UTILS_HPP
+#ifndef SPLA_TEST_UTILS_RANDOM_HPP
+#define SPLA_TEST_UTILS_RANDOM_HPP
 
-#include <cmath>
+#include <random>
 
-#include <gtest/gtest.h>
+namespace testing {
 
-#include <utils/matrix.hpp>
-#include <utils/operation.hpp>
-#include <utils/random.hpp>
-#include <utils/vector.hpp>
+    template<typename T, typename = void>
+    class UniformGenerator;
 
-#ifndef SPLA_GTEST_MAIN
-    // Put in the end of the unit test file
-    #define SPLA_GTEST_MAIN                                  \
-        int main(int argc, char *argv[]) {                   \
-            ::testing::GTEST_FLAG(catch_exceptions) = false; \
-            ::testing::InitGoogleTest(&argc, argv);          \
-            return RUN_ALL_TESTS();                          \
+    template<typename T>
+    class UniformGenerator<T, std::enable_if_t<std::is_floating_point_v<T>>> {
+    public:
+        explicit UniformGenerator(std::size_t seed = 0)
+            : mEngine(seed) {
         }
-#endif
 
-#endif//SPLA_TEST_UTILS_HPP
+        T operator()() {
+            return mDist(mEngine);
+        }
+
+    private:
+        std::default_random_engine mEngine;
+        std::uniform_real_distribution<T> mDist;
+    };
+
+    template<typename T>
+    class UniformGenerator<T, std::enable_if_t<std::is_integral_v<T>>> {
+    public:
+        explicit UniformGenerator(std::size_t seed = 0,
+                                  T min = std::numeric_limits<T>::min(),
+                                  T max = std::numeric_limits<T>::max())
+            : mEngine(seed),
+              mDist(min, max) {}
+
+        T operator()() {
+            return mDist(mEngine);
+        }
+
+    private:
+        std::default_random_engine mEngine;
+        std::uniform_int_distribution<T> mDist;
+    };
+
+}// namespace testing
+
+#endif//SPLA_TEST_UTILS_RANDOM_HPP

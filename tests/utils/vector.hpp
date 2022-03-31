@@ -25,26 +25,7 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TEST_UTILS_HPP
-#define SPLA_TEST_UTILS_HPP
+#ifndef SPLA_TEST_UTILS_VECTOR_HPP
+#define SPLA_TEST_UTILS_VECTOR_HPP
 
-#include <cmath>
-
-#include <gtest/gtest.h>
-
-#include <utils/matrix.hpp>
-#include <utils/operation.hpp>
-#include <utils/random.hpp>
-#include <utils/vector.hpp>
-
-#ifndef SPLA_GTEST_MAIN
-    // Put in the end of the unit test file
-    #define SPLA_GTEST_MAIN                                  \
-        int main(int argc, char *argv[]) {                   \
-            ::testing::GTEST_FLAG(catch_exceptions) = false; \
-            ::testing::InitGoogleTest(&argc, argv);          \
-            return RUN_ALL_TESTS();                          \
-        }
-#endif
-
-#endif//SPLA_TEST_UTILS_HPP
+#endif//SPLA_TEST_UTILS_VECTOR_HPP

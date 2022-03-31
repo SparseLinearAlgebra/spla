@@ -69,7 +69,7 @@ namespace spla {
         [[nodiscard]] std::size_t nvals() const { return m_storage->nvals(); }
 
         /** @return Backend vector storage */
-        [[nodiscard]] const detail::Ref<detail::MatrixStorage<T>> &storage() { return m_storage; }
+        [[nodiscard]] const detail::Ref<detail::MatrixStorage<T>> &storage() const { return m_storage; }
 
     private:
         detail::Ref<detail::MatrixStorage<T>> m_storage;

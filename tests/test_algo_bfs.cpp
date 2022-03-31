@@ -25,26 +25,53 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TEST_UTILS_HPP
-#define SPLA_TEST_UTILS_HPP
+#include <test_utils.hpp>
 
-#include <cmath>
+#include <spla/spla.hpp>
 
-#include <gtest/gtest.h>
+inline void test(std::size_t N, std::size_t nvals, std::size_t runs, std::size_t seed = 0) {
+    auto t_rnd = testing::UniformGenerator<spla::Index>(seed, 0, N - 1);
+    auto t_A = testing::Matrix<int>::generate(N, N, nvals, seed, int{1});
+    auto t_source = t_rnd();
 
-#include <utils/matrix.hpp>
-#include <utils/operation.hpp>
-#include <utils/random.hpp>
-#include <utils/vector.hpp>
+    spla::Matrix<int> A(N, N);
+    spla::Vector<int> v(N);
+    spla::Vector<int> v_naive(N);
 
-#ifndef SPLA_GTEST_MAIN
-    // Put in the end of the unit test file
-    #define SPLA_GTEST_MAIN                                  \
-        int main(int argc, char *argv[]) {                   \
-            ::testing::GTEST_FLAG(catch_exceptions) = false; \
-            ::testing::InitGoogleTest(&argc, argv);          \
-            return RUN_ALL_TESTS();                          \
-        }
-#endif
+    spla::Expression create_graph;
+    create_graph.build(A, spla::NullOp(), t_A.rows, t_A.cols, t_A.values);
+    create_graph.submit().wait();
 
-#endif//SPLA_TEST_UTILS_HPP
+    for (std::size_t run = 0; run < runs; run++) {
+        spla::bfs(v, A, t_source);
+        spla::bfs_naive(v_naive, A, t_source);
+
+        EXPECT_TRUE(testing::equals(v, v_naive));
+    }
+}
+
+TEST(Bfs, Small) {
+    std::size_t N = 120;
+
+    for (std::size_t i = 0; i < 10; i++) {
+        test(N, N * (i + 1), 10, i);
+    }
+}
+
+TEST(Bfs, Medium) {
+    std::size_t N = 1220;
+
+    for (std::size_t i = 0; i < 10; i++) {
+        test(N, N * (i + 1), 10, i);
+    }
+}
+
+TEST(Bfs, Large) {
+    std::size_t N = 12420;
+
+    for (std::size_t i = 0; i < 10; i++) {
+        test(N, N * (i + 1), 10, i);
+    }
+}
+
+SPLA_GTEST_MAIN

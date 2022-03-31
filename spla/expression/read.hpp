@@ -61,15 +61,15 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {
+        void prepare() const override {
             m_vector.storage()->lock_read();
         }
 
-        void finalize() override {
+        void finalize() const override {
             m_vector.storage()->unlock_read();
         }
 
-        void execute(detail::SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) const override {
             auto storage = m_vector.storage();
             auto nvals = storage->nvals();
             auto host_rows = std::make_shared<std::vector<Index>>(nvals);
@@ -119,15 +119,15 @@ namespace spla::expression {
         }
 
     private:
-        void prepare() override {
+        void prepare() const override {
             m_matrix.storage()->lock_read();
         }
 
-        void finalize() override {
+        void finalize() const override {
             m_matrix.storage()->unlock_read();
         }
 
-        void execute(detail::SubtaskBuilder &builder) override {
+        void execute(detail::SubtaskBuilder &builder) const override {
             auto storage = m_matrix.storage();
             auto nvals = storage->nvals();
             auto host_rows = std::make_shared<std::vector<Index>>(nvals);

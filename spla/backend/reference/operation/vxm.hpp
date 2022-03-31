@@ -58,12 +58,12 @@ namespace spla::backend {
              typename MultiplyOp,
              typename ReduceOp>
     inline void vxm(detail::Ref<VectorCoo<T>> &w,
-                    const detail::Ref<VectorDense<T>> &mask,
+                    const detail::Ref<VectorDense<M>> &mask,
                     const AccumOp &accumOp,
                     const MultiplyOp &multiplyOp,
                     const ReduceOp &reduceOp,
-                    const detail::Ref<VectorCoo<T>> &v,
-                    const detail::Ref<MatrixCsr<T>> &m,
+                    const detail::Ref<VectorCoo<U>> &v,
+                    const detail::Ref<MatrixCsr<V>> &m,
                     const Descriptor &descriptor,
                     const DispatchParams &dispatchParams) {
         assert(null_op<AccumOp>());
@@ -95,7 +95,7 @@ namespace spla::backend {
             for (Index k = m_rows_ptr[i]; k < m_rows_ptr[i + 1]; k++) {
                 auto j = m_cols_index[k];
 
-                if (mask_mask[j] != use_scmp) {
+                if (bool(mask_mask[j]) != use_scmp) {
                     if (!out_mask[j]) {
                         out_mask[j] = 1;
                         count += 1;

@@ -29,6 +29,7 @@
 #define SPLA_GRID_HPP
 
 #include <cstddef>
+#include <mutex>
 #include <unordered_map>
 #include <utility>
 
@@ -91,6 +92,12 @@ namespace spla::detail {
             return Slice(row, m_dim, m_elements);
         }
 
+        T &operator[](const Coord &idx) {
+            assert(idx.first < m_dim.first);
+            assert(idx.second < m_dim.second);
+            return m_elements[idx];
+        }
+
         T operator[](const Coord &idx) const {
             assert(idx.first < m_dim.first);
             assert(idx.second < m_dim.second);
@@ -102,9 +109,43 @@ namespace spla::detail {
         [[nodiscard]] std::pair<std::size_t, std::size_t> dim() const { return m_dim; }
         [[nodiscard]] const Elements &elements() const { return m_elements; }
 
+        [[nodiscard]] std::vector<T> column(std::size_t j) const {
+            assert(j < m_dim.second);
+            std::vector<T> values;
+
+            for (std::size_t i = 0; i < m_dim.first; i++) {
+                auto query = m_elements.find(Coord{i, j});
+                if (query != m_elements.end())
+                    values.push_back(query->second);
+            }
+
+            return values;
+        }
+
     private:
         std::pair<std::size_t, std::size_t> m_dim{0, 0};
         Elements m_elements;
+    };
+
+    template<typename T>
+    class GridTS {
+    public:
+        typedef typename Grid<T>::Coord Coord;
+        typedef typename Grid<T>::Elements Elements;
+
+        explicit GridTS(const std::pair<std::size_t, std::size_t> &dim) : m_grid(dim) {}
+
+        void set_block(const Coord &idx, const T &element) {
+            std::lock_guard<std::mutex> lockGuard(m_mutex);
+            m_grid[idx] = element;
+        }
+
+        const Grid<T> &grid() const { return m_grid; }
+        const Elements &elements() const { return m_grid.elements(); }
+
+    private:
+        Grid<T> m_grid;
+        mutable std::mutex m_mutex;
     };
 
     /**
