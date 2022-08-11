@@ -5,9 +5,10 @@ on:
     branches: [ main ]
     paths:
       - '.github/**'
-      - 'sources/**'
       - 'include/**'
+      - 'src/**'
       - 'tests/**'
+      - 'examples/**'
       - '.clang-format'
   pull_request:
     branches: [ main ]
@@ -20,9 +21,10 @@ jobs:
       fail-fast: false
       matrix:
         path:
-          - 'sources'
           - 'include'
+          - 'src'
           - 'tests'
+          - 'examples'
     steps:
     - uses: actions/checkout@v2
     - name: Run clang-format style check
