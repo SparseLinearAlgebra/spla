@@ -1,0 +1,39 @@
+name: Docs Python
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/**'
+      - 'python/spla/**'
+
+jobs:
+  documentation:
+    # Do not attempt to deploy documentation on forks
+    if: github.repository_owner == 'JetBrains-Research'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.8 ]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install packages
+        run: python -m pip install pdoc3
+
+      - name: Build docs
+        run: pdoc -o pydocs --html python/spla
+        env:
+          SPBLA_DOCS_ONLY: true
+
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pydocs/
+          destination_dir: docs-python
