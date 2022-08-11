@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021 JetBrains-Research                                          */
+/* Copyright (c) 2021-2022 JetBrains-Research                                     */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -33,6 +33,11 @@
 namespace spla {
 
     /**
+     * @addtogroup spla
+     * @{
+     */
+
+    /**
      * @class Matrix
      * @brief Generalized M x N dimensional matrix object
      */
@@ -42,6 +47,10 @@ namespace spla {
 
         SPLA_API void build();
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

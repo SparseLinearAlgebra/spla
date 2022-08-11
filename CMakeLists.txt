@@ -191,6 +191,13 @@ endif ()
 ## Source code configuration
 
 add_library(spla SHARED
+        include/spla/library.hpp
+        include/spla/matrix.hpp
+        include/spla/object.hpp
+        include/spla/op.hpp
+        include/spla/ref.hpp
+        include/spla/schedule.hpp
+        include/spla/type.hpp
         src/core/matrix.cpp)
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)

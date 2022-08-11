@@ -73,6 +73,9 @@ folder.
 $ python ./build.py --build-dir=build --build-type=Release --nt=4 --arch=<arch>
 ```
 
+> Attention!   
+> On Windows platform building commands must be executed in `x64 Native Tools Command Prompt for VS`.
+
 ### Run unit-tests
 
 The following code snippet executed python script, which allows to run all native C++ library unit-tests, located in
@@ -102,16 +105,19 @@ $ python ./run_tests.py --build-dir=build
 
 ## Project structure
 
-| Folder        | Description                                                 |
-| :------------ | :---------------------------------------------------------- |
-| `📁 .github`  | CI/CD scripts and GitHub related files                      |
-| `📁 deps`     | Third-party project dependencies, stored as submodules      |
-| `📁 docs`     | Documentations and digital stuff                            |
-| `📁 examples` | Example applications of library C/C++ usage                 |
-| `📁 include`  | Library public C/C++ header files                           |
-| `📁 src`      | Library private compiled source directory                   |
-| `📁 tests`    | Library C/C++ unit-tests                                    |
-| `📁 python`   | Python package bindings for library API                     |
+| Entry                  | Description                                                        |
+| :--------------------- | :----------------------------------------------------------------- |
+| `📁 .github`           | CI/CD scripts and GitHub related files                             |
+| `📁 deps`              | Third-party project dependencies, stored as submodules             |
+| `📁 docs`              | Documentations and digital stuff                                   |
+| `📁 examples`          | Example applications of library C/C++ usage                        |
+| `📁 include`           | Library public C/C++ header files                                  |
+| `📁 src`               | Library private compiled source directory                          |
+| `📁 tests`             | Library C/C++ unit-tests                                           |
+| `📁 python`            | Python package bindings for library API                            |
+| `📄 CMakeLists.txt`    | CMake library configuration, add as sub directory to your project  |
+| `📄 build.py`          | Script to build library sources, tests and examples                |
+| `📄 run_tests.py`      | Script to run compiled library unit tests                          |
 
 ## License
 

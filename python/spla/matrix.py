@@ -12,11 +12,11 @@ class Matrix:
     Attributes
     __________
 
-    type: type
+    * type : type
         type of stored matrix elements
-    shape: 2-tuple
+    * shape : 2-tuple
         shape of the matrix in form of two integers tuple
-    hnd: p_void
+    * hnd: p_void
         handle to the native matrix object in spla C API
 
     Notes
