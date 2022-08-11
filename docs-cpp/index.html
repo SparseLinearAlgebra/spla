@@ -112,7 +112,11 @@ $(function() {
 <div class="fragment"><div class="line">$ python ./build.py --build-dir=build --build-type=Release --nt=4 --tests=YES --examples=YES</div>
 </div><!-- fragment --><p>On macOS, you can optionally specify target binaries architecture to build. Pass option <code>--arch</code> with <code>x86_64</code> or <code>arm64</code> respectively. By default, build falls back to <code>CMAKE_SYSTEM_PROCESSOR</code> specified architecture. See example bellow, replace <code>&lt;arch&gt;</code> with desired architecture for your build. Must be executed from project root folder.</p>
 <div class="fragment"><div class="line">$ python ./build.py --build-dir=build --build-type=Release --nt=4 --arch=&lt;arch&gt;</div>
-</div><!-- fragment --><h2>Run unit-tests</h2>
+</div><!-- fragment --><blockquote class="doxtable">
+<p>Attention! <br  />
+ On Windows platform building commands must be executed in <code>x64 Native Tools Command Prompt for VS</code>. </p>
+</blockquote>
+<h2>Run unit-tests</h2>
 <p>The following code snippet executed python script, which allows to run all native C++ library unit-tests, located in build directory, specified in <code>--build-dir</code> option. Must be executed from project root folder.</p>
 <div class="fragment"><div class="line">$ python ./run_tests.py --build-dir=build</div>
 </div><!-- fragment --><h1>Contributors</h1>
@@ -132,7 +136,7 @@ $(function() {
 </div><!-- fragment --><h1>Project structure</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Folder   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<th class="markdownTableHeadLeft">Entry   </th><th class="markdownTableHeadLeft">Description    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>📁 .github</code>   </td><td class="markdownTableBodyLeft">CI/CD scripts and GitHub related files    </td></tr>
 <tr class="markdownTableRowEven">
@@ -148,7 +152,13 @@ $(function() {
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>📁 tests</code>   </td><td class="markdownTableBodyLeft">Library C/C++ unit-tests    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>📁 python</code>   </td><td class="markdownTableBodyLeft">Python package bindings for library API   </td></tr>
+<td class="markdownTableBodyLeft"><code>📁 python</code>   </td><td class="markdownTableBodyLeft">Python package bindings for library API    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>📄 CMakeLists.txt</code>   </td><td class="markdownTableBodyLeft">CMake library configuration, add as sub directory to your project    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>📄 build.py</code>   </td><td class="markdownTableBodyLeft">Script to build library sources, tests and examples    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>📄 run_tests.py</code>   </td><td class="markdownTableBodyLeft">Script to run compiled library unit tests   </td></tr>
 </table>
 <h1>License</h1>
 <p>This project licensed under MIT License. License text can be found in the <a href="https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md">license file</a>.</p>
