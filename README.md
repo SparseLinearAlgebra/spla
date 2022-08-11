@@ -7,7 +7,7 @@
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
-**spla** is an open-source generalized sparse linear algebra framework for mathematical computations with GPU
+**spla** is an open-source generalized sparse linear algebra framework for mathematical computations with GPUs
 acceleration. It provides linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of
 operations. It gives an ability to customize underlying values types treatment and parametrise operations using rich
 pre-defined functions' set.
@@ -17,7 +17,7 @@ pre-defined functions' set.
 - **Contributing**:
   [https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Python API reference**:
-  [https://jetbrains-research.github.io/spla/docs-python](https://jetbrains-research.github.io/spla/docs-python/)
+  [https://jetbrains-research.github.io/spla/docs-python/spla](https://jetbrains-research.github.io/spla/docs-python/spla/)
 - **C/C++ API reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
