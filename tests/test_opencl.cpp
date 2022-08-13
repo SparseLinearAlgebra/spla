@@ -55,13 +55,10 @@ TEST(opencl, basic_gpu) {
     cl::Buffer c(context, CL_MEM_READ_WRITE, sizeof(int) * vec_c.size());
 
     std::string kernel_code =
-    R"(__kernel void add(__global const int* a, __global const int* b, __global int* c, int count) {
-        size_t idx = get_global_id(0);
-
-        if (idx < count) {
-            c[idx] = a[idx] + b[idx];
-        }
-    })";
+            "__kernel void add(__global const int* a, __global const int* b, __global int* c, int count) { "
+            "   size_t idx = get_global_id(0); "
+            "   if (idx < count) { c[idx] = a[idx] + b[idx]; } "
+            "}";
 
     cl::Program program(context, kernel_code);
     program.build(device, "-cl-std=CL1.2");
