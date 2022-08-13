@@ -1,12 +1,6 @@
 [submodule "deps/gtest"]
 	path = deps/gtest
 	url = https://github.com/google/googletest.git
-[submodule "deps/taskflow"]
-	path = deps/taskflow
-	url = https://github.com/taskflow/taskflow.git
-[submodule "deps/spdlog"]
-	path = deps/spdlog
-	url = https://github.com/gabime/spdlog.git
 [submodule "deps/cxxopts"]
 	path = deps/cxxopts
 	url = https://github.com/jarro2783/cxxopts.git
