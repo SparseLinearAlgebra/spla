@@ -6,6 +6,9 @@
 # Python cache files
 /**/__pycache__
 
+# Modifyed deps file
+
+
 # Prerequisites
 *.d
 

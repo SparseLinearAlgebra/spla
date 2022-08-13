@@ -20,6 +20,7 @@ set(SPLA_TARGET_LINUX NO)
 set(SPLA_TARGET_WINDOWS NO)
 set(SPLA_TARGET_MACOSX NO)
 set(SPLA_ARCH)
+set(SPLA_EXT)
 
 ####################################################################
 ## Define platform
@@ -30,13 +31,16 @@ set(SPLA_ARCH)
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(SPLA_TARGET_WINDOWS YES)
     set(SPLA_ARCH "x64")
+    set(SPLA_EXT "dll")
     list(APPEND SPLA_DEFINES SPLA_TARGET_WINDOWS)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(SPLA_TARGET_LINUX YES)
     set(SPLA_ARCH "x64")
+    set(SPLA_EXT "so")
     list(APPEND SPLA_DEFINES SPLA_TARGET_LINUX)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(SPLA_TARGET_MACOSX YES)
+    set(SPLA_EXT "dylib")
     if (NOT SPLA_ARCH)
         if (NOT CMAKE_OSX_ARCHITECTURES)
             if ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "arm64")
@@ -165,8 +169,13 @@ endfunction()
 ######################################################################
 ## Dependencies config
 
-message(STATUS "Add OpenCL package required header files")
-find_package(OpenCL REQUIRED)
+if (SPLA_BUILD_OPENCL)
+    message(STATUS "Add Khronos OpenCL C API header files")
+    add_subdirectory(deps/opencl-headers)
+    message(STATUS "Add Khronos OpenCL ICD loaded library")
+    set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
+    add_subdirectory(deps/opencl-icd-loader)
+endif ()
 
 if (SPLA_BUILD_EXAMPLES)
     message(STATUS "Add cxxopts as arguments parser for example applications")
@@ -202,12 +211,14 @@ add_library(spla SHARED
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
-target_include_directories(spla PUBLIC ${OpenCL_INCLUDE_DIRS})
-target_link_libraries(spla PUBLIC ${OpenCL_LIBRARIES})
 
 set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
-target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
+
+if (SPLA_BUILD_OPENCL)
+    target_link_libraries(spla PUBLIC OpenCL)
+    target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
+endif ()
 
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)
