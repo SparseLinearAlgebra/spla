@@ -172,9 +172,16 @@ endfunction()
 if (SPLA_BUILD_OPENCL)
     message(STATUS "Add Khronos OpenCL C API header files")
     add_subdirectory(deps/opencl-headers)
+
     message(STATUS "Add Khronos OpenCL ICD loaded library")
     set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
     add_subdirectory(deps/opencl-icd-loader)
+
+    set(BUILD_DOCS OFF CACHE BOOL "" FORCE)
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(OPENCL_CLHPP_BUILD_TESTING OFF CACHE BOOL "" FORCE)
+    message(STATUS "Add Khronos OpenCL HPP bindings")
+    add_subdirectory(deps/opencl-headers-hpp)
 endif ()
 
 if (SPLA_BUILD_EXAMPLES)
@@ -217,7 +224,8 @@ target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 
 if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)
-    target_compile_definitions(spla PRIVATE CL_TARGET_OPENCL_VERSION=120)
+    target_link_libraries(spla PUBLIC OpenCL::HeadersCpp)
+    target_compile_definitions(spla PUBLIC CL_TARGET_OPENCL_VERSION=120)
 endif ()
 
 spla_target_compile_definitions(spla)
@@ -248,9 +256,9 @@ if (SPLA_BUILD_TESTS)
     add_subdirectory(tests)
 
     if (SPLA_TARGET_WINDOWS)
-        set(COMMON_NAME "${CMAKE_BINARY_DIR}/spla_${SPLA_ARCH}")
-        set(TARGET_FILES "${COMMON_NAME}.dll")
-        message(STATUS "${TARGET_FILES}")
+        set(SPLA_LIB_NAME "${CMAKE_BINARY_DIR}/spla_${SPLA_ARCH}.${SPLA_EXT}")
+        set(CL_ICD_LOADER_NAME "${CMAKE_BINARY_DIR}/deps/opencl-icd-loader/OpenCL.${SPLA_EXT}")
+        set(TARGET_FILES ${SPLA_LIB_NAME} ${CL_ICD_LOADER_NAME})
 
         foreach (TARGET_FILE ${TARGET_FILES})
             add_custom_command(

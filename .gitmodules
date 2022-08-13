@@ -16,3 +16,6 @@
 [submodule "deps/opencl-headers"]
 	path = deps/opencl-headers
 	url = https://github.com/KhronosGroup/OpenCL-Headers
+[submodule "deps/opencl-headers-hpp"]
+	path = deps/opencl-headers-hpp
+	url = https://github.com/KhronosGroup/OpenCL-CLHPP.git
