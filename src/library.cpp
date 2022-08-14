@@ -69,6 +69,12 @@ namespace spla {
             return Status::Ok;
         }
 #endif
+        if (accelerator == AcceleratorType::None) {
+            LOG_MSG(Status::Ok, "disable acceleration");
+            m_accelerator.reset();
+            return Status::Ok;
+        }
+
         return Status::NoAcceleration;
     }
 

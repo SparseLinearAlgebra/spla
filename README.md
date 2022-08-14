@@ -15,7 +15,7 @@ pre-defined functions' set.
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
-  [https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
+  [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Python API reference**:
   [https://jetbrains-research.github.io/spla/docs-python/spla](https://jetbrains-research.github.io/spla/docs-python/spla/)
 - **C/C++ API reference**:

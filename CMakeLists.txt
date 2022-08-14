@@ -216,6 +216,8 @@ if (SPLA_BUILD_OPENCL)
 endif ()
 
 add_library(spla SHARED
+        # C++ core
+        include/spla/spla.hpp
         include/spla/config.hpp
         include/spla/library.hpp
         include/spla/matrix.hpp
@@ -229,6 +231,11 @@ add_library(spla SHARED
         src/core/logger.hpp
         src/library.cpp
         src/matrix.cpp
+        # C bindings
+        include/spla_c/spla.h
+        src/binding/c_config.hpp
+        src/binding/c_library.cpp
+        # C++ optional part
         ${SRC_OPENCL})
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)

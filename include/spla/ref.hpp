@@ -29,6 +29,7 @@
 #define SPLA_REF_HPP
 
 #include <atomic>
+#include <cassert>
 
 namespace spla {
 
@@ -112,45 +113,45 @@ namespace spla {
     template<typename T>
     class ref_ptr {
     public:
-        Ref() = default;
+        ref_ptr() = default;
 
-        explicit Ref(T *object) {
+        explicit ref_ptr(T *object) {
             m_object = safe_ref(object);
         }
 
-        Ref(const Ref &other) {
+        ref_ptr(const ref_ptr &other) {
             m_object = safe_ref(other.m_object);
         }
 
-        Ref(Ref &&other) noexcept {
+        ref_ptr(ref_ptr &&other) noexcept {
             m_object = other.m_object;
             other.m_object = nullptr;
         }
-        ~Ref() {
+        ~ref_ptr() {
             unref(m_object);
             m_object = nullptr;
         }
 
-        Ref<T> &operator=(const Ref &other) {
+        ref_ptr<T> &operator=(const ref_ptr &other) {
             if (this != &other)
                 this->reset(safe_ref(other.get()));
             return *this;
         }
 
         template<typename G>
-        Ref<T> &operator=(const Ref<G> &other) {
+        ref_ptr<T> &operator=(const ref_ptr<G> &other) {
             if (get() != other.get())
                 this->reset(safe_ref(other.get()));
             return *this;
         }
 
-        Ref<T> &operator=(Ref &&other) noexcept {
+        ref_ptr<T> &operator=(ref_ptr &&other) noexcept {
             if (this != &other)
                 this->reset(other.release());
             return *this;
         }
 
-        bool operator==(const Ref &other) const {
+        bool operator==(const ref_ptr &other) const {
             return m_object == other.m_object;
         }
 
@@ -202,13 +203,13 @@ namespace spla {
         }
 
         template<class G>
-        Ref<G> as() const {
-            return Ref<G>(m_object);
+        ref_ptr<G> as() const {
+            return ref_ptr<G>(m_object);
         }
 
         template<class G>
-        Ref<G> cast() const {
-            return Ref<G>(dynamic_cast<G *>(m_object));
+        ref_ptr<G> cast() const {
+            return ref_ptr<G>(dynamic_cast<G *>(m_object));
         }
 
     private:

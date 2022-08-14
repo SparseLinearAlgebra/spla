@@ -74,6 +74,9 @@ namespace spla {
          * Finalize method must be called at the end after application
          * to correctly shutdown global library state, release any
          * enabled acceleration device and release any pending device resources.
+         *
+         * @warning Must be called after application execution
+         * @warning After this call no other library function call is allowed
          */
         SPLA_API void finalize();
 

@@ -25,91 +25,44 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CONFIG_HPP
-#define SPLA_CONFIG_HPP
+#include "c_config.hpp"
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+void spla_Library_finalize() {
+    spla::get_library()->finalize();
+}
 
-namespace spla {
+spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator) {
+    return spla::to_c_status(spla::get_library()->set_accelerator(spla::from_c_accelerator_type(accelerator)));
+}
 
-    /**
-     * @addtogroup spla
-     * @{
-     */
+spla_Status spla_Library_set_platform(int index) {
+    return spla::to_c_status(spla::get_library()->set_platform(index));
+}
 
-    /**
-     * @class Status
-     * @brief Status of library operation execution
-     */
-    enum class Status : int {
-        /** No error */
-        Ok = 0,
-        /** Some error occurred */
-        Error = 1,
-        /** Library has no configured accelerator for computations */
-        NoAcceleration = 2,
-        /** Accelerator platform not found */
-        PlatformNotFound = 3,
-        /** Accelerator device not found */
-        DeviceNotFound = 4,
-        /** Call of the function is not possible for some context */
-        InvalidState = 5,
-        /** Passed invalid argument for some function */
-        InvalidArgument = 6,
-        /** Some library feature is not implemented */
-        NotImplemented = 1024
+spla_Status spla_Library_set_device(int index) {
+    return spla::to_c_status(spla::get_library()->set_device(index));
+}
+
+spla_Status spla_Library_set_queues_count(int count) {
+    return spla::to_c_status(spla::get_library()->set_queues_count(count));
+}
+
+spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void *p_user_data) {
+    auto wrapped_callback = [=](spla::Status status,
+                                const std::string &msg,
+                                const std::string &file,
+                                const std::string &function,
+                                int line) {
+        callback(spla::to_c_status(status),
+                 msg.c_str(),
+                 file.c_str(),
+                 function.c_str(),
+                 line,
+                 p_user_data);
     };
+    return spla::to_c_status(spla::get_library()->set_message_callback(wrapped_callback));
+}
 
-    /**
-     * @class AcceleratorType
-     * @brief Types of supported accelerators for computations
-     */
-    enum class AcceleratorType {
-        /** No acceleration to be used */
-        None = 0,
-        /** OpenCL-based single device acceleration */
-        OpenCL = 1
-    };
-
-    /**
-     * @brief Convert status value to string
-     *
-     * @param status Status value
-     *
-     * @return String value
-     */
-    static const char *to_string(Status status) {
-#define STATUS_MAP(value) \
-    case Status::value:   \
-        return #value
-
-        switch (status) {
-            STATUS_MAP(Ok);
-            STATUS_MAP(Error);
-            STATUS_MAP(NoAcceleration);
-            STATUS_MAP(PlatformNotFound);
-            STATUS_MAP(DeviceNotFound);
-            STATUS_MAP(InvalidState);
-            STATUS_MAP(InvalidArgument);
-            STATUS_MAP(NotImplemented);
-            default:
-                return "none";
-        }
-#undef STATUS_MAP
-    }
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_CONFIG_HPP
+spla_Status spla_Library_set_default_callback() {
+    return spla::to_c_status(spla::get_library()->set_default_callback());
+}

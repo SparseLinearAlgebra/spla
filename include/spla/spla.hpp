@@ -25,91 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CONFIG_HPP
-#define SPLA_CONFIG_HPP
+#ifndef SPLA_SPLA_HPP
+#define SPLA_SPLA_HPP
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+#include "config.hpp"
+#include "library.hpp"
+#include "matrix.hpp"
+#include "object.hpp"
+#include "op.hpp"
+#include "ref.hpp"
+#include "schedule.hpp"
+#include "type.hpp"
 
-namespace spla {
-
-    /**
-     * @addtogroup spla
-     * @{
-     */
-
-    /**
-     * @class Status
-     * @brief Status of library operation execution
-     */
-    enum class Status : int {
-        /** No error */
-        Ok = 0,
-        /** Some error occurred */
-        Error = 1,
-        /** Library has no configured accelerator for computations */
-        NoAcceleration = 2,
-        /** Accelerator platform not found */
-        PlatformNotFound = 3,
-        /** Accelerator device not found */
-        DeviceNotFound = 4,
-        /** Call of the function is not possible for some context */
-        InvalidState = 5,
-        /** Passed invalid argument for some function */
-        InvalidArgument = 6,
-        /** Some library feature is not implemented */
-        NotImplemented = 1024
-    };
-
-    /**
-     * @class AcceleratorType
-     * @brief Types of supported accelerators for computations
-     */
-    enum class AcceleratorType {
-        /** No acceleration to be used */
-        None = 0,
-        /** OpenCL-based single device acceleration */
-        OpenCL = 1
-    };
-
-    /**
-     * @brief Convert status value to string
-     *
-     * @param status Status value
-     *
-     * @return String value
-     */
-    static const char *to_string(Status status) {
-#define STATUS_MAP(value) \
-    case Status::value:   \
-        return #value
-
-        switch (status) {
-            STATUS_MAP(Ok);
-            STATUS_MAP(Error);
-            STATUS_MAP(NoAcceleration);
-            STATUS_MAP(PlatformNotFound);
-            STATUS_MAP(DeviceNotFound);
-            STATUS_MAP(InvalidState);
-            STATUS_MAP(InvalidArgument);
-            STATUS_MAP(NotImplemented);
-            default:
-                return "none";
-        }
-#undef STATUS_MAP
-    }
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_CONFIG_HPP
+#endif//SPLA_SPLA_HPP
