@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>spla API documentation</title>
-<meta name="description" content="Python spla package entry point …" />
+<title>spla.bridge API documentation</title>
+<meta name="description" content="Wrapped native (spla C API) raw functions access." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,25 +19,16 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>spla</code></h1>
+<h1 class="title">Module <code>spla.bridge</code></h1>
 </header>
 <section id="section-intro">
-<p>Python spla package entry point.</p>
-<p>Spla C backend compiled library is automatically loaded and
-initialized on package import. State of the library managed
-by internal <code><a title="spla.bridge" href="bridge.html">spla.bridge</a></code> module. All resources are unloaded automatically
-on package exit. Library state finalized automatically.</p>
+<p>Wrapped native (spla C API) raw functions access.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-Python spla package entry point.
-
-Spla C backend compiled library is automatically loaded and
-initialized on package import. State of the library managed
-by internal `bridge` module. All resources are unloaded automatically
-on package exit. Library state finalized automatically.
+Wrapped native (spla C API) raw functions access.
 &#34;&#34;&#34;
 
 __copyright__ = &#34;Copyright (c) 2021-2022 JetBrains-Research&#34;
@@ -59,65 +50,208 @@ THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS 
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+LIABILITY, WHETHER INs AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 &#34;&#34;&#34;
 
-from . import library
-from . import op
-from . import schedule
-from . import type
+__all__ = [
+    &#34;initialize&#34;,
+    &#34;_spla_lib&#34;,
+    &#34;_callback_t&#34;
+]
 
-from . import bridge
+import os
+import ctypes
+import pathlib
+import platform
+import atexit
 
-from .matrix import *
-from .vector import *
-from .version import *
+ARCH = {&#39;AMD64&#39;: &#39;x64&#39;, &#39;x86_64&#39;: &#39;x64&#39;, &#39;arm64&#39;: &#39;arm64&#39;}[platform.machine()]
+SYSTEM = {&#39;Darwin&#39;: &#39;macos&#39;, &#39;Linux&#39;: &#39;linux&#39;, &#39;Windows&#39;: &#39;windows&#39;}[platform.system()]
+TARGET_SUFFIX = {&#39;macos&#39;: &#39;.dylib&#39;, &#39;linux&#39;: &#39;.so&#39;, &#39;windows&#39;: &#39;.dll&#39;}[SYSTEM]
+TARGET = {&#39;macos&#39;: &#39;libspla&#39;, &#39;linux&#39;: &#39;libspla&#39;, &#39;windows&#39;: &#39;spla&#39;}[SYSTEM] + &#34;_&#34; + ARCH + TARGET_SUFFIX
 
-bridge.initialize()</code></pre>
+_spla_lib_path = None
+_spla_lib = None
+_int = None
+_enum_t = None
+_status_t = None
+_object_t = None
+_p_object_t = None
+_callback_t = None
+_default_callback = None
+
+_status_mapping = {
+    0: &#34;OK&#34;,
+    1: &#34;ERROR&#34;,
+    2: &#34;NO_ACCELERATION&#34;,
+    3: &#34;PLATFORM_NOT_FOUND&#34;,
+    4: &#34;DEVICE_NOT_FOUND&#34;,
+    5: &#34;INVALID_STATE&#34;,
+    6: &#34;INVALID_ARGUMENT&#34;,
+    1024: &#34;NOT_IMPLEMENTED&#34;,
+}
+
+
+def load_library(lib_path):
+    global _spla_lib
+    global _int
+    global _enum_t
+    global _status_t
+    global _object_t
+    global _p_object_t
+    global _callback_t
+
+    _spla_lib = ctypes.cdll.LoadLibrary(str(lib_path))
+    _int = ctypes.c_int
+    _enum_t = ctypes.c_uint
+    _status_t = ctypes.c_uint
+    _object_t = ctypes.c_void_p
+    _p_object_t = ctypes.POINTER(_object_t)
+    _callback_t = ctypes.CFUNCTYPE(None,
+                                   ctypes.c_int,
+                                   ctypes.c_char_p,
+                                   ctypes.c_char_p,
+                                   ctypes.c_char_p,
+                                   ctypes.c_int,
+                                   ctypes.c_void_p)
+
+    _spla_lib.spla_Library_finalize.restype = _status_t
+    _spla_lib.spla_Library_finalize.argtypes = []
+
+    _spla_lib.spla_Library_set_accelerator.restype = _status_t
+    _spla_lib.spla_Library_set_accelerator.argtypes = [_enum_t]
+
+    _spla_lib.spla_Library_set_platform.restype = _status_t
+    _spla_lib.spla_Library_set_platform.argtypes = [_int]
+
+    _spla_lib.spla_Library_set_device.restype = _status_t
+    _spla_lib.spla_Library_set_device.argtypes = [_int]
+
+    _spla_lib.spla_Library_set_queues_count.restype = _status_t
+    _spla_lib.spla_Library_set_queues_count.argtypes = [_int]
+
+    _spla_lib.spla_Library_set_message_callback.restype = _status_t
+    _spla_lib.spla_Library_set_message_callback.argtypes = [_callback_t, ctypes.c_void_p]
+
+    _spla_lib.spla_Library_set_default_callback.restype = _status_t
+    _spla_lib.spla_Library_set_default_callback.argtypes = []
+
+
+def default_callback(status, msg, file, function, line, user_data):
+    decoded_msg = msg.decode(&#34;utf-8&#34;)
+    decoded_file = file.decode(&#34;utf-8&#34;)
+    print(f&#34;PySpla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}&#34;)
+
+
+def finalize():
+    if _spla_lib:
+        _spla_lib.spla_Library_finalize()
+
+
+def initialize():
+    global _spla_lib
+    global _spla_lib_path
+    global _callback_t
+    global _default_callback
+
+    try:
+        # If generating docs, no lib init required
+        if os.environ[&#34;SPLA_DOCS&#34;]:
+            return
+    except KeyError:
+        pass
+
+    _spla_lib_path = pathlib.Path(__file__).resolve().parent / TARGET
+
+    try:
+        # Override library path from ENV variable (for debug &amp; custom build)
+        if os.environ[&#34;SPLA_PATH&#34;]:
+            _spla_lib_path = pathlib.Path(os.environ[&#34;SPLA_PATH&#34;])
+    except KeyError:
+        pass
+
+    if not _spla_lib_path.is_file():
+        # Validate file before loading
+        raise Exception(f&#34;no compiled spla file {TARGET} to load&#34;)
+
+    load_library(_spla_lib_path)
+    _default_callback = _callback_t(default_callback)
+
+    try:
+        # If debug enable in ENV, setup default callback for messages on init
+        if int(os.environ[&#34;SPLA_DEBUG&#34;]):
+            _spla_lib.spla_Library_set_message_callback(
+                _default_callback, ctypes.c_void_p(0))
+    except KeyError:
+        pass
+
+    atexit.register(finalize)
+
+
+def check(status):
+    if status != 0:
+        raise Exception(f&#34;{_status_mapping[status]}&#34;)</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="spla.bridge" href="bridge.html">spla.bridge</a></code></dt>
+<dt id="spla.bridge.initialize"><code class="name flex">
+<span>def <span class="ident">initialize</span></span>(<span>)</span>
+</code></dt>
 <dd>
-<div class="desc"><p>Wrapped native (spla C API) raw functions access.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.library" href="library.html">spla.library</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API)</p></div>
-</dd>
-<dt><code class="name"><a title="spla.matrix" href="matrix.html">spla.matrix</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API) matrix primitive python implementation.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.op" href="op.html">spla.op</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API) op implementation.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.schedule" href="schedule.html">spla.schedule</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API) schedule implementation.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.type" href="type.html">spla.type</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API) type support implementation.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.vector" href="vector.html">spla.vector</a></code></dt>
-<dd>
-<div class="desc"><p>Wrapped native (spla C API) vector primitive implementation.</p></div>
-</dd>
-<dt><code class="name"><a title="spla.version" href="version.html">spla.version</a></code></dt>
-<dd>
-<div class="desc"><p>Package version info.</p></div>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize():
+    global _spla_lib
+    global _spla_lib_path
+    global _callback_t
+    global _default_callback
+
+    try:
+        # If generating docs, no lib init required
+        if os.environ[&#34;SPLA_DOCS&#34;]:
+            return
+    except KeyError:
+        pass
+
+    _spla_lib_path = pathlib.Path(__file__).resolve().parent / TARGET
+
+    try:
+        # Override library path from ENV variable (for debug &amp; custom build)
+        if os.environ[&#34;SPLA_PATH&#34;]:
+            _spla_lib_path = pathlib.Path(os.environ[&#34;SPLA_PATH&#34;])
+    except KeyError:
+        pass
+
+    if not _spla_lib_path.is_file():
+        # Validate file before loading
+        raise Exception(f&#34;no compiled spla file {TARGET} to load&#34;)
+
+    load_library(_spla_lib_path)
+    _default_callback = _callback_t(default_callback)
+
+    try:
+        # If debug enable in ENV, setup default callback for messages on init
+        if int(os.environ[&#34;SPLA_DEBUG&#34;]):
+            _spla_lib.spla_Library_set_message_callback(
+                _default_callback, ctypes.c_void_p(0))
+    except KeyError:
+        pass
+
+    atexit.register(finalize)</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -128,16 +262,14 @@ bridge.initialize()</code></pre>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="spla.bridge" href="bridge.html">spla.bridge</a></code></li>
-<li><code><a title="spla.library" href="library.html">spla.library</a></code></li>
-<li><code><a title="spla.matrix" href="matrix.html">spla.matrix</a></code></li>
-<li><code><a title="spla.op" href="op.html">spla.op</a></code></li>
-<li><code><a title="spla.schedule" href="schedule.html">spla.schedule</a></code></li>
-<li><code><a title="spla.type" href="type.html">spla.type</a></code></li>
-<li><code><a title="spla.vector" href="vector.html">spla.vector</a></code></li>
-<li><code><a title="spla.version" href="version.html">spla.version</a></code></li>
+<li><code><a title="spla" href="index.html">spla</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="spla.bridge.initialize" href="#spla.bridge.initialize">initialize</a></code></li>
 </ul>
 </li>
 </ul>
