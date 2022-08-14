@@ -1,5 +1,10 @@
 """
 Python spla package entry point.
+
+Spla C backend compiled library is automatically loaded and
+initialized on package import. State of the library managed
+by internal `bridge` module. All resources are unloaded automatically
+on package exit. Library state finalized automatically.
 """
 
 __copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
@@ -25,3 +30,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
+from . import library
+from . import op
+from . import schedule
+from . import type
+
+from . import bridge
+
+from .matrix import *
+from .vector import *
+from .version import *
+
+bridge.initialize()

@@ -29,7 +29,7 @@ jobs:
       - name: Build docs
         run: pdoc -o pydocs --html python/spla
         env:
-          SPBLA_DOCS_ONLY: true
+          SPLA_DOCS: true
 
       - name: Publish to Github Pages
         uses: peaceiris/actions-gh-pages@v3

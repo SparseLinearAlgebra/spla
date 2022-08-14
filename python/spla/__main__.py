@@ -26,5 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-print("Python bindings for Spla library."
-      "Import library as module to your python scripts.")
+print("****** Spla Project ******")
+print("Python bindings for Spla library.")
+print("Import library as module to your python scripts.")
+print("See https://github.com/JetBrains-Research/spla")
