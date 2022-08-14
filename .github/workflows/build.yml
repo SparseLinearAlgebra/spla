@@ -46,8 +46,6 @@ jobs:
 
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
@@ -69,10 +67,16 @@ jobs:
 
       - uses: seanmiddleditch/gha-setup-ninja@master
 
+      - name: Install GCC required version
+        run: |
+          sudo apt update
+          sudo apt install gcc-8 g++-8
+
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
         env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+          CC: gcc-8
+          CXX: g++-8
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
@@ -95,8 +99,6 @@ jobs:
 
       - name: Configure CMake x64
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=x86_64
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources x64
         run: cmake --build ${{ env.build_dir }} --verbose
