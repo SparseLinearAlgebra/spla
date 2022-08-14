@@ -228,7 +228,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Finalize library execution. </p>
-<p>Finalize method must be called at the end after application to correctly shutdown global library state, release any enabled acceleration device and release any pending device resources. </p>
+<p>Finalize method must be called at the end after application to correctly shutdown global library state, release any enabled acceleration device and release any pending device resources.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Must be called after application execution </dd>
+<dd>
+After this call no other library function call is allowed </dd></dl>
 
 </div>
 </div>

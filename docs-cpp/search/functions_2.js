@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cast_124',['cast',['../classspla_1_1ref__ptr.html#a37cc3589711f0b761c7fd9b0503181be',1,'spla::ref_ptr']]]
+  ['cast_136',['cast',['../classspla_1_1ref__ptr.html#ac967c3662af4bd9a70a0b7afadba252e',1,'spla::ref_ptr']]]
 ];
