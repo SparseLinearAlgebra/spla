@@ -1,5 +1,5 @@
 """
-Wrapped native (spla C API)
+Wrapped native (spla C API) library implementation.
 """
 
 __copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"

@@ -12,13 +12,17 @@ acceleration. It provides linear algebra primitives, such as matrices, vectors a
 operations. It gives an ability to customize underlying values types treatment and parametrise operations using rich
 pre-defined functions' set.
 
+- **Package page**
+  [https://pypi.org/project/spla](https://pypi.org/project/spla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
-- **Python API reference**:
+- **Development**:
+  [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
+- **Python API**:
   [https://jetbrains-research.github.io/spla/docs-python/spla](https://jetbrains-research.github.io/spla/docs-python/spla/)
-- **C/C++ API reference**:
+- **C/C++ API**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
@@ -29,18 +33,21 @@ pre-defined functions' set.
 
 ### Prerequisites
 
-- Common:
+- **Common**:
     - Git (to get source code)
     - CMake (the latest version)
     - Ninja (as build files generator)
     - OpenCL 1.2+ SDK
     - Python 3.7+
-- Windows 10:
+
+- **Windows 10**:
     - Microsoft Visual C++ Compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
-- Ubuntu 20.04:
+
+- **Ubuntu 20.04**:
     - GNU C++ Compiler with C++ 17 support
-- MaсOS Catalina 10.15:
+
+- **MaсOS Catalina 10.15**:
     - Clang Compiler with C++ 17 support
 
 ### Get source code
@@ -55,6 +62,8 @@ $ git submodule update --init --recursive
 ```
 
 ### Configure and run build
+
+> **Attention!** On Windows platform building commands must be executed in `x64 Native Tools Command Prompt for VS`.
 
 The following code snippet runs `build.py` script, which allows configuring cmake and running of actual build with
 selected options. You can specify build directory, build type, number of system threads for build, enable or disable
@@ -72,9 +81,6 @@ folder.
 ```shell
 $ python ./build.py --build-dir=build --build-type=Release --nt=4 --arch=<arch>
 ```
-
-> Attention!   
-> On Windows platform building commands must be executed in `x64 Native Tools Command Prompt for VS`.
 
 ### Run unit-tests
 

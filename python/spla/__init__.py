@@ -1,5 +1,54 @@
 """
-Python spla package entry point.
+Python spla package.
+
+Generalized sparse liner algebra python package with GPUs accelerated
+computations. Library provides a set of linear algebra primitives such as
+`matrix` and `vector` for mathematical computations parametrized using
+on of built-in `type`. It allows to define sequence of execution tasks
+using `schedule` API. Desired behavior of math operations can be customized
+using on of element operations in `op` module.
+
+Library optionally uses GPUs acceleration through OpenCL or CUDA API.
+It automatically attempts to initialize accelerator and trys to use
+it to speed-up some operations. All GPU communication, data transformations
+and transfers done internally automatically with any efforts from user perspective.
+
+Containers
+----------
+
+Library provides fundamental generalized linear algebra containers
+for data storage and mathematical computations. These containers
+are generalized, so any of built-in types may be used to parametrize
+type of data. Containers have sparse formats by default, so it is
+possible to create large-dimension but low data containers. Containers
+are storage-invariant, so the best format for the storage is automatically
+managed by container internally. All required format conversations done
+in the context of particular primitive usage.
+
+* `Matrix` - Generalized sparse storage-invariant matrix primitive.
+* `Vector` - Generalized sparse storage-invariant vector primitive.
+
+Schedule
+--------
+
+Schedule allows to build sequence of tasks to be executed. It allows user
+control the order of the tasks' execution, parallel execution of tasks
+on some level, notification on some steps completion and etc.
+
+* `Schedule` - Schedule object which may be executed by library.
+* `Task` - A particular wort to be done inside a step of schedule.
+
+Types
+-----
+
+Op
+--
+
+Usage information
+-----------------
+
+Details
+-------
 
 Spla C backend compiled library is automatically loaded and
 initialized on package import. State of the library managed
@@ -36,10 +85,8 @@ from . import op
 from . import schedule
 from . import type
 
-from . import bridge
-
 from .matrix import *
 from .vector import *
 from .version import *
 
-bridge.initialize()
+from . import bridge

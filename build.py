@@ -5,14 +5,14 @@ import shared
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--build-dir", default="build")
-    parser.add_argument("--build-type", default="Release")
-    parser.add_argument("--tests", default="YES")
-    parser.add_argument("--examples", default="YES")
-    parser.add_argument("--opencl", default="YES")
-    parser.add_argument("--target", default="all")
-    parser.add_argument("--nt", default="4")
-    parser.add_argument("--arch")
+    parser.add_argument("--build-dir", default="build", help="folder name to locate build files")
+    parser.add_argument("--build-type", default="Release", help="CMake type of build `Debug` or `Release`")
+    parser.add_argument("--tests", default="YES", help="build tests")
+    parser.add_argument("--examples", default="YES", help="build example applications")
+    parser.add_argument("--opencl", default="YES", help="build opencl acceleration backend")
+    parser.add_argument("--target", default="all", help="which target to build")
+    parser.add_argument("--nt", default="4", help="number of os threads for build")
+    parser.add_argument("--arch", default="target architecture on MacOS `x64` or `arm64`")
     args = parser.parse_args()
 
     build_config_args = ["cmake", ".", "-B", args.build_dir, "-G", "Ninja", f"-DCMAKE_BUILD_TYPE={args.build_type}",

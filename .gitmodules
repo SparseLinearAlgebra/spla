@@ -4,9 +4,6 @@
 [submodule "deps/cxxopts"]
 	path = deps/cxxopts
 	url = https://github.com/jarro2783/cxxopts.git
-[submodule "deps/opencl-icd-loader"]
-	path = deps/opencl-icd-loader
-	url = https://github.com/KhronosGroup/OpenCL-ICD-Loader.git
 [submodule "deps/opencl-headers"]
 	path = deps/opencl-headers
 	url = https://github.com/KhronosGroup/OpenCL-Headers

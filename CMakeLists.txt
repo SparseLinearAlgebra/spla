@@ -174,7 +174,7 @@ if (SPLA_BUILD_OPENCL)
     add_subdirectory(deps/opencl-headers)
 
     message(STATUS "Add Khronos OpenCL ICD loaded library")
-    set(OPENCL_ICD_LOADER_BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+    set(OPENCL_ICD_LOADER_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
     set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
     add_subdirectory(deps/opencl-icd-loader)
 

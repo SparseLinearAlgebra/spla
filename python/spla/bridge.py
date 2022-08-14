@@ -27,7 +27,6 @@ SOFTWARE.
 """
 
 __all__ = [
-    "initialize",
     "_spla_lib",
     "_callback_t"
 ]
@@ -164,3 +163,7 @@ def initialize():
 def check(status):
     if status != 0:
         raise Exception(f"{_status_mapping[status]}")
+
+
+# Initialize bridge on import
+initialize()
