@@ -14,6 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -25,7 +26,7 @@ jobs:
           pip install setuptools wheel twine
 
       - name: Download bianries
-      - uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v3
         with:
           name: native
           path: python
