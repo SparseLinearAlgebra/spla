@@ -1,9 +1,10 @@
 <map id="src/core/logger.hpp" name="src/core/logger.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="197,5,329,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="185,5,317,32"/>
 <area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="5,155,113,181"/>
-<area shape="rect" id="node3" href="$library_8hpp.html" title=" " alt="" coords="117,80,225,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="229,155,308,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="301,80,359,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="383,80,453,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="137,155,205,181"/>
+<area shape="rect" id="node3" href="$library_8hpp.html" title=" " alt="" coords="197,80,305,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="137,155,216,181"/>
+<area shape="rect" id="node7" title=" " alt="" coords="329,80,387,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="411,80,481,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="240,155,308,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="332,155,387,181"/>
 </map>
