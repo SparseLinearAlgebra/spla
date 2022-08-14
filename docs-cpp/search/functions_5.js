@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['operator_20bool_66',['operator bool',['../classspla_1_1ref__ptr.html#af556edb717dcb309412fd187cc3da943',1,'spla::ref_ptr']]],
-  ['operator_2a_67',['operator*',['../classspla_1_1ref__ptr.html#a75b78f4d91e0539d0aa47b4d42bf2b43',1,'spla::ref_ptr']]],
-  ['operator_2d_3e_68',['operator-&gt;',['../classspla_1_1ref__ptr.html#a3b87498cf19c984a460ba4a2e4890464',1,'spla::ref_ptr']]],
-  ['operator_3d_69',['operator=',['../classspla_1_1ref__ptr.html#acd34c5cbfa9e9919e36477ac6e97961b',1,'spla::ref_ptr::operator=(const Ref &amp;other)'],['../classspla_1_1ref__ptr.html#a50dca4f7a26156b00350b8aff9249f44',1,'spla::ref_ptr::operator=(const Ref&lt; G &gt; &amp;other)'],['../classspla_1_1ref__ptr.html#a6000e029baae17eb9504199ec6e52f1a',1,'spla::ref_ptr::operator=(Ref &amp;&amp;other) noexcept']]],
-  ['operator_3d_3d_70',['operator==',['../classspla_1_1ref__ptr.html#a69765d293ec2f3128181ef3d323fe315',1,'spla::ref_ptr']]]
+  ['init_137',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
+  ['is_138',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
+  ['is_5fnot_5fnull_139',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_140',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5funique_141',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]]
 ];

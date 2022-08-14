@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['library_2ehpp_11',['library.hpp',['../library_8hpp.html',1,'']]]
+  ['finalize_16',['finalize',['../classspla_1_1Library.html#afd3dcb03984dfe6cc50718b36fd0163a',1,'spla::Library']]]
 ];

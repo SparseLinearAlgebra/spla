@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['object_42',['Object',['../classspla_1_1Object.html',1,'spla']]]
+  ['claccelerator_94',['CLAccelerator',['../classspla_1_1CLAccelerator.html',1,'spla']]]
 ];

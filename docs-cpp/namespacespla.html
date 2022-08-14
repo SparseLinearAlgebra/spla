@@ -62,7 +62,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">spla Namespace Reference</div>  </div>
 </div><!--header-->
@@ -70,6 +73,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html">Library</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> global state automatically instantiated on lib init.  <a href="classspla_1_1Library.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html">Matrix</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized M x N dimensional matrix object.  <a href="classspla_1_1Matrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -82,6 +88,45 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automates reference counting and behaves as shared smart pointer.  <a href="classspla_1_1ref__ptr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Accelerator.html">Accelerator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for an computations acceleration backend.  <a href="classspla_1_1Accelerator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Logger.html">Logger</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> logger.  <a href="classspla_1_1Logger.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9">MessageCallback</a> = std::function&lt; void(<a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
+<tr class="separator:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga032378652a4bec8117bd24ee2c7f3eec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> : int { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Ok</a> = 0
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902">NoAcceleration</a>
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca8e6c62263614574c738707778e9793e5">PlatformNotFound</a>
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35">DeviceNotFound</a>
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">InvalidState</a>
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b">InvalidArgument</a>
+, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e">NotImplemented</a>
+<br />
+ }</td></tr>
+<tr class="separator:ga032378652a4bec8117bd24ee2c7f3eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae53f1b66beabcefa387bdcfce49f251a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae53f1b66beabcefa387bdcfce49f251a">AcceleratorType</a> { <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47">OpenCL</a>
+ }</td></tr>
+<tr class="separator:gae53f1b66beabcefa387bdcfce49f251a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library.html">Library</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">get_library</a> ()</td></tr>
+<tr class="memdesc:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access global library instance.  <a href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">More...</a><br /></td></tr>
+<tr class="separator:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -66,51 +66,69 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">library.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &quot;<a class="el" href="config_8hpp_source.html">config.hpp</a>&quot;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for library.hpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="library_8hpp__incl.png" border="0" usemap="#ainclude_2spla_2library_8hpp" alt=""/></div>
+<map name="ainclude_2spla_2library_8hpp" id="ainclude_2spla_2library_8hpp">
+<area shape="rect" title=" " alt="" coords="73,5,226,32"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="5,80,85,107"/>
+<area shape="rect" title=" " alt="" coords="110,80,189,107"/>
+<area shape="rect" title=" " alt="" coords="213,80,281,107"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="library_8hpp__dep__incl.png" border="0" usemap="#ainclude_2spla_2library_8hppdep" alt=""/></div>
 <map name="ainclude_2spla_2library_8hppdep" id="ainclude_2spla_2library_8hppdep">
-<area shape="rect" title=" " alt="" coords="6,5,159,32"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="5,80,160,107"/>
+<area shape="rect" title=" " alt="" coords="359,5,513,32"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="99,80,253,107"/>
+<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="370,80,502,107"/>
+<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="555,155,658,181"/>
 <area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="5,155,160,181"/>
-<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="17,229,149,256"/>
+<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="31,229,134,256"/>
+<area shape="rect" href="logger_8cpp.html" title=" " alt="" coords="185,155,317,181"/>
+<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="341,155,531,181"/>
+<area shape="rect" href="cl__accelerator_8cpp.html" title=" " alt="" coords="341,229,531,256"/>
 </map>
 </div>
 </div>
 <p><a href="library_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html">spla::Library</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> global state automatically instantiated on lib init.  <a href="classspla_1_1Library.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ae3bb5ff276a0f55f0b3606a36b4e94fc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="library_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></td></tr>
-<tr class="separator:ae3bb5ff276a0f55f0b3606a36b4e94fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9">spla::MessageCallback</a> = std::function&lt; void(<a class="el" href="classStatus.html">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
+<tr class="separator:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memItemLeft" align="right" valign="top">Library *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">spla::get_library</a> ()</td></tr>
+<tr class="memdesc:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access global library instance.  <a href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">More...</a><br /></td></tr>
+<tr class="separator:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ae3bb5ff276a0f55f0b3606a36b4e94fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3bb5ff276a0f55f0b3606a36b4e94fc">&#9670;&nbsp;</a></span>SPLA_API</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPLA_API</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

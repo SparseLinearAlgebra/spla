@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['spla_5fapi_79',['SPLA_API',['../library_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc',1,'library.hpp']]]
+  ['cl_5fhpp_5fminimum_5fopencl_5fversion_180',['CL_HPP_MINIMUM_OPENCL_VERSION',['../cl__accelerator_8hpp.html#a2053025c576bcf48e249dd20e884a560',1,'cl_accelerator.hpp']]],
+  ['cl_5fhpp_5ftarget_5fopencl_5fversion_181',['CL_HPP_TARGET_OPENCL_VERSION',['../cl__accelerator_8hpp.html#a37ea07405ca286c1570612b42d43b345',1,'cl_accelerator.hpp']]]
 ];
