@@ -3,7 +3,7 @@ name: Python Package (Test)
 on:
   workflow_run:
     workflows: [ "Build" ]
-    branches: [ pre-release ]
+    branches: [ "pre-release" ]
     types:
       - completed
 
@@ -11,6 +11,7 @@ jobs:
   deploy:
     name: Deploy Python package
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v2
