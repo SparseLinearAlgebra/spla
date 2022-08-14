@@ -282,11 +282,6 @@ if (SPLA_BUILD_TESTS)
         set(SPLA_LIB_NAME "${CMAKE_BINARY_DIR}/spla_${SPLA_ARCH}.${SPLA_EXT}")
         set(TARGET_FILES ${SPLA_LIB_NAME})
 
-        if (SPLA_BUILD_OPENCL)
-            set(OPENCL_ICD_NAME "${CMAKE_BINARY_DIR}/deps/opencl-icd-loader/OpenCL.dll")
-            list(APPEND TARGET_FILES ${OPENCL_ICD_NAME})
-        endif ()
-
         foreach (TARGET_FILE ${TARGET_FILES})
             add_custom_command(
                     TARGET spla POST_BUILD
