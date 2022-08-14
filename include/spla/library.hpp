@@ -28,15 +28,10 @@
 #ifndef SPLA_LIBRARY_HPP
 #define SPLA_LIBRARY_HPP
 
-#ifdef SPLA_MSVC
-    #ifdef SPLA_EXPORTS
-        #define SPLA_API __declspec(dllexport)
-    #else
-        #define SPLA_API __declspec(dllimport)
-    #endif
-#else
-    #define SPLA_API
-#endif
+#include "config.hpp"
+
+#include <functional>
+#include <memory>
 
 namespace spla {
 
@@ -44,6 +39,148 @@ namespace spla {
      * @addtogroup spla
      * @{
      */
+
+    /**
+     * @class MessageCallback
+     * @brief Callback function called on library message event
+     *
+     * Message callback function is called on library log.
+     * Callback accepts message status, actual textual message with description,
+     * file name and function with line location of message dispatch place.
+     *
+     * Use this message callback to receive library messages (in debug mode especially).
+     */
+    using MessageCallback = std::function<void(Status status,
+                                               const std::string &msg,
+                                               const std::string &file,
+                                               const std::string &function,
+                                               int line)>;
+
+    /**
+     * @class Library
+     * @brief Library global state automatically instantiated on lib init
+     */
+    class Library final {
+    public:
+        SPLA_API Library();
+        SPLA_API ~Library();
+
+        Library(const Library &) = delete;
+        Library(Library &&) = delete;
+
+        /**
+         * @brief Finalize library execution
+         *
+         * Finalize method must be called at the end after application
+         * to correctly shutdown global library state, release any
+         * enabled acceleration device and release any pending device resources.
+         */
+        SPLA_API void finalize();
+
+        /**
+         * @brief Set accelerator to be used in library computations
+         *
+         * Sets type of the accelerator to be used in library computations.
+         * By default library attempts automatically init OpenCL accelerator
+         * if OpenCL runtime present in the system. Set `None` to disable acceleration.
+         *
+         * @param accelerator Accelerate type
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_accelerator(AcceleratorType accelerator);
+
+        /**
+         * @brief Selects platform for computations for current accelerator
+         *
+         * @param index Platform index to select in current PC supported list.
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_platform(int index);
+
+        /**
+         * @brief Selects device for computations for current accelerator
+         *
+         * @param index Device index in current platform devices
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_device(int index);
+
+        /**
+         * @brief Set number of GPU queues for parallel ops execution
+         *
+         * @param count Number of queues to set
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_queues_count(int count);
+
+        /**
+         * @brief Set callback function called on library message event
+         *
+         * @param callback Function to be called
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_message_callback(MessageCallback callback);
+
+        /**
+         * @brief Sets default library callback to log messages to console
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_default_callback();
+
+        /**
+         * @warning Internal usage only!
+         *
+         * @return Library computations accelerator if presented
+         */
+        class Accelerator *get_accelerator();
+
+        /**
+         * @warning Internal usage only!
+         *
+         * @return Library logger
+         */
+        class Logger *get_logger();
+
+    private:
+        std::unique_ptr<class Accelerator> m_accelerator;
+        std::unique_ptr<class Logger> m_logger;
+    };
+
+    /**
+     * @brief Access global library instance
+     *
+     * Global library state instantiate once on first request to the library.
+     * Call this function to access library and configure it first before any computations.
+
+     * @note Only single global instance of the library allowed.
+     *
+     * @return Global library instance
+     */
+    SPLA_API Library *get_library();
+
+    /**
+     * @brief Global library computations accelerator if presented
+     *
+     * @warning Internal usage only!
+     *
+     * @return Library computations accelerator if presented
+     */
+    static class Accelerator *get_accelerator() { return get_library()->get_accelerator(); }
+
+    /**
+     * @brief Global library logger
+     *
+     * @warning Internal usage only!
+     *
+     * @return Library logger
+     */
+    static class Logger *get_logger() { return get_library()->get_logger(); }
 
     /**
      * @}

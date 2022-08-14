@@ -117,6 +117,7 @@ $ python ./run_tests.py --build-dir=build
 | `📁 python`            | Python package bindings for library API                            |
 | `📄 CMakeLists.txt`    | CMake library configuration, add as sub directory to your project  |
 | `📄 build.py`          | Script to build library sources, tests and examples                |
+| `📄 bump_version.py`   | Script to increment or update version of package before release    |
 | `📄 run_tests.py`      | Script to run compiled library unit tests                          |
 
 ## License

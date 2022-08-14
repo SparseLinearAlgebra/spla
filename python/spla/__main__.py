@@ -3,6 +3,7 @@ Main entry point.
 """
 
 __copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
+
 __license__ = """
 MIT License
 

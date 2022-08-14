@@ -207,7 +207,16 @@ endif ()
 ######################################################################
 ## Source code configuration
 
+set(SRC_OPENCL)
+
+if (SPLA_BUILD_OPENCL)
+    set(SRC_OPENCL
+            src/opencl/cl_accelerator.cpp
+            src/opencl/cl_accelerator.hpp)
+endif ()
+
 add_library(spla SHARED
+        include/spla/config.hpp
         include/spla/library.hpp
         include/spla/matrix.hpp
         include/spla/object.hpp
@@ -215,7 +224,12 @@ add_library(spla SHARED
         include/spla/ref.hpp
         include/spla/schedule.hpp
         include/spla/type.hpp
-        src/core/matrix.cpp)
+        src/core/accelerator.hpp
+        src/core/logger.cpp
+        src/core/logger.hpp
+        src/library.cpp
+        src/matrix.cpp
+        ${SRC_OPENCL})
 
 target_include_directories(spla PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
@@ -227,6 +241,7 @@ if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)
     target_link_libraries(spla PUBLIC OpenCL::HeadersCpp)
     target_compile_definitions(spla PUBLIC CL_TARGET_OPENCL_VERSION=120)
+    list(APPEND SPLA_DEFINES SPLA_BUILD_OPENCL)
 endif ()
 
 spla_target_compile_definitions(spla)
