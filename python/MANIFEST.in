@@ -1,5 +1,5 @@
 include LICENSE.md
-include spla_x64.dll
-include libspla_x64.so
-include libspla_x64.dylib
-include libspla_arm64.dylib
+include VERSION.md
+include MANIFEST.in
+include setup.py
+include example.py

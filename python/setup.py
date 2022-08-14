@@ -18,7 +18,10 @@ def get_version():
 
 
 def get_lib_names():
-    pass
+    return ["spla_x64.dll",
+            "libspla_x64.so",
+            "libspla_x64.dylib",
+            "libspla_arm64.dylib"]
 
 
 setuptools.setup(
@@ -70,7 +73,7 @@ setuptools.setup(
     ],
     packages=["spla"],
     package_dir={'': '.'},
-    package_data={'': []},
+    package_data={'': get_lib_names()},
     python_requires=">=3.0",
     include_package_data=True
 )
