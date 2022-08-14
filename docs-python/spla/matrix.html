@@ -60,26 +60,50 @@ import ctypes
 
 class Matrix:
     &#34;&#34;&#34;
-    Generalized storage-invariant matrix primitive.
+    Generalized sparse storage-invariant matrix primitive.
 
     Attributes
-    __________
+    ----------
 
-    * type : type
+    * type : `type`
         type of stored matrix elements
-    * shape : 2-tuple
+    * shape : `2-tuple`
         shape of the matrix in form of two integers tuple
-    * hnd: p_void
+    * hnd: `p_void`
         handle to the native matrix object in spla C API
 
     Notes
-    _____
+    -----
+
+    Matrix provides features for:
+    * incremental creation
+    * build from values
+    * transposition
+    * triangular lower
+    * triangular upper
+    * element-wise addition
+    * element-wise subtraction
+    * matrix-vector product
+    * matrix-matrix product
+    * matrix-matrix kronecker product
+
+    Matrix best performance:
+    * Prepare matrix data
+    * Ensure matrix format
+    * Execute math operations
+    * Avoiding unnecessary data reads and mixing of incremental updates from python
+
+    Matrix typical usage:
+    * Instantiate matrix primitive
+    * Build incrementally from yours data source
+    * Matrix usage in a sequence of math operations
+    * Read-back matrix data to python to analyse results
+
+    Details
+    -------
 
     Matrix class support all spla C API matrix functions.
     It provides bind functionality as well as new functions/methods for better python user experience.
-
-    Matrix provides features for: incremental creation, build from full content,
-    element-wise addition, subtraction, matrix-matrix, matrix-vector products.
 
     Matrix internally manages optimal format of stored data. Use hints to
     force matrix state and format changes.
@@ -105,23 +129,41 @@ class Matrix:
 <span>class <span class="ident">Matrix</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generalized storage-invariant matrix primitive.</p>
-<p>Attributes</p>
-<hr>
+<div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
+<h2 id="attributes">Attributes</h2>
 <ul>
-<li>type : type
+<li>type : <code>type</code>
 type of stored matrix elements</li>
-<li>shape : 2-tuple
+<li>shape : <code>2-tuple</code>
 shape of the matrix in form of two integers tuple</li>
-<li>hnd: p_void
+<li>hnd: <code>p_void</code>
 handle to the native matrix object in spla C API</li>
 </ul>
-<p>Notes</p>
-<hr>
+<h2 id="notes">Notes</h2>
+<p>Matrix provides features for:
+* incremental creation
+* build from values
+* transposition
+* triangular lower
+* triangular upper
+* element-wise addition
+* element-wise subtraction
+* matrix-vector product
+* matrix-matrix product
+* matrix-matrix kronecker product</p>
+<p>Matrix best performance:
+* Prepare matrix data
+* Ensure matrix format
+* Execute math operations
+* Avoiding unnecessary data reads and mixing of incremental updates from python</p>
+<p>Matrix typical usage:
+* Instantiate matrix primitive
+* Build incrementally from yours data source
+* Matrix usage in a sequence of math operations
+* Read-back matrix data to python to analyse results</p>
+<h2 id="details">Details</h2>
 <p>Matrix class support all spla C API matrix functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
-<p>Matrix provides features for: incremental creation, build from full content,
-element-wise addition, subtraction, matrix-matrix, matrix-vector products.</p>
 <p>Matrix internally manages optimal format of stored data. Use hints to
 force matrix state and format changes.</p>
 <p>Matrix optional uses dedicated/integrated GPU to speedup computations
@@ -132,26 +174,50 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </summary>
 <pre><code class="python">class Matrix:
     &#34;&#34;&#34;
-    Generalized storage-invariant matrix primitive.
+    Generalized sparse storage-invariant matrix primitive.
 
     Attributes
-    __________
+    ----------
 
-    * type : type
+    * type : `type`
         type of stored matrix elements
-    * shape : 2-tuple
+    * shape : `2-tuple`
         shape of the matrix in form of two integers tuple
-    * hnd: p_void
+    * hnd: `p_void`
         handle to the native matrix object in spla C API
 
     Notes
-    _____
+    -----
+
+    Matrix provides features for:
+    * incremental creation
+    * build from values
+    * transposition
+    * triangular lower
+    * triangular upper
+    * element-wise addition
+    * element-wise subtraction
+    * matrix-vector product
+    * matrix-matrix product
+    * matrix-matrix kronecker product
+
+    Matrix best performance:
+    * Prepare matrix data
+    * Ensure matrix format
+    * Execute math operations
+    * Avoiding unnecessary data reads and mixing of incremental updates from python
+
+    Matrix typical usage:
+    * Instantiate matrix primitive
+    * Build incrementally from yours data source
+    * Matrix usage in a sequence of math operations
+    * Read-back matrix data to python to analyse results
+
+    Details
+    -------
 
     Matrix class support all spla C API matrix functions.
     It provides bind functionality as well as new functions/methods for better python user experience.
-
-    Matrix provides features for: incremental creation, build from full content,
-    element-wise addition, subtraction, matrix-matrix, matrix-vector products.
 
     Matrix internally manages optimal format of stored data. Use hints to
     force matrix state and format changes.
