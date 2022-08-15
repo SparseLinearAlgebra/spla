@@ -13,7 +13,7 @@ operations. It gives an ability to customize underlying values types treatment a
 pre-defined functions' set.
 
 - **Package page**
-  [https://pypi.org/project/spla](https://pypi.org/project/spla/)
+  [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
@@ -28,6 +28,26 @@ pre-defined functions' set.
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
 
 > Note: project under heavy development! Not ready for usage.
+
+## Installation
+
+Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:
+
+```shell
+$ pip install -i https://test.pypi.org/simple/ spla
+```
+
+Or alternative command using python directly:
+
+```shell
+$ python -m pip install -i https://test.pypi.org/simple/ spla
+```
+
+Delete package if no more required:
+
+```shell
+$ pip uninstall spla
+```
 
 ## Building from sources
 
