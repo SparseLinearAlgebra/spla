@@ -23,13 +23,12 @@ on:
 env:
   build_dir: "build"
   config: "Release"
-  build_tests: "ON"
   artifact: "native"
 
 jobs:
 
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     env:
       ocl_nug_version: "0.777.77"
     steps:
@@ -45,7 +44,7 @@ jobs:
           arch: amd64
 
       - name: Configure CMake
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }} --verbose
@@ -58,7 +57,7 @@ jobs:
 
 
   ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -73,7 +72,7 @@ jobs:
           sudo apt install gcc-8 g++-8
 
       - name: Configure CMake
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }}
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
         env:
           CC: gcc-8
           CXX: g++-8
@@ -88,7 +87,7 @@ jobs:
           path: ${{env.build_dir}}/libspla_x64.so
 
   macos:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
         with:
@@ -98,13 +97,13 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Configure CMake x64
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=x86_64
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=x86_64
 
       - name: Build library sources x64
         run: cmake --build ${{ env.build_dir }} --verbose
 
       - name: Configure CMake arm64
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DSPLA_BUILD_TESTS=${{ env.build_tests }} -DCMAKE_OSX_ARCHITECTURES=arm64
+        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=arm64
         env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
