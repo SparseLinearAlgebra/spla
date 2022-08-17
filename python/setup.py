@@ -25,7 +25,7 @@ def get_lib_names():
 
 
 setuptools.setup(
-    name="spla",
+    name="pyspla",
     version=get_version(),
     author="Egor Orachev",
     author_email="egororachyov@gmail.com",
