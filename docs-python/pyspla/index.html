@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>spla API documentation</title>
+<title>pyspla API documentation</title>
 <meta name="description" content="Python wrapper for spla library
 …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -20,7 +20,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>spla</code></h1>
+<h1 class="title">Package <code>pyspla</code></h1>
 </header>
 <section id="section-intro">
 <h1 id="python-wrapper-for-spla-library">Python wrapper for spla library</h1>
@@ -31,7 +31,7 @@ Library core witten using C++ with optional C-compatible interface.</p>
 <p>Links:</p>
 <ul>
 <li><strong>Package page</strong>
-<a href="https://test.pypi.org/project/spla/">https://test.pypi.org/project/spla</a></li>
+<a href="https://test.pypi.org/project/pyspla/">https://test.pypi.org/project/spla</a></li>
 <li><strong>Source code</strong>:
 <a href="https://github.com/JetBrains-Research/spla">https://github.com/JetBrains-Research/spla</a></li>
 <li><strong>Contributing</strong>:
@@ -46,21 +46,21 @@ Library core witten using C++ with optional C-compatible interface.</p>
 <p>We are welcome for contribution. Join project development on <a href="https://github.com/JetBrains-Research/spla">GitHub</a>!</p>
 <h2 id="installation">Installation</h2>
 <p>Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:</p>
-<pre><code>$ pip install -i &lt;https://test.pypi.org/simple/&gt; spla
+<pre><code>$ pip install -i &lt;https://test.pypi.org/simple/&gt; pyspla
 </code></pre>
 <p>Or alternative command using python directly (on Linux python3 command may be required):</p>
-<pre><code>$ python -m pip install -i &lt;https://test.pypi.org/simple/&gt; spla
+<pre><code>$ python -m pip install -i &lt;https://test.pypi.org/simple/&gt; pyspla
 </code></pre>
 <p>Delete package if no more required:</p>
-<pre><code>$ pip uninstall spla
+<pre><code>$ pip uninstall pyspla
 </code></pre>
 <h2 id="summary">Summary</h2>
 <p>Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
-<code><a title="spla.matrix" href="matrix.html">spla.matrix</a></code> and <code><a title="spla.vector" href="vector.html">spla.vector</a></code> for mathematical computations parametrized using
-on of built-in <code><a title="spla.type" href="type.html">spla.type</a></code>. It allows to define sequence of execution tasks
-using <code><a title="spla.schedule" href="schedule.html">spla.schedule</a></code> API. Desired behavior of math operations can be customized
-using on of element operations in <code><a title="spla.op" href="op.html">spla.op</a></code> module.</p>
+<code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code> and <code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code> for mathematical computations parametrized using
+on of built-in <code><a title="pyspla.type" href="type.html">pyspla.type</a></code>. It allows to define sequence of execution tasks
+using <code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code> API. Desired behavior of math operations can be customized
+using on of element operations in <code><a title="pyspla.op" href="op.html">pyspla.op</a></code> module.</p>
 <p>Library optionally uses GPUs acceleration through OpenCL or CUDA API.
 It automatically attempts to initialize accelerator and trys to use
 it to speed-up some operations. All GPU communication, data transformations
@@ -75,7 +75,7 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
 <ul>
-<li><code><a title="spla.Matrix" href="#spla.Matrix">Matrix</a></code> - Generalized sparse storage-invariant matrix primitive.</li>
+<li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code> - Generalized sparse storage-invariant matrix primitive.</li>
 <li><code>Vector</code> - Generalized sparse storage-invariant vector primitive.</li>
 </ul>
 <h2 id="schedule">Schedule</h2>
@@ -95,7 +95,7 @@ on some level, notification on some steps completion and etc.</p>
 <h2 id="details">Details</h2>
 <p>Spla C backend compiled library is automatically loaded and
 initialized on package import. State of the library managed
-by internal <code><a title="spla.bridge" href="bridge.html">spla.bridge</a></code> module. All resources are unloaded automatically
+by internal <code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code> module. All resources are unloaded automatically
 on package exit. Library state finalized automatically.</p>
 <details class="source">
 <summary>
@@ -113,7 +113,7 @@ Library core witten using C++ with optional C-compatible interface.
 Links:
 
 - **Package page**
-  [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
+  [https://test.pypi.org/project/spla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
@@ -132,15 +132,15 @@ Installation
 
 Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:
 
-    $ pip install -i https://test.pypi.org/simple/ spla
+    $ pip install -i https://test.pypi.org/simple/ pyspla
 
 Or alternative command using python directly (on Linux python3 command may be required):
 
-    $ python -m pip install -i https://test.pypi.org/simple/ spla
+    $ python -m pip install -i https://test.pypi.org/simple/ pyspla
 
 Delete package if no more required:
 
-    $ pip uninstall spla
+    $ pip uninstall pyspla
 
 Summary
 -------
@@ -250,35 +250,35 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="spla.bridge" href="bridge.html">spla.bridge</a></code></dt>
+<dt><code class="name"><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) raw functions access.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.library" href="library.html">spla.library</a></code></dt>
+<dt><code class="name"><a title="pyspla.library" href="library.html">pyspla.library</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) library implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.matrix" href="matrix.html">spla.matrix</a></code></dt>
+<dt><code class="name"><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) matrix primitive implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.op" href="op.html">spla.op</a></code></dt>
+<dt><code class="name"><a title="pyspla.op" href="op.html">pyspla.op</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) op implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.schedule" href="schedule.html">spla.schedule</a></code></dt>
+<dt><code class="name"><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) schedule implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.type" href="type.html">spla.type</a></code></dt>
+<dt><code class="name"><a title="pyspla.type" href="type.html">pyspla.type</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) type support implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.vector" href="vector.html">spla.vector</a></code></dt>
+<dt><code class="name"><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) vector primitive implementation.</p></div>
 </dd>
-<dt><code class="name"><a title="spla.version" href="version.html">spla.version</a></code></dt>
+<dt><code class="name"><a title="pyspla.version" href="version.html">pyspla.version</a></code></dt>
 <dd>
 <div class="desc"><p>Package version info.</p></div>
 </dd>
@@ -291,14 +291,14 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="spla.Matrix"><code class="flex name class">
+<dt id="pyspla.Matrix"><code class="flex name class">
 <span>class <span class="ident">Matrix</span></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
-<li>type : <code><a title="spla.type" href="type.html">spla.type</a></code> type of stored matrix elements</li>
+<li>type : <code><a title="pyspla.type" href="type.html">pyspla.type</a></code> type of stored matrix elements</li>
 <li>shape : <code>2-tuple</code> shape of the matrix in form of two integers tuple</li>
 <li>hnd: <code>p_void</code>
 handle to the native matrix object in spla C API</li>
@@ -423,20 +423,20 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="spla.bridge" href="bridge.html">spla.bridge</a></code></li>
-<li><code><a title="spla.library" href="library.html">spla.library</a></code></li>
-<li><code><a title="spla.matrix" href="matrix.html">spla.matrix</a></code></li>
-<li><code><a title="spla.op" href="op.html">spla.op</a></code></li>
-<li><code><a title="spla.schedule" href="schedule.html">spla.schedule</a></code></li>
-<li><code><a title="spla.type" href="type.html">spla.type</a></code></li>
-<li><code><a title="spla.vector" href="vector.html">spla.vector</a></code></li>
-<li><code><a title="spla.version" href="version.html">spla.version</a></code></li>
+<li><code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></li>
+<li><code><a title="pyspla.library" href="library.html">pyspla.library</a></code></li>
+<li><code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code></li>
+<li><code><a title="pyspla.op" href="op.html">pyspla.op</a></code></li>
+<li><code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code></li>
+<li><code><a title="pyspla.type" href="type.html">pyspla.type</a></code></li>
+<li><code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code></li>
+<li><code><a title="pyspla.version" href="version.html">pyspla.version</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="spla.Matrix" href="#spla.Matrix">Matrix</a></code></h4>
+<h4><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code></h4>
 </li>
 </ul>
 </li>

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>spla.matrix API documentation</title>
-<meta name="description" content="Wrapped native (spla C API) matrix primitive implementation." />
+<title>pyspla.vector API documentation</title>
+<meta name="description" content="Wrapped native (spla C API) vector primitive implementation." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,16 +19,16 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>spla.matrix</code></h1>
+<h1 class="title">Module <code>pyspla.vector</code></h1>
 </header>
 <section id="section-intro">
-<p>Wrapped native (spla C API) matrix primitive implementation.</p>
+<p>Wrapped native (spla C API) vector primitive implementation.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-Wrapped native (spla C API) matrix primitive implementation.
+Wrapped native (spla C API) vector primitive implementation.
 &#34;&#34;&#34;
 
 __copyright__ = &#34;Copyright (c) 2021-2022 JetBrains-Research&#34;
@@ -53,67 +53,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-&#34;&#34;&#34;
-
-import ctypes
-
-
-class Matrix:
-    &#34;&#34;&#34;
-    Generalized sparse storage-invariant matrix primitive.
-
-    Attributes
-    ----------
-
-    - type : `type` type of stored matrix elements
-    - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
-
-    Notes
-    -----
-
-    Matrix provides features for:
-
-    - incremental creation
-    - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
-    - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
-
-    Matrix best performance:
-
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
-
-    Matrix typical usage:
-
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
-
-    Details
-    -------
-
-    Matrix class support all spla C API matrix functions.
-    It provides bind functionality as well as new functions/methods for better python user experience.
-
-    Matrix internally manages optimal format of stored data. Use hints to
-    force matrix state and format changes.
-
-    Matrix optional uses dedicated/integrated GPU to speedup computations
-    using one of built-in OpenCL or CUDA accelerators.
-    &#34;&#34;&#34;
-
-    def __init__(self):
-        pass</code></pre>
+&#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -123,118 +63,6 @@ class Matrix:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="spla.matrix.Matrix"><code class="flex name class">
-<span>class <span class="ident">Matrix</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
-<h2 id="attributes">Attributes</h2>
-<ul>
-<li>type : <code>type</code> type of stored matrix elements</li>
-<li>shape : <code>2-tuple</code> shape of the matrix in form of two integers tuple</li>
-<li>hnd: <code>p_void</code>
-handle to the native matrix object in spla C API</li>
-</ul>
-<h2 id="notes">Notes</h2>
-<p>Matrix provides features for:</p>
-<ul>
-<li>incremental creation</li>
-<li>build from values</li>
-<li>transposition</li>
-<li>triangular lower</li>
-<li>triangular upper</li>
-<li>element-wise addition</li>
-<li>element-wise subtraction</li>
-<li>matrix-vector product</li>
-<li>matrix-matrix product</li>
-<li>matrix-matrix kronecker product</li>
-</ul>
-<p>Matrix best performance:</p>
-<ul>
-<li>Prepare matrix data</li>
-<li>Ensure matrix format</li>
-<li>Execute math operations</li>
-<li>Avoiding unnecessary data reads and mixing of incremental updates from python</li>
-</ul>
-<p>Matrix typical usage:</p>
-<ul>
-<li>Instantiate matrix primitive</li>
-<li>Build incrementally from yours data source</li>
-<li>Matrix usage in a sequence of math operations</li>
-<li>Read-back matrix data to python to analyse results</li>
-</ul>
-<h2 id="details">Details</h2>
-<p>Matrix class support all spla C API matrix functions.
-It provides bind functionality as well as new functions/methods for better python user experience.</p>
-<p>Matrix internally manages optimal format of stored data. Use hints to
-force matrix state and format changes.</p>
-<p>Matrix optional uses dedicated/integrated GPU to speedup computations
-using one of built-in OpenCL or CUDA accelerators.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Matrix:
-    &#34;&#34;&#34;
-    Generalized sparse storage-invariant matrix primitive.
-
-    Attributes
-    ----------
-
-    - type : `type` type of stored matrix elements
-    - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
-
-    Notes
-    -----
-
-    Matrix provides features for:
-
-    - incremental creation
-    - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
-    - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
-
-    Matrix best performance:
-
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
-
-    Matrix typical usage:
-
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
-
-    Details
-    -------
-
-    Matrix class support all spla C API matrix functions.
-    It provides bind functionality as well as new functions/methods for better python user experience.
-
-    Matrix internally manages optimal format of stored data. Use hints to
-    force matrix state and format changes.
-
-    Matrix optional uses dedicated/integrated GPU to speedup computations
-    using one of built-in OpenCL or CUDA accelerators.
-    &#34;&#34;&#34;
-
-    def __init__(self):
-        pass</code></pre>
-</details>
-</dd>
-</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -245,14 +73,7 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="spla" href="index.html">spla</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="spla.matrix.Matrix" href="#spla.matrix.Matrix">Matrix</a></code></h4>
-</li>
+<li><code><a title="pyspla" href="index.html">pyspla</a></code></li>
 </ul>
 </li>
 </ul>
