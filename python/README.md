@@ -13,16 +13,14 @@ operations. It gives an ability to customize underlying values types treatment a
 pre-defined functions' set.
 
 - **Package page**
-  [https://pypi.org/project/spla](https://pypi.org/project/spla/)
+  [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
   [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
-- **Python API**:
-  [https://jetbrains-research.github.io/spla/docs-python/spla](https://jetbrains-research.github.io/spla/docs-python/spla/)
-- **C/C++ API**:
+- **C/C++ API Reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
