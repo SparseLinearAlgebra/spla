@@ -1,5 +1,5 @@
 """
-Wrapped native (spla C API) matrix primitive python implementation.
+Wrapped native (spla C API) matrix primitive implementation.
 """
 
 __copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
@@ -36,39 +36,39 @@ class Matrix:
     Attributes
     ----------
 
-    * type : `type`
-        type of stored matrix elements
-    * shape : `2-tuple`
-        shape of the matrix in form of two integers tuple
-    * hnd: `p_void`
-        handle to the native matrix object in spla C API
+    - type : `type` type of stored matrix elements
+    - shape : `2-tuple` shape of the matrix in form of two integers tuple
+    - hnd: `p_void`  handle to the native matrix object in spla C API
 
     Notes
     -----
 
     Matrix provides features for:
-    * incremental creation
-    * build from values
-    * transposition
-    * triangular lower
-    * triangular upper
-    * element-wise addition
-    * element-wise subtraction
-    * matrix-vector product
-    * matrix-matrix product
-    * matrix-matrix kronecker product
+
+    - incremental creation
+    - build from values
+    - transposition
+    - triangular lower
+    - triangular upper
+    - element-wise addition
+    - element-wise subtraction
+    - matrix-vector product
+    - matrix-matrix product
+    - matrix-matrix kronecker product
 
     Matrix best performance:
-    * Prepare matrix data
-    * Ensure matrix format
-    * Execute math operations
-    * Avoiding unnecessary data reads and mixing of incremental updates from python
+
+    - Prepare matrix data
+    - Ensure matrix format
+    - Execute math operations
+    - Avoiding unnecessary data reads and mixing of incremental updates from python
 
     Matrix typical usage:
-    * Instantiate matrix primitive
-    * Build incrementally from yours data source
-    * Matrix usage in a sequence of math operations
-    * Read-back matrix data to python to analyse results
+
+    - Instantiate matrix primitive
+    - Build incrementally from yours data source
+    - Matrix usage in a sequence of math operations
+    - Read-back matrix data to python to analyse results
 
     Details
     -------

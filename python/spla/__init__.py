@@ -1,5 +1,46 @@
 """
-Python spla package.
+Python wrapper for spla library
+===============================
+
+Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+computations over sparse matrices and vectors with vendor-agnostic GPUs
+accelerations to speed-up processing of large and complex data.
+Library core witten using C++ with optional C-compatible interface.
+
+Links:
+
+- **Package page**
+  [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
+- **Source code**:
+  [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
+- **Contributing**:
+  [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
+- **Development**:
+  [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
+- **C/C++ API Reference**:
+  [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
+- **Bug report**:
+  [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
+
+We are welcome for contribution. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
+
+Installation
+------------
+
+Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:
+
+    $ pip install -i https://test.pypi.org/simple/ spla
+
+Or alternative command using python directly (on Linux python3 command may be required):
+
+    $ python -m pip install -i https://test.pypi.org/simple/ spla
+
+Delete package if no more required:
+
+    $ pip uninstall spla
+
+Summary
+-------
 
 Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
@@ -22,11 +63,11 @@ are generalized, so any of built-in types may be used to parametrize
 type of data. Containers have sparse formats by default, so it is
 possible to create large-dimension but low data containers. Containers
 are storage-invariant, so the best format for the storage is automatically
-managed by container internally. All required format conversations done
+managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-* `Matrix` - Generalized sparse storage-invariant matrix primitive.
-* `Vector` - Generalized sparse storage-invariant vector primitive.
+- `Matrix` - Generalized sparse storage-invariant matrix primitive.
+- `Vector` - Generalized sparse storage-invariant vector primitive.
 
 Schedule
 --------
@@ -35,17 +76,23 @@ Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks' execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.
 
-* `Schedule` - Schedule object which may be executed by library.
-* `Task` - A particular wort to be done inside a step of schedule.
+- `Schedule` - Schedule object which may be executed by library.
+- `Task` - A particular wort to be done inside a step of schedule.
 
 Types
 -----
 
+TBD.
+
 Op
 --
 
+TBD.
+
 Usage information
 -----------------
+
+TBD.
 
 Details
 -------
@@ -80,13 +127,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from . import library
-from . import op
-from . import schedule
-from . import type
-
+from .library import *
+from .op import *
+from .schedule import *
+from .type import *
 from .matrix import *
 from .vector import *
 from .version import *
+from .bridge import *
 
-from . import bridge
+__version__ = VERSIONS[-1]
+
+__all__ = [
+    "Matrix",
+    "VERSIONS"
+]

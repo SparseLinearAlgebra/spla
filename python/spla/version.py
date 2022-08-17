@@ -26,4 +26,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-__version__ = "0.0.4"
+VERSIONS = list()
+VERSIONS.append("0.0.0")
+VERSIONS.append("0.0.1")
+VERSIONS.append("0.0.2")
+VERSIONS.append("0.0.3")
+VERSIONS.append("0.0.4")
