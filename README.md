@@ -2,6 +2,8 @@
 
 [![JB Research](https://jb.gg/badges/research-flat-square.svg)](https://research.jetbrains.org/)
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
+[![Python Package](https://github.com/JetBrains-Research/spla/actions/workflows/deploy.yml/badge.svg)](https://pypi.org/project/spla/)
+[![Python Package (Test)](https://github.com/JetBrains-Research/spla/actions/workflows/deploy-test.yml/badge.svg)](https://test.pypi.org/project/spla/)
 [![Docs C/C++](https://github.com/JetBrains-Research/spla/actions/workflows/docs-cpp.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/docs-cpp/)
 [![Docs Python](https://github.com/JetBrains-Research/spla/actions/workflows/docs-python.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/docs-python/)
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
@@ -12,6 +14,8 @@ acceleration. It provides linear algebra primitives, such as matrices, vectors a
 operations. It gives an ability to customize underlying values types treatment and parametrise operations using rich
 pre-defined functions' set.
 
+- **Website**:
+  [https://jetbrains-research.github.io/spla/](https://jetbrains-research.github.io/spla/docs-python/spla/)
 - **Package page**
   [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
 - **Source code**:
@@ -20,9 +24,7 @@ pre-defined functions' set.
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
   [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
-- **Python API**:
-  [https://jetbrains-research.github.io/spla/docs-python/spla](https://jetbrains-research.github.io/spla/docs-python/spla/)
-- **C/C++ API**:
+- **C/C++ API Reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
@@ -37,7 +39,7 @@ Install the latest test version of the package from Test PyPI repository for Win
 $ pip install -i https://test.pypi.org/simple/ spla
 ```
 
-Or alternative command using python directly:
+Or alternative command using python directly ((on Linux python3 command may be required)):
 
 ```shell
 $ python -m pip install -i https://test.pypi.org/simple/ spla

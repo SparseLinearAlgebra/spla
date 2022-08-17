@@ -19,10 +19,8 @@ def read_version():
 def write_version(version):
     with open(shared.PACKAGE / "VERSION.md", "w") as f:
         f.write(version)
-    for line in fileinput.input(shared.PACKAGE / "spla" / "version.py", inplace=True):
-        if line.startswith("__version__"):
-            line = f"__version__ = \"{version}\"\n"
-        print(line, end='')
+    with open(shared.PACKAGE / "spla" / "version.py", "a") as f:
+        f.write(f"VERSIONS.append(\"{version}\")\n")
 
 
 def main():
