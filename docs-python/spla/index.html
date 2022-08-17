@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>spla API documentation</title>
-<meta name="description" content="Python spla package …" />
+<meta name="description" content="Python wrapper for spla library
+…" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,7 +23,38 @@
 <h1 class="title">Package <code>spla</code></h1>
 </header>
 <section id="section-intro">
-<p>Python spla package.</p>
+<h1 id="python-wrapper-for-spla-library">Python wrapper for spla library</h1>
+<p>Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+computations over sparse matrices and vectors with vendor-agnostic GPUs
+accelerations to speed-up processing of large and complex data.
+Library core witten using C++ with optional C-compatible interface.</p>
+<p>Links:</p>
+<ul>
+<li><strong>Package page</strong>
+<a href="https://test.pypi.org/project/spla/">https://test.pypi.org/project/spla</a></li>
+<li><strong>Source code</strong>:
+<a href="https://github.com/JetBrains-Research/spla">https://github.com/JetBrains-Research/spla</a></li>
+<li><strong>Contributing</strong>:
+<a href="https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md">https://github.com/JetBrains-Research/spla/CONTRIBUTING.md</a></li>
+<li><strong>Development</strong>:
+<a href="https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md">https://github.com/JetBrains-Research/spla/DEVELOPMENT.md</a></li>
+<li><strong>C/C++ API Reference</strong>:
+<a href="https://jetbrains-research.github.io/spla/docs-cpp/">https://jetbrains-research.github.io/spla/docs-cpp</a></li>
+<li><strong>Bug report</strong>:
+<a href="https://github.com/JetBrains-Research/spla/issues">https://github.com/JetBrains-Research/spla/issues</a></li>
+</ul>
+<p>We are welcome for contribution. Join project development on <a href="https://github.com/JetBrains-Research/spla">GitHub</a>!</p>
+<h2 id="installation">Installation</h2>
+<p>Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:</p>
+<pre><code>$ pip install -i &lt;https://test.pypi.org/simple/&gt; spla
+</code></pre>
+<p>Or alternative command using python directly (on Linux python3 command may be required):</p>
+<pre><code>$ python -m pip install -i &lt;https://test.pypi.org/simple/&gt; spla
+</code></pre>
+<p>Delete package if no more required:</p>
+<pre><code>$ pip uninstall spla
+</code></pre>
+<h2 id="summary">Summary</h2>
 <p>Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
 <code><a title="spla.matrix" href="matrix.html">spla.matrix</a></code> and <code><a title="spla.vector" href="vector.html">spla.vector</a></code> for mathematical computations parametrized using
@@ -40,10 +72,10 @@ are generalized, so any of built-in types may be used to parametrize
 type of data. Containers have sparse formats by default, so it is
 possible to create large-dimension but low data containers. Containers
 are storage-invariant, so the best format for the storage is automatically
-managed by container internally. All required format conversations done
+managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
 <ul>
-<li><code>Matrix</code> - Generalized sparse storage-invariant matrix primitive.</li>
+<li><code><a title="spla.Matrix" href="#spla.Matrix">Matrix</a></code> - Generalized sparse storage-invariant matrix primitive.</li>
 <li><code>Vector</code> - Generalized sparse storage-invariant vector primitive.</li>
 </ul>
 <h2 id="schedule">Schedule</h2>
@@ -55,8 +87,11 @@ on some level, notification on some steps completion and etc.</p>
 <li><code>Task</code> - A particular wort to be done inside a step of schedule.</li>
 </ul>
 <h2 id="types">Types</h2>
+<p>TBD.</p>
 <h2 id="op">Op</h2>
+<p>TBD.</p>
 <h2 id="usage-information">Usage Information</h2>
+<p>TBD.</p>
 <h2 id="details">Details</h2>
 <p>Spla C backend compiled library is automatically loaded and
 initialized on package import. State of the library managed
@@ -67,7 +102,48 @@ on package exit. Library state finalized automatically.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-Python spla package.
+Python wrapper for spla library
+===============================
+
+Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+computations over sparse matrices and vectors with vendor-agnostic GPUs
+accelerations to speed-up processing of large and complex data.
+Library core witten using C++ with optional C-compatible interface.
+
+Links:
+
+- **Package page**
+  [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
+- **Source code**:
+  [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
+- **Contributing**:
+  [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
+- **Development**:
+  [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
+- **C/C++ API Reference**:
+  [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
+- **Bug report**:
+  [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
+
+We are welcome for contribution. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
+
+Installation
+------------
+
+Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:
+
+    $ pip install -i https://test.pypi.org/simple/ spla
+
+Or alternative command using python directly (on Linux python3 command may be required):
+
+    $ python -m pip install -i https://test.pypi.org/simple/ spla
+
+Delete package if no more required:
+
+    $ pip uninstall spla
+
+Summary
+-------
 
 Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
@@ -90,11 +166,11 @@ are generalized, so any of built-in types may be used to parametrize
 type of data. Containers have sparse formats by default, so it is
 possible to create large-dimension but low data containers. Containers
 are storage-invariant, so the best format for the storage is automatically
-managed by container internally. All required format conversations done
+managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-* `Matrix` - Generalized sparse storage-invariant matrix primitive.
-* `Vector` - Generalized sparse storage-invariant vector primitive.
+- `Matrix` - Generalized sparse storage-invariant matrix primitive.
+- `Vector` - Generalized sparse storage-invariant vector primitive.
 
 Schedule
 --------
@@ -103,17 +179,23 @@ Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks&#39; execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.
 
-* `Schedule` - Schedule object which may be executed by library.
-* `Task` - A particular wort to be done inside a step of schedule.
+- `Schedule` - Schedule object which may be executed by library.
+- `Task` - A particular wort to be done inside a step of schedule.
 
 Types
 -----
 
+TBD.
+
 Op
 --
 
+TBD.
+
 Usage information
 -----------------
+
+TBD.
 
 Details
 -------
@@ -148,16 +230,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 &#34;&#34;&#34;
 
-from . import library
-from . import op
-from . import schedule
-from . import type
-
+from .library import *
+from .op import *
+from .schedule import *
+from .type import *
 from .matrix import *
 from .vector import *
 from .version import *
+from .bridge import *
 
-from . import bridge</code></pre>
+__version__ = VERSIONS[-1]
+
+__all__ = [
+    &#34;Matrix&#34;,
+    &#34;VERSIONS&#34;
+]</code></pre>
 </details>
 </section>
 <section>
@@ -173,7 +260,7 @@ from . import bridge</code></pre>
 </dd>
 <dt><code class="name"><a title="spla.matrix" href="matrix.html">spla.matrix</a></code></dt>
 <dd>
-<div class="desc"><p>Wrapped native (spla C API) matrix primitive python implementation.</p></div>
+<div class="desc"><p>Wrapped native (spla C API) matrix primitive implementation.</p></div>
 </dd>
 <dt><code class="name"><a title="spla.op" href="op.html">spla.op</a></code></dt>
 <dd>
@@ -202,18 +289,135 @@ from . import bridge</code></pre>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="spla.Matrix"><code class="flex name class">
+<span>class <span class="ident">Matrix</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>type : <code><a title="spla.type" href="type.html">spla.type</a></code> type of stored matrix elements</li>
+<li>shape : <code>2-tuple</code> shape of the matrix in form of two integers tuple</li>
+<li>hnd: <code>p_void</code>
+handle to the native matrix object in spla C API</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Matrix provides features for:</p>
+<ul>
+<li>incremental creation</li>
+<li>build from values</li>
+<li>transposition</li>
+<li>triangular lower</li>
+<li>triangular upper</li>
+<li>element-wise addition</li>
+<li>element-wise subtraction</li>
+<li>matrix-vector product</li>
+<li>matrix-matrix product</li>
+<li>matrix-matrix kronecker product</li>
+</ul>
+<p>Matrix best performance:</p>
+<ul>
+<li>Prepare matrix data</li>
+<li>Ensure matrix format</li>
+<li>Execute math operations</li>
+<li>Avoiding unnecessary data reads and mixing of incremental updates from python</li>
+</ul>
+<p>Matrix typical usage:</p>
+<ul>
+<li>Instantiate matrix primitive</li>
+<li>Build incrementally from yours data source</li>
+<li>Matrix usage in a sequence of math operations</li>
+<li>Read-back matrix data to python to analyse results</li>
+</ul>
+<h2 id="details">Details</h2>
+<p>Matrix class support all spla C API matrix functions.
+It provides bind functionality as well as new functions/methods for better python user experience.</p>
+<p>Matrix internally manages optimal format of stored data. Use hints to
+force matrix state and format changes.</p>
+<p>Matrix optional uses dedicated/integrated GPU to speedup computations
+using one of built-in OpenCL or CUDA accelerators.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Matrix:
+    &#34;&#34;&#34;
+    Generalized sparse storage-invariant matrix primitive.
+
+    Attributes
+    ----------
+
+    - type : `type` type of stored matrix elements
+    - shape : `2-tuple` shape of the matrix in form of two integers tuple
+    - hnd: `p_void`  handle to the native matrix object in spla C API
+
+    Notes
+    -----
+
+    Matrix provides features for:
+
+    - incremental creation
+    - build from values
+    - transposition
+    - triangular lower
+    - triangular upper
+    - element-wise addition
+    - element-wise subtraction
+    - matrix-vector product
+    - matrix-matrix product
+    - matrix-matrix kronecker product
+
+    Matrix best performance:
+
+    - Prepare matrix data
+    - Ensure matrix format
+    - Execute math operations
+    - Avoiding unnecessary data reads and mixing of incremental updates from python
+
+    Matrix typical usage:
+
+    - Instantiate matrix primitive
+    - Build incrementally from yours data source
+    - Matrix usage in a sequence of math operations
+    - Read-back matrix data to python to analyse results
+
+    Details
+    -------
+
+    Matrix class support all spla C API matrix functions.
+    It provides bind functionality as well as new functions/methods for better python user experience.
+
+    Matrix internally manages optimal format of stored data. Use hints to
+    force matrix state and format changes.
+
+    Matrix optional uses dedicated/integrated GPU to speedup computations
+    using one of built-in OpenCL or CUDA accelerators.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        pass</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
 <ul>
+<li><a href="#python-wrapper-for-spla-library">Python wrapper for spla library</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#summary">Summary</a></li>
 <li><a href="#containers">Containers</a></li>
 <li><a href="#schedule">Schedule</a></li>
 <li><a href="#types">Types</a></li>
 <li><a href="#op">Op</a></li>
 <li><a href="#usage-information">Usage information</a></li>
 <li><a href="#details">Details</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <ul id="index">
@@ -227,6 +431,13 @@ from . import bridge</code></pre>
 <li><code><a title="spla.type" href="type.html">spla.type</a></code></li>
 <li><code><a title="spla.vector" href="vector.html">spla.vector</a></code></li>
 <li><code><a title="spla.version" href="version.html">spla.version</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="spla.Matrix" href="#spla.Matrix">Matrix</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
