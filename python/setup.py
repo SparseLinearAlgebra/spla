@@ -71,7 +71,7 @@ setuptools.setup(
         "opencl",
         "gpu"
     ],
-    packages=["spla"],
+    packages=["pyspla"],
     package_dir={'': '.'},
     package_data={'': get_lib_names()},
     python_requires=">=3.0",

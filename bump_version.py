@@ -19,7 +19,7 @@ def read_version():
 def write_version(version):
     with open(shared.PACKAGE / "VERSION.md", "w") as f:
         f.write(version)
-    with open(shared.PACKAGE / "spla" / "version.py", "a") as f:
+    with open(shared.PACKAGE / "pyspla" / "version.py", "a") as f:
         f.write(f"VERSIONS.append(\"{version}\")\n")
 
 
