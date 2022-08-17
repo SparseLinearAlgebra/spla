@@ -27,7 +27,7 @@ jobs:
         run: python -m pip install pdoc3
 
       - name: Build docs
-        run: pdoc -o pydocs --html python/spla
+        run: pdoc -o pydocs --html python/pyspla
         env:
           SPLA_DOCS: true
 

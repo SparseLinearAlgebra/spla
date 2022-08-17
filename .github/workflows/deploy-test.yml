@@ -33,7 +33,7 @@ jobs:
           workflow_conclusion: success
           branch: pre-release
           name: native
-          path: python/spla
+          path: python/pyspla
 
       - name: Build and publish
         env:

@@ -25,7 +25,7 @@ def get_lib_names():
 
 
 setuptools.setup(
-    name="spla",
+    name="pyspla",
     version=get_version(),
     author="Egor Orachev",
     author_email="egororachyov@gmail.com",
@@ -71,7 +71,7 @@ setuptools.setup(
         "opencl",
         "gpu"
     ],
-    packages=["spla"],
+    packages=["pyspla"],
     package_dir={'': '.'},
     package_data={'': get_lib_names()},
     python_requires=">=3.0",

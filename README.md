@@ -2,10 +2,10 @@
 
 [![JB Research](https://jb.gg/badges/research-flat-square.svg)](https://research.jetbrains.org/)
 [![Build](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/build.yml)
-[![Python Package](https://github.com/JetBrains-Research/spla/actions/workflows/deploy.yml/badge.svg)](https://pypi.org/project/spla/)
-[![Python Package (Test)](https://github.com/JetBrains-Research/spla/actions/workflows/deploy-test.yml/badge.svg)](https://test.pypi.org/project/spla/)
+[![Python Package](https://github.com/JetBrains-Research/spla/actions/workflows/deploy.yml/badge.svg)](https://pypi.org/project/pyspla/)
+[![Python Package (Test)](https://github.com/JetBrains-Research/spla/actions/workflows/deploy-test.yml/badge.svg)](https://test.pypi.org/project/pyspla/)
 [![Docs C/C++](https://github.com/JetBrains-Research/spla/actions/workflows/docs-cpp.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/docs-cpp/)
-[![Docs Python](https://github.com/JetBrains-Research/spla/actions/workflows/docs-python.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/docs-python/)
+[![Docs Python](https://github.com/JetBrains-Research/spla/actions/workflows/docs-python.yml/badge.svg?branch=main)](https://jetbrains-research.github.io/spla/docs-python/pyspla/)
 [![Clang Format](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/JetBrains-Research/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/JetBrains-Research/spla/blob/master/LICENSE.md)
 
@@ -15,9 +15,9 @@ operations. It gives an ability to customize underlying values types treatment a
 pre-defined functions' set.
 
 - **Website**:
-  [https://jetbrains-research.github.io/spla/](https://jetbrains-research.github.io/spla/docs-python/spla/)
+  [https://jetbrains-research.github.io/pyspla/](https://jetbrains-research.github.io/spla/docs-python/pyspla/)
 - **Package page**
-  [https://test.pypi.org/project/spla](https://test.pypi.org/project/spla/)
+  [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
 - **Contributing**:
@@ -33,22 +33,22 @@ pre-defined functions' set.
 
 ## Installation
 
-Install the latest test version of the package from Test PyPI repository for Windows, Linux and MacOS:
+Install the release version of the package from **PyPI** repository for Windows, Linux and MacOS:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ spla
+$ pip install pyspla
 ```
 
-Or alternative command using python directly ((on Linux python3 command may be required)):
+Install the latest test version of the package from **Test PyPI** repository for Windows, Linux and MacOS:
 
 ```shell
-$ python -m pip install -i https://test.pypi.org/simple/ spla
+$ pip install -i https://test.pypi.org/simple/ pyspla
 ```
 
 Delete package if no more required:
 
 ```shell
-$ pip uninstall spla
+$ pip uninstall pyspla
 ```
 
 ## Building from sources
