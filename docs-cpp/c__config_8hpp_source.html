@@ -100,15 +100,15 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_C_CONFIG_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="spla_8hpp.html">spla/spla.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;spla_c/spla.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="spla_8h.html">spla_c/spla.h</a>&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">static</span> spla_Status to_c_status(<a class="code" href="classStatus.html">Status</a> status) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>spla_Status<span class="keyword">&gt;</span>(status);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">static</span> <a class="code" href="spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25">spla_Status</a> to_c_status(<a class="code" href="classStatus.html">Status</a> status) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25">spla_Status</a><span class="keyword">&gt;</span>(status);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">static</span> <a class="code" href="classAcceleratorType.html">AcceleratorType</a> from_c_accelerator_type(spla_AcceleratorType accelerator) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">static</span> <a class="code" href="classAcceleratorType.html">AcceleratorType</a> from_c_accelerator_type(<a class="code" href="spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330">spla_AcceleratorType</a> accelerator) {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code" href="classAcceleratorType.html">AcceleratorType</a><span class="keyword">&gt;</span>(accelerator);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
@@ -118,6 +118,9 @@ $(function() {
 <div class="ttc" id="aclassAcceleratorType_html"><div class="ttname"><a href="classAcceleratorType.html">AcceleratorType</a></div><div class="ttdoc">Types of supported accelerators for computations.</div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:41</div></div>
+<div class="ttc" id="aspla_8h_html"><div class="ttname"><a href="spla_8h.html">spla.h</a></div><div class="ttdoc">Spla library C++ API bindings for C language.</div></div>
+<div class="ttc" id="aspla_8h_html_a0a5c53bb86530583ddbbc5f3dedb0330"><div class="ttname"><a href="spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330">spla_AcceleratorType</a></div><div class="ttdeci">spla_AcceleratorType</div><div class="ttdoc">Types of supported accelerators for computations.</div><div class="ttdef"><b>Definition:</b> spla.h:97</div></div>
+<div class="ttc" id="aspla_8h_html_a90db1243ce3d935a3a2b3e7d6c59bf25"><div class="ttname"><a href="spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25">spla_Status</a></div><div class="ttdeci">spla_Status</div><div class="ttdoc">Status of library operation execution.</div><div class="ttdef"><b>Definition:</b> spla.h:75</div></div>
 <div class="ttc" id="aspla_8hpp_html"><div class="ttname"><a href="spla_8hpp.html">spla.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

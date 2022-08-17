@@ -1,8 +1,8 @@
 <map id="src/binding/c_library.cpp" name="src/binding/c_library.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="267,5,429,32"/>
-<area shape="rect" id="node2" href="$c__config_8hpp.html" title=" " alt="" coords="301,80,395,107"/>
-<area shape="rect" id="node3" href="$spla_8hpp.html" title=" " alt="" coords="237,155,336,181"/>
-<area shape="rect" id="node17" title=" " alt="" coords="360,155,459,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="302,5,463,32"/>
+<area shape="rect" id="node2" href="$c__config_8hpp.html" title=" " alt="" coords="335,80,430,107"/>
+<area shape="rect" id="node3" href="$spla_8hpp.html" title=" " alt="" coords="272,155,371,181"/>
+<area shape="rect" id="node17" href="$spla_8h.html" title="Spla library C++ API bindings for C language." alt="" coords="532,155,631,181"/>
 <area shape="rect" id="node4" href="$config_8hpp.html" title=" " alt="" coords="5,453,85,480"/>
 <area shape="rect" id="node5" href="$library_8hpp.html" title=" " alt="" coords="121,379,201,405"/>
 <area shape="rect" id="node9" href="$matrix_8hpp.html" title=" " alt="" coords="134,229,215,256"/>
@@ -16,4 +16,5 @@
 <area shape="rect" id="node8" title=" " alt="" coords="305,453,359,480"/>
 <area shape="rect" id="node13" title=" " alt="" coords="332,304,393,331"/>
 <area shape="rect" id="node14" title=" " alt="" coords="418,304,483,331"/>
+<area shape="rect" id="node18" title=" " alt="" coords="680,229,757,256"/>
 </map>
