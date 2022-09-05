@@ -100,22 +100,25 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_OBJECT_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="library_8hpp.html">library.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html">   44</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Object.html">Object</a> {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#ab8484a953a9a1ccad9f7af101267638d">   46</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keyword">virtual</span> <a class="code" href="classspla_1_1Object.html#ab8484a953a9a1ccad9f7af101267638d">~Object</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    };</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_OBJECT_HPP</span></div>
-<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdoc">Base class for any library primitive.</div><div class="ttdef"><b>Definition:</b> object.hpp:44</div></div>
-<div class="ttc" id="aclassspla_1_1Object_html_ab8484a953a9a1ccad9f7af101267638d"><div class="ttname"><a href="classspla_1_1Object.html#ab8484a953a9a1ccad9f7af101267638d">spla::Object::~Object</a></div><div class="ttdeci">virtual ~Object()=default</div></div>
-<div class="ttc" id="aconfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> config.hpp:38</div></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ref_8hpp.html">ref.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html">   45</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Object.html">Object</a> : <span class="keyword">public</span> <a class="code" href="classspla_1_1RefCnt.html">RefCnt</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">   47</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">~Object</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    };</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_OBJECT_HPP</span></div>
+<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdoc">Base class for any library primitive.</div><div class="ttdef"><b>Definition:</b> object.hpp:45</div></div>
+<div class="ttc" id="aclassspla_1_1Object_html_a08981364d4e0c26b69705decb6398f95"><div class="ttname"><a href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">spla::Object::~Object</a></div><div class="ttdeci">~Object() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1RefCnt_html"><div class="ttname"><a href="classspla_1_1RefCnt.html">spla::RefCnt</a></div><div class="ttdoc">Base class for object with built-in reference counting mechanism.</div><div class="ttdef"><b>Definition:</b> ref.hpp:52</div></div>
+<div class="ttc" id="aconfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> config.hpp:41</div></div>
 <div class="ttc" id="alibrary_8hpp_html"><div class="ttname"><a href="library_8hpp.html">library.hpp</a></div></div>
-<div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:41</div></div>
+<div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:44</div></div>
+<div class="ttc" id="aref_8hpp_html"><div class="ttname"><a href="ref_8hpp.html">ref.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

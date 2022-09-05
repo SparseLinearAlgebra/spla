@@ -1,13 +1,5 @@
 var searchData=
 [
-  ['spla_5faccelerator_5ftype_5fnone_230',['SPLA_ACCELERATOR_TYPE_NONE',['../spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330a6588e44ad4263dc9944064f873259ade',1,'spla.h']]],
-  ['spla_5faccelerator_5ftype_5fopencl_231',['SPLA_ACCELERATOR_TYPE_OPENCL',['../spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330afba1560d2a9e1dcd7564ec1791255f40',1,'spla.h']]],
-  ['spla_5fstatus_5fdevice_5fnot_5ffound_232',['SPLA_STATUS_DEVICE_NOT_FOUND',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a985a46afdde8da7626650700e4a2e27e',1,'spla.h']]],
-  ['spla_5fstatus_5ferror_233',['SPLA_STATUS_ERROR',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a61225e5928e3ed342efa12d194d71f16',1,'spla.h']]],
-  ['spla_5fstatus_5finvalid_5fargument_234',['SPLA_STATUS_INVALID_ARGUMENT',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a70f829a2aac182bc689489dbb70ba1ce',1,'spla.h']]],
-  ['spla_5fstatus_5finvalid_5fstate_235',['SPLA_STATUS_INVALID_STATE',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a27412b387d927ddf619641787f261554',1,'spla.h']]],
-  ['spla_5fstatus_5fno_5facceleration_236',['SPLA_STATUS_NO_ACCELERATION',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25aec68c5cf2a31d6d623639916da54e1ed',1,'spla.h']]],
-  ['spla_5fstatus_5fnot_5fimplemented_237',['SPLA_STATUS_NOT_IMPLEMENTED',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a9d830bdd23a4528bcc453f2adc49cc93',1,'spla.h']]],
-  ['spla_5fstatus_5fok_238',['SPLA_STATUS_OK',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25afea2bc6e5ceb1041474e22b65b69bb5e',1,'spla.h']]],
-  ['spla_5fstatus_5fplatform_5fnot_5ffound_239',['SPLA_STATUS_PLATFORM_NOT_FOUND',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25a6359850f143f179a5b1c86be272f38c4',1,'spla.h']]]
+  ['ok_383',['Ok',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115',1,'spla']]],
+  ['opencl_384',['OpenCL',['../group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47',1,'spla']]]
 ];

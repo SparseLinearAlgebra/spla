@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['object_128',['Object',['../classspla_1_1Object.html',1,'spla']]]
+  ['matrix_205',['Matrix',['../classspla_1_1Matrix.html',1,'spla']]],
+  ['messagecallback_206',['MessageCallback',['../classMessageCallback.html',1,'']]]
 ];

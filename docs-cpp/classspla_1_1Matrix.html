@@ -69,7 +69,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classspla_1_1Matrix-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">spla::Matrix Class Reference<div class="ingroups"><a class="el" href="group__spla.html">Spla</a></div></div>  </div>
+<div class="title">spla::Matrix Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__spla.html">Spla</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -82,8 +82,10 @@ Inheritance diagram for spla::Matrix:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1Matrix__inherit__graph.png" border="0" usemap="#aspla_1_1Matrix_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1Matrix_inherit__map" id="aspla_1_1Matrix_inherit__map">
-<area shape="rect" title="Generalized M x N dimensional matrix object." alt="" coords="7,80,94,107"/>
-<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="5,5,96,32"/>
+<area shape="rect" title="Generalized M x N dimensional matrix object." alt="" coords="25,155,111,181"/>
+<area shape="rect" href="classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="5,229,131,256"/>
+<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="23,80,113,107"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="22,5,114,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -91,8 +93,9 @@ Collaboration diagram for spla::Matrix:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1Matrix__coll__graph.png" border="0" usemap="#aspla_1_1Matrix_coll__map" alt="Collaboration graph"/></div>
 <map name="aspla_1_1Matrix_coll__map" id="aspla_1_1Matrix_coll__map">
-<area shape="rect" title="Generalized M x N dimensional matrix object." alt="" coords="7,80,94,107"/>
-<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="5,5,96,32"/>
+<area shape="rect" title="Generalized M x N dimensional matrix object." alt="" coords="8,155,95,181"/>
+<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="6,80,97,107"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,5,97,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -100,11 +103,30 @@ Collaboration diagram for spla::Matrix:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e1df1592d57cf36130a6473fa68a35c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a8e1df1592d57cf36130a6473fa68a35c">~Matrix</a> () override=default</td></tr>
 <tr class="separator:a8e1df1592d57cf36130a6473fa68a35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeac01be785750d6d6a4295e52c04ede"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#afeac01be785750d6d6a4295e52c04ede">build</a> ()</td></tr>
-<tr class="separator:afeac01be785750d6d6a4295e52c04ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8eb3037d7d2219610bf2b6260f9c9e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a5d8eb3037d7d2219610bf2b6260f9c9e">hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint)=0</td></tr>
+<tr class="separator:a5d8eb3037d7d2219610bf2b6260f9c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e366c29deef6f178ccf6fde36c39d29"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a7e366c29deef6f178ccf6fde36c39d29">hint_format</a> (<a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">FormatHint</a> hint)=0</td></tr>
+<tr class="separator:a7e366c29deef6f178ccf6fde36c39d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af554f600e4b34be4b26791c128a28634"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#af554f600e4b34be4b26791c128a28634">get_n_rows</a> ()=0</td></tr>
+<tr class="separator:af554f600e4b34be4b26791c128a28634"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa24a2ce5381576a7f03d1db7b3a737"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a9aa24a2ce5381576a7f03d1db7b3a737">get_n_cols</a> ()=0</td></tr>
+<tr class="separator:a9aa24a2ce5381576a7f03d1db7b3a737"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91efddc4804682eac49604eb1ff3ddb2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a91efddc4804682eac49604eb1ff3ddb2">get_type</a> ()=0</td></tr>
+<tr class="separator:a91efddc4804682eac49604eb1ff3ddb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1Object')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1Object.html">spla::Object</a></td></tr>
-<tr class="memitem:ab8484a953a9a1ccad9f7af101267638d inherit pub_methods_classspla_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Object.html#ab8484a953a9a1ccad9f7af101267638d">~Object</a> ()=default</td></tr>
-<tr class="separator:ab8484a953a9a1ccad9f7af101267638d inherit pub_methods_classspla_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08981364d4e0c26b69705decb6398f95 inherit pub_methods_classspla_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">~Object</a> () override=default</td></tr>
+<tr class="separator:a08981364d4e0c26b69705decb6398f95 inherit pub_methods_classspla_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
+<tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
+<tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9dc500bf023e672b8da0e7b6805b97 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97">is_unique</a> () const</td></tr>
+<tr class="separator:abd9dc500bf023e672b8da0e7b6805b97 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9f5c8c5b1e345b9c9edcba923bc2214 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#ad9f5c8c5b1e345b9c9edcba923bc2214">get_refs</a> () const</td></tr>
+<tr class="separator:ad9f5c8c5b1e345b9c9edcba923bc2214 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb67be8171b576ac60c3e1762e9b171b inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#aeb67be8171b576ac60c3e1762e9b171b">add_ref</a> () const</td></tr>
+<tr class="separator:aeb67be8171b576ac60c3e1762e9b171b inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#af6db98ef69c4ee40823587075ab84101">rel_ref</a> () const</td></tr>
+<tr class="separator:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generalized M x N dimensional matrix object. </p>
@@ -135,26 +157,145 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afeac01be785750d6d6a4295e52c04ede"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afeac01be785750d6d6a4295e52c04ede">&#9670;&nbsp;</a></span>build()</h2>
+<a id="a9aa24a2ce5381576a7f03d1db7b3a737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aa24a2ce5381576a7f03d1db7b3a737">&#9670;&nbsp;</a></span>get_n_cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void spla::Matrix::build </td>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> spla::Matrix::get_n_cols </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">spla::TMatrix&lt; T &gt;</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a id="af554f600e4b34be4b26791c128a28634"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af554f600e4b34be4b26791c128a28634">&#9670;&nbsp;</a></span>get_n_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> spla::Matrix::get_n_rows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a91efddc4804682eac49604eb1ff3ddb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91efddc4804682eac49604eb1ff3ddb2">&#9670;&nbsp;</a></span>get_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Type.html">Type</a>&gt; spla::Matrix::get_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">spla::TMatrix&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a7e366c29deef6f178ccf6fde36c39d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e366c29deef6f178ccf6fde36c39d29">&#9670;&nbsp;</a></span>hint_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Matrix::hint_format </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">FormatHint</a>&#160;</td>
+          <td class="paramname"><em>hint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">spla::TMatrix&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a5d8eb3037d7d2219610bf2b6260f9c9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d8eb3037d7d2219610bf2b6260f9c9e">&#9670;&nbsp;</a></span>hint_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Matrix::hint_state </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a>&#160;</td>
+          <td class="paramname"><em>hint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980">spla::TMatrix&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/spla/<a class="el" href="matrix_8hpp_source.html">matrix.hpp</a></li>
-<li>src/<a class="el" href="matrix_8cpp.html">matrix.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

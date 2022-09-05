@@ -100,43 +100,41 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_LOGGER_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="config_8hpp.html">spla/config.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="library_8hpp.html">spla/library.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Logger.html">   49</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Logger.html">Logger</a> {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Logger.html#a78d3d9ed5039a24041b5d9e2850a1e68">log_msg</a>(<a class="code" href="classStatus.html">Status</a> status, <span class="keyword">const</span> std::string &amp;msg, <span class="keyword">const</span> std::string &amp;file, <span class="keyword">const</span> std::string &amp;<span class="keyword">function</span>, <span class="keywordtype">int</span> line);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Logger.html#a95dca0a657a26cb06525f4085d752d94">set_msg_callback</a>(<a class="code" href="classMessageCallback.html">MessageCallback</a> callback);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="classMessageCallback.html">MessageCallback</a> m_callback;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">mutable</span> std::mutex m_mutex;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">   66</a></span>&#160;<span class="preprocessor">#define LOG_MSG(status, msg)                                                                           \</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">    do {                                                                                               \</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">        std::stringstream __ss;                                                                        \</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">        __ss &lt;&lt; msg;                                                                                   \</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">        get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast&lt;int&gt;(__LINE__)); \</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">    } while (false);</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_LOGGER_HPP</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Logger.html">   48</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Logger.html">Logger</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Logger.html#a78d3d9ed5039a24041b5d9e2850a1e68">log_msg</a>(<a class="code" href="classStatus.html">Status</a> status, <span class="keyword">const</span> std::string &amp;msg, <span class="keyword">const</span> std::string &amp;file, <span class="keyword">const</span> std::string &amp;<span class="keyword">function</span>, <span class="keywordtype">int</span> line);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1Logger.html#a95dca0a657a26cb06525f4085d752d94">set_msg_callback</a>(<a class="code" href="classMessageCallback.html">MessageCallback</a> callback);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="classMessageCallback.html">MessageCallback</a> m_callback;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">mutable</span> std::mutex m_mutex;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    };</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">   65</a></span>&#160;<span class="preprocessor">#define LOG_MSG(status, msg)                                                                            \</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">    do {                                                                                                \</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">        std::stringstream __ss;                                                                         \</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">        __ss &lt;&lt; msg;                                                                                    \</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">        _get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast&lt;int&gt;(__LINE__)); \</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">    } while (false);</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_LOGGER_HPP</span></div>
 <div class="ttc" id="aclassMessageCallback_html"><div class="ttname"><a href="classMessageCallback.html">MessageCallback</a></div><div class="ttdoc">Callback function called on library message event.</div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
-<div class="ttc" id="aclassspla_1_1Logger_html"><div class="ttname"><a href="classspla_1_1Logger.html">spla::Logger</a></div><div class="ttdoc">Library logger.</div><div class="ttdef"><b>Definition:</b> logger.hpp:49</div></div>
+<div class="ttc" id="aclassspla_1_1Logger_html"><div class="ttname"><a href="classspla_1_1Logger.html">spla::Logger</a></div><div class="ttdoc">Library logger.</div><div class="ttdef"><b>Definition:</b> logger.hpp:48</div></div>
 <div class="ttc" id="aclassspla_1_1Logger_html_a78d3d9ed5039a24041b5d9e2850a1e68"><div class="ttname"><a href="classspla_1_1Logger.html#a78d3d9ed5039a24041b5d9e2850a1e68">spla::Logger::log_msg</a></div><div class="ttdeci">void log_msg(Status status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)</div><div class="ttdef"><b>Definition:</b> logger.cpp:34</div></div>
 <div class="ttc" id="aclassspla_1_1Logger_html_a95dca0a657a26cb06525f4085d752d94"><div class="ttname"><a href="classspla_1_1Logger.html#a95dca0a657a26cb06525f4085d752d94">spla::Logger::set_msg_callback</a></div><div class="ttdeci">void set_msg_callback(MessageCallback callback)</div><div class="ttdef"><b>Definition:</b> logger.cpp:40</div></div>
 <div class="ttc" id="aconfig_8hpp_html"><div class="ttname"><a href="config_8hpp.html">config.hpp</a></div></div>
-<div class="ttc" id="alibrary_8hpp_html"><div class="ttname"><a href="library_8hpp.html">library.hpp</a></div></div>
-<div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:41</div></div>
+<div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

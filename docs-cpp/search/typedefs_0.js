@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['messagecallback_207',['MessageCallback',['../group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9',1,'spla']]]
+  ['entry_345',['Entry',['../classspla_1_1CpuLil.html#a8401ce8ecef9719bd75e65c819350fef',1,'spla::CpuLil']]]
 ];

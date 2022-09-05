@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['accelerator_0',['Accelerator',['../classspla_1_1Accelerator.html',1,'spla']]],
-  ['accelerator_2ehpp_1',['accelerator.hpp',['../accelerator_8hpp.html',1,'']]],
-  ['acceleratortype_2',['AcceleratorType',['../classAcceleratorType.html',1,'AcceleratorType'],['../group__spla.html#gae53f1b66beabcefa387bdcfce49f251a',1,'spla::AcceleratorType()']]],
-  ['acquire_3',['acquire',['../classspla_1_1ref__ptr.html#a0fab312790bc5a8294dc66b8731b3f55',1,'spla::ref_ptr']]],
-  ['add_5fref_4',['add_ref',['../classspla_1_1RefCnt.html#aeb67be8171b576ac60c3e1762e9b171b',1,'spla::RefCnt']]],
-  ['as_5',['as',['../classspla_1_1ref__ptr.html#abc6fb0e00b5119e63f42bfece9051b48',1,'spla::ref_ptr']]]
+  ['_5fensure_5facc_0',['_ensure_acc',['../classspla_1_1TMatrix.html#a90c21dbf56404d0c0e39e9e5583d940a',1,'spla::TMatrix']]],
+  ['_5fensure_5fcpu_5fcoo_1',['_ensure_cpu_coo',['../classspla_1_1TMatrix.html#a636c6535336c525afdf09046355858bc',1,'spla::TMatrix']]],
+  ['_5fensure_5fcpu_5fcsr_2',['_ensure_cpu_csr',['../classspla_1_1TMatrix.html#aa17f850bb0a52f9baf92a448758d0b44',1,'spla::TMatrix']]],
+  ['_5fensure_5fcpu_5flil_3',['_ensure_cpu_lil',['../classspla_1_1TMatrix.html#ab3512d3ba6be7cc83f79d246dc026d60',1,'spla::TMatrix']]],
+  ['_5fget_5faccelerator_4',['_get_accelerator',['../classspla_1_1Library.html#acffa441651951cf0f14acdf5aff9ee88',1,'spla::Library']]],
+  ['_5fget_5flogger_5',['_get_logger',['../classspla_1_1Library.html#a010477b1320f933b73f6a7b5ed5c7a90',1,'spla::Library']]]
 ];

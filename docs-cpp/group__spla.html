@@ -65,7 +65,8 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Spla</div>  </div>
 </div><!--header-->
@@ -88,11 +89,23 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ref__ptr.html">spla::ref_ptr&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automates reference counting and behaves as shared smart pointer.  <a href="classspla_1_1ref__ptr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Type.html">spla::Type</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> representation for parametrisation of containers stored values.  <a href="classspla_1_1Type.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html">spla::Vector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized N dimensional vector object.  <a href="classspla_1_1Vector.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStatus.html">Status</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classStatus.html" title="Status of library operation execution.">Status</a> of library operation execution.  <a href="classStatus.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAcceleratorType.html">AcceleratorType</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of supported accelerators for computations.  <a href="classAcceleratorType.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStateHint.html">StateHint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hint used to explicitly prepare matrix state.  <a href="classStateHint.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatHint.html">FormatHint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hint desired storage format of object.  <a href="classFormatHint.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMessageCallback.html">MessageCallback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function called on library message event.  <a href="classMessageCallback.html#details">More...</a><br /></td></tr>
@@ -100,6 +113,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga669156f74132dd261f21223177f0b458"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> = std::uint32_t</td></tr>
+<tr class="memdesc:ga669156f74132dd261f21223177f0b458"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> index and size type.  <a href="group__spla.html#ga669156f74132dd261f21223177f0b458">More...</a><br /></td></tr>
+<tr class="separator:ga669156f74132dd261f21223177f0b458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9">spla::MessageCallback</a> = std::function&lt; void(<a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
 <tr class="separator:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -122,12 +138,49 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47">spla::OpenCL</a> = 1
  }</td></tr>
 <tr class="separator:gae53f1b66beabcefa387bdcfce49f251a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">spla::StateHint</a> { <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67">spla::Default</a> = 0
+, <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f">spla::Incremental</a> = 1
+, <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10">spla::Compute</a> = 2
+ }</td></tr>
+<tr class="separator:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">spla::FormatHint</a> { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67">spla::Default</a> = 0
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 1
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ab4bcf9c00c010c3e67b0da4ab6e432cd">spla::AccDefault</a> = 100
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 102
+, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 103
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 104
+<br />
+ }</td></tr>
+<tr class="separator:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1Library.html">Library</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">spla::get_library</a> ()</td></tr>
 <tr class="memdesc:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access global library instance.  <a href="group__spla.html#ga8a1590463f8b9be55c0f6b82a9eee21a">More...</a><br /></td></tr>
 <tr class="separator:ga8a1590463f8b9be55c0f6b82a9eee21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59bd0fb803b33d4ef924657048410de3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga59bd0fb803b33d4ef924657048410de3">spla::make_matrix</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
+<tr class="memdesc:ga59bd0fb803b33d4ef924657048410de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new matrix instance with specified dim and values type.  <a href="group__spla.html#ga59bd0fb803b33d4ef924657048410de3">More...</a><br /></td></tr>
+<tr class="separator:ga59bd0fb803b33d4ef924657048410de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cde173a713635741cb535fd615df6fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9cde173a713635741cb535fd615df6fb">spla::make_vector</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
+<tr class="memdesc:ga9cde173a713635741cb535fd615df6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new vector instance with specified dim and values type.  <a href="group__spla.html#ga9cde173a713635741cb535fd615df6fb">More...</a><br /></td></tr>
+<tr class="separator:ga9cde173a713635741cb535fd615df6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga9773e98e96006b42002968fea46cf7cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9773e98e96006b42002968fea46cf7cb">spla::BYTE</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int8_t&gt;::make_type(&quot;BYTE&quot;, &quot;B&quot;, &quot;signed 1 byte integral type&quot;, 1)</td></tr>
+<tr class="separator:ga9773e98e96006b42002968fea46cf7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga50adbf4f00a8835e1f227fb98780f01c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c">spla::INT</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int32_t&gt;::make_type(&quot;INT&quot;, &quot;I&quot;, &quot;signed 4 byte integral type&quot;, 2)</td></tr>
+<tr class="separator:ga50adbf4f00a8835e1f227fb98780f01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc8fc2cf208c1737a64339121a41cf01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gafc8fc2cf208c1737a64339121a41cf01">spla::UINT</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::uint32_t&gt;::make_type(&quot;UINT&quot;, &quot;U&quot;, &quot;unsigned 4 byte integral type&quot;, 3)</td></tr>
+<tr class="separator:gafc8fc2cf208c1737a64339121a41cf01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa62e3c873c501b318561a12b67568792"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gaa62e3c873c501b318561a12b67568792">spla::FLOAT</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;float&gt;::make_type(&quot;FLOAT&quot;, &quot;F&quot;, &quot;4 byte floating point type&quot;, 4)</td></tr>
+<tr class="separator:gaa62e3c873c501b318561a12b67568792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -142,6 +195,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga669156f74132dd261f21223177f0b458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga669156f74132dd261f21223177f0b458">&#9670;&nbsp;</a></span>uint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> = typedef std::uint32_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> index and size type. </p>
 
 </div>
 </div>
@@ -169,6 +238,69 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggae53f1b66beabcefa387bdcfce49f251aa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>No acceleration to be used </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47"></a>OpenCL&#160;</td><td class="fielddoc"><p>OpenCL-based single device acceleration </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga8a475c461a7d919fd864a4c90ec44b38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8a475c461a7d919fd864a4c90ec44b38">&#9670;&nbsp;</a></span>FormatHint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">spla::FormatHint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38ab4bcf9c00c010c3e67b0da4ab6e432cd"></a>AccDefault&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga8eed27bc4c4b81483b248c47eb8bffd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8eed27bc4c4b81483b248c47eb8bffd3">&#9670;&nbsp;</a></span>StateHint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">spla::StateHint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"><p>Default state of container (empty) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f"></a>Incremental&#160;</td><td class="fielddoc"><p>Prepare for incremental build </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10"></a>Compute&#160;</td><td class="fielddoc"><p>Commits build data to optimal storage format </p>
 </td></tr>
 </table>
 
@@ -234,6 +366,146 @@ Functions</h2></td></tr>
 <p>Global library state instantiate once on first request to the library. Call this function to access library and configure it first before any computations.</p>
 <dl class="section note"><dt>Note</dt><dd>Only single global instance of the library allowed.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Global library instance </dd></dl>
+
+</div>
+</div>
+<a id="ga59bd0fb803b33d4ef924657048410de3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59bd0fb803b33d4ef924657048410de3">&#9670;&nbsp;</a></span>make_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; spla::make_matrix </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make new matrix instance with specified dim and values type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n_rows</td><td>Number of matrix rows; must be &gt; 0; </td></tr>
+    <tr><td class="paramname">n_cols</td><td>Number of matrix columns; must be &gt; 0; </td></tr>
+    <tr><td class="paramname">type</td><td><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> of matrix elements</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New matrix instance or null if failed to create </dd></dl>
+
+</div>
+</div>
+<a id="ga9cde173a713635741cb535fd615df6fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9cde173a713635741cb535fd615df6fb">&#9670;&nbsp;</a></span>make_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Vector.html">Vector</a>&gt; spla::make_vector </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make new vector instance with specified dim and values type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n_rows</td><td>Number of vector rows; must be &gt; 0; </td></tr>
+    <tr><td class="paramname">type</td><td><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> of vector elements</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New vector instance or null if failed to create </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ga9773e98e96006b42002968fea46cf7cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9773e98e96006b42002968fea46cf7cb">&#9670;&nbsp;</a></span>BYTE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; spla::BYTE = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int8_t&gt;::make_type(&quot;BYTE&quot;, &quot;B&quot;, &quot;signed 1 byte integral type&quot;, 1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa62e3c873c501b318561a12b67568792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa62e3c873c501b318561a12b67568792">&#9670;&nbsp;</a></span>FLOAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; spla::FLOAT = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;float&gt;::make_type(&quot;FLOAT&quot;, &quot;F&quot;, &quot;4 byte floating point type&quot;, 4)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga50adbf4f00a8835e1f227fb98780f01c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga50adbf4f00a8835e1f227fb98780f01c">&#9670;&nbsp;</a></span>INT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; spla::INT = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int32_t&gt;::make_type(&quot;INT&quot;, &quot;I&quot;, &quot;signed 4 byte integral type&quot;, 2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafc8fc2cf208c1737a64339121a41cf01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafc8fc2cf208c1737a64339121a41cf01">&#9670;&nbsp;</a></span>UINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; spla::UINT = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::uint32_t&gt;::make_type(&quot;UINT&quot;, &quot;U&quot;, &quot;unsigned 4 byte integral type&quot;, 3)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

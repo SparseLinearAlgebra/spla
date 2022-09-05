@@ -68,14 +68,12 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">library.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="config_8hpp_source.html">config.hpp</a>&quot;</code><br />
-<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -83,11 +81,12 @@ Include dependency graph for library.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="library_8hpp__incl.png" border="0" usemap="#ainclude_2spla_2library_8hpp" alt=""/></div>
 <map name="ainclude_2spla_2library_8hpp" id="ainclude_2spla_2library_8hpp">
-<area shape="rect" title=" " alt="" coords="121,5,274,32"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="5,80,85,107"/>
-<area shape="rect" title=" " alt="" coords="110,80,189,107"/>
-<area shape="rect" title=" " alt="" coords="213,80,281,107"/>
-<area shape="rect" title=" " alt="" coords="305,80,359,107"/>
+<area shape="rect" title=" " alt="" coords="115,5,269,32"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="53,80,133,107"/>
+<area shape="rect" title=" " alt="" coords="158,80,226,107"/>
+<area shape="rect" title=" " alt="" coords="250,80,305,107"/>
+<area shape="rect" title=" " alt="" coords="5,155,80,181"/>
+<area shape="rect" title=" " alt="" coords="105,155,183,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -95,18 +94,21 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="library_8hpp__dep__incl.png" border="0" usemap="#ainclude_2spla_2library_8hppdep" alt=""/></div>
 <map name="ainclude_2spla_2library_8hppdep" id="ainclude_2spla_2library_8hppdep">
-<area shape="rect" title=" " alt="" coords="223,5,377,32"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="56,80,211,107"/>
-<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="142,229,285,256"/>
-<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="378,80,510,107"/>
-<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="657,155,759,181"/>
-<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="5,155,160,181"/>
-<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="15,229,118,256"/>
-<area shape="rect" href="c__config_8hpp.html" title=" " alt="" coords="133,304,294,331"/>
-<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="133,379,294,405"/>
-<area shape="rect" href="logger_8cpp.html" title=" " alt="" coords="286,155,418,181"/>
-<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="442,155,633,181"/>
-<area shape="rect" href="cl__accelerator_8cpp.html" title=" " alt="" coords="442,229,633,256"/>
+<area shape="rect" title=" " alt="" coords="135,5,288,32"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="58,80,213,107"/>
+<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="44,304,187,331"/>
+<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="238,80,340,107"/>
+<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="378,80,568,107"/>
+<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="280,229,434,256"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="170,155,312,181"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="50,229,205,256"/>
+<area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="301,304,437,331"/>
+<area shape="rect" href="c__config_8hpp.html" title=" " alt="" coords="35,379,196,405"/>
+<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="35,453,196,480"/>
+<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="318,379,420,405"/>
+<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="458,229,584,256"/>
+<area shape="rect" href="type_8cpp.html" title=" " alt="" coords="475,304,567,331"/>
+<area shape="rect" href="cl__accelerator_8cpp.html" title=" " alt="" coords="388,155,579,181"/>
 </map>
 </div>
 </div>
@@ -122,11 +124,6 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9">spla::MessageCallback</a> = std::function&lt; void(<a class="el" href="classStatus.html">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
-<tr class="separator:ga64e0b9ae874e2a0ade109246bf2288b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
