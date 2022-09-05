@@ -25,45 +25,13 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
-
-#include <spla/config.hpp>
-
-#include <string>
+#include <core/ttype.hpp>
 
 namespace spla {
 
-    /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
-     */
-    class Accelerator {
-    public:
-        virtual ~Accelerator() = default;
-
-        virtual Status init() = 0;
-
-        virtual Status set_platform(int index)     = 0;
-        virtual Status set_device(int index)       = 0;
-        virtual Status set_queues_count(int count) = 0;
-
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
-    };
+    ref_ptr<Type> BYTE  = TType<std::int8_t>::make_type("BYTE", "B", "signed 1 byte integral type", 1);
+    ref_ptr<Type> INT   = TType<std::int32_t>::make_type("INT", "I", "signed 4 byte integral type", 2);
+    ref_ptr<Type> UINT  = TType<std::uint32_t>::make_type("UINT", "U", "unsigned 4 byte integral type", 3);
+    ref_ptr<Type> FLOAT = TType<float>::make_type("FLOAT", "F", "4 byte floating point type", 4);
 
 }// namespace spla
-
-#endif//SPLA_ACCELERATOR_HPP

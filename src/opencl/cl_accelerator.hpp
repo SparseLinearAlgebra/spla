@@ -30,38 +30,45 @@
 
 #include <core/accelerator.hpp>
 #include <core/logger.hpp>
+#include <spla/library.hpp>
 
 #include <string>
 #include <vector>
 
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
-#define CL_HPP_TARGET_OPENCL_VERSION 120
+#define CL_HPP_TARGET_OPENCL_VERSION  120
 #include <CL/opencl.hpp>
 
 namespace spla {
 
+    /**
+     * @class CLAccelerator
+     * @brief Single-device OpenCL acceleration implementation
+     */
     class CLAccelerator final : public Accelerator {
     public:
         ~CLAccelerator() override = default;
 
         // Accelerator API
-        Status init() override;
-        Status set_platform(int index) override;
-        Status set_device(int index) override;
-        Status set_queues_count(int count) override;
+        Status      init() override;
+        Status      set_platform(int index) override;
+        Status      set_device(int index) override;
+        Status      set_queues_count(int count) override;
         std::string get_name() override;
         std::string get_description() override;
 
         // OpenCL API
         cl::Platform &get_platform() { return m_platform; }
-        cl::Device &get_device() { return m_device; }
-        cl::Context &get_context() { return m_context; }
+        cl::Device &  get_device() { return m_device; }
+        cl::Context & get_context() { return m_context; }
+
         std::vector<cl::CommandQueue> &get_queues() { return m_queues; }
 
     private:
         cl::Platform m_platform;
-        cl::Device m_device;
-        cl::Context m_context;
+        cl::Device   m_device;
+        cl::Context  m_context;
+
         std::vector<cl::CommandQueue> m_queues;
     };
 

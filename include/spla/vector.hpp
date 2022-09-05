@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021 JetBrains-Research                                          */
+/* Copyright (c) 2021-2022 JetBrains-Research                                     */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,45 +25,46 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
+#ifndef SPLA_VECTOR_HPP
+#define SPLA_VECTOR_HPP
 
-#include <spla/config.hpp>
-
-#include <string>
+#include "object.hpp"
+#include "type.hpp"
 
 namespace spla {
 
     /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
+     * @addtogroup spla
+     * @{
      */
-    class Accelerator {
+
+    /**
+     * @class Vector
+     * @brief Generalized N dimensional vector object
+     */
+    class Vector : public Object {
     public:
-        virtual ~Accelerator() = default;
-
-        virtual Status init() = 0;
-
-        virtual Status set_platform(int index)     = 0;
-        virtual Status set_device(int index)       = 0;
-        virtual Status set_queues_count(int count) = 0;
-
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
+        SPLA_API ~Vector() override                                 = default;
+        SPLA_API virtual Status        hint_state(StateHint hint)   = 0;
+        SPLA_API virtual Status        hint_format(FormatHint hint) = 0;
+        SPLA_API virtual uint          get_n_rows()                 = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                   = 0;
     };
+
+    /**
+     * @brief Make new vector instance with specified dim and values type
+     *
+     * @param n_rows Number of vector rows; must be > 0;
+     * @param type Type of vector elements
+     *
+     * @return New vector instance or null if failed to create
+     */
+    SPLA_API ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type> &type);
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+#endif//SPLA_VECTOR_HPP

@@ -25,45 +25,100 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
+#ifndef SPLA_TMATRIX_HPP
+#define SPLA_TMATRIX_HPP
 
 #include <spla/config.hpp>
+#include <spla/matrix.hpp>
 
-#include <string>
+#include <core/ttype.hpp>
+
+#include <sequential/cpu_coo.hpp>
+#include <sequential/cpu_csr.hpp>
+#include <sequential/cpu_lil.hpp>
 
 namespace spla {
 
     /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
+     * @addtogroup internal
+     * @{
      */
-    class Accelerator {
+
+    /**
+     * @class TMatrix
+     * @brief Matrix interface implementation with type information bound
+     *
+     * @tparam T Type of stored elements
+     */
+    template<typename T>
+    class TMatrix final : public Matrix {
     public:
-        virtual ~Accelerator() = default;
+        SPLA_API TMatrix(uint n_rows, uint n_cols);
+        SPLA_API ~TMatrix() override = default;
+        SPLA_API Status hint_state(StateHint hint) override;
+        SPLA_API Status hint_format(FormatHint hint) override;
+        SPLA_API uint   get_n_rows() override;
+        SPLA_API uint   get_n_cols() override;
+        SPLA_API ref_ptr<Type> get_type() override;
 
-        virtual Status init() = 0;
+        void _ensure_cpu_lil();
+        void _ensure_cpu_coo();
+        void _ensure_cpu_csr();
+        void _ensure_acc();
 
-        virtual Status set_platform(int index)     = 0;
-        virtual Status set_device(int index)       = 0;
-        virtual Status set_queues_count(int count) = 0;
+    private:
+        CpuLil<T> m_lil;
 
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
+        uint m_n_rows = 0;
+        uint m_n_cols = 0;
+
+        StateHint  m_state_hint  = StateHint::Default;
+        FormatHint m_format_hint = FormatHint::Default;
+
+        uint m_version = 0;
     };
+
+    template<typename T>
+    TMatrix<T>::TMatrix(uint n_rows, uint n_cols) {
+        m_n_rows = n_rows;
+        m_n_cols = n_cols;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::hint_state(StateHint hint) {
+        if (m_state_hint == hint) {
+            return Status::Ok;
+        }
+
+
+        return Status::InvalidState;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::hint_format(FormatHint hint) {
+        return Status::Ok;
+    }
+
+    template<typename T>
+    uint TMatrix<T>::get_n_rows() {
+        return m_n_rows;
+    }
+
+    template<typename T>
+    uint TMatrix<T>::get_n_cols() {
+        return m_n_cols;
+    }
+
+    template<typename T>
+    ref_ptr<Type> TMatrix<T>::get_type() {
+        return get_ttype<T>().template as<Type>();
+    }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+
+#endif//SPLA_TMATRIX_HPP

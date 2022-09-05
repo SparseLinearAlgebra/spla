@@ -29,6 +29,7 @@
 #define SPLA_OBJECT_HPP
 
 #include "library.hpp"
+#include "ref.hpp"
 
 namespace spla {
 
@@ -41,9 +42,9 @@ namespace spla {
      * @class Object
      * @brief Base class for any library primitive
      */
-    class Object {
+    class Object : public RefCnt {
     public:
-        SPLA_API virtual ~Object() = default;
+        SPLA_API ~Object() override = default;
     };
 
     /**

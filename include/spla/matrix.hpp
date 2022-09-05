@@ -29,6 +29,7 @@
 #define SPLA_MATRIX_HPP
 
 #include "object.hpp"
+#include "type.hpp"
 
 namespace spla {
 
@@ -43,10 +44,24 @@ namespace spla {
      */
     class Matrix : public Object {
     public:
-        SPLA_API ~Matrix() override = default;
-
-        SPLA_API void build();
+        SPLA_API ~Matrix() override                                 = default;
+        SPLA_API virtual Status        hint_state(StateHint hint)   = 0;
+        SPLA_API virtual Status        hint_format(FormatHint hint) = 0;
+        SPLA_API virtual uint          get_n_rows()                 = 0;
+        SPLA_API virtual uint          get_n_cols()                 = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                   = 0;
     };
+
+    /**
+     * @brief Make new matrix instance with specified dim and values type
+     *
+     * @param n_rows Number of matrix rows; must be > 0;
+     * @param n_cols Number of matrix columns; must be > 0;
+     * @param type Type of matrix elements
+     *
+     * @return New matrix instance or null if failed to create
+     */
+    SPLA_API ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type> &type);
 
     /**
      * @}

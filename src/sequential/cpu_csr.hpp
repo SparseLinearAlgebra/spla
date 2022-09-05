@@ -25,45 +25,70 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
+#ifndef SPLA_CPU_CSR_HPP
+#define SPLA_CPU_CSR_HPP
 
 #include <spla/config.hpp>
 
+#include <core/tdecoration.hpp>
+
+#include <algorithm>
+#include <cassert>
+#include <functional>
+#include <numeric>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace spla {
 
     /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
+     * @addtogroup internal
+     * @{
      */
-    class Accelerator {
+
+    /**
+     * @class CpuCsr
+     * @brief CPU compressed sparse row matrix format
+     *
+     * @tparam T Type of elements
+     */
+    template<typename T>
+    class CpuCsr : public TDecoration<T> {
     public:
-        virtual ~Accelerator() = default;
+        ~CpuCsr() override = default;
 
-        virtual Status init() = 0;
+        void to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx);
 
-        virtual Status set_platform(int index)     = 0;
-        virtual Status set_device(int index)       = 0;
-        virtual Status set_queues_count(int count) = 0;
-
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
+        std::vector<uint> Ap;
+        std::vector<uint> Aj;
+        std::vector<T>    Ax;
+        uint              n_rows   = 0;
+        uint              n_cols   = 0;
+        uint              n_values = 0;
+        uint              version  = 0;
     };
+
+    template<typename T>
+    void CpuCsr<T>::to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx) {
+        assert(Ri.size() == n_values);
+        assert(Rj.size() == n_values);
+        assert(Rx.size() == n_values);
+
+        for (uint i = 0; i < n_rows; i++) {
+            for (uint j = Ap[i]; j < Ap[i + 1]; j++) {
+                Ri[j] = i;
+                Rj[j] = Aj[j];
+                Rx[j] = Ax[j];
+            }
+        }
+    }
+
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+#endif//SPLA_CPU_CSR_HPP

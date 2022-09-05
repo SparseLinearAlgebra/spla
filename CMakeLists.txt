@@ -226,11 +226,19 @@ add_library(spla SHARED
         include/spla/ref.hpp
         include/spla/schedule.hpp
         include/spla/type.hpp
+        include/spla/vector.hpp
         src/core/accelerator.hpp
         src/core/logger.cpp
         src/core/logger.hpp
+        src/core/tdecoration.hpp
+        src/core/tmatrix.hpp
+        src/core/ttype.hpp
+        src/sequential/cpu_coo.hpp
+        src/sequential/cpu_csr.hpp
+        src/sequential/cpu_lil.hpp
         src/library.cpp
         src/matrix.cpp
+        src/type.cpp
         # C bindings
         include/spla_c/spla.h
         src/binding/c_config.hpp

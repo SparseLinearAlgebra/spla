@@ -30,7 +30,6 @@
 
 #include "config.hpp"
 
-#include <functional>
 #include <memory>
 #include <string>
 
@@ -42,22 +41,6 @@ namespace spla {
      */
 
     /**
-     * @class MessageCallback
-     * @brief Callback function called on library message event
-     *
-     * Message callback function is called on library log.
-     * Callback accepts message status, actual textual message with description,
-     * file name and function with line location of message dispatch place.
-     *
-     * Use this message callback to receive library messages (in debug mode especially).
-     */
-    using MessageCallback = std::function<void(Status status,
-                                               const std::string &msg,
-                                               const std::string &file,
-                                               const std::string &function,
-                                               int line)>;
-
-    /**
      * @class Library
      * @brief Library global state automatically instantiated on lib init
      */
@@ -67,7 +50,7 @@ namespace spla {
         SPLA_API ~Library();
 
         Library(const Library &) = delete;
-        Library(Library &&) = delete;
+        Library(Library &&)      = delete;
 
         /**
          * @brief Finalize library execution
@@ -139,21 +122,19 @@ namespace spla {
 
         /**
          * @warning Internal usage only!
-         *
          * @return Library computations accelerator if presented
          */
-        class Accelerator *get_accelerator();
+        class Accelerator *_get_accelerator();
 
         /**
          * @warning Internal usage only!
-         *
          * @return Library logger
          */
-        class Logger *get_logger();
+        class Logger *_get_logger();
 
     private:
         std::unique_ptr<class Accelerator> m_accelerator;
-        std::unique_ptr<class Logger> m_logger;
+        std::unique_ptr<class Logger>      m_logger;
     };
 
     /**
@@ -175,7 +156,7 @@ namespace spla {
      *
      * @return Library computations accelerator if presented
      */
-    static class Accelerator *get_accelerator() { return get_library()->get_accelerator(); }
+    static class Accelerator *_get_accelerator() { return get_library()->_get_accelerator(); }
 
     /**
      * @brief Global library logger
@@ -184,7 +165,7 @@ namespace spla {
      *
      * @return Library logger
      */
-    static class Logger *get_logger() { return get_library()->get_logger(); }
+    static class Logger *_get_logger() { return get_library()->_get_logger(); }
 
     /**
      * @}

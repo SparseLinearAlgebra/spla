@@ -124,7 +124,7 @@ namespace spla {
         }
 
         ref_ptr(ref_ptr &&other) noexcept {
-            m_object = other.m_object;
+            m_object       = other.m_object;
             other.m_object = nullptr;
         }
         ~ref_ptr() {
@@ -182,13 +182,13 @@ namespace spla {
         }
 
         void reset(T *ptr = nullptr) {
-            T *old = m_object;
+            T *old   = m_object;
             m_object = ptr;
             unref(old);
         }
 
         T *release() {
-            T *ptr = m_object;
+            T *ptr   = m_object;
             m_object = nullptr;
             return ptr;
         }

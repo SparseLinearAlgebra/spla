@@ -16,7 +16,9 @@ pre-defined functions' set.
 
 - **Website**:
   [https://jetbrains-research.github.io/pyspla/](https://jetbrains-research.github.io/spla/docs-python/pyspla/)
-- **Package page**
+- **Package page**:
+  [https://pypi.org/project/pyspla](https://pypi.org/project/pyspla/)
+- **Package page (test)**:
   [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
@@ -24,7 +26,7 @@ pre-defined functions' set.
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
   [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
-- **C/C++ API Reference**:
+- **C/C++ API reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)

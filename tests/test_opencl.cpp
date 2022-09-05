@@ -28,7 +28,7 @@
 #include "test_common.hpp"
 
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
-#define CL_HPP_TARGET_OPENCL_VERSION 120
+#define CL_HPP_TARGET_OPENCL_VERSION  120
 #include <CL/opencl.hpp>
 
 #include <iostream>
@@ -43,7 +43,7 @@ TEST(opencl, basic_gpu) {
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
     cl::Device device = devices.front();
 
-    cl::Context context(device);
+    cl::Context      context(device);
     cl::CommandQueue queue(context);
 
     std::vector<int> vec_a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};

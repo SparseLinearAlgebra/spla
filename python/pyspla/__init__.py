@@ -9,7 +9,9 @@ Library core witten using C++ with optional C-compatible interface.
 
 Links:
 
-- **Package page**
+- **Package page**:
+  [https://pypi.org/project/pyspla](https://pypi.org/project/pyspla/)
+- **Package page (test)**:
   [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
@@ -52,7 +54,7 @@ using on of element operations in `op` module.
 Library optionally uses GPUs acceleration through OpenCL or CUDA API.
 It automatically attempts to initialize accelerator and trys to use
 it to speed-up some operations. All GPU communication, data transformations
-and transfers done internally automatically with any efforts from user perspective.
+and transfers done internally automatically without any efforts from user perspective.
 
 Containers
 ----------

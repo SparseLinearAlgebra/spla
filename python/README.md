@@ -12,7 +12,9 @@ acceleration. It provides linear algebra primitives, such as matrices, vectors a
 operations. It gives an ability to customize underlying values types treatment and parametrise operations using rich
 pre-defined functions' set.
 
-- **Package page**
+- **Package page**:
+  [https://pypi.org/project/pyspla](https://pypi.org/project/pyspla/)
+- **Package page (test)**:
   [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
   [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
@@ -20,12 +22,32 @@ pre-defined functions' set.
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
   [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
-- **C/C++ API Reference**:
+- **C/C++ API reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
 
 > Note: project under heavy development! Not ready for usage.
+
+## Installation
+
+Install the release version of the package from **PyPI** repository for Windows, Linux and MacOS:
+
+```shell
+$ pip install pyspla
+```
+
+Install the latest test version of the package from **Test PyPI** repository for Windows, Linux and MacOS:
+
+```shell
+$ pip install -i https://test.pypi.org/simple/ pyspla
+```
+
+Delete package if no more required:
+
+```shell
+$ pip uninstall pyspla
+```
 
 ## Contributors
 

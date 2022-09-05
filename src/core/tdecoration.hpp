@@ -25,45 +25,38 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
-
-#include <spla/config.hpp>
-
-#include <string>
+#ifndef SPLA_T_DECORATION_HPP
+#define SPLA_T_DECORATION_HPP
 
 namespace spla {
 
     /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
+     * @addtogroup internal
+     * @{
      */
-    class Accelerator {
+
+    /**
+     * @class TDecoration
+     * @brief Base class for typed decoration for storage object
+     *
+     * @tparam T Type of stored values
+     */
+    template<typename T>
+    class TDecoration {
     public:
-        virtual ~Accelerator() = default;
+        virtual ~TDecoration() = default;
 
-        virtual Status init() = 0;
+        /** @return Version of decoration required to sync data between storages */
+        [[nodiscard]] virtual int get_version() const { return m_version; };
 
-        virtual Status set_platform(int index)     = 0;
-        virtual Status set_device(int index)       = 0;
-        virtual Status set_queues_count(int count) = 0;
-
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
+    protected:
+        int m_version = 0;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+#endif//SPLA_T_DECORATION_HPP

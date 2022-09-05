@@ -28,6 +28,11 @@
 #ifndef SPLA_TEST_COMMON_HPP
 #define SPLA_TEST_COMMON_HPP
 
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+
 #include <gtest/gtest.h>
 
 // Put in the end of the unit test file

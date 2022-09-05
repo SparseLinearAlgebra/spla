@@ -28,12 +28,35 @@
 #ifndef SPLA_TYPE_HPP
 #define SPLA_TYPE_HPP
 
+#include "object.hpp"
+
+#include <string>
+
 namespace spla {
 
     /**
      * @addtogroup spla
      * @{
      */
+
+    /**
+     * @class Type
+     * @brief Type representation for parametrisation of containers stored values
+     */
+    class Type : public RefCnt {
+    public:
+        SPLA_API ~Type() override                             = default;
+        SPLA_API virtual const std::string &get_name()        = 0;
+        SPLA_API virtual const std::string &get_code()        = 0;
+        SPLA_API virtual const std::string &get_description() = 0;
+        SPLA_API virtual int                get_size()        = 0;
+        SPLA_API virtual int                get_id()          = 0;
+    };
+
+    SPLA_API extern ref_ptr<Type> BYTE;
+    SPLA_API extern ref_ptr<Type> INT;
+    SPLA_API extern ref_ptr<Type> UINT;
+    SPLA_API extern ref_ptr<Type> FLOAT;
 
     /**
      * @}

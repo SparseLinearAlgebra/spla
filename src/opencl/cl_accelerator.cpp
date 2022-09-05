@@ -54,7 +54,7 @@ namespace spla {
             return Status::InvalidArgument;
         }
 
-        m_device = cl::Device();
+        m_device   = cl::Device();
         m_platform = available_platforms[index];
         LOG_MSG(Status::Ok, "select OpenCL platform " << m_platform.getInfo<CL_PLATFORM_NAME>());
 
@@ -85,6 +85,6 @@ namespace spla {
         return "OpenCL";
     }
     std::string CLAccelerator::get_description() {
-        return "Single-device OpenCL-based acceleration";
+        return m_platform() && m_device() ? "OpenCL Acc" + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform";
     }
 }// namespace spla

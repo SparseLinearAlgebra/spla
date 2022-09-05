@@ -28,6 +28,9 @@
 #ifndef SPLA_CONFIG_HPP
 #define SPLA_CONFIG_HPP
 
+#include <cinttypes>
+#include <functional>
+
 #ifdef SPLA_MSVC
     #ifdef SPLA_EXPORTS
         #define SPLA_API __declspec(dllexport)
@@ -44,6 +47,11 @@ namespace spla {
      * @addtogroup spla
      * @{
      */
+
+    /**
+     * @brief Library index and size type
+     */
+    using uint = std::uint32_t;
 
     /**
      * @class Status
@@ -78,6 +86,51 @@ namespace spla {
         /** OpenCL-based single device acceleration */
         OpenCL = 1
     };
+
+    /**
+     * @class StateHint
+     * @brief Hint used to explicitly prepare matrix state
+     */
+    enum class StateHint {
+        /** Default state of container (empty) */
+        Default = 0,
+        /** Prepare for incremental build */
+        Incremental = 1,
+        /** Commits build data to optimal storage format */
+        Compute = 2,
+    };
+
+    /**
+     * @class FormatHint
+     * @brief Hint desired storage format of object
+     */
+    enum class FormatHint {
+        Default    = 0,
+        CpuLil     = 1,
+        CpuCoo     = 2,
+        CpuCsr     = 3,
+        CpuCsc     = 4,
+        AccDefault = 100,
+        AccCoo     = 102,
+        AccCsr     = 103,
+        AccCsc     = 104
+    };
+
+    /**
+     * @class MessageCallback
+     * @brief Callback function called on library message event
+     *
+     * Message callback function is called on library log.
+     * Callback accepts message status, actual textual message with description,
+     * file name and function with line location of message dispatch place.
+     *
+     * Use this message callback to receive library messages (in debug mode especially).
+     */
+    using MessageCallback = std::function<void(Status             status,
+                                               const std::string &msg,
+                                               const std::string &file,
+                                               const std::string &function,
+                                               int                line)>;
 
     /**
      * @brief Convert status value to string

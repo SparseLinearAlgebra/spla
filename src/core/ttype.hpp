@@ -25,14 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#ifndef SPLA_TTYPE_HPP
+#define SPLA_TTYPE_HPP
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <spla/type.hpp>
 
 namespace spla {
 
@@ -42,19 +38,92 @@ namespace spla {
      */
 
     /**
-     * @class Logger
-     * @brief Library logger
+     * @class TType
+     * @brief Type interface implementation with actual type info bound
+     *
+     * @tparam T Actual type information
      */
-    class Logger {
+    template<typename T>
+    class TType final : public Type {
     public:
-        void log_msg(Status status, const std::string &msg, const std::string &file, const std::string &function, int line);
-        void set_msg_callback(MessageCallback callback);
+        SPLA_API ~TType() override = default;
+        SPLA_API const std::string &get_name() override;
+        SPLA_API const std::string &get_code() override;
+        SPLA_API const std::string &get_description() override;
+        SPLA_API int                get_size() override;
+        SPLA_API int                get_id() override;
+
+        static ref_ptr<Type> make_type(std::string name, std::string code, std::string desc, int id);
 
     private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
+        std::string m_name;
+        std::string m_code;
+        std::string m_desc;
+        int         m_size = -1;
+        int         m_id   = -1;
     };
+
+    template<typename T>
+    const std::string &TType<T>::get_name() {
+        return m_name;
+    }
+
+    template<typename T>
+    const std::string &TType<T>::get_code() {
+        return m_code;
+    }
+
+    template<typename T>
+    const std::string &TType<T>::get_description() {
+        return m_desc;
+    }
+
+    template<typename T>
+    int TType<T>::get_size() {
+        return m_size;
+    }
+
+    template<typename T>
+    int TType<T>::get_id() {
+        return m_id;
+    }
+
+    template<typename T>
+    ref_ptr<Type> TType<T>::make_type(std::string name, std::string code, std::string desc, int id) {
+        ref_ptr<TType<T>> t(new TType<T>());
+        t->m_name = std::move(name);
+        t->m_code = std::move(code);
+        t->m_desc = std::move(desc);
+        t->m_size = static_cast<int>(sizeof(T));
+        t->m_id   = id;
+        return t.template as<Type>();
+    }
+
+    template<typename T>
+    static ref_ptr<TType<T>> get_ttype() {
+        assert(false && "not supported type");
+        return ref_ptr<TType<T>>();
+    }
+
+    template<>
+    ref_ptr<TType<std::int8_t>> get_ttype() {
+        return BYTE.cast<TType<std::int8_t>>();
+    }
+
+    template<>
+    ref_ptr<TType<std::int32_t>> get_ttype() {
+        return INT.cast<TType<std::int32_t>>();
+    }
+
+    template<>
+    ref_ptr<TType<std::uint32_t>> get_ttype() {
+        return UINT.cast<TType<std::uint32_t>>();
+    }
+
+    template<>
+    ref_ptr<TType<float>> get_ttype() {
+        return FLOAT.cast<TType<float>>();
+    }
 
     /**
      * @}
@@ -62,11 +131,4 @@ namespace spla {
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+#endif//SPLA_TTYPE_HPP
