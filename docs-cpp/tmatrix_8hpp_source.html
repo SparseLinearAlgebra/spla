@@ -151,34 +151,33 @@ $(function() {
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">Status::InvalidState</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">   99</a></span>&#160;    <a class="code" href="classStatus.html">Status</a> <a class="code" href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">TMatrix&lt;T&gt;::hint_format</a>(<a class="code" href="classFormatHint.html">FormatHint</a> hint) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">  104</a></span>&#160;    <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="code" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">TMatrix&lt;T&gt;::get_n_rows</a>() {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> m_n_rows;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">  109</a></span>&#160;    <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="code" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">TMatrix&lt;T&gt;::get_n_cols</a>() {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> m_n_cols;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">  114</a></span>&#160;    <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;Type&gt;</a> <a class="code" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">TMatrix&lt;T&gt;::get_type</a>() {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">return</span> get_ttype&lt;T&gt;().template as&lt;Type&gt;();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">Status::InvalidState</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">   98</a></span>&#160;    <a class="code" href="classStatus.html">Status</a> <a class="code" href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">TMatrix&lt;T&gt;::hint_format</a>(<a class="code" href="classFormatHint.html">FormatHint</a> hint) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">  103</a></span>&#160;    <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="code" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">TMatrix&lt;T&gt;::get_n_rows</a>() {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">return</span> m_n_rows;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">  108</a></span>&#160;    <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="code" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">TMatrix&lt;T&gt;::get_n_cols</a>() {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">return</span> m_n_cols;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">  113</a></span>&#160;    <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;Type&gt;</a> <a class="code" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">TMatrix&lt;T&gt;::get_type</a>() {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> get_ttype&lt;T&gt;().template as&lt;Type&gt;();</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_TMATRIX_HPP</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_TMATRIX_HPP</span></div>
 <div class="ttc" id="aclassFormatHint_html"><div class="ttname"><a href="classFormatHint.html">FormatHint</a></div><div class="ttdoc">Hint desired storage format of object.</div></div>
 <div class="ttc" id="aclassStateHint_html"><div class="ttname"><a href="classStateHint.html">StateHint</a></div><div class="ttdoc">Hint used to explicitly prepare matrix state.</div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
@@ -196,12 +195,12 @@ $(function() {
 <div class="ttc" id="acpu__coo_8hpp_html"><div class="ttname"><a href="cpu__coo_8hpp.html">cpu_coo.hpp</a></div></div>
 <div class="ttc" id="acpu__csr_8hpp_html"><div class="ttname"><a href="cpu__csr_8hpp.html">cpu_csr.hpp</a></div></div>
 <div class="ttc" id="acpu__lil_8hpp_html"><div class="ttname"><a href="cpu__lil_8hpp.html">cpu_lil.hpp</a></div></div>
-<div class="ttc" id="agroup__internal_html_ga017fea1b6b109484cdc5f18c8b829087"><div class="ttname"><a href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">spla::TMatrix::get_type</a></div><div class="ttdeci">SPLA_API ref_ptr&lt; Type &gt; get_type() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:114</div></div>
+<div class="ttc" id="agroup__internal_html_ga017fea1b6b109484cdc5f18c8b829087"><div class="ttname"><a href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">spla::TMatrix::get_type</a></div><div class="ttdeci">SPLA_API ref_ptr&lt; Type &gt; get_type() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:113</div></div>
 <div class="ttc" id="agroup__internal_html_ga2f6b9a1070e583e79d2272d0ca502e1c"><div class="ttname"><a href="group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c">spla::TMatrix::TMatrix</a></div><div class="ttdeci">SPLA_API TMatrix(uint n_rows, uint n_cols)</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:82</div></div>
-<div class="ttc" id="agroup__internal_html_ga639b5a94ded440386196d379bc6f4306"><div class="ttname"><a href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">spla::TMatrix::hint_format</a></div><div class="ttdeci">SPLA_API Status hint_format(FormatHint hint) override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:99</div></div>
-<div class="ttc" id="agroup__internal_html_ga6f2f8fd19836935ea992bbd572a33d72"><div class="ttname"><a href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">spla::TMatrix::get_n_cols</a></div><div class="ttdeci">SPLA_API uint get_n_cols() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:109</div></div>
+<div class="ttc" id="agroup__internal_html_ga639b5a94ded440386196d379bc6f4306"><div class="ttname"><a href="group__internal.html#ga639b5a94ded440386196d379bc6f4306">spla::TMatrix::hint_format</a></div><div class="ttdeci">SPLA_API Status hint_format(FormatHint hint) override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:98</div></div>
+<div class="ttc" id="agroup__internal_html_ga6f2f8fd19836935ea992bbd572a33d72"><div class="ttname"><a href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">spla::TMatrix::get_n_cols</a></div><div class="ttdeci">SPLA_API uint get_n_cols() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:108</div></div>
 <div class="ttc" id="agroup__internal_html_ga8db8a9702b5f7d2435abf73caa7ee980"><div class="ttname"><a href="group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980">spla::TMatrix::hint_state</a></div><div class="ttdeci">SPLA_API Status hint_state(StateHint hint) override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:88</div></div>
-<div class="ttc" id="agroup__internal_html_gad86ffe7ca4ad6ec30c11fbad6c14ef33"><div class="ttname"><a href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix::get_n_rows</a></div><div class="ttdeci">SPLA_API uint get_n_rows() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:104</div></div>
+<div class="ttc" id="agroup__internal_html_gad86ffe7ca4ad6ec30c11fbad6c14ef33"><div class="ttname"><a href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix::get_n_rows</a></div><div class="ttdeci">SPLA_API uint get_n_rows() override</div><div class="ttdef"><b>Definition:</b> tmatrix.hpp:103</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">spla::Status::InvalidState</a></div><div class="ttdeci">@ InvalidState</div></div>
