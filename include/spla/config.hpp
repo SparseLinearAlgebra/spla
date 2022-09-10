@@ -127,10 +127,20 @@ namespace spla {
      * Use this message callback to receive library messages (in debug mode especially).
      */
     using MessageCallback = std::function<void(Status             status,
-                                               const std::string &msg,
-                                               const std::string &file,
-                                               const std::string &function,
+                                               const std::string& msg,
+                                               const std::string& file,
+                                               const std::string& function,
                                                int                line)>;
+
+    /**
+     * @class ScheduleCallback
+     * @brief Callback function which can be scheduled in schedule
+     *
+     * Scheduled callback function allows to schedule your callable
+     * object inside any schedule step. It allows user track the progress
+     * of schedule execution and allows perform some tasks inside running schedule.
+     */
+    using ScheduleCallback = std::function<void()>;
 
     /**
      * @brief Convert status value to string
@@ -139,7 +149,7 @@ namespace spla {
      *
      * @return String value
      */
-    static const char *to_string(Status status) {
+    static const char* to_string(Status status) {
 #define STATUS_MAP(value) \
     case Status::value:   \
         return #value

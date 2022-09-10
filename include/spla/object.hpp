@@ -31,6 +31,8 @@
 #include "library.hpp"
 #include "ref.hpp"
 
+#include <string>
+
 namespace spla {
 
     /**
@@ -44,7 +46,9 @@ namespace spla {
      */
     class Object : public RefCnt {
     public:
-        SPLA_API ~Object() override = default;
+        SPLA_API ~Object() override                                      = default;
+        SPLA_API virtual void               set_label(std::string label) = 0;
+        SPLA_API virtual const std::string& get_label() const            = 0;
     };
 
     /**

@@ -49,8 +49,8 @@ namespace spla {
         SPLA_API Library();
         SPLA_API ~Library();
 
-        Library(const Library &) = delete;
-        Library(Library &&)      = delete;
+        Library(const Library&) = delete;
+        Library(Library&&)      = delete;
 
         /**
          * @brief Finalize library execution
@@ -124,13 +124,13 @@ namespace spla {
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
-        class Accelerator *_get_accelerator();
+        class Accelerator* _get_accelerator();
 
         /**
          * @warning Internal usage only!
          * @return Library logger
          */
-        class Logger *_get_logger();
+        class Logger* _get_logger();
 
     private:
         std::unique_ptr<class Accelerator> m_accelerator;
@@ -147,7 +147,7 @@ namespace spla {
      *
      * @return Global library instance
      */
-    SPLA_API Library *get_library();
+    SPLA_API Library* get_library();
 
     /**
      * @brief Global library computations accelerator if presented
@@ -156,7 +156,7 @@ namespace spla {
      *
      * @return Library computations accelerator if presented
      */
-    static class Accelerator *_get_accelerator() { return get_library()->_get_accelerator(); }
+    static class Accelerator* _get_accelerator() { return get_library()->_get_accelerator(); }
 
     /**
      * @brief Global library logger
@@ -165,7 +165,7 @@ namespace spla {
      *
      * @return Library logger
      */
-    static class Logger *_get_logger() { return get_library()->_get_logger(); }
+    static class Logger* _get_logger() { return get_library()->_get_logger(); }
 
     /**
      * @}

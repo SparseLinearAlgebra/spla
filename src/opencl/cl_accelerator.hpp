@@ -42,6 +42,11 @@
 namespace spla {
 
     /**
+     * @addtogroup internal
+     * @{
+     */
+
+    /**
      * @class CLAccelerator
      * @brief Single-device OpenCL acceleration implementation
      */
@@ -58,11 +63,11 @@ namespace spla {
         std::string get_description() override;
 
         // OpenCL API
-        cl::Platform &get_platform() { return m_platform; }
-        cl::Device &  get_device() { return m_device; }
-        cl::Context & get_context() { return m_context; }
+        cl::Platform& get_platform() { return m_platform; }
+        cl::Device&   get_device() { return m_device; }
+        cl::Context&  get_context() { return m_context; }
 
-        std::vector<cl::CommandQueue> &get_queues() { return m_queues; }
+        std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
 
     private:
         cl::Platform m_platform;
@@ -71,6 +76,10 @@ namespace spla {
 
         std::vector<cl::CommandQueue> m_queues;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

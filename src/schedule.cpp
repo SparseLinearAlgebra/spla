@@ -25,48 +25,54 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#include <spla/schedule.hpp>
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <schedule/schedule_st.hpp>
+#include <schedule/schedule_tasks.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    ref_ptr<Schedule> make_schedule() {
+        return ref_ptr<Schedule>(new ScheduleSingleThread);
+    }
 
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+    ref_ptr<ScheduleTask> make_sched_callback(
+            ScheduleCallback callback) {
+        auto task      = make_ref<ScheduleTask_callback>();
+        task->callback = std::move(callback);
+        return task.as<ScheduleTask>();
+    }
 
-    private:
-        MessageCallback m_callback;
+    ref_ptr<ScheduleTask> make_sched_mxv_masked(
+            ref_ptr<Vector> r,
+            ref_ptr<Vector> mask,
+            ref_ptr<Matrix> M,
+            ref_ptr<Vector> v,
+            ref_ptr<OpBin>  op_multiply,
+            ref_ptr<OpBin>  op_add,
+            bool            opt_complement) {
+        auto task            = make_ref<ScheduleTask_mxv_masked>();
+        task->r              = std::move(r);
+        task->mask           = std::move(mask);
+        task->M              = std::move(M);
+        task->v              = std::move(v);
+        task->op_multiply    = std::move(op_multiply);
+        task->op_add         = std::move(op_add);
+        task->opt_complement = opt_complement;
+        return task.as<ScheduleTask>();
+    }
 
-        mutable std::mutex m_mutex;
-    };
-
-    /**
-     * @}
-     */
+    ref_ptr<ScheduleTask> make_sched_v_assign_masked(
+            ref_ptr<Vector> r,
+            ref_ptr<Vector> mask,
+            ref_ptr<Scalar> value,
+            ref_ptr<OpBin>  op_assign) {
+        auto task       = make_ref<ScheduleTask_v_assign_masked>();
+        task->r         = std::move(r);
+        task->mask      = std::move(mask);
+        task->value     = std::move(value);
+        task->op_assign = std::move(op_assign);
+        return task.as<ScheduleTask>();
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP

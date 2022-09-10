@@ -30,6 +30,8 @@
 
 #include <atomic>
 #include <cassert>
+#include <functional>
+#include <utility>
 
 namespace spla {
 
@@ -90,14 +92,14 @@ namespace spla {
     };
 
     template<typename T>
-    static inline T *safe_ref(T *object) {
+    static inline T* safe_ref(T* object) {
         if (object)
             object->add_ref();
         return object;
     }
 
     template<typename T>
-    static inline void unref(T *object) {
+    static inline void unref(T* object) {
         if (object)
             object->rel_ref();
     }
@@ -115,15 +117,15 @@ namespace spla {
     public:
         ref_ptr() = default;
 
-        explicit ref_ptr(T *object) {
+        explicit ref_ptr(T* object) {
             m_object = safe_ref(object);
         }
 
-        ref_ptr(const ref_ptr &other) {
+        ref_ptr(const ref_ptr& other) {
             m_object = safe_ref(other.m_object);
         }
 
-        ref_ptr(ref_ptr &&other) noexcept {
+        ref_ptr(ref_ptr&& other) noexcept {
             m_object       = other.m_object;
             other.m_object = nullptr;
         }
@@ -132,26 +134,26 @@ namespace spla {
             m_object = nullptr;
         }
 
-        ref_ptr<T> &operator=(const ref_ptr &other) {
+        ref_ptr<T>& operator=(const ref_ptr& other) {
             if (this != &other)
                 this->reset(safe_ref(other.get()));
             return *this;
         }
 
         template<typename G>
-        ref_ptr<T> &operator=(const ref_ptr<G> &other) {
+        ref_ptr<T>& operator=(const ref_ptr<G>& other) {
             if (get() != other.get())
                 this->reset(safe_ref(other.get()));
             return *this;
         }
 
-        ref_ptr<T> &operator=(ref_ptr &&other) noexcept {
+        ref_ptr<T>& operator=(ref_ptr&& other) noexcept {
             if (this != &other)
                 this->reset(other.release());
             return *this;
         }
 
-        bool operator==(const ref_ptr &other) const {
+        bool operator==(const ref_ptr& other) const {
             return m_object == other.m_object;
         }
 
@@ -163,12 +165,12 @@ namespace spla {
             return m_object;
         }
 
-        T *operator->() const {
+        T* operator->() const {
             assert(m_object);
             return m_object;
         }
 
-        T &operator*() const {
+        T& operator*() const {
             assert(m_object);
             return *m_object;
         }
@@ -177,29 +179,29 @@ namespace spla {
             return m_object != nullptr;
         }
 
-        void acquire(T *safe_ref_ptr = nullptr) {
+        void acquire(T* safe_ref_ptr = nullptr) {
             reset(safe_ref(safe_ref_ptr));
         }
 
-        void reset(T *ptr = nullptr) {
-            T *old   = m_object;
+        void reset(T* ptr = nullptr) {
+            T* old   = m_object;
             m_object = ptr;
             unref(old);
         }
 
-        T *release() {
-            T *ptr   = m_object;
+        T* release() {
+            T* ptr   = m_object;
             m_object = nullptr;
             return ptr;
         }
 
-        T *get() const {
+        T* get() const {
             return m_object;
         }
 
         template<typename G>
         [[nodiscard]] bool is() const {
-            return !m_object || dynamic_cast<G *>(m_object);
+            return !m_object || dynamic_cast<G*>(m_object);
         }
 
         template<class G>
@@ -209,12 +211,17 @@ namespace spla {
 
         template<class G>
         ref_ptr<G> cast() const {
-            return ref_ptr<G>(dynamic_cast<G *>(m_object));
+            return ref_ptr<G>(dynamic_cast<G*>(m_object));
         }
 
     private:
-        T *m_object = nullptr;
+        T* m_object = nullptr;
     };
+
+    template<typename T, typename... TArgs>
+    ref_ptr<T> make_ref(TArgs&&... args) {
+        return ref_ptr<T>(new T(std::forward<TArgs>(args)...));
+    }
 
     /**
      * @}

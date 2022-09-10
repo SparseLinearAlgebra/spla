@@ -59,7 +59,7 @@ namespace spla {
      *
      * @return New vector instance or null if failed to create
      */
-    SPLA_API ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type> &type);
+    SPLA_API ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type>& type);
 
     /**
      * @}

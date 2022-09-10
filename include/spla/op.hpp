@@ -28,12 +28,36 @@
 #ifndef SPLA_OP_HPP
 #define SPLA_OP_HPP
 
+#include "object.hpp"
+
+#include <string>
+
 namespace spla {
 
     /**
      * @addtogroup spla
      * @{
      */
+
+    /**
+     * @class Op
+     * @brief An callable operation to parametrize execution of math computations
+     */
+    class Op : public Object {
+    public:
+        SPLA_API ~Op() override                 = default;
+        SPLA_API virtual std::string get_name() = 0;
+        SPLA_API virtual std::string get_key()  = 0;
+    };
+
+    /**
+     * @class OpBin
+     * @brief Binary operation with 2-arity
+     */
+    class OpBin : public Op {
+    public:
+        SPLA_API ~OpBin() override = default;
+    };
 
     /**
      * @}

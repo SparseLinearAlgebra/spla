@@ -47,11 +47,11 @@ spla_Status spla_Library_set_queues_count(int count) {
     return spla::to_c_status(spla::get_library()->set_queues_count(count));
 }
 
-spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void *p_user_data) {
+spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void* p_user_data) {
     auto wrapped_callback = [=](spla::Status       status,
-                                const std::string &msg,
-                                const std::string &file,
-                                const std::string &function,
+                                const std::string& msg,
+                                const std::string& file,
+                                const std::string& function,
                                 int                line) {
         callback(spla::to_c_status(status),
                  msg.c_str(),

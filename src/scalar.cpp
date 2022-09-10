@@ -25,48 +25,48 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
-
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <core/logger.hpp>
+#include <core/tscalar.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    ref_ptr<Scalar> make_scalar(const ref_ptr<Type>& type) {
+        if (!type) {
+            LOG_MSG(Status::InvalidArgument, "passed null type");
+            return ref_ptr<Scalar>{};
+        }
 
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+        if (type == BYTE) {
+            return ref_ptr<Scalar>(new TScalar<std::int8_t>());
+        }
+        if (type == INT) {
+            return ref_ptr<Scalar>(new TScalar<std::int32_t>());
+        }
+        if (type == UINT) {
+            return ref_ptr<Scalar>(new TScalar<std::uint32_t>());
+        }
+        if (type == FLOAT) {
+            return ref_ptr<Scalar>(new TScalar<float>());
+        }
 
-    private:
-        MessageCallback m_callback;
+        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
+        return ref_ptr<Scalar>();
+    }
 
-        mutable std::mutex m_mutex;
-    };
+    ref_ptr<Scalar> make_byte(std::int8_t value) {
+        return ref_ptr<Scalar>(new TScalar<std::int8_t>(value));
+    }
 
-    /**
-     * @}
-     */
+    ref_ptr<Scalar> make_int(std::int32_t value) {
+        return ref_ptr<Scalar>(new TScalar<std::int32_t>(value));
+    }
+
+    ref_ptr<Scalar> make_uint(std::uint32_t value) {
+        return ref_ptr<Scalar>(new TScalar<std::uint32_t>(value));
+    }
+
+    ref_ptr<Scalar> make_float(float value) {
+        return ref_ptr<Scalar>(new TScalar<float>(value));
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP

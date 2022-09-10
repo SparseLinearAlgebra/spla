@@ -25,48 +25,32 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
-
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include "schedule_st.hpp"
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    Status ScheduleSingleThread::step_task(ref_ptr<ScheduleTask> task) {
+        std::vector<ref_ptr<ScheduleTask>> step = {task};
+        m_steps.push_back(std::move(step));
+        return Status::Ok;
+    }
 
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+    Status ScheduleSingleThread::step_tasks(std::vector<ref_ptr<ScheduleTask>> tasks) {
+        m_steps.push_back(std::move(tasks));
+        return Status::Ok;
+    }
 
-    private:
-        MessageCallback m_callback;
+    Status ScheduleSingleThread::submit() {
 
-        mutable std::mutex m_mutex;
-    };
+        return Status::Ok;
+    }
 
-    /**
-     * @}
-     */
+    void ScheduleSingleThread::set_label(std::string label) {
+        m_label = std::move(label);
+    }
+
+    const std::string& ScheduleSingleThread::get_label() const {
+        return m_label;
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP

@@ -224,20 +224,30 @@ add_library(spla SHARED
         include/spla/object.hpp
         include/spla/op.hpp
         include/spla/ref.hpp
+        include/spla/scalar.hpp
         include/spla/schedule.hpp
         include/spla/type.hpp
         include/spla/vector.hpp
         src/core/accelerator.hpp
         src/core/logger.cpp
         src/core/logger.hpp
+        src/core/registry.cpp
+        src/core/registry.hpp
         src/core/tdecoration.hpp
         src/core/tmatrix.hpp
+        src/core/tscalar.hpp
         src/core/ttype.hpp
+        src/schedule/schedule_tasks.cpp
+        src/schedule/schedule_tasks.hpp
+        src/schedule/schedule_st.cpp
+        src/schedule/schedule_st.hpp
         src/sequential/cpu_coo.hpp
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_lil.hpp
         src/library.cpp
         src/matrix.cpp
+        src/scalar.cpp
+        src/schedule.cpp
         src/type.cpp
         # C bindings
         include/spla_c/spla.h

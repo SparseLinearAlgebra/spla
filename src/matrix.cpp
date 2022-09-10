@@ -30,7 +30,7 @@
 
 namespace spla {
 
-    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type> &type) {
+    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
         if (n_rows <= 0 || n_cols <= 0) {
             LOG_MSG(Status::InvalidArgument, "passed 0 dim");
             return ref_ptr<Matrix>{};

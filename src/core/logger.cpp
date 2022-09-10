@@ -31,7 +31,7 @@
 
 namespace spla {
 
-    void Logger::log_msg(Status status, const std::string &msg, const std::string &file, const std::string &function, int line) {
+    void Logger::log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line) {
         std::lock_guard       guard(m_mutex);
         std::filesystem::path file_path(file);
         if (m_callback) m_callback(status, msg, file_path.filename().string(), function, line);

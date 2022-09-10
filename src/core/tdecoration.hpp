@@ -28,6 +28,8 @@
 #ifndef SPLA_T_DECORATION_HPP
 #define SPLA_T_DECORATION_HPP
 
+#include <spla/ref.hpp>
+
 namespace spla {
 
     /**
@@ -42,9 +44,9 @@ namespace spla {
      * @tparam T Type of stored values
      */
     template<typename T>
-    class TDecoration {
+    class TDecoration : public RefCnt {
     public:
-        virtual ~TDecoration() = default;
+        ~TDecoration() override = default;
 
         /** @return Version of decoration required to sync data between storages */
         [[nodiscard]] virtual int get_version() const { return m_version; };

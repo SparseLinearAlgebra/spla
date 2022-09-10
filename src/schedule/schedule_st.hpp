@@ -25,14 +25,13 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#ifndef SPLA_SCHEDULE_ST_HPP
+#define SPLA_SCHEDULE_ST_HPP
 
-#include <spla/config.hpp>
+#include <spla/schedule.hpp>
 
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <string>
+#include <vector>
 
 namespace spla {
 
@@ -42,18 +41,21 @@ namespace spla {
      */
 
     /**
-     * @class Logger
-     * @brief Library logger
+     * @class ScheduleSingleThread
+     * @brief Single-thread dispatch sequential execution schedule
      */
-    class Logger {
+    class ScheduleSingleThread final : public Schedule {
     public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+        ~ScheduleSingleThread() override = default;
+        Status             step_task(ref_ptr<ScheduleTask> task) override;
+        Status             step_tasks(std::vector<ref_ptr<ScheduleTask>> tasks) override;
+        Status             submit() override;
+        void               set_label(std::string label) override;
+        const std::string& get_label() const override;
 
     private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
+        std::vector<std::vector<ref_ptr<ScheduleTask>>> m_steps;
+        std::string                                     m_label;
     };
 
     /**
@@ -62,11 +64,4 @@ namespace spla {
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+#endif//SPLA_SCHEDULE_ST_HPP

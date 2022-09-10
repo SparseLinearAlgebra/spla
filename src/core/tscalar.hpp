@@ -25,10 +25,12 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TTYPE_HPP
-#define SPLA_TTYPE_HPP
+#ifndef SPLA_TSCALAR_HPP
+#define SPLA_TSCALAR_HPP
 
-#include <spla/type.hpp>
+#include <spla/scalar.hpp>
+
+#include <core/ttype.hpp>
 
 namespace spla {
 
@@ -38,91 +40,99 @@ namespace spla {
      */
 
     /**
-     * @class TType
-     * @brief Type interface implementation with actual type info bound
      *
-     * @tparam T Actual type information
+     * @tparam T
      */
     template<typename T>
-    class TType final : public Type {
+    class TScalar final : public Scalar {
     public:
-        SPLA_API ~TType() override = default;
-        SPLA_API const std::string& get_name() override;
-        SPLA_API const std::string& get_code() override;
-        SPLA_API const std::string& get_description() override;
-        SPLA_API int                get_size() override;
-        SPLA_API int                get_id() override;
+        TScalar() = default;
+        explicit TScalar(T value);
+        ~TScalar() override = default;
 
-        static ref_ptr<Type> make_type(std::string name, std::string code, std::string desc, int id);
+        ref_ptr<Type> get_type() override;
+        Status        set_byte(std::int8_t value) override;
+        Status        set_int(std::int32_t value) override;
+        Status        set_uint(std::uint32_t value) override;
+        Status        set_float(float value) override;
+        Status        get_byte(std::int8_t& value) override;
+        Status        get_int(std::int32_t& value) override;
+        Status        get_uint(std::uint32_t& value) override;
+        Status        get_float(float& value) override;
+
+        void               set_label(std::string label) override;
+        const std::string& get_label() const override;
 
     private:
-        std::string m_name;
-        std::string m_code;
-        std::string m_desc;
-        int         m_size = -1;
-        int         m_id   = -1;
+        std::string m_label;
+        T           m_value = T();
     };
 
     template<typename T>
-    const std::string& TType<T>::get_name() {
-        return m_name;
+    TScalar<T>::TScalar(T value) : m_value(value) {
     }
 
     template<typename T>
-    const std::string& TType<T>::get_code() {
-        return m_code;
+    ref_ptr<Type> TScalar<T>::get_type() {
+        return get_ttype<T>().template as<Type>();
     }
 
     template<typename T>
-    const std::string& TType<T>::get_description() {
-        return m_desc;
+    Status TScalar<T>::set_byte(std::int8_t value) {
+        m_value = static_cast<T>(value);
+        return Status::Ok;
     }
 
     template<typename T>
-    int TType<T>::get_size() {
-        return m_size;
+    Status TScalar<T>::set_int(std::int32_t value) {
+        m_value = static_cast<T>(value);
+        return Status::Ok;
     }
 
     template<typename T>
-    int TType<T>::get_id() {
-        return m_id;
+    Status TScalar<T>::set_uint(std::uint32_t value) {
+        m_value = static_cast<T>(value);
+        return Status::Ok;
     }
 
     template<typename T>
-    ref_ptr<Type> TType<T>::make_type(std::string name, std::string code, std::string desc, int id) {
-        ref_ptr<TType<T>> t(new TType<T>());
-        t->m_name = std::move(name);
-        t->m_code = std::move(code);
-        t->m_desc = std::move(desc);
-        t->m_size = static_cast<int>(sizeof(T));
-        t->m_id   = id;
-        return t.template as<Type>();
+    Status TScalar<T>::set_float(float value) {
+        m_value = static_cast<T>(value);
+        return Status::Ok;
     }
 
     template<typename T>
-    static ref_ptr<TType<T>> get_ttype() {
-        assert(false && "not supported type");
-        return ref_ptr<TType<T>>();
+    Status TScalar<T>::get_byte(std::int8_t& value) {
+        value = static_cast<T>(m_value);
+        return Status::Ok;
     }
 
-    template<>
-    ref_ptr<TType<std::int8_t>> get_ttype() {
-        return BYTE.cast<TType<std::int8_t>>();
+    template<typename T>
+    Status TScalar<T>::get_int(std::int32_t& value) {
+        value = static_cast<T>(m_value);
+        return Status::Ok;
     }
 
-    template<>
-    ref_ptr<TType<std::int32_t>> get_ttype() {
-        return INT.cast<TType<std::int32_t>>();
+    template<typename T>
+    Status TScalar<T>::get_uint(std::uint32_t& value) {
+        value = static_cast<T>(m_value);
+        return Status::Ok;
     }
 
-    template<>
-    ref_ptr<TType<std::uint32_t>> get_ttype() {
-        return UINT.cast<TType<std::uint32_t>>();
+    template<typename T>
+    Status TScalar<T>::get_float(float& value) {
+        value = static_cast<T>(m_value);
+        return Status::Ok;
     }
 
-    template<>
-    ref_ptr<TType<float>> get_ttype() {
-        return FLOAT.cast<TType<float>>();
+    template<typename T>
+    void TScalar<T>::set_label(std::string label) {
+        m_label = std::move(label);
+    }
+
+    template<typename T>
+    const std::string& TScalar<T>::get_label() const {
+        return m_label;
     }
 
     /**
@@ -131,4 +141,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_TTYPE_HPP
+#endif//SPLA_TSCALAR_HPP

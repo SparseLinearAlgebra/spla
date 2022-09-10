@@ -28,12 +28,101 @@
 #ifndef SPLA_SCHEDULE_HPP
 #define SPLA_SCHEDULE_HPP
 
+#include "config.hpp"
+#include "matrix.hpp"
+#include "object.hpp"
+#include "op.hpp"
+#include "scalar.hpp"
+#include "vector.hpp"
+
+#include <string>
+#include <vector>
+
 namespace spla {
 
     /**
      * @addtogroup spla
      * @{
      */
+
+    /**
+     * @class ScheduleTask
+     * @brief Represent single smallest evaluation tasks which can scheduled
+     */
+    class ScheduleTask : public Object {
+    public:
+        SPLA_API ~ScheduleTask() override                        = default;
+        SPLA_API virtual std::string                  get_name() = 0;
+        SPLA_API virtual std::string                  get_key()  = 0;
+        SPLA_API virtual std::vector<ref_ptr<Object>> get_args() = 0;
+    };
+
+    /**
+     * @class Schedule
+     * @brief Object with sequence of steps with tasks forming schedule for execution
+     */
+    class Schedule : public Object {
+    public:
+        SPLA_API ~Schedule() override                                                = default;
+        SPLA_API virtual Status step_task(ref_ptr<ScheduleTask> task)                = 0;
+        SPLA_API virtual Status step_tasks(std::vector<ref_ptr<ScheduleTask>> tasks) = 0;
+        SPLA_API virtual Status submit()                                             = 0;
+    };
+
+    /**
+     * @brief Makes new schedule for making execution schedule
+     *
+     * @return New created schedule
+     */
+    SPLA_API ref_ptr<Schedule> make_schedule();
+
+    /**
+     * @brief Scheduled callback function
+     *
+     * @param callback User-defined function to call as scheduled task
+     *
+     * @return Created node or null on failure
+     */
+    SPLA_API ref_ptr<ScheduleTask> make_sched_callback(
+            ScheduleCallback callback);
+
+    /**
+     * @brief Scheduled r<comp! mask> = M x V
+     *
+     * @param r
+     * @param mask
+     * @param M
+     * @param v
+     * @param op_multiply
+     * @param op_add
+     * @param opt_complement
+     *
+     * @return Created node or null on failure
+     */
+    SPLA_API ref_ptr<ScheduleTask> make_sched_mxv_masked(
+            ref_ptr<Vector> r,
+            ref_ptr<Vector> mask,
+            ref_ptr<Matrix> M,
+            ref_ptr<Vector> v,
+            ref_ptr<OpBin>  op_multiply,
+            ref_ptr<OpBin>  op_add,
+            bool            opt_complement);
+
+    /**
+     * @brief Scheduled r<mask> = value
+     *
+     * @param r
+     * @param mask
+     * @param value
+     * @param op_assign
+     *
+     * @return Created node or null on failure
+     */
+    SPLA_API ref_ptr<ScheduleTask> make_sched_v_assign_masked(
+            ref_ptr<Vector> r,
+            ref_ptr<Vector> mask,
+            ref_ptr<Scalar> value,
+            ref_ptr<OpBin>  op_assign);
 
     /**
      * @}

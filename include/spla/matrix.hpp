@@ -61,7 +61,7 @@ namespace spla {
      *
      * @return New matrix instance or null if failed to create
      */
-    SPLA_API ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type> &type);
+    SPLA_API ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type);
 
     /**
      * @}

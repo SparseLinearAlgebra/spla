@@ -58,7 +58,7 @@ namespace spla {
     public:
         ~CpuCsr() override = default;
 
-        void to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx);
+        void to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx);
 
         std::vector<uint> Ap;
         std::vector<uint> Aj;
@@ -70,7 +70,7 @@ namespace spla {
     };
 
     template<typename T>
-    void CpuCsr<T>::to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx) {
+    void CpuCsr<T>::to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx) {
         assert(Ri.size() == n_values);
         assert(Rj.size() == n_values);
         assert(Rx.size() == n_values);
@@ -83,7 +83,6 @@ namespace spla {
             }
         }
     }
-
 
     /**
      * @}

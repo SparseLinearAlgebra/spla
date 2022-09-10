@@ -34,6 +34,7 @@
 #include "object.hpp"
 #include "op.hpp"
 #include "ref.hpp"
+#include "scalar.hpp"
 #include "schedule.hpp"
 #include "type.hpp"
 

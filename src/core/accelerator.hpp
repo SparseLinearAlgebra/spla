@@ -35,6 +35,11 @@
 namespace spla {
 
     /**
+     * @addtogroup internal
+     * @{
+     */
+
+    /**
      * @class Accelerator
      * @brief Interface for an computations acceleration backend
      *
@@ -63,6 +68,10 @@ namespace spla {
         virtual std::string get_name()        = 0;
         virtual std::string get_description() = 0;
     };
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 

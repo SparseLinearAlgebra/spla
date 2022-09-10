@@ -109,32 +109,32 @@ typedef enum spla_AcceleratorType {
 /**
  * @brief Handle to any spla object
  */
-typedef struct spla_Object_t *spla_Object;
+typedef struct spla_Object_t* spla_Object;
 
 /**
  * @brief Handle to spla matrix primitive
  */
-typedef struct spla_Matrix_t *spla_Matrix;
+typedef struct spla_Matrix_t* spla_Matrix;
 
 /**
  * @brief Handle to spla vector primitive
  */
-typedef struct spla_Vector_t *spla_Vector;
+typedef struct spla_Vector_t* spla_Vector;
 
 /**
  * @brief Handle to spla schedule object
  */
-typedef struct spla_Schedule_t *spla_Schedule;
+typedef struct spla_Schedule_t* spla_Schedule;
 
 /**
  * @brief Handle to spla schedule node object
  */
-typedef struct spla_ScheduleNode_t *spla_ScheduleNode;
+typedef struct spla_ScheduleTask_t* spla_ScheduleTask;
 
 /**
  * @brief Callback function called on library message event
  */
-typedef void(spla_MessageCallback)(spla_Status, const char *message, const char *file, const char *function, int line, void *p_user_data);
+typedef void(spla_MessageCallback)(spla_Status, const char* message, const char* file, const char* function, int line, void* p_user_data);
 
 /**
  * @brief Finalize library execution
@@ -195,7 +195,7 @@ SPLA_API spla_Status spla_Library_set_queues_count(int count);
  *
  * @return Function call status
  */
-SPLA_API spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void *p_user_data);
+SPLA_API spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void* p_user_data);
 
 /**
  * @brief Sets default library callback to log messages to console

@@ -37,7 +37,7 @@
 
 // Put in the end of the unit test file
 #define SPLA_GTEST_MAIN                                  \
-    int main(int argc, char *argv[]) {                   \
+    int main(int argc, char* argv[]) {                   \
         ::testing::GTEST_FLAG(catch_exceptions) = false; \
         ::testing::InitGoogleTest(&argc, argv);          \
         return RUN_ALL_TESTS();                          \

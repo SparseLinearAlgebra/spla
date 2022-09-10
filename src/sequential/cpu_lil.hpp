@@ -66,8 +66,8 @@ namespace spla {
         void clear();
         void resize(uint new_n_rows, uint new_n_cols);
         void add_element(uint row_id, uint col_id, T element);
-        void to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx);
-        void to_csr(std::vector<uint> &Rp, std::vector<uint> &Rj, std::vector<T> &Rx);
+        void to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx);
+        void to_csr(std::vector<uint>& Rp, std::vector<uint>& Rj, std::vector<T>& Rx);
 
         Reduce reduce = [](T, T a) { return a; };
         List   data{};
@@ -78,7 +78,7 @@ namespace spla {
 
     template<typename T>
     void CpuLil<T>::clear() {
-        for (auto &row : data) {
+        for (auto& row : data) {
             row.clear();
         }
 
@@ -97,10 +97,10 @@ namespace spla {
         assert(row_id < n_rows);
         assert(col_id < n_cols);
 
-        Row &row = data[row_id];
+        Row& row = data[row_id];
         uint i   = 0;
 
-        auto where = std::upper_bound(row.begin(), row.end(), Entry{col_id, element}, [](const Entry &val, const Entry &point) {
+        auto where = std::upper_bound(row.begin(), row.end(), Entry{col_id, element}, [](const Entry& val, const Entry& point) {
             return val.first < point.first;
         });
 
@@ -114,14 +114,14 @@ namespace spla {
     }
 
     template<typename T>
-    void CpuLil<T>::to_coo(std::vector<uint> &Ri, std::vector<uint> &Rj, std::vector<T> &Rx) {
+    void CpuLil<T>::to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx) {
         assert(Ri.size() == n_values);
         assert(Rj.size() == n_values);
         assert(Rx.size() == n_values);
 
         uint k = 0;
         for (uint i = 0; i < n_rows; i++) {
-            const Row &row = data[i];
+            const Row& row = data[i];
             for (uint j = 0; j < row.size(); j++) {
                 Ri[k] = i;
                 Rj[k] = row[j].first;
@@ -132,7 +132,7 @@ namespace spla {
     }
 
     template<typename T>
-    void CpuLil<T>::to_csr(std::vector<uint> &Rp, std::vector<uint> &Rj, std::vector<T> &Rx) {
+    void CpuLil<T>::to_csr(std::vector<uint>& Rp, std::vector<uint>& Rj, std::vector<T>& Rx) {
         assert(Rp.size() == n_rows + 1);
         assert(Rj.size() == n_values);
         assert(Rx.size() == n_values);
@@ -145,7 +145,7 @@ namespace spla {
 
         uint k = 0;
         for (uint i = 0; i < n_rows; i++) {
-            const Row &row = data[i];
+            const Row& row = data[i];
             for (uint j = 0; j < row.size(); j++) {
                 Rj[k] = row[j].first;
                 Rx[k] = row[j].second;

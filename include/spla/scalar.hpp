@@ -25,36 +25,42 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#ifndef SPLA_SCALAR_HPP
+#define SPLA_SCALAR_HPP
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include "object.hpp"
+#include "type.hpp"
 
 namespace spla {
 
     /**
-     * @addtogroup internal
+     * @addtogroup spla
      * @{
      */
 
     /**
-     * @class Logger
-     * @brief Library logger
+     * @class Scalar
+     * @brief Box for a single typed scalar value
      */
-    class Logger {
+    class Scalar : public Object {
     public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
-
-    private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
+        SPLA_API ~Scalar() override                                   = default;
+        SPLA_API virtual ref_ptr<Type> get_type()                     = 0;
+        SPLA_API virtual Status        set_byte(std::int8_t value)    = 0;
+        SPLA_API virtual Status        set_int(std::int32_t value)    = 0;
+        SPLA_API virtual Status        set_uint(std::uint32_t value)  = 0;
+        SPLA_API virtual Status        set_float(float value)         = 0;
+        SPLA_API virtual Status        get_byte(std::int8_t& value)   = 0;
+        SPLA_API virtual Status        get_int(std::int32_t& value)   = 0;
+        SPLA_API virtual Status        get_uint(std::uint32_t& value) = 0;
+        SPLA_API virtual Status        get_float(float& value)        = 0;
     };
+
+    SPLA_API ref_ptr<Scalar> make_scalar(const ref_ptr<Type>& type);
+    SPLA_API ref_ptr<Scalar> make_byte(std::int8_t value);
+    SPLA_API ref_ptr<Scalar> make_int(std::int32_t value);
+    SPLA_API ref_ptr<Scalar> make_uint(std::uint32_t value);
+    SPLA_API ref_ptr<Scalar> make_float(float value);
 
     /**
      * @}
@@ -62,11 +68,4 @@ namespace spla {
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+#endif//SPLA_SCALAR_HPP

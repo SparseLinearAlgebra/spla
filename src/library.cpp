@@ -96,9 +96,9 @@ namespace spla {
 
     Status Library::set_default_callback() {
         auto callback = [](spla::Status       status,
-                           const std::string &msg,
-                           const std::string &file,
-                           const std::string &function,
+                           const std::string& msg,
+                           const std::string& file,
+                           const std::string& function,
                            int                line) {
             std::stringstream to_output;
 
@@ -113,15 +113,15 @@ namespace spla {
         return set_message_callback(callback);
     }
 
-    class Accelerator *Library::_get_accelerator() {
+    class Accelerator* Library::_get_accelerator() {
         return m_accelerator.get();
     }
 
-    class Logger *Library::_get_logger() {
+    class Logger* Library::_get_logger() {
         return m_logger.get();
     }
 
-    Library *get_library() {
+    Library* get_library() {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {

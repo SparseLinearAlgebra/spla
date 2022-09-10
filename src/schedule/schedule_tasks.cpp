@@ -25,48 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#include "schedule_tasks.hpp"
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
 #include <sstream>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    void ScheduleTaskBase::set_label(std::string new_label) {
+        label = std::move(new_label);
+    }
+    const std::string& ScheduleTaskBase::get_label() const {
+        return label;
+    }
 
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+    std::string ScheduleTask_callback::get_name() {
+        return "callback";
+    }
+    std::string ScheduleTask_callback::get_key() {
+        return "callback";
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_callback::get_args() {
+        return std::vector<ref_ptr<Object>>();
+    }
 
-    private:
-        MessageCallback m_callback;
+    std::string ScheduleTask_mxv_masked::get_name() {
+        return "mxv_masked";
+    }
+    std::string ScheduleTask_mxv_masked::get_key() {
+        std::stringstream key;
+        key << get_name() << "_"
+            << op_multiply->get_key() << "_"
+            << op_add->get_key() << "_"
+            << (opt_complement ? "mc" : "md");
 
-        mutable std::mutex m_mutex;
-    };
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_mxv_masked::get_args() {
+        return {r.as<Object>(), mask.as<Object>(), M.as<Object>(), v.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>()};
+    }
 
-    /**
-     * @}
-     */
+    std::string ScheduleTask_v_assign_masked::get_name() {
+        return "v_assign_masked";
+    }
+    std::string ScheduleTask_v_assign_masked::get_key() {
+        std::stringstream key;
+        key << get_name() << "_"
+            << op_assign->get_key();
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_v_assign_masked::get_args() {
+        return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>()};
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                            \
-    do {                                                                                                \
-        std::stringstream __ss;                                                                         \
-        __ss << msg;                                                                                    \
-        _get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
