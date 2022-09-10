@@ -99,12 +99,37 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_OP_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_OP_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="object_8hpp.html">object.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_OP_HPP</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Op.html">   46</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Op.html">Op</a> : <span class="keyword">public</span> <a class="code" href="classspla_1_1Object.html">Object</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Op.html#a2cb04518b4d0f22814685e8adafa01a3">   48</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1Op.html#a2cb04518b4d0f22814685e8adafa01a3">~Op</a>() <span class="keyword">override</span>                 = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Op.html#af9e87e4138fb050d8537e37d52615789">   49</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keyword">virtual</span> std::string <a class="code" href="classspla_1_1Op.html#af9e87e4138fb050d8537e37d52615789">get_name</a>() = 0;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">   50</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <span class="keyword">virtual</span> std::string <a class="code" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">get_key</a>()  = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classspla_1_1OpBin.html">   57</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1OpBin.html">OpBin</a> : <span class="keyword">public</span> <a class="code" href="classspla_1_1Op.html">Op</a> {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classspla_1_1OpBin.html#aedcc8bdf3e6b7507d292e566c8fa350e">   59</a></span>&#160;        <a class="code" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> <a class="code" href="classspla_1_1OpBin.html#aedcc8bdf3e6b7507d292e566c8fa350e">~OpBin</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_OP_HPP</span></div>
+<div class="ttc" id="aclassspla_1_1Object_html"><div class="ttname"><a href="classspla_1_1Object.html">spla::Object</a></div><div class="ttdoc">Base class for any library primitive.</div><div class="ttdef"><b>Definition:</b> object.hpp:47</div></div>
+<div class="ttc" id="aclassspla_1_1OpBin_html"><div class="ttname"><a href="classspla_1_1OpBin.html">spla::OpBin</a></div><div class="ttdoc">Binary operation with 2-arity.</div><div class="ttdef"><b>Definition:</b> op.hpp:57</div></div>
+<div class="ttc" id="aclassspla_1_1OpBin_html_aedcc8bdf3e6b7507d292e566c8fa350e"><div class="ttname"><a href="classspla_1_1OpBin.html#aedcc8bdf3e6b7507d292e566c8fa350e">spla::OpBin::~OpBin</a></div><div class="ttdeci">~OpBin() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1Op_html"><div class="ttname"><a href="classspla_1_1Op.html">spla::Op</a></div><div class="ttdoc">An callable operation to parametrize execution of math computations.</div><div class="ttdef"><b>Definition:</b> op.hpp:46</div></div>
+<div class="ttc" id="aclassspla_1_1Op_html_a2cb04518b4d0f22814685e8adafa01a3"><div class="ttname"><a href="classspla_1_1Op.html#a2cb04518b4d0f22814685e8adafa01a3">spla::Op::~Op</a></div><div class="ttdeci">~Op() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1Op_html_ad547628612bcfd8067f2d33e9c206f0d"><div class="ttname"><a href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">spla::Op::get_key</a></div><div class="ttdeci">virtual std::string get_key()=0</div></div>
+<div class="ttc" id="aclassspla_1_1Op_html_af9e87e4138fb050d8537e37d52615789"><div class="ttname"><a href="classspla_1_1Op.html#af9e87e4138fb050d8537e37d52615789">spla::Op::get_name</a></div><div class="ttdeci">virtual std::string get_name()=0</div></div>
+<div class="ttc" id="aconfig_8hpp_html_ae3bb5ff276a0f55f0b3606a36b4e94fc"><div class="ttname"><a href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a></div><div class="ttdeci">#define SPLA_API</div><div class="ttdef"><b>Definition:</b> config.hpp:41</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:44</div></div>
+<div class="ttc" id="aobject_8hpp_html"><div class="ttname"><a href="object_8hpp.html">object.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

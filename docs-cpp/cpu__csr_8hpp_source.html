@@ -118,7 +118,7 @@ $(function() {
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classspla_1_1CpuCsr.html#af4c0a3c1a719ab96f15f8d2ef1e06768">   59</a></span>&#160;        <a class="code" href="classspla_1_1CpuCsr.html#af4c0a3c1a719ab96f15f8d2ef1e06768">~CpuCsr</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">to_coo</a>(std::vector&lt;uint&gt; &amp;Ri, std::vector&lt;uint&gt; &amp;Rj, std::vector&lt;T&gt; &amp;Rx);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">to_coo</a>(std::vector&lt;uint&gt;&amp; Ri, std::vector&lt;uint&gt;&amp; Rj, std::vector&lt;T&gt;&amp; Rx);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classspla_1_1CpuCsr.html#a0e83d281f5e5e5cc86e05876659e8d22">   63</a></span>&#160;        std::vector&lt;uint&gt; <a class="code" href="classspla_1_1CpuCsr.html#a0e83d281f5e5e5cc86e05876659e8d22">Ap</a>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classspla_1_1CpuCsr.html#a11f7ced9670a75f102eb3209021f385a">   64</a></span>&#160;        std::vector&lt;uint&gt; <a class="code" href="classspla_1_1CpuCsr.html#a11f7ced9670a75f102eb3209021f385a">Aj</a>;</div>
@@ -130,7 +130,7 @@ $(function() {
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    };</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">   73</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">CpuCsr&lt;T&gt;::to_coo</a>(std::vector&lt;uint&gt; &amp;Ri, std::vector&lt;uint&gt; &amp;Rj, std::vector&lt;T&gt; &amp;Rx) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">   73</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">CpuCsr&lt;T&gt;::to_coo</a>(std::vector&lt;uint&gt;&amp; Ri, std::vector&lt;uint&gt;&amp; Rj, std::vector&lt;T&gt;&amp; Rx) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        assert(Ri.size() == n_values);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        assert(Rj.size() == n_values);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        assert(Rx.size() == n_values);</div>
@@ -144,10 +144,9 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_CSR_HPP</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_CSR_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1CpuCsr_html"><div class="ttname"><a href="classspla_1_1CpuCsr.html">spla::CpuCsr</a></div><div class="ttdoc">CPU compressed sparse row matrix format.</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:57</div></div>
 <div class="ttc" id="aclassspla_1_1CpuCsr_html_a0e83d281f5e5e5cc86e05876659e8d22"><div class="ttname"><a href="classspla_1_1CpuCsr.html#a0e83d281f5e5e5cc86e05876659e8d22">spla::CpuCsr::Ap</a></div><div class="ttdeci">std::vector&lt; uint &gt; Ap</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:63</div></div>
 <div class="ttc" id="aclassspla_1_1CpuCsr_html_a11f7ced9670a75f102eb3209021f385a"><div class="ttname"><a href="classspla_1_1CpuCsr.html#a11f7ced9670a75f102eb3209021f385a">spla::CpuCsr::Aj</a></div><div class="ttdeci">std::vector&lt; uint &gt; Aj</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:64</div></div>
@@ -157,7 +156,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1CpuCsr_html_a7e025052fb438a3a93618d1225c5eac8"><div class="ttname"><a href="classspla_1_1CpuCsr.html#a7e025052fb438a3a93618d1225c5eac8">spla::CpuCsr::version</a></div><div class="ttdeci">uint version</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:69</div></div>
 <div class="ttc" id="aclassspla_1_1CpuCsr_html_a8c8ab7650daa7382536a6722b36ba363"><div class="ttname"><a href="classspla_1_1CpuCsr.html#a8c8ab7650daa7382536a6722b36ba363">spla::CpuCsr::Ax</a></div><div class="ttdeci">std::vector&lt; T &gt; Ax</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:65</div></div>
 <div class="ttc" id="aclassspla_1_1CpuCsr_html_af4c0a3c1a719ab96f15f8d2ef1e06768"><div class="ttname"><a href="classspla_1_1CpuCsr.html#af4c0a3c1a719ab96f15f8d2ef1e06768">spla::CpuCsr::~CpuCsr</a></div><div class="ttdeci">~CpuCsr() override=default</div></div>
-<div class="ttc" id="aclassspla_1_1TDecoration_html"><div class="ttname"><a href="classspla_1_1TDecoration.html">spla::TDecoration</a></div><div class="ttdoc">Base class for typed decoration for storage object.</div><div class="ttdef"><b>Definition:</b> tdecoration.hpp:45</div></div>
+<div class="ttc" id="aclassspla_1_1TDecoration_html"><div class="ttname"><a href="classspla_1_1TDecoration.html">spla::TDecoration</a></div><div class="ttdoc">Base class for typed decoration for storage object.</div><div class="ttdef"><b>Definition:</b> tdecoration.hpp:47</div></div>
 <div class="ttc" id="aconfig_8hpp_html"><div class="ttname"><a href="config_8hpp.html">config.hpp</a></div></div>
 <div class="ttc" id="agroup__internal_html_gad46029b5f19e5d2bd584ab05b97faa0b"><div class="ttname"><a href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">spla::CpuCsr::to_coo</a></div><div class="ttdeci">void to_coo(std::vector&lt; uint &gt; &amp;Ri, std::vector&lt; uint &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</div><div class="ttdef"><b>Definition:</b> cpu_csr.hpp:73</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>

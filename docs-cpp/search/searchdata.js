@@ -5,10 +5,10 @@ var indexSectionsWithContent =
   2: "s",
   3: "aclmorstv",
   4: "_acfghilmorst~",
-  5: "abdfimnruv",
+  5: "abcdfilmnoruv",
   6: "elmrsu",
-  7: "afs",
-  8: "acdeinops",
+  7: "afms",
+  8: "acdeimnops",
   9: "cls",
   10: "is",
   11: "s"

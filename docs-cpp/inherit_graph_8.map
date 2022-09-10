@@ -1,6 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,56,157,83"/>
-<area shape="rect" id="node2" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="205,5,333,32"/>
-<area shape="rect" id="node3" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="207,56,332,83"/>
-<area shape="rect" id="node4" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="210,107,329,133"/>
+<area shape="rect" id="node1" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="5,5,129,47"/>
 </map>

@@ -1,12 +1,13 @@
 <map id="include/spla/object.hpp" name="include/spla/object.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="199,5,353,32"/>
-<area shape="rect" id="node2" href="$library_8hpp.html" title=" " alt="" coords="189,80,269,107"/>
-<area shape="rect" id="node8" href="$ref_8hpp.html" title=" " alt="" coords="329,80,391,107"/>
-<area shape="rect" id="node3" href="$config_8hpp.html" title=" " alt="" coords="53,155,133,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="158,155,226,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="250,155,305,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,229,80,256"/>
-<area shape="rect" id="node5" title=" " alt="" coords="105,229,183,256"/>
-<area shape="rect" id="node9" title=" " alt="" coords="329,155,391,181"/>
-<area shape="rect" id="node10" title=" " alt="" coords="415,155,481,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="152,5,307,32"/>
+<area shape="rect" id="node2" href="$library_8hpp.html" title=" " alt="" coords="108,80,188,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="202,155,257,181"/>
+<area shape="rect" id="node8" href="$ref_8hpp.html" title=" " alt="" coords="332,80,393,107"/>
+<area shape="rect" id="node3" href="$config_8hpp.html" title=" " alt="" coords="5,155,85,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="110,155,178,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="8,229,83,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="181,229,259,256"/>
+<area shape="rect" id="node9" title=" " alt="" coords="332,155,393,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="418,155,483,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="507,155,559,181"/>
 </map>

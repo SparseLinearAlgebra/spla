@@ -67,21 +67,26 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ref.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;atomic&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ref.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="ref_8hpp__incl.png" border="0" usemap="#ainclude_2spla_2ref_8hpp" alt=""/></div>
 <map name="ainclude_2spla_2ref_8hpp" id="ainclude_2spla_2ref_8hpp">
-<area shape="rect" title=" " alt="" coords="13,5,147,32"/>
+<area shape="rect" title=" " alt="" coords="105,5,239,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,67,107"/>
 <area shape="rect" title=" " alt="" coords="91,80,157,107"/>
+<area shape="rect" title=" " alt="" coords="181,80,259,107"/>
+<area shape="rect" title=" " alt="" coords="283,80,335,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -89,18 +94,32 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="ref_8hpp__dep__incl.png" border="0" usemap="#ainclude_2spla_2ref_8hppdep" alt=""/></div>
 <map name="ainclude_2spla_2ref_8hppdep" id="ainclude_2spla_2ref_8hppdep">
-<area shape="rect" title=" " alt="" coords="43,5,177,32"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="115,80,270,107"/>
-<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="15,304,157,331"/>
-<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="115,229,270,256"/>
-<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="236,155,379,181"/>
-<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="494,229,649,256"/>
-<area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="194,304,330,331"/>
-<area shape="rect" href="c__config_8hpp.html" title=" " alt="" coords="5,379,167,405"/>
-<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="5,453,167,480"/>
-<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="211,379,313,405"/>
-<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="345,229,470,256"/>
-<area shape="rect" href="type_8cpp.html" title=" " alt="" coords="361,304,453,331"/>
+<area shape="rect" title=" " alt="" coords="475,5,610,32"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="465,80,620,107"/>
+<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="193,401,335,427"/>
+<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="1173,155,1334,181"/>
+<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="629,237,784,263"/>
+<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="680,319,851,345"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="93,237,227,263"/>
+<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="301,237,456,263"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="471,155,614,181"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="808,237,963,263"/>
+<area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="1109,319,1245,345"/>
+<area shape="rect" href="schedule__st_8hpp.html" title=" " alt="" coords="576,393,728,435"/>
+<area shape="rect" href="schedule_8cpp.html" title=" " alt="" coords="705,490,825,517"/>
+<area shape="rect" href="schedule__tasks_8hpp.html" title=" " alt="" coords="803,393,955,435"/>
+<area shape="rect" href="c__config_8hpp.html" title=" " alt="" coords="183,490,345,517"/>
+<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="183,572,345,599"/>
+<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="529,483,681,524"/>
+<area shape="rect" href="schedule__tasks_8cpp.html" title=" " alt="" coords="849,483,1001,524"/>
+<area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="1126,401,1229,427"/>
+<area shape="rect" href="tscalar_8hpp.html" title=" " alt="" coords="352,319,488,345"/>
+<area shape="rect" href="scalar_8cpp.html" title=" " alt="" coords="369,401,471,427"/>
+<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="480,237,605,263"/>
+<area shape="rect" href="type_8cpp.html" title=" " alt="" coords="513,319,605,345"/>
+<area shape="rect" href="cpu__coo_8hpp.html" title=" " alt="" coords="1392,229,1520,271"/>
+<area shape="rect" href="cpu__csr_8hpp.html" title=" " alt="" coords="1037,229,1165,271"/>
+<area shape="rect" href="cpu__lil_8hpp.html" title=" " alt="" coords="1189,229,1317,271"/>
 </map>
 </div>
 </div>
@@ -119,6 +138,12 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga679860c05617406206984f3372197ef0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TArgs&gt; </td></tr>
+<tr class="memitem:ga679860c05617406206984f3372197ef0"><td class="memTemplItemLeft" align="right" valign="top">ref_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__spla.html#ga679860c05617406206984f3372197ef0">spla::make_ref</a> (TArgs &amp;&amp;... args)</td></tr>
+<tr class="separator:ga679860c05617406206984f3372197ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

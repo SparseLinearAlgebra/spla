@@ -64,18 +64,6 @@ $(function() {
 &#160;
 
 <h3><a id="index__5F"></a>- _ -</h3><ul>
-<li>_ensure_acc()
-: <a class="el" href="classspla_1_1TMatrix.html#a90c21dbf56404d0c0e39e9e5583d940a">spla::TMatrix&lt; T &gt;</a>
-</li>
-<li>_ensure_cpu_coo()
-: <a class="el" href="classspla_1_1TMatrix.html#a636c6535336c525afdf09046355858bc">spla::TMatrix&lt; T &gt;</a>
-</li>
-<li>_ensure_cpu_csr()
-: <a class="el" href="classspla_1_1TMatrix.html#aa17f850bb0a52f9baf92a448758d0b44">spla::TMatrix&lt; T &gt;</a>
-</li>
-<li>_ensure_cpu_lil()
-: <a class="el" href="classspla_1_1TMatrix.html#ab3512d3ba6be7cc83f79d246dc026d60">spla::TMatrix&lt; T &gt;</a>
-</li>
 <li>_get_accelerator()
 : <a class="el" href="classspla_1_1Library.html#acffa441651951cf0f14acdf5aff9ee88">spla::Library</a>
 </li>
@@ -122,12 +110,28 @@ $(function() {
 <li>get()
 : <a class="el" href="classspla_1_1ref__ptr.html#a4c5e4ec850094be8a85609e76253da35">spla::ref_ptr&lt; T &gt;</a>
 </li>
+<li>get_args()
+: <a class="el" href="classspla_1_1ScheduleTask.html#a1a848453ab0dd4c1f603bf149088568d">spla::ScheduleTask</a>
+, <a class="el" href="classspla_1_1ScheduleTask__callback.html#a6d5c17f8f73603797a9d7e1a953c0ee1">spla::ScheduleTask_callback</a>
+, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a345850c3378e3dc5804d8411a5f6d453">spla::ScheduleTask_mxv_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a99547e6ec1163bfc6e4661a6452604a2">spla::ScheduleTask_v_assign_masked</a>
+</li>
+<li>get_byte()
+: <a class="el" href="classspla_1_1Scalar.html#af5d25034fb887cc22cdd004e89540637">spla::Scalar</a>
+, <a class="el" href="group__internal.html#ga71ab07c67ac96a15b98bace3e462bbab">spla::TScalar&lt; T &gt;</a>
+</li>
 <li>get_code()
 : <a class="el" href="group__internal.html#gaed53dd20ed394c653f647f013f7fe259">spla::TType&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Type.html#a84c59e92fafacf0e84c2ee43444f405d">spla::Type</a>
 </li>
 <li>get_context()
 : <a class="el" href="classspla_1_1CLAccelerator.html#ad5fbf9983c5ff86aa8ee1b7653b90530">spla::CLAccelerator</a>
+</li>
+<li>get_decoration()
+: <a class="el" href="classspla_1_1TMatrix.html#acba11b6b225b8f7f5eac5e95665f073a">spla::TMatrix&lt; T &gt;</a>
+</li>
+<li>get_decorations()
+: <a class="el" href="classspla_1_1TMatrix.html#a97cd467dc01fae87f2d372d4fff0396f">spla::TMatrix&lt; T &gt;</a>
 </li>
 <li>get_description()
 : <a class="el" href="classspla_1_1Accelerator.html#af0f6828e7ce41a38656316e1758aba8f">spla::Accelerator</a>
@@ -138,9 +142,31 @@ $(function() {
 <li>get_device()
 : <a class="el" href="classspla_1_1CLAccelerator.html#a4ba183a02d5f02fcf6b3a11f79fc6e78">spla::CLAccelerator</a>
 </li>
+<li>get_float()
+: <a class="el" href="classspla_1_1Scalar.html#abd48825fd8f1d1334b8e1cad6e194fad">spla::Scalar</a>
+, <a class="el" href="group__internal.html#ga4dcfd46fb36de2847977b06dab2543b1">spla::TScalar&lt; T &gt;</a>
+</li>
 <li>get_id()
 : <a class="el" href="group__internal.html#gadaa56ab34da4fcf8bbe070b3e9e07c3d">spla::TType&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Type.html#af1794ba0f32707030be8c94c48200225">spla::Type</a>
+</li>
+<li>get_int()
+: <a class="el" href="classspla_1_1Scalar.html#a703bdde5e2e69c565cd6f053d963c76c">spla::Scalar</a>
+, <a class="el" href="group__internal.html#gabe07f959aa8bf25679c4592c25e2f31f">spla::TScalar&lt; T &gt;</a>
+</li>
+<li>get_key()
+: <a class="el" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">spla::Op</a>
+, <a class="el" href="classspla_1_1ScheduleTask.html#af8983db7087467be68757944d59e0e0a">spla::ScheduleTask</a>
+, <a class="el" href="classspla_1_1ScheduleTask__callback.html#a21d5d94c538f29520dc054370bb89dbd">spla::ScheduleTask_callback</a>
+, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a88b4d0cf11c6cb6cf541fb16b04d8b12">spla::ScheduleTask_mxv_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a5ec96835b813a417d87a78a813e12b74">spla::ScheduleTask_v_assign_masked</a>
+</li>
+<li>get_label()
+: <a class="el" href="classspla_1_1Object.html#aba6e4944eab42a3afb0d6adea38cc268">spla::Object</a>
+, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af034373489b9f27bf1faa719addec599">spla::ScheduleSingleThread</a>
+, <a class="el" href="classspla_1_1ScheduleTaskBase.html#a1a2c042964d622fa0b04c0f315078aa5">spla::ScheduleTaskBase</a>
+, <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>
 </li>
 <li>get_n_cols()
 : <a class="el" href="classspla_1_1Matrix.html#a9aa24a2ce5381576a7f03d1db7b3a737">spla::Matrix</a>
@@ -154,6 +180,11 @@ $(function() {
 <li>get_name()
 : <a class="el" href="classspla_1_1Accelerator.html#af35742b67d76c904abd1978d6bbf1b9f">spla::Accelerator</a>
 , <a class="el" href="classspla_1_1CLAccelerator.html#adb90838fadeac794b7df87ed91787db7">spla::CLAccelerator</a>
+, <a class="el" href="classspla_1_1Op.html#af9e87e4138fb050d8537e37d52615789">spla::Op</a>
+, <a class="el" href="classspla_1_1ScheduleTask.html#aeb031cf32002851b1ba71caa20d03618">spla::ScheduleTask</a>
+, <a class="el" href="classspla_1_1ScheduleTask__callback.html#a2f25eb318091f922aca8f9796d9a81a4">spla::ScheduleTask_callback</a>
+, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#ae03149969f7eec6a52c7e271c54b6ba8">spla::ScheduleTask_mxv_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#aa868792553475323f103af8a728cc2f2">spla::ScheduleTask_v_assign_masked</a>
 , <a class="el" href="group__internal.html#ga09fb9172fae139442bdcd8b9e0b9863d">spla::TType&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Type.html#a1c095619ccf412493ef923535b86063c">spla::Type</a>
 </li>
@@ -172,8 +203,14 @@ $(function() {
 </li>
 <li>get_type()
 : <a class="el" href="classspla_1_1Matrix.html#a91efddc4804682eac49604eb1ff3ddb2">spla::Matrix</a>
+, <a class="el" href="classspla_1_1Scalar.html#afcb9bd7ad0376d7cce1c5204af288fad">spla::Scalar</a>
 , <a class="el" href="group__internal.html#ga017fea1b6b109484cdc5f18c8b829087">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#gabf269c4d8cfb9468262de8ed7a43da4d">spla::TScalar&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Vector.html#ac5599281179d68083eb56ea6fc6ae5e7">spla::Vector</a>
+</li>
+<li>get_uint()
+: <a class="el" href="classspla_1_1Scalar.html#acdbc961d18c09e6eff3226810eb4ede3">spla::Scalar</a>
+, <a class="el" href="group__internal.html#gaa4ce944a7eb6584f0981abc4345ff062">spla::TScalar&lt; T &gt;</a>
 </li>
 <li>get_version()
 : <a class="el" href="classspla_1_1TDecoration.html#ae28daf1bf5b9a0211bfa2d6ecb378db0">spla::TDecoration&lt; T &gt;</a>
@@ -274,6 +311,10 @@ $(function() {
 <li>set_accelerator()
 : <a class="el" href="classspla_1_1Library.html#af87f1437716ee9bfc10bbf0ebf83ebc8">spla::Library</a>
 </li>
+<li>set_byte()
+: <a class="el" href="classspla_1_1Scalar.html#ac271db619749dfd929f426a75a1fc72c">spla::Scalar</a>
+, <a class="el" href="group__internal.html#ga404ae6ff0d78dae2cc5d37c0550b621a">spla::TScalar&lt; T &gt;</a>
+</li>
 <li>set_default_callback()
 : <a class="el" href="classspla_1_1Library.html#a516025afa2bcc0026878cf0f97846034">spla::Library</a>
 </li>
@@ -281,6 +322,21 @@ $(function() {
 : <a class="el" href="classspla_1_1Accelerator.html#a89dd8b482229af75d69475a0dd027ad4">spla::Accelerator</a>
 , <a class="el" href="classspla_1_1CLAccelerator.html#ad20512d6b3f920a077dfd1116867bfd8">spla::CLAccelerator</a>
 , <a class="el" href="classspla_1_1Library.html#a281786fdce4b9c0c86b4c0c9b19a0d49">spla::Library</a>
+</li>
+<li>set_float()
+: <a class="el" href="classspla_1_1Scalar.html#a85c4c0f1d6808681d5111afbbc9ca25d">spla::Scalar</a>
+, <a class="el" href="group__internal.html#gaa36a40a1ee3a0db4f85214c4cd41b721">spla::TScalar&lt; T &gt;</a>
+</li>
+<li>set_int()
+: <a class="el" href="classspla_1_1Scalar.html#a9703fcdcab0ab542aa560af7e001fd02">spla::Scalar</a>
+, <a class="el" href="group__internal.html#gaf1ce6af1f534ab8b90768924b051aacc">spla::TScalar&lt; T &gt;</a>
+</li>
+<li>set_label()
+: <a class="el" href="classspla_1_1Object.html#a552a85e7493f80bee3daea3805a74b94">spla::Object</a>
+, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a1dba1ad9906def2ff58eb6adb8864744">spla::ScheduleSingleThread</a>
+, <a class="el" href="classspla_1_1ScheduleTaskBase.html#a3cb411427c5cdb1b614261d450574266">spla::ScheduleTaskBase</a>
+, <a class="el" href="group__internal.html#gab64ccb60bbb75231ef8ff0d32e5d3a5a">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;</a>
 </li>
 <li>set_message_callback()
 : <a class="el" href="classspla_1_1Library.html#aa9c5c715e07df0ff162496498200915e">spla::Library</a>
@@ -298,6 +354,22 @@ $(function() {
 , <a class="el" href="classspla_1_1CLAccelerator.html#aed8f0eb156eca01b1972ebb2acdd71e2">spla::CLAccelerator</a>
 , <a class="el" href="classspla_1_1Library.html#a07a54748ef083d0c23c876e3fc7a54cf">spla::Library</a>
 </li>
+<li>set_uint()
+: <a class="el" href="classspla_1_1Scalar.html#a40a4eb82d4232beb7c5de8ab261ebe9b">spla::Scalar</a>
+, <a class="el" href="group__internal.html#ga3f4eaa374061ce9cc8c8ec7acd0407ad">spla::TScalar&lt; T &gt;</a>
+</li>
+<li>step_task()
+: <a class="el" href="classspla_1_1Schedule.html#a29ff45d953885f13813bc99d2ad5c7fd">spla::Schedule</a>
+, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af95c704af9497bb22368c91c78321580">spla::ScheduleSingleThread</a>
+</li>
+<li>step_tasks()
+: <a class="el" href="classspla_1_1Schedule.html#af1935516ed9133ebb6dd51b73167feee">spla::Schedule</a>
+, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a0df77ef9727741ca6d368e5b6f0d7e84">spla::ScheduleSingleThread</a>
+</li>
+<li>submit()
+: <a class="el" href="classspla_1_1Schedule.html#aac56cf9fcf7e4d63da8683472f7de955">spla::Schedule</a>
+, <a class="el" href="classspla_1_1ScheduleSingleThread.html#ab4fb0f11f981ae11de9f671ee2e00314">spla::ScheduleSingleThread</a>
+</li>
 </ul>
 
 
@@ -311,6 +383,9 @@ $(function() {
 </li>
 <li>to_csr()
 : <a class="el" href="group__internal.html#ga022025559eaa771d7373a5eff62a74e6">spla::CpuLil&lt; T &gt;</a>
+</li>
+<li>TScalar()
+: <a class="el" href="classspla_1_1TScalar.html#a319d952e7bd55e47d3d730ec4736876d">spla::TScalar&lt; T &gt;</a>
 </li>
 </ul>
 
@@ -340,17 +415,50 @@ $(function() {
 <li>~Object()
 : <a class="el" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">spla::Object</a>
 </li>
+<li>~Op()
+: <a class="el" href="classspla_1_1Op.html#a2cb04518b4d0f22814685e8adafa01a3">spla::Op</a>
+</li>
+<li>~OpBin()
+: <a class="el" href="classspla_1_1OpBin.html#aedcc8bdf3e6b7507d292e566c8fa350e">spla::OpBin</a>
+</li>
 <li>~ref_ptr()
 : <a class="el" href="classspla_1_1ref__ptr.html#ab2e10b74a795205c864920362a54776c">spla::ref_ptr&lt; T &gt;</a>
 </li>
 <li>~RefCnt()
 : <a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">spla::RefCnt</a>
 </li>
+<li>~Scalar()
+: <a class="el" href="classspla_1_1Scalar.html#a14f8374a2f0d326b639b61334c92c583">spla::Scalar</a>
+</li>
+<li>~Schedule()
+: <a class="el" href="classspla_1_1Schedule.html#a23d6f15d60563fe04b44a0fb6d4b7aaa">spla::Schedule</a>
+</li>
+<li>~ScheduleSingleThread()
+: <a class="el" href="classspla_1_1ScheduleSingleThread.html#a9efd6436649afce5826f05939c842a1d">spla::ScheduleSingleThread</a>
+</li>
+<li>~ScheduleTask()
+: <a class="el" href="classspla_1_1ScheduleTask.html#a65e6f1564f50dbdeb40e8c52f666b3a5">spla::ScheduleTask</a>
+</li>
+<li>~ScheduleTask_callback()
+: <a class="el" href="classspla_1_1ScheduleTask__callback.html#aab87ee2e9216a07d8daa40448d39d319">spla::ScheduleTask_callback</a>
+</li>
+<li>~ScheduleTask_mxv_masked()
+: <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a242d92aefe9b3b925324021e83aa7357">spla::ScheduleTask_mxv_masked</a>
+</li>
+<li>~ScheduleTask_v_assign_masked()
+: <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a83f5ae8c142c50d5700562a5122ad30a">spla::ScheduleTask_v_assign_masked</a>
+</li>
+<li>~ScheduleTaskBase()
+: <a class="el" href="classspla_1_1ScheduleTaskBase.html#aa28de3dfe21dae82f639786ea67b493e">spla::ScheduleTaskBase</a>
+</li>
 <li>~TDecoration()
-: <a class="el" href="classspla_1_1TDecoration.html#a5e5d834d2105aca18202423993d6cc76">spla::TDecoration&lt; T &gt;</a>
+: <a class="el" href="classspla_1_1TDecoration.html#a028631dbd046650931ae3ffc40e98477">spla::TDecoration&lt; T &gt;</a>
 </li>
 <li>~TMatrix()
-: <a class="el" href="classspla_1_1TMatrix.html#a109e6e0d94aede27af02c633dffce44b">spla::TMatrix&lt; T &gt;</a>
+: <a class="el" href="classspla_1_1TMatrix.html#a08477c3b16f5dbb0095466809da980a9">spla::TMatrix&lt; T &gt;</a>
+</li>
+<li>~TScalar()
+: <a class="el" href="classspla_1_1TScalar.html#a2612ad8b3a879ff54ca8b31cf6d37735">spla::TScalar&lt; T &gt;</a>
 </li>
 <li>~TType()
 : <a class="el" href="classspla_1_1TType.html#a61e3e2890a469875972cee867ae31d78">spla::TType&lt; T &gt;</a>

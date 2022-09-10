@@ -150,38 +150,41 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <a class="code" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d">AccCsc</a>     = 104</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    };</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9">  129</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classMessageCallback.html">MessageCallback</a> = std::function&lt;void(<a class="code" href="classStatus.html">Status</a>             status,</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                                               <span class="keyword">const</span> std::string &amp;msg,</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                                               <span class="keyword">const</span> std::string &amp;file,</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                                               <span class="keyword">const</span> std::string &amp;<span class="keyword">function</span>,</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">  129</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classMessageCallback.html">MessageCallback</a> = std::function&lt;void(<a class="code" href="classStatus.html">Status</a>             status,</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                                               <span class="keyword">const</span> std::string&amp; msg,</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                                               <span class="keyword">const</span> std::string&amp; file,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                                               <span class="keyword">const</span> std::string&amp; <span class="keyword">function</span>,</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                                               <span class="keywordtype">int</span>                line)&gt;;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *to_string(<a class="code" href="classStatus.html">Status</a> status) {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#define STATUS_MAP(value) \</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">    case Status::value:   \</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">        return #value</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">switch</span> (status) {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Ok</a>);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Error</a>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902">NoAcceleration</a>);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca8e6c62263614574c738707778e9793e5">PlatformNotFound</a>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35">DeviceNotFound</a>);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">InvalidState</a>);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b">InvalidArgument</a>);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e">NotImplemented</a>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;none&quot;</span>;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#undef STATUS_MAP</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CONFIG_HPP</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">  143</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classScheduleCallback.html">ScheduleCallback</a> = std::function&lt;void()&gt;;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* to_string(<a class="code" href="classStatus.html">Status</a> status) {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#define STATUS_MAP(value) \</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">    case Status::value:   \</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">        return #value</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">switch</span> (status) {</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Ok</a>);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Error</a>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902">NoAcceleration</a>);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca8e6c62263614574c738707778e9793e5">PlatformNotFound</a>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35">DeviceNotFound</a>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">InvalidState</a>);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b">InvalidArgument</a>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <a class="code" href="config_8hpp.html#a3e58c6b3224dad4c847702cbf061bb75">STATUS_MAP</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e">NotImplemented</a>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;none&quot;</span>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#undef STATUS_MAP</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CONFIG_HPP</span></div>
 <div class="ttc" id="aclassAcceleratorType_html"><div class="ttname"><a href="classAcceleratorType.html">AcceleratorType</a></div><div class="ttdoc">Types of supported accelerators for computations.</div></div>
 <div class="ttc" id="aclassFormatHint_html"><div class="ttname"><a href="classFormatHint.html">FormatHint</a></div><div class="ttdoc">Hint desired storage format of object.</div></div>
 <div class="ttc" id="aclassMessageCallback_html"><div class="ttname"><a href="classMessageCallback.html">MessageCallback</a></div><div class="ttdoc">Callback function called on library message event.</div></div>
+<div class="ttc" id="aclassScheduleCallback_html"><div class="ttname"><a href="classScheduleCallback.html">ScheduleCallback</a></div><div class="ttdoc">Callback function which can be scheduled in schedule.</div></div>
 <div class="ttc" id="aclassStateHint_html"><div class="ttname"><a href="classStateHint.html">StateHint</a></div><div class="ttdoc">Hint used to explicitly prepare matrix state.</div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1CpuCoo_html"><div class="ttname"><a href="classspla_1_1CpuCoo.html">spla::CpuCoo</a></div><div class="ttdoc">CPU list of coordinates matrix format.</div><div class="ttdef"><b>Definition:</b> cpu_coo.hpp:57</div></div>

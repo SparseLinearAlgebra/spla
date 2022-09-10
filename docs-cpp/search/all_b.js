@@ -1,11 +1,25 @@
 var searchData=
 [
-  ['m_5fversion_86',['m_version',['../classspla_1_1TDecoration.html#ae4963da7bf8686fd20649e429eabe10b',1,'spla::TDecoration']]],
-  ['make_5fmatrix_87',['make_matrix',['../group__spla.html#ga59bd0fb803b33d4ef924657048410de3',1,'spla']]],
-  ['make_5ftype_88',['make_type',['../group__internal.html#ga8d01fa1d323102ae1910b0c65d5812e8',1,'spla::TType']]],
-  ['make_5fvector_89',['make_vector',['../group__spla.html#ga9cde173a713635741cb535fd615df6fb',1,'spla']]],
-  ['matrix_90',['Matrix',['../classspla_1_1Matrix.html',1,'spla']]],
-  ['matrix_2ecpp_91',['matrix.cpp',['../matrix_8cpp.html',1,'']]],
-  ['matrix_2ehpp_92',['matrix.hpp',['../matrix_8hpp.html',1,'']]],
-  ['messagecallback_93',['MessageCallback',['../classMessageCallback.html',1,'MessageCallback'],['../group__spla.html#ga64e0b9ae874e2a0ade109246bf2288b9',1,'spla::MessageCallback()']]]
+  ['m_96',['M',['../classspla_1_1ScheduleTask__mxv__masked.html#afa764c65487cb4766dda3b0077040e83',1,'spla::ScheduleTask_mxv_masked']]],
+  ['m_5fversion_97',['m_version',['../classspla_1_1TDecoration.html#ae4963da7bf8686fd20649e429eabe10b',1,'spla::TDecoration']]],
+  ['make_5fbyte_98',['make_byte',['../group__spla.html#ga86259e53632c91edc5ebf9f7953664fe',1,'spla']]],
+  ['make_5ffloat_99',['make_float',['../group__spla.html#ga22f6947b6db70316ed2bb47ed2c61b70',1,'spla']]],
+  ['make_5fint_100',['make_int',['../group__spla.html#gabaaae61891ecf5a53196ba55e14b9d20',1,'spla']]],
+  ['make_5fmatrix_101',['make_matrix',['../group__spla.html#ga59bd0fb803b33d4ef924657048410de3',1,'spla']]],
+  ['make_5fref_102',['make_ref',['../group__spla.html#ga679860c05617406206984f3372197ef0',1,'spla']]],
+  ['make_5fscalar_103',['make_scalar',['../group__spla.html#ga8b3fe53bfbfca623501b84a691c6fb9a',1,'spla']]],
+  ['make_5fsched_5fcallback_104',['make_sched_callback',['../group__spla.html#gab315e0a39ffff2cc368c7644df7df8a7',1,'spla']]],
+  ['make_5fsched_5fmxv_5fmasked_105',['make_sched_mxv_masked',['../group__spla.html#ga16779c806308eeaeae8ee93e7c4870ff',1,'spla']]],
+  ['make_5fsched_5fv_5fassign_5fmasked_106',['make_sched_v_assign_masked',['../group__spla.html#gaa15d68ba9eb906ebbf49b065685f6783',1,'spla']]],
+  ['make_5fschedule_107',['make_schedule',['../group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f',1,'spla']]],
+  ['make_5ftype_108',['make_type',['../group__internal.html#ga8d01fa1d323102ae1910b0c65d5812e8',1,'spla::TType']]],
+  ['make_5fuint_109',['make_uint',['../group__spla.html#gabe08755ccd147039224c3ba97c4c8bec',1,'spla']]],
+  ['make_5fvector_110',['make_vector',['../group__spla.html#ga9cde173a713635741cb535fd615df6fb',1,'spla']]],
+  ['mask_111',['mask',['../classspla_1_1ScheduleTask__v__assign__masked.html#a2cdadd87c5f98cbdbda6ff3f69e9bda2',1,'spla::ScheduleTask_v_assign_masked::mask()'],['../classspla_1_1ScheduleTask__mxv__masked.html#adeb351ef68337c969878a5d34c2ac199',1,'spla::ScheduleTask_mxv_masked::mask()']]],
+  ['matrix_112',['Matrix',['../classspla_1_1Matrix.html',1,'spla']]],
+  ['matrix_2ecpp_113',['matrix.cpp',['../matrix_8cpp.html',1,'']]],
+  ['matrix_2ehpp_114',['matrix.hpp',['../matrix_8hpp.html',1,'']]],
+  ['matrixdec_115',['MatrixDec',['../group__internal.html#gabea29ff517eb47782a0ca53060d31400',1,'spla::MatrixDec()'],['../classMatrixDec.html',1,'MatrixDec']]],
+  ['max_116',['Max',['../group__internal.html#ggabea29ff517eb47782a0ca53060d31400a6a061313d22e51e0f25b7cd4dc065233',1,'spla']]],
+  ['messagecallback_117',['MessageCallback',['../classMessageCallback.html',1,'MessageCallback'],['../group__spla.html#ga4769e8739b9e6291a694ea1457be9196',1,'spla::MessageCallback()']]]
 ];
