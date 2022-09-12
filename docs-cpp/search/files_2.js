@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['library_2ecpp_322',['library.cpp',['../library_8cpp.html',1,'']]],
-  ['library_2ehpp_323',['library.hpp',['../library_8hpp.html',1,'']]],
-  ['logger_2ecpp_324',['logger.cpp',['../logger_8cpp.html',1,'']]],
-  ['logger_2ehpp_325',['logger.hpp',['../logger_8hpp.html',1,'']]]
+  ['dispatcher_2ecpp_366',['dispatcher.cpp',['../dispatcher_8cpp.html',1,'']]],
+  ['dispatcher_2ehpp_367',['dispatcher.hpp',['../dispatcher_8hpp.html',1,'']]]
 ];

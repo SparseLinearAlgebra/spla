@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['matrix_282',['Matrix',['../classspla_1_1Matrix.html',1,'spla']]],
-  ['matrixdec_283',['MatrixDec',['../classMatrixDec.html',1,'']]],
-  ['messagecallback_284',['MessageCallback',['../classMessageCallback.html',1,'']]]
+  ['library_317',['Library',['../classspla_1_1Library.html',1,'spla']]],
+  ['logger_318',['Logger',['../classspla_1_1Logger.html',1,'spla']]]
 ];

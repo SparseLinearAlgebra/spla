@@ -1,9 +1,10 @@
 <map id="src/core/logger.hpp" name="src/core/logger.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="273,5,405,32"/>
-<area shape="rect" id="node2" href="$logger_8cpp.html" title=" " alt="" coords="5,80,137,107"/>
-<area shape="rect" id="node3" href="$library_8cpp.html" title=" " alt="" coords="161,80,264,107"/>
-<area shape="rect" id="node4" href="$matrix_8cpp.html" title=" " alt="" coords="288,80,391,107"/>
-<area shape="rect" id="node5" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="415,80,605,107"/>
-<area shape="rect" id="node7" href="$scalar_8cpp.html" title=" " alt="" coords="629,80,732,107"/>
-<area shape="rect" id="node6" href="$cl__accelerator_8cpp.html" title=" " alt="" coords="415,155,605,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="391,5,523,32"/>
+<area shape="rect" id="node2" href="$dispatcher_8cpp.html" title=" " alt="" coords="5,80,163,107"/>
+<area shape="rect" id="node3" href="$logger_8cpp.html" title=" " alt="" coords="187,80,319,107"/>
+<area shape="rect" id="node4" href="$library_8cpp.html" title=" " alt="" coords="343,80,446,107"/>
+<area shape="rect" id="node5" href="$matrix_8cpp.html" title=" " alt="" coords="470,80,573,107"/>
+<area shape="rect" id="node6" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="597,80,787,107"/>
+<area shape="rect" id="node8" href="$scalar_8cpp.html" title=" " alt="" coords="811,80,914,107"/>
+<area shape="rect" id="node7" href="$cl__accelerator_8cpp.html" title=" " alt="" coords="597,155,787,181"/>
 </map>

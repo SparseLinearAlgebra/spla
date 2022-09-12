@@ -65,6 +65,9 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classspla_1_1Registry-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::Registry Class Reference<div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
 </div><!--header-->
@@ -74,10 +77,138 @@ $(function() {
  <a href="classspla_1_1Registry.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="registry_8hpp_source.html">registry.hpp</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a702417ffd73591f2eacf64a4f4f52ea4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html#a702417ffd73591f2eacf64a4f4f52ea4">~Registry</a> ()=default</td></tr>
+<tr class="separator:a702417ffd73591f2eacf64a4f4f52ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e84f393d9530f395b802e367da5c13"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html#a35e84f393d9530f395b802e367da5c13">add</a> (const std::string &amp;key, std::shared_ptr&lt; <a class="el" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> &gt; algo)</td></tr>
+<tr class="separator:a35e84f393d9530f395b802e367da5c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ea75762c28485f854068013174c8690"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html#a1ea75762c28485f854068013174c8690">has</a> (const std::string &amp;key)</td></tr>
+<tr class="separator:a1ea75762c28485f854068013174c8690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64a72e3446a4bc1008969beaee5fc8d"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html#af64a72e3446a4bc1008969beaee5fc8d">find</a> (const std::string &amp;key)</td></tr>
+<tr class="separator:af64a72e3446a4bc1008969beaee5fc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classspla_1_1Registry.html" title="Registry with key-algo mapping of stored algo implementations.">Registry</a> with key-algo mapping of stored algo implementations. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a702417ffd73591f2eacf64a4f4f52ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a702417ffd73591f2eacf64a4f4f52ea4">&#9670;&nbsp;</a></span>~Registry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual spla::Registry::~Registry </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a35e84f393d9530f395b802e367da5c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35e84f393d9530f395b802e367da5c13">&#9670;&nbsp;</a></span>add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::Registry::add </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> &gt;&#160;</td>
+          <td class="paramname"><em>algo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af64a72e3446a4bc1008969beaee5fc8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64a72e3446a4bc1008969beaee5fc8d">&#9670;&nbsp;</a></span>find()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> &gt; spla::Registry::find </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ea75762c28485f854068013174c8690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ea75762c28485f854068013174c8690">&#9670;&nbsp;</a></span>has()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool spla::Registry::has </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/core/<a class="el" href="registry_8hpp_source.html">registry.hpp</a></li>
+<li>src/core/<a class="el" href="registry_8cpp.html">registry.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -86,8 +86,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Op.html">spla::Op</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An callable operation to parametrize execution of math computations.  <a href="classspla_1_1Op.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpBin.html">spla::OpBin</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary operation with 2-arity.  <a href="classspla_1_1OpBin.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpUnary.html">spla::OpUnary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary operation with 1-arity.  <a href="classspla_1_1OpUnary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpBinary.html">spla::OpBinary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary operation with 2-arity.  <a href="classspla_1_1OpBinary.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for object with built-in reference counting mechanism.  <a href="classspla_1_1RefCnt.html#details">More...</a><br /></td></tr>
@@ -206,12 +209,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gab315e0a39ffff2cc368c7644df7df8a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gab315e0a39ffff2cc368c7644df7df8a7">spla::make_sched_callback</a> (<a class="el" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">ScheduleCallback</a> callback)</td></tr>
 <tr class="memdesc:gab315e0a39ffff2cc368c7644df7df8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled callback function.  <a href="group__spla.html#gab315e0a39ffff2cc368c7644df7df8a7">More...</a><br /></td></tr>
 <tr class="separator:gab315e0a39ffff2cc368c7644df7df8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga16779c806308eeaeae8ee93e7c4870ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga16779c806308eeaeae8ee93e7c4870ff">spla::make_sched_mxv_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; M, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt; op_multiply, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt; op_add, bool opt_complement)</td></tr>
-<tr class="memdesc:ga16779c806308eeaeae8ee93e7c4870ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#ga16779c806308eeaeae8ee93e7c4870ff">More...</a><br /></td></tr>
-<tr class="separator:ga16779c806308eeaeae8ee93e7c4870ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa15d68ba9eb906ebbf49b065685f6783"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gaa15d68ba9eb906ebbf49b065685f6783">spla::make_sched_v_assign_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; value, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt; op_assign)</td></tr>
-<tr class="memdesc:gaa15d68ba9eb906ebbf49b065685f6783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#gaa15d68ba9eb906ebbf49b065685f6783">More...</a><br /></td></tr>
-<tr class="separator:gaa15d68ba9eb906ebbf49b065685f6783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gaa2c182a720f89ca837fbb1eeab3c03d5">spla::make_sched_mxv_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; M, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_multiply, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_add, bool opt_complement)</td></tr>
+<tr class="memdesc:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#gaa2c182a720f89ca837fbb1eeab3c03d5">More...</a><br /></td></tr>
+<tr class="separator:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga00edde1aeb10d31353bb9aa04a8cb1dd">spla::make_sched_v_assign_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; value, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_assign)</td></tr>
+<tr class="memdesc:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#ga00edde1aeb10d31353bb9aa04a8cb1dd">More...</a><br /></td></tr>
+<tr class="separator:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9cde173a713635741cb535fd615df6fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9cde173a713635741cb535fd615df6fb">spla::make_vector</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
 <tr class="memdesc:ga9cde173a713635741cb535fd615df6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new vector instance with specified dim and values type.  <a href="group__spla.html#ga9cde173a713635741cb535fd615df6fb">More...</a><br /></td></tr>
 <tr class="separator:ga9cde173a713635741cb535fd615df6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -592,8 +595,8 @@ template&lt;typename T , typename... TArgs&gt; </div>
 
 </div>
 </div>
-<a id="ga16779c806308eeaeae8ee93e7c4870ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga16779c806308eeaeae8ee93e7c4870ff">&#9670;&nbsp;</a></span>make_sched_mxv_masked()</h2>
+<a id="gaa2c182a720f89ca837fbb1eeab3c03d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa2c182a720f89ca837fbb1eeab3c03d5">&#9670;&nbsp;</a></span>make_sched_mxv_masked()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -625,13 +628,13 @@ template&lt;typename T , typename... TArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
           <td class="paramname"><em>op_multiply</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
           <td class="paramname"><em>op_add</em>, </td>
         </tr>
         <tr>
@@ -665,8 +668,8 @@ template&lt;typename T , typename... TArgs&gt; </div>
 
 </div>
 </div>
-<a id="gaa15d68ba9eb906ebbf49b065685f6783"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa15d68ba9eb906ebbf49b065685f6783">&#9670;&nbsp;</a></span>make_sched_v_assign_masked()</h2>
+<a id="ga00edde1aeb10d31353bb9aa04a8cb1dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00edde1aeb10d31353bb9aa04a8cb1dd">&#9670;&nbsp;</a></span>make_sched_v_assign_masked()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -692,7 +695,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBin.html">OpBin</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
           <td class="paramname"><em>op_assign</em>&#160;</td>
         </tr>
         <tr>

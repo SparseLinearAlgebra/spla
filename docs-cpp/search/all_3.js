@@ -1,25 +1,11 @@
 var searchData=
 [
-  ['c_5fconfig_2ehpp_18',['c_config.hpp',['../c__config_8hpp.html',1,'']]],
-  ['c_5flibrary_2ecpp_19',['c_library.cpp',['../c__library_8cpp.html',1,'']]],
-  ['callback_20',['callback',['../classspla_1_1ScheduleTask__callback.html#a0ca0c532cc72ff807da3a8152db532b7',1,'spla::ScheduleTask_callback']]],
-  ['cast_21',['cast',['../classspla_1_1ref__ptr.html#ac967c3662af4bd9a70a0b7afadba252e',1,'spla::ref_ptr']]],
-  ['cl_5faccelerator_2ecpp_22',['cl_accelerator.cpp',['../cl__accelerator_8cpp.html',1,'']]],
-  ['cl_5faccelerator_2ehpp_23',['cl_accelerator.hpp',['../cl__accelerator_8hpp.html',1,'']]],
-  ['cl_5fhpp_5fminimum_5fopencl_5fversion_24',['CL_HPP_MINIMUM_OPENCL_VERSION',['../cl__accelerator_8hpp.html#a2053025c576bcf48e249dd20e884a560',1,'cl_accelerator.hpp']]],
-  ['cl_5fhpp_5ftarget_5fopencl_5fversion_25',['CL_HPP_TARGET_OPENCL_VERSION',['../cl__accelerator_8hpp.html#a37ea07405ca286c1570612b42d43b345',1,'cl_accelerator.hpp']]],
-  ['claccelerator_26',['CLAccelerator',['../classspla_1_1CLAccelerator.html',1,'spla']]],
-  ['clear_27',['clear',['../group__internal.html#gafb90c41e7be969461e1545ecc6d8ba01',1,'spla::CpuLil']]],
-  ['compute_28',['Compute',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10',1,'spla']]],
-  ['config_2ehpp_29',['config.hpp',['../config_8hpp.html',1,'']]],
-  ['coo_30',['Coo',['../group__internal.html#ggabea29ff517eb47782a0ca53060d31400a0e99c181102b6ccce5d015c8c3789375',1,'spla']]],
-  ['cpu_5fcoo_2ehpp_31',['cpu_coo.hpp',['../cpu__coo_8hpp.html',1,'']]],
-  ['cpu_5fcsr_2ehpp_32',['cpu_csr.hpp',['../cpu__csr_8hpp.html',1,'']]],
-  ['cpu_5flil_2ehpp_33',['cpu_lil.hpp',['../cpu__lil_8hpp.html',1,'']]],
-  ['cpucoo_34',['CpuCoo',['../group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550',1,'spla::CpuCoo()'],['../classspla_1_1CpuCoo.html',1,'spla::CpuCoo&lt; T &gt;']]],
-  ['cpucsc_35',['CpuCsc',['../group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1',1,'spla']]],
-  ['cpucsr_36',['CpuCsr',['../group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4',1,'spla::CpuCsr()'],['../classspla_1_1CpuCsr.html',1,'spla::CpuCsr&lt; T &gt;']]],
-  ['cpulil_37',['CpuLil',['../group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409',1,'spla::CpuLil()'],['../classspla_1_1CpuLil.html',1,'spla::CpuLil&lt; T &gt;']]],
-  ['csc_38',['Csc',['../group__internal.html#ggabea29ff517eb47782a0ca53060d31400a6731b938e3e89f3ef5e19a8483baa090',1,'spla']]],
-  ['csr_39',['Csr',['../group__internal.html#ggabea29ff517eb47782a0ca53060d31400a10defbbac1a6ba3522f44d0cce95e5f4',1,'spla']]]
+  ['data_43',['data',['../classspla_1_1CpuLil.html#ab82ebb1faa46ce6fb6697918c323c1e7',1,'spla::CpuLil']]],
+  ['default_44',['Default',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67',1,'spla::Default()'],['../group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67',1,'spla::Default()']]],
+  ['devicenotfound_45',['DeviceNotFound',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35',1,'spla']]],
+  ['dispatch_46',['dispatch',['../classspla_1_1Dispatcher.html#adecdf84b9fea86c491dea4e280cfe8d3',1,'spla::Dispatcher']]],
+  ['dispatchcontext_47',['DispatchContext',['../structspla_1_1DispatchContext.html',1,'spla']]],
+  ['dispatcher_48',['Dispatcher',['../classspla_1_1Dispatcher.html',1,'spla']]],
+  ['dispatcher_2ecpp_49',['dispatcher.cpp',['../dispatcher_8cpp.html',1,'']]],
+  ['dispatcher_2ehpp_50',['dispatcher.hpp',['../dispatcher_8hpp.html',1,'']]]
 ];

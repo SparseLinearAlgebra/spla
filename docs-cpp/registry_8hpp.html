@@ -72,13 +72,50 @@ $(function() {
 <div class="title">registry.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8hpp_source.html">spla/config.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="schedule_8hpp_source.html">spla/schedule.hpp</a>&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for registry.hpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="registry_8hpp__incl.png" border="0" usemap="#asrc_2core_2registry_8hpp" alt=""/></div>
+<map name="asrc_2core_2registry_8hpp" id="asrc_2core_2registry_8hpp">
+<area shape="rect" title=" " alt="" coords="483,5,621,32"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="589,453,697,480"/>
+<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="346,80,473,107"/>
+<area shape="rect" title=" " alt="" coords="107,453,162,480"/>
+<area shape="rect" title=" " alt="" coords="733,80,843,107"/>
+<area shape="rect" title=" " alt="" coords="605,528,680,555"/>
+<area shape="rect" title=" " alt="" coords="459,528,538,555"/>
+<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="369,155,450,181"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="323,304,405,331"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="94,155,154,181"/>
+<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="474,155,555,181"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="179,155,261,181"/>
+<area shape="rect" title=" " alt="" coords="285,155,344,181"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="225,229,295,256"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="448,379,528,405"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="333,379,395,405"/>
+<area shape="rect" title=" " alt="" coords="494,453,562,480"/>
+<area shape="rect" title=" " alt="" coords="191,453,252,480"/>
+<area shape="rect" title=" " alt="" coords="277,453,342,480"/>
+<area shape="rect" title=" " alt="" coords="366,453,418,480"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="registry_8hpp__dep__incl.png" border="0" usemap="#asrc_2core_2registry_8hppdep" alt=""/></div>
 <map name="asrc_2core_2registry_8hppdep" id="asrc_2core_2registry_8hppdep">
-<area shape="rect" title=" " alt="" coords="5,5,144,32"/>
-<area shape="rect" href="registry_8cpp.html" title=" " alt="" coords="5,80,144,107"/>
+<area shape="rect" title=" " alt="" coords="285,5,424,32"/>
+<area shape="rect" href="dispatcher_8cpp.html" title=" " alt="" coords="5,162,163,189"/>
+<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="276,80,433,107"/>
+<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="187,162,290,189"/>
+<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="491,155,623,196"/>
+<area shape="rect" href="registry_8cpp.html" title=" " alt="" coords="508,80,647,107"/>
+<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="315,155,467,196"/>
+<area shape="rect" href="cpu__algo__registry_8cpp.html" title=" " alt="" coords="493,244,621,285"/>
 </map>
 </div>
 </div>
@@ -86,6 +123,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Algorithm suitable to process schedule task based on task string key.  <a href="classspla_1_1RegistryAlgo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html">spla::Registry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Registry.html" title="Registry with key-algo mapping of stored algo implementations.">Registry</a> with key-algo mapping of stored algo implementations.  <a href="classspla_1_1Registry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>

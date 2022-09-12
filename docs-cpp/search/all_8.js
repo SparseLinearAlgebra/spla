@@ -1,5 +1,13 @@
 var searchData=
 [
-  ['hint_5fformat_74',['hint_format',['../classspla_1_1Matrix.html#a7e366c29deef6f178ccf6fde36c39d29',1,'spla::Matrix::hint_format()'],['../classspla_1_1Vector.html#a5822edd9e96cdfde237bf1c4aa66ce7d',1,'spla::Vector::hint_format()'],['../group__internal.html#ga639b5a94ded440386196d379bc6f4306',1,'spla::TMatrix::hint_format()']]],
-  ['hint_5fstate_75',['hint_state',['../classspla_1_1Matrix.html#a5d8eb3037d7d2219610bf2b6260f9c9e',1,'spla::Matrix::hint_state()'],['../classspla_1_1Vector.html#a0b951af71f444d3606c269ceaeef46fd',1,'spla::Vector::hint_state()'],['../group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980',1,'spla::TMatrix::hint_state()']]]
+  ['incremental_95',['Incremental',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f',1,'spla']]],
+  ['init_96',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
+  ['int_97',['INT',['../group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c',1,'spla']]],
+  ['internal_98',['Internal',['../group__internal.html',1,'']]],
+  ['invalidargument_99',['InvalidArgument',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b',1,'spla']]],
+  ['invalidstate_100',['InvalidState',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120',1,'spla']]],
+  ['is_101',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
+  ['is_5fnot_5fnull_102',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_103',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5funique_104',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]]
 ];

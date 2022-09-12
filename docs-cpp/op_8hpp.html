@@ -73,24 +73,26 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="object_8hpp_source.html">object.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="type_8hpp_source.html">type.hpp</a>&quot;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for op.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="op_8hpp__incl.png" border="0" usemap="#ainclude_2spla_2op_8hpp" alt=""/></div>
 <map name="ainclude_2spla_2op_8hpp" id="ainclude_2spla_2op_8hpp">
-<area shape="rect" title=" " alt="" coords="5,5,139,32"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="95,80,177,107"/>
-<area shape="rect" title=" " alt="" coords="27,229,82,256"/>
-<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="121,155,201,181"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="363,155,424,181"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="199,229,279,256"/>
-<area shape="rect" title=" " alt="" coords="106,229,174,256"/>
-<area shape="rect" title=" " alt="" coords="201,304,276,331"/>
-<area shape="rect" title=" " alt="" coords="327,304,406,331"/>
-<area shape="rect" title=" " alt="" coords="431,229,492,256"/>
-<area shape="rect" title=" " alt="" coords="517,229,582,256"/>
-<area shape="rect" title=" " alt="" coords="303,229,355,256"/>
+<area shape="rect" title=" " alt="" coords="443,5,577,32"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="396,155,477,181"/>
+<area shape="rect" title=" " alt="" coords="505,304,560,331"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="475,80,545,107"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="365,229,445,256"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="154,229,215,256"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="401,304,481,331"/>
+<area shape="rect" title=" " alt="" coords="308,304,376,331"/>
+<area shape="rect" title=" " alt="" coords="403,379,478,405"/>
+<area shape="rect" title=" " alt="" coords="223,379,301,405"/>
+<area shape="rect" title=" " alt="" coords="222,304,283,331"/>
+<area shape="rect" title=" " alt="" coords="5,304,71,331"/>
+<area shape="rect" title=" " alt="" coords="95,304,147,331"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -98,16 +100,23 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="op_8hpp__dep__incl.png" border="0" usemap="#ainclude_2spla_2op_8hppdep" alt=""/></div>
 <map name="ainclude_2spla_2op_8hppdep" id="ainclude_2spla_2op_8hppdep">
-<area shape="rect" title=" " alt="" coords="138,5,271,32"/>
-<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="205,80,375,107"/>
-<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="47,162,189,189"/>
-<area shape="rect" href="schedule__st_8hpp.html" title=" " alt="" coords="214,155,366,196"/>
-<area shape="rect" href="schedule_8cpp.html" title=" " alt="" coords="367,251,487,278"/>
-<area shape="rect" href="schedule__tasks_8hpp.html" title=" " alt="" coords="441,155,593,196"/>
+<area shape="rect" title=" " alt="" coords="269,5,402,32"/>
+<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="393,80,563,107"/>
+<area shape="rect" href="spla_8hpp.html" title=" " alt="" coords="121,162,264,189"/>
+<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="663,251,821,278"/>
+<area shape="rect" href="registry_8hpp.html" title=" " alt="" coords="802,162,941,189"/>
+<area shape="rect" href="schedule__st_8hpp.html" title=" " alt="" coords="515,155,667,196"/>
+<area shape="rect" href="schedule_8cpp.html" title=" " alt="" coords="418,251,538,278"/>
+<area shape="rect" href="schedule__tasks_8hpp.html" title=" " alt="" coords="289,155,441,196"/>
 <area shape="rect" href="c__config_8hpp.html" title=" " alt="" coords="5,251,167,278"/>
-<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="5,333,167,360"/>
-<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="191,244,343,285"/>
-<area shape="rect" href="schedule__tasks_8cpp.html" title=" " alt="" coords="511,244,663,285"/>
+<area shape="rect" href="c__library_8cpp.html" title=" " alt="" coords="5,341,167,367"/>
+<area shape="rect" href="dispatcher_8cpp.html" title=" " alt="" coords="986,341,1143,367"/>
+<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="853,341,956,367"/>
+<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="666,333,818,375"/>
+<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="509,333,641,375"/>
+<area shape="rect" href="cpu__algo__registry_8cpp.html" title=" " alt="" coords="511,423,639,464"/>
+<area shape="rect" href="registry_8cpp.html" title=" " alt="" coords="845,251,983,278"/>
+<area shape="rect" href="schedule__tasks_8cpp.html" title=" " alt="" coords="191,244,343,285"/>
 </map>
 </div>
 </div>
@@ -118,8 +127,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Op.html">spla::Op</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An callable operation to parametrize execution of math computations.  <a href="classspla_1_1Op.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpBin.html">spla::OpBin</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary operation with 2-arity.  <a href="classspla_1_1OpBin.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpUnary.html">spla::OpUnary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary operation with 1-arity.  <a href="classspla_1_1OpUnary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpBinary.html">spla::OpBinary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary operation with 2-arity.  <a href="classspla_1_1OpBinary.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>

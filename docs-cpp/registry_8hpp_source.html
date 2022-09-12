@@ -99,17 +99,51 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_REGISTRY_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_REGISTRY_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classspla_1_1Registry.html">   42</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Registry.html">Registry</a> {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    };</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_REGISTRY_HPP</span></div>
-<div class="ttc" id="aclassspla_1_1Registry_html"><div class="ttname"><a href="classspla_1_1Registry.html">spla::Registry</a></div><div class="ttdoc">Registry with key-algo mapping of stored algo implementations.</div><div class="ttdef"><b>Definition:</b> registry.hpp:42</div></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="config_8hpp.html">spla/config.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="schedule_8hpp.html">spla/schedule.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1RegistryAlgo.html">   48</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classspla_1_1RegistryAlgo.html#ad691f1ebdb7ebda51883be1374c2f889">   50</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1RegistryAlgo.html#ad691f1ebdb7ebda51883be1374c2f889">~RegistryAlgo</a>()                                       = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1RegistryAlgo.html#a09ae7f7598f7b45f28fd886fe7b0abfc">   51</a></span>&#160;        <span class="keyword">virtual</span> std::string <a class="code" href="classspla_1_1RegistryAlgo.html#a09ae7f7598f7b45f28fd886fe7b0abfc">get_name</a>()                                = 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classspla_1_1RegistryAlgo.html#ae3db352c4ccf97ec2afd17e2f3c3a13c">   52</a></span>&#160;        <span class="keyword">virtual</span> std::string <a class="code" href="classspla_1_1RegistryAlgo.html#ae3db352c4ccf97ec2afd17e2f3c3a13c">get_description</a>()                         = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1RegistryAlgo.html#afda3ca332a6a6c22da3999200e431b90">   53</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classStatus.html">Status</a>      <a class="code" href="classspla_1_1RegistryAlgo.html#afda3ca332a6a6c22da3999200e431b90">execute</a>(<span class="keyword">const</span> <span class="keyword">class</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    };</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classspla_1_1Registry.html">   60</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Registry.html">Registry</a> {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classspla_1_1Registry.html#a702417ffd73591f2eacf64a4f4f52ea4">   62</a></span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classspla_1_1Registry.html#a702417ffd73591f2eacf64a4f4f52ea4">~Registry</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span>                          <a class="code" href="classspla_1_1Registry.html#a35e84f393d9530f395b802e367da5c13">add</a>(<span class="keyword">const</span> std::string&amp; key, std::shared_ptr&lt;RegistryAlgo&gt; algo);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">bool</span>                          <a class="code" href="classspla_1_1Registry.html#a1ea75762c28485f854068013174c8690">has</a>(<span class="keyword">const</span> std::string&amp; key);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">virtual</span> std::shared_ptr&lt;RegistryAlgo&gt; <a class="code" href="classspla_1_1Registry.html#af64a72e3446a4bc1008969beaee5fc8d">find</a>(<span class="keyword">const</span> std::string&amp; key);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        std::unordered_map&lt;std::string, std::shared_ptr&lt;RegistryAlgo&gt;&gt; m_registry;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_REGISTRY_HPP</span></div>
+<div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></div><div class="ttdoc">Algorithm suitable to process schedule task based on task string key.</div><div class="ttdef"><b>Definition:</b> registry.hpp:48</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html_a09ae7f7598f7b45f28fd886fe7b0abfc"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html#a09ae7f7598f7b45f28fd886fe7b0abfc">spla::RegistryAlgo::get_name</a></div><div class="ttdeci">virtual std::string get_name()=0</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html_ad691f1ebdb7ebda51883be1374c2f889"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html#ad691f1ebdb7ebda51883be1374c2f889">spla::RegistryAlgo::~RegistryAlgo</a></div><div class="ttdeci">virtual ~RegistryAlgo()=default</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html_ae3db352c4ccf97ec2afd17e2f3c3a13c"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html#ae3db352c4ccf97ec2afd17e2f3c3a13c">spla::RegistryAlgo::get_description</a></div><div class="ttdeci">virtual std::string get_description()=0</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html_afda3ca332a6a6c22da3999200e431b90"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html#afda3ca332a6a6c22da3999200e431b90">spla::RegistryAlgo::execute</a></div><div class="ttdeci">virtual Status execute(const class DispatchContext &amp;ctx)=0</div></div>
+<div class="ttc" id="aclassspla_1_1Registry_html"><div class="ttname"><a href="classspla_1_1Registry.html">spla::Registry</a></div><div class="ttdoc">Registry with key-algo mapping of stored algo implementations.</div><div class="ttdef"><b>Definition:</b> registry.hpp:60</div></div>
+<div class="ttc" id="aclassspla_1_1Registry_html_a1ea75762c28485f854068013174c8690"><div class="ttname"><a href="classspla_1_1Registry.html#a1ea75762c28485f854068013174c8690">spla::Registry::has</a></div><div class="ttdeci">virtual bool has(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> registry.cpp:36</div></div>
+<div class="ttc" id="aclassspla_1_1Registry_html_a35e84f393d9530f395b802e367da5c13"><div class="ttname"><a href="classspla_1_1Registry.html#a35e84f393d9530f395b802e367da5c13">spla::Registry::add</a></div><div class="ttdeci">virtual void add(const std::string &amp;key, std::shared_ptr&lt; RegistryAlgo &gt; algo)</div><div class="ttdef"><b>Definition:</b> registry.cpp:32</div></div>
+<div class="ttc" id="aclassspla_1_1Registry_html_a702417ffd73591f2eacf64a4f4f52ea4"><div class="ttname"><a href="classspla_1_1Registry.html#a702417ffd73591f2eacf64a4f4f52ea4">spla::Registry::~Registry</a></div><div class="ttdeci">virtual ~Registry()=default</div></div>
+<div class="ttc" id="aclassspla_1_1Registry_html_af64a72e3446a4bc1008969beaee5fc8d"><div class="ttname"><a href="classspla_1_1Registry.html#af64a72e3446a4bc1008969beaee5fc8d">spla::Registry::find</a></div><div class="ttdeci">virtual std::shared_ptr&lt; RegistryAlgo &gt; find(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> registry.cpp:40</div></div>
+<div class="ttc" id="aconfig_8hpp_html"><div class="ttname"><a href="config_8hpp.html">config.hpp</a></div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:44</div></div>
+<div class="ttc" id="aschedule_8hpp_html"><div class="ttname"><a href="schedule_8hpp.html">schedule.hpp</a></div></div>
+<div class="ttc" id="astructspla_1_1DispatchContext_html"><div class="ttname"><a href="structspla_1_1DispatchContext.html">spla::DispatchContext</a></div><div class="ttdoc">Execution context of a single task.</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

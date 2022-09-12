@@ -75,8 +75,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Accelerator.html">spla::Accelerator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for an computations acceleration backend.  <a href="classspla_1_1Accelerator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspla_1_1DispatchContext.html">spla::DispatchContext</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execution context of a single task.  <a href="structspla_1_1DispatchContext.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Dispatcher.html">spla::Dispatcher</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class responsible for dispatching of execution of a single task.  <a href="classspla_1_1Dispatcher.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Logger.html">spla::Logger</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> logger.  <a href="classspla_1_1Logger.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Algorithm suitable to process schedule task based on task string key.  <a href="classspla_1_1RegistryAlgo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html">spla::Registry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Registry.html" title="Registry with key-algo mapping of stored algo implementations.">Registry</a> with key-algo mapping of stored algo implementations.  <a href="classspla_1_1Registry.html#details">More...</a><br /></td></tr>
@@ -143,6 +152,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TType.html">TType</a>&lt; std::int8_t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga96368cd7049fe7eb192f9f45967a1da2">spla::get_ttype</a> ()</td></tr>
 <tr class="separator:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">spla::register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
+<tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
+<tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c">spla::TMatrix&lt; T &gt;::TMatrix</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols)</td></tr>
 <tr class="separator:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8db8a9702b5f7d2435abf73caa7ee980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980">spla::TMatrix&lt; T &gt;::hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint) override</td></tr>
@@ -826,6 +838,32 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8cf03e6ac9524d52548b35cab7509f1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8cf03e6ac9524d52548b35cab7509f1f">&#9670;&nbsp;</a></span>register_algo_cpu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::register_algo_cpu </td>
+          <td>(</td>
+          <td class="paramtype">class <a class="el" href="classspla_1_1Registry.html">Registry</a> *&#160;</td>
+          <td class="paramname"><em>g_registry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register all cpu-specific algorithms. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g_registry</td><td>Where to register algorithms </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
