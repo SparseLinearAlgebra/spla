@@ -26,3 +26,20 @@
 /**********************************************************************************/
 
 #include "registry.hpp"
+
+namespace spla {
+
+    void Registry::add(const std::string& key, std::shared_ptr<RegistryAlgo> algo) {
+        m_registry[key] = std::move(algo);
+    }
+
+    bool Registry::has(const std::string& key) {
+        return m_registry.find(key) != m_registry.end();
+    }
+
+    std::shared_ptr<RegistryAlgo> Registry::find(const std::string& key) {
+        auto entry = m_registry.find(key);
+        return entry != m_registry.end() ? entry->second : std::shared_ptr<RegistryAlgo>();
+    }
+
+}// namespace spla

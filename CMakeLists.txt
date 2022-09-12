@@ -229,6 +229,8 @@ add_library(spla SHARED
         include/spla/type.hpp
         include/spla/vector.hpp
         src/core/accelerator.hpp
+        src/core/dispatcher.cpp
+        src/core/dispatcher.hpp
         src/core/logger.cpp
         src/core/logger.hpp
         src/core/registry.cpp
@@ -241,6 +243,9 @@ add_library(spla SHARED
         src/schedule/schedule_tasks.hpp
         src/schedule/schedule_st.cpp
         src/schedule/schedule_st.hpp
+        src/sequential/cpu_algo_callback.hpp
+        src/sequential/cpu_algo_registry.cpp
+        src/sequential/cpu_algo_registry.hpp
         src/sequential/cpu_coo.hpp
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_lil.hpp

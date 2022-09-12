@@ -25,14 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
-
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#ifndef SPLA_CPU_ALGO_REGISTRY_HPP
+#define SPLA_CPU_ALGO_REGISTRY_HPP
 
 namespace spla {
 
@@ -42,19 +36,10 @@ namespace spla {
      */
 
     /**
-     * @class Logger
-     * @brief Library logger
+     * @brief Register all cpu-specific algorithms
+     * @param g_registry Where to register algorithms
      */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
-
-    private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
-    };
+    void register_algo_cpu(class Registry* g_registry);
 
     /**
      * @}
@@ -62,11 +47,4 @@ namespace spla {
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+#endif//SPLA_CPU_ALGO_REGISTRY_HPP

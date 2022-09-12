@@ -65,8 +65,9 @@ namespace spla {
         virtual Status set_device(int index)       = 0;
         virtual Status set_queues_count(int count) = 0;
 
-        virtual std::string get_name()        = 0;
-        virtual std::string get_description() = 0;
+        virtual const std::string& get_name()        = 0;
+        virtual const std::string& get_description() = 0;
+        virtual const std::string& get_suffix()      = 0;
     };
 
     /**

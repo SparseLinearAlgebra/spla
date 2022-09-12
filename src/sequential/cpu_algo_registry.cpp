@@ -25,48 +25,14 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#include "cpu_algo_registry.hpp"
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <sequential/cpu_algo_callback.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
-
-    private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
-    };
-
-    /**
-     * @}
-     */
+    void register_algo_cpu(Registry* g_registry) {
+        g_registry->add("callback__cpu", std::make_shared<Algo_callback>());
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP

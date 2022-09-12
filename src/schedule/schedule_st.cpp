@@ -27,6 +27,8 @@
 
 #include "schedule_st.hpp"
 
+#include <core/dispatcher.hpp>
+
 namespace spla {
 
     Status ScheduleSingleThread::step_task(ref_ptr<ScheduleTask> task) {
@@ -41,6 +43,26 @@ namespace spla {
     }
 
     Status ScheduleSingleThread::submit() {
+        Dispatcher*     g_dispatcher = get_dispatcher();
+        DispatchContext ctx{};
+
+        ctx.schedule = ref_ptr<Schedule>(this);
+
+        for (int step_id = 0; step_id < static_cast<int>(m_steps.size()); step_id++) {
+            auto& step  = m_steps[step_id];
+            ctx.step_id = step_id;
+
+            for (int task_id = 0; task_id < static_cast<int>(step.size()); task_id++) {
+                auto& task  = step[task_id];
+                ctx.task    = task;
+                ctx.task_id = task_id;
+
+                auto status = g_dispatcher->dispatch(ctx);
+                if (status != Status::Ok) {
+                    return status;
+                }
+            }
+        }
 
         return Status::Ok;
     }

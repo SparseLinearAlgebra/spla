@@ -29,7 +29,7 @@
 
 #include <spla/spla.hpp>
 
-TEST(library, log) {
+TEST(library, default_log) {
     spla::get_library()->set_default_callback();
     spla::get_library()->finalize();
 }
@@ -39,7 +39,14 @@ TEST(library, default_accelerator) {
     spla::get_library()->finalize();
 }
 
-TEST(library, types) {
+TEST(library, default_accelerator_select_props) {
+    spla::get_library()->set_accelerator(spla::AcceleratorType::OpenCL);
+    spla::get_library()->set_platform(1);
+    spla::get_library()->set_device(0);
+    spla::get_library()->finalize();
+}
+
+TEST(library, default_types) {
     EXPECT_EQ(spla::BYTE->get_size(), 1);
     EXPECT_EQ(spla::INT->get_size(), 4);
     EXPECT_EQ(spla::UINT->get_size(), 4);

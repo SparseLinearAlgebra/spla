@@ -28,6 +28,12 @@
 #ifndef SPLA_REGISTRY_HPP
 #define SPLA_REGISTRY_HPP
 
+#include <spla/config.hpp>
+#include <spla/schedule.hpp>
+
+#include <string>
+#include <unordered_map>
+
 namespace spla {
 
     /**
@@ -36,11 +42,30 @@ namespace spla {
      */
 
     /**
+     * @class RegistryAlgo
+     * @brief Algorithm suitable to process schedule task based on task string key
+     */
+    class RegistryAlgo {
+    public:
+        virtual ~RegistryAlgo()                                       = default;
+        virtual std::string get_name()                                = 0;
+        virtual std::string get_description()                         = 0;
+        virtual Status      execute(const class DispatchContext& ctx) = 0;
+    };
+
+    /**
      * @class Registry
      * @brief Registry with key-algo mapping of stored algo implementations
      */
     class Registry {
     public:
+        virtual ~Registry() = default;
+        virtual void                          add(const std::string& key, std::shared_ptr<RegistryAlgo> algo);
+        virtual bool                          has(const std::string& key);
+        virtual std::shared_ptr<RegistryAlgo> find(const std::string& key);
+
+    private:
+        std::unordered_map<std::string, std::shared_ptr<RegistryAlgo>> m_registry;
     };
 
     /**

@@ -55,12 +55,13 @@ namespace spla {
         ~CLAccelerator() override = default;
 
         // Accelerator API
-        Status      init() override;
-        Status      set_platform(int index) override;
-        Status      set_device(int index) override;
-        Status      set_queues_count(int count) override;
-        std::string get_name() override;
-        std::string get_description() override;
+        Status             init() override;
+        Status             set_platform(int index) override;
+        Status             set_device(int index) override;
+        Status             set_queues_count(int count) override;
+        const std::string& get_name() override;
+        const std::string& get_description() override;
+        const std::string& get_suffix() override;
 
         // OpenCL API
         cl::Platform& get_platform() { return m_platform; }
@@ -70,9 +71,15 @@ namespace spla {
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
 
     private:
+        void build_description();
+
         cl::Platform m_platform;
         cl::Device   m_device;
         cl::Context  m_context;
+
+        std::string m_name = "OpenCL";
+        std::string m_description;
+        std::string m_suffix = "__cl";
 
         std::vector<cl::CommandQueue> m_queues;
     };

@@ -75,13 +75,13 @@ namespace spla {
         std::string                  get_key() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
-        ref_ptr<Vector> r;
-        ref_ptr<Vector> mask;
-        ref_ptr<Matrix> M;
-        ref_ptr<Vector> v;
-        ref_ptr<OpBin>  op_multiply;
-        ref_ptr<OpBin>  op_add;
-        bool            opt_complement;
+        ref_ptr<Vector>   r;
+        ref_ptr<Vector>   mask;
+        ref_ptr<Matrix>   M;
+        ref_ptr<Vector>   v;
+        ref_ptr<OpBinary> op_multiply;
+        ref_ptr<OpBinary> op_add;
+        bool              opt_complement;
     };
 
     /**
@@ -95,10 +95,10 @@ namespace spla {
         std::string                  get_key() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
-        ref_ptr<Vector> r;
-        ref_ptr<Vector> mask;
-        ref_ptr<Scalar> value;
-        ref_ptr<OpBin>  op_assign;
+        ref_ptr<Vector>   r;
+        ref_ptr<Vector>   mask;
+        ref_ptr<Scalar>   value;
+        ref_ptr<OpBinary> op_assign;
     };
 
     /**

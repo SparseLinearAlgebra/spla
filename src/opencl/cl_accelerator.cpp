@@ -36,6 +36,8 @@ namespace spla {
         if (set_device(0) != Status::Ok)
             return Status::DeviceNotFound;
 
+        build_description();
+
         // Output handy info
         LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());
 
@@ -76,15 +78,24 @@ namespace spla {
         m_device = available_devices[0];
         LOG_MSG(Status::Ok, "select OpenCL device " << m_device.getInfo<CL_DEVICE_NAME>());
 
+        build_description();
+
         return Status::Ok;
     }
     Status CLAccelerator::set_queues_count(int count) {
         return Status::Ok;
     }
-    std::string CLAccelerator::get_name() {
-        return "OpenCL";
+    const std::string& CLAccelerator::get_name() {
+        return m_name;
     }
-    std::string CLAccelerator::get_description() {
-        return m_platform() && m_device() ? "OpenCL Acc" + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform";
+    const std::string& CLAccelerator::get_description() {
+        return m_description;
     }
+    const std::string& CLAccelerator::get_suffix() {
+        return m_suffix;
+    }
+    void CLAccelerator::build_description() {
+        m_description = m_platform() && m_device() ? "OpenCL Acc " + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform or device";
+    }
+
 }// namespace spla

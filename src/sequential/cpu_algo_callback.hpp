@@ -25,48 +25,36 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#ifndef SPLA_CPU_ALGO_CALLBACK_HPP
+#define SPLA_CPU_ALGO_CALLBACK_HPP
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <core/dispatcher.hpp>
+#include <core/registry.hpp>
+#include <schedule/schedule_tasks.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
+    class Algo_callback final : public RegistryAlgo {
     public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+        ~Algo_callback() override = default;
+        std::string get_name() override {
+            return "callback";
+        }
+        std::string get_description() override {
+            return "call user callback function on cpu";
+        }
+        Status execute(const DispatchContext& ctx) override {
+            auto* task = dynamic_cast<ScheduleTask_callback*>(ctx.task.get());
 
-    private:
-        MessageCallback m_callback;
+            if (task->callback) {
+                // Invoke callback if present
+                task->callback();
+            }
 
-        mutable std::mutex m_mutex;
+            return Status::Ok;
+        }
     };
-
-    /**
-     * @}
-     */
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+#endif//SPLA_CPU_ALGO_CALLBACK_HPP

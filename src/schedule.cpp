@@ -44,13 +44,13 @@ namespace spla {
     }
 
     ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector> r,
-            ref_ptr<Vector> mask,
-            ref_ptr<Matrix> M,
-            ref_ptr<Vector> v,
-            ref_ptr<OpBin>  op_multiply,
-            ref_ptr<OpBin>  op_add,
-            bool            opt_complement) {
+            ref_ptr<Vector>   r,
+            ref_ptr<Vector>   mask,
+            ref_ptr<Matrix>   M,
+            ref_ptr<Vector>   v,
+            ref_ptr<OpBinary> op_multiply,
+            ref_ptr<OpBinary> op_add,
+            bool              opt_complement) {
         auto task            = make_ref<ScheduleTask_mxv_masked>();
         task->r              = std::move(r);
         task->mask           = std::move(mask);
@@ -63,10 +63,10 @@ namespace spla {
     }
 
     ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector> r,
-            ref_ptr<Vector> mask,
-            ref_ptr<Scalar> value,
-            ref_ptr<OpBin>  op_assign) {
+            ref_ptr<Vector>   r,
+            ref_ptr<Vector>   mask,
+            ref_ptr<Scalar>   value,
+            ref_ptr<OpBinary> op_assign) {
         auto task       = make_ref<ScheduleTask_v_assign_masked>();
         task->r         = std::move(r);
         task->mask      = std::move(mask);

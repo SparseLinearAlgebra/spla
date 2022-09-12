@@ -29,6 +29,7 @@
 #define SPLA_OP_HPP
 
 #include "object.hpp"
+#include "type.hpp"
 
 #include <string>
 
@@ -51,12 +52,26 @@ namespace spla {
     };
 
     /**
-     * @class OpBin
+     * @class OpUnary
+     * @brief Unary operation with 1-arity
+     */
+    class OpUnary : public Op {
+    public:
+        SPLA_API ~OpUnary() override                    = default;
+        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
+        SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
+    };
+
+    /**
+     * @class OpBinary
      * @brief Binary operation with 2-arity
      */
-    class OpBin : public Op {
+    class OpBinary : public Op {
     public:
-        SPLA_API ~OpBin() override = default;
+        SPLA_API ~OpBinary() override                   = default;
+        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
+        SPLA_API virtual ref_ptr<Type> get_type_arg_1() = 0;
+        SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
     };
 
     /**

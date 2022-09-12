@@ -25,48 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#include "test_common.hpp"
 
-#include <spla/config.hpp>
+#include <spla/spla.hpp>
 
-#include <functional>
-#include <mutex>
-#include <sstream>
+TEST(schedule, task_callback) {
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_callback([]() { std::cout << "exec sched callback"; }));
+    schedule->submit();
 
-namespace spla {
+    spla::get_library()->finalize();
+}
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
-
-    private:
-        MessageCallback m_callback;
-
-        mutable std::mutex m_mutex;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP
+SPLA_GTEST_MAIN

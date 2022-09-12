@@ -25,48 +25,42 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_LOGGER_HPP
-#define SPLA_LOGGER_HPP
+#include "dispatcher.hpp"
 
-#include <spla/config.hpp>
-
-#include <functional>
-#include <mutex>
-#include <sstream>
+#include <core/accelerator.hpp>
+#include <core/logger.hpp>
+#include <core/registry.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    Status Dispatcher::dispatch(const DispatchContext& ctx) {
+        Registry*    g_reg = get_registry();
+        Accelerator* g_acc = get_accelerator();
 
-    /**
-     * @class Logger
-     * @brief Library logger
-     */
-    class Logger {
-    public:
-        void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
-        void set_msg_callback(MessageCallback callback);
+        std::shared_ptr<RegistryAlgo> algo;
+        std::string                   key = ctx.task->get_key();
 
-    private:
-        MessageCallback m_callback;
+        if (g_acc) {
+            std::string key_acc = key + g_acc->get_suffix();
+            algo                = g_reg->find(key_acc);
 
-        mutable std::mutex m_mutex;
-    };
+            if (algo) {
+                LOG_MSG(Status::Ok, "found acc algo " << algo->get_name());
+                return algo->execute(ctx);
+            }
+        }
 
-    /**
-     * @}
-     */
+        std::string key_cpu = key + "__cpu";
+        algo                = g_reg->find(key_cpu);
+
+        if (algo) {
+            LOG_MSG(Status::Ok, "found cpu algo " << algo->get_name());
+            return algo->execute(ctx);
+        }
+
+        LOG_MSG(Status::NotImplemented, "failed to find suitable algo for key " << key);
+
+        return Status::NotImplemented;
+    }
 
 }// namespace spla
-
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-    } while (false);
-
-#endif//SPLA_LOGGER_HPP

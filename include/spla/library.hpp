@@ -124,16 +124,30 @@ namespace spla {
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
-        class Accelerator* _get_accelerator();
+        class Accelerator* get_accelerator();
+
+        /**
+         * @warning Internal usage only!
+         * @return Library algorithms registry
+         */
+        class Registry* get_registry();
+
+        /**
+         * @warning Internal usage only!
+         * @return Library algorithms dispatcher
+         */
+        class Dispatcher* get_dispatcher();
 
         /**
          * @warning Internal usage only!
          * @return Library logger
          */
-        class Logger* _get_logger();
+        class Logger* get_logger();
 
     private:
         std::unique_ptr<class Accelerator> m_accelerator;
+        std::unique_ptr<class Registry>    m_registry;
+        std::unique_ptr<class Dispatcher>  m_dispatcher;
         std::unique_ptr<class Logger>      m_logger;
     };
 
@@ -156,7 +170,25 @@ namespace spla {
      *
      * @return Library computations accelerator if presented
      */
-    static class Accelerator* _get_accelerator() { return get_library()->_get_accelerator(); }
+    static class Accelerator* get_accelerator() { return get_library()->get_accelerator(); }
+
+    /**
+     * @brief Global library algorithms registry
+     *
+     * @warning Internal usage only!
+     *
+     * @return Library algorithms registry
+     */
+    static class Registry* get_registry() { return get_library()->get_registry(); }
+
+    /**
+     * @brief Global library algorithms dispatcher
+     *
+     * @warning Internal usage only!
+     *
+     * @return Library algorithms dispatcher
+     */
+    static class Dispatcher* get_dispatcher() { return get_library()->get_dispatcher(); }
 
     /**
      * @brief Global library logger
@@ -165,7 +197,7 @@ namespace spla {
      *
      * @return Library logger
      */
-    static class Logger* _get_logger() { return get_library()->_get_logger(); }
+    static class Logger* get_logger() { return get_library()->get_logger(); }
 
     /**
      * @}

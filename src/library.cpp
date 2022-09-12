@@ -28,7 +28,11 @@
 #include <spla/library.hpp>
 
 #include <core/accelerator.hpp>
+#include <core/dispatcher.hpp>
 #include <core/logger.hpp>
+#include <core/registry.hpp>
+
+#include <sequential/cpu_algo_registry.hpp>
 
 #include <iostream>
 
@@ -41,6 +45,17 @@ namespace spla {
     Library::Library() {
         // Setup logger (always present in the system)
         m_logger = std::make_unique<Logger>();
+        // Setup registry (always available)
+        m_registry = std::make_unique<Registry>();
+        // Setup dispatcher (always available)
+        m_dispatcher = std::make_unique<Dispatcher>();
+
+        // Register cpu algo version
+        register_algo_cpu(m_registry.get());
+
+#if defined(SPLA_BUILD_OPENCL)
+        // todo: Register cl algo version
+#endif
     }
 
     Library::~Library() = default;
@@ -113,11 +128,19 @@ namespace spla {
         return set_message_callback(callback);
     }
 
-    class Accelerator* Library::_get_accelerator() {
+    class Accelerator* Library::get_accelerator() {
         return m_accelerator.get();
     }
 
-    class Logger* Library::_get_logger() {
+    class Registry* Library::get_registry() {
+        return m_registry.get();
+    }
+
+    class Dispatcher* Library::get_dispatcher() {
+        return m_dispatcher.get();
+    }
+
+    class Logger* Library::get_logger() {
         return m_logger.get();
     }
 
