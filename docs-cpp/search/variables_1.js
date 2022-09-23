@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['byte_537',['BYTE',['../group__spla.html#ga9773e98e96006b42002968fea46cf7cb',1,'spla']]]
+  ['byte_554',['BYTE',['../group__spla.html#ga9773e98e96006b42002968fea46cf7cb',1,'spla']]]
 ];

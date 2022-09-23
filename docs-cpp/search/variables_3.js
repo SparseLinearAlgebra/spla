@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_539',['data',['../classspla_1_1CpuLil.html#ab82ebb1faa46ce6fb6697918c323c1e7',1,'spla::CpuLil']]]
+  ['float_556',['FLOAT',['../group__spla.html#gaa62e3c873c501b318561a12b67568792',1,'spla']]]
 ];

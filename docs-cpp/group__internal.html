@@ -119,14 +119,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html">spla::ScheduleTask_v_assign_masked</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked vector assignment.  <a href="classspla_1_1ScheduleTask__v__assign__masked.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html">spla::CpuArray&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU one-dim array for dense vector representation.  <a href="classspla_1_1CpuArray.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list-of-list matrix format for fast incremental build.  <a href="classspla_1_1CpuLil.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCoo.html">spla::CpuCoo&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list of coordinates matrix format.  <a href="classspla_1_1CpuCoo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCsr.html">spla::CpuCsr&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU compressed sparse row matrix format.  <a href="classspla_1_1CpuCsr.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list-of-list matrix format for fast incremental build.  <a href="classspla_1_1CpuLil.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixDec.html">MatrixDec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible indexed matrix decoration enumerations.  <a href="classMatrixDec.html#details">More...</a><br /></td></tr>
@@ -155,6 +158,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">spla::register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac059260e42cb6edf6003057c082c5820"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gac059260e42cb6edf6003057c082c5820"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gac059260e42cb6edf6003057c082c5820">spla::cpu_array_add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, T element, <a class="el" href="classspla_1_1CpuArray.html">CpuArray</a>&lt; T &gt; &amp;arr)</td></tr>
+<tr class="separator:gac059260e42cb6edf6003057c082c5820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0649c8a851178bf399e95ce8773610c9">spla::cpu_coo_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga0649c8a851178bf399e95ce8773610c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea9caa5dafdd72be27449e169fe4499f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaea9caa5dafdd72be27449e169fe4499f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaea9caa5dafdd72be27449e169fe4499f">spla::cpu_csr_to_coo</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gaea9caa5dafdd72be27449e169fe4499f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebe21f0cb95072ced17556a63933b8e0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaebe21f0cb95072ced17556a63933b8e0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaebe21f0cb95072ced17556a63933b8e0">spla::cpu_lil_resize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:gaebe21f0cb95072ced17556a63933b8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2eb23f7adb2c0d7974e8157ec57eb715">spla::cpu_lil_clear</a> (<a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab7c5746b8030ed667aa9fe67702853c5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gab7c5746b8030ed667aa9fe67702853c5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gab7c5746b8030ed667aa9fe67702853c5">spla::cpu_lil_add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, T element, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:gab7c5746b8030ed667aa9fe67702853c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gafae65ec17628aa861b21ce5cdebf2fd5">spla::cpu_lil_to_coo</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0c91b4653cd1fec92a48186171099dd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gab0c91b4653cd1fec92a48186171099dd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gab0c91b4653cd1fec92a48186171099dd">spla::cpu_lil_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gab0c91b4653cd1fec92a48186171099dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c">spla::TMatrix&lt; T &gt;::TMatrix</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols)</td></tr>
 <tr class="separator:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8db8a9702b5f7d2435abf73caa7ee980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980">spla::TMatrix&lt; T &gt;::hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint) override</td></tr>
@@ -207,18 +234,6 @@ Functions</h2></td></tr>
 <tr class="separator:gadaa56ab34da4fcf8bbe070b3e9e07c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8d01fa1d323102ae1910b0c65d5812e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8d01fa1d323102ae1910b0c65d5812e8">spla::TType&lt; T &gt;::make_type</a> (std::string name, std::string code, std::string desc, int id)</td></tr>
 <tr class="separator:ga8d01fa1d323102ae1910b0c65d5812e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad46029b5f19e5d2bd584ab05b97faa0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad46029b5f19e5d2bd584ab05b97faa0b">spla::CpuCsr&lt; T &gt;::to_coo</a> (std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Ri, std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</td></tr>
-<tr class="separator:gad46029b5f19e5d2bd584ab05b97faa0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb90c41e7be969461e1545ecc6d8ba01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafb90c41e7be969461e1545ecc6d8ba01">spla::CpuLil&lt; T &gt;::clear</a> ()</td></tr>
-<tr class="separator:gafb90c41e7be969461e1545ecc6d8ba01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadf289382f7b5523e7af719aa69e162d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadf289382f7b5523e7af719aa69e162d7">spla::CpuLil&lt; T &gt;::resize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> new_n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> new_n_cols)</td></tr>
-<tr class="separator:gadf289382f7b5523e7af719aa69e162d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab86a2b47f0efb8af6f6a8818122e5e13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab86a2b47f0efb8af6f6a8818122e5e13">spla::CpuLil&lt; T &gt;::add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, T element)</td></tr>
-<tr class="separator:gab86a2b47f0efb8af6f6a8818122e5e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae61ff4d9d578d3aa09e98c64131ddd9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae61ff4d9d578d3aa09e98c64131ddd9e">spla::CpuLil&lt; T &gt;::to_coo</a> (std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Ri, std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</td></tr>
-<tr class="separator:gae61ff4d9d578d3aa09e98c64131ddd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga022025559eaa771d7373a5eff62a74e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga022025559eaa771d7373a5eff62a74e6">spla::CpuLil&lt; T &gt;::to_csr</a> (std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rp, std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</td></tr>
-<tr class="separator:ga022025559eaa771d7373a5eff62a74e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -254,8 +269,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gab86a2b47f0efb8af6f6a8818122e5e13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab86a2b47f0efb8af6f6a8818122e5e13">&#9670;&nbsp;</a></span>add_element()</h2>
+<a id="gac059260e42cb6edf6003057c082c5820"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac059260e42cb6edf6003057c082c5820">&#9670;&nbsp;</a></span>cpu_array_add_element()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +278,115 @@ Functions</h2></td></tr>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::add_element </td>
+          <td class="memname">void spla::cpu_array_add_element </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>row_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuArray.html">CpuArray</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga0649c8a851178bf399e95ce8773610c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0649c8a851178bf399e95ce8773610c9">&#9670;&nbsp;</a></span>cpu_coo_to_csr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_to_csr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaea9caa5dafdd72be27449e169fe4499f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaea9caa5dafdd72be27449e169fe4499f">&#9670;&nbsp;</a></span>cpu_csr_to_coo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_csr_to_coo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab7c5746b8030ed667aa9fe67702853c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7c5746b8030ed667aa9fe67702853c5">&#9670;&nbsp;</a></span>cpu_lil_add_element()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_lil_add_element </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -278,7 +401,13 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>element</em>&#160;</td>
+          <td class="paramname"><em>element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lil</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -290,8 +419,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gafb90c41e7be969461e1545ecc6d8ba01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb90c41e7be969461e1545ecc6d8ba01">&#9670;&nbsp;</a></span>clear()</h2>
+<a id="ga2eb23f7adb2c0d7974e8157ec57eb715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2eb23f7adb2c0d7974e8157ec57eb715">&#9670;&nbsp;</a></span>cpu_lil_clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,7 +428,113 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::clear</td>
+          <td class="memname">void spla::cpu_lil_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lil</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaebe21f0cb95072ced17556a63933b8e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaebe21f0cb95072ced17556a63933b8e0">&#9670;&nbsp;</a></span>cpu_lil_resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_lil_resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lil</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafae65ec17628aa861b21ce5cdebf2fd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafae65ec17628aa861b21ce5cdebf2fd5">&#9670;&nbsp;</a></span>cpu_lil_to_coo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_lil_to_coo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab0c91b4653cd1fec92a48186171099dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab0c91b4653cd1fec92a48186171099dd">&#9670;&nbsp;</a></span>cpu_lil_to_csr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_lil_to_csr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -867,36 +1102,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gadf289382f7b5523e7af719aa69e162d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadf289382f7b5523e7af719aa69e162d7">&#9670;&nbsp;</a></span>resize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::resize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
-          <td class="paramname"><em>new_n_rows</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
-          <td class="paramname"><em>new_n_cols</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ga404ae6ff0d78dae2cc5d37c0550b621a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga404ae6ff0d78dae2cc5d37c0550b621a">&#9670;&nbsp;</a></span>set_byte()</h2>
 
@@ -1096,114 +1301,6 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>n_cols</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="gad46029b5f19e5d2bd584ab05b97faa0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad46029b5f19e5d2bd584ab05b97faa0b">&#9670;&nbsp;</a></span>to_coo() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuCsr.html">spla::CpuCsr</a>&lt; T &gt;::to_coo </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Ri</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="gae61ff4d9d578d3aa09e98c64131ddd9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae61ff4d9d578d3aa09e98c64131ddd9e">&#9670;&nbsp;</a></span>to_coo() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::to_coo </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Ri</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ga022025559eaa771d7373a5eff62a74e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga022025559eaa771d7373a5eff62a74e6">&#9670;&nbsp;</a></span>to_csr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::to_csr </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Rx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

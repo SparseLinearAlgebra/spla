@@ -78,7 +78,7 @@ $(function() {
 <p>CPU list-of-list matrix format for fast incremental build.  
  <a href="classspla_1_1CpuLil.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="cpu__lil_8hpp_source.html">cpu_lil.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="cpu__formats_8hpp_source.html">cpu_formats.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for spla::CpuLil&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -106,8 +106,6 @@ Public Types</h2></td></tr>
 <tr class="separator:a8401ce8ecef9719bd75e65c819350fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0de3c46d741423bac453281690007599"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599">Row</a> = std::vector&lt; <a class="el" href="classspla_1_1CpuLil.html#a8401ce8ecef9719bd75e65c819350fef">Entry</a> &gt;</td></tr>
 <tr class="separator:a0de3c46d741423bac453281690007599"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac057e85771700da209b8a6cd486a69ff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#ac057e85771700da209b8a6cd486a69ff">List</a> = std::vector&lt; <a class="el" href="classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599">Row</a> &gt;</td></tr>
-<tr class="separator:ac057e85771700da209b8a6cd486a69ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d4c56861bfde195b88be6ef74522740"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#a3d4c56861bfde195b88be6ef74522740">Reduce</a> = std::function&lt; T(T accum, T added)&gt;</td></tr>
 <tr class="separator:a3d4c56861bfde195b88be6ef74522740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -115,21 +113,13 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa90111d7bfd4a8ff47cb0dc2f0964f6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#aa90111d7bfd4a8ff47cb0dc2f0964f6b">~CpuLil</a> () override=default</td></tr>
 <tr class="separator:aa90111d7bfd4a8ff47cb0dc2f0964f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb90c41e7be969461e1545ecc6d8ba01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafb90c41e7be969461e1545ecc6d8ba01">clear</a> ()</td></tr>
-<tr class="separator:gafb90c41e7be969461e1545ecc6d8ba01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadf289382f7b5523e7af719aa69e162d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadf289382f7b5523e7af719aa69e162d7">resize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> new_n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> new_n_cols)</td></tr>
-<tr class="separator:gadf289382f7b5523e7af719aa69e162d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab86a2b47f0efb8af6f6a8818122e5e13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab86a2b47f0efb8af6f6a8818122e5e13">add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, T element)</td></tr>
-<tr class="separator:gab86a2b47f0efb8af6f6a8818122e5e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae61ff4d9d578d3aa09e98c64131ddd9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae61ff4d9d578d3aa09e98c64131ddd9e">to_coo</a> (std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Ri, std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</td></tr>
-<tr class="separator:gae61ff4d9d578d3aa09e98c64131ddd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga022025559eaa771d7373a5eff62a74e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga022025559eaa771d7373a5eff62a74e6">to_csr</a> (std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rp, std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt; &amp;Rj, std::vector&lt; T &gt; &amp;Rx)</td></tr>
-<tr class="separator:ga022025559eaa771d7373a5eff62a74e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1TDecoration"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1TDecoration')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
 <tr class="memitem:a028631dbd046650931ae3ffc40e98477 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a028631dbd046650931ae3ffc40e98477">~TDecoration</a> () override=default</td></tr>
 <tr class="separator:a028631dbd046650931ae3ffc40e98477 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae28daf1bf5b9a0211bfa2d6ecb378db0 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#ae28daf1bf5b9a0211bfa2d6ecb378db0">get_version</a> () const</td></tr>
-<tr class="separator:ae28daf1bf5b9a0211bfa2d6ecb378db0 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0cc6619da55ed919a4c81c044516f9 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#aad0cc6619da55ed919a4c81c044516f9">get_values</a> () const</td></tr>
+<tr class="separator:aad0cc6619da55ed919a4c81c044516f9 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6ba9947b2cb5755e75636c0a8587f4 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a9f6ba9947b2cb5755e75636c0a8587f4">get_version</a> () const</td></tr>
+<tr class="separator:a9f6ba9947b2cb5755e75636c0a8587f4 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
 <tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,22 +134,15 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ab3eaecd499d01432228fbbc02ba65fc0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599">Row</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">Ar</a> {}</td></tr>
+<tr class="separator:ab3eaecd499d01432228fbbc02ba65fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f1a1f136308f0ad1d61e23f37a98c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1CpuLil.html#a3d4c56861bfde195b88be6ef74522740">Reduce</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#ad5f1a1f136308f0ad1d61e23f37a98c2">reduce</a> = [](T, T a) { return a; }</td></tr>
 <tr class="separator:ad5f1a1f136308f0ad1d61e23f37a98c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82ebb1faa46ce6fb6697918c323c1e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1CpuLil.html#ac057e85771700da209b8a6cd486a69ff">List</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#ab82ebb1faa46ce6fb6697918c323c1e7">data</a> {}</td></tr>
-<tr class="separator:ab82ebb1faa46ce6fb6697918c323c1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbc8765c6d977b4d6e88269f59243418"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#abbc8765c6d977b4d6e88269f59243418">n_rows</a> = 0</td></tr>
-<tr class="separator:abbc8765c6d977b4d6e88269f59243418"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa71ec2a4c03a2dfb071e0d4a79a8da1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#aaa71ec2a4c03a2dfb071e0d4a79a8da1">n_cols</a> = 0</td></tr>
-<tr class="separator:aaa71ec2a4c03a2dfb071e0d4a79a8da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae236b01e0a6cc2e651db3b2494e761f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html#ae236b01e0a6cc2e651db3b2494e761f3">n_values</a> = 0</td></tr>
-<tr class="separator:ae236b01e0a6cc2e651db3b2494e761f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_classspla_1_1TDecoration"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classspla_1_1TDecoration')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
-<tr class="memitem:ae4963da7bf8686fd20649e429eabe10b inherit pro_attribs_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#ae4963da7bf8686fd20649e429eabe10b">m_version</a> = 0</td></tr>
-<tr class="separator:ae4963da7bf8686fd20649e429eabe10b inherit pro_attribs_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classspla_1_1TDecoration"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classspla_1_1TDecoration')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
+<tr class="memitem:a3bce818ace934694373d236be753e739 inherit pub_attribs_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = 0</td></tr>
+<tr class="separator:a3bce818ace934694373d236be753e739 inherit pub_attribs_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c51fdcf89b6c52cb62023586e86ea75 inherit pub_attribs_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a8c51fdcf89b6c52cb62023586e86ea75">version</a> = 0</td></tr>
+<tr class="separator:a8c51fdcf89b6c52cb62023586e86ea75 inherit pub_attribs_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -183,22 +166,6 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::<a class="el" href="classspla_1_1CpuLil.html#a8401ce8ecef9719bd75e65c819350fef">Entry</a> =  std::pair&lt;<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>, T&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac057e85771700da209b8a6cd486a69ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac057e85771700da209b8a6cd486a69ff">&#9670;&nbsp;</a></span>List</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::<a class="el" href="classspla_1_1CpuLil.html#ac057e85771700da209b8a6cd486a69ff">List</a> =  std::vector&lt;<a class="el" href="classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599">Row</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -266,8 +233,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab82ebb1faa46ce6fb6697918c323c1e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab82ebb1faa46ce6fb6697918c323c1e7">&#9670;&nbsp;</a></span>data</h2>
+<a id="ab3eaecd499d01432228fbbc02ba65fc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3eaecd499d01432228fbbc02ba65fc0">&#9670;&nbsp;</a></span>Ar</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -275,55 +242,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classspla_1_1CpuLil.html#ac057e85771700da209b8a6cd486a69ff">List</a> <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::data {}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aaa71ec2a4c03a2dfb071e0d4a79a8da1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa71ec2a4c03a2dfb071e0d4a79a8da1">&#9670;&nbsp;</a></span>n_cols</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::n_cols = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abbc8765c6d977b4d6e88269f59243418"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbc8765c6d977b4d6e88269f59243418">&#9670;&nbsp;</a></span>n_rows</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::n_rows = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae236b01e0a6cc2e651db3b2494e761f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae236b01e0a6cc2e651db3b2494e761f3">&#9670;&nbsp;</a></span>n_values</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::n_values = 0</td>
+          <td class="memname">std::vector&lt;<a class="el" href="classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599">Row</a>&gt; <a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil</a>&lt; T &gt;::Ar {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -347,7 +266,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/sequential/<a class="el" href="cpu__lil_8hpp_source.html">cpu_lil.hpp</a></li>
+<li>src/sequential/<a class="el" href="cpu__formats_8hpp_source.html">cpu_formats.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

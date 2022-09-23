@@ -1,8 +1,8 @@
 <map id="spla::RefCnt" name="spla::RefCnt">
-<area shape="rect" id="node1" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,411,97,437"/>
+<area shape="rect" id="node1" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,436,97,463"/>
 <area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="176,208,267,235"/>
-<area shape="rect" id="node18" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="145,411,297,437"/>
-<area shape="rect" id="node22" href="$classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values." alt="" coords="181,487,261,513"/>
+<area shape="rect" id="node18" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="145,436,297,463"/>
+<area shape="rect" id="node23" href="$classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values." alt="" coords="181,537,261,564"/>
 <area shape="rect" id="node3" href="$classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object." alt="" coords="369,31,456,57"/>
 <area shape="rect" id="node5" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="378,107,447,133"/>
 <area shape="rect" id="node8" href="$classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="368,157,457,184"/>
@@ -18,8 +18,9 @@
 <area shape="rect" id="node14" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="759,186,893,227"/>
 <area shape="rect" id="node15" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="759,251,893,293"/>
 <area shape="rect" id="node16" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="759,317,893,358"/>
-<area shape="rect" id="node19" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="349,360,477,387"/>
-<area shape="rect" id="node20" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="350,411,475,437"/>
-<area shape="rect" id="node21" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="353,461,472,488"/>
-<area shape="rect" id="node23" href="$classspla_1_1TType.html" title="Type interface implementation with actual type info bound." alt="" coords="353,512,472,539"/>
+<area shape="rect" id="node19" href="$classspla_1_1CpuArray.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="345,360,480,387"/>
+<area shape="rect" id="node20" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="349,411,477,437"/>
+<area shape="rect" id="node21" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="350,461,475,488"/>
+<area shape="rect" id="node22" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="353,512,472,539"/>
+<area shape="rect" id="node24" href="$classspla_1_1TType.html" title="Type interface implementation with actual type info bound." alt="" coords="353,563,472,589"/>
 </map>

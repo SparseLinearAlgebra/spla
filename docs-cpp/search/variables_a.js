@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['r_553',['r',['../classspla_1_1ScheduleTask__mxv__masked.html#a4ae45fa54053f9ad93a2b9d63974f4f7',1,'spla::ScheduleTask_mxv_masked::r()'],['../classspla_1_1ScheduleTask__v__assign__masked.html#aae487127e8bbce370d7a70979382666f',1,'spla::ScheduleTask_v_assign_masked::r()']]],
-  ['reduce_554',['reduce',['../classspla_1_1CpuLil.html#ad5f1a1f136308f0ad1d61e23f37a98c2',1,'spla::CpuLil']]]
+  ['task_569',['task',['../structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25',1,'spla::DispatchContext']]],
+  ['task_5fid_570',['task_id',['../structspla_1_1DispatchContext.html#a9b2dfdec15d7cb510c6f84a524d92384',1,'spla::DispatchContext']]],
+  ['thread_5fid_571',['thread_id',['../structspla_1_1DispatchContext.html#a461d86b4293c73c0089dc98f1a465cf4',1,'spla::DispatchContext']]]
 ];

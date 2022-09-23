@@ -67,7 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classspla_1_1TDecoration-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::TDecoration&lt; T &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
@@ -83,11 +83,12 @@ Inheritance diagram for spla::TDecoration&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1TDecoration__inherit__graph.png" border="0" usemap="#aspla_1_1TDecoration_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1TDecoration_3_01T_01_4_inherit__map" id="aspla_1_1TDecoration_3_01T_01_4_inherit__map">
-<area shape="rect" title="Base class for typed decoration for storage object." alt="" coords="144,80,296,107"/>
-<area shape="rect" href="classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="5,155,133,181"/>
-<area shape="rect" href="classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="157,155,283,181"/>
-<area shape="rect" href="classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="307,155,426,181"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="174,5,266,32"/>
+<area shape="rect" title="Base class for typed decoration for storage object." alt="" coords="227,80,379,107"/>
+<area shape="rect" href="classspla_1_1CpuArray.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="5,155,140,181"/>
+<area shape="rect" href="classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="165,155,293,181"/>
+<area shape="rect" href="classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="317,155,442,181"/>
+<area shape="rect" href="classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="467,155,585,181"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="257,5,349,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -104,8 +105,10 @@ Collaboration diagram for spla::TDecoration&lt; T &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a028631dbd046650931ae3ffc40e98477"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a028631dbd046650931ae3ffc40e98477">~TDecoration</a> () override=default</td></tr>
 <tr class="separator:a028631dbd046650931ae3ffc40e98477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae28daf1bf5b9a0211bfa2d6ecb378db0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#ae28daf1bf5b9a0211bfa2d6ecb378db0">get_version</a> () const</td></tr>
-<tr class="separator:ae28daf1bf5b9a0211bfa2d6ecb378db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0cc6619da55ed919a4c81c044516f9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#aad0cc6619da55ed919a4c81c044516f9">get_values</a> () const</td></tr>
+<tr class="separator:aad0cc6619da55ed919a4c81c044516f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6ba9947b2cb5755e75636c0a8587f4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a9f6ba9947b2cb5755e75636c0a8587f4">get_version</a> () const</td></tr>
+<tr class="separator:a9f6ba9947b2cb5755e75636c0a8587f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
 <tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,10 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#af6db98ef69c4ee40823587075ab84101">rel_ref</a> () const</td></tr>
 <tr class="separator:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:ae4963da7bf8686fd20649e429eabe10b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#ae4963da7bf8686fd20649e429eabe10b">m_version</a> = 0</td></tr>
-<tr class="separator:ae4963da7bf8686fd20649e429eabe10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a3bce818ace934694373d236be753e739"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = 0</td></tr>
+<tr class="separator:a3bce818ace934694373d236be753e739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c51fdcf89b6c52cb62023586e86ea75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a8c51fdcf89b6c52cb62023586e86ea75">version</a> = 0</td></tr>
+<tr class="separator:a8c51fdcf89b6c52cb62023586e86ea75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -163,8 +168,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae28daf1bf5b9a0211bfa2d6ecb378db0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae28daf1bf5b9a0211bfa2d6ecb378db0">&#9670;&nbsp;</a></span>get_version()</h2>
+<a id="aad0cc6619da55ed919a4c81c044516f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad0cc6619da55ed919a4c81c044516f9">&#9670;&nbsp;</a></span>get_values()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,7 +180,35 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::get_version </td>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::get_values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Number of value in decoration </dd></dl>
+
+</div>
+</div>
+<a id="a9f6ba9947b2cb5755e75636c0a8587f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6ba9947b2cb5755e75636c0a8587f4">&#9670;&nbsp;</a></span>get_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::get_version </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -192,26 +225,34 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae4963da7bf8686fd20649e429eabe10b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4963da7bf8686fd20649e429eabe10b">&#9670;&nbsp;</a></span>m_version</h2>
+<a id="a3bce818ace934694373d236be753e739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bce818ace934694373d236be753e739">&#9670;&nbsp;</a></span>values</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::m_version = 0</td>
+          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::values = 0</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c51fdcf89b6c52cb62023586e86ea75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c51fdcf89b6c52cb62023586e86ea75">&#9670;&nbsp;</a></span>version</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration</a>&lt; T &gt;::version = 0</td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

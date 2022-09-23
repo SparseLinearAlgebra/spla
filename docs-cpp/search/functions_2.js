@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dispatch_404',['dispatch',['../classspla_1_1Dispatcher.html#adecdf84b9fea86c491dea4e280cfe8d3',1,'spla::Dispatcher']]]
+  ['dispatch_421',['dispatch',['../classspla_1_1Dispatcher.html#adecdf84b9fea86c491dea4e280cfe8d3',1,'spla::Dispatcher']]]
 ];

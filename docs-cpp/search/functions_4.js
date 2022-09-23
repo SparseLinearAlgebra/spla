@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['finalize_406',['finalize',['../classspla_1_1Library.html#afd3dcb03984dfe6cc50718b36fd0163a',1,'spla::Library']]],
-  ['find_407',['find',['../classspla_1_1Registry.html#af64a72e3446a4bc1008969beaee5fc8d',1,'spla::Registry']]]
+  ['finalize_423',['finalize',['../classspla_1_1Library.html#afd3dcb03984dfe6cc50718b36fd0163a',1,'spla::Library']]],
+  ['find_424',['find',['../classspla_1_1Registry.html#af64a72e3446a4bc1008969beaee5fc8d',1,'spla::Registry']]]
 ];

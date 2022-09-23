@@ -162,14 +162,17 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__callback.html">Algo_callback</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html">CpuArray</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU one-dim array for dense vector representation.  <a href="classspla_1_1CpuArray.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list-of-list matrix format for fast incremental build.  <a href="classspla_1_1CpuLil.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list of coordinates matrix format.  <a href="classspla_1_1CpuCoo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU compressed sparse row matrix format.  <a href="classspla_1_1CpuCsr.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list-of-list matrix format for fast incremental build.  <a href="classspla_1_1CpuLil.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -276,6 +279,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac059260e42cb6edf6003057c082c5820"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gac059260e42cb6edf6003057c082c5820"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gac059260e42cb6edf6003057c082c5820">cpu_array_add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, T element, <a class="el" href="classspla_1_1CpuArray.html">CpuArray</a>&lt; T &gt; &amp;arr)</td></tr>
+<tr class="separator:gac059260e42cb6edf6003057c082c5820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0649c8a851178bf399e95ce8773610c9">cpu_coo_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga0649c8a851178bf399e95ce8773610c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea9caa5dafdd72be27449e169fe4499f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaea9caa5dafdd72be27449e169fe4499f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaea9caa5dafdd72be27449e169fe4499f">cpu_csr_to_coo</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gaea9caa5dafdd72be27449e169fe4499f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebe21f0cb95072ced17556a63933b8e0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaebe21f0cb95072ced17556a63933b8e0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaebe21f0cb95072ced17556a63933b8e0">cpu_lil_resize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:gaebe21f0cb95072ced17556a63933b8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2eb23f7adb2c0d7974e8157ec57eb715">cpu_lil_clear</a> (<a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:ga2eb23f7adb2c0d7974e8157ec57eb715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab7c5746b8030ed667aa9fe67702853c5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gab7c5746b8030ed667aa9fe67702853c5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gab7c5746b8030ed667aa9fe67702853c5">cpu_lil_add_element</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, T element, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;lil)</td></tr>
+<tr class="separator:gab7c5746b8030ed667aa9fe67702853c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gafae65ec17628aa861b21ce5cdebf2fd5">cpu_lil_to_coo</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gafae65ec17628aa861b21ce5cdebf2fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0c91b4653cd1fec92a48186171099dd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gab0c91b4653cd1fec92a48186171099dd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gab0c91b4653cd1fec92a48186171099dd">cpu_lil_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gab0c91b4653cd1fec92a48186171099dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
