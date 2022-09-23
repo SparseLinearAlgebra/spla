@@ -54,7 +54,6 @@ namespace spla {
     public:
         ~CLAccelerator() override = default;
 
-        // Accelerator API
         Status             init() override;
         Status             set_platform(int index) override;
         Status             set_device(int index) override;
@@ -63,7 +62,6 @@ namespace spla {
         const std::string& get_description() override;
         const std::string& get_suffix() override;
 
-        // OpenCL API
         cl::Platform& get_platform() { return m_platform; }
         cl::Device&   get_device() { return m_device; }
         cl::Context&  get_context() { return m_context; }

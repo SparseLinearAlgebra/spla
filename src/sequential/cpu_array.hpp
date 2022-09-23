@@ -25,12 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
+#ifndef SPLA_CPU_ARRAY_HPP
+#define SPLA_CPU_ARRAY_HPP
 
-#include <spla/config.hpp>
-
-#include <string>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -39,34 +37,10 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
-     */
-    class Accelerator {
-    public:
-        virtual ~Accelerator() = default;
-
-        virtual Status             init()                      = 0;
-        virtual Status             set_platform(int index)     = 0;
-        virtual Status             set_device(int index)       = 0;
-        virtual Status             set_queues_count(int count) = 0;
-        virtual const std::string& get_name()                  = 0;
-        virtual const std::string& get_description()           = 0;
-        virtual const std::string& get_suffix()                = 0;
-    };
+    template<typename T>
+    void cpu_array_add_element(uint row_id, T element, CpuArray<T>& arr) {
+        arr.Ax[row_id] = arr.reduce(arr.Ax[row_id], element);
+    }
 
     /**
      * @}
@@ -74,4 +48,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+#endif//SPLA_CPU_ARRAY_HPP

@@ -48,11 +48,15 @@ namespace spla {
     public:
         ~TDecoration() override = default;
 
-        /** @return Version of decoration required to sync data between storages */
-        [[nodiscard]] virtual int get_version() const { return m_version; };
+        /** @return Number of value in decoration */
+        [[nodiscard]] virtual uint get_values() const { return values; }
 
-    protected:
-        int m_version = 0;
+        /** @return Version of decoration required to sync data between storages */
+        [[nodiscard]] virtual uint get_version() const { return version; };
+
+    public:
+        uint values  = 0;
+        uint version = 0;
     };
 
     /**

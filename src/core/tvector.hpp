@@ -25,18 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TMATRIX_HPP
-#define SPLA_TMATRIX_HPP
+#ifndef SPLA_TVECTOR_HPP
+#define SPLA_TVECTOR_HPP
 
 #include <spla/config.hpp>
-#include <spla/matrix.hpp>
+#include <spla/vector.hpp>
 
 #include <core/tdecoration.hpp>
 #include <core/ttype.hpp>
 
-#include <sequential/cpu_coo.hpp>
-#include <sequential/cpu_csr.hpp>
-#include <sequential/cpu_lil.hpp>
+#include <sequential/cpu_array.hpp>
 
 #include <memory>
 #include <vector>
@@ -52,43 +50,39 @@ namespace spla {
      * @class MatrixDec
      * @brief Possible indexed matrix decoration enumerations
      */
-    enum class MatrixDec {
-        Coo    = 0,
-        Csr    = 1,
-        Csc    = 2,
-        AccCoo = 3,
-        AccCsr = 4,
-        AccCsc = 5,
-        Max    = 10
+    enum class VectorDec {
+        Dense    = 0,
+        Coo      = 1,
+        AccDense = 2,
+        AccCoo   = 3,
+        Max      = 4
     };
 
     /**
-     * @class TMatrix
-     * @brief Matrix interface implementation with type information bound
+     * @class TVector
+     * @brief Vector interface implementation with type information bound
      *
      * @tparam T Type of stored elements
      */
     template<typename T>
-    class TMatrix final : public Matrix {
+    class TVector final : public Vector {
     public:
-        TMatrix(uint n_rows, uint n_cols);
-        ~TMatrix() override = default;
+        explicit TVector(uint n_rows);
+        ~TVector() override = default;
         Status             hint_state(StateHint hint) override;
         Status             hint_format(FormatHint hint) override;
         uint               get_n_rows() override;
-        uint               get_n_cols() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
 
-        ref_ptr<TDecoration<T>>&              get_decoration(MatrixDec dec) { return m_decorations[static_cast<int>(dec)]; }
+        ref_ptr<TDecoration<T>>&              get_decoration(VectorDec dec) { return m_decorations[static_cast<int>(dec)]; }
         ref_ptr<TDecoration<T>>               get_decoration(int index) { return m_decorations[index]; }
         std::vector<ref_ptr<TDecoration<T>>>& get_decorations() { return m_decorations; }
 
     private:
         uint       m_version     = 0;
         uint       m_n_rows      = 0;
-        uint       m_n_cols      = 0;
         StateHint  m_state_hint  = StateHint::Default;
         FormatHint m_format_hint = FormatHint::Default;
 
@@ -97,44 +91,38 @@ namespace spla {
     };
 
     template<typename T>
-    TMatrix<T>::TMatrix(uint n_rows, uint n_cols) {
+    TVector<T>::TVector(uint n_rows) {
         m_n_rows = n_rows;
-        m_n_cols = n_cols;
-        m_decorations.resize(static_cast<int>(MatrixDec::Max));
+        m_decorations.resize(static_cast<int>(VectorDec::Max));
     }
 
     template<typename T>
-    Status TMatrix<T>::hint_state(StateHint hint) {
+    Status TVector<T>::hint_state(StateHint hint) {
         return Status::InvalidState;
     }
 
     template<typename T>
-    Status TMatrix<T>::hint_format(FormatHint hint) {
+    Status TVector<T>::hint_format(FormatHint hint) {
         return Status::InvalidState;
     }
 
     template<typename T>
-    uint TMatrix<T>::get_n_rows() {
+    uint TVector<T>::get_n_rows() {
         return m_n_rows;
     }
 
     template<typename T>
-    uint TMatrix<T>::get_n_cols() {
-        return m_n_cols;
-    }
-
-    template<typename T>
-    ref_ptr<Type> TMatrix<T>::get_type() {
+    ref_ptr<Type> TVector<T>::get_type() {
         return get_ttype<T>().template as<Type>();
     }
 
     template<typename T>
-    void TMatrix<T>::set_label(std::string label) {
+    void TVector<T>::set_label(std::string label) {
         m_label = std::move(label);
     }
 
     template<typename T>
-    const std::string& TMatrix<T>::get_label() const {
+    const std::string& TVector<T>::get_label() const {
         return m_label;
     }
 
@@ -144,5 +132,4 @@ namespace spla {
 
 }// namespace spla
 
-
-#endif//SPLA_TMATRIX_HPP
+#endif//SPLA_TVECTOR_HPP

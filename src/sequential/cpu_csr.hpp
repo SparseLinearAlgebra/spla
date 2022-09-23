@@ -28,17 +28,7 @@
 #ifndef SPLA_CPU_CSR_HPP
 #define SPLA_CPU_CSR_HPP
 
-#include <spla/config.hpp>
-
-#include <core/tdecoration.hpp>
-
-#include <algorithm>
-#include <cassert>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -47,33 +37,21 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class CpuCsr
-     * @brief CPU compressed sparse row matrix format
-     *
-     * @tparam T Type of elements
-     */
     template<typename T>
-    class CpuCsr : public TDecoration<T> {
-    public:
-        ~CpuCsr() override = default;
+    void cpu_csr_to_coo(uint             n_rows,
+                        const CpuCsr<T>& in,
+                        CpuCoo<T>&       out) {
+        auto& Ap = in.Ap;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
 
-        void to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx);
+        auto& Ri = out.Ai;
+        auto& Rj = out.Aj;
+        auto& Rx = out.Ax;
 
-        std::vector<uint> Ap;
-        std::vector<uint> Aj;
-        std::vector<T>    Ax;
-        uint              n_rows   = 0;
-        uint              n_cols   = 0;
-        uint              n_values = 0;
-        uint              version  = 0;
-    };
-
-    template<typename T>
-    void CpuCsr<T>::to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx) {
-        assert(Ri.size() == n_values);
-        assert(Rj.size() == n_values);
-        assert(Rx.size() == n_values);
+        assert(Ri.size() == in.values);
+        assert(Rj.size() == in.values);
+        assert(Rx.size() == in.values);
 
         for (uint i = 0; i < n_rows; i++) {
             for (uint j = Ap[i]; j < Ap[i + 1]; j++) {

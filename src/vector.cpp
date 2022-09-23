@@ -25,53 +25,36 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
-
-#include <spla/config.hpp>
-
-#include <string>
+#include <core/logger.hpp>
+#include <core/tvector.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type>& type) {
+        if (n_rows <= 0) {
+            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
+            return ref_ptr<Vector>{};
+        }
+        if (!type) {
+            LOG_MSG(Status::InvalidArgument, "passed null type");
+            return ref_ptr<Vector>{};
+        }
 
-    /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
-     *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
-     */
-    class Accelerator {
-    public:
-        virtual ~Accelerator() = default;
+        if (type == BYTE) {
+            return ref_ptr<Vector>(new TVector<std::int8_t>(n_rows));
+        }
+        if (type == INT) {
+            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
+        }
+        if (type == UINT) {
+            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
+        }
+        if (type == FLOAT) {
+            return ref_ptr<Vector>(new TVector<float>(n_rows));
+        }
 
-        virtual Status             init()                      = 0;
-        virtual Status             set_platform(int index)     = 0;
-        virtual Status             set_device(int index)       = 0;
-        virtual Status             set_queues_count(int count) = 0;
-        virtual const std::string& get_name()                  = 0;
-        virtual const std::string& get_description()           = 0;
-        virtual const std::string& get_suffix()                = 0;
-    };
-
-    /**
-     * @}
-     */
+        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
+        return ref_ptr<Vector>();
+    }
 
 }// namespace spla
-
-#endif//SPLA_ACCELERATOR_HPP

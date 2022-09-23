@@ -28,17 +28,7 @@
 #ifndef SPLA_CPU_LIL_HPP
 #define SPLA_CPU_LIL_HPP
 
-#include <spla/config.hpp>
-
-#include <core/tdecoration.hpp>
-
-#include <algorithm>
-#include <cassert>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -47,81 +37,58 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class CpuLil
-     * @brief CPU list-of-list matrix format for fast incremental build
-     *
-     * @tparam T Type of elements
-     */
     template<typename T>
-    class CpuLil : public TDecoration<T> {
-    public:
-        ~CpuLil() override = default;
-
-        using Entry  = std::pair<uint, T>;
-        using Row    = std::vector<Entry>;
-        using List   = std::vector<Row>;
-        using Reduce = std::function<T(T accum, T added)>;
-
-        void clear();
-        void resize(uint new_n_rows, uint new_n_cols);
-        void add_element(uint row_id, uint col_id, T element);
-        void to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx);
-        void to_csr(std::vector<uint>& Rp, std::vector<uint>& Rj, std::vector<T>& Rx);
-
-        Reduce reduce = [](T, T a) { return a; };
-        List   data{};
-        uint   n_rows   = 0;
-        uint   n_cols   = 0;
-        uint   n_values = 0;
-    };
+    void cpu_lil_resize(uint       n_rows,
+                        CpuLil<T>& lil) {
+        lil.Ar.clear();
+        lil.Ar.resize(n_rows);
+    }
 
     template<typename T>
-    void CpuLil<T>::clear() {
-        for (auto& row : data) {
+    void cpu_lil_clear(CpuLil<T>& lil) {
+        for (auto& row : lil.Ar) {
             row.clear();
         }
-
-        n_values = 0;
+        lil.values = 0;
     }
 
     template<typename T>
-    void CpuLil<T>::resize(uint new_n_rows, uint new_n_cols) {
-        data.resize(n_rows);
-        n_rows = new_n_rows;
-        n_cols = new_n_cols;
-    }
-
-    template<typename T>
-    void CpuLil<T>::add_element(uint row_id, uint col_id, T element) {
-        assert(row_id < n_rows);
-        assert(col_id < n_cols);
-
-        Row& row = data[row_id];
-        uint i   = 0;
+    void cpu_lil_add_element(uint       row_id,
+                             uint       col_id,
+                             T          element,
+                             CpuLil<T>& lil) {
+        using Entry = typename CpuLil<T>::Entry;
+        auto& row   = lil.Ar[row_id];
 
         auto where = std::upper_bound(row.begin(), row.end(), Entry{col_id, element}, [](const Entry& val, const Entry& point) {
             return val.first < point.first;
         });
 
         if (where != row.end() && *where.first == col_id) {
-            *where.second = reduce(*where.second, element);
+            *where.second = lil.reduce(*where.second, element);
             return;
         }
 
         row.insert(where, Entry{col_id, element});
-        n_values += 1;
+        lil.values += 1;
     }
 
     template<typename T>
-    void CpuLil<T>::to_coo(std::vector<uint>& Ri, std::vector<uint>& Rj, std::vector<T>& Rx) {
-        assert(Ri.size() == n_values);
-        assert(Rj.size() == n_values);
-        assert(Rx.size() == n_values);
+    void cpu_lil_to_coo(uint             n_rows,
+                        const CpuLil<T>& in,
+                        CpuCoo<T>&       out) {
+        auto& Ri = out.Ai;
+        auto& Rj = out.Aj;
+        auto& Rx = out.Ax;
+        auto& Ar = in.Ar;
+
+        assert(Ri.size() == in.values);
+        assert(Rj.size() == in.values);
+        assert(Rx.size() == in.values);
 
         uint k = 0;
         for (uint i = 0; i < n_rows; i++) {
-            const Row& row = data[i];
+            const auto& row = Ar[i];
             for (uint j = 0; j < row.size(); j++) {
                 Ri[k] = i;
                 Rj[k] = row[j].first;
@@ -132,20 +99,28 @@ namespace spla {
     }
 
     template<typename T>
-    void CpuLil<T>::to_csr(std::vector<uint>& Rp, std::vector<uint>& Rj, std::vector<T>& Rx) {
+    void cpu_lil_to_csr(uint             n_rows,
+                        const CpuLil<T>& in,
+                        CpuCsr<T>&       out) {
+        auto& Rp = out.Ap;
+        auto& Rj = out.Aj;
+        auto& Rx = out.Ax;
+        auto& Ar = in.Ar;
+
         assert(Rp.size() == n_rows + 1);
-        assert(Rj.size() == n_values);
-        assert(Rx.size() == n_values);
+        assert(Rj.size() == in.values);
+        assert(Rx.size() == in.values);
 
         for (uint i = 0; i < n_rows; i++) {
-            Rp[i] = data[i].size();
+            Rp[i] = Ar[i].size();
         }
 
         std::exclusive_scan(Rp.begin(), Rp.end(), Rp.begin(), 0, std::plus<>());
+        assert(Rp[n_rows] == in.values);
 
         uint k = 0;
         for (uint i = 0; i < n_rows; i++) {
-            const Row& row = data[i];
+            const auto& row = Ar[i];
             for (uint j = 0; j < row.size(); j++) {
                 Rj[k] = row[j].first;
                 Rx[k] = row[j].second;
@@ -153,7 +128,6 @@ namespace spla {
             }
         }
     }
-
 
     /**
      * @}

@@ -28,17 +28,7 @@
 #ifndef SPLA_CPU_COO_HPP
 #define SPLA_CPU_COO_HPP
 
-#include <spla/config.hpp>
-
-#include <core/tdecoration.hpp>
-
-#include <algorithm>
-#include <cassert>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <utility>
-#include <vector>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -47,25 +37,35 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class CpuCoo
-     * @brief CPU list of coordinates matrix format
-     *
-     * @tparam T Type of elements
-     */
     template<typename T>
-    class CpuCoo : public TDecoration<T> {
-    public:
-        ~CpuCoo() override = default;
+    void cpu_coo_to_csr(uint             n_rows,
+                        const CpuCoo<T>& in,
+                        CpuCsr<T>&       out) {
+        auto& Rp = out.Ap;
+        auto& Rj = out.Aj;
+        auto& Rx = out.Ax;
+        auto& Ai = in.Ai;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
 
-        std::vector<uint> Ai;
-        std::vector<uint> Aj;
-        std::vector<T>    Ax;
-        uint              n_rows   = 0;
-        uint              n_cols   = 0;
-        uint              n_values = 0;
-        uint              version  = 0;
-    };
+        assert(Rp.size() == n_rows + 1);
+        assert(Rj.size() == in.values);
+        assert(Rx.size() == in.values);
+
+        std::fill(Rp.begin(), Rp.end(), 0u);
+
+        for (uint k = 0; k < in.values; ++k) {
+            Rp[Ai[k]] += 1;
+        }
+
+        std::exclusive_scan(Rp.begin(), Rp.end(), Rp.begin(), 0, std::plus<>());
+        assert(Rp[n_rows] == in.values);
+
+        for (uint k = 0; k < in.values; ++k) {
+            Rj[k] = Aj[k];
+            Rx[k] = Ax[k];
+        }
+    }
 
     /**
      * @}

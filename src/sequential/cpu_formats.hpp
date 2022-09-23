@@ -25,12 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_ACCELERATOR_HPP
-#define SPLA_ACCELERATOR_HPP
+#ifndef SPLA_CPU_FORMATS_HPP
+#define SPLA_CPU_FORMATS_HPP
 
 #include <spla/config.hpp>
 
+#include <core/tdecoration.hpp>
+
+#include <algorithm>
+#include <cassert>
+#include <functional>
+#include <numeric>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace spla {
 
@@ -40,32 +48,71 @@ namespace spla {
      */
 
     /**
-     * @class Accelerator
-     * @brief Interface for an computations acceleration backend
+     * @class CpuArray
+     * @brief CPU one-dim array for dense vector representation
      *
-     * Accelerator is an optional library computations backend, which
-     * may provided customized and efficient implementations of some operations
-     * over matrices and vectors.
-     *
-     * Accelerator can implement additional and custom storage schemas on top of
-     * the default schemas in matrices and vectors and optional store any data
-     * along with default in order to speed-up computations.
-     *
-     * Typical accelerator implementation is a GPUs utilization by usage of
-     * OpenCL or CUDA API. In this case additional device resident data stored
-     * with host data and kernels dispatched in order to perform computations.
+     * @tparam T
      */
-    class Accelerator {
+    template<typename T>
+    class CpuArray : public TDecoration<T> {
     public:
-        virtual ~Accelerator() = default;
+        ~CpuArray() override = default;
 
-        virtual Status             init()                      = 0;
-        virtual Status             set_platform(int index)     = 0;
-        virtual Status             set_device(int index)       = 0;
-        virtual Status             set_queues_count(int count) = 0;
-        virtual const std::string& get_name()                  = 0;
-        virtual const std::string& get_description()           = 0;
-        virtual const std::string& get_suffix()                = 0;
+        using Reduce = std::function<T(T accum, T added)>;
+
+        std::vector<T> Ax{};
+        Reduce         reduce = [](T, T a) { return a; };
+    };
+
+    /**
+     * @class CpuLil
+     * @brief CPU list-of-list matrix format for fast incremental build
+     *
+     * @tparam T Type of elements
+     */
+    template<typename T>
+    class CpuLil : public TDecoration<T> {
+    public:
+        ~CpuLil() override = default;
+
+        using Entry  = std::pair<uint, T>;
+        using Row    = std::vector<Entry>;
+        using Reduce = std::function<T(T accum, T added)>;
+
+        std::vector<Row> Ar{};
+        Reduce           reduce = [](T, T a) { return a; };
+    };
+
+    /**
+     * @class CpuCoo
+     * @brief CPU list of coordinates matrix format
+     *
+     * @tparam T Type of elements
+     */
+    template<typename T>
+    class CpuCoo : public TDecoration<T> {
+    public:
+        ~CpuCoo() override = default;
+
+        std::vector<uint> Ai;
+        std::vector<uint> Aj;
+        std::vector<T>    Ax;
+    };
+
+    /**
+     * @class CpuCsr
+     * @brief CPU compressed sparse row matrix format
+     *
+     * @tparam T Type of elements
+     */
+    template<typename T>
+    class CpuCsr : public TDecoration<T> {
+    public:
+        ~CpuCsr() override = default;
+
+        std::vector<uint> Ap;
+        std::vector<uint> Aj;
+        std::vector<T>    Ax;
     };
 
     /**
@@ -74,4 +121,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_ACCELERATOR_HPP
+#endif//SPLA_CPU_FORMATS_HPP

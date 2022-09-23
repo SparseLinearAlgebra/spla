@@ -239,6 +239,7 @@ add_library(spla SHARED
         src/core/tmatrix.hpp
         src/core/tscalar.hpp
         src/core/ttype.hpp
+        src/core/tvector.hpp
         src/schedule/schedule_tasks.cpp
         src/schedule/schedule_tasks.hpp
         src/schedule/schedule_st.cpp
@@ -246,14 +247,17 @@ add_library(spla SHARED
         src/sequential/cpu_algo_callback.hpp
         src/sequential/cpu_algo_registry.cpp
         src/sequential/cpu_algo_registry.hpp
+        src/sequential/cpu_array.hpp
         src/sequential/cpu_coo.hpp
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_lil.hpp
+        src/sequential/cpu_formats.hpp
         src/library.cpp
         src/matrix.cpp
         src/scalar.cpp
         src/schedule.cpp
         src/type.cpp
+        src/vector.cpp
         # C bindings
         include/spla_c/spla.h
         src/binding/c_config.hpp
