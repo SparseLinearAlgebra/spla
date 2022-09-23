@@ -1,29 +1,31 @@
 <map id="include/spla/type.hpp" name="include/spla/type.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="532,5,675,32"/>
-<area shape="rect" id="node2" href="$matrix_8hpp.html" title=" " alt="" coords="615,80,770,107"/>
-<area shape="rect" id="node4" href="$spla_8hpp.html" title=" " alt="" coords="197,237,340,263"/>
-<area shape="rect" id="node21" href="$op_8hpp.html" title=" " alt="" coords="279,80,413,107"/>
-<area shape="rect" id="node22" href="$scalar_8hpp.html" title=" " alt="" coords="794,80,949,107"/>
-<area shape="rect" id="node25" href="$vector_8hpp.html" title=" " alt="" coords="437,80,591,107"/>
-<area shape="rect" id="node26" href="$ttype_8hpp.html" title=" " alt="" coords="973,80,1098,107"/>
-<area shape="rect" id="node3" href="$schedule_8hpp.html" title=" " alt="" coords="530,155,701,181"/>
-<area shape="rect" id="node19" href="$tmatrix_8hpp.html" title=" " alt="" coords="807,155,943,181"/>
-<area shape="rect" id="node7" href="$dispatcher_8hpp.html" title=" " alt="" coords="506,326,663,353"/>
-<area shape="rect" id="node13" href="$registry_8hpp.html" title=" " alt="" coords="365,237,503,263"/>
-<area shape="rect" id="node15" href="$schedule__st_8hpp.html" title=" " alt="" coords="851,229,1003,271"/>
-<area shape="rect" id="node16" href="$schedule_8cpp.html" title=" " alt="" coords="914,326,1034,353"/>
-<area shape="rect" id="node17" href="$schedule__tasks_8hpp.html" title=" " alt="" coords="625,229,777,271"/>
+<area shape="rect" id="node1" title=" " alt="" coords="420,5,563,32"/>
+<area shape="rect" id="node2" href="$matrix_8hpp.html" title=" " alt="" coords="325,80,479,107"/>
+<area shape="rect" id="node4" href="$spla_8hpp.html" title=" " alt="" coords="59,237,201,263"/>
+<area shape="rect" id="node21" href="$op_8hpp.html" title=" " alt="" coords="167,80,301,107"/>
+<area shape="rect" id="node22" href="$scalar_8hpp.html" title=" " alt="" coords="503,80,658,107"/>
+<area shape="rect" id="node25" href="$vector_8hpp.html" title=" " alt="" coords="682,80,837,107"/>
+<area shape="rect" id="node28" href="$ttype_8hpp.html" title=" " alt="" coords="861,80,986,107"/>
+<area shape="rect" id="node3" href="$schedule_8hpp.html" title=" " alt="" coords="334,155,505,181"/>
+<area shape="rect" id="node19" href="$tmatrix_8hpp.html" title=" " alt="" coords="614,155,750,181"/>
+<area shape="rect" id="node7" href="$dispatcher_8hpp.html" title=" " alt="" coords="613,326,770,353"/>
+<area shape="rect" id="node13" href="$registry_8hpp.html" title=" " alt="" coords="679,237,818,263"/>
+<area shape="rect" id="node15" href="$schedule__st_8hpp.html" title=" " alt="" coords="226,229,378,271"/>
+<area shape="rect" id="node16" href="$schedule_8cpp.html" title=" " alt="" coords="242,326,362,353"/>
+<area shape="rect" id="node17" href="$schedule__tasks_8hpp.html" title=" " alt="" coords="453,229,605,271"/>
 <area shape="rect" id="node5" href="$c__config_8hpp.html" title=" " alt="" coords="5,326,167,353"/>
 <area shape="rect" id="node6" href="$c__library_8cpp.html" title=" " alt="" coords="5,415,167,442"/>
-<area shape="rect" id="node8" href="$dispatcher_8cpp.html" title=" " alt="" coords="197,415,354,442"/>
-<area shape="rect" id="node9" href="$library_8cpp.html" title=" " alt="" coords="388,415,491,442"/>
-<area shape="rect" id="node10" href="$schedule__st_8cpp.html" title=" " alt="" coords="835,408,987,449"/>
-<area shape="rect" id="node11" href="$cpu__algo__callback_8hpp.html" title=" " alt="" coords="519,408,651,449"/>
-<area shape="rect" id="node12" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="521,497,649,539"/>
-<area shape="rect" id="node14" href="$registry_8cpp.html" title=" " alt="" coords="343,326,482,353"/>
-<area shape="rect" id="node18" href="$schedule__tasks_8cpp.html" title=" " alt="" coords="738,319,890,360"/>
-<area shape="rect" id="node20" href="$matrix_8cpp.html" title=" " alt="" coords="1028,237,1131,263"/>
-<area shape="rect" id="node23" href="$tscalar_8hpp.html" title=" " alt="" coords="967,155,1103,181"/>
-<area shape="rect" id="node24" href="$scalar_8cpp.html" title=" " alt="" coords="1155,237,1257,263"/>
-<area shape="rect" id="node27" href="$type_8cpp.html" title=" " alt="" coords="1128,155,1220,181"/>
+<area shape="rect" id="node8" href="$dispatcher_8cpp.html" title=" " alt="" coords="779,415,937,442"/>
+<area shape="rect" id="node9" href="$library_8cpp.html" title=" " alt="" coords="991,415,1093,442"/>
+<area shape="rect" id="node10" href="$schedule__st_8cpp.html" title=" " alt="" coords="319,408,471,449"/>
+<area shape="rect" id="node11" href="$cpu__algo__callback_8hpp.html" title=" " alt="" coords="623,408,755,449"/>
+<area shape="rect" id="node12" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="625,497,753,539"/>
+<area shape="rect" id="node14" href="$registry_8cpp.html" title=" " alt="" coords="895,326,1034,353"/>
+<area shape="rect" id="node18" href="$schedule__tasks_8cpp.html" title=" " alt="" coords="386,319,538,360"/>
+<area shape="rect" id="node20" href="$matrix_8cpp.html" title=" " alt="" coords="843,237,945,263"/>
+<area shape="rect" id="node23" href="$tscalar_8hpp.html" title=" " alt="" coords="774,155,910,181"/>
+<area shape="rect" id="node24" href="$scalar_8cpp.html" title=" " alt="" coords="969,237,1072,263"/>
+<area shape="rect" id="node26" href="$tvector_8hpp.html" title=" " alt="" coords="935,155,1072,181"/>
+<area shape="rect" id="node27" href="$vector_8cpp.html" title=" " alt="" coords="1097,237,1201,263"/>
+<area shape="rect" id="node29" href="$type_8cpp.html" title=" " alt="" coords="1096,155,1188,181"/>
 </map>

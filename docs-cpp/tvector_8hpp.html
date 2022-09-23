@@ -65,12 +65,84 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">tvector.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8hpp_source.html">spla/config.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="vector_8hpp_source.html">spla/vector.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="tdecoration_8hpp_source.html">core/tdecoration.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ttype_8hpp_source.html">core/ttype.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__array_8hpp_source.html">sequential/cpu_array.hpp</a>&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for tvector.hpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="tvector_8hpp__incl.png" border="0" usemap="#asrc_2core_2tvector_8hpp" alt=""/></div>
+<map name="asrc_2core_2tvector_8hpp" id="asrc_2core_2tvector_8hpp">
+<area shape="rect" title=" " alt="" coords="233,5,371,32"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="143,379,251,405"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="116,80,227,107"/>
+<area shape="rect" title=" " alt="" coords="5,379,73,405"/>
+<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="273,229,411,256"/>
+<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="251,80,353,107"/>
+<area shape="rect" href="cpu__array_8hpp.html" title=" " alt="" coords="509,80,674,107"/>
+<area shape="rect" title=" " alt="" coords="881,229,939,256"/>
+<area shape="rect" title=" " alt="" coords="159,453,234,480"/>
+<area shape="rect" title=" " alt="" coords="468,453,547,480"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="116,229,197,256"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="197,155,268,181"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="117,304,197,331"/>
+<area shape="rect" title=" " alt="" coords="297,379,352,405"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="542,304,603,331"/>
+<area shape="rect" title=" " alt="" coords="545,379,606,405"/>
+<area shape="rect" title=" " alt="" coords="633,379,699,405"/>
+<area shape="rect" title=" " alt="" coords="743,379,795,405"/>
+<area shape="rect" href="cpu__formats_8hpp.html" title=" " alt="" coords="531,155,713,181"/>
+<area shape="rect" title=" " alt="" coords="537,229,611,256"/>
+<area shape="rect" title=" " alt="" coords="636,229,704,256"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="tvector_8hpp__dep__incl.png" border="0" usemap="#asrc_2core_2tvector_8hppdep" alt=""/></div>
+<map name="asrc_2core_2tvector_8hppdep" id="asrc_2core_2tvector_8hppdep">
+<area shape="rect" title=" " alt="" coords="5,5,143,32"/>
+<area shape="rect" href="vector_8cpp.html" title=" " alt="" coords="22,80,126,107"/>
+</map>
+</div>
+</div>
 <p><a href="tvector_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TVector.html">spla::TVector&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga3fd67fecca0cdf9c4a1a98b9d7851615"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3fd67fecca0cdf9c4a1a98b9d7851615">spla::VectorDec</a> { <br />
+&#160;&#160;<a class="el" href="group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615a9a71a13863c84ba34fc41595fc2ee0c6">spla::Dense</a> = 0
+, <a class="el" href="group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615a0e99c181102b6ccce5d015c8c3789375">spla::Coo</a> = 1
+, <a class="el" href="group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615a2a674ad5e27026967254a80445593b9f">spla::AccDense</a> = 2
+, <a class="el" href="group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615a6a061313d22e51e0f25b7cd4dc065233">spla::Max</a> = 4
+<br />
+ }</td></tr>
+<tr class="separator:ga3fd67fecca0cdf9c4a1a98b9d7851615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
