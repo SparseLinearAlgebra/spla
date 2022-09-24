@@ -1,0 +1,20 @@
+<map id="include/spla/descriptor.hpp" name="include/spla/descriptor.hpp">
+<area shape="rect" id="node1" title=" " alt="" coords="390,5,566,32"/>
+<area shape="rect" id="node2" href="$schedule_8hpp.html" title=" " alt="" coords="393,80,563,107"/>
+<area shape="rect" id="node3" href="$spla_8hpp.html" title=" " alt="" coords="121,162,264,189"/>
+<area shape="rect" id="node18" href="$descriptor_8cpp.html" title=" " alt="" coords="587,80,713,107"/>
+<area shape="rect" id="node6" href="$dispatcher_8hpp.html" title=" " alt="" coords="663,251,821,278"/>
+<area shape="rect" id="node12" href="$registry_8hpp.html" title=" " alt="" coords="802,162,941,189"/>
+<area shape="rect" id="node14" href="$schedule__st_8hpp.html" title=" " alt="" coords="515,155,667,196"/>
+<area shape="rect" id="node15" href="$schedule_8cpp.html" title=" " alt="" coords="418,251,538,278"/>
+<area shape="rect" id="node16" href="$schedule__tasks_8hpp.html" title=" " alt="" coords="289,155,441,196"/>
+<area shape="rect" id="node4" href="$c__config_8hpp.html" title=" " alt="" coords="5,251,167,278"/>
+<area shape="rect" id="node5" href="$c__library_8cpp.html" title=" " alt="" coords="5,341,167,367"/>
+<area shape="rect" id="node7" href="$dispatcher_8cpp.html" title=" " alt="" coords="986,341,1143,367"/>
+<area shape="rect" id="node8" href="$library_8cpp.html" title=" " alt="" coords="853,341,956,367"/>
+<area shape="rect" id="node9" href="$schedule__st_8cpp.html" title=" " alt="" coords="666,333,818,375"/>
+<area shape="rect" id="node10" href="$cpu__algo__callback_8hpp.html" title=" " alt="" coords="509,333,641,375"/>
+<area shape="rect" id="node11" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="511,423,639,464"/>
+<area shape="rect" id="node13" href="$registry_8cpp.html" title=" " alt="" coords="845,251,983,278"/>
+<area shape="rect" id="node17" href="$schedule__tasks_8cpp.html" title=" " alt="" coords="191,244,343,285"/>
+</map>

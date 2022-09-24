@@ -74,6 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="config_8hpp_source.html">config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="object_8hpp_source.html">object.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="op_8hpp_source.html">op.hpp</a>&quot;</code><br />
@@ -86,24 +87,25 @@ Include dependency graph for schedule.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="schedule_8hpp__incl.png" border="0" usemap="#ainclude_2spla_2schedule_8hpp" alt=""/></div>
 <map name="ainclude_2spla_2schedule_8hpp" id="ainclude_2spla_2schedule_8hpp">
-<area shape="rect" title=" " alt="" coords="416,5,586,32"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="274,379,354,405"/>
-<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="302,80,383,107"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="368,229,450,256"/>
-<area shape="rect" title=" " alt="" coords="510,379,564,405"/>
-<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="620,80,680,107"/>
-<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="407,80,488,107"/>
-<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="513,80,596,107"/>
-<area shape="rect" title=" " alt="" coords="756,80,814,107"/>
-<area shape="rect" title=" " alt="" coords="277,453,352,480"/>
-<area shape="rect" title=" " alt="" coords="60,453,139,480"/>
-<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="443,155,514,181"/>
-<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="369,304,449,331"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="110,304,172,331"/>
-<area shape="rect" title=" " alt="" coords="379,379,447,405"/>
-<area shape="rect" title=" " alt="" coords="22,379,84,405"/>
-<area shape="rect" title=" " alt="" coords="108,379,174,405"/>
-<area shape="rect" title=" " alt="" coords="198,379,250,405"/>
+<area shape="rect" title=" " alt="" coords="393,5,564,32"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="273,379,353,405"/>
+<area shape="rect" href="descriptor_8hpp.html" title=" " alt="" coords="259,155,362,181"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="385,229,466,256"/>
+<area shape="rect" title=" " alt="" coords="525,379,579,405"/>
+<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="333,80,414,107"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="651,80,711,107"/>
+<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="438,80,519,107"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="544,80,627,107"/>
+<area shape="rect" title=" " alt="" coords="787,80,845,107"/>
+<area shape="rect" title=" " alt="" coords="276,453,351,480"/>
+<area shape="rect" title=" " alt="" coords="59,453,138,480"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="384,304,464,331"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="72,304,133,331"/>
+<area shape="rect" title=" " alt="" coords="390,379,458,405"/>
+<area shape="rect" title=" " alt="" coords="21,379,83,405"/>
+<area shape="rect" title=" " alt="" coords="107,379,173,405"/>
+<area shape="rect" title=" " alt="" coords="197,379,249,405"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="489,155,559,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -151,15 +153,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga582b4e6cbcd02d06afb39efdc5ae977f"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; Schedule &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f">spla::make_schedule</a> ()</td></tr>
 <tr class="memdesc:ga582b4e6cbcd02d06afb39efdc5ae977f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes new schedule for making execution schedule.  <a href="group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f">More...</a><br /></td></tr>
 <tr class="separator:ga582b4e6cbcd02d06afb39efdc5ae977f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab315e0a39ffff2cc368c7644df7df8a7"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gab315e0a39ffff2cc368c7644df7df8a7">spla::make_sched_callback</a> (<a class="el" href="classScheduleCallback.html">ScheduleCallback</a> callback)</td></tr>
-<tr class="memdesc:gab315e0a39ffff2cc368c7644df7df8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled callback function.  <a href="group__spla.html#gab315e0a39ffff2cc368c7644df7df8a7">More...</a><br /></td></tr>
-<tr class="separator:gab315e0a39ffff2cc368c7644df7df8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gaa2c182a720f89ca837fbb1eeab3c03d5">spla::make_sched_mxv_masked</a> (ref_ptr&lt; Vector &gt; r, ref_ptr&lt; Vector &gt; mask, ref_ptr&lt; Matrix &gt; M, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; OpBinary &gt; op_multiply, ref_ptr&lt; OpBinary &gt; op_add, bool opt_complement)</td></tr>
-<tr class="memdesc:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#gaa2c182a720f89ca837fbb1eeab3c03d5">More...</a><br /></td></tr>
-<tr class="separator:gaa2c182a720f89ca837fbb1eeab3c03d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga00edde1aeb10d31353bb9aa04a8cb1dd">spla::make_sched_v_assign_masked</a> (ref_ptr&lt; Vector &gt; r, ref_ptr&lt; Vector &gt; mask, ref_ptr&lt; Scalar &gt; value, ref_ptr&lt; OpBinary &gt; op_assign)</td></tr>
-<tr class="memdesc:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#ga00edde1aeb10d31353bb9aa04a8cb1dd">More...</a><br /></td></tr>
-<tr class="separator:ga00edde1aeb10d31353bb9aa04a8cb1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9a52465cd98a53181d4628bb17530c8f"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9a52465cd98a53181d4628bb17530c8f">spla::make_sched_callback</a> (<a class="el" href="classScheduleCallback.html">ScheduleCallback</a> callback, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;())</td></tr>
+<tr class="memdesc:ga9a52465cd98a53181d4628bb17530c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled callback function.  <a href="group__spla.html#ga9a52465cd98a53181d4628bb17530c8f">More...</a><br /></td></tr>
+<tr class="separator:ga9a52465cd98a53181d4628bb17530c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d861b7f585c55bb8335242394da57c9"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga0d861b7f585c55bb8335242394da57c9">spla::make_sched_mxv_masked</a> (ref_ptr&lt; Vector &gt; r, ref_ptr&lt; Vector &gt; mask, ref_ptr&lt; Matrix &gt; M, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; OpBinary &gt; op_multiply, ref_ptr&lt; OpBinary &gt; op_add, bool opt_complement, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;())</td></tr>
+<tr class="memdesc:ga0d861b7f585c55bb8335242394da57c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#ga0d861b7f585c55bb8335242394da57c9">More...</a><br /></td></tr>
+<tr class="separator:ga0d861b7f585c55bb8335242394da57c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae30b845e700b7c343b77b0437148c07a"><td class="memItemLeft" align="right" valign="top">ref_ptr&lt; ScheduleTask &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">spla::make_sched_v_assign_masked</a> (ref_ptr&lt; Vector &gt; r, ref_ptr&lt; Vector &gt; mask, ref_ptr&lt; Scalar &gt; value, ref_ptr&lt; OpBinary &gt; op_assign, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;())</td></tr>
+<tr class="memdesc:gae30b845e700b7c343b77b0437148c07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">More...</a><br /></td></tr>
+<tr class="separator:gae30b845e700b7c343b77b0437148c07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

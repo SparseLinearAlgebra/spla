@@ -112,6 +112,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af8983db7087467be68757944d59e0e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a848453ab0dd4c1f603bf149088568d"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Object.html">Object</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask.html#a1a848453ab0dd4c1f603bf149088568d">get_args</a> ()=0</td></tr>
 <tr class="separator:a1a848453ab0dd4c1f603bf149088568d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ce243743cb2bf0118bed6f4b2ac1ed"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask.html#a24ce243743cb2bf0118bed6f4b2ac1ed">get_desc</a> ()=0</td></tr>
+<tr class="separator:a24ce243743cb2bf0118bed6f4b2ac1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad35a656e14343420ae326d18fc291682"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask.html#ad35a656e14343420ae326d18fc291682">get_desc_or_default</a> ()=0</td></tr>
+<tr class="separator:ad35a656e14343420ae326d18fc291682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1Object')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1Object.html">spla::Object</a></td></tr>
 <tr class="memitem:a08981364d4e0c26b69705decb6398f95 inherit pub_methods_classspla_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Object.html#a08981364d4e0c26b69705decb6398f95">~Object</a> () override=default</td></tr>
 <tr class="separator:a08981364d4e0c26b69705decb6398f95 inherit pub_methods_classspla_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,6 +188,60 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a99547e6ec1163bfc6e4661a6452604a2">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a345850c3378e3dc5804d8411a5f6d453">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a6d5c17f8f73603797a9d7e1a953c0ee1">spla::ScheduleTask_callback</a>.</p>
+
+</div>
+</div>
+<a id="a24ce243743cb2bf0118bed6f4b2ac1ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24ce243743cb2bf0118bed6f4b2ac1ed">&#9670;&nbsp;</a></span>get_desc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt; spla::ScheduleTask::get_desc </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a727e9f9a85e605eca6e5d6f3c15c280a">spla::ScheduleTaskBase</a>.</p>
+
+</div>
+</div>
+<a id="ad35a656e14343420ae326d18fc291682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad35a656e14343420ae326d18fc291682">&#9670;&nbsp;</a></span>get_desc_or_default()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt; spla::ScheduleTask::get_desc_or_default </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a9a85b17854d81a88e1022f31365c15e4">spla::ScheduleTaskBase</a>.</p>
 
 </div>
 </div>
