@@ -29,6 +29,7 @@
 #define SPLA_SCHEDULE_HPP
 
 #include "config.hpp"
+#include "descriptor.hpp"
 #include "matrix.hpp"
 #include "object.hpp"
 #include "op.hpp"
@@ -51,10 +52,12 @@ namespace spla {
      */
     class ScheduleTask : public Object {
     public:
-        SPLA_API ~ScheduleTask() override                        = default;
-        SPLA_API virtual std::string                  get_name() = 0;
-        SPLA_API virtual std::string                  get_key()  = 0;
-        SPLA_API virtual std::vector<ref_ptr<Object>> get_args() = 0;
+        SPLA_API ~ScheduleTask() override                                   = default;
+        SPLA_API virtual std::string                  get_name()            = 0;
+        SPLA_API virtual std::string                  get_key()             = 0;
+        SPLA_API virtual std::vector<ref_ptr<Object>> get_args()            = 0;
+        SPLA_API virtual ref_ptr<Descriptor>          get_desc()            = 0;
+        SPLA_API virtual ref_ptr<Descriptor>          get_desc_or_default() = 0;
     };
 
     /**
@@ -80,11 +83,13 @@ namespace spla {
      * @brief Scheduled callback function
      *
      * @param callback User-defined function to call as scheduled task
+     * @param desc Scheduled task descriptor; default is null
      *
      * @return Created node or null on failure
      */
     SPLA_API ref_ptr<ScheduleTask> make_sched_callback(
-            ScheduleCallback callback);
+            ScheduleCallback    callback,
+            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 
     /**
      * @brief Scheduled r<comp! mask> = M x V
@@ -96,17 +101,19 @@ namespace spla {
      * @param op_multiply
      * @param op_add
      * @param opt_complement
+     * @param desc Scheduled task descriptor; default is null
      *
      * @return Created node or null on failure
      */
     SPLA_API ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector>   r,
-            ref_ptr<Vector>   mask,
-            ref_ptr<Matrix>   M,
-            ref_ptr<Vector>   v,
-            ref_ptr<OpBinary> op_multiply,
-            ref_ptr<OpBinary> op_add,
-            bool              opt_complement);
+            ref_ptr<Vector>     r,
+            ref_ptr<Vector>     mask,
+            ref_ptr<Matrix>     M,
+            ref_ptr<Vector>     v,
+            ref_ptr<OpBinary>   op_multiply,
+            ref_ptr<OpBinary>   op_add,
+            bool                opt_complement,
+            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 
     /**
      * @brief Scheduled r<mask> = value
@@ -115,14 +122,16 @@ namespace spla {
      * @param mask
      * @param value
      * @param op_assign
+     * @param desc Scheduled task descriptor; default is null
      *
      * @return Created node or null on failure
      */
     SPLA_API ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector>   r,
-            ref_ptr<Vector>   mask,
-            ref_ptr<Scalar>   value,
-            ref_ptr<OpBinary> op_assign);
+            ref_ptr<Vector>     r,
+            ref_ptr<Vector>     mask,
+            ref_ptr<Scalar>     value,
+            ref_ptr<OpBinary>   op_assign,
+            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 
     /**
      * @}

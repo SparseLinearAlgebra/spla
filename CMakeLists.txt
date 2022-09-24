@@ -219,6 +219,7 @@ add_library(spla SHARED
         # C++ core
         include/spla/spla.hpp
         include/spla/config.hpp
+        include/spla/descriptor.hpp
         include/spla/library.hpp
         include/spla/matrix.hpp
         include/spla/object.hpp
@@ -252,6 +253,7 @@ add_library(spla SHARED
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_lil.hpp
         src/sequential/cpu_formats.hpp
+        src/descriptor.cpp
         src/library.cpp
         src/matrix.cpp
         src/scalar.cpp

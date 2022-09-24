@@ -112,6 +112,11 @@ typedef enum spla_AcceleratorType {
 typedef struct spla_Object_t* spla_Object;
 
 /**
+ * @brief Handle to spla descriptor object
+ */
+typedef struct spla_Descriptor_t* spla_Descriptor;
+
+/**
  * @brief Handle to spla matrix primitive
  */
 typedef struct spla_Matrix_t* spla_Matrix;

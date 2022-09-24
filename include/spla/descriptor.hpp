@@ -25,60 +25,44 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla/schedule.hpp>
+#ifndef SPLA_DESCRIPTOR_HPP
+#define SPLA_DESCRIPTOR_HPP
 
-#include <schedule/schedule_st.hpp>
-#include <schedule/schedule_tasks.hpp>
+#include "object.hpp"
 
 namespace spla {
 
-    ref_ptr<Schedule> make_schedule() {
-        return ref_ptr<Schedule>(new ScheduleSingleThread);
-    }
+    /**
+     * @addtogroup spla
+     * @{
+     */
 
-    ref_ptr<ScheduleTask> make_sched_callback(
-            ScheduleCallback    callback,
-            ref_ptr<Descriptor> desc) {
-        auto task      = make_ref<ScheduleTask_callback>();
-        task->callback = std::move(callback);
-        task->desc     = std::move(desc);
-        return task.as<ScheduleTask>();
-    }
+    /**
+     * @class Descriptor
+     * @brief Descriptor object used to parametrize execution of particular scheduled tasks
+     */
+    class Descriptor final : public Object {
+    public:
+        ~Descriptor() override = default;
 
-    ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Matrix>     M,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_multiply,
-            ref_ptr<OpBinary>   op_add,
-            bool                opt_complement,
-            ref_ptr<Descriptor> desc) {
-        auto task            = make_ref<ScheduleTask_mxv_masked>();
-        task->r              = std::move(r);
-        task->mask           = std::move(mask);
-        task->M              = std::move(M);
-        task->v              = std::move(v);
-        task->op_multiply    = std::move(op_multiply);
-        task->op_add         = std::move(op_add);
-        task->opt_complement = opt_complement;
-        task->desc           = std::move(desc);
-        return task.as<ScheduleTask>();
-    }
+        void               set_label(std::string label) override;
+        const std::string& get_label() const override;
 
-    ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Scalar>     value,
-            ref_ptr<OpBinary>   op_assign,
-            ref_ptr<Descriptor> desc) {
-        auto task       = make_ref<ScheduleTask_v_assign_masked>();
-        task->r         = std::move(r);
-        task->mask      = std::move(mask);
-        task->value     = std::move(value);
-        task->op_assign = std::move(op_assign);
-        task->desc      = std::move(desc);
-        return task.as<ScheduleTask>();
-    }
+    private:
+        std::string m_label;
+    };
+
+    /**
+     * @brief Makes new empty descriptor object
+     *
+     * @return New descriptor
+     */
+    ref_ptr<Descriptor> make_desc();
+
+    /**
+     * @}
+     */
 
 }// namespace spla
+
+#endif//SPLA_DESCRIPTOR_HPP

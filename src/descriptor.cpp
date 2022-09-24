@@ -25,60 +25,20 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla/schedule.hpp>
-
-#include <schedule/schedule_st.hpp>
-#include <schedule/schedule_tasks.hpp>
+#include <spla/descriptor.hpp>
 
 namespace spla {
 
-    ref_ptr<Schedule> make_schedule() {
-        return ref_ptr<Schedule>(new ScheduleSingleThread);
+    void Descriptor::set_label(std::string label) {
+        m_label = std::move(label);
     }
 
-    ref_ptr<ScheduleTask> make_sched_callback(
-            ScheduleCallback    callback,
-            ref_ptr<Descriptor> desc) {
-        auto task      = make_ref<ScheduleTask_callback>();
-        task->callback = std::move(callback);
-        task->desc     = std::move(desc);
-        return task.as<ScheduleTask>();
+    const std::string& Descriptor::get_label() const {
+        return m_label;
     }
 
-    ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Matrix>     M,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_multiply,
-            ref_ptr<OpBinary>   op_add,
-            bool                opt_complement,
-            ref_ptr<Descriptor> desc) {
-        auto task            = make_ref<ScheduleTask_mxv_masked>();
-        task->r              = std::move(r);
-        task->mask           = std::move(mask);
-        task->M              = std::move(M);
-        task->v              = std::move(v);
-        task->op_multiply    = std::move(op_multiply);
-        task->op_add         = std::move(op_add);
-        task->opt_complement = opt_complement;
-        task->desc           = std::move(desc);
-        return task.as<ScheduleTask>();
-    }
-
-    ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Scalar>     value,
-            ref_ptr<OpBinary>   op_assign,
-            ref_ptr<Descriptor> desc) {
-        auto task       = make_ref<ScheduleTask_v_assign_masked>();
-        task->r         = std::move(r);
-        task->mask      = std::move(mask);
-        task->value     = std::move(value);
-        task->op_assign = std::move(op_assign);
-        task->desc      = std::move(desc);
-        return task.as<ScheduleTask>();
+    ref_ptr<Descriptor> make_desc() {
+        return ref_ptr<Descriptor>(new Descriptor);
     }
 
 }// namespace spla

@@ -29,6 +29,7 @@
 #define SPLA_SPLA_HPP
 
 #include "config.hpp"
+#include "descriptor.hpp"
 #include "library.hpp"
 #include "matrix.hpp"
 #include "object.hpp"
@@ -37,5 +38,6 @@
 #include "scalar.hpp"
 #include "schedule.hpp"
 #include "type.hpp"
+#include "vector.hpp"
 
 #endif//SPLA_SPLA_HPP

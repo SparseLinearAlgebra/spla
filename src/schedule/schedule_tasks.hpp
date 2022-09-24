@@ -44,10 +44,14 @@ namespace spla {
     class ScheduleTaskBase : public ScheduleTask {
     public:
         ~ScheduleTaskBase() override = default;
-        void               set_label(std::string label) override;
-        const std::string& get_label() const override;
 
-        std::string label;
+        void                set_label(std::string label) override;
+        const std::string&  get_label() const override;
+        ref_ptr<Descriptor> get_desc() override;
+        ref_ptr<Descriptor> get_desc_or_default() override;
+
+        std::string         label;
+        ref_ptr<Descriptor> desc;
     };
 
     /**
@@ -57,6 +61,7 @@ namespace spla {
     class ScheduleTask_callback final : public ScheduleTaskBase {
     public:
         ~ScheduleTask_callback() override = default;
+
         std::string                  get_name() override;
         std::string                  get_key() override;
         std::vector<ref_ptr<Object>> get_args() override;
@@ -71,6 +76,7 @@ namespace spla {
     class ScheduleTask_mxv_masked final : public ScheduleTaskBase {
     public:
         ~ScheduleTask_mxv_masked() override = default;
+
         std::string                  get_name() override;
         std::string                  get_key() override;
         std::vector<ref_ptr<Object>> get_args() override;
@@ -91,6 +97,7 @@ namespace spla {
     class ScheduleTask_v_assign_masked final : public ScheduleTaskBase {
     public:
         ~ScheduleTask_v_assign_masked() override = default;
+
         std::string                  get_name() override;
         std::string                  get_key() override;
         std::vector<ref_ptr<Object>> get_args() override;

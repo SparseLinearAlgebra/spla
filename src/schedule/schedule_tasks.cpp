@@ -38,6 +38,15 @@ namespace spla {
         return label;
     }
 
+    ref_ptr<Descriptor> ScheduleTaskBase::get_desc() {
+        return desc;
+    }
+
+    ref_ptr<Descriptor> ScheduleTaskBase::get_desc_or_default() {
+        static ref_ptr<Descriptor> default_desc(new Descriptor);
+        return desc.is_not_null() ? desc : default_desc;
+    }
+
     std::string ScheduleTask_callback::get_name() {
         return "callback";
     }
