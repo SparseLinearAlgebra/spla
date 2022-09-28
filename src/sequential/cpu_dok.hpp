@@ -25,14 +25,22 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "test_common.hpp"
+#ifndef SPLA_CPU_DOK_HPP
+#define SPLA_CPU_DOK_HPP
 
-#include <spla/spla.hpp>
+#include <sequential/cpu_formats.hpp>
 
-TEST(schedule, task_callback) {
-    auto schedule = spla::make_schedule();
-    schedule->step_task(spla::make_sched_callback([]() { std::cout << "exec sched callback"; }));
-    schedule->submit();
-}
+namespace spla {
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+    /**
+     * @addtogroup internal
+     * @{
+     */
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_CPU_DOK_HPP

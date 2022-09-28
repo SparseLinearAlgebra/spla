@@ -46,4 +46,22 @@ TEST(vector, get_set_naive) {
     }
 }
 
-SPLA_GTEST_MAIN
+TEST(vector, get_set_reduce) {
+    const spla::uint N    = 10;
+    const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
+
+    auto ivec = spla::make_vector(N, spla::INT);
+
+    for (spla::uint i = 0; i < N; ++i) {
+        ivec->set_int(i, X[i]);
+        ivec->set_int(i, X[i]);
+    }
+
+    for (spla::uint i = 0; i < N; ++i) {
+        int x;
+        ivec->get_int(i, x);
+        EXPECT_EQ(x, X[i]);
+    }
+}
+
+SPLA_GTEST_MAIN_WITH_FINALIZE

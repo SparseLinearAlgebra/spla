@@ -43,4 +43,14 @@
         return RUN_ALL_TESTS();                          \
     }
 
+// Put in the end of the unit test file if you need additional spla lib finalize call
+#define SPLA_GTEST_MAIN_WITH_FINALIZE                    \
+    int main(int argc, char* argv[]) {                   \
+        ::testing::GTEST_FLAG(catch_exceptions) = false; \
+        ::testing::InitGoogleTest(&argc, argv);          \
+        int __ret = RUN_ALL_TESTS();                     \
+        spla::get_library()->finalize();                 \
+        return __ret;                                    \
+    }
+
 #endif//SPLA_TEST_COMMON_HPP

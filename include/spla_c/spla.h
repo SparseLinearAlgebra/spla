@@ -87,6 +87,8 @@ typedef enum spla_Status {
     SPLA_STATUS_INVALID_STATE = 5,
     /** Passed invalid argument for some function */
     SPLA_STATUS_INVALID_ARGUMENT = 6,
+    /** No such requested value in matrix, vector or scalar storage */
+    SPLA_STATUS_NO_VALUE = 7,
     /** Some library feature is not implemented */
     SPLA_STATUS_NOT_IMPLEMENTED = 1024
 } spla_Status;

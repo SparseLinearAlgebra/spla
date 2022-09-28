@@ -31,12 +31,14 @@
 #include <spla/config.hpp>
 
 #include <core/tdecoration.hpp>
+#include <util/pair_hash.hpp>
 
 #include <algorithm>
 #include <cassert>
 #include <functional>
 #include <numeric>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -104,6 +106,26 @@ namespace spla {
 
         std::vector<Row> Ar{};
         Reduce           reduce = [](T, T a) { return a; };
+    };
+
+    /**
+     * @class CpuDok
+     * @brief Dictionary of keys sparse matrix format
+     *
+     * @tparam T Type of elements
+     */
+    template<typename T>
+    class CpuDok : public TDecoration<T> {
+    public:
+        static constexpr Format FORMAT = Format::CpuDok;
+
+        ~CpuDok() override = default;
+
+        using Key    = std::pair<uint, uint>;
+        using Reduce = std::function<T(T accum, T added)>;
+
+        std::unordered_map<Key, T, pair_hash> Ax;
+        Reduce                                reduce = [](T, T a) { return a; };
     };
 
     /**

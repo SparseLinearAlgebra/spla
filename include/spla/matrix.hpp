@@ -44,11 +44,19 @@ namespace spla {
      */
     class Matrix : public Object {
     public:
-        SPLA_API ~Matrix() override                               = default;
-        SPLA_API virtual Status        hint_state(StateHint hint) = 0;
-        SPLA_API virtual uint          get_n_rows()               = 0;
-        SPLA_API virtual uint          get_n_cols()               = 0;
-        SPLA_API virtual ref_ptr<Type> get_type()                 = 0;
+        SPLA_API ~Matrix() override                                                             = default;
+        SPLA_API virtual Status        hint_state(StateHint hint)                               = 0;
+        SPLA_API virtual uint          get_n_rows()                                             = 0;
+        SPLA_API virtual uint          get_n_cols()                                             = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                                               = 0;
+        SPLA_API virtual Status        set_byte(uint row_id, uint col_id, std::int8_t value)    = 0;
+        SPLA_API virtual Status        set_int(uint row_id, uint col_id, std::int32_t value)    = 0;
+        SPLA_API virtual Status        set_uint(uint row_id, uint col_id, std::uint32_t value)  = 0;
+        SPLA_API virtual Status        set_float(uint row_id, uint col_id, float value)         = 0;
+        SPLA_API virtual Status        get_byte(uint row_id, uint col_id, std::int8_t& value)   = 0;
+        SPLA_API virtual Status        get_int(uint row_id, uint col_id, std::int32_t& value)   = 0;
+        SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value) = 0;
+        SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)        = 0;
     };
 
     /**

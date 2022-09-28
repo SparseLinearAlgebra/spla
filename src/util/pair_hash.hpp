@@ -25,14 +25,30 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "test_common.hpp"
+#ifndef SPLA_PAIR_HASH_HPP
+#define SPLA_PAIR_HASH_HPP
 
-#include <spla/spla.hpp>
+#include <utility>
 
-TEST(schedule, task_callback) {
-    auto schedule = spla::make_schedule();
-    schedule->step_task(spla::make_sched_callback([]() { std::cout << "exec sched callback"; }));
-    schedule->submit();
-}
+namespace spla {
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+    /**
+     * @addtogroup internal
+     * @{
+     */
+
+    struct pair_hash {
+    public:
+        template<typename T, typename U>
+        std::size_t operator()(const std::pair<T, U>& x) const {
+            return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+        }
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_PAIR_HASH_HPP

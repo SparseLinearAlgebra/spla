@@ -27,4 +27,45 @@
 
 #include "test_common.hpp"
 
-SPLA_GTEST_MAIN
+#include <spla/spla.hpp>
+
+TEST(matrix, get_set_naive) {
+    const spla::uint M = 10, N = 10, K = 8;
+    const spla::uint Ai[K] = {0, 0, 1, 2, 4, 7, 8, 8};
+    const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
+    const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
+
+    auto imat = spla::make_matrix(M, N, spla::INT);
+
+    for (spla::uint k = 0; k < K; ++k) {
+        imat->set_int(Ai[k], Aj[k], Ax[k]);
+    }
+
+    for (spla::uint k = 0; k < K; ++k) {
+        int x;
+        imat->get_int(Ai[k], Aj[k], x);
+        EXPECT_EQ(x, Ax[k]);
+    }
+}
+
+TEST(matrix, get_set_reduce) {
+    const spla::uint M = 10, N = 10, K = 8;
+    const spla::uint Ai[K] = {0, 0, 1, 2, 4, 7, 8, 8};
+    const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
+    const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
+
+    auto imat = spla::make_matrix(M, N, spla::INT);
+
+    for (spla::uint k = 0; k < K; ++k) {
+        imat->set_int(Ai[k], Aj[k], Ax[k]);
+        imat->set_int(Ai[k], Aj[k], Ax[k]);
+    }
+
+    for (spla::uint k = 0; k < K; ++k) {
+        int x;
+        imat->get_int(Ai[k], Aj[k], x);
+        EXPECT_EQ(x, Ax[k]);
+    }
+}
+
+SPLA_GTEST_MAIN_WITH_FINALIZE

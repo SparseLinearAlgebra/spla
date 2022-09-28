@@ -65,6 +65,14 @@ namespace spla {
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
+        Status             set_byte(uint row_id, uint col_id, std::int8_t value) override;
+        Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
+        Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
+        Status             set_float(uint row_id, uint col_id, float value) override;
+        Status             get_byte(uint row_id, uint col_id, int8_t& value) override;
+        Status             get_int(uint row_id, uint col_id, int32_t& value) override;
+        Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
+        Status             get_float(uint row_id, uint col_id, float& value) override;
 
         ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
         ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
@@ -76,8 +84,12 @@ namespace spla {
         template<typename Decorator>
         Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
+        void update_version();
+        void ensure_lil_format();
+        void ensure_dok_format();
+
     private:
-        uint      m_version    = 0;
+        uint      m_version    = 1;
         uint      m_n_rows     = 0;
         uint      m_n_cols     = 0;
         StateHint m_state_hint = StateHint::Default;
@@ -134,6 +146,9 @@ namespace spla {
         if (format == Format::CpuLil) {
             return m_decorations[index] = make_ref<CpuLil<T>>();
         }
+        if (format == Format::CpuDok) {
+            return m_decorations[index] = make_ref<CpuDok<T>>();
+        }
         if (format == Format::CpuCoo) {
             return m_decorations[index] = make_ref<CpuCoo<T>>();
         }
@@ -146,6 +161,129 @@ namespace spla {
 
         LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
         return m_decorations.back();
+    }
+
+    template<typename T>
+    Status TMatrix<T>::set_byte(uint row_id, uint col_id, std::int8_t value) {
+        ensure_lil_format();
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::set_int(uint row_id, uint col_id, std::int32_t value) {
+        ensure_lil_format();
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::set_uint(uint row_id, uint col_id, std::uint32_t value) {
+        ensure_lil_format();
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::set_float(uint row_id, uint col_id, float value) {
+        ensure_lil_format();
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::get_byte(uint row_id, uint col_id, int8_t& value) {
+        ensure_dok_format();
+
+        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+
+        if (entry != Ax.end()) {
+            value = static_cast<int8_t>(entry->second);
+            return Status ::Ok;
+        }
+
+        return Status::NoValue;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::get_int(uint row_id, uint col_id, int32_t& value) {
+        ensure_dok_format();
+
+        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+
+        if (entry != Ax.end()) {
+            value = static_cast<int32_t>(entry->second);
+            return Status ::Ok;
+        }
+
+        return Status::NoValue;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::get_uint(uint row_id, uint col_id, uint32_t& value) {
+        ensure_dok_format();
+
+        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+
+        if (entry != Ax.end()) {
+            value = static_cast<uint32_t>(entry->second);
+            return Status ::Ok;
+        }
+
+        return Status::NoValue;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::get_float(uint row_id, uint col_id, float& value) {
+        ensure_dok_format();
+
+        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+
+        if (entry != Ax.end()) {
+            value = static_cast<float>(entry->second);
+            return Status ::Ok;
+        }
+
+        return Status::NoValue;
+    }
+
+    template<typename T>
+    void TMatrix<T>::update_version() {
+        ++m_version;
+    }
+
+    template<typename T>
+    void TMatrix<T>::ensure_lil_format() {
+        auto p_lil = get_dec_or_create_p<CpuLil<T>>();
+
+        if (p_lil->get_version() < m_version) {
+            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+            update_version();
+            cpu_lil_resize(m_n_rows, *p_lil);
+            p_lil->update_version(m_version);
+        }
+    }
+
+    template<typename T>
+    void TMatrix<T>::ensure_dok_format() {
+        auto p_dok = get_dec_or_create_p<CpuDok<T>>();
+
+        if (p_dok->get_version() < m_version) {
+            auto p_lil = get_dec_p<CpuLil<T>>();
+
+            assert(!p_lil || p_lil->get_version() == m_version && "only lil read supported");
+
+            if (p_lil && p_lil->get_version() == m_version) {
+                LOG_MSG(Status::Ok, "copy data from lil, preserve content");
+                cpu_lil_to_dok(m_n_rows, *p_lil, *p_dok);
+            }
+
+            p_dok->update_version(m_version);
+        }
     }
 
     /**

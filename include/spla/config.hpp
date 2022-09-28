@@ -72,6 +72,8 @@ namespace spla {
         InvalidState = 5,
         /** Passed invalid argument for some function */
         InvalidArgument = 6,
+        /** No such requested value in matrix, vector or scalar storage */
+        NoValue = 7,
         /** Some library feature is not implemented */
         NotImplemented = 1024
     };
@@ -103,19 +105,34 @@ namespace spla {
     /**
      * @class Format
      * @brief Named storage format for library data objects
+     *
+     * @warning Do not change order and values
      */
     enum class Format {
-        CpuLil      = 0,
-        CpuCoo      = 1,
-        CpuCsr      = 2,
-        CpuCsc      = 3,
-        AccCoo      = 4,
-        AccCsr      = 5,
-        AccCsc      = 6,
-        CountMatrix = 7,
+        /** Matrix list of lists format for fast increment build */
+        CpuLil = 0,
+        /** Matrix dictionary of keys for fast look-up of values */
+        CpuDok = 1,
+        /** Matrix coordinates list format */
+        CpuCoo = 2,
+        /** Matrix compressed sparse rows format */
+        CpuCsr = 3,
+        /** Matrix compressed sparse columns format */
+        CpuCsc = 4,
+        /** Matrix acceleration structured coo format */
+        AccCoo = 5,
+        /** Matrix acceleration structured csr format */
+        AccCsr = 6,
+        /** Matrix acceleration structured csc format */
+        AccCsc = 7,
+        /** Total number of supported matrix formats */
+        CountMatrix = 8,
 
+        /** Vector dense array of values representation */
         CpuDenseVec = 0,
-        CpuCooVec   = 1,
+        /** Vector list of values for sparse data */
+        CpuCooVec = 1,
+        /** Total number of supported vector formats */
         CountVector = 2
     };
 
@@ -165,6 +182,7 @@ namespace spla {
             STATUS_MAP(DeviceNotFound);
             STATUS_MAP(InvalidState);
             STATUS_MAP(InvalidArgument);
+            STATUS_MAP(NoValue);
             STATUS_MAP(NotImplemented);
             default:
                 return "none";

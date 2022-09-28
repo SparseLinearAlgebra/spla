@@ -60,6 +60,7 @@ _status_mapping = {
     4: "DEVICE_NOT_FOUND",
     5: "INVALID_STATE",
     6: "INVALID_ARGUMENT",
+    7: "NO_VALUE",
     1024: "NOT_IMPLEMENTED",
 }
 

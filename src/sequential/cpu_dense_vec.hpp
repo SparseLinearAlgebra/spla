@@ -42,11 +42,12 @@ namespace spla {
                               CpuDenseVec<T>& vec) {
         vec.Ax.clear();
         vec.Ax.resize(n_rows);
+        vec.values = n_rows;
     }
 
     template<typename T>
-    void cpu_dense_vec_clear(T               value,
-                             CpuDenseVec<T>& vec) {
+    void cpu_dense_vec_fill(T               value,
+                            CpuDenseVec<T>& vec) {
         std::fill(vec.Ax.begin(), vec.Ax.end(), value);
     }
 

@@ -42,6 +42,7 @@ namespace spla {
                         CpuLil<T>& lil) {
         lil.Ar.clear();
         lil.Ar.resize(n_rows);
+        lil.values = 0;
     }
 
     template<typename T>
@@ -64,13 +65,31 @@ namespace spla {
             return val.first < point.first;
         });
 
-        if (where != row.end() && *where.first == col_id) {
-            *where.second = lil.reduce(*where.second, element);
+        if (where != row.end() && (*where).first == col_id) {
+            (*where).second = lil.reduce((*where).second, element);
             return;
         }
 
         row.insert(where, Entry{col_id, element});
         lil.values += 1;
+    }
+
+    template<typename T>
+    void cpu_lil_to_dok(uint             n_rows,
+                        const CpuLil<T>& in,
+                        CpuDok<T>&       out) {
+        auto& Rx = out.Ax;
+        auto& Ar = in.Ar;
+
+        assert(Rx.empty());
+
+        for (uint i = 0; i < n_rows; i++) {
+            const auto& row = Ar[i];
+            for (uint j = 0; j < row.size(); j++) {
+                typename CpuDok<T>::Key key{i, row[j].first};
+                Rx[key] = row[j].second;
+            }
+        }
     }
 
     template<typename T>

@@ -85,7 +85,7 @@ namespace spla {
         void ensure_dense_format();
 
     private:
-        uint      m_version    = 0;
+        uint      m_version    = 1;
         uint      m_n_rows     = 0;
         StateHint m_state_hint = StateHint::Default;
 
@@ -97,7 +97,6 @@ namespace spla {
     TVector<T>::TVector(uint n_rows) {
         m_n_rows = n_rows;
         m_decorations.resize(static_cast<int>(Format::CountVector) + 1);
-        cpu_dense_vec_resize(n_rows, *get_dec_or_create_p<CpuDenseVec<T>>());
     }
 
     template<typename T>
@@ -147,56 +146,56 @@ namespace spla {
     template<typename T>
     Status TVector<T>::set_byte(uint row_id, std::int8_t value) {
         ensure_dense_format();
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
         ensure_dense_format();
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
         ensure_dense_format();
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
         ensure_dense_format();
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_byte(uint row_id, int8_t& value) {
         ensure_dense_format();
-        value = static_cast<int8_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        value = static_cast<int8_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_int(uint row_id, int32_t& value) {
         ensure_dense_format();
-        value = static_cast<int32_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        value = static_cast<int32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
         ensure_dense_format();
-        value = static_cast<uint32_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        value = static_cast<uint32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
         ensure_dense_format();
-        value = static_cast<float>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        value = static_cast<float>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
@@ -209,11 +208,11 @@ namespace spla {
     void TVector<T>::ensure_dense_format() {
         auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
 
-        if (p_vec->version < m_version) {
+        if (p_vec->get_version() < m_version) {
             LOG_MSG(Status::Error, "data invalidation, previous content lost");
-            cpu_dense_vec_clear(T(), *p_vec);
-            p_vec->values = m_n_rows;
             update_version();
+            cpu_dense_vec_resize(m_n_rows, *p_vec);
+            p_vec->update_version(m_version);
         }
     }
 

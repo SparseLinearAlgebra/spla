@@ -251,8 +251,10 @@ add_library(spla SHARED
         src/sequential/cpu_coo.hpp
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_dense_vec.hpp
+        src/sequential/cpu_dok.hpp
         src/sequential/cpu_lil.hpp
         src/sequential/cpu_formats.hpp
+        src/util/pair_hash.hpp
         src/descriptor.cpp
         src/library.cpp
         src/matrix.cpp
