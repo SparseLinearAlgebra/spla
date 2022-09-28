@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_ARRAY_HPP
-#define SPLA_CPU_ARRAY_HPP
+#ifndef SPLA_CPU_DENSE_VEC_HPP
+#define SPLA_CPU_DENSE_VEC_HPP
 
 #include <sequential/cpu_formats.hpp>
 
@@ -38,8 +38,23 @@ namespace spla {
      */
 
     template<typename T>
-    void cpu_array_add_element(uint row_id, T element, CpuArray<T>& arr) {
-        arr.Ax[row_id] = arr.reduce(arr.Ax[row_id], element);
+    void cpu_dense_vec_resize(uint            n_rows,
+                              CpuDenseVec<T>& vec) {
+        vec.Ax.clear();
+        vec.Ax.resize(n_rows);
+    }
+
+    template<typename T>
+    void cpu_dense_vec_clear(T               value,
+                             CpuDenseVec<T>& vec) {
+        std::fill(vec.Ax.begin(), vec.Ax.end(), value);
+    }
+
+    template<typename T>
+    void cpu_dense_vec_add_element(uint            row_id,
+                                   T               element,
+                                   CpuDenseVec<T>& vec) {
+        vec.Ax[row_id] = vec.reduce(vec.Ax[row_id], element);
     }
 
     /**
@@ -48,4 +63,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_ARRAY_HPP
+#endif//SPLA_CPU_DENSE_VEC_HPP

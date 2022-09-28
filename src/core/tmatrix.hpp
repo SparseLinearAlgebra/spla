@@ -49,20 +49,6 @@ namespace spla {
      */
 
     /**
-     * @class MatrixDec
-     * @brief Possible indexed matrix decoration enumerations
-     */
-    enum class MatrixDec {
-        Coo    = 0,
-        Csr    = 1,
-        Csc    = 2,
-        AccCoo = 3,
-        AccCsr = 4,
-        AccCsc = 5,
-        Max    = 10
-    };
-
-    /**
      * @class TMatrix
      * @brief Matrix interface implementation with type information bound
      *
@@ -74,42 +60,41 @@ namespace spla {
         TMatrix(uint n_rows, uint n_cols);
         ~TMatrix() override = default;
         Status             hint_state(StateHint hint) override;
-        Status             hint_format(FormatHint hint) override;
         uint               get_n_rows() override;
         uint               get_n_cols() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
 
-        ref_ptr<TDecoration<T>>&              get_decoration(MatrixDec dec) { return m_decorations[static_cast<int>(dec)]; }
-        ref_ptr<TDecoration<T>>               get_decoration(int index) { return m_decorations[index]; }
-        std::vector<ref_ptr<TDecoration<T>>>& get_decorations() { return m_decorations; }
+        ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
+        ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
+        ref_ptr<TDecoration<T>>&              get_dec_or_create(Format format);
+        std::vector<ref_ptr<TDecoration<T>>>& get_decs() { return m_decorations; }
+
+        template<typename Decorator>
+        Decorator* get_dec_p() { return (Decorator*) (get_dec(Decorator::FORMAT).get()); }
+        template<typename Decorator>
+        Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
     private:
-        uint       m_version     = 0;
-        uint       m_n_rows      = 0;
-        uint       m_n_cols      = 0;
-        StateHint  m_state_hint  = StateHint::Default;
-        FormatHint m_format_hint = FormatHint::Default;
+        uint      m_version    = 0;
+        uint      m_n_rows     = 0;
+        uint      m_n_cols     = 0;
+        StateHint m_state_hint = StateHint::Default;
 
-        std::vector<std::shared_ptr<TDecoration<T>>> m_decorations;
-        std::string                                  m_label;
+        std::vector<ref_ptr<TDecoration<T>>> m_decorations;
+        std::string                          m_label;
     };
 
     template<typename T>
     TMatrix<T>::TMatrix(uint n_rows, uint n_cols) {
         m_n_rows = n_rows;
         m_n_cols = n_cols;
-        m_decorations.resize(static_cast<int>(MatrixDec::Max));
+        m_decorations.resize(static_cast<int>(Format::CountMatrix) + 1);
     }
 
     template<typename T>
     Status TMatrix<T>::hint_state(StateHint hint) {
-        return Status::InvalidState;
-    }
-
-    template<typename T>
-    Status TMatrix<T>::hint_format(FormatHint hint) {
         return Status::InvalidState;
     }
 
@@ -136,6 +121,31 @@ namespace spla {
     template<typename T>
     const std::string& TMatrix<T>::get_label() const {
         return m_label;
+    }
+
+    template<typename T>
+    ref_ptr<TDecoration<T>>& TMatrix<T>::get_dec_or_create(Format format) {
+        auto index = static_cast<int>(format);
+
+        if (m_decorations[index]) {
+            return m_decorations[index];
+        }
+
+        if (format == Format::CpuLil) {
+            return m_decorations[index] = make_ref<CpuLil<T>>();
+        }
+        if (format == Format::CpuCoo) {
+            return m_decorations[index] = make_ref<CpuCoo<T>>();
+        }
+        if (format == Format::CpuCsr) {
+            return m_decorations[index] = make_ref<CpuCsr<T>>();
+        }
+        if (format == Format::CpuCsc) {
+            return m_decorations[index] = make_ref<CpuCsr<T>>();
+        }
+
+        LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
+        return m_decorations.back();
     }
 
     /**

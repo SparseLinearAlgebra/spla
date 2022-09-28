@@ -48,20 +48,41 @@ namespace spla {
      */
 
     /**
-     * @class CpuArray
+     * @class CpuDenseVec
      * @brief CPU one-dim array for dense vector representation
      *
      * @tparam T
      */
     template<typename T>
-    class CpuArray : public TDecoration<T> {
+    class CpuDenseVec : public TDecoration<T> {
     public:
-        ~CpuArray() override = default;
+        static constexpr Format FORMAT = Format::CpuDenseVec;
+
+        ~CpuDenseVec() override = default;
 
         using Reduce = std::function<T(T accum, T added)>;
 
         std::vector<T> Ax{};
         Reduce         reduce = [](T, T a) { return a; };
+    };
+
+    /**
+     * @class CpuCooVec
+     * @brief CPU list-of-coordinates sparse vector representation
+     *
+     * @tparam T
+     */
+    template<typename T>
+    class CpuCooVec : public TDecoration<T> {
+    public:
+        static constexpr Format FORMAT = Format::CpuCooVec;
+
+        ~CpuCooVec() override = default;
+
+        using Reduce = std::function<T(T accum, T added)>;
+
+        std::vector<uint> Ai;
+        std::vector<T>    Ax;
     };
 
     /**
@@ -73,6 +94,8 @@ namespace spla {
     template<typename T>
     class CpuLil : public TDecoration<T> {
     public:
+        static constexpr Format FORMAT = Format::CpuLil;
+
         ~CpuLil() override = default;
 
         using Entry  = std::pair<uint, T>;
@@ -92,6 +115,8 @@ namespace spla {
     template<typename T>
     class CpuCoo : public TDecoration<T> {
     public:
+        static constexpr Format FORMAT = Format::CpuCoo;
+
         ~CpuCoo() override = default;
 
         std::vector<uint> Ai;
@@ -108,6 +133,8 @@ namespace spla {
     template<typename T>
     class CpuCsr : public TDecoration<T> {
     public:
+        static constexpr Format FORMAT = Format::CpuCsr;
+
         ~CpuCsr() override = default;
 
         std::vector<uint> Ap;

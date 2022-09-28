@@ -248,9 +248,9 @@ add_library(spla SHARED
         src/sequential/cpu_algo_callback.hpp
         src/sequential/cpu_algo_registry.cpp
         src/sequential/cpu_algo_registry.hpp
-        src/sequential/cpu_array.hpp
         src/sequential/cpu_coo.hpp
         src/sequential/cpu_csr.hpp
+        src/sequential/cpu_dense_vec.hpp
         src/sequential/cpu_lil.hpp
         src/sequential/cpu_formats.hpp
         src/descriptor.cpp

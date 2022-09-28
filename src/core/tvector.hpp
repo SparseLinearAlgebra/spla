@@ -34,7 +34,7 @@
 #include <core/tdecoration.hpp>
 #include <core/ttype.hpp>
 
-#include <sequential/cpu_array.hpp>
+#include <sequential/cpu_dense_vec.hpp>
 
 #include <memory>
 #include <vector>
@@ -45,18 +45,6 @@ namespace spla {
      * @addtogroup internal
      * @{
      */
-
-    /**
-     * @class MatrixDec
-     * @brief Possible indexed matrix decoration enumerations
-     */
-    enum class VectorDec {
-        Dense    = 0,
-        Coo      = 1,
-        AccDense = 2,
-        AccCoo   = 3,
-        Max      = 4
-    };
 
     /**
      * @class TVector
@@ -70,39 +58,50 @@ namespace spla {
         explicit TVector(uint n_rows);
         ~TVector() override = default;
         Status             hint_state(StateHint hint) override;
-        Status             hint_format(FormatHint hint) override;
         uint               get_n_rows() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
+        Status             set_byte(uint row_id, std::int8_t value) override;
+        Status             set_int(uint row_id, std::int32_t value) override;
+        Status             set_uint(uint row_id, std::uint32_t value) override;
+        Status             set_float(uint row_id, float value) override;
+        Status             get_byte(uint row_id, int8_t& value) override;
+        Status             get_int(uint row_id, int32_t& value) override;
+        Status             get_uint(uint row_id, uint32_t& value) override;
+        Status             get_float(uint row_id, float& value) override;
 
-        ref_ptr<TDecoration<T>>&              get_decoration(VectorDec dec) { return m_decorations[static_cast<int>(dec)]; }
-        ref_ptr<TDecoration<T>>               get_decoration(int index) { return m_decorations[index]; }
-        std::vector<ref_ptr<TDecoration<T>>>& get_decorations() { return m_decorations; }
+        ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
+        ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
+        ref_ptr<TDecoration<T>>&              get_dec_or_create(Format format);
+        std::vector<ref_ptr<TDecoration<T>>>& get_decs() { return m_decorations; }
+
+        template<typename Decorator>
+        Decorator* get_dec_p() { return (Decorator*) (get_dec(Decorator::FORMAT).get()); }
+        template<typename Decorator>
+        Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
+
+        void update_version();
+        void ensure_dense_format();
 
     private:
-        uint       m_version     = 0;
-        uint       m_n_rows      = 0;
-        StateHint  m_state_hint  = StateHint::Default;
-        FormatHint m_format_hint = FormatHint::Default;
+        uint      m_version    = 0;
+        uint      m_n_rows     = 0;
+        StateHint m_state_hint = StateHint::Default;
 
-        std::vector<std::shared_ptr<TDecoration<T>>> m_decorations;
-        std::string                                  m_label;
+        std::vector<ref_ptr<TDecoration<T>>> m_decorations;
+        std::string                          m_label;
     };
 
     template<typename T>
     TVector<T>::TVector(uint n_rows) {
         m_n_rows = n_rows;
-        m_decorations.resize(static_cast<int>(VectorDec::Max));
+        m_decorations.resize(static_cast<int>(Format::CountVector) + 1);
+        cpu_dense_vec_resize(n_rows, *get_dec_or_create_p<CpuDenseVec<T>>());
     }
 
     template<typename T>
     Status TVector<T>::hint_state(StateHint hint) {
-        return Status::InvalidState;
-    }
-
-    template<typename T>
-    Status TVector<T>::hint_format(FormatHint hint) {
         return Status::InvalidState;
     }
 
@@ -124,6 +123,98 @@ namespace spla {
     template<typename T>
     const std::string& TVector<T>::get_label() const {
         return m_label;
+    }
+
+    template<typename T>
+    ref_ptr<TDecoration<T>>& TVector<T>::get_dec_or_create(Format format) {
+        auto index = static_cast<int>(format);
+
+        if (m_decorations[index]) {
+            return m_decorations[index];
+        }
+
+        if (format == Format::CpuDenseVec) {
+            return m_decorations[index] = make_ref<CpuDenseVec<T>>();
+        }
+        if (format == Format::CpuCooVec) {
+            return m_decorations[index] = make_ref<CpuCooVec<T>>();
+        }
+
+        LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
+        return m_decorations.back();
+    }
+
+    template<typename T>
+    Status TVector<T>::set_byte(uint row_id, std::int8_t value) {
+        ensure_dense_format();
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::set_int(uint row_id, std::int32_t value) {
+        ensure_dense_format();
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
+        ensure_dense_format();
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::set_float(uint row_id, float value) {
+        ensure_dense_format();
+        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_or_create_p<CpuDenseVec<T>>());
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::get_byte(uint row_id, int8_t& value) {
+        ensure_dense_format();
+        value = static_cast<int8_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::get_int(uint row_id, int32_t& value) {
+        ensure_dense_format();
+        value = static_cast<int32_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
+        ensure_dense_format();
+        value = static_cast<uint32_t>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::get_float(uint row_id, float& value) {
+        ensure_dense_format();
+        value = static_cast<float>(get_dec_or_create_p<CpuDenseVec<T>>()->Ax[row_id]);
+        return Status::Ok;
+    }
+
+    template<typename T>
+    void TVector<T>::update_version() {
+        ++m_version;
+    }
+
+    template<typename T>
+    void TVector<T>::ensure_dense_format() {
+        auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+
+        if (p_vec->version < m_version) {
+            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+            cpu_dense_vec_clear(T(), *p_vec);
+            p_vec->values = m_n_rows;
+            update_version();
+        }
     }
 
     /**

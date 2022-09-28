@@ -54,6 +54,13 @@ namespace spla {
         /** @return Version of decoration required to sync data between storages */
         [[nodiscard]] virtual uint get_version() const { return version; };
 
+        /**
+         * @brief Updates version of the decorator stored content
+         *
+         * @param new_version New version to set
+         */
+        virtual void update_version(uint new_version) { version = new_version; }
+
     public:
         uint values  = 0;
         uint version = 0;

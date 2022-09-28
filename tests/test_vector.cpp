@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021-2022 JetBrains-Research                                     */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,53 +25,25 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_VECTOR_HPP
-#define SPLA_VECTOR_HPP
+#include "test_common.hpp"
 
-#include "object.hpp"
-#include "type.hpp"
+#include <spla/spla.hpp>
 
-namespace spla {
+TEST(vector, get_set_naive) {
+    const spla::uint N    = 10;
+    const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
-    /**
-     * @addtogroup spla
-     * @{
-     */
+    auto ivec = spla::make_vector(N, spla::INT);
 
-    /**
-     * @class Vector
-     * @brief Generalized N dimensional vector object
-     */
-    class Vector : public Object {
-    public:
-        SPLA_API ~Vector() override                                                = default;
-        SPLA_API virtual Status        hint_state(StateHint hint)                  = 0;
-        SPLA_API virtual uint          get_n_rows()                                = 0;
-        SPLA_API virtual ref_ptr<Type> get_type()                                  = 0;
-        SPLA_API virtual Status        set_byte(uint row_id, std::int8_t value)    = 0;
-        SPLA_API virtual Status        set_int(uint row_id, std::int32_t value)    = 0;
-        SPLA_API virtual Status        set_uint(uint row_id, std::uint32_t value)  = 0;
-        SPLA_API virtual Status        set_float(uint row_id, float value)         = 0;
-        SPLA_API virtual Status        get_byte(uint row_id, std::int8_t& value)   = 0;
-        SPLA_API virtual Status        get_int(uint row_id, std::int32_t& value)   = 0;
-        SPLA_API virtual Status        get_uint(uint row_id, std::uint32_t& value) = 0;
-        SPLA_API virtual Status        get_float(uint row_id, float& value)        = 0;
-    };
+    for (spla::uint i = 0; i < N; ++i) {
+        ivec->set_int(i, X[i]);
+    }
 
-    /**
-     * @brief Make new vector instance with specified dim and values type
-     *
-     * @param n_rows Number of vector rows; must be > 0;
-     * @param type Type of vector elements
-     *
-     * @return New vector instance or null if failed to create
-     */
-    SPLA_API ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type>& type);
+    for (spla::uint i = 0; i < N; ++i) {
+        int x;
+        ivec->get_int(i, x);
+        EXPECT_EQ(x, X[i]);
+    }
+}
 
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_VECTOR_HPP
+SPLA_GTEST_MAIN

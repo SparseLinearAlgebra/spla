@@ -214,6 +214,11 @@ namespace spla {
             return ref_ptr<G>(dynamic_cast<G*>(m_object));
         }
 
+        template<class G>
+        ref_ptr<G> cast_static() const {
+            return ref_ptr<G>((G*) m_object);
+        }
+
     private:
         T* m_object = nullptr;
     };

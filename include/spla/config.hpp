@@ -101,19 +101,22 @@ namespace spla {
     };
 
     /**
-     * @class FormatHint
-     * @brief Hint desired storage format of object
+     * @class Format
+     * @brief Named storage format for library data objects
      */
-    enum class FormatHint {
-        Default    = 0,
-        CpuLil     = 1,
-        CpuCoo     = 2,
-        CpuCsr     = 3,
-        CpuCsc     = 4,
-        AccDefault = 100,
-        AccCoo     = 102,
-        AccCsr     = 103,
-        AccCsc     = 104
+    enum class Format {
+        CpuLil      = 0,
+        CpuCoo      = 1,
+        CpuCsr      = 2,
+        CpuCsc      = 3,
+        AccCoo      = 4,
+        AccCsr      = 5,
+        AccCsc      = 6,
+        CountMatrix = 7,
+
+        CpuDenseVec = 0,
+        CpuCooVec   = 1,
+        CountVector = 2
     };
 
     /**
