@@ -74,11 +74,13 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="config_8hpp_source.html">spla/config.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="tdecoration_8hpp_source.html">core/tdecoration.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pair__hash_8hpp_source.html">util/pair_hash.hpp</a>&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;numeric&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -86,19 +88,21 @@ Include dependency graph for cpu_formats.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="cpu__formats_8hpp__incl.png" border="0" usemap="#asrc_2sequential_2cpu__formats_8hpp" alt=""/></div>
 <map name="asrc_2sequential_2cpu__formats_8hpp" id="asrc_2sequential_2cpu__formats_8hpp">
-<area shape="rect" title=" " alt="" coords="368,5,496,47"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="22,95,130,121"/>
-<area shape="rect" title=" " alt="" coords="127,244,206,271"/>
-<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="205,95,344,121"/>
-<area shape="rect" title=" " alt="" coords="317,244,382,271"/>
-<area shape="rect" title=" " alt="" coords="406,244,458,271"/>
-<area shape="rect" title=" " alt="" coords="469,95,544,121"/>
-<area shape="rect" title=" " alt="" coords="569,95,637,121"/>
-<area shape="rect" title=" " alt="" coords="661,95,715,121"/>
-<area shape="rect" title=" " alt="" coords="740,95,799,121"/>
-<area shape="rect" title=" " alt="" coords="5,169,80,196"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="230,169,319,196"/>
-<area shape="rect" title=" " alt="" coords="231,244,292,271"/>
+<area shape="rect" title=" " alt="" coords="411,5,539,47"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="38,95,146,121"/>
+<area shape="rect" title=" " alt="" coords="105,244,184,271"/>
+<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="171,95,310,121"/>
+<area shape="rect" title=" " alt="" coords="294,244,360,271"/>
+<area shape="rect" title=" " alt="" coords="398,244,450,271"/>
+<area shape="rect" href="pair__hash_8hpp.html" title=" " alt="" coords="363,169,486,196"/>
+<area shape="rect" title=" " alt="" coords="512,95,587,121"/>
+<area shape="rect" title=" " alt="" coords="612,95,680,121"/>
+<area shape="rect" title=" " alt="" coords="704,95,758,121"/>
+<area shape="rect" title=" " alt="" coords="782,95,893,121"/>
+<area shape="rect" title=" " alt="" coords="918,95,976,121"/>
+<area shape="rect" title=" " alt="" coords="38,169,112,196"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="196,169,285,196"/>
+<area shape="rect" title=" " alt="" coords="208,244,270,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -106,15 +110,16 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="cpu__formats_8hpp__dep__incl.png" border="0" usemap="#asrc_2sequential_2cpu__formats_8hppdep" alt=""/></div>
 <map name="asrc_2sequential_2cpu__formats_8hppdep" id="asrc_2sequential_2cpu__formats_8hppdep">
-<area shape="rect" title=" " alt="" coords="233,5,361,47"/>
+<area shape="rect" title=" " alt="" coords="309,5,437,47"/>
 <area shape="rect" href="cpu__coo_8hpp.html" title=" " alt="" coords="5,95,133,136"/>
-<area shape="rect" href="cpu__csr_8hpp.html" title=" " alt="" coords="157,95,285,136"/>
-<area shape="rect" href="cpu__dense__vec_8hpp.html" title=" " alt="" coords="461,95,589,136"/>
-<area shape="rect" href="cpu__lil_8hpp.html" title=" " alt="" coords="309,95,437,136"/>
+<area shape="rect" href="cpu__csr_8hpp.html" title=" " alt="" coords="309,95,437,136"/>
+<area shape="rect" href="cpu__dense__vec_8hpp.html" title=" " alt="" coords="613,95,741,136"/>
+<area shape="rect" href="cpu__dok_8hpp.html" title=" " alt="" coords="461,95,589,136"/>
+<area shape="rect" href="cpu__lil_8hpp.html" title=" " alt="" coords="157,95,285,136"/>
 <area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="153,184,289,211"/>
 <area shape="rect" href="matrix_8cpp.html" title=" " alt="" coords="170,259,273,285"/>
-<area shape="rect" href="tvector_8hpp.html" title=" " alt="" coords="457,184,594,211"/>
-<area shape="rect" href="vector_8cpp.html" title=" " alt="" coords="473,259,577,285"/>
+<area shape="rect" href="tvector_8hpp.html" title=" " alt="" coords="609,184,746,211"/>
+<area shape="rect" href="vector_8cpp.html" title=" " alt="" coords="625,259,729,285"/>
 </map>
 </div>
 </div>
@@ -130,6 +135,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuLil.html">spla::CpuLil&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list-of-list matrix format for fast incremental build.  <a href="classspla_1_1CpuLil.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuDok.html">spla::CpuDok&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictionary of keys sparse matrix format.  <a href="classspla_1_1CpuDok.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCoo.html">spla::CpuCoo&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU list of coordinates matrix format.  <a href="classspla_1_1CpuCoo.html#details">More...</a><br /></td></tr>

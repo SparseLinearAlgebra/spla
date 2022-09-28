@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['scalar_364',['Scalar',['../classspla_1_1Scalar.html',1,'spla']]],
-  ['schedule_365',['Schedule',['../classspla_1_1Schedule.html',1,'spla']]],
-  ['schedulecallback_366',['ScheduleCallback',['../classScheduleCallback.html',1,'']]],
-  ['schedulesinglethread_367',['ScheduleSingleThread',['../classspla_1_1ScheduleSingleThread.html',1,'spla']]],
-  ['scheduletask_368',['ScheduleTask',['../classspla_1_1ScheduleTask.html',1,'spla']]],
-  ['scheduletask_5fcallback_369',['ScheduleTask_callback',['../classspla_1_1ScheduleTask__callback.html',1,'spla']]],
-  ['scheduletask_5fmxv_5fmasked_370',['ScheduleTask_mxv_masked',['../classspla_1_1ScheduleTask__mxv__masked.html',1,'spla']]],
-  ['scheduletask_5fv_5fassign_5fmasked_371',['ScheduleTask_v_assign_masked',['../classspla_1_1ScheduleTask__v__assign__masked.html',1,'spla']]],
-  ['scheduletaskbase_372',['ScheduleTaskBase',['../classspla_1_1ScheduleTaskBase.html',1,'spla']]],
-  ['statehint_373',['StateHint',['../classStateHint.html',1,'']]],
-  ['status_374',['Status',['../classStatus.html',1,'']]]
+  ['ref_5fptr_368',['ref_ptr',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3adescriptor_20_3e_369',['ref_ptr&lt; spla::Descriptor &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3amatrix_20_3e_370',['ref_ptr&lt; spla::Matrix &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3aopbinary_20_3e_371',['ref_ptr&lt; spla::OpBinary &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3ascalar_20_3e_372',['ref_ptr&lt; spla::Scalar &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3aschedule_20_3e_373',['ref_ptr&lt; spla::Schedule &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3ascheduletask_20_3e_374',['ref_ptr&lt; spla::ScheduleTask &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['ref_5fptr_3c_20spla_3a_3avector_20_3e_375',['ref_ptr&lt; spla::Vector &gt;',['../classspla_1_1ref__ptr.html',1,'spla']]],
+  ['refcnt_376',['RefCnt',['../classspla_1_1RefCnt.html',1,'spla']]],
+  ['registry_377',['Registry',['../classspla_1_1Registry.html',1,'spla']]],
+  ['registryalgo_378',['RegistryAlgo',['../classspla_1_1RegistryAlgo.html',1,'spla']]]
 ];

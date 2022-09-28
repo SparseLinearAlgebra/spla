@@ -1,6 +1,19 @@
 var searchData=
 [
-  ['uint_287',['UINT',['../group__spla.html#gafc8fc2cf208c1737a64339121a41cf01',1,'spla']]],
-  ['uint_288',['uint',['../group__spla.html#ga669156f74132dd261f21223177f0b458',1,'spla']]],
-  ['update_5fversion_289',['update_version',['../classspla_1_1TDecoration.html#a48c0c9c64dffd14c4eb1c8bd3ec28497',1,'spla::TDecoration::update_version()'],['../group__internal.html#ga251222d3a7b5d30b63517f33e095b8ab',1,'spla::TVector::update_version()']]]
+  ['task_283',['task',['../structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25',1,'spla::DispatchContext']]],
+  ['task_5fid_284',['task_id',['../structspla_1_1DispatchContext.html#a9b2dfdec15d7cb510c6f84a524d92384',1,'spla::DispatchContext']]],
+  ['tdecoration_285',['TDecoration',['../classspla_1_1TDecoration.html',1,'spla']]],
+  ['tdecoration_2ehpp_286',['tdecoration.hpp',['../tdecoration_8hpp.html',1,'']]],
+  ['thread_5fid_287',['thread_id',['../structspla_1_1DispatchContext.html#a461d86b4293c73c0089dc98f1a465cf4',1,'spla::DispatchContext']]],
+  ['tmatrix_288',['TMatrix',['../classspla_1_1TMatrix.html',1,'spla::TMatrix&lt; T &gt;'],['../group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c',1,'spla::TMatrix::TMatrix()']]],
+  ['tmatrix_2ehpp_289',['tmatrix.hpp',['../tmatrix_8hpp.html',1,'']]],
+  ['tscalar_290',['TScalar',['../classspla_1_1TScalar.html',1,'spla::TScalar&lt; T &gt;'],['../group__internal.html#ga35755e9689106c89c5992419a0e552ef',1,'spla::TScalar::TScalar(T value)'],['../classspla_1_1TScalar.html#a319d952e7bd55e47d3d730ec4736876d',1,'spla::TScalar::TScalar()=default']]],
+  ['tscalar_2ehpp_291',['tscalar.hpp',['../tscalar_8hpp.html',1,'']]],
+  ['ttype_292',['TType',['../classspla_1_1TType.html',1,'spla']]],
+  ['ttype_2ehpp_293',['ttype.hpp',['../ttype_8hpp.html',1,'']]],
+  ['tvector_294',['TVector',['../classspla_1_1TVector.html',1,'spla::TVector&lt; T &gt;'],['../group__internal.html#ga83e2cdb83c6b5223bb1d23af42ad69c2',1,'spla::TVector::TVector()']]],
+  ['tvector_2ehpp_295',['tvector.hpp',['../tvector_8hpp.html',1,'']]],
+  ['type_296',['Type',['../classspla_1_1Type.html',1,'spla']]],
+  ['type_2ecpp_297',['type.cpp',['../type_8cpp.html',1,'']]],
+  ['type_2ehpp_298',['type.hpp',['../type_8hpp.html',1,'']]]
 ];

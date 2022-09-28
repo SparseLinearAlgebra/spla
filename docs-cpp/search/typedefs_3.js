@@ -1,13 +1,5 @@
 var searchData=
 [
-  ['schedulecallback_621',['ScheduleCallback',['../group__spla.html#gad09a33345c60faa341702747b8e1022d',1,'spla']]],
-  ['spla_5facceleratortype_622',['spla_AcceleratorType',['../spla_8h.html#af6ce3710ac2244836e4dbec00d031fce',1,'spla.h']]],
-  ['spla_5fdescriptor_623',['spla_Descriptor',['../spla_8h.html#ab6e0a5130e85fdc7d25d2b6b9d3d83da',1,'spla.h']]],
-  ['spla_5fmatrix_624',['spla_Matrix',['../spla_8h.html#a811b46e603ce4bd2ebbdedbb3c67e135',1,'spla.h']]],
-  ['spla_5fmessagecallback_625',['spla_MessageCallback',['../spla_8h.html#a79496595594e18352cdf24b30d9103ea',1,'spla.h']]],
-  ['spla_5fobject_626',['spla_Object',['../spla_8h.html#a9681ab1ffcd8db9ca3b4522e8447c05b',1,'spla.h']]],
-  ['spla_5fschedule_627',['spla_Schedule',['../spla_8h.html#a0191d0176d9d49bad011ffe026b1f10a',1,'spla.h']]],
-  ['spla_5fscheduletask_628',['spla_ScheduleTask',['../spla_8h.html#a6ab6fede354ddf04dd624cb45fe6b800',1,'spla.h']]],
-  ['spla_5fstatus_629',['spla_Status',['../spla_8h.html#aad588e061c2c629fc3ba3d70db8a8d6a',1,'spla.h']]],
-  ['spla_5fvector_630',['spla_Vector',['../spla_8h.html#a820c830cdab0aad6229216223c2e22d5',1,'spla.h']]]
+  ['reduce_642',['Reduce',['../classspla_1_1CpuDenseVec.html#acb51a9b7d84b4601255f8b43c38a4769',1,'spla::CpuDenseVec::Reduce()'],['../classspla_1_1CpuCooVec.html#afc1ddbac7f3f98daaf03eca7465d7ef5',1,'spla::CpuCooVec::Reduce()'],['../classspla_1_1CpuLil.html#a3d4c56861bfde195b88be6ef74522740',1,'spla::CpuLil::Reduce()'],['../classspla_1_1CpuDok.html#a05873e142654be80e02f07479aa129d3',1,'spla::CpuDok::Reduce()']]],
+  ['row_643',['Row',['../classspla_1_1CpuLil.html#a0de3c46d741423bac453281690007599',1,'spla::CpuLil']]]
 ];

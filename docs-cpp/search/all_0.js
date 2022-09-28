@@ -15,5 +15,5 @@ var searchData=
   ['ap_12',['Ap',['../classspla_1_1CpuCsr.html#a0e83d281f5e5e5cc86e05876659e8d22',1,'spla::CpuCsr']]],
   ['ar_13',['Ar',['../classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0',1,'spla::CpuLil']]],
   ['as_14',['as',['../classspla_1_1ref__ptr.html#abc6fb0e00b5119e63f42bfece9051b48',1,'spla::ref_ptr']]],
-  ['ax_15',['Ax',['../classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba',1,'spla::CpuDenseVec::Ax()'],['../classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d',1,'spla::CpuCooVec::Ax()'],['../classspla_1_1CpuCoo.html#a412c621b45adc2bdd66557b344fd5276',1,'spla::CpuCoo::Ax()'],['../classspla_1_1CpuCsr.html#a8c8ab7650daa7382536a6722b36ba363',1,'spla::CpuCsr::Ax()']]]
+  ['ax_15',['Ax',['../classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba',1,'spla::CpuDenseVec::Ax()'],['../classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d',1,'spla::CpuCooVec::Ax()'],['../classspla_1_1CpuDok.html#a8fd21fe33ef6af259c20ef0095e7f809',1,'spla::CpuDok::Ax()'],['../classspla_1_1CpuCoo.html#a412c621b45adc2bdd66557b344fd5276',1,'spla::CpuCoo::Ax()'],['../classspla_1_1CpuCsr.html#a8c8ab7650daa7382536a6722b36ba363',1,'spla::CpuCsr::Ax()']]]
 ];

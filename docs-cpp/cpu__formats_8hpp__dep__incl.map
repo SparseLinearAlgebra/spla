@@ -1,11 +1,12 @@
 <map id="src/sequential/cpu_formats.hpp" name="src/sequential/cpu_formats.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="233,5,361,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="309,5,437,47"/>
 <area shape="rect" id="node2" href="$cpu__coo_8hpp.html" title=" " alt="" coords="5,95,133,136"/>
-<area shape="rect" id="node5" href="$cpu__csr_8hpp.html" title=" " alt="" coords="157,95,285,136"/>
-<area shape="rect" id="node6" href="$cpu__dense__vec_8hpp.html" title=" " alt="" coords="461,95,589,136"/>
-<area shape="rect" id="node9" href="$cpu__lil_8hpp.html" title=" " alt="" coords="309,95,437,136"/>
+<area shape="rect" id="node5" href="$cpu__csr_8hpp.html" title=" " alt="" coords="309,95,437,136"/>
+<area shape="rect" id="node6" href="$cpu__dense__vec_8hpp.html" title=" " alt="" coords="613,95,741,136"/>
+<area shape="rect" id="node9" href="$cpu__dok_8hpp.html" title=" " alt="" coords="461,95,589,136"/>
+<area shape="rect" id="node10" href="$cpu__lil_8hpp.html" title=" " alt="" coords="157,95,285,136"/>
 <area shape="rect" id="node3" href="$tmatrix_8hpp.html" title=" " alt="" coords="153,184,289,211"/>
 <area shape="rect" id="node4" href="$matrix_8cpp.html" title=" " alt="" coords="170,259,273,285"/>
-<area shape="rect" id="node7" href="$tvector_8hpp.html" title=" " alt="" coords="457,184,594,211"/>
-<area shape="rect" id="node8" href="$vector_8cpp.html" title=" " alt="" coords="473,259,577,285"/>
+<area shape="rect" id="node7" href="$tvector_8hpp.html" title=" " alt="" coords="609,184,746,211"/>
+<area shape="rect" id="node8" href="$vector_8cpp.html" title=" " alt="" coords="625,259,729,285"/>
 </map>

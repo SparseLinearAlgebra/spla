@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['readme_2emd_409',['README.md',['../README_8md.html',1,'']]],
-  ['ref_2ehpp_410',['ref.hpp',['../ref_8hpp.html',1,'']]],
-  ['registry_2ecpp_411',['registry.cpp',['../registry_8cpp.html',1,'']]],
-  ['registry_2ehpp_412',['registry.hpp',['../registry_8hpp.html',1,'']]]
+  ['pair_5fhash_2ehpp_425',['pair_hash.hpp',['../pair__hash_8hpp.html',1,'']]]
 ];
