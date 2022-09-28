@@ -79,6 +79,8 @@ $(function() {
 <li>get_byte()
 : <a class="el" href="classspla_1_1Scalar.html#af5d25034fb887cc22cdd004e89540637">spla::Scalar</a>
 , <a class="el" href="group__internal.html#ga71ab07c67ac96a15b98bace3e462bbab">spla::TScalar&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga7f94622efa83dc7c7b89fb74e3d49b24">spla::TVector&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Vector.html#ab9aa93a5476fb87aaf3ad085a3029bc2">spla::Vector</a>
 </li>
 <li>get_code()
 : <a class="el" href="group__internal.html#gaed53dd20ed394c653f647f013f7fe259">spla::TType&lt; T &gt;</a>
@@ -87,13 +89,25 @@ $(function() {
 <li>get_context()
 : <a class="el" href="classspla_1_1CLAccelerator.html#ad5fbf9983c5ff86aa8ee1b7653b90530">spla::CLAccelerator</a>
 </li>
-<li>get_decoration()
-: <a class="el" href="classspla_1_1TMatrix.html#a0f7c9da497d583a1a605ab5fa5c31ebd">spla::TMatrix&lt; T &gt;</a>
-, <a class="el" href="classspla_1_1TVector.html#a2e7e0ec91409689c1934695e420bd529">spla::TVector&lt; T &gt;</a>
+<li>get_dec()
+: <a class="el" href="classspla_1_1TMatrix.html#a36bc760e2711bf46bf84013cde810b06">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1TVector.html#a1165be5a9c3de15cbbc611b01f08c87a">spla::TVector&lt; T &gt;</a>
 </li>
-<li>get_decorations()
-: <a class="el" href="classspla_1_1TMatrix.html#a97cd467dc01fae87f2d372d4fff0396f">spla::TMatrix&lt; T &gt;</a>
-, <a class="el" href="classspla_1_1TVector.html#af49c0bf5210bc2c7c5617fdee6e29536">spla::TVector&lt; T &gt;</a>
+<li>get_dec_or_create()
+: <a class="el" href="group__internal.html#gad1b5e23cc126b5eea41b85f469979ecb">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga9956136658f6d83e86b94cb0042bfd2d">spla::TVector&lt; T &gt;</a>
+</li>
+<li>get_dec_or_create_p()
+: <a class="el" href="classspla_1_1TMatrix.html#ae5c1e796302c573e9f574c182bc5c437">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1TVector.html#abe5dce2002310e527e4f57d3e9da05c9">spla::TVector&lt; T &gt;</a>
+</li>
+<li>get_dec_p()
+: <a class="el" href="classspla_1_1TMatrix.html#aab48e44d24c6636805aba66749bbfdaf">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1TVector.html#aa1e74e0236c4c58dfce25561518a593c">spla::TVector&lt; T &gt;</a>
+</li>
+<li>get_decs()
+: <a class="el" href="classspla_1_1TMatrix.html#a65ef297d0bf5bf4a0fbbcf1c37bb1124">spla::TMatrix&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1TVector.html#a7277022c14eb76b1413990a45a28884f">spla::TVector&lt; T &gt;</a>
 </li>
 <li>get_desc()
 : <a class="el" href="classspla_1_1ScheduleTask.html#a24ce243743cb2bf0118bed6f4b2ac1ed">spla::ScheduleTask</a>
@@ -120,6 +134,8 @@ $(function() {
 <li>get_float()
 : <a class="el" href="classspla_1_1Scalar.html#abd48825fd8f1d1334b8e1cad6e194fad">spla::Scalar</a>
 , <a class="el" href="group__internal.html#ga4dcfd46fb36de2847977b06dab2543b1">spla::TScalar&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga4f3725ea5166a6019660c47d0b8d4dbe">spla::TVector&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Vector.html#a781eab87e9fd375b8f6b8cdd02d61cbc">spla::Vector</a>
 </li>
 <li>get_id()
 : <a class="el" href="group__internal.html#gadaa56ab34da4fcf8bbe070b3e9e07c3d">spla::TType&lt; T &gt;</a>
@@ -128,6 +144,8 @@ $(function() {
 <li>get_int()
 : <a class="el" href="classspla_1_1Scalar.html#a703bdde5e2e69c565cd6f053d963c76c">spla::Scalar</a>
 , <a class="el" href="group__internal.html#gabe07f959aa8bf25679c4592c25e2f31f">spla::TScalar&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#ga61fb7b2192ea09e381252e0b7c3b45f8">spla::TVector&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Vector.html#a3d56c860e96988703bd20717d534620b">spla::Vector</a>
 </li>
 <li>get_key()
 : <a class="el" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">spla::Op</a>
@@ -213,6 +231,8 @@ $(function() {
 <li>get_uint()
 : <a class="el" href="classspla_1_1Scalar.html#acdbc961d18c09e6eff3226810eb4ede3">spla::Scalar</a>
 , <a class="el" href="group__internal.html#gaa4ce944a7eb6584f0981abc4345ff062">spla::TScalar&lt; T &gt;</a>
+, <a class="el" href="group__internal.html#gad738cd87a2a3e322e42d29bf7d10d79c">spla::TVector&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Vector.html#a6d4d417a8ce0f000bb874cf73654ff0a">spla::Vector</a>
 </li>
 <li>get_values()
 : <a class="el" href="classspla_1_1TDecoration.html#aad0cc6619da55ed919a4c81c044516f9">spla::TDecoration&lt; T &gt;</a>

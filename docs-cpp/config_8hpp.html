@@ -131,9 +131,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" href="type_8cpp.html" title=" " alt="" coords="906,408,998,435"/>
 <area shape="rect" href="cl__accelerator_8cpp.html" title=" " alt="" coords="512,579,702,606"/>
 <area shape="rect" href="logger_8cpp.html" title=" " alt="" coords="253,490,385,517"/>
-<area shape="rect" href="cpu__array_8hpp.html" title=" " alt="" coords="652,319,780,360"/>
 <area shape="rect" href="cpu__coo_8hpp.html" title=" " alt="" coords="44,319,172,360"/>
 <area shape="rect" href="cpu__csr_8hpp.html" title=" " alt="" coords="196,319,324,360"/>
+<area shape="rect" href="cpu__dense__vec_8hpp.html" title=" " alt="" coords="652,319,780,360"/>
 <area shape="rect" href="cpu__lil_8hpp.html" title=" " alt="" coords="348,319,476,360"/>
 </map>
 </div>
@@ -186,21 +186,23 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10">spla::Compute</a> = 2
  }</td></tr>
 <tr class="separator:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">spla::FormatHint</a> { <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67">spla::Default</a> = 0
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 1
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
+<tr class="memitem:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">spla::Format</a> { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 1
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 2
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ab4bcf9c00c010c3e67b0da4ab6e432cd">spla::AccDefault</a> = 100
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 102
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 103
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 4
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 5
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 6
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f">spla::CountMatrix</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 104
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">spla::CpuDenseVec</a> = 0
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">spla::CpuCooVec</a> = 1
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e">spla::CountVector</a> = 2
 <br />
  }</td></tr>
-<tr class="separator:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ae3bb5ff276a0f55f0b3606a36b4e94fc"></a>

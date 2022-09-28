@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: src/sequential/cpu_array.hpp Source File</title>
+<title>spla: src/sequential/cpu_dense_vec.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,10 +66,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">cpu_array.hpp</div>  </div>
+<div class="title">cpu_dense_vec.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="cpu__array_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
+<a href="cpu__dense__vec_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">/* This file is part of spla project                                              */</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/* https://github.com/JetBrains-Research/spla                                     */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
@@ -96,26 +96,43 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* SOFTWARE.                                                                      */</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_CPU_ARRAY_HPP</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CPU_ARRAY_HPP</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_CPU_DENSE_VEC_HPP</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CPU_DENSE_VEC_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cpu__formats_8hpp.html">sequential/cpu_formats.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="group__internal.html#gac059260e42cb6edf6003057c082c5820">   41</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gac059260e42cb6edf6003057c082c5820">cpu_array_add_element</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, T element, <a class="code" href="classspla_1_1CpuArray.html">CpuArray&lt;T&gt;</a>&amp; arr) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        arr.<a class="code" href="classspla_1_1CpuArray.html#a896b729ca82234b89daf7e95d4ec2250">Ax</a>[row_id] = arr.<a class="code" href="classspla_1_1CpuArray.html#a974b8dee2c0baa043a1b9d925a39ae43">reduce</a>(arr.<a class="code" href="classspla_1_1CpuArray.html#a896b729ca82234b89daf7e95d4ec2250">Ax</a>[row_id], element);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_ARRAY_HPP</span></div>
-<div class="ttc" id="aclassspla_1_1CpuArray_html"><div class="ttname"><a href="classspla_1_1CpuArray.html">spla::CpuArray</a></div><div class="ttdoc">CPU one-dim array for dense vector representation.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:57</div></div>
-<div class="ttc" id="aclassspla_1_1CpuArray_html_a896b729ca82234b89daf7e95d4ec2250"><div class="ttname"><a href="classspla_1_1CpuArray.html#a896b729ca82234b89daf7e95d4ec2250">spla::CpuArray::Ax</a></div><div class="ttdeci">std::vector&lt; T &gt; Ax</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:63</div></div>
-<div class="ttc" id="aclassspla_1_1CpuArray_html_a974b8dee2c0baa043a1b9d925a39ae43"><div class="ttname"><a href="classspla_1_1CpuArray.html#a974b8dee2c0baa043a1b9d925a39ae43">spla::CpuArray::reduce</a></div><div class="ttdeci">Reduce reduce</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:64</div></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="group__internal.html#gab52316f19b99fc2c14b3e7afbc533568">   41</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gab52316f19b99fc2c14b3e7afbc533568">cpu_dense_vec_resize</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>            n_rows,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                              <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>&amp; vec) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.clear();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.resize(n_rows);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="group__internal.html#ga358ea9458414ca5861cabebf7181b9ab">   48</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga358ea9458414ca5861cabebf7181b9ab">cpu_dense_vec_clear</a>(T               value,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                             <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>&amp; vec) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::fill(vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.begin(), vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.end(), value);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="group__internal.html#gae20f322ef66651808e9de985877c655e">   54</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gae20f322ef66651808e9de985877c655e">cpu_dense_vec_add_element</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>            row_id,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                   T               element,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                   <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>&amp; vec) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[row_id] = vec.<a class="code" href="classspla_1_1CpuDenseVec.html#a3f4c8f53a992ec2420796e02224cef6b">reduce</a>(vec.<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[row_id], element);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_DENSE_VEC_HPP</span></div>
+<div class="ttc" id="aclassspla_1_1CpuDenseVec_html"><div class="ttname"><a href="classspla_1_1CpuDenseVec.html">spla::CpuDenseVec</a></div><div class="ttdoc">CPU one-dim array for dense vector representation.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:57</div></div>
+<div class="ttc" id="aclassspla_1_1CpuDenseVec_html_a3f4c8f53a992ec2420796e02224cef6b"><div class="ttname"><a href="classspla_1_1CpuDenseVec.html#a3f4c8f53a992ec2420796e02224cef6b">spla::CpuDenseVec::reduce</a></div><div class="ttdeci">Reduce reduce</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:66</div></div>
+<div class="ttc" id="aclassspla_1_1CpuDenseVec_html_af07982f0c83b5b51b77938122576c2ba"><div class="ttname"><a href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">spla::CpuDenseVec::Ax</a></div><div class="ttdeci">std::vector&lt; T &gt; Ax</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:65</div></div>
 <div class="ttc" id="acpu__formats_8hpp_html"><div class="ttname"><a href="cpu__formats_8hpp.html">cpu_formats.hpp</a></div></div>
-<div class="ttc" id="agroup__internal_html_gac059260e42cb6edf6003057c082c5820"><div class="ttname"><a href="group__internal.html#gac059260e42cb6edf6003057c082c5820">spla::cpu_array_add_element</a></div><div class="ttdeci">void cpu_array_add_element(uint row_id, T element, CpuArray&lt; T &gt; &amp;arr)</div><div class="ttdef"><b>Definition:</b> cpu_array.hpp:41</div></div>
+<div class="ttc" id="agroup__internal_html_ga358ea9458414ca5861cabebf7181b9ab"><div class="ttname"><a href="group__internal.html#ga358ea9458414ca5861cabebf7181b9ab">spla::cpu_dense_vec_clear</a></div><div class="ttdeci">void cpu_dense_vec_clear(T value, CpuDenseVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_dense_vec.hpp:48</div></div>
+<div class="ttc" id="agroup__internal_html_gab52316f19b99fc2c14b3e7afbc533568"><div class="ttname"><a href="group__internal.html#gab52316f19b99fc2c14b3e7afbc533568">spla::cpu_dense_vec_resize</a></div><div class="ttdeci">void cpu_dense_vec_resize(uint n_rows, CpuDenseVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_dense_vec.hpp:41</div></div>
+<div class="ttc" id="agroup__internal_html_gae20f322ef66651808e9de985877c655e"><div class="ttname"><a href="group__internal.html#gae20f322ef66651808e9de985877c655e">spla::cpu_dense_vec_add_element</a></div><div class="ttdeci">void cpu_dense_vec_add_element(uint row_id, T element, CpuDenseVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_dense_vec.hpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> config.hpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->

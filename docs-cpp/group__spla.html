@@ -125,8 +125,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStateHint.html">StateHint</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hint used to explicitly prepare matrix state.  <a href="classStateHint.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatHint.html">FormatHint</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hint desired storage format of object.  <a href="classFormatHint.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormat.html">Format</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage format for library data objects.  <a href="classFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMessageCallback.html">MessageCallback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function called on library message event.  <a href="classMessageCallback.html#details">More...</a><br /></td></tr>
@@ -169,21 +169,23 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10">spla::Compute</a> = 2
  }</td></tr>
 <tr class="separator:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">spla::FormatHint</a> { <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67">spla::Default</a> = 0
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 1
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
+<tr class="memitem:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">spla::Format</a> { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 1
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 2
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ab4bcf9c00c010c3e67b0da4ab6e432cd">spla::AccDefault</a> = 100
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 102
-, <a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 103
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 4
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 5
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 6
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f">spla::CountMatrix</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 104
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">spla::CpuDenseVec</a> = 0
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">spla::CpuCooVec</a> = 1
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e">spla::CountVector</a> = 2
 <br />
  }</td></tr>
-<tr class="separator:ga8a475c461a7d919fd864a4c90ec44b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -311,8 +313,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga8a475c461a7d919fd864a4c90ec44b38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8a475c461a7d919fd864a4c90ec44b38">&#9670;&nbsp;</a></span>FormatHint</h2>
+<a id="ga9ac48ae2db6acc9a1f428a36ca1421c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9ac48ae2db6acc9a1f428a36ca1421c0">&#9670;&nbsp;</a></span>Format</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +323,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#ga8a475c461a7d919fd864a4c90ec44b38">spla::FormatHint</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">spla::Format</a></td>
         </tr>
       </table>
   </td>
@@ -331,15 +333,17 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38ab4bcf9c00c010c3e67b0da4ab6e432cd"></a>AccDefault&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga8a475c461a7d919fd864a4c90ec44b38a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f"></a>CountMatrix&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3"></a>CpuDenseVec&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d"></a>CpuCooVec&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e"></a>CountVector&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['max_647',['Max',['../group__internal.html#ggabea29ff517eb47782a0ca53060d31400a6a061313d22e51e0f25b7cd4dc065233',1,'spla::Max()'],['../group__internal.html#gga3fd67fecca0cdf9c4a1a98b9d7851615a6a061313d22e51e0f25b7cd4dc065233',1,'spla::Max()']]]
+  ['noacceleration_656',['NoAcceleration',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902',1,'spla']]],
+  ['none_657',['None',['../group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa6adf97f83acf6453d4a6a4b1070f3754',1,'spla']]],
+  ['notimplemented_658',['NotImplemented',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e',1,'spla']]]
 ];

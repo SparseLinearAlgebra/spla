@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: spla::CpuArray&lt; T &gt; Class Template Reference</title>
+<title>spla: spla::CpuCooVec&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacespla.html">spla</a></li><li class="navelem"><a class="el" href="classspla_1_1CpuArray.html">CpuArray</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacespla.html">spla</a></li><li class="navelem"><a class="el" href="classspla_1_1CpuCooVec.html">CpuCooVec</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,46 +69,48 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="classspla_1_1CpuArray-members.html">List of all members</a>  </div>
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="classspla_1_1CpuCooVec-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">spla::CpuArray&lt; T &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
+<div class="title">spla::CpuCooVec&lt; T &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>CPU one-dim array for dense vector representation.  
- <a href="classspla_1_1CpuArray.html#details">More...</a></p>
+<p>CPU list-of-coordinates sparse vector representation.  
+ <a href="classspla_1_1CpuCooVec.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="cpu__formats_8hpp_source.html">cpu_formats.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for spla::CpuArray&lt; T &gt;:</div>
+Inheritance diagram for spla::CpuCooVec&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classspla_1_1CpuArray__inherit__graph.png" border="0" usemap="#aspla_1_1CpuArray_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="aspla_1_1CpuArray_3_01T_01_4_inherit__map" id="aspla_1_1CpuArray_3_01T_01_4_inherit__map">
-<area shape="rect" title="CPU one&#45;dim array for dense vector representation." alt="" coords="14,155,149,181"/>
+<div class="center"><img src="classspla_1_1CpuCooVec__inherit__graph.png" border="0" usemap="#aspla_1_1CpuCooVec_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="aspla_1_1CpuCooVec_3_01T_01_4_inherit__map" id="aspla_1_1CpuCooVec_3_01T_01_4_inherit__map">
+<area shape="rect" title="CPU list&#45;of&#45;coordinates sparse vector representation." alt="" coords="6,155,157,181"/>
 <area shape="rect" href="classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,80,157,107"/>
 <area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="35,5,127,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for spla::CpuArray&lt; T &gt;:</div>
+Collaboration diagram for spla::CpuCooVec&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classspla_1_1CpuArray__coll__graph.png" border="0" usemap="#aspla_1_1CpuArray_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="aspla_1_1CpuArray_3_01T_01_4_coll__map" id="aspla_1_1CpuArray_3_01T_01_4_coll__map">
-<area shape="rect" title="CPU one&#45;dim array for dense vector representation." alt="" coords="14,155,149,181"/>
-<area shape="rect" href="classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,80,157,107"/>
+<div class="center"><img src="classspla_1_1CpuCooVec__coll__graph.png" border="0" usemap="#aspla_1_1CpuCooVec_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="aspla_1_1CpuCooVec_3_01T_01_4_coll__map" id="aspla_1_1CpuCooVec_3_01T_01_4_coll__map">
+<area shape="rect" title="CPU list&#45;of&#45;coordinates sparse vector representation." alt="" coords="71,171,222,197"/>
+<area shape="rect" href="classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,81,157,108"/>
 <area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="35,5,127,32"/>
+<area shape="rect" href="classFormat.html" title="Named storage format for library data objects." alt="" coords="182,81,245,108"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a37f3f5938a584f239531572017ade06a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html#a37f3f5938a584f239531572017ade06a">Reduce</a> = std::function&lt; T(T accum, T added)&gt;</td></tr>
-<tr class="separator:a37f3f5938a584f239531572017ade06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc1ddbac7f3f98daaf03eca7465d7ef5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCooVec.html#afc1ddbac7f3f98daaf03eca7465d7ef5">Reduce</a> = std::function&lt; T(T accum, T added)&gt;</td></tr>
+<tr class="separator:afc1ddbac7f3f98daaf03eca7465d7ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2a636707f0100511d1854a7a06b20b77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html#a2a636707f0100511d1854a7a06b20b77">~CpuArray</a> () override=default</td></tr>
-<tr class="separator:a2a636707f0100511d1854a7a06b20b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13c19c5f06db4618265dfb153c477d57"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCooVec.html#a13c19c5f06db4618265dfb153c477d57">~CpuCooVec</a> () override=default</td></tr>
+<tr class="separator:a13c19c5f06db4618265dfb153c477d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1TDecoration"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1TDecoration')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
 <tr class="memitem:a028631dbd046650931ae3ffc40e98477 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a028631dbd046650931ae3ffc40e98477">~TDecoration</a> () override=default</td></tr>
 <tr class="separator:a028631dbd046650931ae3ffc40e98477 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aad0cc6619da55ed919a4c81c044516f9 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6ba9947b2cb5755e75636c0a8587f4 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a9f6ba9947b2cb5755e75636c0a8587f4">get_version</a> () const</td></tr>
 <tr class="separator:a9f6ba9947b2cb5755e75636c0a8587f4 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c0c9c64dffd14c4eb1c8bd3ec28497 inherit pub_methods_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a48c0c9c64dffd14c4eb1c8bd3ec28497">update_version</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> new_version)</td></tr>
+<tr class="memdesc:a48c0c9c64dffd14c4eb1c8bd3ec28497 inherit pub_methods_classspla_1_1TDecoration"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates version of the decorator stored content.  <a href="classspla_1_1TDecoration.html#a48c0c9c64dffd14c4eb1c8bd3ec28497">More...</a><br /></td></tr>
+<tr class="separator:a48c0c9c64dffd14c4eb1c8bd3ec28497 inherit pub_methods_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classspla_1_1RefCnt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspla_1_1RefCnt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memitem:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#a28790819c35f5cae6df7ce59b56c6ea5">~RefCnt</a> ()</td></tr>
 <tr class="separator:a28790819c35f5cae6df7ce59b56c6ea5 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,21 +135,26 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a896b729ca82234b89daf7e95d4ec2250"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html#a896b729ca82234b89daf7e95d4ec2250">Ax</a> {}</td></tr>
-<tr class="separator:a896b729ca82234b89daf7e95d4ec2250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974b8dee2c0baa043a1b9d925a39ae43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1CpuArray.html#a37f3f5938a584f239531572017ade06a">Reduce</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuArray.html#a974b8dee2c0baa043a1b9d925a39ae43">reduce</a> = [](T, T a) { return a; }</td></tr>
-<tr class="separator:a974b8dee2c0baa043a1b9d925a39ae43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac493d56f333e1f1829a547372bfb786d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d">Ai</a></td></tr>
+<tr class="separator:ac493d56f333e1f1829a547372bfb786d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d72e062787a5d4404883bfe247495d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d">Ax</a></td></tr>
+<tr class="separator:ad5d72e062787a5d4404883bfe247495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classspla_1_1TDecoration"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classspla_1_1TDecoration')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
 <tr class="memitem:a3bce818ace934694373d236be753e739 inherit pub_attribs_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = 0</td></tr>
 <tr class="separator:a3bce818ace934694373d236be753e739 inherit pub_attribs_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c51fdcf89b6c52cb62023586e86ea75 inherit pub_attribs_classspla_1_1TDecoration"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html#a8c51fdcf89b6c52cb62023586e86ea75">version</a> = 0</td></tr>
 <tr class="separator:a8c51fdcf89b6c52cb62023586e86ea75 inherit pub_attribs_classspla_1_1TDecoration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4ce447ac658a58bb4b6676d2698ef4fa"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuCooVec.html#a4ce447ac658a58bb4b6676d2698ef4fa">FORMAT</a> = <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">Format::CpuCooVec</a></td></tr>
+<tr class="separator:a4ce447ac658a58bb4b6676d2698ef4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
-class spla::CpuArray&lt; T &gt;</h3>
+class spla::CpuCooVec&lt; T &gt;</h3>
 
-<p>CPU one-dim array for dense vector representation. </p>
+<p>CPU list-of-coordinates sparse vector representation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -152,8 +162,8 @@ class spla::CpuArray&lt; T &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a37f3f5938a584f239531572017ade06a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37f3f5938a584f239531572017ade06a">&#9670;&nbsp;</a></span>Reduce</h2>
+<a id="afc1ddbac7f3f98daaf03eca7465d7ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc1ddbac7f3f98daaf03eca7465d7ef5">&#9670;&nbsp;</a></span>Reduce</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +171,7 @@ class spla::CpuArray&lt; T &gt;</h3>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classspla_1_1CpuArray.html">spla::CpuArray</a>&lt; T &gt;::<a class="el" href="classspla_1_1CpuArray.html#a37f3f5938a584f239531572017ade06a">Reduce</a> =  std::function&lt;T(T accum, T added)&gt;</td>
+          <td class="memname">using <a class="el" href="classspla_1_1CpuCooVec.html">spla::CpuCooVec</a>&lt; T &gt;::<a class="el" href="classspla_1_1CpuCooVec.html#afc1ddbac7f3f98daaf03eca7465d7ef5">Reduce</a> =  std::function&lt;T(T accum, T added)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -169,8 +179,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2a636707f0100511d1854a7a06b20b77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a636707f0100511d1854a7a06b20b77">&#9670;&nbsp;</a></span>~CpuArray()</h2>
+<a id="a13c19c5f06db4618265dfb153c477d57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13c19c5f06db4618265dfb153c477d57">&#9670;&nbsp;</a></span>~CpuCooVec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,7 +191,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classspla_1_1CpuArray.html">spla::CpuArray</a>&lt; T &gt;::~<a class="el" href="classspla_1_1CpuArray.html">CpuArray</a> </td>
+          <td class="memname"><a class="el" href="classspla_1_1CpuCooVec.html">spla::CpuCooVec</a>&lt; T &gt;::~<a class="el" href="classspla_1_1CpuCooVec.html">CpuCooVec</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -197,8 +207,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a896b729ca82234b89daf7e95d4ec2250"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a896b729ca82234b89daf7e95d4ec2250">&#9670;&nbsp;</a></span>Ax</h2>
+<a id="ac493d56f333e1f1829a547372bfb786d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac493d56f333e1f1829a547372bfb786d">&#9670;&nbsp;</a></span>Ai</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,15 +216,15 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;T&gt; <a class="el" href="classspla_1_1CpuArray.html">spla::CpuArray</a>&lt; T &gt;::Ax {}</td>
+          <td class="memname">std::vector&lt;<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&gt; <a class="el" href="classspla_1_1CpuCooVec.html">spla::CpuCooVec</a>&lt; T &gt;::Ai</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a974b8dee2c0baa043a1b9d925a39ae43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a974b8dee2c0baa043a1b9d925a39ae43">&#9670;&nbsp;</a></span>reduce</h2>
+<a id="ad5d72e062787a5d4404883bfe247495d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5d72e062787a5d4404883bfe247495d">&#9670;&nbsp;</a></span>Ax</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,9 +232,33 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classspla_1_1CpuArray.html#a37f3f5938a584f239531572017ade06a">Reduce</a> <a class="el" href="classspla_1_1CpuArray.html">spla::CpuArray</a>&lt; T &gt;::reduce = [](T, T a) { return a; }</td>
+          <td class="memname">std::vector&lt;T&gt; <a class="el" href="classspla_1_1CpuCooVec.html">spla::CpuCooVec</a>&lt; T &gt;::Ax</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ce447ac658a58bb4b6676d2698ef4fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ce447ac658a58bb4b6676d2698ef4fa">&#9670;&nbsp;</a></span>FORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> <a class="el" href="classspla_1_1CpuCooVec.html">spla::CpuCooVec</a>&lt; T &gt;::FORMAT = <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">Format::CpuCooVec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

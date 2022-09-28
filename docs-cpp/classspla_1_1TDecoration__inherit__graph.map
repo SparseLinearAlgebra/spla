@@ -1,8 +1,9 @@
 <map id="spla::TDecoration&lt; T &gt;" name="spla::TDecoration&lt; T &gt;">
-<area shape="rect" id="node1" title="Base class for typed decoration for storage object." alt="" coords="227,80,379,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1CpuArray.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="5,155,140,181"/>
-<area shape="rect" id="node4" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="165,155,293,181"/>
-<area shape="rect" id="node5" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="317,155,442,181"/>
-<area shape="rect" id="node6" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="467,155,585,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="257,5,349,32"/>
+<area shape="rect" id="node1" title="Base class for typed decoration for storage object." alt="" coords="145,107,297,133"/>
+<area shape="rect" id="node3" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="364,5,492,32"/>
+<area shape="rect" id="node4" href="$classspla_1_1CpuCooVec.html" title="CPU list&#45;of&#45;coordinates sparse vector representation." alt="" coords="353,56,503,83"/>
+<area shape="rect" id="node5" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="365,107,491,133"/>
+<area shape="rect" id="node6" href="$classspla_1_1CpuDenseVec.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="345,157,511,184"/>
+<area shape="rect" id="node7" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="369,208,487,235"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,107,97,133"/>
 </map>
