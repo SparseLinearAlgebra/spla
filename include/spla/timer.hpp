@@ -25,21 +25,52 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_TIMER_HPP
+#define SPLA_TIMER_HPP
 
-#include "algorithm.hpp"
 #include "config.hpp"
-#include "descriptor.hpp"
-#include "library.hpp"
-#include "matrix.hpp"
-#include "object.hpp"
-#include "op.hpp"
-#include "ref.hpp"
-#include "scalar.hpp"
-#include "schedule.hpp"
-#include "timer.hpp"
-#include "type.hpp"
-#include "vector.hpp"
 
-#endif//SPLA_SPLA_HPP
+#include <chrono>
+#include <vector>
+
+namespace spla {
+
+    /**
+     * @addtogroup spla
+     * @{
+     */
+
+    /**
+     * @class Timer
+     * @brief Simple timer to measure intervals of time on CPU-side
+     */
+    class Timer {
+    public:
+        SPLA_API Timer();
+        SPLA_API ~Timer();
+
+        SPLA_API void   start();
+        SPLA_API void   stop();
+        SPLA_API void   lap();
+        [[nodiscard]] SPLA_API double get_elapsed_ms() const;
+        [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
+        [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;
+
+    private:
+        using clock = std::chrono::steady_clock;
+        using us    = std::chrono::microseconds;
+        using point = clock::time_point;
+
+        std::vector<double> m_laps;
+        point               m_start;
+        point               m_prev;
+        point               m_end;
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_TIMER_HPP

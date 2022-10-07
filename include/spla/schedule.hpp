@@ -134,6 +134,22 @@ namespace spla {
             ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 
     /**
+     * @brief Scheduled r = reduce(v)
+     *
+     * @param r
+     * @param v
+     * @param op_reduce
+     * @param desc Scheduled task descriptor; default is null
+     *
+     * @return Created node or null on failure
+     */
+    SPLA_API ref_ptr<ScheduleTask> make_sched_v_reduce(
+            ref_ptr<Scalar>     r,
+            ref_ptr<Vector>     v,
+            ref_ptr<OpBinary>   op_reduce,
+            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
+
+    /**
      * @}
      */
 

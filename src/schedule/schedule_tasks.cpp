@@ -87,4 +87,18 @@ namespace spla {
         return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>()};
     }
 
+    std::string ScheduleTask_v_reduce::get_name() {
+        return "v_reduce";
+    }
+    std::string ScheduleTask_v_reduce::get_key() {
+        std::stringstream key;
+        key << get_name() << "_"
+            << op_reduce->get_key();
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_v_reduce::get_args() {
+        return {r.as<Object>(), v.as<Object>(), op_reduce.as<Object>()};
+    }
+
 }// namespace spla

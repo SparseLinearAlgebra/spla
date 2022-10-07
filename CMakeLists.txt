@@ -218,6 +218,7 @@ endif ()
 add_library(spla SHARED
         # C++ core
         include/spla/spla.hpp
+        include/spla/algorithm.hpp
         include/spla/config.hpp
         include/spla/descriptor.hpp
         include/spla/library.hpp
@@ -227,6 +228,7 @@ add_library(spla SHARED
         include/spla/ref.hpp
         include/spla/scalar.hpp
         include/spla/schedule.hpp
+        include/spla/timer.hpp
         include/spla/type.hpp
         include/spla/vector.hpp
         src/core/accelerator.hpp
@@ -259,9 +261,11 @@ add_library(spla SHARED
         src/descriptor.cpp
         src/library.cpp
         src/matrix.cpp
+        src/algorithm.cpp
         src/op.cpp
         src/scalar.cpp
         src/schedule.cpp
+        src/timer.cpp
         src/type.cpp
         src/vector.cpp
         # C bindings

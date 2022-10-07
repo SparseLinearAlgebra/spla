@@ -25,21 +25,33 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#include <spla/timer.hpp>
 
-#include "algorithm.hpp"
-#include "config.hpp"
-#include "descriptor.hpp"
-#include "library.hpp"
-#include "matrix.hpp"
-#include "object.hpp"
-#include "op.hpp"
-#include "ref.hpp"
-#include "scalar.hpp"
-#include "schedule.hpp"
-#include "timer.hpp"
-#include "type.hpp"
-#include "vector.hpp"
+namespace spla {
 
-#endif//SPLA_SPLA_HPP
+    void Timer::start() {
+        m_start = m_prev = m_end = clock::now();
+    }
+    void Timer::stop() {
+        m_prev = m_end = clock::now();
+    }
+    void Timer::lap() {
+        auto lap_start = m_prev;
+        m_prev         = clock::now();
+        m_laps.push_back(static_cast<double>(std::chrono::duration_cast<us>(m_prev - lap_start).count()) * 1e-3);
+    }
+    double Timer::get_elapsed_ms() const {
+        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_start).count()) * 1e-3;
+    }
+    double Timer::get_elapsed_lap_ms() const {
+        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_prev).count()) * 1e-3;
+    }
+    const std::vector<double>& Timer::get_laps_ms() const {
+        return m_laps;
+    }
+
+    Timer::~Timer() = default;
+    Timer::Timer()  = default;
+
+
+}// namespace spla

@@ -25,21 +25,41 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_ALGORITHM_HPP
+#define SPLA_ALGORITHM_HPP
 
-#include "algorithm.hpp"
 #include "config.hpp"
 #include "descriptor.hpp"
-#include "library.hpp"
 #include "matrix.hpp"
-#include "object.hpp"
-#include "op.hpp"
-#include "ref.hpp"
 #include "scalar.hpp"
-#include "schedule.hpp"
-#include "timer.hpp"
-#include "type.hpp"
 #include "vector.hpp"
 
-#endif//SPLA_SPLA_HPP
+namespace spla {
+
+    /**
+     * @addtogroup spla
+     * @{
+     */
+
+    /**
+     * @brief Breadth-first search algorithm
+     *
+     * @param v int vector to store reached distances
+     * @param A int matrix filled with 1 where exist edge from i to j
+     * @param s start vertex id to search
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status bfs(const ref_ptr<Vector>&     v,
+                        const ref_ptr<Matrix>&     A,
+                        uint                       s,
+                        const ref_ptr<Descriptor>& descriptor);
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_ALGORITHM_HPP

@@ -81,4 +81,17 @@ namespace spla {
         return task.as<ScheduleTask>();
     }
 
+    ref_ptr<ScheduleTask> make_sched_v_reduce(
+            ref_ptr<Scalar>     r,
+            ref_ptr<Vector>     v,
+            ref_ptr<OpBinary>   op_reduce,
+            ref_ptr<Descriptor> desc) {
+        auto task       = make_ref<ScheduleTask_v_reduce>();
+        task->r         = std::move(r);
+        task->v         = std::move(v);
+        task->op_reduce = std::move(op_reduce);
+        task->desc      = std::move(desc);
+        return task.as<ScheduleTask>();
+    }
+
 }// namespace spla

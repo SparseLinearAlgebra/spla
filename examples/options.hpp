@@ -25,21 +25,42 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_OPTIONS_HPP
+#define SPLA_OPTIONS_HPP
 
-#include "algorithm.hpp"
-#include "config.hpp"
-#include "descriptor.hpp"
-#include "library.hpp"
-#include "matrix.hpp"
-#include "object.hpp"
-#include "op.hpp"
-#include "ref.hpp"
-#include "scalar.hpp"
-#include "schedule.hpp"
-#include "timer.hpp"
-#include "type.hpp"
-#include "vector.hpp"
+#include <cxxopts.hpp>
 
-#endif//SPLA_SPLA_HPP
+std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
+    std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
+    options->add_option("", cxxopts::Option("h,help", "display help info", cxxopts::value<bool>()->default_value("false")));
+    options->add_option("", cxxopts::Option("mtxpath", "path to matrix file", cxxopts::value<std::string>()));
+    options->add_option("", cxxopts::Option("niters", "number of iterations to run", cxxopts::value<int>()->default_value("4")));
+    options->add_option("", cxxopts::Option("source", "source vertex to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
+    options->add_option("", cxxopts::Option("platform", "id of platform to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option("devices", "id of device to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
+    options->add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
+    return options;
+}
+
+bool parse_options(int argc, const char* const* argv, const std::shared_ptr<cxxopts::Options>& options, cxxopts::ParseResult& args, int& ret) {
+    ret = 0;
+
+    try {
+        args = options->parse(argc, argv);
+    } catch (const std::exception& e) {
+        std::cerr << "failed parse input arguments: " << e.what();
+        ret = 1;
+        return true;
+    }
+
+    if (args["help"].as<bool>()) {
+        std::cout << options->help();
+        return true;
+    }
+
+    return false;
+}
+
+#endif//SPLA_OPTIONS_HPP
