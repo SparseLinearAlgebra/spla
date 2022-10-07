@@ -31,6 +31,7 @@
 #include <core/dispatcher.hpp>
 #include <core/logger.hpp>
 #include <core/registry.hpp>
+#include <core/top.hpp>
 
 #include <sequential/cpu_algo_registry.hpp>
 
@@ -49,6 +50,8 @@ namespace spla {
         m_registry = std::make_unique<Registry>();
         // Setup dispatcher (always available)
         m_dispatcher = std::make_unique<Dispatcher>();
+        // Register build-in bin ops (id's done here, since registration depend on types)
+        register_ops();
 
         // Register cpu algo version
         register_algo_cpu(m_registry.get());

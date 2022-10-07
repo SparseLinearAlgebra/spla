@@ -25,13 +25,24 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/ttype.hpp>
+#include "test_common.hpp"
 
-namespace spla {
+#include <spla/spla.hpp>
 
-    ref_ptr<Type> BYTE  = TType<std::int8_t>::make_type("BYTE", "B", "char", "signed 1 byte integral type", 1);
-    ref_ptr<Type> INT   = TType<std::int32_t>::make_type("INT", "I", "int", "signed 4 byte integral type", 2);
-    ref_ptr<Type> UINT  = TType<std::uint32_t>::make_type("UINT", "U", "uint", "unsigned 4 byte integral type", 3);
-    ref_ptr<Type> FLOAT = TType<float>::make_type("FLOAT", "F", "float", "4 byte floating point type", 4);
+#include <iostream>
 
-}// namespace spla
+TEST(op_binary, getters) {
+    spla::get_library();
+
+    auto display_op_info = [](spla::ref_ptr<spla::OpBinary>& op) {
+        std::cout << op->get_name() << " " << op->get_key() << " " << op->get_source() << std::endl;
+    };
+
+    display_op_info(spla::PLUS_INT);
+    display_op_info(spla::MULT_INT);
+
+    display_op_info(spla::PLUS_UINT);
+    display_op_info(spla::MULT_UINT);
+}
+
+SPLA_GTEST_MAIN_WITH_FINALIZE

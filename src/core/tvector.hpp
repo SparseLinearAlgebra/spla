@@ -70,6 +70,7 @@ namespace spla {
         Status             get_int(uint row_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint32_t& value) override;
         Status             get_float(uint row_id, float& value) override;
+        Status             clear() override;
 
         ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
         ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
@@ -200,6 +201,11 @@ namespace spla {
     }
 
     template<typename T>
+    Status TVector<T>::clear() {
+        return Status::Ok;
+    }
+
+    template<typename T>
     void TVector<T>::update_version() {
         ++m_version;
     }
@@ -209,8 +215,9 @@ namespace spla {
         auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
 
         if (p_vec->get_version() < m_version) {
-            LOG_MSG(Status::Error, "data invalidation, previous content lost");
             update_version();
+            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+
             cpu_dense_vec_resize(m_n_rows, *p_vec);
             p_vec->update_version(m_version);
         }

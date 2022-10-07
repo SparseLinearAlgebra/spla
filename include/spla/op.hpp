@@ -46,9 +46,10 @@ namespace spla {
      */
     class Op : public Object {
     public:
-        SPLA_API ~Op() override                 = default;
-        SPLA_API virtual std::string get_name() = 0;
-        SPLA_API virtual std::string get_key()  = 0;
+        SPLA_API ~Op() override                   = default;
+        SPLA_API virtual std::string get_name()   = 0;
+        SPLA_API virtual std::string get_source() = 0;
+        SPLA_API virtual std::string get_key()    = 0;
     };
 
     /**
@@ -73,6 +74,34 @@ namespace spla {
         SPLA_API virtual ref_ptr<Type> get_type_arg_1() = 0;
         SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
     };
+
+    SPLA_API extern ref_ptr<OpBinary> PLUS_INT;
+    SPLA_API extern ref_ptr<OpBinary> PLUS_UINT;
+    SPLA_API extern ref_ptr<OpBinary> PLUS_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> MINUS_INT;
+    SPLA_API extern ref_ptr<OpBinary> MINUS_UINT;
+    SPLA_API extern ref_ptr<OpBinary> MINUS_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> MULT_INT;
+    SPLA_API extern ref_ptr<OpBinary> MULT_UINT;
+    SPLA_API extern ref_ptr<OpBinary> MULT_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> DIV_INT;
+    SPLA_API extern ref_ptr<OpBinary> DIV_UINT;
+    SPLA_API extern ref_ptr<OpBinary> DIV_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> FIRST_INT;
+    SPLA_API extern ref_ptr<OpBinary> FIRST_UINT;
+    SPLA_API extern ref_ptr<OpBinary> FIRST_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> SECOND_INT;
+    SPLA_API extern ref_ptr<OpBinary> SECOND_UINT;
+    SPLA_API extern ref_ptr<OpBinary> SECOND_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> ONE_INT;
+    SPLA_API extern ref_ptr<OpBinary> ONE_UINT;
+    SPLA_API extern ref_ptr<OpBinary> ONE_FLOAT;
 
     /**
      * @}

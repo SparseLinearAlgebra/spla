@@ -49,15 +49,17 @@ namespace spla {
         SPLA_API ~TType() override = default;
         SPLA_API const std::string& get_name() override;
         SPLA_API const std::string& get_code() override;
+        SPLA_API const std::string& get_cpp() override;
         SPLA_API const std::string& get_description() override;
         SPLA_API int                get_size() override;
         SPLA_API int                get_id() override;
 
-        static ref_ptr<Type> make_type(std::string name, std::string code, std::string desc, int id);
+        static ref_ptr<Type> make_type(std::string name, std::string code, std::string cpp, std::string desc, int id);
 
     private:
         std::string m_name;
         std::string m_code;
+        std::string m_cpp;
         std::string m_desc;
         int         m_size = -1;
         int         m_id   = -1;
@@ -71,6 +73,11 @@ namespace spla {
     template<typename T>
     const std::string& TType<T>::get_code() {
         return m_code;
+    }
+
+    template<typename T>
+    const std::string& TType<T>::get_cpp() {
+        return m_cpp;
     }
 
     template<typename T>
@@ -89,10 +96,11 @@ namespace spla {
     }
 
     template<typename T>
-    ref_ptr<Type> TType<T>::make_type(std::string name, std::string code, std::string desc, int id) {
+    ref_ptr<Type> TType<T>::make_type(std::string name, std::string code, std::string cpp, std::string desc, int id) {
         ref_ptr<TType<T>> t(new TType<T>());
         t->m_name = std::move(name);
         t->m_code = std::move(code);
+        t->m_cpp  = std::move(cpp);
         t->m_desc = std::move(desc);
         t->m_size = static_cast<int>(sizeof(T));
         t->m_id   = id;

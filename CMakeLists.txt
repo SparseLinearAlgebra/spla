@@ -238,6 +238,7 @@ add_library(spla SHARED
         src/core/registry.hpp
         src/core/tdecoration.hpp
         src/core/tmatrix.hpp
+        src/core/top.hpp
         src/core/tscalar.hpp
         src/core/ttype.hpp
         src/core/tvector.hpp
@@ -258,6 +259,7 @@ add_library(spla SHARED
         src/descriptor.cpp
         src/library.cpp
         src/matrix.cpp
+        src/op.cpp
         src/scalar.cpp
         src/schedule.cpp
         src/type.cpp

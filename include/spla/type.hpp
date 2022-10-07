@@ -48,10 +48,16 @@ namespace spla {
         SPLA_API ~Type() override                             = default;
         SPLA_API virtual const std::string& get_name()        = 0;
         SPLA_API virtual const std::string& get_code()        = 0;
+        SPLA_API virtual const std::string& get_cpp()         = 0;
         SPLA_API virtual const std::string& get_description() = 0;
         SPLA_API virtual int                get_size()        = 0;
         SPLA_API virtual int                get_id()          = 0;
     };
+
+    using T_BYTE  = std::int8_t;
+    using T_INT   = std::int32_t;
+    using T_UINT  = std::uint32_t;
+    using T_FLOAT = float;
 
     SPLA_API extern ref_ptr<Type> BYTE;
     SPLA_API extern ref_ptr<Type> INT;

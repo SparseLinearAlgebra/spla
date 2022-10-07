@@ -73,6 +73,7 @@ namespace spla {
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
+        Status             clear() override;
 
         ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
         ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
@@ -252,6 +253,12 @@ namespace spla {
     }
 
     template<typename T>
+    Status TMatrix<T>::clear() {
+        update_version();
+        return Status::Ok;
+    }
+
+    template<typename T>
     void TMatrix<T>::update_version() {
         ++m_version;
     }
@@ -261,8 +268,9 @@ namespace spla {
         auto p_lil = get_dec_or_create_p<CpuLil<T>>();
 
         if (p_lil->get_version() < m_version) {
-            LOG_MSG(Status::Error, "data invalidation, previous content lost");
             update_version();
+            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+
             cpu_lil_resize(m_n_rows, *p_lil);
             p_lil->update_version(m_version);
         }

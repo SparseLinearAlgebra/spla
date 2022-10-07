@@ -57,6 +57,7 @@ namespace spla {
         SPLA_API virtual Status        get_int(uint row_id, uint col_id, std::int32_t& value)   = 0;
         SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value) = 0;
         SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)        = 0;
+        SPLA_API virtual Status        clear()                                                  = 0;
     };
 
     /**
