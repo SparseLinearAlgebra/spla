@@ -64,4 +64,62 @@ TEST(vector, get_set_reduce) {
     }
 }
 
+TEST(vector, reduce_plus) {
+    const spla::uint N    = 20;
+    const spla::uint K    = 8;
+    const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
+    const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
+
+
+    auto ivec   = spla::make_vector(N, spla::INT);
+    auto ir     = spla::make_scalar(spla::INT);
+    auto istart = spla::make_int(0);
+    int  isum   = 0;
+
+    for (int k = 0; k < K; ++k) {
+        ivec->set_int(I[k], X[k]);
+        isum += X[k];
+    }
+
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_v_reduce(ir, istart, ivec, spla::PLUS_INT));
+    schedule->submit();
+
+    int result;
+    ir->get_int(result);
+
+    EXPECT_EQ(result, isum);
+}
+
+TEST(vector, reduce_mult) {
+    const spla::uint N    = 20;
+    const spla::uint K    = 8;
+    const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
+    const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
+
+
+    auto ivec   = spla::make_vector(N, spla::INT);
+    auto ir     = spla::make_scalar(spla::INT);
+    auto istart = spla::make_int(1);
+    int  isum   = 1;
+
+    for (int k = 0; k < N; ++k) {
+        ivec->set_int(k, 1);
+    }
+
+    for (int k = 0; k < K; ++k) {
+        ivec->set_int(I[k], X[k]);
+        isum *= X[k];
+    }
+
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_v_reduce(ir, istart, ivec, spla::MULT_INT));
+    schedule->submit();
+
+    int result;
+    ir->get_int(result);
+
+    EXPECT_EQ(result, isum);
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE

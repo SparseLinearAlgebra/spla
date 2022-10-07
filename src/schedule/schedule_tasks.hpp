@@ -121,6 +121,7 @@ namespace spla {
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Scalar>   r;
+        ref_ptr<Scalar>   s;
         ref_ptr<Vector>   v;
         ref_ptr<OpBinary> op_reduce;
     };

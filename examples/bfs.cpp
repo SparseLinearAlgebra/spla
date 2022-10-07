@@ -35,6 +35,5 @@ int main(int argc, const char* const* argv) {
     if (parse_options(argc, argv, options, args, ret)) return ret;
 
 
-
     return 0;
 }

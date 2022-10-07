@@ -98,7 +98,7 @@ namespace spla {
         return key.str();
     }
     std::vector<ref_ptr<Object>> ScheduleTask_v_reduce::get_args() {
-        return {r.as<Object>(), v.as<Object>(), op_reduce.as<Object>()};
+        return {r.as<Object>(), s.as<Object>(), v.as<Object>(), op_reduce.as<Object>()};
     }
 
 }// namespace spla

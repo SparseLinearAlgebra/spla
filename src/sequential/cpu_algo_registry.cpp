@@ -27,12 +27,24 @@
 
 #include "cpu_algo_registry.hpp"
 
+#include <core/registry.hpp>
+#include <core/top.hpp>
+
 #include <sequential/cpu_algo_callback.hpp>
+#include <sequential/cpu_vector_reduce.hpp>
 
 namespace spla {
 
     void register_algo_cpu(Registry* g_registry) {
-        g_registry->add("callback__cpu", std::make_shared<Algo_callback>());
+        g_registry->add("callback" CPU_SUFFIX, std::make_shared<Algo_callback>());
+
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", PLUS_INT), std::make_shared<Algo_v_reduce_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", PLUS_UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", PLUS_FLOAT), std::make_shared<Algo_v_reduce_cpu<T_FLOAT>>());
+
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", MULT_INT), std::make_shared<Algo_v_reduce_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", MULT_UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_reduce", MULT_FLOAT), std::make_shared<Algo_v_reduce_cpu<T_FLOAT>>());
     }
 
 }// namespace spla

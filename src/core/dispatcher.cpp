@@ -50,7 +50,7 @@ namespace spla {
             }
         }
 
-        std::string key_cpu = key + "__cpu";
+        std::string key_cpu = key + CPU_SUFFIX;
         algo                = g_reg->find(key_cpu);
 
         if (algo) {

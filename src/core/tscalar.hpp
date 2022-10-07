@@ -63,6 +63,9 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
 
+        T& get_value();
+        T  get_value() const;
+
     private:
         std::string m_label;
         T           m_value = T();
@@ -133,6 +136,15 @@ namespace spla {
     template<typename T>
     const std::string& TScalar<T>::get_label() const {
         return m_label;
+    }
+
+    template<typename T>
+    T& TScalar<T>::get_value() {
+        return m_value;
+    }
+    template<typename T>
+    T TScalar<T>::get_value() const {
+        return m_value;
     }
 
     /**

@@ -49,9 +49,9 @@ namespace spla {
         SPLA_API Timer();
         SPLA_API ~Timer();
 
-        SPLA_API void   start();
-        SPLA_API void   stop();
-        SPLA_API void   lap();
+        SPLA_API void                 start();
+        SPLA_API void                 stop();
+        SPLA_API void                 lap();
         [[nodiscard]] SPLA_API double get_elapsed_ms() const;
         [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
         [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;

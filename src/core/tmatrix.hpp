@@ -31,6 +31,7 @@
 #include <spla/config.hpp>
 #include <spla/matrix.hpp>
 
+#include <core/logger.hpp>
 #include <core/tdecoration.hpp>
 #include <core/ttype.hpp>
 

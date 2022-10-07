@@ -36,6 +36,11 @@
 
 namespace spla {
 
+#define CPU_SUFFIX               "__cpu"
+#define GPU_SUFFIX               "__gpu"
+#define MAKE_KEY_1(name, op)     std::string(name) + "_" + (op)->get_key()
+#define MAKE_KEY_CPU_1(name, op) MAKE_KEY_1(name, op) + CPU_SUFFIX
+
     /**
      * @addtogroup internal
      * @{
