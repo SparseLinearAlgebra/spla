@@ -1,17 +1,6 @@
 var searchData=
 [
-  ['make_5fbyte_567',['make_byte',['../group__spla.html#ga86259e53632c91edc5ebf9f7953664fe',1,'spla']]],
-  ['make_5fdesc_568',['make_desc',['../group__spla.html#ga5eeceddb418c3f5ecb2dad7cb9d38d61',1,'spla']]],
-  ['make_5ffloat_569',['make_float',['../group__spla.html#ga22f6947b6db70316ed2bb47ed2c61b70',1,'spla']]],
-  ['make_5fint_570',['make_int',['../group__spla.html#gabaaae61891ecf5a53196ba55e14b9d20',1,'spla']]],
-  ['make_5fmatrix_571',['make_matrix',['../group__spla.html#ga59bd0fb803b33d4ef924657048410de3',1,'spla']]],
-  ['make_5fref_572',['make_ref',['../group__spla.html#ga679860c05617406206984f3372197ef0',1,'spla']]],
-  ['make_5fscalar_573',['make_scalar',['../group__spla.html#ga8b3fe53bfbfca623501b84a691c6fb9a',1,'spla']]],
-  ['make_5fsched_5fcallback_574',['make_sched_callback',['../group__spla.html#ga9a52465cd98a53181d4628bb17530c8f',1,'spla']]],
-  ['make_5fsched_5fmxv_5fmasked_575',['make_sched_mxv_masked',['../group__spla.html#ga0d861b7f585c55bb8335242394da57c9',1,'spla']]],
-  ['make_5fsched_5fv_5fassign_5fmasked_576',['make_sched_v_assign_masked',['../group__spla.html#gae30b845e700b7c343b77b0437148c07a',1,'spla']]],
-  ['make_5fschedule_577',['make_schedule',['../group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f',1,'spla']]],
-  ['make_5ftype_578',['make_type',['../group__internal.html#gae0014fa21689ed7c89214674bf3a844f',1,'spla::TType']]],
-  ['make_5fuint_579',['make_uint',['../group__spla.html#gabe08755ccd147039224c3ba97c4c8bec',1,'spla']]],
-  ['make_5fvector_580',['make_vector',['../group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2',1,'spla']]]
+  ['lap_603',['lap',['../classspla_1_1Timer.html#ae778df36c9e8575e7d36bf92e14acdb9',1,'spla::Timer']]],
+  ['library_604',['Library',['../classspla_1_1Library.html#af08ae9415dcd644a677cd36c6549095b',1,'spla::Library::Library()'],['../classspla_1_1Library.html#a4ebf235634d2cc8804b2d65f0567c6e9',1,'spla::Library::Library(const Library &amp;)=delete'],['../classspla_1_1Library.html#ad00c9a1654a3140151f43224e9146d08',1,'spla::Library::Library(Library &amp;&amp;)=delete']]],
+  ['log_5fmsg_605',['log_msg',['../classspla_1_1Logger.html#a78d3d9ed5039a24041b5d9e2850a1e68',1,'spla::Logger']]]
 ];

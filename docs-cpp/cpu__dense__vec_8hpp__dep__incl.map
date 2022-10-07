@@ -1,5 +1,7 @@
 <map id="src/sequential/cpu_dense_vec.hpp" name="src/sequential/cpu_dense_vec.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="10,5,138,47"/>
-<area shape="rect" id="node2" href="$tvector_8hpp.html" title=" " alt="" coords="5,95,143,121"/>
-<area shape="rect" id="node3" href="$vector_8cpp.html" title=" " alt="" coords="22,169,126,196"/>
+<area shape="rect" id="node1" title=" " alt="" coords="81,5,209,47"/>
+<area shape="rect" id="node2" href="$tvector_8hpp.html" title=" " alt="" coords="76,95,213,121"/>
+<area shape="rect" id="node3" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="5,169,140,211"/>
+<area shape="rect" id="node5" href="$vector_8cpp.html" title=" " alt="" coords="165,177,269,203"/>
+<area shape="rect" id="node4" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="9,259,137,300"/>
 </map>

@@ -1,9 +1,10 @@
 <map id="spla::ScheduleTask" name="spla::ScheduleTask">
-<area shape="rect" id="node1" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,78,419,105"/>
-<area shape="rect" id="node4" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,78,632,105"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,78,236,105"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,78,97,105"/>
+<area shape="rect" id="node1" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,111,419,138"/>
+<area shape="rect" id="node4" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,111,632,138"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,111,236,138"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,111,97,138"/>
 <area shape="rect" id="node5" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="680,5,815,47"/>
 <area shape="rect" id="node6" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="680,71,815,112"/>
 <area shape="rect" id="node7" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="680,136,815,177"/>
+<area shape="rect" id="node8" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="680,201,815,243"/>
 </map>

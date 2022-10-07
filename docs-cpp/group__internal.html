@@ -123,6 +123,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html">spla::ScheduleTask_v_assign_masked</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked vector assignment.  <a href="classspla_1_1ScheduleTask__v__assign__masked.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__reduce.html">spla::ScheduleTask_v_reduce</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> reduction to scalar.  <a href="classspla_1_1ScheduleTask__v__reduce.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CpuDenseVec.html">spla::CpuDenseVec&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU one-dim array for dense vector representation.  <a href="classspla_1_1CpuDenseVec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,6 +271,10 @@ Functions</h2></td></tr>
 <tr class="separator:ga31668c71819c462ec0acc094b1b188ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f414490ba31196f126c7519844921f5"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;::get_label</a> () const override</td></tr>
 <tr class="separator:ga2f414490ba31196f126c7519844921f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa903651127aed5ad2b96b7ecfb1b522a"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa903651127aed5ad2b96b7ecfb1b522a">spla::TScalar&lt; T &gt;::get_value</a> ()</td></tr>
+<tr class="separator:gaa903651127aed5ad2b96b7ecfb1b522a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d5439749d74653920eb627dd1eb7b53"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5d5439749d74653920eb627dd1eb7b53">spla::TScalar&lt; T &gt;::get_value</a> () const</td></tr>
+<tr class="separator:ga5d5439749d74653920eb627dd1eb7b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga09fb9172fae139442bdcd8b9e0b9863d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="spla_8h.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga09fb9172fae139442bdcd8b9e0b9863d">spla::TType&lt; T &gt;::get_name</a> () override</td></tr>
 <tr class="separator:ga09fb9172fae139442bdcd8b9e0b9863d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed53dd20ed394c653f647f013f7fe259"><td class="memItemLeft" align="right" valign="top"><a class="el" href="spla_8h.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">SPLA_API</a> const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaed53dd20ed394c653f647f013f7fe259">spla::TType&lt; T &gt;::get_code</a> () override</td></tr>
@@ -1868,6 +1875,38 @@ template&lt;typename T &gt; </div>
 <span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa903651127aed5ad2b96b7ecfb1b522a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa903651127aed5ad2b96b7ecfb1b522a">&#9670;&nbsp;</a></span>get_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T &amp; <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5d5439749d74653920eb627dd1eb7b53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d5439749d74653920eb627dd1eb7b53">&#9670;&nbsp;</a></span>get_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_value</td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

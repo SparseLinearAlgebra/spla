@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['init_560',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
-  ['is_561',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
-  ['is_5fnot_5fnull_562',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
-  ['is_5fnull_563',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
-  ['is_5funique_564',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]]
+  ['has_596',['has',['../classspla_1_1Registry.html#a1ea75762c28485f854068013174c8690',1,'spla::Registry']]],
+  ['hint_5fstate_597',['hint_state',['../classspla_1_1Matrix.html#a5d8eb3037d7d2219610bf2b6260f9c9e',1,'spla::Matrix::hint_state()'],['../classspla_1_1Vector.html#a0b951af71f444d3606c269ceaeef46fd',1,'spla::Vector::hint_state()'],['../group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980',1,'spla::TMatrix::hint_state()'],['../group__internal.html#gacaf81f5ac855c678c9b96401d5404a13',1,'spla::TVector::hint_state()']]]
 ];

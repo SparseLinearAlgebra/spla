@@ -1,9 +1,18 @@
 var searchData=
 [
-  ['operator_20bool_581',['operator bool',['../classspla_1_1ref__ptr.html#af556edb717dcb309412fd187cc3da943',1,'spla::ref_ptr']]],
-  ['operator_28_29_582',['operator()',['../structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62',1,'spla::pair_hash']]],
-  ['operator_2a_583',['operator*',['../classspla_1_1ref__ptr.html#a75b78f4d91e0539d0aa47b4d42bf2b43',1,'spla::ref_ptr']]],
-  ['operator_2d_3e_584',['operator-&gt;',['../classspla_1_1ref__ptr.html#a3b87498cf19c984a460ba4a2e4890464',1,'spla::ref_ptr']]],
-  ['operator_3d_585',['operator=',['../classspla_1_1ref__ptr.html#a1439801f9781eb2ef55c71748cb2094d',1,'spla::ref_ptr::operator=(const ref_ptr &amp;other)'],['../classspla_1_1ref__ptr.html#a2524506a09c1b2b1aefae9b79ec7d8f1',1,'spla::ref_ptr::operator=(const ref_ptr&lt; G &gt; &amp;other)'],['../classspla_1_1ref__ptr.html#af8693a4969c909646659710fe588353d',1,'spla::ref_ptr::operator=(ref_ptr &amp;&amp;other) noexcept']]],
-  ['operator_3d_3d_586',['operator==',['../classspla_1_1ref__ptr.html#a5fc9a61101b489dda680ce4ec2ca92b3',1,'spla::ref_ptr']]]
+  ['make_5fbyte_606',['make_byte',['../group__spla.html#ga86259e53632c91edc5ebf9f7953664fe',1,'spla']]],
+  ['make_5fdesc_607',['make_desc',['../group__spla.html#ga5eeceddb418c3f5ecb2dad7cb9d38d61',1,'spla']]],
+  ['make_5ffloat_608',['make_float',['../group__spla.html#ga22f6947b6db70316ed2bb47ed2c61b70',1,'spla']]],
+  ['make_5fint_609',['make_int',['../group__spla.html#gabaaae61891ecf5a53196ba55e14b9d20',1,'spla']]],
+  ['make_5fmatrix_610',['make_matrix',['../group__spla.html#ga59bd0fb803b33d4ef924657048410de3',1,'spla']]],
+  ['make_5fref_611',['make_ref',['../group__spla.html#ga679860c05617406206984f3372197ef0',1,'spla']]],
+  ['make_5fscalar_612',['make_scalar',['../group__spla.html#ga8b3fe53bfbfca623501b84a691c6fb9a',1,'spla']]],
+  ['make_5fsched_5fcallback_613',['make_sched_callback',['../group__spla.html#ga9a52465cd98a53181d4628bb17530c8f',1,'spla']]],
+  ['make_5fsched_5fmxv_5fmasked_614',['make_sched_mxv_masked',['../group__spla.html#ga0d861b7f585c55bb8335242394da57c9',1,'spla']]],
+  ['make_5fsched_5fv_5fassign_5fmasked_615',['make_sched_v_assign_masked',['../group__spla.html#gae30b845e700b7c343b77b0437148c07a',1,'spla']]],
+  ['make_5fsched_5fv_5freduce_616',['make_sched_v_reduce',['../group__spla.html#ga57113e442a8d1c4f9131d50b88914d50',1,'spla']]],
+  ['make_5fschedule_617',['make_schedule',['../group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f',1,'spla']]],
+  ['make_5ftype_618',['make_type',['../group__internal.html#gae0014fa21689ed7c89214674bf3a844f',1,'spla::TType']]],
+  ['make_5fuint_619',['make_uint',['../group__spla.html#gabe08755ccd147039224c3ba97c4c8bec',1,'spla']]],
+  ['make_5fvector_620',['make_vector',['../group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2',1,'spla']]]
 ];

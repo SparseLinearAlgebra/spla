@@ -1,4 +1,6 @@
 <map id="src/core/tvector.hpp" name="src/core/tvector.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,143,32"/>
-<area shape="rect" id="node2" href="$vector_8cpp.html" title=" " alt="" coords="22,80,126,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="76,5,213,32"/>
+<area shape="rect" id="node2" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="5,80,140,121"/>
+<area shape="rect" id="node4" href="$vector_8cpp.html" title=" " alt="" coords="165,87,269,114"/>
+<area shape="rect" id="node3" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="9,169,137,211"/>
 </map>

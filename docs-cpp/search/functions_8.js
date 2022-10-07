@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['library_565',['Library',['../classspla_1_1Library.html#af08ae9415dcd644a677cd36c6549095b',1,'spla::Library::Library()'],['../classspla_1_1Library.html#a4ebf235634d2cc8804b2d65f0567c6e9',1,'spla::Library::Library(const Library &amp;)=delete'],['../classspla_1_1Library.html#ad00c9a1654a3140151f43224e9146d08',1,'spla::Library::Library(Library &amp;&amp;)=delete']]],
-  ['log_5fmsg_566',['log_msg',['../classspla_1_1Logger.html#a78d3d9ed5039a24041b5d9e2850a1e68',1,'spla::Logger']]]
+  ['init_598',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
+  ['is_599',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
+  ['is_5fnot_5fnull_600',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_601',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5funique_602',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]]
 ];

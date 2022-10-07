@@ -67,7 +67,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">registry.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -109,14 +110,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="registry_8hpp__dep__incl.png" border="0" usemap="#asrc_2core_2registry_8hppdep" alt=""/></div>
 <map name="asrc_2core_2registry_8hppdep" id="asrc_2core_2registry_8hppdep">
-<area shape="rect" title=" " alt="" coords="285,5,424,32"/>
-<area shape="rect" href="dispatcher_8cpp.html" title=" " alt="" coords="5,162,163,189"/>
-<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="276,80,433,107"/>
-<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="187,162,290,189"/>
-<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="491,155,623,196"/>
-<area shape="rect" href="registry_8cpp.html" title=" " alt="" coords="508,80,647,107"/>
-<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="315,155,467,196"/>
-<area shape="rect" href="cpu__algo__registry_8cpp.html" title=" " alt="" coords="493,244,621,285"/>
+<area shape="rect" title=" " alt="" coords="488,5,627,32"/>
+<area shape="rect" href="dispatcher_8cpp.html" title=" " alt="" coords="5,177,163,203"/>
+<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="312,87,469,114"/>
+<area shape="rect" href="library_8cpp.html" title=" " alt="" coords="187,177,290,203"/>
+<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="491,169,623,211"/>
+<area shape="rect" href="cpu__algo__registry_8cpp.html" title=" " alt="" coords="597,259,725,300"/>
+<area shape="rect" href="registry_8cpp.html" title=" " alt="" coords="832,87,971,114"/>
+<area shape="rect" href="cpu__vector__reduce_8hpp.html" title=" " alt="" coords="673,80,807,121"/>
+<area shape="rect" href="schedule__st_8cpp.html" title=" " alt="" coords="315,169,467,211"/>
 </map>
 </div>
 </div>
@@ -135,7 +137,103 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacespla"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html">spla</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aeca5d30860018b559b8b5fc74540ef7b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a>&#160;&#160;&#160;&quot;__cpu&quot;</td></tr>
+<tr class="separator:aeca5d30860018b559b8b5fc74540ef7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63df1a34eb20901e57847686049ab28e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a63df1a34eb20901e57847686049ab28e">GPU_SUFFIX</a>&#160;&#160;&#160;&quot;__gpu&quot;</td></tr>
+<tr class="separator:a63df1a34eb20901e57847686049ab28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d8e88f2b7a12462a42410f44d087e62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name,  op)&#160;&#160;&#160;std::string(name) + &quot;_&quot; + (op)-&gt;get_key()</td></tr>
+<tr class="separator:a7d8e88f2b7a12462a42410f44d087e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3657ac6ddad565137aafecdba289ec14"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a3657ac6ddad565137aafecdba289ec14">MAKE_KEY_CPU_1</a>(name,  op)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name, op) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td></tr>
+<tr class="separator:a3657ac6ddad565137aafecdba289ec14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aeca5d30860018b559b8b5fc74540ef7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeca5d30860018b559b8b5fc74540ef7b">&#9670;&nbsp;</a></span>CPU_SUFFIX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CPU_SUFFIX&#160;&#160;&#160;&quot;__cpu&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63df1a34eb20901e57847686049ab28e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63df1a34eb20901e57847686049ab28e">&#9670;&nbsp;</a></span>GPU_SUFFIX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GPU_SUFFIX&#160;&#160;&#160;&quot;__gpu&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7d8e88f2b7a12462a42410f44d087e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d8e88f2b7a12462a42410f44d087e62">&#9670;&nbsp;</a></span>MAKE_KEY_1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAKE_KEY_1</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">op&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;std::string(name) + &quot;_&quot; + (op)-&gt;get_key()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3657ac6ddad565137aafecdba289ec14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3657ac6ddad565137aafecdba289ec14">&#9670;&nbsp;</a></span>MAKE_KEY_CPU_1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAKE_KEY_CPU_1</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">op&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name, op) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

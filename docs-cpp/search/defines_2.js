@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['log_5fmsg_778',['LOG_MSG',['../logger_8hpp.html#af10c23177855b77e6dfb971906b5f027',1,'logger.hpp']]]
+  ['gpu_5fsuffix_827',['GPU_SUFFIX',['../registry_8hpp.html#a63df1a34eb20901e57847686049ab28e',1,'registry.hpp']]]
 ];

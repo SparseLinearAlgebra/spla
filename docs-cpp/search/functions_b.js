@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['ref_5fptr_587',['ref_ptr',['../classspla_1_1ref__ptr.html#a8ebfb557c1e84e692cd2ec32f25eff30',1,'spla::ref_ptr::ref_ptr()=default'],['../classspla_1_1ref__ptr.html#a209bbf9f782c053a7716ff225c83737a',1,'spla::ref_ptr::ref_ptr(T *object)'],['../classspla_1_1ref__ptr.html#ab2ff9672120a5d318486fe4696ba2b4c',1,'spla::ref_ptr::ref_ptr(const ref_ptr &amp;other)'],['../classspla_1_1ref__ptr.html#aad113c99b92da8dc2e70762178c3946d',1,'spla::ref_ptr::ref_ptr(ref_ptr &amp;&amp;other) noexcept']]],
-  ['register_5falgo_5fcpu_588',['register_algo_cpu',['../group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f',1,'spla']]],
-  ['register_5fops_589',['register_ops',['../group__internal.html#gac69f6ed40e17126d4fae50e61b00fad0',1,'spla']]],
-  ['rel_5fref_590',['rel_ref',['../classspla_1_1RefCnt.html#af6db98ef69c4ee40823587075ab84101',1,'spla::RefCnt']]],
-  ['release_591',['release',['../classspla_1_1ref__ptr.html#a368b8ab591303329ac756f3fb6e4abd6',1,'spla::ref_ptr']]],
-  ['reset_592',['reset',['../classspla_1_1ref__ptr.html#a332364da8c91e13617c63eea0fcbdc07',1,'spla::ref_ptr']]]
+  ['operator_20bool_621',['operator bool',['../classspla_1_1ref__ptr.html#af556edb717dcb309412fd187cc3da943',1,'spla::ref_ptr']]],
+  ['operator_28_29_622',['operator()',['../structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62',1,'spla::pair_hash']]],
+  ['operator_2a_623',['operator*',['../classspla_1_1ref__ptr.html#a75b78f4d91e0539d0aa47b4d42bf2b43',1,'spla::ref_ptr']]],
+  ['operator_2d_3e_624',['operator-&gt;',['../classspla_1_1ref__ptr.html#a3b87498cf19c984a460ba4a2e4890464',1,'spla::ref_ptr']]],
+  ['operator_3d_625',['operator=',['../classspla_1_1ref__ptr.html#a1439801f9781eb2ef55c71748cb2094d',1,'spla::ref_ptr::operator=(const ref_ptr &amp;other)'],['../classspla_1_1ref__ptr.html#a2524506a09c1b2b1aefae9b79ec7d8f1',1,'spla::ref_ptr::operator=(const ref_ptr&lt; G &gt; &amp;other)'],['../classspla_1_1ref__ptr.html#af8693a4969c909646659710fe588353d',1,'spla::ref_ptr::operator=(ref_ptr &amp;&amp;other) noexcept']]],
+  ['operator_3d_3d_626',['operator==',['../classspla_1_1ref__ptr.html#a5fc9a61101b489dda680ce4ec2ca92b3',1,'spla::ref_ptr']]]
 ];

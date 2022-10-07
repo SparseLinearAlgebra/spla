@@ -6,7 +6,7 @@
 <area shape="rect" id="node10" href="$classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="307,157,396,184"/>
 <area shape="rect" id="node12" href="$classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="298,208,405,235"/>
 <area shape="rect" id="node14" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,259,419,285"/>
-<area shape="rect" id="node19" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,309,397,336"/>
+<area shape="rect" id="node20" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,309,397,336"/>
 <area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,157,97,184"/>
 <area shape="rect" id="node5" href="$classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="495,5,621,32"/>
 <area shape="rect" id="node7" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="505,56,611,83"/>
@@ -15,8 +15,9 @@
 <area shape="rect" id="node11" href="$classspla_1_1TScalar.html" title=" " alt="" coords="495,157,621,184"/>
 <area shape="rect" id="node13" href="$classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="467,208,649,235"/>
 <area shape="rect" id="node15" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,259,641,285"/>
-<area shape="rect" id="node16" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="702,186,837,227"/>
-<area shape="rect" id="node17" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="702,251,837,293"/>
-<area shape="rect" id="node18" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="702,317,837,358"/>
-<area shape="rect" id="node20" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,309,622,336"/>
+<area shape="rect" id="node16" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="702,153,837,194"/>
+<area shape="rect" id="node17" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="702,218,837,259"/>
+<area shape="rect" id="node18" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="702,283,837,325"/>
+<area shape="rect" id="node19" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="702,349,837,390"/>
+<area shape="rect" id="node21" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,309,622,336"/>
 </map>

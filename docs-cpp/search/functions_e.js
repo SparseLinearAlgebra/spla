@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['update_5fversion_618',['update_version',['../classspla_1_1TDecoration.html#a48c0c9c64dffd14c4eb1c8bd3ec28497',1,'spla::TDecoration::update_version()'],['../group__internal.html#gae784e3ed69cd0d6e0f7cc3213063bc31',1,'spla::TMatrix::update_version()'],['../group__internal.html#ga251222d3a7b5d30b63517f33e095b8ab',1,'spla::TVector::update_version()']]]
+  ['timer_657',['Timer',['../classspla_1_1Timer.html#aff103231d70cb7f04fe9b959d37b03ad',1,'spla::Timer']]],
+  ['tmatrix_658',['TMatrix',['../group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c',1,'spla::TMatrix']]],
+  ['tscalar_659',['TScalar',['../classspla_1_1TScalar.html#a319d952e7bd55e47d3d730ec4736876d',1,'spla::TScalar::TScalar()=default'],['../group__internal.html#ga35755e9689106c89c5992419a0e552ef',1,'spla::TScalar::TScalar(T value)']]],
+  ['tvector_660',['TVector',['../group__internal.html#ga83e2cdb83c6b5223bb1d23af42ad69c2',1,'spla::TVector']]]
 ];

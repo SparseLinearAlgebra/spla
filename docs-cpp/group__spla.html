@@ -110,6 +110,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Schedule.html">spla::Schedule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Object.html" title="Base class for any library primitive.">Object</a> with sequence of steps with tasks forming schedule for execution.  <a href="classspla_1_1Schedule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Timer.html">spla::Timer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple timer to measure intervals of time on CPU-side.  <a href="classspla_1_1Timer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Type.html">spla::Type</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> representation for parametrisation of containers stored values.  <a href="classspla_1_1Type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +203,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gafe2175bc6c795f4e33d9c6b58cb3620d">spla::bfs</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor)</td></tr>
+<tr class="memdesc:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Breadth-first search algorithm.  <a href="group__spla.html#gafe2175bc6c795f4e33d9c6b58cb3620d">More...</a><br /></td></tr>
+<tr class="separator:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5eeceddb418c3f5ecb2dad7cb9d38d61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga5eeceddb418c3f5ecb2dad7cb9d38d61">spla::make_desc</a> ()</td></tr>
 <tr class="memdesc:ga5eeceddb418c3f5ecb2dad7cb9d38d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes new empty descriptor object.  <a href="group__spla.html#ga5eeceddb418c3f5ecb2dad7cb9d38d61">More...</a><br /></td></tr>
 <tr class="separator:ga5eeceddb418c3f5ecb2dad7cb9d38d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +240,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae30b845e700b7c343b77b0437148c07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">spla::make_sched_v_assign_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; value, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_assign, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
 <tr class="memdesc:gae30b845e700b7c343b77b0437148c07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">More...</a><br /></td></tr>
 <tr class="separator:gae30b845e700b7c343b77b0437148c07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57113e442a8d1c4f9131d50b88914d50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga57113e442a8d1c4f9131d50b88914d50">spla::make_sched_v_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; s, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_reduce, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
+<tr class="memdesc:ga57113e442a8d1c4f9131d50b88914d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r = reduce(s, v)  <a href="group__spla.html#ga57113e442a8d1c4f9131d50b88914d50">More...</a><br /></td></tr>
+<tr class="separator:ga57113e442a8d1c4f9131d50b88914d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2">spla::make_vector</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
 <tr class="memdesc:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new vector instance with specified dim and values type.  <a href="group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2">More...</a><br /></td></tr>
 <tr class="separator:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -543,6 +552,58 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gafe2175bc6c795f4e33d9c6b58cb3620d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafe2175bc6c795f4e33d9c6b58cb3620d">&#9670;&nbsp;</a></span>bfs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::bfs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>descriptor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Breadth-first search algorithm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>int vector to store reached distances </td></tr>
+    <tr><td class="paramname">A</td><td>int matrix filled with 1 where exist edge from i to j </td></tr>
+    <tr><td class="paramname">s</td><td>start vertex id to search </td></tr>
+    <tr><td class="paramname">descriptor</td><td>optional descriptor for algorithm</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ok on success </dd></dl>
+
+</div>
+</div>
 <a id="ga8a1590463f8b9be55c0f6b82a9eee21a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8a1590463f8b9be55c0f6b82a9eee21a">&#9670;&nbsp;</a></span>get_library()</h2>
 
@@ -891,6 +952,65 @@ template&lt;typename T , typename... TArgs&gt; </div>
     <tr><td class="paramname">mask</td><td></td></tr>
     <tr><td class="paramname">value</td><td></td></tr>
     <tr><td class="paramname">op_assign</td><td></td></tr>
+    <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Created node or null on failure </dd></dl>
+
+</div>
+</div>
+<a id="ga57113e442a8d1c4f9131d50b88914d50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga57113e442a8d1c4f9131d50b88914d50">&#9670;&nbsp;</a></span>make_sched_v_reduce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; spla::make_sched_v_reduce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
+          <td class="paramname"><em>op_reduce</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt;()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scheduled r = reduce(s, v) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">s</td><td></td></tr>
+    <tr><td class="paramname">v</td><td></td></tr>
+    <tr><td class="paramname">op_reduce</td><td></td></tr>
     <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null</td></tr>
   </table>
   </dd>
