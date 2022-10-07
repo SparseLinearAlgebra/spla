@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['task_631',['task',['../structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25',1,'spla::DispatchContext']]],
-  ['task_5fid_632',['task_id',['../structspla_1_1DispatchContext.html#a9b2dfdec15d7cb510c6f84a524d92384',1,'spla::DispatchContext']]],
-  ['thread_5fid_633',['thread_id',['../structspla_1_1DispatchContext.html#a461d86b4293c73c0089dc98f1a465cf4',1,'spla::DispatchContext']]]
+  ['plus_5ffloat_692',['PLUS_FLOAT',['../group__spla.html#ga2718e5ec038870bbbb45e52739bc6708',1,'spla']]],
+  ['plus_5fint_693',['PLUS_INT',['../group__spla.html#ga4c7ac59923bcb161d2b9a1597033ed47',1,'spla']]],
+  ['plus_5fuint_694',['PLUS_UINT',['../group__spla.html#ga54b6a6b5a8fe443ca64704d38769a63d',1,'spla']]]
 ];

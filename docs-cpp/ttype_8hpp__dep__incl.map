@@ -1,10 +1,13 @@
 <map id="src/core/ttype.hpp" name="src/core/ttype.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="251,5,376,32"/>
-<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="5,80,141,107"/>
-<area shape="rect" id="node4" href="$tscalar_8hpp.html" title=" " alt="" coords="165,80,301,107"/>
-<area shape="rect" id="node6" href="$tvector_8hpp.html" title=" " alt="" coords="326,80,463,107"/>
-<area shape="rect" id="node8" href="$type_8cpp.html" title=" " alt="" coords="487,80,579,107"/>
-<area shape="rect" id="node3" href="$matrix_8cpp.html" title=" " alt="" coords="22,155,125,181"/>
-<area shape="rect" id="node5" href="$scalar_8cpp.html" title=" " alt="" coords="182,155,285,181"/>
-<area shape="rect" id="node7" href="$vector_8cpp.html" title=" " alt="" coords="343,155,447,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="338,5,463,32"/>
+<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="19,80,155,107"/>
+<area shape="rect" id="node4" href="$top_8hpp.html" title=" " alt="" coords="194,80,309,107"/>
+<area shape="rect" id="node7" href="$tscalar_8hpp.html" title=" " alt="" coords="333,80,469,107"/>
+<area shape="rect" id="node9" href="$tvector_8hpp.html" title=" " alt="" coords="493,80,631,107"/>
+<area shape="rect" id="node11" href="$type_8cpp.html" title=" " alt="" coords="655,80,747,107"/>
+<area shape="rect" id="node3" href="$matrix_8cpp.html" title=" " alt="" coords="5,155,108,181"/>
+<area shape="rect" id="node5" href="$library_8cpp.html" title=" " alt="" coords="132,155,235,181"/>
+<area shape="rect" id="node6" href="$op_8cpp.html" title=" " alt="" coords="259,155,342,181"/>
+<area shape="rect" id="node8" href="$scalar_8cpp.html" title=" " alt="" coords="367,155,469,181"/>
+<area shape="rect" id="node10" href="$vector_8cpp.html" title=" " alt="" coords="510,155,614,181"/>
 </map>

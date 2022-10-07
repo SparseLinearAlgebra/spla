@@ -94,12 +94,13 @@ Inheritance diagram for spla::Object:</div>
 <area shape="rect" href="classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="495,5,621,32"/>
 <area shape="rect" href="classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="505,56,611,83"/>
 <area shape="rect" href="classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="507,107,609,133"/>
+<area shape="rect" href="classspla_1_1TOpBinary.html" title=" " alt="" coords="697,49,841,90"/>
 <area shape="rect" href="classspla_1_1TScalar.html" title=" " alt="" coords="495,157,621,184"/>
 <area shape="rect" href="classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="467,208,649,235"/>
 <area shape="rect" href="classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,259,641,285"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="697,186,832,227"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="697,251,832,293"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="697,317,832,358"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="702,186,837,227"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="702,251,837,293"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="702,317,837,358"/>
 <area shape="rect" href="classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,309,622,336"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -185,7 +186,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a1a2c042964d622fa0b04c0f315078aa5">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af034373489b9f27bf1faa719addec599">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#a7f720fb3847fa6f397d9ce7ee32d8a1e">spla::Descriptor</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a1a2c042964d622fa0b04c0f315078aa5">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af034373489b9f27bf1faa719addec599">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#gada52e4eb5734d6744268d459e5a4307b">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#a7f720fb3847fa6f397d9ce7ee32d8a1e">spla::Descriptor</a>.</p>
 
 </div>
 </div>
@@ -213,7 +214,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a3cb411427c5cdb1b614261d450574266">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a1dba1ad9906def2ff58eb6adb8864744">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#ga43aad595aecb6adf7683258b3c632223">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#gab64ccb60bbb75231ef8ff0d32e5d3a5a">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#ace62a853097c4636dcb978091b19f089">spla::Descriptor</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a3cb411427c5cdb1b614261d450574266">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a1dba1ad9906def2ff58eb6adb8864744">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#ga43aad595aecb6adf7683258b3c632223">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#gaeea8b2d2d47195a42fa72323011336d4">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#gab64ccb60bbb75231ef8ff0d32e5d3a5a">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#ace62a853097c4636dcb978091b19f089">spla::Descriptor</a>.</p>
 
 </div>
 </div>

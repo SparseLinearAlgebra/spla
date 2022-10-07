@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['log_5fmsg_700',['LOG_MSG',['../logger_8hpp.html#af10c23177855b77e6dfb971906b5f027',1,'logger.hpp']]]
+  ['decl_5fop_5fbin_776',['DECL_OP_BIN',['../top_8hpp.html#a6fe5d0089ee3c73c28471d90deec890c',1,'top.hpp']]],
+  ['decl_5fop_5fbin_5fs_777',['DECL_OP_BIN_S',['../top_8hpp.html#ab24d7758955a4947bfe10fa945ad1950',1,'top.hpp']]]
 ];
