@@ -46,7 +46,7 @@ TEST(vector, get_set_naive) {
     }
 }
 
-TEST(vector, get_set_reduce) {
+TEST(vector, get_set_reduce_default) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
@@ -69,7 +69,6 @@ TEST(vector, reduce_plus) {
     const spla::uint K    = 8;
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
-
 
     auto ivec   = spla::make_vector(N, spla::INT);
     auto ir     = spla::make_scalar(spla::INT);
@@ -97,7 +96,6 @@ TEST(vector, reduce_mult) {
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
 
-
     auto ivec   = spla::make_vector(N, spla::INT);
     auto ir     = spla::make_scalar(spla::INT);
     auto istart = spla::make_int(1);
@@ -120,6 +118,72 @@ TEST(vector, reduce_mult) {
     ir->get_int(result);
 
     EXPECT_EQ(result, isum);
+}
+
+TEST(vector, assign_plus) {
+    const spla::uint N    = 20;
+    const spla::uint K    = 8;
+    const int        S    = -5;
+    const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
+    int              R[N];
+
+    auto ivec  = spla::make_vector(N, spla::INT);
+    auto imask = spla::make_vector(N, spla::INT);
+    auto ival  = spla::make_int(S);
+
+    for (int k = 0; k < N; ++k) {
+        ivec->set_int(k, 14);
+        imask->set_int(k, 0);
+        R[k] = 14;
+    }
+
+    for (int k = 0; k < K; ++k) {
+        imask->set_int(I[k], 1);
+        R[I[k]] = R[I[k]] + S;
+    }
+
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_v_assign_masked(ivec, imask, ival, spla::PLUS_INT));
+    schedule->submit();
+
+    for (int k = 0; k < N; k++) {
+        int r;
+        ivec->get_int(k, r);
+        EXPECT_EQ(R[k], r);
+    }
+}
+
+TEST(vector, assign_second) {
+    const spla::uint N    = 20;
+    const spla::uint K    = 8;
+    const int        S    = -5;
+    const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
+    int              R[N];
+
+    auto ivec  = spla::make_vector(N, spla::INT);
+    auto imask = spla::make_vector(N, spla::INT);
+    auto ival  = spla::make_int(S);
+
+    for (int k = 0; k < N; ++k) {
+        ivec->set_int(k, 14);
+        imask->set_int(k, 0);
+        R[k] = 14;
+    }
+
+    for (int k = 0; k < K; ++k) {
+        imask->set_int(I[k], 1);
+        R[I[k]] = S;
+    }
+
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_v_assign_masked(ivec, imask, ival, spla::SECOND_INT));
+    schedule->submit();
+
+    for (int k = 0; k < N; k++) {
+        int r;
+        ivec->get_int(k, r);
+        EXPECT_EQ(R[k], r);
+    }
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

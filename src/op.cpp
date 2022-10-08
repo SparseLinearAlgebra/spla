@@ -57,6 +57,12 @@ namespace spla {
     ref_ptr<OpBinary> ONE_UINT;
     ref_ptr<OpBinary> ONE_FLOAT;
 
+
+    ref_ptr<OpSelect> GZERO_INT;
+    ref_ptr<OpSelect> GZERO_UINT;
+    ref_ptr<OpSelect> GZERO_FLOAT;
+
+
     void register_ops() {
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });

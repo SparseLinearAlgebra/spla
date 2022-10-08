@@ -116,7 +116,7 @@ namespace spla {
             ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 
     /**
-     * @brief Scheduled r<mask> = value
+     * @brief Scheduled r<select(mask)> = value
      *
      * @param r
      * @param mask

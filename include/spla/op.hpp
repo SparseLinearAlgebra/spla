@@ -75,6 +75,16 @@ namespace spla {
         SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
     };
 
+    /**
+     * @class OpSelect
+     * @brief Select operation with 1-arity and bool return type
+     */
+    class OpSelect : public Op {
+    public:
+        SPLA_API ~OpSelect() override                   = default;
+        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
+    };
+
     SPLA_API extern ref_ptr<OpBinary> PLUS_INT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_UINT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_FLOAT;
@@ -102,6 +112,10 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> ONE_INT;
     SPLA_API extern ref_ptr<OpBinary> ONE_UINT;
     SPLA_API extern ref_ptr<OpBinary> ONE_FLOAT;
+
+    SPLA_API extern ref_ptr<OpSelect> GZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> GZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> GZERO_FLOAT;
 
     /**
      * @}

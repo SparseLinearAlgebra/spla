@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_REDUCE_HPP
-#define SPLA_CPU_VECTOR_REDUCE_HPP
+#ifndef SPLA_CPU_VECTOR_ASSIGN_HPP
+#define SPLA_CPU_VECTOR_ASSIGN_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -39,37 +39,43 @@
 namespace spla {
 
     template<typename T>
-    class Algo_v_reduce_cpu final : public RegistryAlgo {
+    class Algo_v_assign_masked_cpu final : public RegistryAlgo {
     public:
-        ~Algo_v_reduce_cpu() override = default;
+        ~Algo_v_assign_masked_cpu() override = default;
 
         std::string get_name() override {
-            return "v_reduce";
+            return "v_assign_masked";
         }
 
         std::string get_description() override {
-            return "sequential vector reduction on cpu";
+            return "sequential masked vector assignment";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
-            auto r         = t->r.template cast<TScalar<T>>();
-            auto s         = t->s.template cast<TScalar<T>>();
-            auto v         = t->v.template cast<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+            auto r         = t->r.template cast<TVector<T>>();
+            auto mask      = t->mask.template cast<TVector<T>>();
+            auto value     = t->value.template cast<TScalar<T>>();
+            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
 
-            T sum = s->get_value();
+            auto skip_value   = T();
+            auto assign_value = value->get_value();
 
-            v->ensure_dense_format();
-            const auto* p_dense  = v->template get_dec_p<CpuDenseVec<T>>();
-            const auto& function = op_reduce->function;
+            r->ensure_dense_format();
+            mask->ensure_dense_format();
 
-            for (const auto& value : p_dense->Ax) {
-                sum = function(sum, value);
+            auto*       p_r_dense    = r->template get_dec_p<CpuDenseVec<T>>();
+            const auto* p_mask_dense = mask->template get_dec_p<CpuDenseVec<T>>();
+            const auto& function     = op_assign->function;
+
+            uint N = r->get_n_rows();
+
+            for (uint i = 0; i < N; ++i) {
+                if (p_mask_dense->Ax[i] != skip_value) {
+                    p_r_dense->Ax[i] = function(p_r_dense->Ax[i], assign_value);
+                }
             }
-
-            r->get_value() = sum;
 
             return Status::Ok;
         }
@@ -77,4 +83,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_REDUCE_HPP
+#endif//SPLA_CPU_VECTOR_ASSIGN_HPP
