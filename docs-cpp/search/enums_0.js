@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['acceleratortype_779',['AcceleratorType',['../group__spla.html#gae53f1b66beabcefa387bdcfce49f251a',1,'spla']]]
+  ['acceleratortype_795',['AcceleratorType',['../group__spla.html#gae53f1b66beabcefa387bdcfce49f251a',1,'spla']]]
 ];

@@ -95,6 +95,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpBinary.html">spla::OpBinary</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary operation with 2-arity.  <a href="classspla_1_1OpBinary.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1OpSelect.html">spla::OpSelect</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select operation with 1-arity and bool return type.  <a href="classspla_1_1OpSelect.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html">spla::RefCnt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for object with built-in reference counting mechanism.  <a href="classspla_1_1RefCnt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,7 +241,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga0d861b7f585c55bb8335242394da57c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#ga0d861b7f585c55bb8335242394da57c9">More...</a><br /></td></tr>
 <tr class="separator:ga0d861b7f585c55bb8335242394da57c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae30b845e700b7c343b77b0437148c07a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">spla::make_sched_v_assign_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; value, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_assign, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
-<tr class="memdesc:gae30b845e700b7c343b77b0437148c07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;mask&gt; = value.  <a href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">More...</a><br /></td></tr>
+<tr class="memdesc:gae30b845e700b7c343b77b0437148c07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;select(mask)&gt; = value.  <a href="group__spla.html#gae30b845e700b7c343b77b0437148c07a">More...</a><br /></td></tr>
 <tr class="separator:gae30b845e700b7c343b77b0437148c07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga57113e442a8d1c4f9131d50b88914d50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga57113e442a8d1c4f9131d50b88914d50">spla::make_sched_v_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; s, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_reduce, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
 <tr class="memdesc:ga57113e442a8d1c4f9131d50b88914d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r = reduce(s, v)  <a href="group__spla.html#ga57113e442a8d1c4f9131d50b88914d50">More...</a><br /></td></tr>
@@ -291,6 +294,12 @@ Variables</h2></td></tr>
 <tr class="separator:gabe3bf03f5bc7c4ea8ff73a3341609302"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaddc4c729a931cfe402f7851fe775590e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gaddc4c729a931cfe402f7851fe775590e">spla::ONE_FLOAT</a></td></tr>
 <tr class="separator:gaddc4c729a931cfe402f7851fe775590e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c96cb92502e248f5fea11fa54dcd3e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga5c96cb92502e248f5fea11fa54dcd3e9">spla::GZERO_INT</a></td></tr>
+<tr class="separator:ga5c96cb92502e248f5fea11fa54dcd3e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae327f1aecaa3c5b28a4f60d154cbf9c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae327f1aecaa3c5b28a4f60d154cbf9c4">spla::GZERO_UINT</a></td></tr>
+<tr class="separator:gae327f1aecaa3c5b28a4f60d154cbf9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga20b4e652c9f9e4592e484cfcc400e56c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga20b4e652c9f9e4592e484cfcc400e56c">spla::GZERO_FLOAT</a></td></tr>
+<tr class="separator:ga20b4e652c9f9e4592e484cfcc400e56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9773e98e96006b42002968fea46cf7cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9773e98e96006b42002968fea46cf7cb">spla::BYTE</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int8_t&gt;::make_type(&quot;BYTE&quot;, &quot;B&quot;, &quot;char&quot;, &quot;signed 1 byte integral type&quot;, 1)</td></tr>
 <tr class="separator:ga9773e98e96006b42002968fea46cf7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga50adbf4f00a8835e1f227fb98780f01c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c">spla::INT</a> = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;std::int32_t&gt;::make_type(&quot;INT&quot;, &quot;I&quot;, &quot;int&quot;, &quot;signed 4 byte integral type&quot;, 2)</td></tr>
@@ -945,7 +954,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Scheduled r&lt;mask&gt; = value. </p>
+<p>Scheduled r&lt;select(mask)&gt; = value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td></td></tr>
@@ -1202,6 +1211,48 @@ template&lt;typename T , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; spla::FLOAT = <a class="el" href="classspla_1_1TType.html">TType</a>&lt;float&gt;::make_type(&quot;FLOAT&quot;, &quot;F&quot;, &quot;float&quot;, &quot;4 byte floating point type&quot;, 4)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga20b4e652c9f9e4592e484cfcc400e56c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga20b4e652c9f9e4592e484cfcc400e56c">&#9670;&nbsp;</a></span>GZERO_FLOAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; spla::GZERO_FLOAT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5c96cb92502e248f5fea11fa54dcd3e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c96cb92502e248f5fea11fa54dcd3e9">&#9670;&nbsp;</a></span>GZERO_INT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; spla::GZERO_INT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae327f1aecaa3c5b28a4f60d154cbf9c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae327f1aecaa3c5b28a4f60d154cbf9c4">&#9670;&nbsp;</a></span>GZERO_UINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; spla::GZERO_UINT</td>
         </tr>
       </table>
 </div><div class="memdoc">

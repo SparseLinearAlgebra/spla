@@ -1,6 +1,7 @@
 <map id="src/core/tscalar.hpp" name="src/core/tscalar.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="59,5,195,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="131,5,267,32"/>
 <area shape="rect" id="node2" href="$scalar_8cpp.html" title=" " alt="" coords="5,87,108,114"/>
-<area shape="rect" id="node3" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="132,80,267,121"/>
-<area shape="rect" id="node4" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="135,169,263,211"/>
+<area shape="rect" id="node3" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="132,80,267,121"/>
+<area shape="rect" id="node5" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="291,80,425,121"/>
+<area shape="rect" id="node4" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="214,169,342,211"/>
 </map>

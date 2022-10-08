@@ -1,5 +1,6 @@
 <map id="spla::RegistryAlgo" name="spla::RegistryAlgo">
-<area shape="rect" id="node1" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="89,5,215,32"/>
-<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="5,87,139,114"/>
-<area shape="rect" id="node3" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="163,80,301,121"/>
+<area shape="rect" id="node1" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,64,131,91"/>
+<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="181,5,315,32"/>
+<area shape="rect" id="node3" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="179,57,317,98"/>
+<area shape="rect" id="node4" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="179,122,317,163"/>
 </map>

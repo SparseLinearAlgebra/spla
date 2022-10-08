@@ -1,8 +1,9 @@
 <map id="spla::Op" name="spla::Op">
-<area shape="rect" id="node1" title="An callable operation to parametrize execution of math computations." alt="" coords="107,155,176,181"/>
+<area shape="rect" id="node1" title="An callable operation to parametrize execution of math computations." alt="" coords="173,155,243,181"/>
 <area shape="rect" id="node4" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="25,229,130,256"/>
-<area shape="rect" id="node6" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="154,229,257,256"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="96,80,187,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="95,5,187,32"/>
+<area shape="rect" id="node6" href="$classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="155,229,261,256"/>
+<area shape="rect" id="node7" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="286,229,389,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="163,80,253,107"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="162,5,254,32"/>
 <area shape="rect" id="node5" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="5,304,149,345"/>
 </map>

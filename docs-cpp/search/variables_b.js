@@ -1,6 +1,11 @@
 var searchData=
 [
-  ['plus_5ffloat_739',['PLUS_FLOAT',['../group__spla.html#ga2718e5ec038870bbbb45e52739bc6708',1,'spla']]],
-  ['plus_5fint_740',['PLUS_INT',['../group__spla.html#ga4c7ac59923bcb161d2b9a1597033ed47',1,'spla']]],
-  ['plus_5fuint_741',['PLUS_UINT',['../group__spla.html#ga54b6a6b5a8fe443ca64704d38769a63d',1,'spla']]]
+  ['one_5ffloat_747',['ONE_FLOAT',['../group__spla.html#gaddc4c729a931cfe402f7851fe775590e',1,'spla']]],
+  ['one_5fint_748',['ONE_INT',['../group__spla.html#ga30b7e99bfb5a3575008f6cd2d81f73a4',1,'spla']]],
+  ['one_5fuint_749',['ONE_UINT',['../group__spla.html#gabe3bf03f5bc7c4ea8ff73a3341609302',1,'spla']]],
+  ['op_5fadd_750',['op_add',['../classspla_1_1ScheduleTask__mxv__masked.html#ad20de7ffc30bbce8e589829c331f184c',1,'spla::ScheduleTask_mxv_masked']]],
+  ['op_5fassign_751',['op_assign',['../classspla_1_1ScheduleTask__v__assign__masked.html#af4703640674739c834658c2771369a90',1,'spla::ScheduleTask_v_assign_masked']]],
+  ['op_5fmultiply_752',['op_multiply',['../classspla_1_1ScheduleTask__mxv__masked.html#aa9a4ccce3f0cb563c00df278d717c83f',1,'spla::ScheduleTask_mxv_masked']]],
+  ['op_5freduce_753',['op_reduce',['../classspla_1_1ScheduleTask__v__reduce.html#adcbc38b2ef0737fc493f21c92e24850e',1,'spla::ScheduleTask_v_reduce']]],
+  ['opt_5fcomplement_754',['opt_complement',['../classspla_1_1ScheduleTask__mxv__masked.html#a1616f229b845ebe6bea777e30c6dde43',1,'spla::ScheduleTask_mxv_masked']]]
 ];

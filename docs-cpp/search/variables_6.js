@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_720',['key',['../classspla_1_1TOpBinary.html#adef40517bce4ddb9610a906f6693740e',1,'spla::TOpBinary']]]
+  ['int_735',['INT',['../group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c',1,'spla']]]
 ];
