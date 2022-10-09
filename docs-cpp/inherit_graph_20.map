@@ -1,6 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classspla_1_1RegistryAlgo.html" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,64,131,91"/>
-<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="181,5,315,32"/>
-<area shape="rect" id="node3" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="179,57,317,98"/>
-<area shape="rect" id="node4" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="179,122,317,163"/>
+<area shape="rect" id="node1" href="$classspla_1_1RegistryAlgo.html" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,97,131,124"/>
+<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="193,5,327,32"/>
+<area shape="rect" id="node3" href="$classspla_1_1Algo__mxv__masked__mc.html" title=" " alt="" coords="179,57,341,98"/>
+<area shape="rect" id="node4" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="191,122,329,163"/>
+<area shape="rect" id="node5" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="191,187,329,229"/>
 </map>

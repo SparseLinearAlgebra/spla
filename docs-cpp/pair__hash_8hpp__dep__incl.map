@@ -2,15 +2,16 @@
 <area shape="rect" id="node1" title=" " alt="" coords="301,5,446,32"/>
 <area shape="rect" id="node2" href="$cpu__formats_8hpp.html" title=" " alt="" coords="309,80,437,121"/>
 <area shape="rect" id="node3" href="$cpu__coo_8hpp.html" title=" " alt="" coords="5,169,133,211"/>
-<area shape="rect" id="node6" href="$cpu__csr_8hpp.html" title=" " alt="" coords="309,169,437,211"/>
-<area shape="rect" id="node7" href="$cpu__dense__vec_8hpp.html" title=" " alt="" coords="613,169,741,211"/>
-<area shape="rect" id="node13" href="$cpu__dok_8hpp.html" title=" " alt="" coords="461,169,589,211"/>
-<area shape="rect" id="node14" href="$cpu__lil_8hpp.html" title=" " alt="" coords="157,169,285,211"/>
-<area shape="rect" id="node4" href="$tmatrix_8hpp.html" title=" " alt="" coords="153,259,289,285"/>
-<area shape="rect" id="node5" href="$matrix_8cpp.html" title=" " alt="" coords="170,341,273,367"/>
-<area shape="rect" id="node8" href="$tvector_8hpp.html" title=" " alt="" coords="609,259,746,285"/>
-<area shape="rect" id="node9" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="754,333,889,375"/>
-<area shape="rect" id="node11" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="466,333,601,375"/>
-<area shape="rect" id="node12" href="$vector_8cpp.html" title=" " alt="" coords="625,341,729,367"/>
-<area shape="rect" id="node10" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="613,423,741,464"/>
+<area shape="rect" id="node8" href="$cpu__csr_8hpp.html" title=" " alt="" coords="309,169,437,211"/>
+<area shape="rect" id="node9" href="$cpu__dense__vec_8hpp.html" title=" " alt="" coords="613,169,741,211"/>
+<area shape="rect" id="node14" href="$cpu__dok_8hpp.html" title=" " alt="" coords="461,169,589,211"/>
+<area shape="rect" id="node15" href="$cpu__lil_8hpp.html" title=" " alt="" coords="157,169,285,211"/>
+<area shape="rect" id="node4" href="$tmatrix_8hpp.html" title=" " alt="" coords="161,259,297,285"/>
+<area shape="rect" id="node5" href="$matrix_8cpp.html" title=" " alt="" coords="178,341,281,367"/>
+<area shape="rect" id="node6" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="309,333,437,375"/>
+<area shape="rect" id="node7" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="465,423,593,464"/>
+<area shape="rect" id="node10" href="$tvector_8hpp.html" title=" " alt="" coords="605,259,742,285"/>
+<area shape="rect" id="node11" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="750,333,885,375"/>
+<area shape="rect" id="node12" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="462,333,597,375"/>
+<area shape="rect" id="node13" href="$vector_8cpp.html" title=" " alt="" coords="621,341,725,367"/>
 </map>

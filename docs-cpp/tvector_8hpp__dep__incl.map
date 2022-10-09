@@ -1,7 +1,8 @@
 <map id="src/core/tvector.hpp" name="src/core/tvector.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="163,5,300,32"/>
-<area shape="rect" id="node2" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="5,80,140,121"/>
-<area shape="rect" id="node4" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="164,80,299,121"/>
-<area shape="rect" id="node5" href="$vector_8cpp.html" title=" " alt="" coords="323,87,427,114"/>
-<area shape="rect" id="node3" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="87,169,215,211"/>
+<area shape="rect" id="node1" title=" " alt="" coords="235,5,373,32"/>
+<area shape="rect" id="node2" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="5,80,133,121"/>
+<area shape="rect" id="node4" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="158,80,293,121"/>
+<area shape="rect" id="node5" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="317,80,451,121"/>
+<area shape="rect" id="node6" href="$vector_8cpp.html" title=" " alt="" coords="476,87,580,114"/>
+<area shape="rect" id="node3" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="161,169,289,211"/>
 </map>
