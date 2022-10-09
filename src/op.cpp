@@ -27,6 +27,8 @@
 
 #include <core/top.hpp>
 
+#include <algorithm>
+
 namespace spla {
 
     ref_ptr<OpBinary> PLUS_INT;
@@ -57,11 +59,21 @@ namespace spla {
     ref_ptr<OpBinary> ONE_UINT;
     ref_ptr<OpBinary> ONE_FLOAT;
 
+    ref_ptr<OpBinary> MIN_INT;
+    ref_ptr<OpBinary> MIN_UINT;
+    ref_ptr<OpBinary> MIN_FLOAT;
+
+    ref_ptr<OpBinary> MAX_INT;
+    ref_ptr<OpBinary> MAX_UINT;
+    ref_ptr<OpBinary> MAX_FLOAT;
+
 
     ref_ptr<OpSelect> GZERO_INT;
     ref_ptr<OpSelect> GZERO_UINT;
     ref_ptr<OpSelect> GZERO_FLOAT;
 
+#define min std::min
+#define max std::max
 
     void register_ops() {
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
@@ -91,6 +103,14 @@ namespace spla {
         DECL_OP_BIN_S(ONE_INT, ONE, T_INT, { return 1; });
         DECL_OP_BIN_S(ONE_UINT, ONE, T_UINT, { return 1; });
         DECL_OP_BIN_S(ONE_FLOAT, ONE, T_FLOAT, { return 1; });
+
+        DECL_OP_BIN_S(MIN_INT, ONE, T_INT, { return min(a, b); });
+        DECL_OP_BIN_S(MIN_UINT, ONE, T_UINT, { return min(a, b); });
+        DECL_OP_BIN_S(MIN_FLOAT, ONE, T_FLOAT, { return min(a, b); });
+
+        DECL_OP_BIN_S(MAX_INT, ONE, T_INT, { return max(a, b); });
+        DECL_OP_BIN_S(MAX_UINT, ONE, T_UINT, { return max(a, b); });
+        DECL_OP_BIN_S(MAX_FLOAT, ONE, T_FLOAT, { return max(a, b); });
     }
 
 }// namespace spla

@@ -257,6 +257,7 @@ add_library(spla SHARED
         src/sequential/cpu_dok.hpp
         src/sequential/cpu_lil.hpp
         src/sequential/cpu_formats.hpp
+        src/sequential/cpu_mxv.hpp
         src/sequential/cpu_vector_assign.hpp
         src/sequential/cpu_vector_reduce.hpp
         src/util/pair_hash.hpp

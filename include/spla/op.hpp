@@ -113,6 +113,14 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> ONE_UINT;
     SPLA_API extern ref_ptr<OpBinary> ONE_FLOAT;
 
+    SPLA_API extern ref_ptr<OpBinary> MIN_INT;
+    SPLA_API extern ref_ptr<OpBinary> MIN_UINT;
+    SPLA_API extern ref_ptr<OpBinary> MIN_FLOAT;
+
+    SPLA_API extern ref_ptr<OpBinary> MAX_INT;
+    SPLA_API extern ref_ptr<OpBinary> MAX_UINT;
+    SPLA_API extern ref_ptr<OpBinary> MAX_FLOAT;
+
     SPLA_API extern ref_ptr<OpSelect> GZERO_INT;
     SPLA_API extern ref_ptr<OpSelect> GZERO_UINT;
     SPLA_API extern ref_ptr<OpSelect> GZERO_FLOAT;

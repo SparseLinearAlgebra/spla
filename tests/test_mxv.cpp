@@ -29,25 +29,63 @@
 
 #include <spla/spla.hpp>
 
-#include <iostream>
+TEST(mxv_masked_comp, naive) {
+    spla::uint M = 4, N = 5;
 
-TEST(op_binary, getters) {
-    spla::get_library();
+    //            v 3 0 3 0 -1
+    //
+    // r    r   mask       M
+    // ________________________
+    // 2 |  2 |  1 | 0 2 0 0 -9
+    // 9 | -5 |  0 | 2 0 0 0 -8
+    // 4 |  4 |  1 | 0 0 3 0  0
+    // 6 |  5 |  0 | 0 0 0 0 -1
 
-    auto display_op_info = [](spla::ref_ptr<spla::OpBinary>& op) {
-        std::cout << op->get_name() << " "
-                  << op->get_key() << " "
-                  << op->get_source() << std::endl;
-    };
+    auto ir    = spla::make_vector(M, spla::INT);
+    auto imask = spla::make_vector(M, spla::INT);
+    auto iv    = spla::make_vector(N, spla::INT);
+    auto iM    = spla::make_matrix(M, N, spla::INT);
 
-    display_op_info(spla::PLUS_INT);
-    display_op_info(spla::MULT_INT);
+    ir->set_int(0, 2);
+    ir->set_int(1, -5);
+    ir->set_int(2, 4);
+    ir->set_int(3, 5);
 
-    display_op_info(spla::PLUS_UINT);
-    display_op_info(spla::MULT_UINT);
+    imask->set_int(0, 1);
+    imask->set_int(1, 0);
+    imask->set_int(2, 1);
+    imask->set_int(3, 0);
 
-    display_op_info(spla::MIN_FLOAT);
-    display_op_info(spla::ONE_FLOAT);
+    iv->set_int(0, 3);
+    iv->set_int(1, 0);
+    iv->set_int(2, 3);
+    iv->set_int(3, 0);
+    iv->set_int(4, -1);
+
+    iM->set_int(0, 1, 2);
+    iM->set_int(0, 4, -9);
+    iM->set_int(1, 0, 2);
+    iM->set_int(1, 4, -8);
+    iM->set_int(2, 2, 3);
+    iM->set_int(3, 4, -1);
+
+    auto schedule = spla::make_schedule();
+    schedule->step_task(spla::make_sched_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, true));
+    schedule->submit();
+
+    int r;
+
+    ir->get_int(0, r);
+    EXPECT_EQ(r, 2);
+
+    ir->get_int(1, r);
+    EXPECT_EQ(r, 9);
+
+    ir->get_int(2, r);
+    EXPECT_EQ(r, 4);
+
+    ir->get_int(3, r);
+    EXPECT_EQ(r, 6);
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

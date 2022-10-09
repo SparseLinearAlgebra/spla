@@ -202,7 +202,7 @@ namespace spla {
 
         if (entry != Ax.end()) {
             value = static_cast<int8_t>(entry->second);
-            return Status ::Ok;
+            return Status::Ok;
         }
 
         return Status::NoValue;
@@ -217,7 +217,7 @@ namespace spla {
 
         if (entry != Ax.end()) {
             value = static_cast<int32_t>(entry->second);
-            return Status ::Ok;
+            return Status::Ok;
         }
 
         return Status::NoValue;
@@ -232,7 +232,7 @@ namespace spla {
 
         if (entry != Ax.end()) {
             value = static_cast<uint32_t>(entry->second);
-            return Status ::Ok;
+            return Status::Ok;
         }
 
         return Status::NoValue;
@@ -247,7 +247,7 @@ namespace spla {
 
         if (entry != Ax.end()) {
             value = static_cast<float>(entry->second);
-            return Status ::Ok;
+            return Status::Ok;
         }
 
         return Status::NoValue;

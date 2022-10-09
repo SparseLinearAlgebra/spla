@@ -27,6 +27,8 @@
 
 #include "schedule_tasks.hpp"
 
+#include <core/registry.hpp>
+
 #include <sstream>
 
 namespace spla {
@@ -62,10 +64,10 @@ namespace spla {
     }
     std::string ScheduleTask_mxv_masked::get_key() {
         std::stringstream key;
-        key << get_name() << "_"
-            << op_multiply->get_key() << "_"
-            << op_add->get_key() << "_"
-            << (opt_complement ? "mc" : "md");
+        key << get_name()
+            << OP_KEY(op_multiply)
+            << OP_KEY(op_add)
+            << MASK_KEY(opt_complement);
 
         return key.str();
     }
@@ -78,8 +80,8 @@ namespace spla {
     }
     std::string ScheduleTask_v_assign_masked::get_key() {
         std::stringstream key;
-        key << get_name() << "_"
-            << op_assign->get_key();
+        key << get_name()
+            << OP_KEY(op_assign);
 
         return key.str();
     }
@@ -92,8 +94,8 @@ namespace spla {
     }
     std::string ScheduleTask_v_reduce::get_key() {
         std::stringstream key;
-        key << get_name() << "_"
-            << op_reduce->get_key();
+        key << get_name()
+            << OP_KEY(op_reduce);
 
         return key.str();
     }
