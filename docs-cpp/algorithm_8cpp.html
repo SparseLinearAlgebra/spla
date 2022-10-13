@@ -75,33 +75,37 @@ $(function() {
 <div class="textblock"><code>#include &lt;<a class="el" href="algorithm_8hpp_source.html">spla/algorithm.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="op_8hpp_source.html">spla/op.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="schedule_8hpp_source.html">spla/schedule.hpp</a>&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;queue&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for algorithm.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="algorithm_8cpp__incl.png" border="0" usemap="#asrc_2algorithm_8cpp" alt=""/></div>
 <map name="asrc_2algorithm_8cpp" id="asrc_2algorithm_8cpp">
-<area shape="rect" title=" " alt="" coords="390,5,511,32"/>
-<area shape="rect" href="algorithm_8hpp.html" title=" " alt="" coords="448,80,575,107"/>
-<area shape="rect" title=" " alt="" coords="911,453,976,480"/>
+<area shape="rect" title=" " alt="" coords="673,5,794,32"/>
+<area shape="rect" href="algorithm_8hpp.html" title=" " alt="" coords="517,80,643,107"/>
+<area shape="rect" title=" " alt="" coords="869,453,934,480"/>
 <area shape="rect" href="op_8hpp.html" title=" " alt="" coords="44,155,132,181"/>
-<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="282,80,408,107"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="585,453,665,480"/>
+<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="335,80,462,107"/>
+<area shape="rect" title=" " alt="" coords="888,80,963,107"/>
+<area shape="rect" title=" " alt="" coords="987,80,1045,107"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="551,453,631,480"/>
 <area shape="rect" href="descriptor_8hpp.html" title=" " alt="" coords="659,155,762,181"/>
 <area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="502,155,583,181"/>
-<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="396,155,478,181"/>
+<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="397,155,478,181"/>
 <area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="289,155,372,181"/>
-<area shape="rect" title=" " alt="" coords="588,528,662,555"/>
-<area shape="rect" title=" " alt="" coords="718,528,796,555"/>
+<area shape="rect" title=" " alt="" coords="553,528,628,555"/>
+<area shape="rect" title=" " alt="" coords="679,528,758,555"/>
 <area shape="rect" href="object_8hpp.html" title=" " alt="" coords="386,304,467,331"/>
 <area shape="rect" href="library_8hpp.html" title=" " alt="" coords="412,379,492,405"/>
-<area shape="rect" title=" " alt="" coords="296,453,351,480"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="830,379,892,405"/>
+<area shape="rect" title=" " alt="" coords="297,453,351,480"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="752,379,813,405"/>
 <area shape="rect" title=" " alt="" coords="418,453,486,480"/>
-<area shape="rect" title=" " alt="" coords="825,453,886,480"/>
-<area shape="rect" title=" " alt="" coords="698,453,750,480"/>
+<area shape="rect" title=" " alt="" coords="783,453,844,480"/>
+<area shape="rect" title=" " alt="" coords="655,453,707,480"/>
 <area shape="rect" href="type_8hpp.html" title=" " alt="" coords="355,229,426,256"/>
-<area shape="rect" title=" " alt="" coords="156,155,214,181"/>
+<area shape="rect" title=" " alt="" coords="156,155,215,181"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -115,6 +119,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gafe2175bc6c795f4e33d9c6b58cb3620d">spla::bfs</a> (const ref_ptr&lt; Vector &gt; &amp;v, const ref_ptr&lt; Matrix &gt; &amp;A, uint s, const ref_ptr&lt; Descriptor &gt; &amp;descriptor)</td></tr>
 <tr class="memdesc:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Breadth-first search algorithm.  <a href="group__spla.html#gafe2175bc6c795f4e33d9c6b58cb3620d">More...</a><br /></td></tr>
 <tr class="separator:gafe2175bc6c795f4e33d9c6b58cb3620d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0df7014db0634fcce42e08fdd27c63fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga0df7014db0634fcce42e08fdd27c63fa">spla::bfs_naive</a> (std::vector&lt; int &gt; &amp;v, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> &gt;&gt; &amp;A, uint s, const ref_ptr&lt; Descriptor &gt; &amp;descriptor)</td></tr>
+<tr class="memdesc:ga0df7014db0634fcce42e08fdd27c63fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive breadth-first search algorithm.  <a href="group__spla.html#ga0df7014db0634fcce42e08fdd27c63fa">More...</a><br /></td></tr>
+<tr class="separator:ga0df7014db0634fcce42e08fdd27c63fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
