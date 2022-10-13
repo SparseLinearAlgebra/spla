@@ -100,6 +100,7 @@ namespace spla {
      * @param v
      * @param op_multiply
      * @param op_add
+     * @param init
      * @param opt_complement
      * @param desc Scheduled task descriptor; default is null
      *
@@ -112,6 +113,7 @@ namespace spla {
             ref_ptr<Vector>     v,
             ref_ptr<OpBinary>   op_multiply,
             ref_ptr<OpBinary>   op_add,
+            ref_ptr<Scalar>     init,
             bool                opt_complement,
             ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
 

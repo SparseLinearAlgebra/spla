@@ -77,6 +77,8 @@ namespace spla {
                 }
             }
 
+            r->update_dense();
+
             return Status::Ok;
         }
     };

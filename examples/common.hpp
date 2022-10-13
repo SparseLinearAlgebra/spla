@@ -25,37 +25,33 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <spla/timer.hpp>
+#ifndef SPLA_COMMON_HPP
+#define SPLA_COMMON_HPP
 
-namespace spla {
+#include <spla/spla.hpp>
 
-    void Timer::start() {
-        m_laps.clear();
-        m_start = m_prev = m_end = clock::now();
-    }
-    void Timer::stop() {
-        m_prev = m_end = clock::now();
-    }
-    void Timer::lap_begin() {
-        m_prev = clock::now();
-    }
-    void Timer::lap_end() {
-        auto lap_start = m_prev;
-        m_prev         = clock::now();
-        m_laps.push_back(static_cast<double>(std::chrono::duration_cast<us>(m_prev - lap_start).count()) * 1e-3);
-    }
-    double Timer::get_elapsed_ms() const {
-        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_start).count()) * 1e-3;
-    }
-    double Timer::get_elapsed_lap_ms() const {
-        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_prev).count()) * 1e-3;
-    }
-    const std::vector<double>& Timer::get_laps_ms() const {
-        return m_laps;
-    }
+#include <iostream>
+#include <vector>
 
-    Timer::~Timer() = default;
-    Timer::Timer()  = default;
+void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& b) {
+    const auto N = a->get_n_rows();
+    for (spla::uint i = 0; i < N; i++) {
+        int expected = b[i];
+        int actual;
+        a->get_int(i, actual);
 
+        assert(expected == actual);
 
-}// namespace spla
+        if (expected != actual) {
+            std::cerr << " VERIFY: expected " << expected << " actual" << actual << std::endl;
+        }
+    }
+}
+
+void output_time(const spla::Timer& timer) {
+    for (auto t : timer.get_laps_ms()) {
+        std::cout << t << ",";
+    }
+}
+
+#endif//SPLA_COMMON_HPP

@@ -87,6 +87,7 @@ namespace spla {
         ref_ptr<Vector>   v;
         ref_ptr<OpBinary> op_multiply;
         ref_ptr<OpBinary> op_add;
+        ref_ptr<Scalar>   init;
         bool              opt_complement;
     };
 

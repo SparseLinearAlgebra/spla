@@ -106,25 +106,25 @@ namespace spla {
 
     template<typename T>
     Status TScalar<T>::get_byte(std::int8_t& value) {
-        value = static_cast<T>(m_value);
+        value = static_cast<std::int8_t>(m_value);
         return Status::Ok;
     }
 
     template<typename T>
     Status TScalar<T>::get_int(std::int32_t& value) {
-        value = static_cast<T>(m_value);
+        value = static_cast<std::int32_t>(m_value);
         return Status::Ok;
     }
 
     template<typename T>
     Status TScalar<T>::get_uint(std::uint32_t& value) {
-        value = static_cast<T>(m_value);
+        value = static_cast<std::uint32_t>(m_value);
         return Status::Ok;
     }
 
     template<typename T>
     Status TScalar<T>::get_float(float& value) {
-        value = static_cast<T>(m_value);
+        value = static_cast<float>(m_value);
         return Status::Ok;
     }
 

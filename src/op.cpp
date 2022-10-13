@@ -67,6 +67,8 @@ namespace spla {
     ref_ptr<OpBinary> MAX_UINT;
     ref_ptr<OpBinary> MAX_FLOAT;
 
+    ref_ptr<OpBinary> OR_INT;
+    ref_ptr<OpBinary> OR_UINT;
 
     ref_ptr<OpSelect> GZERO_INT;
     ref_ptr<OpSelect> GZERO_UINT;
@@ -104,13 +106,16 @@ namespace spla {
         DECL_OP_BIN_S(ONE_UINT, ONE, T_UINT, { return 1; });
         DECL_OP_BIN_S(ONE_FLOAT, ONE, T_FLOAT, { return 1; });
 
-        DECL_OP_BIN_S(MIN_INT, ONE, T_INT, { return min(a, b); });
-        DECL_OP_BIN_S(MIN_UINT, ONE, T_UINT, { return min(a, b); });
-        DECL_OP_BIN_S(MIN_FLOAT, ONE, T_FLOAT, { return min(a, b); });
+        DECL_OP_BIN_S(MIN_INT, MIN, T_INT, { return min(a, b); });
+        DECL_OP_BIN_S(MIN_UINT, MIN, T_UINT, { return min(a, b); });
+        DECL_OP_BIN_S(MIN_FLOAT, MIN, T_FLOAT, { return min(a, b); });
 
-        DECL_OP_BIN_S(MAX_INT, ONE, T_INT, { return max(a, b); });
-        DECL_OP_BIN_S(MAX_UINT, ONE, T_UINT, { return max(a, b); });
-        DECL_OP_BIN_S(MAX_FLOAT, ONE, T_FLOAT, { return max(a, b); });
+        DECL_OP_BIN_S(MAX_INT, MAX, T_INT, { return max(a, b); });
+        DECL_OP_BIN_S(MAX_UINT, MAX, T_UINT, { return max(a, b); });
+        DECL_OP_BIN_S(MAX_FLOAT, MAX, T_FLOAT, { return max(a, b); });
+
+        DECL_OP_BIN_S(OR_INT, OR, T_INT, { return a | b; });
+        DECL_OP_BIN_S(OR_UINT, OR, T_UINT, { return a | b; });
     }
 
 }// namespace spla

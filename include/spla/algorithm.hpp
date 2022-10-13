@@ -57,6 +57,21 @@ namespace spla {
                         const ref_ptr<Descriptor>& descriptor);
 
     /**
+     * @brief Naive breadth-first search algorithm
+     *
+     * @param v int vector to store reached distances
+     * @param A int graph adjacency lists filled with 1 where exist edge from i to j
+     * @param s start vertex id to search
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status bfs_naive(std::vector<int>&                     v,
+                              std::vector<std::vector<spla::uint>>& A,
+                              uint                                  s,
+                              const ref_ptr<Descriptor>&            descriptor);
+
+    /**
      * @}
      */
 

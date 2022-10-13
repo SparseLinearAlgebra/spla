@@ -34,17 +34,18 @@ TEST(mxv_masked_comp, naive) {
 
     //            v 3 0 3 0 -1
     //
-    // r    r   mask       M
-    // ________________________
-    // 2 |  2 |  1 | 0 2 0 0 -9
-    // 9 | -5 |  0 | 2 0 0 0 -8
-    // 4 |  4 |  1 | 0 0 3 0  0
-    // 6 |  5 |  0 | 0 0 0 0 -1
+    // fr   ir   mask       M
+    // _________________________
+    // 10 |  2 |  1 | 0 2 0 0 -9
+    // 24 | -5 |  0 | 2 0 0 0 -8
+    // 10 |  4 |  1 | 0 0 3 0  0
+    // 11 |  5 |  0 | 0 0 0 0 -1
 
     auto ir    = spla::make_vector(M, spla::INT);
     auto imask = spla::make_vector(M, spla::INT);
     auto iv    = spla::make_vector(N, spla::INT);
     auto iM    = spla::make_matrix(M, N, spla::INT);
+    auto iinit = spla::make_int(10);
 
     ir->set_int(0, 2);
     ir->set_int(1, -5);
@@ -70,22 +71,22 @@ TEST(mxv_masked_comp, naive) {
     iM->set_int(3, 4, -1);
 
     auto schedule = spla::make_schedule();
-    schedule->step_task(spla::make_sched_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, true));
+    schedule->step_task(spla::make_sched_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, iinit, true));
     schedule->submit();
 
     int r;
 
     ir->get_int(0, r);
-    EXPECT_EQ(r, 2);
+    EXPECT_EQ(r, 10);
 
     ir->get_int(1, r);
-    EXPECT_EQ(r, 9);
+    EXPECT_EQ(r, 24);
 
     ir->get_int(2, r);
-    EXPECT_EQ(r, 4);
+    EXPECT_EQ(r, 10);
 
     ir->get_int(3, r);
-    EXPECT_EQ(r, 6);
+    EXPECT_EQ(r, 11);
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

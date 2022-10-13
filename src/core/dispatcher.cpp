@@ -45,7 +45,6 @@ namespace spla {
             algo                = g_reg->find(key_acc);
 
             if (algo) {
-                LOG_MSG(Status::Ok, "found acc algo " << algo->get_name());
                 return algo->execute(ctx);
             }
         }
@@ -54,7 +53,6 @@ namespace spla {
         algo                = g_reg->find(key_cpu);
 
         if (algo) {
-            LOG_MSG(Status::Ok, "found cpu algo " << algo->get_name());
             return algo->execute(ctx);
         }
 

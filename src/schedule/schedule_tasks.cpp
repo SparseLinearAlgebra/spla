@@ -72,7 +72,7 @@ namespace spla {
         return key.str();
     }
     std::vector<ref_ptr<Object>> ScheduleTask_mxv_masked::get_args() {
-        return {r.as<Object>(), mask.as<Object>(), M.as<Object>(), v.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>()};
+        return {r.as<Object>(), mask.as<Object>(), M.as<Object>(), v.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>(), init.as<Object>()};
     }
 
     std::string ScheduleTask_v_assign_masked::get_name() {

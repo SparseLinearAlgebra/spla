@@ -32,13 +32,21 @@
 
 #define OPT_MTXPATH "mtxpath"
 #define OPT_NITERS  "niters"
+#define OPT_SOURCE  "source"
+#define OPT_RUN_REF "run-ref"
+#define OPT_RUN_CPU "run-cpu"
+#define OPT_RUN_GPU "run-gpu"
+
 
 std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
     std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
     options->add_option("", cxxopts::Option("h,help", "display help info", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option(OPT_MTXPATH, "path to matrix file", cxxopts::value<std::string>()));
     options->add_option("", cxxopts::Option(OPT_NITERS, "number of iterations to run", cxxopts::value<int>()->default_value("4")));
-    options->add_option("", cxxopts::Option("source", "source vertex to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option(OPT_SOURCE, "source vertex to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option(OPT_RUN_REF, "check validity running naive version", cxxopts::value<bool>()->default_value("true")));
+    options->add_option("", cxxopts::Option(OPT_RUN_CPU, "run algo with cpu backend", cxxopts::value<bool>()->default_value("true")));
+    options->add_option("", cxxopts::Option(OPT_RUN_GPU, "run algo with gpu (acc) backend", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option("platform", "id of platform to run", cxxopts::value<int>()->default_value("0")));
     options->add_option("", cxxopts::Option("devices", "id of device to run", cxxopts::value<int>()->default_value("0")));

@@ -84,6 +84,7 @@ namespace spla {
         Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
         void update_version();
+        void update_dense();
         void ensure_dense_format();
 
     private:
@@ -203,6 +204,8 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::clear() {
+        update_version();
+
         return Status::Ok;
     }
 
@@ -212,11 +215,19 @@ namespace spla {
     }
 
     template<typename T>
+    void TVector<T>::update_dense() {
+        auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+
+        update_version();
+        p_vec->update_version(m_version);
+    }
+
+    template<typename T>
     void TVector<T>::ensure_dense_format() {
         auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
 
         if (p_vec->get_version() < m_version) {
-            update_version();
+            update_version();// todo: do not update version if all data is invalid
             LOG_MSG(Status::Error, "data invalidation, previous content lost");
 
             cpu_dense_vec_resize(m_n_rows, *p_vec);

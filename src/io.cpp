@@ -110,10 +110,10 @@ namespace spla {
         m_Aj       = std::move(Aj);
         m_n_values = m_Ai.size();
 
-        t.lap();// parsing
+        t.lap_end();// parsing
 
         calc_stats();
-        t.lap();// stats
+        t.lap_end();// stats
 
         t.stop();
 

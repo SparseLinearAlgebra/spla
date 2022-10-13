@@ -61,9 +61,11 @@ namespace spla {
             auto v           = t->v.template cast<TVector<T>>();
             auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
             auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
+            auto init        = t->init.template cast<TScalar<T>>();
 
-            uint DM         = M->get_n_rows();
-            T    skip_value = T();
+            const uint DM         = M->get_n_rows();
+            const T    skip_value = T();
+            const T    sum_init   = init->get_value();
 
             r->ensure_dense_format();
             mask->ensure_dense_format();
@@ -79,17 +81,20 @@ namespace spla {
             auto& func_add      = op_add->function;
 
             for (uint i = 0; i < DM; ++i) {
+                T sum = sum_init;
+
                 if (p_dense_mask->Ax[i] == skip_value) {
-                    T           sum = p_dense_r->Ax[i];
                     const auto& row = p_lil_M->Ar[i];
 
                     for (const auto& j_x : row) {
                         sum = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j_x.first]));
                     }
-
-                    p_dense_r->Ax[i] = sum;
                 }
+
+                p_dense_r->Ax[i] = sum;
             }
+
+            r->update_dense();
 
             return Status::Ok;
         }

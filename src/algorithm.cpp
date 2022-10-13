@@ -29,7 +29,9 @@
 #include <spla/op.hpp>
 #include <spla/schedule.hpp>
 
+#include <algorithm>
 #include <cassert>
+#include <queue>
 
 namespace spla {
 
@@ -40,9 +42,10 @@ namespace spla {
         assert(v);
         assert(A);
 
-        auto N = v->get_n_rows();
+        const auto N = v->get_n_rows();
 
-        ref_ptr<Vector> frontier       = make_vector(N, INT);
+        ref_ptr<Vector> frontier_prev  = make_vector(N, INT);
+        ref_ptr<Vector> frontier_new   = make_vector(N, INT);
         ref_ptr<Scalar> frontier_size  = make_int(1);
         ref_ptr<Scalar> depth          = make_int(1);
         ref_ptr<Scalar> zero           = make_int(0);
@@ -50,19 +53,18 @@ namespace spla {
         bool            frontier_empty = false;
         bool            complement     = true;
 
-        ref_ptr<Schedule>     bfs_body   = make_schedule();
-        ref_ptr<ScheduleTask> bfs_assign = make_sched_v_assign_masked(v, frontier, depth, SECOND_INT);
-        ref_ptr<ScheduleTask> bfs_step   = make_sched_mxv_masked(frontier, v, A, frontier, MULT_INT, PLUS_INT, complement);
-        ref_ptr<ScheduleTask> bfs_check  = make_sched_v_reduce(frontier_size, zero, frontier, PLUS_INT);
-        bfs_body->step_task(bfs_assign);
-        bfs_body->step_task(bfs_step);
-        bfs_body->step_task(bfs_check);
-
-        frontier->set_int(s, 1);
+        frontier_prev->set_int(s, 1);
 
         while (!frontier_empty) {
             depth->set_int(current_level);
 
+            ref_ptr<Schedule>     bfs_body   = make_schedule();
+            ref_ptr<ScheduleTask> bfs_assign = make_sched_v_assign_masked(v, frontier_prev, depth, SECOND_INT);
+            ref_ptr<ScheduleTask> bfs_step   = make_sched_mxv_masked(frontier_new, v, A, frontier_prev, MULT_INT, OR_INT, zero, complement);
+            ref_ptr<ScheduleTask> bfs_check  = make_sched_v_reduce(frontier_size, zero, frontier_new, PLUS_INT);
+            bfs_body->step_task(bfs_assign);
+            bfs_body->step_task(bfs_step);
+            bfs_body->step_task(bfs_check);
             bfs_body->submit();
 
             int observed_vertices;
@@ -70,6 +72,40 @@ namespace spla {
 
             frontier_empty = observed_vertices == 0;
             current_level += 1;
+
+            std::swap(frontier_prev, frontier_new);
+        }
+
+        return Status::Ok;
+    }
+
+    Status bfs_naive(std::vector<int>&                     v,
+                     std::vector<std::vector<spla::uint>>& A,
+                     uint                                  s,
+                     const ref_ptr<Descriptor>&            descriptor) {
+
+        const auto N = v.size();
+
+        std::queue<uint>  front;
+        std::vector<bool> visited(N, false);
+
+        std::fill(v.begin(), v.end(), 0);
+
+        front.push(s);
+        visited[s] = true;
+        v[s]       = 1;
+
+        while (!front.empty()) {
+            auto i = front.front();
+            front.pop();
+
+            for (auto j : A[i]) {
+                if (!visited[j]) {
+                    visited[j] = true;
+                    v[j]       = v[i] + 1;
+                    front.push(j);
+                }
+            }
         }
 
         return Status::Ok;

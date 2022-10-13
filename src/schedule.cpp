@@ -29,6 +29,7 @@
 
 #include <schedule/schedule_st.hpp>
 #include <schedule/schedule_tasks.hpp>
+#include <utility>
 
 namespace spla {
 
@@ -52,6 +53,7 @@ namespace spla {
             ref_ptr<Vector>     v,
             ref_ptr<OpBinary>   op_multiply,
             ref_ptr<OpBinary>   op_add,
+            ref_ptr<Scalar>     init,
             bool                opt_complement,
             ref_ptr<Descriptor> desc) {
         auto task            = make_ref<ScheduleTask_mxv_masked>();
@@ -61,6 +63,7 @@ namespace spla {
         task->v              = std::move(v);
         task->op_multiply    = std::move(op_multiply);
         task->op_add         = std::move(op_add);
+        task->init           = std::move(init);
         task->opt_complement = opt_complement;
         task->desc           = std::move(desc);
         return task.as<ScheduleTask>();

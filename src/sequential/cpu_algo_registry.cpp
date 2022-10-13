@@ -66,6 +66,9 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_1("v_assign_masked", ONE_UINT), std::make_shared<Algo_v_assign_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_1("v_assign_masked", ONE_FLOAT), std::make_shared<Algo_v_assign_masked_cpu<T_FLOAT>>());
 
+        g_registry->add(MAKE_KEY_CPU_2_M("mxv_masked", MULT_INT, OR_INT, true), std::make_shared<Algo_mxv_masked_mc<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2_M("mxv_masked", MULT_UINT, OR_INT, true), std::make_shared<Algo_mxv_masked_mc<T_UINT>>());
+
         g_registry->add(MAKE_KEY_CPU_2_M("mxv_masked", MULT_INT, PLUS_INT, true), std::make_shared<Algo_mxv_masked_mc<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_2_M("mxv_masked", MULT_UINT, PLUS_UINT, true), std::make_shared<Algo_mxv_masked_mc<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_2_M("mxv_masked", MULT_FLOAT, PLUS_FLOAT, true), std::make_shared<Algo_mxv_masked_mc<T_FLOAT>>());
