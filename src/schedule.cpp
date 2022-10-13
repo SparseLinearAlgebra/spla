@@ -37,6 +37,12 @@ namespace spla {
         return ref_ptr<Schedule>(new ScheduleSingleThread);
     }
 
+    Status execute_immediate(ref_ptr<ScheduleTask> task) {
+        auto schedule = make_schedule();
+        schedule->step_task(std::move(task));
+        return schedule->submit();
+    }
+
     ref_ptr<ScheduleTask> make_sched_callback(
             ScheduleCallback    callback,
             ref_ptr<Descriptor> desc) {

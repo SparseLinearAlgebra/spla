@@ -58,14 +58,9 @@ namespace spla {
         while (!frontier_empty) {
             depth->set_int(current_level);
 
-            ref_ptr<Schedule>     bfs_body   = make_schedule();
-            ref_ptr<ScheduleTask> bfs_assign = make_sched_v_assign_masked(v, frontier_prev, depth, SECOND_INT);
-            ref_ptr<ScheduleTask> bfs_step   = make_sched_mxv_masked(frontier_new, v, A, frontier_prev, MULT_INT, OR_INT, zero, complement);
-            ref_ptr<ScheduleTask> bfs_check  = make_sched_v_reduce(frontier_size, zero, frontier_new, PLUS_INT);
-            bfs_body->step_task(bfs_assign);
-            bfs_body->step_task(bfs_step);
-            bfs_body->step_task(bfs_check);
-            bfs_body->submit();
+            spla::execute_immediate(make_sched_v_assign_masked(v, frontier_prev, depth, SECOND_INT));
+            spla::execute_immediate(make_sched_mxv_masked(frontier_new, v, A, frontier_prev, MULT_INT, OR_INT, zero, complement));
+            spla::execute_immediate(make_sched_v_reduce(frontier_size, zero, frontier_new, PLUS_INT));
 
             int observed_vertices;
             frontier_size->get_int(observed_vertices);

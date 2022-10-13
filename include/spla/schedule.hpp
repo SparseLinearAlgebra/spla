@@ -80,6 +80,15 @@ namespace spla {
     SPLA_API ref_ptr<Schedule> make_schedule();
 
     /**
+     * @brief Immediately executes provided task and return only when task is finished
+     *
+     * @param task Task to execute immediately
+     *
+     * @return Ok if finished without errors
+     */
+    SPLA_API Status execute_immediate(ref_ptr<ScheduleTask> task);
+
+    /**
      * @brief Scheduled callback function
      *
      * @param callback User-defined function to call as scheduled task
