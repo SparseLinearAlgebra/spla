@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['plus_5ffloat_783',['PLUS_FLOAT',['../group__spla.html#ga2718e5ec038870bbbb45e52739bc6708',1,'spla']]],
-  ['plus_5fint_784',['PLUS_INT',['../group__spla.html#ga4c7ac59923bcb161d2b9a1597033ed47',1,'spla']]],
-  ['plus_5fuint_785',['PLUS_UINT',['../group__spla.html#ga54b6a6b5a8fe443ca64704d38769a63d',1,'spla']]]
+  ['plus_5ffloat_804',['PLUS_FLOAT',['../group__spla.html#ga2718e5ec038870bbbb45e52739bc6708',1,'spla']]],
+  ['plus_5fint_805',['PLUS_INT',['../group__spla.html#ga4c7ac59923bcb161d2b9a1597033ed47',1,'spla']]],
+  ['plus_5fuint_806',['PLUS_UINT',['../group__spla.html#ga54b6a6b5a8fe443ca64704d38769a63d',1,'spla']]]
 ];
