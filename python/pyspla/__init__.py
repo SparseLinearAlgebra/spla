@@ -19,6 +19,8 @@ Links:
   [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
   [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
+- **Examples**:
+  [https://github.com/JetBrains-Research/spla/EXAMPLES.md](https://github.com/JetBrains-Research/spla/blob/main/EXAMPLES.md)
 - **C/C++ API Reference**:
   [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
 - **Bug report**:

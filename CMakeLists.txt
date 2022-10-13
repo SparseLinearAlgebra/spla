@@ -221,6 +221,7 @@ add_library(spla SHARED
         include/spla/algorithm.hpp
         include/spla/config.hpp
         include/spla/descriptor.hpp
+        include/spla/io.hpp
         include/spla/library.hpp
         include/spla/matrix.hpp
         include/spla/object.hpp
@@ -262,6 +263,7 @@ add_library(spla SHARED
         src/sequential/cpu_vector_reduce.hpp
         src/util/pair_hash.hpp
         src/descriptor.cpp
+        src/io.cpp
         src/library.cpp
         src/matrix.cpp
         src/algorithm.cpp

@@ -27,13 +27,24 @@
 
 #include "options.hpp"
 
+#include <spla/spla.hpp>
+
 int main(int argc, const char* const* argv) {
     std::shared_ptr<cxxopts::Options> options = make_options("bfs", "bfs (breadth first search) algorithm with spla library");
     cxxopts::ParseResult              args;
     int                               ret;
 
-    if (parse_options(argc, argv, options, args, ret)) return ret;
+    if (parse_options(argc, argv, options, args, ret)) {
+        std::cerr << "failed to parse options";
+        return ret;
+    }
 
+    spla::MtxLoader loader;
+
+    if (!loader.load(args[OPT_MTXPATH].as<std::string>())) {
+        std::cerr << "failed to load graph";
+        return 1;
+    }
 
     return 0;
 }

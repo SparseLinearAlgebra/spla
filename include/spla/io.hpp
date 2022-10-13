@@ -25,45 +25,74 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_OPTIONS_HPP
-#define SPLA_OPTIONS_HPP
+#ifndef SPLA_IO_HPP
+#define SPLA_IO_HPP
 
-#include <cxxopts.hpp>
+#include "config.hpp"
 
-#define OPT_MTXPATH "mtxpath"
-#define OPT_NITERS  "niters"
+#include <filesystem>
+#include <vector>
 
-std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
-    std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
-    options->add_option("", cxxopts::Option("h,help", "display help info", cxxopts::value<bool>()->default_value("false")));
-    options->add_option("", cxxopts::Option(OPT_MTXPATH, "path to matrix file", cxxopts::value<std::string>()));
-    options->add_option("", cxxopts::Option(OPT_NITERS, "number of iterations to run", cxxopts::value<int>()->default_value("4")));
-    options->add_option("", cxxopts::Option("source", "source vertex to run", cxxopts::value<int>()->default_value("0")));
-    options->add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
-    options->add_option("", cxxopts::Option("platform", "id of platform to run", cxxopts::value<int>()->default_value("0")));
-    options->add_option("", cxxopts::Option("devices", "id of device to run", cxxopts::value<int>()->default_value("0")));
-    options->add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
-    options->add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
-    return options;
-}
+namespace spla {
 
-bool parse_options(int argc, const char* const* argv, const std::shared_ptr<cxxopts::Options>& options, cxxopts::ParseResult& args, int& ret) {
-    ret = 0;
+    /**
+     * @addtogroup spla
+     * @{
+     */
 
-    try {
-        args = options->parse(argc, argv);
-    } catch (const std::exception& e) {
-        std::cerr << "failed parse input arguments: " << e.what();
-        ret = 1;
-        return true;
-    }
+    /**
+     * @class MtxLoader
+     * @brief Loader for matrix data stored in matrix-market (.mtx) format
+     */
+    class MtxLoader {
+    public:
+        SPLA_API explicit MtxLoader(std::string name = "");
+        SPLA_API ~MtxLoader() = default;
 
-    if (args["help"].as<bool>()) {
-        std::cout << options->help();
-        return true;
-    }
+        /**
+         * @brief Load .mtx data from given file path
+         *
+         * @param file_path Relative or absolute path to file
+         * @param offset_indices True if requires indices offset by -1
+         * @param make_undirected True if for each directed edge reverse edge must be added
+         * @param remove_loops True if self-loops must be removed
+         *
+         * @return True if successfully loaded
+         */
+        SPLA_API bool load(std::filesystem::path file_path,
+                           bool                  offset_indices  = true,
+                           bool                  make_undirected = true,
+                           bool                  remove_loops    = true);
 
-    return false;
-}
+        SPLA_API void calc_stats();
+        SPLA_API void output_stats();
 
-#endif//SPLA_OPTIONS_HPP
+        [[nodiscard]] SPLA_API const std::vector<uint>& get_Ai() const;
+        [[nodiscard]] SPLA_API const std::vector<uint>& get_Aj() const;
+        [[nodiscard]] SPLA_API uint                     get_n_rows() const;
+        [[nodiscard]] SPLA_API uint                     get_n_cols() const;
+        [[nodiscard]] SPLA_API std::size_t get_n_values() const;
+
+    private:
+        std::string           m_name;
+        std::filesystem::path m_file_path;
+        std::vector<uint>     m_Ai;
+        std::vector<uint>     m_Aj;
+        uint                  m_n_rows   = 0;
+        uint                  m_n_cols   = 0;
+        std::size_t           m_n_values = 0;
+
+        double              m_deg_avg = -1.0;
+        double              m_deg_sd  = -1.0;
+        double              m_deg_min = -1.0;
+        double              m_deg_max = -1.0;
+        std::vector<double> m_deg_distribution;
+    };
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_IO_HPP

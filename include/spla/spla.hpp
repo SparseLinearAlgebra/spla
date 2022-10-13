@@ -31,6 +31,7 @@
 #include "algorithm.hpp"
 #include "config.hpp"
 #include "descriptor.hpp"
+#include "io.hpp"
 #include "library.hpp"
 #include "matrix.hpp"
 #include "object.hpp"
