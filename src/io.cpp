@@ -157,14 +157,15 @@ namespace spla {
         m_deg_avg = m_deg_avg / n;
         m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) / (n > 1.0 ? n - 1.0 : 1.0));
 
-        std::vector<double> distributions(GROUPS_COUNT, 0.0);
+        auto range        = m_deg_max - m_deg_min;
+        auto groups_count = std::max(std::min(GROUPS_COUNT, static_cast<uint>(range)), 1u);
+        auto g            = static_cast<double>(groups_count);
 
-        auto range = m_deg_max - m_deg_min;
-        auto g     = static_cast<double>(GROUPS_COUNT);
+        std::vector<double> distributions(groups_count, 0.0);
 
         for (auto deg : deg_pre_vertex) {
             auto slot = static_cast<uint>(std::max(std::floor(((deg - m_deg_min) / range) * g) - 1.0, 0.0));
-            assert(0 <= slot && slot < GROUPS_COUNT);
+            assert(0 <= slot && slot < groups_count);
             distributions[slot] += 1.0;
         }
 
@@ -184,9 +185,10 @@ namespace spla {
 
         std::cout << " distribution:" << std::endl;
 
-        const auto n     = static_cast<double>(m_n_rows);
-        const auto g     = static_cast<double>(GROUPS_COUNT);
-        const auto range = m_deg_max - m_deg_min;
+        auto       groups_count = m_deg_distribution.size();
+        const auto n            = static_cast<double>(m_n_rows);
+        const auto g            = static_cast<double>(groups_count);
+        const auto range        = m_deg_max - m_deg_min;
         const auto default_precision{std::cout.precision()};
         const auto n_digits = static_cast<uint>(std::log10(n) + 1.0);
 
