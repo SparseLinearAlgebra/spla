@@ -24,9 +24,9 @@
 </header>
 <section id="section-intro">
 <h1 id="python-wrapper-for-spla-library">Python wrapper for spla library</h1>
-<p>Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+<p>Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
-accelerations to speed-up processing of large and complex data.
+acceleration to speed-up processing of large and complex data.
 Library core witten using C++ with optional C-compatible interface.</p>
 <p>Links:</p>
 <ul>
@@ -47,7 +47,7 @@ Library core witten using C++ with optional C-compatible interface.</p>
 <li><strong>Bug report</strong>:
 <a href="https://github.com/JetBrains-Research/spla/issues">https://github.com/JetBrains-Research/spla/issues</a></li>
 </ul>
-<p>We are welcome for contribution. Join project development on <a href="https://github.com/JetBrains-Research/spla">GitHub</a>!</p>
+<p>We are welcome for contributions. Join project development on <a href="https://github.com/JetBrains-Research/spla">GitHub</a>!</p>
 <h2 id="installation">Installation</h2>
 <p>Install the release version of the package from <strong>PyPI</strong> repository for Windows, Linux and MacOS:</p>
 <pre><code>$ pip install pyspla
@@ -61,8 +61,8 @@ Library core witten using C++ with optional C-compatible interface.</p>
 <h2 id="summary">Summary</h2>
 <p>Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
-<code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code> and <code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code> for mathematical computations parametrized using
-on of built-in <code><a title="pyspla.type" href="type.html">pyspla.type</a></code>. It allows to define sequence of execution tasks
+<code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code>, <code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code> and <code><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code> for mathematical computations parametrized using
+one of built-in <code><a title="pyspla.type" href="type.html">pyspla.type</a></code>. It allows to define sequence of execution tasks
 using <code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code> API. Desired behavior of math operations can be customized
 using on of element operations in <code><a title="pyspla.op" href="op.html">pyspla.op</a></code> module.</p>
 <p>Library optionally uses GPUs acceleration through OpenCL or CUDA API.
@@ -79,8 +79,9 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
 <ul>
-<li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code> - Generalized sparse storage-invariant matrix primitive.</li>
-<li><code>Vector</code> - Generalized sparse storage-invariant vector primitive.</li>
+<li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code> - Generalized statically-typed sparse storage-invariant matrix primitive.</li>
+<li><code>Vector</code> - Generalized statically-typed sparse storage-invariant vector primitive.</li>
+<li><code>Scalar</code> - Generalized statically-typed scalar primitive.</li>
 </ul>
 <h2 id="schedule">Schedule</h2>
 <p>Schedule allows to build sequence of tasks to be executed. It allows user
@@ -91,15 +92,53 @@ on some level, notification on some steps completion and etc.</p>
 <li><code>Task</code> - A particular wort to be done inside a step of schedule.</li>
 </ul>
 <h2 id="types">Types</h2>
-<p>TBD.</p>
+<p>Library provides a set of standard and common built-in data types. Library value types
+differ a bit from a classic type definition. In spla library type is essentially is a
+storage characteristic, which defines count and layout of bytes per element. User
+can interpret stored data as her/she wants. Spla types set is limited due to the nature
+of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</p>
+<ul>
+<li><code>BYTE</code>
+- 1-byte-sized signed integral value</li>
+<li><code>INT</code>
+- 4-byte-sized signed integral value</li>
+<li><code>UINT</code>
+- 4-byte-sized unsigned integral value</li>
+<li><code>FLOAT</code> - 4-byte-sized single-precision floating point value</li>
+</ul>
 <h2 id="op">Op</h2>
-<p>TBD.</p>
+<p>Library provides a set of unary, binary and select ops for values data manipulation inside
+matrix and vector containers.</p>
+<ul>
+<li><code>PLUS</code>
+- binary(x,y): r = x + y</li>
+<li><code>MINUS</code>
+- binary(x,y): r = x - y</li>
+<li><code>MULT</code>
+- binary(x,y): r = x * y</li>
+<li><code>DIV</code>
+- binary(x,y): r = x / y</li>
+<li><code>FIRST</code>
+- binary(x,y): r = x</li>
+<li><code>SECOND</code> - binary(x,y): r = y</li>
+<li><code>ONE</code>
+- binary(x,y): r = 1</li>
+<li><code>MIN</code>
+- binary(x,y): r = min(x, y)</li>
+<li><code>MAX</code>
+- binary(x,y): r = max(x, y)</li>
+<li><code>BOR</code>
+- binary(x,y): r = x | y, for integral only</li>
+<li><code>BAND</code>
+- binary(x,y): r = x &amp; y, for integral only</li>
+<li><code>BXOR</code>
+- binary(x,y): r = x ^ y, for integral only</li>
+</ul>
 <h2 id="usage-information">Usage Information</h2>
 <p>TBD.</p>
 <h2 id="details">Details</h2>
-<p>Spla C backend compiled library is automatically loaded and
-initialized on package import. State of the library managed
-by internal <code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code> module. All resources are unloaded automatically
+<p>Spla C/C++ backend compiled library is automatically loaded and initialized on package import.
+State of the library managed by internal <code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code> module. All resources are unloaded automatically
 on package exit. Library state finalized automatically.</p>
 <details class="source">
 <summary>
@@ -109,9 +148,9 @@ on package exit. Library state finalized automatically.</p>
 Python wrapper for spla library
 ===============================
 
-Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
-accelerations to speed-up processing of large and complex data.
+acceleration to speed-up processing of large and complex data.
 Library core witten using C++ with optional C-compatible interface.
 
 Links:
@@ -133,7 +172,7 @@ Links:
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
 
-We are welcome for contribution. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
+We are welcome for contributions. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
 
 Installation
 ------------
@@ -155,8 +194,8 @@ Summary
 
 Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
-`matrix` and `vector` for mathematical computations parametrized using
-on of built-in `type`. It allows to define sequence of execution tasks
+`matrix`, `vector` and `scalar` for mathematical computations parametrized using
+one of built-in `type`. It allows to define sequence of execution tasks
 using `schedule` API. Desired behavior of math operations can be customized
 using on of element operations in `op` module.
 
@@ -177,8 +216,9 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-- `Matrix` - Generalized sparse storage-invariant matrix primitive.
-- `Vector` - Generalized sparse storage-invariant vector primitive.
+- `Matrix` - Generalized statically-typed sparse storage-invariant matrix primitive.
+- `Vector` - Generalized statically-typed sparse storage-invariant vector primitive.
+- `Scalar` - Generalized statically-typed scalar primitive.
 
 Schedule
 --------
@@ -193,12 +233,35 @@ on some level, notification on some steps completion and etc.
 Types
 -----
 
-TBD.
+Library provides a set of standard and common built-in data types. Library value types
+differ a bit from a classic type definition. In spla library type is essentially is a
+storage characteristic, which defines count and layout of bytes per element. User
+can interpret stored data as her/she wants. Spla types set is limited due to the nature
+of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
+
+- `BYTE`  - 1-byte-sized signed integral value
+- `INT`   - 4-byte-sized signed integral value
+- `UINT`  - 4-byte-sized unsigned integral value
+- `FLOAT` - 4-byte-sized single-precision floating point value
 
 Op
 --
 
-TBD.
+Library provides a set of unary, binary and select ops for values data manipulation inside
+matrix and vector containers.
+
+- `PLUS`   - binary(x,y): r = x + y
+- `MINUS`  - binary(x,y): r = x - y
+- `MULT`   - binary(x,y): r = x * y
+- `DIV`    - binary(x,y): r = x / y
+- `FIRST`  - binary(x,y): r = x
+- `SECOND` - binary(x,y): r = y
+- `ONE`    - binary(x,y): r = 1
+- `MIN`    - binary(x,y): r = min(x, y)
+- `MAX`    - binary(x,y): r = max(x, y)
+- `BOR`    - binary(x,y): r = x | y, for integral only
+- `BAND`   - binary(x,y): r = x &amp; y, for integral only
+- `BXOR`   - binary(x,y): r = x ^ y, for integral only
 
 Usage information
 -----------------
@@ -208,9 +271,8 @@ TBD.
 Details
 -------
 
-Spla C backend compiled library is automatically loaded and
-initialized on package import. State of the library managed
-by internal `bridge` module. All resources are unloaded automatically
+Spla C/C++ backend compiled library is automatically loaded and initialized on package import.
+State of the library managed by internal `bridge` module. All resources are unloaded automatically
 on package exit. Library state finalized automatically.
 &#34;&#34;&#34;
 
@@ -240,10 +302,12 @@ SOFTWARE.
 
 from .library import *
 from .op import *
+from .object import *
 from .schedule import *
 from .type import *
 from .matrix import *
 from .vector import *
+from .scalar import *
 from .version import *
 from .bridge import *
 
@@ -270,9 +334,17 @@ __all__ = [
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) matrix primitive implementation.</p></div>
 </dd>
+<dt><code class="name"><a title="pyspla.object" href="object.html">pyspla.object</a></code></dt>
+<dd>
+<div class="desc"><p>Wrapped native (spla C API) object primitive implementation.</p></div>
+</dd>
 <dt><code class="name"><a title="pyspla.op" href="op.html">pyspla.op</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) op implementation.</p></div>
+</dd>
+<dt><code class="name"><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code></dt>
+<dd>
+<div class="desc"><p>Wrapped native (spla C API) scalar primitive implementation.</p></div>
 </dd>
 <dt><code class="name"><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code></dt>
 <dd>
@@ -303,42 +375,49 @@ __all__ = [
 <span>class <span class="ident">Matrix</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
+<div class="desc"><p>Generalized statically-typed sparse storage-invariant matrix primitive.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
 <li>type : <code><a title="pyspla.type" href="type.html">pyspla.type</a></code> type of stored matrix elements</li>
 <li>shape : <code>2-tuple</code> shape of the matrix in form of two integers tuple</li>
-<li>hnd: <code>p_void</code>
-handle to the native matrix object in spla C API</li>
 </ul>
 <h2 id="notes">Notes</h2>
 <p>Matrix provides features for:</p>
 <ul>
 <li>incremental creation</li>
 <li>build from values</li>
-<li>transposition</li>
-<li>triangular lower</li>
-<li>triangular upper</li>
-<li>element-wise addition</li>
-<li>element-wise subtraction</li>
+<li>read-back by value</li>
+<li>(tbd) transposition</li>
+<li>(tbd) triangular lower</li>
+<li>(tbd) triangular upper</li>
+<li>(tbd) element-wise addition</li>
+<li>(tbd) element-wise subtraction</li>
 <li>matrix-vector product</li>
-<li>matrix-matrix product</li>
-<li>matrix-matrix kronecker product</li>
+<li>(tbd) matrix-matrix product</li>
+<li>(tbd) matrix-matrix kronecker product</li>
 </ul>
-<p>Matrix best performance:</p>
+<p>Matrix supports storage schemas:</p>
 <ul>
-<li>Prepare matrix data</li>
-<li>Ensure matrix format</li>
-<li>Execute math operations</li>
-<li>Avoiding unnecessary data reads and mixing of incremental updates from python</li>
+<li>cpu lil (list of lists, for incremental build)</li>
+<li>cpu dok (dictionary of keys, for incremental build and per-value reed back)</li>
+<li>cpu coo (coordinate matrix format)</li>
+<li>cpu csr (compressed sparse rows)</li>
+<li>cpu csc (compressed sparse columns)</li>
+<li>acc coo (opencl)</li>
+<li>acc csr (opencl)</li>
+<li>acc csc (opencl)</li>
 </ul>
 <p>Matrix typical usage:</p>
 <ul>
-<li>Instantiate matrix primitive</li>
-<li>Build incrementally from yours data source</li>
-<li>Matrix usage in a sequence of math operations</li>
-<li>Read-back matrix data to python to analyse results</li>
+<li>(1) Instantiate matrix primitive</li>
+<li>(2) Build incrementally from yours data source</li>
+<li>(3) Matrix usage in a sequence of math operations</li>
+<li>(4) Read-back matrix data to python to analyse results</li>
 </ul>
+<p>Steps (2) and (4) requires internal format transformations and possible transfer of data
+from acc (GPU) side if acceleration was employed in computations. These steps may be very
+intensive, so you have to avoid them in critical parts of computations. If you need faster
+data reads, prefer usage of batched reads, where all content of storage read at once.</p>
 <h2 id="details">Details</h2>
 <p>Matrix class support all spla C API matrix functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
@@ -352,14 +431,13 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </summary>
 <pre><code class="python">class Matrix:
     &#34;&#34;&#34;
-    Generalized sparse storage-invariant matrix primitive.
+    Generalized statically-typed sparse storage-invariant matrix primitive.
 
     Attributes
     ----------
 
     - type : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
 
     Notes
     -----
@@ -368,28 +446,38 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 
     - incremental creation
     - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
+    - read-back by value
+    - (tbd) transposition
+    - (tbd) triangular lower
+    - (tbd) triangular upper
+    - (tbd) element-wise addition
+    - (tbd) element-wise subtraction
     - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
+    - (tbd) matrix-matrix product
+    - (tbd) matrix-matrix kronecker product
 
-    Matrix best performance:
+    Matrix supports storage schemas:
 
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
+    - cpu lil (list of lists, for incremental build)
+    - cpu dok (dictionary of keys, for incremental build and per-value reed back)
+    - cpu coo (coordinate matrix format)
+    - cpu csr (compressed sparse rows)
+    - cpu csc (compressed sparse columns)
+    - acc coo (opencl)
+    - acc csr (opencl)
+    - acc csc (opencl)
 
     Matrix typical usage:
 
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
+    - (1) Instantiate matrix primitive
+    - (2) Build incrementally from yours data source
+    - (3) Matrix usage in a sequence of math operations
+    - (4) Read-back matrix data to python to analyse results
+
+    Steps (2) and (4) requires internal format transformations and possible transfer of data
+    from acc (GPU) side if acceleration was employed in computations. These steps may be very
+    intensive, so you have to avoid them in critical parts of computations. If you need faster
+    data reads, prefer usage of batched reads, where all content of storage read at once.
 
     Details
     -------
@@ -434,7 +522,9 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li><code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></li>
 <li><code><a title="pyspla.library" href="library.html">pyspla.library</a></code></li>
 <li><code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code></li>
+<li><code><a title="pyspla.object" href="object.html">pyspla.object</a></code></li>
 <li><code><a title="pyspla.op" href="op.html">pyspla.op</a></code></li>
+<li><code><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code></li>
 <li><code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code></li>
 <li><code><a title="pyspla.type" href="type.html">pyspla.type</a></code></li>
 <li><code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code></li>

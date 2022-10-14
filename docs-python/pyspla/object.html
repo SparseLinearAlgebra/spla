@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>pyspla.vector API documentation</title>
-<meta name="description" content="Wrapped native (spla C API) vector primitive implementation." />
+<title>pyspla.object API documentation</title>
+<meta name="description" content="Wrapped native (spla C API) object primitive implementation." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,16 +19,16 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>pyspla.vector</code></h1>
+<h1 class="title">Module <code>pyspla.object</code></h1>
 </header>
 <section id="section-intro">
-<p>Wrapped native (spla C API) vector primitive implementation.</p>
+<p>Wrapped native (spla C API) object primitive implementation.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-Wrapped native (spla C API) vector primitive implementation.
+Wrapped native (spla C API) object primitive implementation.
 &#34;&#34;&#34;
 
 __copyright__ = &#34;Copyright (c) 2021-2022 JetBrains-Research&#34;
@@ -58,57 +58,24 @@ SOFTWARE.
 import ctypes
 
 
-class Vector:
+class Object:
     &#34;&#34;&#34;
-    Generalized statically-typed sparse storage-invariant vector primitive.
+    Base class for any spla library object.
 
     Attributes
     ----------
 
-    - type : `type` type of stored vector elements
-    - shape : `2-tuple` shape of the vector in form of two integers tuple (second dim is 1)
-
-    Notes
-    -----
-
-    Vector provides features for:
-
-    - incremental creation
-    - build from values
-    - read-back by value
-    - reduction to scalar
-    - (tbd) element-wise addition
-    - (tbd) element-wise subtraction
-    - matrix-vector product
-
-    Vector supports storage schemas:
-
-    - cpu dense
-    - acc dense (opencl)
-
-    Vector typical usage:
-
-    - (1) Instantiate vector primitive
-    - (2) Build incrementally from yours data source
-    - (3) Vector usage in a sequence of math operations
-    - (4) Read-back vector data to python to analyse results
-
-    Steps (2) and (4) requires internal format transformations and possible transfer of data
-    from acc (GPU) side if acceleration was employed in computations. These steps may be very
-    intensive, so you have to avoid them in critical parts of computations. If you need faster
-    data reads, prefer usage of batched reads, where all content of storage read at once.
+    - label : `str` user provided text label for object for debugging
+    - hnd : `ctypes.p_void` hnd to native object in spla C API
 
     Details
     -------
 
-    Vector class support all spla C API vector functions.
+    Object class support all spla C API matrix functions.
     It provides bind functionality as well as new functions/methods for better python user experience.
 
-    Vector internally manages optimal format of stored data. Use hints to
-    force vector state and format changes.
-
-    Vector optional uses dedicated/integrated GPU to speedup computations
-    using one of built-in OpenCL or CUDA accelerators.
+    Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
+    of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     &#34;&#34;&#34;
 
     def __init__(self):
@@ -124,105 +91,43 @@ class Vector:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="pyspla.vector.Vector"><code class="flex name class">
-<span>class <span class="ident">Vector</span></span>
+<dt id="pyspla.object.Object"><code class="flex name class">
+<span>class <span class="ident">Object</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generalized statically-typed sparse storage-invariant vector primitive.</p>
+<div class="desc"><p>Base class for any spla library object.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
-<li>type : <code>type</code> type of stored vector elements</li>
-<li>shape : <code>2-tuple</code> shape of the vector in form of two integers tuple (second dim is 1)</li>
+<li>label : <code>str</code> user provided text label for object for debugging</li>
+<li>hnd : <code>ctypes.p_void</code> hnd to native object in spla C API</li>
 </ul>
-<h2 id="notes">Notes</h2>
-<p>Vector provides features for:</p>
-<ul>
-<li>incremental creation</li>
-<li>build from values</li>
-<li>read-back by value</li>
-<li>reduction to scalar</li>
-<li>(tbd) element-wise addition</li>
-<li>(tbd) element-wise subtraction</li>
-<li>matrix-vector product</li>
-</ul>
-<p>Vector supports storage schemas:</p>
-<ul>
-<li>cpu dense</li>
-<li>acc dense (opencl)</li>
-</ul>
-<p>Vector typical usage:</p>
-<ul>
-<li>(1) Instantiate vector primitive</li>
-<li>(2) Build incrementally from yours data source</li>
-<li>(3) Vector usage in a sequence of math operations</li>
-<li>(4) Read-back vector data to python to analyse results</li>
-</ul>
-<p>Steps (2) and (4) requires internal format transformations and possible transfer of data
-from acc (GPU) side if acceleration was employed in computations. These steps may be very
-intensive, so you have to avoid them in critical parts of computations. If you need faster
-data reads, prefer usage of batched reads, where all content of storage read at once.</p>
 <h2 id="details">Details</h2>
-<p>Vector class support all spla C API vector functions.
+<p>Object class support all spla C API matrix functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
-<p>Vector internally manages optimal format of stored data. Use hints to
-force vector state and format changes.</p>
-<p>Vector optional uses dedicated/integrated GPU to speedup computations
-using one of built-in OpenCL or CUDA accelerators.</p></div>
+<p>Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
+of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Vector:
+<pre><code class="python">class Object:
     &#34;&#34;&#34;
-    Generalized statically-typed sparse storage-invariant vector primitive.
+    Base class for any spla library object.
 
     Attributes
     ----------
 
-    - type : `type` type of stored vector elements
-    - shape : `2-tuple` shape of the vector in form of two integers tuple (second dim is 1)
-
-    Notes
-    -----
-
-    Vector provides features for:
-
-    - incremental creation
-    - build from values
-    - read-back by value
-    - reduction to scalar
-    - (tbd) element-wise addition
-    - (tbd) element-wise subtraction
-    - matrix-vector product
-
-    Vector supports storage schemas:
-
-    - cpu dense
-    - acc dense (opencl)
-
-    Vector typical usage:
-
-    - (1) Instantiate vector primitive
-    - (2) Build incrementally from yours data source
-    - (3) Vector usage in a sequence of math operations
-    - (4) Read-back vector data to python to analyse results
-
-    Steps (2) and (4) requires internal format transformations and possible transfer of data
-    from acc (GPU) side if acceleration was employed in computations. These steps may be very
-    intensive, so you have to avoid them in critical parts of computations. If you need faster
-    data reads, prefer usage of batched reads, where all content of storage read at once.
+    - label : `str` user provided text label for object for debugging
+    - hnd : `ctypes.p_void` hnd to native object in spla C API
 
     Details
     -------
 
-    Vector class support all spla C API vector functions.
+    Object class support all spla C API matrix functions.
     It provides bind functionality as well as new functions/methods for better python user experience.
 
-    Vector internally manages optimal format of stored data. Use hints to
-    force vector state and format changes.
-
-    Vector optional uses dedicated/integrated GPU to speedup computations
-    using one of built-in OpenCL or CUDA accelerators.
+    Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
+    of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     &#34;&#34;&#34;
 
     def __init__(self):
@@ -246,7 +151,7 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="pyspla.vector.Vector" href="#pyspla.vector.Vector">Vector</a></code></h4>
+<h4><code><a title="pyspla.object.Object" href="#pyspla.object.Object">Object</a></code></h4>
 </li>
 </ul>
 </li>

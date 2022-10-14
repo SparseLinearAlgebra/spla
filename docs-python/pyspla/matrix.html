@@ -60,14 +60,13 @@ import ctypes
 
 class Matrix:
     &#34;&#34;&#34;
-    Generalized sparse storage-invariant matrix primitive.
+    Generalized statically-typed sparse storage-invariant matrix primitive.
 
     Attributes
     ----------
 
     - type : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
 
     Notes
     -----
@@ -76,28 +75,38 @@ class Matrix:
 
     - incremental creation
     - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
+    - read-back by value
+    - (tbd) transposition
+    - (tbd) triangular lower
+    - (tbd) triangular upper
+    - (tbd) element-wise addition
+    - (tbd) element-wise subtraction
     - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
+    - (tbd) matrix-matrix product
+    - (tbd) matrix-matrix kronecker product
 
-    Matrix best performance:
+    Matrix supports storage schemas:
 
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
+    - cpu lil (list of lists, for incremental build)
+    - cpu dok (dictionary of keys, for incremental build and per-value reed back)
+    - cpu coo (coordinate matrix format)
+    - cpu csr (compressed sparse rows)
+    - cpu csc (compressed sparse columns)
+    - acc coo (opencl)
+    - acc csr (opencl)
+    - acc csc (opencl)
 
     Matrix typical usage:
 
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
+    - (1) Instantiate matrix primitive
+    - (2) Build incrementally from yours data source
+    - (3) Matrix usage in a sequence of math operations
+    - (4) Read-back matrix data to python to analyse results
+
+    Steps (2) and (4) requires internal format transformations and possible transfer of data
+    from acc (GPU) side if acceleration was employed in computations. These steps may be very
+    intensive, so you have to avoid them in critical parts of computations. If you need faster
+    data reads, prefer usage of batched reads, where all content of storage read at once.
 
     Details
     -------
@@ -129,42 +138,49 @@ class Matrix:
 <span>class <span class="ident">Matrix</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generalized sparse storage-invariant matrix primitive.</p>
+<div class="desc"><p>Generalized statically-typed sparse storage-invariant matrix primitive.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
 <li>type : <code>type</code> type of stored matrix elements</li>
 <li>shape : <code>2-tuple</code> shape of the matrix in form of two integers tuple</li>
-<li>hnd: <code>p_void</code>
-handle to the native matrix object in spla C API</li>
 </ul>
 <h2 id="notes">Notes</h2>
 <p>Matrix provides features for:</p>
 <ul>
 <li>incremental creation</li>
 <li>build from values</li>
-<li>transposition</li>
-<li>triangular lower</li>
-<li>triangular upper</li>
-<li>element-wise addition</li>
-<li>element-wise subtraction</li>
+<li>read-back by value</li>
+<li>(tbd) transposition</li>
+<li>(tbd) triangular lower</li>
+<li>(tbd) triangular upper</li>
+<li>(tbd) element-wise addition</li>
+<li>(tbd) element-wise subtraction</li>
 <li>matrix-vector product</li>
-<li>matrix-matrix product</li>
-<li>matrix-matrix kronecker product</li>
+<li>(tbd) matrix-matrix product</li>
+<li>(tbd) matrix-matrix kronecker product</li>
 </ul>
-<p>Matrix best performance:</p>
+<p>Matrix supports storage schemas:</p>
 <ul>
-<li>Prepare matrix data</li>
-<li>Ensure matrix format</li>
-<li>Execute math operations</li>
-<li>Avoiding unnecessary data reads and mixing of incremental updates from python</li>
+<li>cpu lil (list of lists, for incremental build)</li>
+<li>cpu dok (dictionary of keys, for incremental build and per-value reed back)</li>
+<li>cpu coo (coordinate matrix format)</li>
+<li>cpu csr (compressed sparse rows)</li>
+<li>cpu csc (compressed sparse columns)</li>
+<li>acc coo (opencl)</li>
+<li>acc csr (opencl)</li>
+<li>acc csc (opencl)</li>
 </ul>
 <p>Matrix typical usage:</p>
 <ul>
-<li>Instantiate matrix primitive</li>
-<li>Build incrementally from yours data source</li>
-<li>Matrix usage in a sequence of math operations</li>
-<li>Read-back matrix data to python to analyse results</li>
+<li>(1) Instantiate matrix primitive</li>
+<li>(2) Build incrementally from yours data source</li>
+<li>(3) Matrix usage in a sequence of math operations</li>
+<li>(4) Read-back matrix data to python to analyse results</li>
 </ul>
+<p>Steps (2) and (4) requires internal format transformations and possible transfer of data
+from acc (GPU) side if acceleration was employed in computations. These steps may be very
+intensive, so you have to avoid them in critical parts of computations. If you need faster
+data reads, prefer usage of batched reads, where all content of storage read at once.</p>
 <h2 id="details">Details</h2>
 <p>Matrix class support all spla C API matrix functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
@@ -178,14 +194,13 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </summary>
 <pre><code class="python">class Matrix:
     &#34;&#34;&#34;
-    Generalized sparse storage-invariant matrix primitive.
+    Generalized statically-typed sparse storage-invariant matrix primitive.
 
     Attributes
     ----------
 
     - type : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
 
     Notes
     -----
@@ -194,28 +209,38 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 
     - incremental creation
     - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
+    - read-back by value
+    - (tbd) transposition
+    - (tbd) triangular lower
+    - (tbd) triangular upper
+    - (tbd) element-wise addition
+    - (tbd) element-wise subtraction
     - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
+    - (tbd) matrix-matrix product
+    - (tbd) matrix-matrix kronecker product
 
-    Matrix best performance:
+    Matrix supports storage schemas:
 
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
+    - cpu lil (list of lists, for incremental build)
+    - cpu dok (dictionary of keys, for incremental build and per-value reed back)
+    - cpu coo (coordinate matrix format)
+    - cpu csr (compressed sparse rows)
+    - cpu csc (compressed sparse columns)
+    - acc coo (opencl)
+    - acc csr (opencl)
+    - acc csc (opencl)
 
     Matrix typical usage:
 
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
+    - (1) Instantiate matrix primitive
+    - (2) Build incrementally from yours data source
+    - (3) Matrix usage in a sequence of math operations
+    - (4) Read-back matrix data to python to analyse results
+
+    Steps (2) and (4) requires internal format transformations and possible transfer of data
+    from acc (GPU) side if acceleration was employed in computations. These steps may be very
+    intensive, so you have to avoid them in critical parts of computations. If you need faster
+    data reads, prefer usage of batched reads, where all content of storage read at once.
 
     Details
     -------
