@@ -31,14 +31,13 @@ import ctypes
 
 class Matrix:
     """
-    Generalized sparse storage-invariant matrix primitive.
+    Generalized statically-typed sparse storage-invariant matrix primitive.
 
     Attributes
     ----------
 
     - type : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the matrix in form of two integers tuple
-    - hnd: `p_void`  handle to the native matrix object in spla C API
 
     Notes
     -----
@@ -47,28 +46,38 @@ class Matrix:
 
     - incremental creation
     - build from values
-    - transposition
-    - triangular lower
-    - triangular upper
-    - element-wise addition
-    - element-wise subtraction
+    - read-back by value
+    - (tbd) transposition
+    - (tbd) triangular lower
+    - (tbd) triangular upper
+    - (tbd) element-wise addition
+    - (tbd) element-wise subtraction
     - matrix-vector product
-    - matrix-matrix product
-    - matrix-matrix kronecker product
+    - (tbd) matrix-matrix product
+    - (tbd) matrix-matrix kronecker product
 
-    Matrix best performance:
+    Matrix supports storage schemas:
 
-    - Prepare matrix data
-    - Ensure matrix format
-    - Execute math operations
-    - Avoiding unnecessary data reads and mixing of incremental updates from python
+    - cpu lil (list of lists, for incremental build)
+    - cpu dok (dictionary of keys, for incremental build and per-value reed back)
+    - cpu coo (coordinate matrix format)
+    - cpu csr (compressed sparse rows)
+    - cpu csc (compressed sparse columns)
+    - acc coo (opencl)
+    - acc csr (opencl)
+    - acc csc (opencl)
 
     Matrix typical usage:
 
-    - Instantiate matrix primitive
-    - Build incrementally from yours data source
-    - Matrix usage in a sequence of math operations
-    - Read-back matrix data to python to analyse results
+    - (1) Instantiate matrix primitive
+    - (2) Build incrementally from yours data source
+    - (3) Matrix usage in a sequence of math operations
+    - (4) Read-back matrix data to python to analyse results
+
+    Steps (2) and (4) requires internal format transformations and possible transfer of data
+    from acc (GPU) side if acceleration was employed in computations. These steps may be very
+    intensive, so you have to avoid them in critical parts of computations. If you need faster
+    data reads, prefer usage of batched reads, where all content of storage read at once.
 
     Details
     -------

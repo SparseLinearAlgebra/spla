@@ -2,9 +2,9 @@
 Python wrapper for spla library
 ===============================
 
-Cross-platforms generalized sparse linear algebra framework for efficient mathematical
+Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
-accelerations to speed-up processing of large and complex data.
+acceleration to speed-up processing of large and complex data.
 Library core witten using C++ with optional C-compatible interface.
 
 Links:
@@ -26,7 +26,7 @@ Links:
 - **Bug report**:
   [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
 
-We are welcome for contribution. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
+We are welcome for contributions. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
 
 Installation
 ------------
@@ -48,8 +48,8 @@ Summary
 
 Generalized sparse liner algebra python package with GPUs accelerated
 computations. Library provides a set of linear algebra primitives such as
-`matrix` and `vector` for mathematical computations parametrized using
-on of built-in `type`. It allows to define sequence of execution tasks
+`matrix`, `vector` and `scalar` for mathematical computations parametrized using
+one of built-in `type`. It allows to define sequence of execution tasks
 using `schedule` API. Desired behavior of math operations can be customized
 using on of element operations in `op` module.
 
@@ -70,8 +70,9 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-- `Matrix` - Generalized sparse storage-invariant matrix primitive.
-- `Vector` - Generalized sparse storage-invariant vector primitive.
+- `Matrix` - Generalized statically-typed sparse storage-invariant matrix primitive.
+- `Vector` - Generalized statically-typed sparse storage-invariant vector primitive.
+- `Scalar` - Generalized statically-typed scalar primitive.
 
 Schedule
 --------
@@ -86,12 +87,35 @@ on some level, notification on some steps completion and etc.
 Types
 -----
 
-TBD.
+Library provides a set of standard and common built-in data types. Library value types
+differ a bit from a classic type definition. In spla library type is essentially is a
+storage characteristic, which defines count and layout of bytes per element. User
+can interpret stored data as her/she wants. Spla types set is limited due to the nature
+of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
+
+- `BYTE`  - 1-byte-sized signed integral value
+- `INT`   - 4-byte-sized signed integral value
+- `UINT`  - 4-byte-sized unsigned integral value
+- `FLOAT` - 4-byte-sized single-precision floating point value
 
 Op
 --
 
-TBD.
+Library provides a set of unary, binary and select ops for values data manipulation inside
+matrix and vector containers.
+
+- `PLUS`   - binary(x,y): r = x + y
+- `MINUS`  - binary(x,y): r = x - y
+- `MULT`   - binary(x,y): r = x * y
+- `DIV`    - binary(x,y): r = x / y
+- `FIRST`  - binary(x,y): r = x
+- `SECOND` - binary(x,y): r = y
+- `ONE`    - binary(x,y): r = 1
+- `MIN`    - binary(x,y): r = min(x, y)
+- `MAX`    - binary(x,y): r = max(x, y)
+- `BOR`    - binary(x,y): r = x | y, for integral only
+- `BAND`   - binary(x,y): r = x & y, for integral only
+- `BXOR`   - binary(x,y): r = x ^ y, for integral only
 
 Usage information
 -----------------
@@ -101,9 +125,8 @@ TBD.
 Details
 -------
 
-Spla C backend compiled library is automatically loaded and
-initialized on package import. State of the library managed
-by internal `bridge` module. All resources are unloaded automatically
+Spla C/C++ backend compiled library is automatically loaded and initialized on package import.
+State of the library managed by internal `bridge` module. All resources are unloaded automatically
 on package exit. Library state finalized automatically.
 """
 
@@ -133,16 +156,21 @@ SOFTWARE.
 
 from .library import *
 from .op import *
+from .object import *
 from .schedule import *
 from .type import *
 from .matrix import *
 from .vector import *
+from .scalar import *
 from .version import *
 from .bridge import *
 
 __version__ = VERSIONS[-1]
 
 __all__ = [
+    "Object",
     "Matrix",
+    "Vector",
+    "Scalar",
     "VERSIONS"
 ]
