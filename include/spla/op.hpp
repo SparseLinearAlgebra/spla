@@ -88,15 +88,12 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> PLUS_INT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_UINT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_FLOAT;
-
     SPLA_API extern ref_ptr<OpBinary> MINUS_INT;
     SPLA_API extern ref_ptr<OpBinary> MINUS_UINT;
     SPLA_API extern ref_ptr<OpBinary> MINUS_FLOAT;
-
     SPLA_API extern ref_ptr<OpBinary> MULT_INT;
     SPLA_API extern ref_ptr<OpBinary> MULT_UINT;
     SPLA_API extern ref_ptr<OpBinary> MULT_FLOAT;
-
     SPLA_API extern ref_ptr<OpBinary> DIV_INT;
     SPLA_API extern ref_ptr<OpBinary> DIV_UINT;
     SPLA_API extern ref_ptr<OpBinary> DIV_FLOAT;
@@ -104,7 +101,6 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> FIRST_INT;
     SPLA_API extern ref_ptr<OpBinary> FIRST_UINT;
     SPLA_API extern ref_ptr<OpBinary> FIRST_FLOAT;
-
     SPLA_API extern ref_ptr<OpBinary> SECOND_INT;
     SPLA_API extern ref_ptr<OpBinary> SECOND_UINT;
     SPLA_API extern ref_ptr<OpBinary> SECOND_FLOAT;
@@ -116,13 +112,16 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> MIN_INT;
     SPLA_API extern ref_ptr<OpBinary> MIN_UINT;
     SPLA_API extern ref_ptr<OpBinary> MIN_FLOAT;
-
     SPLA_API extern ref_ptr<OpBinary> MAX_INT;
     SPLA_API extern ref_ptr<OpBinary> MAX_UINT;
     SPLA_API extern ref_ptr<OpBinary> MAX_FLOAT;
 
-    SPLA_API extern ref_ptr<OpBinary> OR_INT;
-    SPLA_API extern ref_ptr<OpBinary> OR_UINT;
+    SPLA_API extern ref_ptr<OpBinary> BOR_INT;
+    SPLA_API extern ref_ptr<OpBinary> BOR_UINT;
+    SPLA_API extern ref_ptr<OpBinary> BAND_INT;
+    SPLA_API extern ref_ptr<OpBinary> BAND_UINT;
+    SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
+    SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
     SPLA_API extern ref_ptr<OpSelect> GZERO_INT;
     SPLA_API extern ref_ptr<OpSelect> GZERO_UINT;

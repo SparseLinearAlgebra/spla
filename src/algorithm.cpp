@@ -59,7 +59,7 @@ namespace spla {
             depth->set_int(current_level);
 
             spla::execute_immediate(make_sched_v_assign_masked(v, frontier_prev, depth, SECOND_INT));
-            spla::execute_immediate(make_sched_mxv_masked(frontier_new, v, A, frontier_prev, MULT_INT, OR_INT, zero, complement));
+            spla::execute_immediate(make_sched_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, zero, complement));
             spla::execute_immediate(make_sched_v_reduce(frontier_size, zero, frontier_new, PLUS_INT));
 
             int observed_vertices;

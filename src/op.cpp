@@ -34,15 +34,12 @@ namespace spla {
     ref_ptr<OpBinary> PLUS_INT;
     ref_ptr<OpBinary> PLUS_UINT;
     ref_ptr<OpBinary> PLUS_FLOAT;
-
     ref_ptr<OpBinary> MINUS_INT;
     ref_ptr<OpBinary> MINUS_UINT;
     ref_ptr<OpBinary> MINUS_FLOAT;
-
     ref_ptr<OpBinary> MULT_INT;
     ref_ptr<OpBinary> MULT_UINT;
     ref_ptr<OpBinary> MULT_FLOAT;
-
     ref_ptr<OpBinary> DIV_INT;
     ref_ptr<OpBinary> DIV_UINT;
     ref_ptr<OpBinary> DIV_FLOAT;
@@ -50,7 +47,6 @@ namespace spla {
     ref_ptr<OpBinary> FIRST_INT;
     ref_ptr<OpBinary> FIRST_UINT;
     ref_ptr<OpBinary> FIRST_FLOAT;
-
     ref_ptr<OpBinary> SECOND_INT;
     ref_ptr<OpBinary> SECOND_UINT;
     ref_ptr<OpBinary> SECOND_FLOAT;
@@ -62,13 +58,16 @@ namespace spla {
     ref_ptr<OpBinary> MIN_INT;
     ref_ptr<OpBinary> MIN_UINT;
     ref_ptr<OpBinary> MIN_FLOAT;
-
     ref_ptr<OpBinary> MAX_INT;
     ref_ptr<OpBinary> MAX_UINT;
     ref_ptr<OpBinary> MAX_FLOAT;
 
-    ref_ptr<OpBinary> OR_INT;
-    ref_ptr<OpBinary> OR_UINT;
+    ref_ptr<OpBinary> BOR_INT;
+    ref_ptr<OpBinary> BOR_UINT;
+    ref_ptr<OpBinary> BAND_INT;
+    ref_ptr<OpBinary> BAND_UINT;
+    ref_ptr<OpBinary> BXOR_INT;
+    ref_ptr<OpBinary> BXOR_UINT;
 
     ref_ptr<OpSelect> GZERO_INT;
     ref_ptr<OpSelect> GZERO_UINT;
@@ -81,15 +80,12 @@ namespace spla {
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });
         DECL_OP_BIN_S(PLUS_FLOAT, PLUS, T_FLOAT, { return a + b; });
-
         DECL_OP_BIN_S(MINUS_INT, MINUS, T_INT, { return a - b; });
         DECL_OP_BIN_S(MINUS_UINT, MINUS, T_UINT, { return a - b; });
         DECL_OP_BIN_S(MINUS_FLOAT, MINUS, T_FLOAT, { return a - b; });
-
         DECL_OP_BIN_S(MULT_INT, MULT, T_INT, { return a * b; });
         DECL_OP_BIN_S(MULT_UINT, MULT, T_UINT, { return a * b; });
         DECL_OP_BIN_S(MULT_FLOAT, MULT, T_FLOAT, { return a * b; });
-
         DECL_OP_BIN_S(DIV_INT, DIV, T_INT, { return a / b; });
         DECL_OP_BIN_S(DIV_UINT, DIV, T_UINT, { return a / b; });
         DECL_OP_BIN_S(DIV_FLOAT, DIV, T_FLOAT, { return a / b; });
@@ -97,7 +93,6 @@ namespace spla {
         DECL_OP_BIN_S(FIRST_INT, FIRST, T_INT, { return a; });
         DECL_OP_BIN_S(FIRST_UINT, FIRST, T_UINT, { return a; });
         DECL_OP_BIN_S(FIRST_FLOAT, FIRST, T_FLOAT, { return a; });
-
         DECL_OP_BIN_S(SECOND_INT, SECOND, T_INT, { return b; });
         DECL_OP_BIN_S(SECOND_UINT, SECOND, T_UINT, { return b; });
         DECL_OP_BIN_S(SECOND_FLOAT, SECOND, T_FLOAT, { return b; });
@@ -109,13 +104,16 @@ namespace spla {
         DECL_OP_BIN_S(MIN_INT, MIN, T_INT, { return min(a, b); });
         DECL_OP_BIN_S(MIN_UINT, MIN, T_UINT, { return min(a, b); });
         DECL_OP_BIN_S(MIN_FLOAT, MIN, T_FLOAT, { return min(a, b); });
-
         DECL_OP_BIN_S(MAX_INT, MAX, T_INT, { return max(a, b); });
         DECL_OP_BIN_S(MAX_UINT, MAX, T_UINT, { return max(a, b); });
         DECL_OP_BIN_S(MAX_FLOAT, MAX, T_FLOAT, { return max(a, b); });
 
-        DECL_OP_BIN_S(OR_INT, OR, T_INT, { return a | b; });
-        DECL_OP_BIN_S(OR_UINT, OR, T_UINT, { return a | b; });
+        DECL_OP_BIN_S(BOR_INT, BOR, T_INT, { return a | b; });
+        DECL_OP_BIN_S(BOR_UINT, BOR, T_UINT, { return a | b; });
+        DECL_OP_BIN_S(BAND_INT, BAND, T_INT, { return a & b; });
+        DECL_OP_BIN_S(BAND_UINT, BAND, T_UINT, { return a & b; });
+        DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
+        DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
     }
 
 }// namespace spla
