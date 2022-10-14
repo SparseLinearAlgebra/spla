@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['acccoo_863',['AccCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738',1,'spla']]],
-  ['acccsc_864',['AccCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d',1,'spla']]],
-  ['acccsr_865',['AccCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47',1,'spla']]]
+  ['acccoo_871',['AccCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738',1,'spla']]],
+  ['acccsc_872',['AccCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d',1,'spla']]],
+  ['acccsr_873',['AccCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47',1,'spla']]]
 ];
