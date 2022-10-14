@@ -80,8 +80,8 @@ managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
 <ul>
 <li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code> - Generalized statically-typed sparse storage-invariant matrix primitive.</li>
-<li><code>Vector</code> - Generalized statically-typed sparse storage-invariant vector primitive.</li>
-<li><code>Scalar</code> - Generalized statically-typed scalar primitive.</li>
+<li><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code> - Generalized statically-typed sparse storage-invariant vector primitive.</li>
+<li><code><a title="pyspla.Scalar" href="#pyspla.Scalar">Scalar</a></code> - Generalized statically-typed scalar primitive.</li>
 </ul>
 <h2 id="schedule">Schedule</h2>
 <p>Schedule allows to build sequence of tasks to be executed. It allows user
@@ -314,7 +314,10 @@ from .bridge import *
 __version__ = VERSIONS[-1]
 
 __all__ = [
+    &#34;Object&#34;,
     &#34;Matrix&#34;,
+    &#34;Vector&#34;,
+    &#34;Scalar&#34;,
     &#34;VERSIONS&#34;
 ]</code></pre>
 </details>
@@ -496,6 +499,234 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
         pass</code></pre>
 </details>
 </dd>
+<dt id="pyspla.Object"><code class="flex name class">
+<span>class <span class="ident">Object</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for any spla library object.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>label : <code>str</code> user provided text label for object for debugging</li>
+<li>hnd : <code>ctypes.p_void</code> hnd to native object in spla C API</li>
+</ul>
+<h2 id="details">Details</h2>
+<p>Object class support all spla C API matrix functions.
+It provides bind functionality as well as new functions/methods for better python user experience.</p>
+<p>Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
+of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Object:
+    &#34;&#34;&#34;
+    Base class for any spla library object.
+
+    Attributes
+    ----------
+
+    - label : `str` user provided text label for object for debugging
+    - hnd : `ctypes.p_void` hnd to native object in spla C API
+
+    Details
+    -------
+
+    Object class support all spla C API matrix functions.
+    It provides bind functionality as well as new functions/methods for better python user experience.
+
+    Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
+    of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        pass</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Scalar"><code class="flex name class">
+<span>class <span class="ident">Scalar</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generalized statically-typed scalar primitive.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>type : <code><a title="pyspla.type" href="type.html">pyspla.type</a></code> type of stored matrix elements</li>
+<li>shape : <code>2-tuple</code> shape of the scalar in form of two integers tuple (always 1x1)</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Scalar provides features for:</p>
+<ul>
+<li>pack native value</li>
+<li>unpack native value</li>
+<li>pass value as a param to some operation</li>
+<li>get scalar as an operation result</li>
+</ul>
+<p>Scalar typical usage:</p>
+<ul>
+<li>(1) Create scalar from python value</li>
+<li>(2) Pass scalar as argument to matrix/vector operation</li>
+<li>(3) Get scalar as a return value of some operation</li>
+<li>(4) Unpack value on python side</li>
+</ul>
+<p>Avoid intensive creation of scalar values. Prefer python native types.
+Use scalars only if you want to parametrise matrix/vector operations.</p>
+<h2 id="details">Details</h2>
+<p>Scalar class support all spla C API scalar functions.
+It provides bind functionality as well as new functions/methods for better python user experience.</p>
+<p>Scalar internally stored in the native format of the type it has.
+Meta-data additionally stored with each scalar value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Scalar:
+    &#34;&#34;&#34;
+    Generalized statically-typed scalar primitive.
+
+    Attributes
+    ----------
+
+    - type : `type` type of stored matrix elements
+    - shape : `2-tuple` shape of the scalar in form of two integers tuple (always 1x1)
+
+    Notes
+    -----
+
+    Scalar provides features for:
+
+    - pack native value
+    - unpack native value
+    - pass value as a param to some operation
+    - get scalar as an operation result
+
+    Scalar typical usage:
+
+    - (1) Create scalar from python value
+    - (2) Pass scalar as argument to matrix/vector operation
+    - (3) Get scalar as a return value of some operation
+    - (4) Unpack value on python side
+
+    Avoid intensive creation of scalar values. Prefer python native types.
+    Use scalars only if you want to parametrise matrix/vector operations.
+
+    Details
+    -------
+
+    Scalar class support all spla C API scalar functions.
+    It provides bind functionality as well as new functions/methods for better python user experience.
+
+    Scalar internally stored in the native format of the type it has.
+    Meta-data additionally stored with each scalar value.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        pass</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Vector"><code class="flex name class">
+<span>class <span class="ident">Vector</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generalized statically-typed sparse storage-invariant vector primitive.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>type : <code><a title="pyspla.type" href="type.html">pyspla.type</a></code> type of stored vector elements</li>
+<li>shape : <code>2-tuple</code> shape of the vector in form of two integers tuple (second dim is 1)</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Vector provides features for:</p>
+<ul>
+<li>incremental creation</li>
+<li>build from values</li>
+<li>read-back by value</li>
+<li>reduction to scalar</li>
+<li>(tbd) element-wise addition</li>
+<li>(tbd) element-wise subtraction</li>
+<li>matrix-vector product</li>
+</ul>
+<p>Vector supports storage schemas:</p>
+<ul>
+<li>cpu dense</li>
+<li>acc dense (opencl)</li>
+</ul>
+<p>Vector typical usage:</p>
+<ul>
+<li>(1) Instantiate vector primitive</li>
+<li>(2) Build incrementally from yours data source</li>
+<li>(3) Vector usage in a sequence of math operations</li>
+<li>(4) Read-back vector data to python to analyse results</li>
+</ul>
+<p>Steps (2) and (4) requires internal format transformations and possible transfer of data
+from acc (GPU) side if acceleration was employed in computations. These steps may be very
+intensive, so you have to avoid them in critical parts of computations. If you need faster
+data reads, prefer usage of batched reads, where all content of storage read at once.</p>
+<h2 id="details">Details</h2>
+<p>Vector class support all spla C API vector functions.
+It provides bind functionality as well as new functions/methods for better python user experience.</p>
+<p>Vector internally manages optimal format of stored data. Use hints to
+force vector state and format changes.</p>
+<p>Vector optional uses dedicated/integrated GPU to speedup computations
+using one of built-in OpenCL or CUDA accelerators.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Vector:
+    &#34;&#34;&#34;
+    Generalized statically-typed sparse storage-invariant vector primitive.
+
+    Attributes
+    ----------
+
+    - type : `type` type of stored vector elements
+    - shape : `2-tuple` shape of the vector in form of two integers tuple (second dim is 1)
+
+    Notes
+    -----
+
+    Vector provides features for:
+
+    - incremental creation
+    - build from values
+    - read-back by value
+    - reduction to scalar
+    - (tbd) element-wise addition
+    - (tbd) element-wise subtraction
+    - matrix-vector product
+
+    Vector supports storage schemas:
+
+    - cpu dense
+    - acc dense (opencl)
+
+    Vector typical usage:
+
+    - (1) Instantiate vector primitive
+    - (2) Build incrementally from yours data source
+    - (3) Vector usage in a sequence of math operations
+    - (4) Read-back vector data to python to analyse results
+
+    Steps (2) and (4) requires internal format transformations and possible transfer of data
+    from acc (GPU) side if acceleration was employed in computations. These steps may be very
+    intensive, so you have to avoid them in critical parts of computations. If you need faster
+    data reads, prefer usage of batched reads, where all content of storage read at once.
+
+    Details
+    -------
+
+    Vector class support all spla C API vector functions.
+    It provides bind functionality as well as new functions/methods for better python user experience.
+
+    Vector internally manages optimal format of stored data. Use hints to
+    force vector state and format changes.
+
+    Vector optional uses dedicated/integrated GPU to speedup computations
+    using one of built-in OpenCL or CUDA accelerators.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        pass</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 </article>
@@ -535,6 +766,15 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <ul>
 <li>
 <h4><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.Object" href="#pyspla.Object">Object</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.Scalar" href="#pyspla.Scalar">Scalar</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code></h4>
 </li>
 </ul>
 </li>
