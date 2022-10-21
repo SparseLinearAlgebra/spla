@@ -151,6 +151,7 @@ $ python ./run_tests.py --build-dir=build
 | `📄 build.py`          | Script to build library sources, tests and examples                |
 | `📄 bump_version.py`   | Script to increment or update version of package before release    |
 | `📄 run_tests.py`      | Script to run compiled library unit tests                          |
+| `📄 generate.py`       | Script to re-generate `.hpp` bindings from `.cl` source files      |
 
 ## License
 

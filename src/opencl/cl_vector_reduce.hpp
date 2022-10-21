@@ -97,7 +97,7 @@ namespace spla {
             code << "#define WARP_SIZE " << 32 << "\n";
             code << "#define TYPE " << get_ttype<T>()->get_cpp() << "\n";
             code << op_reduce->get_type_res()->get_cpp() << " OP1 " << op_reduce->get_source() << "\n";
-            code << auto_vector_reduce_cl;
+            code << source_vector_reduce;
             m_source = code.str();
 
             auto acc = get_acc_cl();
