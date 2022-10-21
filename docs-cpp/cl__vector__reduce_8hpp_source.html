@@ -168,7 +168,7 @@ $(function() {
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            code &lt;&lt; <span class="stringliteral">&quot;#define WARP_SIZE &quot;</span> &lt;&lt; 32 &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            code &lt;&lt; <span class="stringliteral">&quot;#define TYPE &quot;</span> &lt;&lt; get_ttype&lt;T&gt;()-&gt;get_cpp() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            code &lt;&lt; op_reduce-&gt;get_type_res()-&gt;get_cpp() &lt;&lt; <span class="stringliteral">&quot; OP1 &quot;</span> &lt;&lt; op_reduce-&gt;get_source() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            code &lt;&lt; auto_vector_reduce_cl;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            code &lt;&lt; <a class="code" href="auto__vector__reduce_8hpp.html#a1d466cbe5833212e13e0b8a230c62d4d">source_vector_reduce</a>;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            m_source = code.str();</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">auto</span> acc = get_acc_cl();</div>
@@ -196,6 +196,7 @@ $(function() {
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_REDUCE_HPP</span></div>
 <div class="ttc" id="aauto__vector__reduce_8hpp_html"><div class="ttname"><a href="auto__vector__reduce_8hpp.html">auto_vector_reduce.hpp</a></div></div>
+<div class="ttc" id="aauto__vector__reduce_8hpp_html_a1d466cbe5833212e13e0b8a230c62d4d"><div class="ttname"><a href="auto__vector__reduce_8hpp.html#a1d466cbe5833212e13e0b8a230c62d4d">source_vector_reduce</a></div><div class="ttdeci">const char source_vector_reduce[]</div><div class="ttdef"><b>Definition:</b> auto_vector_reduce.hpp:6</div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html">spla::Algo_v_reduce_cl</a></div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:47</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a4aabad0c88fcafc70cc256e5e26e9b8a"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">spla::Algo_v_reduce_cl::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:55</div></div>

@@ -1,18 +1,18 @@
 var searchData=
 [
-  ['incremental_183',['Incremental',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f',1,'spla']]],
-  ['init_184',['init',['../classspla_1_1ScheduleTask__mxv__masked.html#a5de4f6fddd463dc9264cfd9706bc0dc5',1,'spla::ScheduleTask_mxv_masked::init()'],['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
-  ['int_185',['INT',['../group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c',1,'spla']]],
-  ['internal_186',['Internal',['../group__internal.html',1,'']]],
-  ['invalidargument_187',['InvalidArgument',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b',1,'spla']]],
-  ['invalidate_188',['invalidate',['../group__internal.html#ga32e2363fa92980590354e5a0d4e49d41',1,'spla::TMatrix::invalidate()'],['../group__internal.html#ga4eb572e80b0c191aa87e35c142c1d2b3',1,'spla::TVector::invalidate()']]],
-  ['invalidstate_189',['InvalidState',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120',1,'spla']]],
-  ['io_2ecpp_190',['io.cpp',['../io_8cpp.html',1,'']]],
-  ['io_2ehpp_191',['io.hpp',['../io_8hpp.html',1,'']]],
-  ['is_192',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
-  ['is_5fnot_5fnull_193',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
-  ['is_5fnull_194',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
-  ['is_5funique_195',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]],
-  ['is_5fvalid_196',['is_valid',['../group__internal.html#ga95c7093a52c88911de743eba22fdeae9',1,'spla::TMatrix::is_valid()'],['../group__internal.html#ga02c6983b826b6ce42d4fc9419e212a3d',1,'spla::TVector::is_valid()']]],
-  ['is_5fvalid_5fversion_197',['is_valid_version',['../classspla_1_1TDecoration.html#a42b0a1d07c071e81e1c1e2e8cf11e908',1,'spla::TDecoration']]]
+  ['incremental_184',['Incremental',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f',1,'spla']]],
+  ['init_185',['init',['../classspla_1_1ScheduleTask__mxv__masked.html#a5de4f6fddd463dc9264cfd9706bc0dc5',1,'spla::ScheduleTask_mxv_masked::init()'],['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
+  ['int_186',['INT',['../group__spla.html#ga50adbf4f00a8835e1f227fb98780f01c',1,'spla']]],
+  ['internal_187',['Internal',['../group__internal.html',1,'']]],
+  ['invalidargument_188',['InvalidArgument',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b',1,'spla']]],
+  ['invalidate_189',['invalidate',['../group__internal.html#ga32e2363fa92980590354e5a0d4e49d41',1,'spla::TMatrix::invalidate()'],['../group__internal.html#ga4eb572e80b0c191aa87e35c142c1d2b3',1,'spla::TVector::invalidate()']]],
+  ['invalidstate_190',['InvalidState',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120',1,'spla']]],
+  ['io_2ecpp_191',['io.cpp',['../io_8cpp.html',1,'']]],
+  ['io_2ehpp_192',['io.hpp',['../io_8hpp.html',1,'']]],
+  ['is_193',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
+  ['is_5fnot_5fnull_194',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_195',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5funique_196',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]],
+  ['is_5fvalid_197',['is_valid',['../group__internal.html#ga95c7093a52c88911de743eba22fdeae9',1,'spla::TMatrix::is_valid()'],['../group__internal.html#ga02c6983b826b6ce42d4fc9419e212a3d',1,'spla::TVector::is_valid()']]],
+  ['is_5fvalid_5fversion_198',['is_valid_version',['../classspla_1_1TDecoration.html#a42b0a1d07c071e81e1c1e2e8cf11e908',1,'spla::TDecoration']]]
 ];
