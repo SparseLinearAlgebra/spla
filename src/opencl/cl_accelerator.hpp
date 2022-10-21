@@ -35,6 +35,10 @@
 #include <string>
 #include <vector>
 
+#ifdef SPLA_DEBUG
+    #define CL_HPP_ENABLE_EXCEPTIONS
+#endif
+
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
 #define CL_HPP_TARGET_OPENCL_VERSION  120
 #include <CL/opencl.hpp>
@@ -62,10 +66,10 @@ namespace spla {
         const std::string& get_description() override;
         const std::string& get_suffix() override;
 
-        cl::Platform& get_platform() { return m_platform; }
-        cl::Device&   get_device() { return m_device; }
-        cl::Context&  get_context() { return m_context; }
-
+        cl::Platform&                  get_platform() { return m_platform; }
+        cl::Device&                    get_device() { return m_device; }
+        cl::Context&                   get_context() { return m_context; }
+        cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
 
     private:
@@ -81,6 +85,15 @@ namespace spla {
 
         std::vector<cl::CommandQueue> m_queues;
     };
+
+    /**
+     * @brief Returns opencl library accelerator
+     *
+     * @return OpenCL accelerator if present
+     */
+    static inline CLAccelerator* get_acc_cl() {
+        return dynamic_cast<CLAccelerator*>(get_accelerator());
+    }
 
     /**
      * @}

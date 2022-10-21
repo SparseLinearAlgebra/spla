@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021-2022 JetBrains-Research                                     */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,38 +25,53 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tmatrix.hpp>
+#ifndef SPLA_CL_DENSE_VEC_HPP
+#define SPLA_CL_DENSE_VEC_HPP
+
+#include <opencl/cl_formats.hpp>
 
 namespace spla {
 
-    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
-        if (n_rows <= 0 || n_cols <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Matrix>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Matrix>{};
-        }
+    /**
+     * @addtogroup internal
+     * @{
+     */
 
-        get_library();
-
-        if (type == BYTE) {
-            return ref_ptr<Matrix>(new TMatrix<std::int8_t>(n_rows, n_cols));
-        }
-        if (type == INT) {
-            return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));
-        }
-        if (type == UINT) {
-            return ref_ptr<Matrix>(new TMatrix<std::uint32_t>(n_rows, n_cols));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Matrix>(new TMatrix<float>(n_rows, n_cols));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Matrix>();
+    template<typename T>
+    void cl_dense_vec_init(std::size_t    size,
+                           const T*       values,
+                           CLDenseVec<T>& storage) {
+        cl::Buffer buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, size * sizeof(T), (void*) values);
+        storage.Ax = std::move(buffer);
     }
 
+    template<typename T>
+    void cl_dense_vec_write(std::size_t       size,
+                            const T*          values,
+                            CLDenseVec<T>&    storage,
+                            cl::CommandQueue& queue,
+                            bool              blocking = true) {
+        queue.enqueueWriteBuffer(storage.Ax, blocking, 0, size * sizeof(T), values);
+    }
+
+    template<typename T>
+    void cl_dense_vec_read(std::size_t       size,
+                           T*                values,
+                           CLDenseVec<T>&    storage,
+                           cl::CommandQueue& queue,
+                           bool              blocking = true) {
+        std::size_t buffer_size = size * sizeof(T);
+        cl::Buffer  staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_USE_HOST_PTR, buffer_size, values);
+
+        queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
+
+        if (blocking) queue.finish();
+    }
+
+    /**
+     * @}
+     */
+
 }// namespace spla
+
+#endif//SPLA_CL_DENSE_VEC_HPP

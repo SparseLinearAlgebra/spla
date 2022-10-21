@@ -43,21 +43,23 @@ namespace spla {
         if (g_acc) {
             std::string key_acc = key + g_acc->get_suffix();
             algo                = g_reg->find(key_acc);
+        }
 
-            if (algo) {
+        if (!algo) {
+            std::string key_cpu = key + CPU_SUFFIX;
+            algo                = g_reg->find(key_cpu);
+        }
+
+        if (algo) {
+            try {
                 return algo->execute(ctx);
+            } catch (const std::exception& ex) {
+                LOG_MSG(Status::Error, "not handled exception thrown: " << ex.what());
+                return Status::Error;
             }
         }
 
-        std::string key_cpu = key + CPU_SUFFIX;
-        algo                = g_reg->find(key_cpu);
-
-        if (algo) {
-            return algo->execute(ctx);
-        }
-
         LOG_MSG(Status::NotImplemented, "failed to find suitable algo for key " << key);
-
         return Status::NotImplemented;
     }
 

@@ -125,15 +125,31 @@ namespace spla {
         AccCsr = 6,
         /** Matrix acceleration structured csc format */
         AccCsc = 7,
+        /** [EXTENSION] Matrix opencl acceleration structured coo format */
+        CLCoo = 8,
+        /** [EXTENSION] Matrix opencl acceleration structured csr format */
+        CLCsr = 9,
+        /** [EXTENSION] Matrix opencl acceleration structured csc format */
+        CLCsc = 10,
         /** Total number of supported matrix formats */
-        CountMatrix = 8,
+        CountMatrix = 11,
+
+        //////////////////////////////////////////////////
 
         /** Vector dense array of values representation */
         CpuDenseVec = 0,
         /** Vector list of values for sparse data */
         CpuCooVec = 1,
+        /** Vector acceleration structured dense format */
+        AccDenseVec = 2,
+        /** Vector acceleration structured coo format */
+        AccCooVec = 3,
+        /** [EXTENSION] Vector opencl acceleration structured dense format */
+        CLDenseVec = 4,
+        /** [EXTENSION] Vector opencl acceleration structured coo format */
+        CLCooVec = 5,
         /** Total number of supported vector formats */
-        CountVector = 2
+        CountVector = 6
     };
 
     /**

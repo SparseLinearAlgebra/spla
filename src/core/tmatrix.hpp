@@ -86,6 +86,9 @@ namespace spla {
         template<typename Decorator>
         Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
+        bool is_valid();
+        void validate();
+        void invalidate();
         void update_version();
         void ensure_lil_format();
         void ensure_dok_format();
@@ -94,6 +97,7 @@ namespace spla {
         uint      m_version    = 1;
         uint      m_n_rows     = 0;
         uint      m_n_cols     = 0;
+        bool      m_valid      = false;
         StateHint m_state_hint = StateHint::Default;
 
         std::vector<ref_ptr<TDecoration<T>>> m_decorations;
@@ -255,8 +259,24 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::clear() {
+        invalidate();
         update_version();
         return Status::Ok;
+    }
+
+    template<typename T>
+    bool TMatrix<T>::is_valid() {
+        return m_valid;
+    }
+
+    template<typename T>
+    void TMatrix<T>::validate() {
+        m_valid = true;
+    }
+
+    template<typename T>
+    void TMatrix<T>::invalidate() {
+        m_valid = false;
     }
 
     template<typename T>
@@ -269,10 +289,17 @@ namespace spla {
         auto p_lil = get_dec_or_create_p<CpuLil<T>>();
 
         if (p_lil->get_version() < m_version) {
-            update_version();
-            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+            if (is_valid()) {
+                // todo: sync data
+                LOG_MSG(Status::Error, "data invalidation, previous content lost");
+                update_version();// todo: keep
+                cpu_lil_resize(m_n_rows, *p_lil);
+            } else {
+                validate();
+                update_version();
+                cpu_lil_resize(m_n_rows, *p_lil);
+            }
 
-            cpu_lil_resize(m_n_rows, *p_lil);
             p_lil->update_version(m_version);
         }
     }
@@ -282,13 +309,15 @@ namespace spla {
         auto p_dok = get_dec_or_create_p<CpuDok<T>>();
 
         if (p_dok->get_version() < m_version) {
-            auto p_lil = get_dec_p<CpuLil<T>>();
 
-            assert(!p_lil || p_lil->get_version() == m_version && "only lil read supported");
+            if (is_valid()) {
+                auto p_lil = get_dec_p<CpuLil<T>>();
+                assert(!p_lil || p_lil->get_version() == m_version && "only lil read supported");
 
-            if (p_lil && p_lil->get_version() == m_version) {
-                LOG_MSG(Status::Ok, "copy data from lil, preserve content");
-                cpu_lil_to_dok(m_n_rows, *p_lil, *p_dok);
+                if (p_lil && p_lil->get_version() == m_version) {
+                    LOG_MSG(Status::Ok, "copy data from lil, preserve content");
+                    cpu_lil_to_dok(m_n_rows, *p_lil, *p_dok);
+                }
             }
 
             p_dok->update_version(m_version);

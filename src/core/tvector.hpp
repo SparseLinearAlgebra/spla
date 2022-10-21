@@ -36,9 +36,16 @@
 #include <core/ttype.hpp>
 
 #include <sequential/cpu_dense_vec.hpp>
+#include <sequential/cpu_formats.hpp>
 
 #include <memory>
 #include <vector>
+
+#if defined(SPLA_BUILD_OPENCL)
+    #include <opencl/cl_accelerator.hpp>
+    #include <opencl/cl_dense_vec.hpp>
+    #include <opencl/cl_formats.hpp>
+#endif
 
 namespace spla {
 
@@ -83,13 +90,21 @@ namespace spla {
         template<typename Decorator>
         Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
+        bool is_valid();
+        void validate();
+        void invalidate();
         void update_version();
         void update_dense();
         void ensure_dense_format();
+#if defined(SPLA_BUILD_OPENCL)
+        void cl_update_dense();
+        void cl_ensure_dense();
+#endif
 
     private:
         uint      m_version    = 1;
         uint      m_n_rows     = 0;
+        bool      m_valid      = false;
         StateHint m_state_hint = StateHint::Default;
 
         std::vector<ref_ptr<TDecoration<T>>> m_decorations;
@@ -141,6 +156,14 @@ namespace spla {
         if (format == Format::CpuCooVec) {
             return m_decorations[index] = make_ref<CpuCooVec<T>>();
         }
+#if defined(SPLA_BUILD_OPENCL)
+        if (format == Format::CLDenseVec) {
+            return m_decorations[index] = make_ref<CLDenseVec<T>>();
+        }
+        if (format == Format::CLCooVec) {
+            return m_decorations[index] = make_ref<CLCooVec<T>>();
+        }
+#endif
 
         LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
         return m_decorations.back();
@@ -204,9 +227,24 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::clear() {
+        invalidate();
         update_version();
-
         return Status::Ok;
+    }
+
+    template<typename T>
+    bool TVector<T>::is_valid() {
+        return m_valid;
+    }
+
+    template<typename T>
+    void TVector<T>::validate() {
+        m_valid = true;
+    }
+
+    template<typename T>
+    void TVector<T>::invalidate() {
+        m_valid = false;
     }
 
     template<typename T>
@@ -217,7 +255,6 @@ namespace spla {
     template<typename T>
     void TVector<T>::update_dense() {
         auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
-
         update_version();
         p_vec->update_version(m_version);
     }
@@ -227,13 +264,45 @@ namespace spla {
         auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
 
         if (p_vec->get_version() < m_version) {
-            update_version();// todo: do not update version if all data is invalid
-            LOG_MSG(Status::Error, "data invalidation, previous content lost");
+            if (is_valid()) {
+#if defined(SPLA_BUILD_OPENCL)
+                auto p_cl_acc       = get_acc_cl();
+                auto p_cl_dense_vec = get_dec_p<CLDenseVec<T>>();
+                if (p_cl_dense_vec && p_cl_dense_vec->is_valid_version(m_version)) {
+                    cpu_dense_vec_resize(m_n_rows, *p_vec);
+                    cl_dense_vec_read(m_n_rows, p_vec->Ax.data(), *p_cl_dense_vec, p_cl_acc->get_queue_default());
+                }
+#endif
+            } else {
+                validate();
+                update_version();
+                cpu_dense_vec_resize(m_n_rows, *p_vec);
+            }
 
-            cpu_dense_vec_resize(m_n_rows, *p_vec);
             p_vec->update_version(m_version);
         }
     }
+
+#if defined(SPLA_BUILD_OPENCL)
+    template<typename T>
+    void TVector<T>::cl_update_dense() {
+        auto p_vec = get_dec_or_create_p<CLDenseVec<T>>();
+        update_version();
+        p_vec->update_version(m_version);
+    }
+
+    template<typename T>
+    void TVector<T>::cl_ensure_dense() {
+        auto p_cpu_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+        auto p_cl_vec  = get_dec_or_create_p<CLDenseVec<T>>();
+
+        if (p_cl_vec->get_version() < m_version) {
+            ensure_dense_format();
+            cl_dense_vec_init(m_n_rows, p_cpu_vec->Ax.data(), *p_cl_vec);// todo: if allocated copy using staging buffer
+            p_cl_vec->update_version(m_version);
+        }
+    }
+#endif
 
     /**
      * @}

@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021-2022 JetBrains-Research                                     */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,38 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tmatrix.hpp>
+#ifndef SPLA_CL_ALGO_REGISTRY_HPP
+#define SPLA_CL_ALGO_REGISTRY_HPP
 
 namespace spla {
 
-    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
-        if (n_rows <= 0 || n_cols <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Matrix>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Matrix>{};
-        }
+    /**
+     * @addtogroup internal
+     * @{
+     */
 
-        get_library();
+    /**
+     * @brief Register all opencl-specific algorithms
+     * @param g_registry Where to register algorithms
+     */
+    void register_algo_cl(class Registry* g_registry);
 
-        if (type == BYTE) {
-            return ref_ptr<Matrix>(new TMatrix<std::int8_t>(n_rows, n_cols));
-        }
-        if (type == INT) {
-            return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));
-        }
-        if (type == UINT) {
-            return ref_ptr<Matrix>(new TMatrix<std::uint32_t>(n_rows, n_cols));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Matrix>(new TMatrix<float>(n_rows, n_cols));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Matrix>();
-    }
+    /**
+     * @}
+     */
 
 }// namespace spla
+
+#endif//SPLA_CL_ALGO_REGISTRY_HPP

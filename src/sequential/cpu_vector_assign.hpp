@@ -30,6 +30,7 @@
 
 #include <schedule/schedule_tasks.hpp>
 
+#include <core/dispatcher.hpp>
 #include <core/registry.hpp>
 #include <core/top.hpp>
 #include <core/tscalar.hpp>

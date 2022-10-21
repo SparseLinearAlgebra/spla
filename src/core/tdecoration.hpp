@@ -61,6 +61,15 @@ namespace spla {
          */
         virtual void update_version(uint new_version) { version = new_version; }
 
+        /**
+         * @brief Checks if version of this decorator is valid
+         *
+         * @param current_version Version to check
+         *
+         * @return True if valid
+         */
+        virtual bool is_valid_version(uint current_version) { return version == current_version; }
+
     public:
         uint values  = 0;
         uint version = 0;

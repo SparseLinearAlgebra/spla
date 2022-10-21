@@ -40,6 +40,8 @@ namespace spla {
             return ref_ptr<Vector>{};
         }
 
+        get_library();
+
         if (type == BYTE) {
             return ref_ptr<Vector>(new TVector<std::int8_t>(n_rows));
         }

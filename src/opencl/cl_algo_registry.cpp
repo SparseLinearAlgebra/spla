@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021-2022 JetBrains-Research                                     */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,38 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tmatrix.hpp>
+#include "cl_algo_registry.hpp"
+
+#include <core/registry.hpp>
+#include <core/top.hpp>
+
+#include <opencl/cl_vector_reduce.hpp>
 
 namespace spla {
 
-    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
-        if (n_rows <= 0 || n_cols <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Matrix>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Matrix>{};
-        }
-
-        get_library();
-
-        if (type == BYTE) {
-            return ref_ptr<Matrix>(new TMatrix<std::int8_t>(n_rows, n_cols));
-        }
-        if (type == INT) {
-            return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));
-        }
-        if (type == UINT) {
-            return ref_ptr<Matrix>(new TMatrix<std::uint32_t>(n_rows, n_cols));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Matrix>(new TMatrix<float>(n_rows, n_cols));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Matrix>();
+    void register_algo_cl(class Registry* g_registry) {
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
     }
 
 }// namespace spla

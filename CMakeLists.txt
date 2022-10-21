@@ -212,7 +212,12 @@ set(SRC_OPENCL)
 if (SPLA_BUILD_OPENCL)
     set(SRC_OPENCL
             src/opencl/cl_accelerator.cpp
-            src/opencl/cl_accelerator.hpp)
+            src/opencl/cl_accelerator.hpp
+            src/opencl/cl_algo_registry.cpp
+            src/opencl/cl_algo_registry.hpp
+            src/opencl/cl_dense_vec.hpp
+            src/opencl/cl_formats.hpp
+            src/opencl/cl_vector_reduce.hpp)
 endif ()
 
 add_library(spla SHARED

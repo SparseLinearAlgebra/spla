@@ -36,6 +36,9 @@ namespace spla {
         if (set_device(0) != Status::Ok)
             return Status::DeviceNotFound;
 
+        if (set_queues_count(1) != Status::Ok)
+            return Status::Error;
+
         build_description();
 
         // Output handy info
@@ -83,6 +86,16 @@ namespace spla {
         return Status::Ok;
     }
     Status CLAccelerator::set_queues_count(int count) {
+        m_context = cl::Context(m_device);
+        m_queues.clear();
+        m_queues.reserve(count);
+
+        for (int i = 0; i < count; i++) {
+            cl::CommandQueue queue(m_context);
+            m_queues.emplace_back(std::move(queue));
+        }
+
+        LOG_MSG(Status::Ok, "configure " << count << " queues for computations");
         return Status::Ok;
     }
     const std::string& CLAccelerator::get_name() {

@@ -39,6 +39,7 @@
 
 #if defined(SPLA_BUILD_OPENCL)
     #include <opencl/cl_accelerator.hpp>
+    #include <opencl/cl_algo_registry.hpp>
 #endif
 
 namespace spla {
@@ -57,7 +58,8 @@ namespace spla {
         register_algo_cpu(m_registry.get());
 
 #if defined(SPLA_BUILD_OPENCL)
-        // todo: Register cl algo version
+        // Register cl algo version
+        register_algo_cl(m_registry.get());
 #endif
     }
 
