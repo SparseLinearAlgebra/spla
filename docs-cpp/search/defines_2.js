@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['gpu_5fcl_5fsuffix_977',['GPU_CL_SUFFIX',['../registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a',1,'registry.hpp']]],
-  ['gpu_5fsuffix_978',['GPU_SUFFIX',['../registry_8hpp.html#a63df1a34eb20901e57847686049ab28e',1,'registry.hpp']]]
+  ['exec_5for_5fmake_5ftask_976',['EXEC_OR_MAKE_TASK',['../schedule_8cpp.html#af2f5e94d238a349757d51030f7a2fddf',1,'schedule.cpp']]]
 ];
