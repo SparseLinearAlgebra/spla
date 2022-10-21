@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['init_659',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
-  ['is_660',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
-  ['is_5fnot_5fnull_661',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
-  ['is_5fnull_662',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
-  ['is_5funique_663',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]]
+  ['init_702',['init',['../classspla_1_1Accelerator.html#a9c019db3734d86adeeb85918b86146d0',1,'spla::Accelerator::init()'],['../classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11',1,'spla::CLAccelerator::init()']]],
+  ['invalidate_703',['invalidate',['../group__internal.html#ga32e2363fa92980590354e5a0d4e49d41',1,'spla::TMatrix::invalidate()'],['../group__internal.html#ga4eb572e80b0c191aa87e35c142c1d2b3',1,'spla::TVector::invalidate()']]],
+  ['is_704',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
+  ['is_5fnot_5fnull_705',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_706',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5funique_707',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]],
+  ['is_5fvalid_708',['is_valid',['../group__internal.html#ga95c7093a52c88911de743eba22fdeae9',1,'spla::TMatrix::is_valid()'],['../group__internal.html#ga02c6983b826b6ce42d4fc9419e212a3d',1,'spla::TVector::is_valid()']]],
+  ['is_5fvalid_5fversion_709',['is_valid_version',['../classspla_1_1TDecoration.html#a42b0a1d07c071e81e1c1e2e8cf11e908',1,'spla::TDecoration']]]
 ];

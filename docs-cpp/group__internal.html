@@ -108,6 +108,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html">spla::CLAccelerator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-device OpenCL acceleration implementation.  <a href="classspla_1_1CLAccelerator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLDenseVec.html">spla::CLDenseVec&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL one-dim array for dense vector representation.  <a href="classspla_1_1CLDenseVec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLCooVec.html">spla::CLCooVec&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL list-of-coordinates sparse vector representation.  <a href="classspla_1_1CLCooVec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleSingleThread.html">spla::ScheduleSingleThread</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-thread dispatch sequential execution schedule.  <a href="classspla_1_1ScheduleSingleThread.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +161,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TType.html">TType</a>&lt; std::int8_t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga96368cd7049fe7eb192f9f45967a1da2">spla::get_ttype</a> ()</td></tr>
 <tr class="separator:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">spla::register_algo_cl</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
+<tr class="memdesc:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all opencl-specific algorithms.  <a href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">More...</a><br /></td></tr>
+<tr class="separator:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaebb85b9d1aa094e2f5de8553f0fbabc2">spla::cl_dense_vec_init</a> (std::size_t size, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa7f1765dcf67a0faf384adfdf97bbcf8">spla::cl_dense_vec_write</a> (std::size_t size, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
+<tr class="separator:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga107d754a89e6d1428d1644d434ee59a7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga107d754a89e6d1428d1644d434ee59a7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga107d754a89e6d1428d1644d434ee59a7">spla::cl_dense_vec_read</a> (std::size_t size, T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
+<tr class="separator:ga107d754a89e6d1428d1644d434ee59a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">spla::register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +243,12 @@ Functions</h2></td></tr>
 <tr class="separator:ga93a4a55724e8617e4f38bf06212ffc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7da1865b613a0987a69404e6ce0a31f7">spla::TMatrix&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95c7093a52c88911de743eba22fdeae9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga95c7093a52c88911de743eba22fdeae9">spla::TMatrix&lt; T &gt;::is_valid</a> ()</td></tr>
+<tr class="separator:ga95c7093a52c88911de743eba22fdeae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab07d28231458cdb4e1e7ff6a23319da7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab07d28231458cdb4e1e7ff6a23319da7">spla::TMatrix&lt; T &gt;::validate</a> ()</td></tr>
+<tr class="separator:gab07d28231458cdb4e1e7ff6a23319da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32e2363fa92980590354e5a0d4e49d41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga32e2363fa92980590354e5a0d4e49d41">spla::TMatrix&lt; T &gt;::invalidate</a> ()</td></tr>
+<tr class="separator:ga32e2363fa92980590354e5a0d4e49d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae784e3ed69cd0d6e0f7cc3213063bc31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae784e3ed69cd0d6e0f7cc3213063bc31">spla::TMatrix&lt; T &gt;::update_version</a> ()</td></tr>
 <tr class="separator:gae784e3ed69cd0d6e0f7cc3213063bc31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9193100fdca1a3a7e25cc332859f9b99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga9193100fdca1a3a7e25cc332859f9b99">spla::TMatrix&lt; T &gt;::ensure_lil_format</a> ()</td></tr>
@@ -321,6 +345,12 @@ Functions</h2></td></tr>
 <tr class="separator:ga4f3725ea5166a6019660c47d0b8d4dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadebaf3fc07d3814e3abd3442a12f6ec6">spla::TVector&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02c6983b826b6ce42d4fc9419e212a3d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga02c6983b826b6ce42d4fc9419e212a3d">spla::TVector&lt; T &gt;::is_valid</a> ()</td></tr>
+<tr class="separator:ga02c6983b826b6ce42d4fc9419e212a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf30e43ca0a8ea17e56d5d55663aa31c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf30e43ca0a8ea17e56d5d55663aa31c9">spla::TVector&lt; T &gt;::validate</a> ()</td></tr>
+<tr class="separator:gaf30e43ca0a8ea17e56d5d55663aa31c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4eb572e80b0c191aa87e35c142c1d2b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4eb572e80b0c191aa87e35c142c1d2b3">spla::TVector&lt; T &gt;::invalidate</a> ()</td></tr>
+<tr class="separator:ga4eb572e80b0c191aa87e35c142c1d2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga251222d3a7b5d30b63517f33e095b8ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga251222d3a7b5d30b63517f33e095b8ab">spla::TVector&lt; T &gt;::update_version</a> ()</td></tr>
 <tr class="separator:ga251222d3a7b5d30b63517f33e095b8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae631c31a49e08c307752ea8b82d9d3f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae631c31a49e08c307752ea8b82d9d3f3">spla::TVector&lt; T &gt;::update_dense</a> ()</td></tr>
@@ -330,6 +360,138 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gaebb85b9d1aa094e2f5de8553f0fbabc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaebb85b9d1aa094e2f5de8553f0fbabc2">&#9670;&nbsp;</a></span>cl_dense_vec_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cl_dense_vec_init </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga107d754a89e6d1428d1644d434ee59a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga107d754a89e6d1428d1644d434ee59a7">&#9670;&nbsp;</a></span>cl_dense_vec_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cl_dense_vec_read </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blocking</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa7f1765dcf67a0faf384adfdf97bbcf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7f1765dcf67a0faf384adfdf97bbcf8">&#9670;&nbsp;</a></span>cl_dense_vec_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cl_dense_vec_write </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blocking</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ga7da1865b613a0987a69404e6ce0a31f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7da1865b613a0987a69404e6ce0a31f7">&#9670;&nbsp;</a></span>clear() <span class="overload">[1/2]</span></h2>
 
@@ -1973,6 +2135,70 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ga32e2363fa92980590354e5a0d4e49d41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga32e2363fa92980590354e5a0d4e49d41">&#9670;&nbsp;</a></span>invalidate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::invalidate</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4eb572e80b0c191aa87e35c142c1d2b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4eb572e80b0c191aa87e35c142c1d2b3">&#9670;&nbsp;</a></span>invalidate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::invalidate</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga95c7093a52c88911de743eba22fdeae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga95c7093a52c88911de743eba22fdeae9">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::is_valid</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga02c6983b826b6ce42d4fc9419e212a3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga02c6983b826b6ce42d4fc9419e212a3d">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::is_valid</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="gae0014fa21689ed7c89214674bf3a844f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae0014fa21689ed7c89214674bf3a844f">&#9670;&nbsp;</a></span>make_type()</h2>
 
@@ -2026,6 +2252,32 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="gabb6fb799e1d7c70cdfc8e542369c0570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabb6fb799e1d7c70cdfc8e542369c0570">&#9670;&nbsp;</a></span>register_algo_cl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::register_algo_cl </td>
+          <td>(</td>
+          <td class="paramtype">class <a class="el" href="classspla_1_1Registry.html">Registry</a> *&#160;</td>
+          <td class="paramname"><em>g_registry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register all opencl-specific algorithms. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g_registry</td><td>Where to register algorithms </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2786,6 +3038,38 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::update_version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab07d28231458cdb4e1e7ff6a23319da7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab07d28231458cdb4e1e7ff6a23319da7">&#9670;&nbsp;</a></span>validate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaf30e43ca0a8ea17e56d5d55663aa31c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf30e43ca0a8ea17e56d5d55663aa31c9">&#9670;&nbsp;</a></span>validate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate</td>
         </tr>
       </table>
 </div><div class="memdoc">

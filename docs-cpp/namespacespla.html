@@ -162,6 +162,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-device OpenCL acceleration implementation.  <a href="classspla_1_1CLAccelerator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL one-dim array for dense vector representation.  <a href="classspla_1_1CLDenseVec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL list-of-coordinates sparse vector representation.  <a href="classspla_1_1CLCooVec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__v__reduce__cl.html">Algo_v_reduce_cl</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleSingleThread.html">ScheduleSingleThread</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-thread dispatch sequential execution schedule.  <a href="classspla_1_1ScheduleSingleThread.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,10 +272,19 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47">AccCsr</a> = 6
 , <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d">AccCsc</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f">CountMatrix</a> = 8
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">CpuDenseVec</a> = 0
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e">CLCoo</a> = 8
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">CLCsr</a> = 9
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e">CLCsc</a> = 10
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f">CountMatrix</a> = 11
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">CpuDenseVec</a> = 0
 , <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">CpuCooVec</a> = 1
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e">CountVector</a> = 2
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ad2d223e6b9e395dece529e2a329c1d33">AccDenseVec</a> = 2
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa273506ffa38aee155d32ba2a5968bf9">AccCooVec</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">CLDenseVec</a> = 4
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068">CLCooVec</a> = 5
+, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e">CountVector</a> = 6
 <br />
  }</td></tr>
 <tr class="separator:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,6 +346,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TType.html">TType</a>&lt; std::int8_t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga96368cd7049fe7eb192f9f45967a1da2">get_ttype</a> ()</td></tr>
 <tr class="separator:ga96368cd7049fe7eb192f9f45967a1da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">register_algo_cl</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
+<tr class="memdesc:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all opencl-specific algorithms.  <a href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">More...</a><br /></td></tr>
+<tr class="separator:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaebb85b9d1aa094e2f5de8553f0fbabc2">cl_dense_vec_init</a> (std::size_t size, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa7f1765dcf67a0faf384adfdf97bbcf8">cl_dense_vec_write</a> (std::size_t size, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
+<tr class="separator:gaa7f1765dcf67a0faf384adfdf97bbcf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga107d754a89e6d1428d1644d434ee59a7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga107d754a89e6d1428d1644d434ee59a7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga107d754a89e6d1428d1644d434ee59a7">cl_dense_vec_read</a> (std::size_t size, T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
+<tr class="separator:ga107d754a89e6d1428d1644d434ee59a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>

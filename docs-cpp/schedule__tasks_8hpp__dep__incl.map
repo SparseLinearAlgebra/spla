@@ -1,10 +1,12 @@
 <map id="src/schedule/schedule_tasks.hpp" name="src/schedule/schedule_tasks.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="393,5,545,47"/>
-<area shape="rect" id="node2" href="$schedule__tasks_8cpp.html" title=" " alt="" coords="5,95,157,136"/>
-<area shape="rect" id="node3" href="$schedule_8cpp.html" title=" " alt="" coords="181,102,301,129"/>
-<area shape="rect" id="node4" href="$cpu__algo__callback_8hpp.html" title=" " alt="" coords="326,95,458,136"/>
-<area shape="rect" id="node6" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="483,95,611,136"/>
-<area shape="rect" id="node7" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="635,95,770,136"/>
-<area shape="rect" id="node8" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="794,95,929,136"/>
-<area shape="rect" id="node5" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="560,184,688,225"/>
+<area shape="rect" id="node1" title=" " alt="" coords="479,5,631,47"/>
+<area shape="rect" id="node2" href="$cl__vector__reduce_8hpp.html" title=" " alt="" coords="5,95,144,136"/>
+<area shape="rect" id="node4" href="$schedule__tasks_8cpp.html" title=" " alt="" coords="168,95,320,136"/>
+<area shape="rect" id="node5" href="$schedule_8cpp.html" title=" " alt="" coords="344,102,464,129"/>
+<area shape="rect" id="node6" href="$cpu__algo__callback_8hpp.html" title=" " alt="" coords="489,95,621,136"/>
+<area shape="rect" id="node8" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="645,95,773,136"/>
+<area shape="rect" id="node9" href="$cpu__vector__assign_8hpp.html" title=" " alt="" coords="798,95,933,136"/>
+<area shape="rect" id="node10" href="$cpu__vector__reduce_8hpp.html" title=" " alt="" coords="957,95,1091,136"/>
+<area shape="rect" id="node3" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="11,184,138,225"/>
+<area shape="rect" id="node7" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="723,184,851,225"/>
 </map>
