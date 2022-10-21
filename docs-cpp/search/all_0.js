@@ -14,7 +14,7 @@ var searchData=
   ['ai_11',['Ai',['../classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca',1,'spla::CLCooVec::Ai()'],['../classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d',1,'spla::CpuCooVec::Ai()'],['../classspla_1_1CpuCoo.html#ab8d3db4e8d4ac879839acd9eb5d34a7e',1,'spla::CpuCoo::Ai()']]],
   ['aj_12',['Aj',['../classspla_1_1CpuCsr.html#a11f7ced9670a75f102eb3209021f385a',1,'spla::CpuCsr::Aj()'],['../classspla_1_1CpuCoo.html#a073f8e95e813b61e66e40a289ca560f2',1,'spla::CpuCoo::Aj()']]],
   ['algo_5fcallback_13',['Algo_callback',['../classspla_1_1Algo__callback.html',1,'spla']]],
-  ['algo_5fmxv_5fmasked_5fmc_14',['Algo_mxv_masked_mc',['../classspla_1_1Algo__mxv__masked__mc.html',1,'spla']]],
+  ['algo_5fmxv_5fmasked_14',['Algo_mxv_masked',['../classspla_1_1Algo__mxv__masked.html',1,'spla']]],
   ['algo_5fv_5fassign_5fmasked_5fcpu_15',['Algo_v_assign_masked_cpu',['../classspla_1_1Algo__v__assign__masked__cpu.html',1,'spla']]],
   ['algo_5fv_5freduce_5fcl_16',['Algo_v_reduce_cl',['../classspla_1_1Algo__v__reduce__cl.html',1,'spla']]],
   ['algo_5fv_5freduce_5fcpu_17',['Algo_v_reduce_cpu',['../classspla_1_1Algo__v__reduce__cpu.html',1,'spla']]],

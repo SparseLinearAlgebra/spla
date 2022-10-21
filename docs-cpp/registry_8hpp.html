@@ -151,32 +151,26 @@ Macros</h2></td></tr>
 <tr class="separator:a63df1a34eb20901e57847686049ab28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abac625d750967f5f4dbbe86d1d777c2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a>&#160;&#160;&#160;&quot;__cl&quot;</td></tr>
 <tr class="separator:abac625d750967f5f4dbbe86d1d777c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae78c018981075498c2e29e8d0dac6499"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#ae78c018981075498c2e29e8d0dac6499">MASK_COMPLEMENT</a>&#160;&#160;&#160;&quot;_mc&quot;</td></tr>
-<tr class="separator:ae78c018981075498c2e29e8d0dac6499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a248b72573ce82bd6072e81917b7c608d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a248b72573ce82bd6072e81917b7c608d">MASK_DIRECT</a>&#160;&#160;&#160;&quot;_md&quot;</td></tr>
-<tr class="separator:a248b72573ce82bd6072e81917b7c608d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0867da27de2d7a865897332772c0863"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#aa0867da27de2d7a865897332772c0863">MASK_KEY</a>(complement)&#160;&#160;&#160;((complement) ? <a class="el" href="registry_8hpp.html#ae78c018981075498c2e29e8d0dac6499">MASK_COMPLEMENT</a> : <a class="el" href="registry_8hpp.html#a248b72573ce82bd6072e81917b7c608d">MASK_DIRECT</a>)</td></tr>
-<tr class="separator:aa0867da27de2d7a865897332772c0863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e42c218f956f7433c75908c6854a314"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op)&#160;&#160;&#160;&quot;_&quot; + (op)-&gt;get_key()</td></tr>
 <tr class="separator:a3e42c218f956f7433c75908c6854a314"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d8e88f2b7a12462a42410f44d087e62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name,  op)&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op)</td></tr>
 <tr class="separator:a7d8e88f2b7a12462a42410f44d087e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad68cffbe44a310193e67398957844314"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#ad68cffbe44a310193e67398957844314">MAKE_KEY_2</a>(name,  op1,  op2)&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op1) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op2)</td></tr>
 <tr class="separator:ad68cffbe44a310193e67398957844314"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaad1eb765ea764dbab4924747558bdf2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#aaad1eb765ea764dbab4924747558bdf2">MAKE_KEY_2_M</a>(name,  op1,  op2,  comp)&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op1) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op2) + <a class="el" href="registry_8hpp.html#aa0867da27de2d7a865897332772c0863">MASK_KEY</a>(comp)</td></tr>
-<tr class="separator:aaad1eb765ea764dbab4924747558bdf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adddbcf7c3ba4383e6436fdb87bd335af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#adddbcf7c3ba4383e6436fdb87bd335af">MAKE_KEY_3</a>(name,  op1,  op2,  op3)&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op1) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op2) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op3)</td></tr>
+<tr class="separator:adddbcf7c3ba4383e6436fdb87bd335af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3657ac6ddad565137aafecdba289ec14"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a3657ac6ddad565137aafecdba289ec14">MAKE_KEY_CPU_1</a>(name,  op)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name, op) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td></tr>
 <tr class="separator:a3657ac6ddad565137aafecdba289ec14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6edd752256dc645c329abc88d21320"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a9f6edd752256dc645c329abc88d21320">MAKE_KEY_CPU_2</a>(name,  op1,  op2)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#ad68cffbe44a310193e67398957844314">MAKE_KEY_2</a>(name, op1, op2) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td></tr>
 <tr class="separator:a9f6edd752256dc645c329abc88d21320"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7654bde0e9de0ad2b6c78e444ab64844"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a7654bde0e9de0ad2b6c78e444ab64844">MAKE_KEY_CPU_2_M</a>(name,  op1,  op2,  comp)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#aaad1eb765ea764dbab4924747558bdf2">MAKE_KEY_2_M</a>(name, op1, op2, comp) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td></tr>
-<tr class="separator:a7654bde0e9de0ad2b6c78e444ab64844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd03b23fd0b5c9ad8ebf67752c789364"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#abd03b23fd0b5c9ad8ebf67752c789364">MAKE_KEY_CPU_3</a>(name,  op1,  op2,  op3)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#adddbcf7c3ba4383e6436fdb87bd335af">MAKE_KEY_3</a>(name, op1, op2, op3) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td></tr>
+<tr class="separator:abd03b23fd0b5c9ad8ebf67752c789364"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae622e58a2cf2fb18b7de6956c7a41c89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#ae622e58a2cf2fb18b7de6956c7a41c89">MAKE_KEY_CL_1</a>(name,  op)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#a7d8e88f2b7a12462a42410f44d087e62">MAKE_KEY_1</a>(name, op) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td></tr>
 <tr class="separator:ae622e58a2cf2fb18b7de6956c7a41c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af571669b07f902ca722e1b3b05bce5ef"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#af571669b07f902ca722e1b3b05bce5ef">MAKE_KEY_CL_2</a>(name,  op1,  op2)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#ad68cffbe44a310193e67398957844314">MAKE_KEY_2</a>(name, op1, op2) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td></tr>
 <tr class="separator:af571669b07f902ca722e1b3b05bce5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8ca806ce2bbe0fe3800d4c5e57108e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#aa8ca806ce2bbe0fe3800d4c5e57108e0">MAKE_KEY_CL_2_M</a>(name,  op1,  op2,  comp)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#aaad1eb765ea764dbab4924747558bdf2">MAKE_KEY_2_M</a>(name, op1, op2, comp) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td></tr>
-<tr class="separator:aa8ca806ce2bbe0fe3800d4c5e57108e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81509a22d4942659e62654e39a48dcb8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="registry_8hpp.html#a81509a22d4942659e62654e39a48dcb8">MAKE_KEY_CL_3</a>(name,  op1,  op2,  op3)&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#adddbcf7c3ba4383e6436fdb87bd335af">MAKE_KEY_3</a>(name, op1, op2, op3) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td></tr>
+<tr class="separator:a81509a22d4942659e62654e39a48dcb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aeca5d30860018b559b8b5fc74540ef7b"></a>
@@ -283,14 +277,14 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="aaad1eb765ea764dbab4924747558bdf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaad1eb765ea764dbab4924747558bdf2">&#9670;&nbsp;</a></span>MAKE_KEY_2_M</h2>
+<a id="adddbcf7c3ba4383e6436fdb87bd335af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adddbcf7c3ba4383e6436fdb87bd335af">&#9670;&nbsp;</a></span>MAKE_KEY_3</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAKE_KEY_2_M</td>
+          <td class="memname">#define MAKE_KEY_3</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">name, </td>
@@ -311,12 +305,12 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">comp&#160;</td>
+          <td class="paramname">op3&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op1) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op2) + <a class="el" href="registry_8hpp.html#aa0867da27de2d7a865897332772c0863">MASK_KEY</a>(comp)</td>
+          <td></td><td>&#160;&#160;&#160;std::string(name) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op1) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op2) + <a class="el" href="registry_8hpp.html#a3e42c218f956f7433c75908c6854a314">OP_KEY</a>(op3)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -385,14 +379,14 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="aa8ca806ce2bbe0fe3800d4c5e57108e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8ca806ce2bbe0fe3800d4c5e57108e0">&#9670;&nbsp;</a></span>MAKE_KEY_CL_2_M</h2>
+<a id="a81509a22d4942659e62654e39a48dcb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81509a22d4942659e62654e39a48dcb8">&#9670;&nbsp;</a></span>MAKE_KEY_CL_3</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAKE_KEY_CL_2_M</td>
+          <td class="memname">#define MAKE_KEY_CL_3</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">name, </td>
@@ -413,12 +407,12 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">comp&#160;</td>
+          <td class="paramname">op3&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#aaad1eb765ea764dbab4924747558bdf2">MAKE_KEY_2_M</a>(name, op1, op2, comp) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#adddbcf7c3ba4383e6436fdb87bd335af">MAKE_KEY_3</a>(name, op1, op2, op3) + <a class="el" href="registry_8hpp.html#abac625d750967f5f4dbbe86d1d777c2a">GPU_CL_SUFFIX</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -487,14 +481,14 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="a7654bde0e9de0ad2b6c78e444ab64844"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7654bde0e9de0ad2b6c78e444ab64844">&#9670;&nbsp;</a></span>MAKE_KEY_CPU_2_M</h2>
+<a id="abd03b23fd0b5c9ad8ebf67752c789364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd03b23fd0b5c9ad8ebf67752c789364">&#9670;&nbsp;</a></span>MAKE_KEY_CPU_3</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAKE_KEY_CPU_2_M</td>
+          <td class="memname">#define MAKE_KEY_CPU_3</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">name, </td>
@@ -515,58 +509,12 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">comp&#160;</td>
+          <td class="paramname">op3&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#aaad1eb765ea764dbab4924747558bdf2">MAKE_KEY_2_M</a>(name, op1, op2, comp) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae78c018981075498c2e29e8d0dac6499"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae78c018981075498c2e29e8d0dac6499">&#9670;&nbsp;</a></span>MASK_COMPLEMENT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MASK_COMPLEMENT&#160;&#160;&#160;&quot;_mc&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a248b72573ce82bd6072e81917b7c608d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a248b72573ce82bd6072e81917b7c608d">&#9670;&nbsp;</a></span>MASK_DIRECT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MASK_DIRECT&#160;&#160;&#160;&quot;_md&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa0867da27de2d7a865897332772c0863"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0867da27de2d7a865897332772c0863">&#9670;&nbsp;</a></span>MASK_KEY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MASK_KEY</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">complement</td><td>)</td>
-          <td>&#160;&#160;&#160;((complement) ? <a class="el" href="registry_8hpp.html#ae78c018981075498c2e29e8d0dac6499">MASK_COMPLEMENT</a> : <a class="el" href="registry_8hpp.html#a248b72573ce82bd6072e81917b7c608d">MASK_DIRECT</a>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="registry_8hpp.html#adddbcf7c3ba4383e6436fdb87bd335af">MAKE_KEY_3</a>(name, op1, op2, op3) + <a class="el" href="registry_8hpp.html#aeca5d30860018b559b8b5fc74540ef7b">CPU_SUFFIX</a></td>
         </tr>
       </table>
 </div><div class="memdoc">

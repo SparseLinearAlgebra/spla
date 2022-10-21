@@ -112,19 +112,19 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked__mc.html">   44</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Algo__mxv__masked__mc.html">Algo_mxv_masked_mc</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked.html">   44</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Algo__mxv__masked.html">Algo_mxv_masked</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked__mc.html#a3f8be9cd430590d3bfef8fc2061c8779">   46</a></span>&#160;        <a class="code" href="classspla_1_1Algo__mxv__masked__mc.html#a3f8be9cd430590d3bfef8fc2061c8779">~Algo_mxv_masked_mc</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked.html#a369152db7911a197aecfda98d4ade469">   46</a></span>&#160;        <a class="code" href="classspla_1_1Algo__mxv__masked.html#a369152db7911a197aecfda98d4ade469">~Algo_mxv_masked</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked__mc.html#a9ee39aadc9e5595c848ccf632907aca7">   48</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxv__masked__mc.html#a9ee39aadc9e5595c848ccf632907aca7">get_name</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;mxv_masked_mc&quot;</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked.html#a06bbbb808bc5d24c82d3d502e93fd004">   48</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxv__masked.html#a06bbbb808bc5d24c82d3d502e93fd004">get_name</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;mxv_masked&quot;</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked__mc.html#ac8581c48c611d818e147714539ee6960">   52</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxv__masked__mc.html#ac8581c48c611d818e147714539ee6960">get_description</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;sequential matrix-vector with complement-mask product on cpu&quot;</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked.html#a6f1c417196797f7ac296524c92c6b55c">   52</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxv__masked.html#a6f1c417196797f7ac296524c92c6b55c">get_description</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;sequential matrix-vector product on cpu&quot;</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked__mc.html#a3fbfca5114877f1354bd0715ec6e20cc">   56</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__mxv__masked__mc.html#a3fbfca5114877f1354bd0715ec6e20cc">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxv__masked.html#a46f9919871720c097d8d6dab902b0279">   56</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__mxv__masked.html#a46f9919871720c097d8d6dab902b0279">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_mxv_masked&gt;();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">auto</span> r           = t-&gt;r.template cast&lt;TVector&lt;T&gt;&gt;();</div>
@@ -133,11 +133,11 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span> v           = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">auto</span> op_multiply = t-&gt;op_multiply.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">auto</span> op_add      = t-&gt;op_add.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> init        = t-&gt;init.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> DM         = M-&gt;get_n_rows();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">const</span> T    skip_value = T();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keyword">const</span> T    sum_init   = init-&gt;get_value();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> op_select   = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">auto</span> init        = t-&gt;init.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> DM       = M-&gt;get_n_rows();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keyword">const</span> T    sum_init = init-&gt;get_value();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            r-&gt;ensure_dense_format();</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            mask-&gt;ensure_dense_format();</div>
@@ -151,41 +151,42 @@ $(function() {
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keyword">auto</span>&amp; func_multiply = op_multiply-&gt;function;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">auto</span>&amp; func_add      = op_add-&gt;function;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; DM; ++i) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                T sum = sum_init;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">if</span> (p_dense_mask-&gt;Ax[i] == skip_value) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; row = p_lil_M-&gt;<a class="code" href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">Ar</a>[i];</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                        sum = func_add(sum, func_multiply(j_x.second, p_dense_v-&gt;Ax[j_x.first]));</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = sum;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            r-&gt;update_dense();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    };</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXV_HPP</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span>&amp; func_select   = op_select-&gt;function;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; DM; ++i) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                T sum = sum_init;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keywordflow">if</span> (func_select(p_dense_mask-&gt;Ax[i])) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; row = p_lil_M-&gt;<a class="code" href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">Ar</a>[i];</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                        sum = func_add(sum, func_multiply(j_x.second, p_dense_v-&gt;Ax[j_x.first]));</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = sum;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            r-&gt;update_dense();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    };</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXV_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__mxv__masked__mc_html"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked__mc.html">spla::Algo_mxv_masked_mc</a></div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:44</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__mxv__masked__mc_html_a3f8be9cd430590d3bfef8fc2061c8779"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked__mc.html#a3f8be9cd430590d3bfef8fc2061c8779">spla::Algo_mxv_masked_mc::~Algo_mxv_masked_mc</a></div><div class="ttdeci">~Algo_mxv_masked_mc() override=default</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__mxv__masked__mc_html_a3fbfca5114877f1354bd0715ec6e20cc"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked__mc.html#a3fbfca5114877f1354bd0715ec6e20cc">spla::Algo_mxv_masked_mc::execute</a></div><div class="ttdeci">Status execute(const DispatchContext &amp;ctx) override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:56</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__mxv__masked__mc_html_a9ee39aadc9e5595c848ccf632907aca7"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked__mc.html#a9ee39aadc9e5595c848ccf632907aca7">spla::Algo_mxv_masked_mc::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:48</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__mxv__masked__mc_html_ac8581c48c611d818e147714539ee6960"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked__mc.html#ac8581c48c611d818e147714539ee6960">spla::Algo_mxv_masked_mc::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:52</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html">spla::Algo_mxv_masked</a></div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:44</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html_a06bbbb808bc5d24c82d3d502e93fd004"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html#a06bbbb808bc5d24c82d3d502e93fd004">spla::Algo_mxv_masked::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:48</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html_a369152db7911a197aecfda98d4ade469"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html#a369152db7911a197aecfda98d4ade469">spla::Algo_mxv_masked::~Algo_mxv_masked</a></div><div class="ttdeci">~Algo_mxv_masked() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html_a46f9919871720c097d8d6dab902b0279"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html#a46f9919871720c097d8d6dab902b0279">spla::Algo_mxv_masked::execute</a></div><div class="ttdeci">Status execute(const DispatchContext &amp;ctx) override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:56</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html_a6f1c417196797f7ac296524c92c6b55c"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html#a6f1c417196797f7ac296524c92c6b55c">spla::Algo_mxv_masked::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1CpuDenseVec_html"><div class="ttname"><a href="classspla_1_1CpuDenseVec.html">spla::CpuDenseVec</a></div><div class="ttdoc">CPU one-dim array for dense vector representation.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:59</div></div>
 <div class="ttc" id="aclassspla_1_1CpuDenseVec_html_af07982f0c83b5b51b77938122576c2ba"><div class="ttname"><a href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">spla::CpuDenseVec::Ax</a></div><div class="ttdeci">std::vector&lt; T &gt; Ax</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:67</div></div>
 <div class="ttc" id="aclassspla_1_1CpuLil_html"><div class="ttname"><a href="classspla_1_1CpuLil.html">spla::CpuLil</a></div><div class="ttdoc">CPU list-of-list matrix format for fast incremental build.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:97</div></div>
 <div class="ttc" id="aclassspla_1_1CpuLil_html_ab3eaecd499d01432228fbbc02ba65fc0"><div class="ttname"><a href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">spla::CpuLil::Ar</a></div><div class="ttdeci">std::vector&lt; Row &gt; Ar</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:107</div></div>
-<div class="ttc" id="aclassspla_1_1RegistryAlgo_html"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></div><div class="ttdoc">Algorithm suitable to process schedule task based on task string key.</div><div class="ttdef"><b>Definition:</b> registry.hpp:65</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></div><div class="ttdoc">Algorithm suitable to process schedule task based on task string key.</div><div class="ttdef"><b>Definition:</b> registry.hpp:62</div></div>
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>

@@ -1,8 +1,8 @@
 <map id="spla::RegistryAlgo" name="spla::RegistryAlgo">
-<area shape="rect" id="node1" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,129,131,156"/>
-<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="193,5,327,32"/>
-<area shape="rect" id="node3" href="$classspla_1_1Algo__mxv__masked__mc.html" title=" " alt="" coords="179,57,341,98"/>
-<area shape="rect" id="node4" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="191,122,329,163"/>
-<area shape="rect" id="node5" href="$classspla_1_1Algo__v__reduce__cl.html" title=" " alt="" coords="191,187,329,229"/>
-<area shape="rect" id="node6" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="191,253,329,294"/>
+<area shape="rect" id="node1" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,115,131,141"/>
+<area shape="rect" id="node2" href="$classspla_1_1Algo__callback.html" title=" " alt="" coords="208,5,341,32"/>
+<area shape="rect" id="node3" href="$classspla_1_1Algo__mxv__masked.html" title=" " alt="" coords="179,56,371,83"/>
+<area shape="rect" id="node4" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="206,107,343,149"/>
+<area shape="rect" id="node5" href="$classspla_1_1Algo__v__reduce__cl.html" title=" " alt="" coords="205,173,344,214"/>
+<area shape="rect" id="node6" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="205,238,344,279"/>
 </map>
