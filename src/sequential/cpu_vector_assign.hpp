@@ -59,8 +59,8 @@ namespace spla {
             auto mask      = t->mask.template cast<TVector<T>>();
             auto value     = t->value.template cast<TScalar<T>>();
             auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
+            auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            auto skip_value   = T();
             auto assign_value = value->get_value();
 
             r->ensure_dense_format();
@@ -68,13 +68,14 @@ namespace spla {
 
             auto*       p_r_dense    = r->template get_dec_p<CpuDenseVec<T>>();
             const auto* p_mask_dense = mask->template get_dec_p<CpuDenseVec<T>>();
-            const auto& function     = op_assign->function;
+            const auto& func_assign  = op_assign->function;
+            const auto& func_select  = op_select->function;
 
             uint N = r->get_n_rows();
 
             for (uint i = 0; i < N; ++i) {
-                if (p_mask_dense->Ax[i] != skip_value) {
-                    p_r_dense->Ax[i] = function(p_r_dense->Ax[i], assign_value);
+                if (func_select(p_mask_dense->Ax[i])) {
+                    p_r_dense->Ax[i] = func_assign(p_r_dense->Ax[i], assign_value);
                 }
             }
 

@@ -123,9 +123,12 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
-    SPLA_API extern ref_ptr<OpSelect> GZERO_INT;
-    SPLA_API extern ref_ptr<OpSelect> GZERO_UINT;
-    SPLA_API extern ref_ptr<OpSelect> GZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> EQZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> EQZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> EQZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> NQZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> NQZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> NQZERO_FLOAT;
 
     /**
      * @}

@@ -67,12 +67,12 @@ namespace spla {
         key << get_name()
             << OP_KEY(op_multiply)
             << OP_KEY(op_add)
-            << MASK_KEY(opt_complement);
+            << OP_KEY(op_select);
 
         return key.str();
     }
     std::vector<ref_ptr<Object>> ScheduleTask_mxv_masked::get_args() {
-        return {r.as<Object>(), mask.as<Object>(), M.as<Object>(), v.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>(), init.as<Object>()};
+        return {r.as<Object>(), mask.as<Object>(), M.as<Object>(), v.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>(), op_select.as<Object>(), init.as<Object>()};
     }
 
     std::string ScheduleTask_v_assign_masked::get_name() {
@@ -81,12 +81,13 @@ namespace spla {
     std::string ScheduleTask_v_assign_masked::get_key() {
         std::stringstream key;
         key << get_name()
-            << OP_KEY(op_assign);
+            << OP_KEY(op_assign)
+            << OP_KEY(op_select);
 
         return key.str();
     }
     std::vector<ref_ptr<Object>> ScheduleTask_v_assign_masked::get_args() {
-        return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>()};
+        return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>(), op_select.as<Object>()};
     }
 
     std::string ScheduleTask_v_reduce::get_name() {

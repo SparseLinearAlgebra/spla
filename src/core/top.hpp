@@ -68,6 +68,28 @@ namespace spla {
 #define DECL_OP_BIN_S(name, key_prefix, T, ...) \
     DECL_OP_BIN(name, key_prefix, T, T, T, __VA_ARGS__)
 
+#define DECL_OP_SELECT(fname, key_prefix, A0, ...)          \
+    {                                                       \
+        auto func = make_ref<TOpSelect<A0>>();              \
+                                                            \
+        func->function = [](A0 a) -> bool __VA_ARGS__;      \
+        func->name     = #fname;                            \
+                                                            \
+        std::stringstream source_builder;                   \
+        source_builder << "("                               \
+                       << func->get_type_arg_0()->get_cpp() \
+                       << " a)" #__VA_ARGS__;               \
+                                                            \
+        func->source = source_builder.str();                \
+                                                            \
+        std::stringstream key_builder;                      \
+        key_builder << #key_prefix << "_"                   \
+                    << func->get_type_arg_0()->get_code();  \
+        func->key = key_builder.str();                      \
+                                                            \
+        fname = func.as<OpSelect>();                        \
+    }
+
     /**
      * @addtogroup internal
      * @{
@@ -125,6 +147,50 @@ namespace spla {
     template<typename A0, typename A1, typename R>
     ref_ptr<Type> TOpBinary<A0, A1, R>::get_type_res() {
         return get_ttype<R>().template as<Type>();
+    }
+
+    template<typename A0>
+    class TOpSelect : public OpSelect {
+    public:
+        ~TOpSelect() override = default;
+
+        void               set_label(std::string label) override;
+        const std::string& get_label() const override;
+        std::string        get_name() override;
+        std::string        get_source() override;
+        std::string        get_key() override;
+        ref_ptr<Type>      get_type_arg_0() override;
+
+        std::function<bool(A0)> function;
+        std::string             name;
+        std::string             source;
+        std::string             key;
+        std::string             label;
+    };
+
+    template<typename A0>
+    void TOpSelect<A0>::set_label(std::string new_label) {
+        label = std::move(new_label);
+    }
+    template<typename A0>
+    const std::string& TOpSelect<A0>::get_label() const {
+        return label;
+    }
+    template<typename A0>
+    std::string TOpSelect<A0>::get_name() {
+        return name;
+    }
+    template<typename A0>
+    std::string TOpSelect<A0>::get_source() {
+        return source;
+    }
+    template<typename A0>
+    std::string TOpSelect<A0>::get_key() {
+        return key;
+    }
+    template<typename A0>
+    ref_ptr<Type> TOpSelect<A0>::get_type_arg_0() {
+        return get_ttype<A0>().template as<Type>();
     }
 
     /**

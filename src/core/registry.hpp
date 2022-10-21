@@ -36,22 +36,19 @@
 
 namespace spla {
 
-#define CPU_SUFFIX                             "__cpu"
-#define GPU_SUFFIX                             "__gpu"
-#define GPU_CL_SUFFIX                          "__cl"
-#define MASK_COMPLEMENT                        "_mc"
-#define MASK_DIRECT                            "_md"
-#define MASK_KEY(complement)                   ((complement) ? MASK_COMPLEMENT : MASK_DIRECT)
-#define OP_KEY(op)                             "_" + (op)->get_key()
-#define MAKE_KEY_1(name, op)                   std::string(name) + OP_KEY(op)
-#define MAKE_KEY_2(name, op1, op2)             std::string(name) + OP_KEY(op1) + OP_KEY(op2)
-#define MAKE_KEY_2_M(name, op1, op2, comp)     std::string(name) + OP_KEY(op1) + OP_KEY(op2) + MASK_KEY(comp)
-#define MAKE_KEY_CPU_1(name, op)               MAKE_KEY_1(name, op) + CPU_SUFFIX
-#define MAKE_KEY_CPU_2(name, op1, op2)         MAKE_KEY_2(name, op1, op2) + CPU_SUFFIX
-#define MAKE_KEY_CPU_2_M(name, op1, op2, comp) MAKE_KEY_2_M(name, op1, op2, comp) + CPU_SUFFIX
-#define MAKE_KEY_CL_1(name, op)                MAKE_KEY_1(name, op) + GPU_CL_SUFFIX
-#define MAKE_KEY_CL_2(name, op1, op2)          MAKE_KEY_2(name, op1, op2) + GPU_CL_SUFFIX
-#define MAKE_KEY_CL_2_M(name, op1, op2, comp)  MAKE_KEY_2_M(name, op1, op2, comp) + GPU_CL_SUFFIX
+#define CPU_SUFFIX                          "__cpu"
+#define GPU_SUFFIX                          "__gpu"
+#define GPU_CL_SUFFIX                       "__cl"
+#define OP_KEY(op)                          "_" + (op)->get_key()
+#define MAKE_KEY_1(name, op)                std::string(name) + OP_KEY(op)
+#define MAKE_KEY_2(name, op1, op2)          std::string(name) + OP_KEY(op1) + OP_KEY(op2)
+#define MAKE_KEY_3(name, op1, op2, op3)     std::string(name) + OP_KEY(op1) + OP_KEY(op2) + OP_KEY(op3)
+#define MAKE_KEY_CPU_1(name, op)            MAKE_KEY_1(name, op) + CPU_SUFFIX
+#define MAKE_KEY_CPU_2(name, op1, op2)      MAKE_KEY_2(name, op1, op2) + CPU_SUFFIX
+#define MAKE_KEY_CPU_3(name, op1, op2, op3) MAKE_KEY_3(name, op1, op2, op3) + CPU_SUFFIX
+#define MAKE_KEY_CL_1(name, op)             MAKE_KEY_1(name, op) + GPU_CL_SUFFIX
+#define MAKE_KEY_CL_2(name, op1, op2)       MAKE_KEY_2(name, op1, op2) + GPU_CL_SUFFIX
+#define MAKE_KEY_CL_3(name, op1, op2, op3)  MAKE_KEY_3(name, op1, op2, op3) + GPU_CL_SUFFIX
 
     /**
      * @addtogroup internal

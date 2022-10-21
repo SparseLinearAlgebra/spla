@@ -138,7 +138,7 @@ TEST(vector, assign_plus) {
         R[I[k]] = R[I[k]] + S;
     }
 
-    spla::exec_v_assign_masked(ivec, imask, ival, spla::PLUS_INT);
+    spla::exec_v_assign_masked(ivec, imask, ival, spla::PLUS_INT, spla::NQZERO_INT);
 
     for (int k = 0; k < N; k++) {
         int r;
@@ -169,7 +169,7 @@ TEST(vector, assign_second) {
         R[I[k]] = S;
     }
 
-    spla::exec_v_assign_masked(ivec, imask, ival, spla::SECOND_INT);
+    spla::exec_v_assign_masked(ivec, imask, ival, spla::SECOND_INT, spla::NQZERO_INT);
 
     for (int k = 0; k < N; k++) {
         int r;

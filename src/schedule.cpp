@@ -69,20 +69,20 @@ namespace spla {
             ref_ptr<Vector>        v,
             ref_ptr<OpBinary>      op_multiply,
             ref_ptr<OpBinary>      op_add,
+            ref_ptr<OpSelect>      op_select,
             ref_ptr<Scalar>        init,
-            bool                   opt_complement,
             ref_ptr<Descriptor>    desc,
             ref_ptr<ScheduleTask>* task_hnd) {
-        auto task            = make_ref<ScheduleTask_mxv_masked>();
-        task->r              = std::move(r);
-        task->mask           = std::move(mask);
-        task->M              = std::move(M);
-        task->v              = std::move(v);
-        task->op_multiply    = std::move(op_multiply);
-        task->op_add         = std::move(op_add);
-        task->init           = std::move(init);
-        task->opt_complement = opt_complement;
-        task->desc           = std::move(desc);
+        auto task         = make_ref<ScheduleTask_mxv_masked>();
+        task->r           = std::move(r);
+        task->mask        = std::move(mask);
+        task->M           = std::move(M);
+        task->v           = std::move(v);
+        task->op_multiply = std::move(op_multiply);
+        task->op_add      = std::move(op_add);
+        task->op_select   = std::move(op_select);
+        task->init        = std::move(init);
+        task->desc        = std::move(desc);
         EXEC_OR_MAKE_TASK
     }
 
@@ -91,6 +91,7 @@ namespace spla {
             ref_ptr<Vector>        mask,
             ref_ptr<Scalar>        value,
             ref_ptr<OpBinary>      op_assign,
+            ref_ptr<OpSelect>      op_select,
             ref_ptr<Descriptor>    desc,
             ref_ptr<ScheduleTask>* task_hnd) {
         auto task       = make_ref<ScheduleTask_v_assign_masked>();
@@ -98,6 +99,7 @@ namespace spla {
         task->mask      = std::move(mask);
         task->value     = std::move(value);
         task->op_assign = std::move(op_assign);
+        task->op_select = std::move(op_select);
         task->desc      = std::move(desc);
         EXEC_OR_MAKE_TASK
     }

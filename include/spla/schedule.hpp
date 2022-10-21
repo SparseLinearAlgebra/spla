@@ -106,6 +106,7 @@ namespace spla {
      * @param v
      * @param op_multiply
      * @param op_add
+     * @param op_select
      * @param init
      * @param opt_complement
      * @param desc Scheduled task descriptor; default is null
@@ -120,8 +121,8 @@ namespace spla {
             ref_ptr<Vector>        v,
             ref_ptr<OpBinary>      op_multiply,
             ref_ptr<OpBinary>      op_add,
+            ref_ptr<OpSelect>      op_select,
             ref_ptr<Scalar>        init,
-            bool                   opt_complement,
             ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
@@ -134,6 +135,7 @@ namespace spla {
      * @param mask
      * @param value
      * @param op_assign
+     * @param op_select
      * @param desc Scheduled task descriptor; default is null
      * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
@@ -144,6 +146,7 @@ namespace spla {
             ref_ptr<Vector>        mask,
             ref_ptr<Scalar>        value,
             ref_ptr<OpBinary>      op_assign,
+            ref_ptr<OpSelect>      op_select,
             ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 

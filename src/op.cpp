@@ -69,9 +69,12 @@ namespace spla {
     ref_ptr<OpBinary> BXOR_INT;
     ref_ptr<OpBinary> BXOR_UINT;
 
-    ref_ptr<OpSelect> GZERO_INT;
-    ref_ptr<OpSelect> GZERO_UINT;
-    ref_ptr<OpSelect> GZERO_FLOAT;
+    ref_ptr<OpSelect> EQZERO_INT;
+    ref_ptr<OpSelect> EQZERO_UINT;
+    ref_ptr<OpSelect> EQZERO_FLOAT;
+    ref_ptr<OpSelect> NQZERO_INT;
+    ref_ptr<OpSelect> NQZERO_UINT;
+    ref_ptr<OpSelect> NQZERO_FLOAT;
 
 #define min std::min
 #define max std::max
@@ -114,6 +117,13 @@ namespace spla {
         DECL_OP_BIN_S(BAND_UINT, BAND, T_UINT, { return a & b; });
         DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
+
+        DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
+        DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
+        DECL_OP_SELECT(EQZERO_FLOAT, EQZERO, T_FLOAT, { return a == 0; });
+        DECL_OP_SELECT(NQZERO_INT, NQZERO, T_INT, { return a != 0; });
+        DECL_OP_SELECT(NQZERO_UINT, NQZERO, T_UINT, { return a != 0; });
+        DECL_OP_SELECT(NQZERO_FLOAT, NQZERO, T_FLOAT, { return a != 0; });
     }
 
 }// namespace spla

@@ -87,6 +87,7 @@ namespace spla {
         ref_ptr<Vector>   v;
         ref_ptr<OpBinary> op_multiply;
         ref_ptr<OpBinary> op_add;
+        ref_ptr<OpSelect> op_select;
         ref_ptr<Scalar>   init;
         bool              opt_complement;
     };
@@ -107,6 +108,7 @@ namespace spla {
         ref_ptr<Vector>   mask;
         ref_ptr<Scalar>   value;
         ref_ptr<OpBinary> op_assign;
+        ref_ptr<OpSelect> op_select;
     };
 
     /**

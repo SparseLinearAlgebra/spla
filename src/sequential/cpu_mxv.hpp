@@ -41,16 +41,16 @@
 namespace spla {
 
     template<typename T>
-    class Algo_mxv_masked_mc final : public RegistryAlgo {
+    class Algo_mxv_masked final : public RegistryAlgo {
     public:
-        ~Algo_mxv_masked_mc() override = default;
+        ~Algo_mxv_masked() override = default;
 
         std::string get_name() override {
-            return "mxv_masked_mc";
+            return "mxv_masked";
         }
 
         std::string get_description() override {
-            return "sequential matrix-vector with complement-mask product on cpu";
+            return "sequential matrix-vector product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
@@ -62,11 +62,11 @@ namespace spla {
             auto v           = t->v.template cast<TVector<T>>();
             auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
             auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
+            auto op_select   = t->op_select.template cast<TOpSelect<T>>();
             auto init        = t->init.template cast<TScalar<T>>();
 
-            const uint DM         = M->get_n_rows();
-            const T    skip_value = T();
-            const T    sum_init   = init->get_value();
+            const uint DM       = M->get_n_rows();
+            const T    sum_init = init->get_value();
 
             r->ensure_dense_format();
             mask->ensure_dense_format();
@@ -80,11 +80,12 @@ namespace spla {
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
+            auto& func_select   = op_select->function;
 
             for (uint i = 0; i < DM; ++i) {
                 T sum = sum_init;
 
-                if (p_dense_mask->Ax[i] == skip_value) {
+                if (func_select(p_dense_mask->Ax[i])) {
                     const auto& row = p_lil_M->Ar[i];
 
                     for (const auto& j_x : row) {

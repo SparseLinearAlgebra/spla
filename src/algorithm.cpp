@@ -51,14 +51,13 @@ namespace spla {
         ref_ptr<Scalar> zero           = make_int(0);
         int             current_level  = 1;
         bool            frontier_empty = false;
-        bool            complement     = true;
 
         frontier_prev->set_int(s, 1);
 
         while (!frontier_empty) {
             depth->set_int(current_level);
-            exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT);
-            exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, zero, complement);
+            exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
+            exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero);
             exec_v_reduce(frontier_size, zero, frontier_new, PLUS_INT);
 
             int observed_vertices;
