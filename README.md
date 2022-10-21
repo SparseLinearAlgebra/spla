@@ -63,16 +63,12 @@ $ pip uninstall pyspla
     - Git (to get source code)
     - CMake (the latest version)
     - Ninja (as build files generator)
-    - OpenCL 1.2+ SDK
     - Python 3.7+
-
 - **Windows 10**:
     - Microsoft Visual C++ Compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
-
 - **Ubuntu 20.04**:
     - GNU C++ Compiler with C++ 17 support
-
 - **MaсOS Catalina 10.15**:
     - Clang Compiler with C++ 17 support
 
