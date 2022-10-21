@@ -33,35 +33,46 @@
 
 namespace spla {
 
-    ref_ptr<Schedule> make_schedule() {
-        return ref_ptr<Schedule>(new ScheduleSingleThread);
-    }
-
-    Status execute_immediate(ref_ptr<ScheduleTask> task) {
+    static Status execute_immediate(ref_ptr<ScheduleTask> task) {
         auto schedule = make_schedule();
         schedule->step_task(std::move(task));
         return schedule->submit();
     }
 
-    ref_ptr<ScheduleTask> make_sched_callback(
-            ScheduleCallback    callback,
-            ref_ptr<Descriptor> desc) {
+    ref_ptr<Schedule> make_schedule() {
+        return ref_ptr<Schedule>(new ScheduleSingleThread);
+    }
+
+#define EXEC_OR_MAKE_TASK                                  \
+    if (task_hnd) {                                        \
+        *task_hnd = task.as<ScheduleTask>();               \
+        return Status::Ok;                                 \
+    } else {                                               \
+        return execute_immediate(task.as<ScheduleTask>()); \
+    }
+
+
+    Status exec_callback(
+            ScheduleCallback       callback,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
         auto task      = make_ref<ScheduleTask_callback>();
         task->callback = std::move(callback);
         task->desc     = std::move(desc);
-        return task.as<ScheduleTask>();
+        EXEC_OR_MAKE_TASK
     }
 
-    ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Matrix>     M,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_multiply,
-            ref_ptr<OpBinary>   op_add,
-            ref_ptr<Scalar>     init,
-            bool                opt_complement,
-            ref_ptr<Descriptor> desc) {
+    Status exec_mxv_masked(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        mask,
+            ref_ptr<Matrix>        M,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op_multiply,
+            ref_ptr<OpBinary>      op_add,
+            ref_ptr<Scalar>        init,
+            bool                   opt_complement,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
         auto task            = make_ref<ScheduleTask_mxv_masked>();
         task->r              = std::move(r);
         task->mask           = std::move(mask);
@@ -72,37 +83,39 @@ namespace spla {
         task->init           = std::move(init);
         task->opt_complement = opt_complement;
         task->desc           = std::move(desc);
-        return task.as<ScheduleTask>();
+        EXEC_OR_MAKE_TASK
     }
 
-    ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Scalar>     value,
-            ref_ptr<OpBinary>   op_assign,
-            ref_ptr<Descriptor> desc) {
+    Status exec_v_assign_masked(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        mask,
+            ref_ptr<Scalar>        value,
+            ref_ptr<OpBinary>      op_assign,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
         auto task       = make_ref<ScheduleTask_v_assign_masked>();
         task->r         = std::move(r);
         task->mask      = std::move(mask);
         task->value     = std::move(value);
         task->op_assign = std::move(op_assign);
         task->desc      = std::move(desc);
-        return task.as<ScheduleTask>();
+        EXEC_OR_MAKE_TASK
     }
 
-    ref_ptr<ScheduleTask> make_sched_v_reduce(
-            ref_ptr<Scalar>     r,
-            ref_ptr<Scalar>     s,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_reduce,
-            ref_ptr<Descriptor> desc) {
+    Status exec_v_reduce(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Scalar>        s,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op_reduce,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
         auto task       = make_ref<ScheduleTask_v_reduce>();
         task->r         = std::move(r);
         task->s         = std::move(s);
         task->v         = std::move(v);
         task->op_reduce = std::move(op_reduce);
         task->desc      = std::move(desc);
-        return task.as<ScheduleTask>();
+        EXEC_OR_MAKE_TASK
     }
 
 }// namespace spla

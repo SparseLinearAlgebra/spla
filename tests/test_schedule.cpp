@@ -30,8 +30,10 @@
 #include <spla/spla.hpp>
 
 TEST(schedule, task_callback) {
-    auto schedule = spla::make_schedule();
-    schedule->step_task(spla::make_sched_callback([]() { std::cout << "exec sched callback"; }));
+    spla::ref_ptr<spla::Schedule>     schedule = spla::make_schedule();
+    spla::ref_ptr<spla::ScheduleTask> task;
+    spla::exec_callback([]() { std::cout << "exec sched callback"; }, spla::ref_ptr<spla::Descriptor>(), &task);
+    schedule->step_task(task);
     schedule->submit();
 }
 

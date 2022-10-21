@@ -70,7 +70,7 @@ TEST(mxv_masked_comp, naive) {
     iM->set_int(2, 2, 3);
     iM->set_int(3, 4, -1);
 
-    spla::execute_immediate(spla::make_sched_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, iinit, true));
+    spla::exec_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, iinit, true);
 
     int r;
 

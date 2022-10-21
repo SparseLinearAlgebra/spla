@@ -80,28 +80,25 @@ namespace spla {
     SPLA_API ref_ptr<Schedule> make_schedule();
 
     /**
-     * @brief Immediately executes provided task and return only when task is finished
-     *
-     * @param task Task to execute immediately
-     *
-     * @return Ok if finished without errors
-     */
-    SPLA_API Status execute_immediate(ref_ptr<ScheduleTask> task);
-
-    /**
      * @brief Scheduled callback function
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param callback User-defined function to call as scheduled task
      * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
-     * @return Created node or null on failure
+     * @return Status on task execution or status on hnd creation
      */
-    SPLA_API ref_ptr<ScheduleTask> make_sched_callback(
-            ScheduleCallback    callback,
-            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
+    SPLA_API Status exec_callback(
+            ScheduleCallback       callback,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
      * @brief Scheduled r<comp! mask> = M x V
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param r
      * @param mask
@@ -112,55 +109,65 @@ namespace spla {
      * @param init
      * @param opt_complement
      * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
-     * @return Created node or null on failure
+     * @return Status on task execution or status on hnd creation
      */
-    SPLA_API ref_ptr<ScheduleTask> make_sched_mxv_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Matrix>     M,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_multiply,
-            ref_ptr<OpBinary>   op_add,
-            ref_ptr<Scalar>     init,
-            bool                opt_complement,
-            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
+    SPLA_API Status exec_mxv_masked(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        mask,
+            ref_ptr<Matrix>        M,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op_multiply,
+            ref_ptr<OpBinary>      op_add,
+            ref_ptr<Scalar>        init,
+            bool                   opt_complement,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
      * @brief Scheduled r<select(mask)> = value
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param r
      * @param mask
      * @param value
      * @param op_assign
      * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
-     * @return Created node or null on failure
+     * @return Status on task execution or status on hnd creation
      */
-    SPLA_API ref_ptr<ScheduleTask> make_sched_v_assign_masked(
-            ref_ptr<Vector>     r,
-            ref_ptr<Vector>     mask,
-            ref_ptr<Scalar>     value,
-            ref_ptr<OpBinary>   op_assign,
-            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
+    SPLA_API Status exec_v_assign_masked(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        mask,
+            ref_ptr<Scalar>        value,
+            ref_ptr<OpBinary>      op_assign,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
      * @brief Scheduled r = reduce(s, v)
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param r
      * @param s
      * @param v
      * @param op_reduce
      * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
-     * @return Created node or null on failure
+     * @return Status on task execution or status on hnd creation
      */
-    SPLA_API ref_ptr<ScheduleTask> make_sched_v_reduce(
-            ref_ptr<Scalar>     r,
-            ref_ptr<Scalar>     s,
-            ref_ptr<Vector>     v,
-            ref_ptr<OpBinary>   op_reduce,
-            ref_ptr<Descriptor> desc = ref_ptr<Descriptor>());
+    SPLA_API Status exec_v_reduce(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Scalar>        s,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op_reduce,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
      * @}

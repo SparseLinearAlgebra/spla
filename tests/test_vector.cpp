@@ -80,7 +80,7 @@ TEST(vector, reduce_plus) {
         isum += X[k];
     }
 
-    spla::execute_immediate(spla::make_sched_v_reduce(ir, istart, ivec, spla::PLUS_INT));
+    spla::exec_v_reduce(ir, istart, ivec, spla::PLUS_INT);
 
     int result;
     ir->get_int(result);
@@ -108,7 +108,7 @@ TEST(vector, reduce_mult) {
         isum *= X[k];
     }
 
-    spla::execute_immediate(spla::make_sched_v_reduce(ir, istart, ivec, spla::MULT_INT));
+    spla::exec_v_reduce(ir, istart, ivec, spla::MULT_INT);
 
     int result;
     ir->get_int(result);
@@ -138,7 +138,7 @@ TEST(vector, assign_plus) {
         R[I[k]] = R[I[k]] + S;
     }
 
-    spla::execute_immediate(spla::make_sched_v_assign_masked(ivec, imask, ival, spla::PLUS_INT));
+    spla::exec_v_assign_masked(ivec, imask, ival, spla::PLUS_INT);
 
     for (int k = 0; k < N; k++) {
         int r;
@@ -169,7 +169,7 @@ TEST(vector, assign_second) {
         R[I[k]] = S;
     }
 
-    spla::execute_immediate(spla::make_sched_v_assign_masked(ivec, imask, ival, spla::SECOND_INT));
+    spla::exec_v_assign_masked(ivec, imask, ival, spla::SECOND_INT);
 
     for (int k = 0; k < N; k++) {
         int r;

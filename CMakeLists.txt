@@ -191,6 +191,7 @@ if (SPLA_BUILD_OPENCL)
         add_subdirectory(deps/opencl-icd-loader)
     endif ()
 
+
     message(STATUS "Add Khronos OpenCL HPP bindings")
     add_library(HeadersCpp INTERFACE)
     add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
