@@ -108,108 +108,113 @@ $(function() {
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ttype_8hpp.html">core/ttype.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="tvector_8hpp.html">core/tvector.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__vector__reduce_8hpp.html">opencl/generated/auto_vector_reduce.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__formats_8hpp.html">opencl/cl_formats.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__kernel__builder_8hpp.html">opencl/cl_kernel_builder.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__vector__reduce_8hpp.html">opencl/generated/auto_vector_reduce.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html">   47</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Algo__v__reduce__cl.html">Algo_v_reduce_cl</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a8797c62ffadabc68a2930fee952227ff">   49</a></span>&#160;        <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a8797c62ffadabc68a2930fee952227ff">~Algo_v_reduce_cl</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">   51</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">get_name</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;v_reduce&quot;</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">   55</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">get_description</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;parallel vector reduction on opencl device&quot;</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">   59</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_reduce&gt;();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            v-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(op_reduce)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_dense_vec = v-&gt;template get_dec_p&lt;CLDenseVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc       = get_acc_cl();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keyword">auto</span>&amp;       queue          = p_cl_acc-&gt;get_queue_default();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            T          sum[] = {s-&gt;get_value()};</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            cl::Buffer cl_sum(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, <span class="keyword">sizeof</span>(T), sum);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            m_kernel.setArg(0, p_cl_dense_vec-&gt;Ax);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            m_kernel.setArg(1, cl_sum);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            m_kernel.setArg(2, v-&gt;get_n_rows());</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            cl::NDRange global(256);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            cl::NDRange local(256);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            cl::copy(queue, cl_sum, sum, sum + 1);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            r-&gt;get_value() = sum[0];</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html">   49</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Algo__v__reduce__cl.html">Algo_v_reduce_cl</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a8797c62ffadabc68a2930fee952227ff">   51</a></span>&#160;        <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a8797c62ffadabc68a2930fee952227ff">~Algo_v_reduce_cl</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">   53</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">get_name</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;v_reduce&quot;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">   57</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">get_description</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;parallel vector reduction on opencl device&quot;</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">   61</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_reduce&gt;();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            v-&gt;cl_ensure_dense();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(op_reduce)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_dense_vec = v-&gt;template get_dec_p&lt;CLDenseVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc       = get_acc_cl();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span>&amp;       queue          = p_cl_acc-&gt;get_queue_default();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            T          sum[] = {s-&gt;get_value()};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            cl::Buffer cl_sum(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, <span class="keyword">sizeof</span>(T), sum);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            m_kernel.setArg(0, p_cl_dense_vec-&gt;Ax);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            m_kernel.setArg(1, cl_sum);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            m_kernel.setArg(2, v-&gt;get_n_rows());</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            cl::NDRange global(block_size);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            cl::NDRange local(block_size);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            cl::copy(queue, cl_sum, sum, sum + 1);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpBinary.html">TOpBinary&lt;T, T, T&gt;</a>&gt;&amp; op_reduce) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">if</span> (m_compiled) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            std::stringstream code;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            code &lt;&lt; <span class="stringliteral">&quot;#define BLOCK_SIZE &quot;</span> &lt;&lt; 256 &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            code &lt;&lt; <span class="stringliteral">&quot;#define WARP_SIZE &quot;</span> &lt;&lt; 32 &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            code &lt;&lt; <span class="stringliteral">&quot;#define TYPE &quot;</span> &lt;&lt; get_ttype&lt;T&gt;()-&gt;get_cpp() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            code &lt;&lt; op_reduce-&gt;get_type_res()-&gt;get_cpp() &lt;&lt; <span class="stringliteral">&quot; OP1 &quot;</span> &lt;&lt; op_reduce-&gt;get_source() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            code &lt;&lt; <a class="code" href="auto__vector__reduce_8hpp.html#a1d466cbe5833212e13e0b8a230c62d4d">source_vector_reduce</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            m_source = code.str();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">auto</span> acc = get_acc_cl();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            r-&gt;get_value() = sum[0];</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpBinary.html">TOpBinary&lt;T, T, T&gt;</a>&gt;&amp; op_reduce) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">if</span> (m_compiled) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <a class="code" href="classspla_1_1CLKernelBuilder.html">CLKernelBuilder</a> kernel_builder;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            kernel_builder</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    .<a class="code" href="classspla_1_1CLKernelBuilder.html#a6acf96532cf66403aebde3d984bae7dc">add_define</a>(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, block_size)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    .<a class="code" href="classspla_1_1CLKernelBuilder.html#a6acf96532cf66403aebde3d984bae7dc">add_define</a>(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, warp_size)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    .<a class="code" href="classspla_1_1CLKernelBuilder.html#a0efbfba174dbe861b959a270108ce0aa">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    .<a class="code" href="classspla_1_1CLKernelBuilder.html#a644aa17d1b1946b7b0add0bec431a239">add_op</a>(<span class="stringliteral">&quot;OP1&quot;</span>, op_reduce.template as&lt;OpBinary&gt;())</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    .<a class="code" href="classspla_1_1CLKernelBuilder.html#a77778f5448c367f65fd7e0cce4d4efab">add_code</a>(<a class="code" href="auto__vector__reduce_8hpp.html#a1d466cbe5833212e13e0b8a230c62d4d">source_vector_reduce</a>);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            m_program = cl::Program(acc-&gt;get_context(), m_source);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">if</span> (m_program.build(acc-&gt;get_device(), <span class="stringliteral">&quot;-cl-std=CL1.2&quot;</span>) != CL_SUCCESS) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                <a class="code" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>, <span class="stringliteral">&quot;failed to build program: &quot;</span> &lt;&lt; m_program.getBuildInfo&lt;CL_PROGRAM_BUILD_LOG&gt;(acc-&gt;get_device()));</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <a class="code" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a>(<a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>, <span class="stringliteral">&quot;src\n&quot;</span> &lt;&lt; m_source);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            m_kernel   = cl::Kernel(m_program, <span class="stringliteral">&quot;reduce&quot;</span>);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            m_compiled = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        std::string m_source;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        cl::Kernel  m_kernel;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        cl::Program m_program;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordtype">bool</span>        m_compiled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    };</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_REDUCE_HPP</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">if</span> (!kernel_builder.<a class="code" href="classspla_1_1CLKernelBuilder.html#ae7b3a089eb9f9a0c6753da2156a91ba7">build</a>()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            m_program  = kernel_builder.<a class="code" href="classspla_1_1CLKernelBuilder.html#a2a40aca08315202ebee2e4896398a9ec">get_program</a>();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            m_kernel   = cl::Kernel(m_program, <span class="stringliteral">&quot;reduce&quot;</span>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            m_compiled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        cl::Kernel  m_kernel;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        cl::Program m_program;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">int</span>         block_size = 256;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordtype">int</span>         warp_size  = 32;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordtype">bool</span>        m_compiled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    };</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_REDUCE_HPP</span></div>
 <div class="ttc" id="aauto__vector__reduce_8hpp_html"><div class="ttname"><a href="auto__vector__reduce_8hpp.html">auto_vector_reduce.hpp</a></div></div>
 <div class="ttc" id="aauto__vector__reduce_8hpp_html_a1d466cbe5833212e13e0b8a230c62d4d"><div class="ttname"><a href="auto__vector__reduce_8hpp.html#a1d466cbe5833212e13e0b8a230c62d4d">source_vector_reduce</a></div><div class="ttdeci">const char source_vector_reduce[]</div><div class="ttdef"><b>Definition:</b> auto_vector_reduce.hpp:6</div></div>
+<div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
+<div class="ttc" id="acl__kernel__builder_8hpp_html"><div class="ttname"><a href="cl__kernel__builder_8hpp.html">cl_kernel_builder.hpp</a></div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html">spla::Algo_v_reduce_cl</a></div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:47</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a4aabad0c88fcafc70cc256e5e26e9b8a"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">spla::Algo_v_reduce_cl::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:55</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a6f8dab83506efb45a0ea48e053d8160e"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">spla::Algo_v_reduce_cl::execute</a></div><div class="ttdeci">Status execute(const DispatchContext &amp;ctx) override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:59</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html">spla::Algo_v_reduce_cl</a></div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:49</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a4aabad0c88fcafc70cc256e5e26e9b8a"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">spla::Algo_v_reduce_cl::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:57</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a6f8dab83506efb45a0ea48e053d8160e"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a6f8dab83506efb45a0ea48e053d8160e">spla::Algo_v_reduce_cl::execute</a></div><div class="ttdeci">Status execute(const DispatchContext &amp;ctx) override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:61</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_a8797c62ffadabc68a2930fee952227ff"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#a8797c62ffadabc68a2930fee952227ff">spla::Algo_v_reduce_cl::~Algo_v_reduce_cl</a></div><div class="ttdeci">~Algo_v_reduce_cl() override=default</div></div>
-<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_ace6cfc24402a00acff9ba7ed8d54e8ed"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">spla::Algo_v_reduce_cl::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:51</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__v__reduce__cl_html_ace6cfc24402a00acff9ba7ed8d54e8ed"><div class="ttname"><a href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">spla::Algo_v_reduce_cl::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cl_vector_reduce.hpp:53</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html">spla::CLKernelBuilder</a></div><div class="ttdoc">Runtime opencl program builder.</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.hpp:50</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_a0efbfba174dbe861b959a270108ce0aa"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#a0efbfba174dbe861b959a270108ce0aa">spla::CLKernelBuilder::add_type</a></div><div class="ttdeci">CLKernelBuilder &amp; add_type(const char *alias, const ref_ptr&lt; Type &gt; &amp;type)</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.cpp:36</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_a2a40aca08315202ebee2e4896398a9ec"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#a2a40aca08315202ebee2e4896398a9ec">spla::CLKernelBuilder::get_program</a></div><div class="ttdeci">const cl::Program &amp; get_program()</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.hpp:61</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_a644aa17d1b1946b7b0add0bec431a239"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#a644aa17d1b1946b7b0add0bec431a239">spla::CLKernelBuilder::add_op</a></div><div class="ttdeci">CLKernelBuilder &amp; add_op(const char *name, const ref_ptr&lt; OpBinary &gt; &amp;op)</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.cpp:40</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_a6acf96532cf66403aebde3d984bae7dc"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#a6acf96532cf66403aebde3d984bae7dc">spla::CLKernelBuilder::add_define</a></div><div class="ttdeci">CLKernelBuilder &amp; add_define(const char *define, int value)</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.cpp:32</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_a77778f5448c367f65fd7e0cce4d4efab"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#a77778f5448c367f65fd7e0cce4d4efab">spla::CLKernelBuilder::add_code</a></div><div class="ttdeci">CLKernelBuilder &amp; add_code(const char *source)</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.cpp:48</div></div>
+<div class="ttc" id="aclassspla_1_1CLKernelBuilder_html_ae7b3a089eb9f9a0c6753da2156a91ba7"><div class="ttname"><a href="classspla_1_1CLKernelBuilder.html#ae7b3a089eb9f9a0c6753da2156a91ba7">spla::CLKernelBuilder::build</a></div><div class="ttdeci">bool build()</div><div class="ttdef"><b>Definition:</b> cl_kernel_builder.cpp:52</div></div>
 <div class="ttc" id="aclassspla_1_1RegistryAlgo_html"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></div><div class="ttdoc">Algorithm suitable to process schedule task based on task string key.</div><div class="ttdef"><b>Definition:</b> registry.hpp:62</div></div>
 <div class="ttc" id="aclassspla_1_1TOpBinary_html"><div class="ttname"><a href="classspla_1_1TOpBinary.html">spla::TOpBinary</a></div><div class="ttdef"><b>Definition:</b> top.hpp:99</div></div>
 <div class="ttc" id="aclassspla_1_1ref__ptr_html"><div class="ttname"><a href="classspla_1_1ref__ptr.html">spla::ref_ptr</a></div><div class="ttdoc">Automates reference counting and behaves as shared smart pointer.</div><div class="ttdef"><b>Definition:</b> ref.hpp:116</div></div>
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">spla::Status::Error</a></div><div class="ttdeci">@ Error</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
-<div class="ttc" id="alogger_8hpp_html_af10c23177855b77e6dfb971906b5f027"><div class="ttname"><a href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a></div><div class="ttdeci">#define LOG_MSG(status, msg)</div><div class="ttdef"><b>Definition:</b> logger.hpp:65</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
