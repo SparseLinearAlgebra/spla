@@ -31,8 +31,7 @@ __kernel void reduce(__global const TYPE* g_vec, __global TYPE* g_sum, uint n) {
     __local TYPE s_sum[BLOCK_SIZE];
     TYPE         sum = g_sum[0];
 
-    // Count stride sum
-    // with step of grid size
+    // Count stride sum with step of grid size
     while (i < n) {
         sum = OP1(sum, g_vec[i]);
         i += gsize;
@@ -42,8 +41,7 @@ __kernel void reduce(__global const TYPE* g_vec, __global TYPE* g_sum, uint n) {
     s_sum[lid] = sum;
     barrier(CLK_LOCAL_MEM_FENCE);
 
-    // Perform group reduction
-    // Use unrolled statements (without loop)
+    // Perform group reduction. Use unrolled statements (without loop)
     reduction_group(512, lid, s_sum);
     reduction_group(256, lid, s_sum);
     reduction_group(128, lid, s_sum);

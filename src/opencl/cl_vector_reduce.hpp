@@ -37,6 +37,8 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_formats.hpp>
+#include <opencl/cl_kernel_builder.hpp>
 #include <opencl/generated/auto_vector_reduce.hpp>
 
 #include <sstream>
@@ -78,8 +80,8 @@ namespace spla {
             m_kernel.setArg(1, cl_sum);
             m_kernel.setArg(2, v->get_n_rows());
 
-            cl::NDRange global(256);
-            cl::NDRange local(256);
+            cl::NDRange global(block_size);
+            cl::NDRange local(block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
             cl::copy(queue, cl_sum, sum, sum + 1);
 
@@ -92,32 +94,27 @@ namespace spla {
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
             if (m_compiled) return true;
 
-            std::stringstream code;
-            code << "#define BLOCK_SIZE " << 256 << "\n";
-            code << "#define WARP_SIZE " << 32 << "\n";
-            code << "#define TYPE " << get_ttype<T>()->get_cpp() << "\n";
-            code << op_reduce->get_type_res()->get_cpp() << " OP1 " << op_reduce->get_source() << "\n";
-            code << source_vector_reduce;
-            m_source = code.str();
+            CLKernelBuilder kernel_builder;
+            kernel_builder
+                    .add_define("BLOCK_SIZE", block_size)
+                    .add_define("WARP_SIZE", warp_size)
+                    .add_type("TYPE", get_ttype<T>().template as<Type>())
+                    .add_op("OP1", op_reduce.template as<OpBinary>())
+                    .add_code(source_vector_reduce);
 
-            auto acc = get_acc_cl();
+            if (!kernel_builder.build()) return false;
 
-            m_program = cl::Program(acc->get_context(), m_source);
-            if (m_program.build(acc->get_device(), "-cl-std=CL1.2") != CL_SUCCESS) {
-                LOG_MSG(Status::Error, "failed to build program: " << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(acc->get_device()));
-                LOG_MSG(Status::Ok, "src\n" << m_source);
-                return false;
-            }
-
+            m_program  = kernel_builder.get_program();
             m_kernel   = cl::Kernel(m_program, "reduce");
             m_compiled = true;
 
             return true;
         }
 
-        std::string m_source;
         cl::Kernel  m_kernel;
         cl::Program m_program;
+        int         block_size = 256;
+        int         warp_size  = 32;
         bool        m_compiled = false;
     };
 
