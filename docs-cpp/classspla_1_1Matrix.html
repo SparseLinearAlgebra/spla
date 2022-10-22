@@ -111,6 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9aa24a2ce5381576a7f03d1db7b3a737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91efddc4804682eac49604eb1ff3ddb2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a91efddc4804682eac49604eb1ff3ddb2">get_type</a> ()=0</td></tr>
 <tr class="separator:a91efddc4804682eac49604eb1ff3ddb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3f5550db1828ac8e78c8bd39e5cd29c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#ab3f5550db1828ac8e78c8bd39e5cd29c">set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates)=0</td></tr>
+<tr class="separator:ab3f5550db1828ac8e78c8bd39e5cd29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a599cb9aa36b8d12f82223ba831bf64ce"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#a599cb9aa36b8d12f82223ba831bf64ce">set_byte</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::int8_t value)=0</td></tr>
 <tr class="separator:a599cb9aa36b8d12f82223ba831bf64ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0a89ea7eb08cc9bd6339314314f6b1b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#af0a89ea7eb08cc9bd6339314314f6b1b">set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::int32_t value)=0</td></tr>
@@ -612,6 +614,34 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="group__internal.html#ga855824f38344446f38e410fa53c3a05d">spla::TMatrix&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ab3f5550db1828ac8e78c8bd39e5cd29c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3f5550db1828ac8e78c8bd39e5cd29c">&#9670;&nbsp;</a></span>set_reduce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Matrix::set_reduce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
+          <td class="paramname"><em>resolve_duplicates</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#gafe44d7e8c42b14c8a8ae75b5e875fc0c">spla::TMatrix&lt; T &gt;</a>.</p>
 
 </div>
 </div>
