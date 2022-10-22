@@ -85,6 +85,7 @@ namespace spla {
 
         std::vector<uint> Ai;
         std::vector<T>    Ax;
+        Reduce            reduce = [](T, T a) { return a; };
     };
 
     /**

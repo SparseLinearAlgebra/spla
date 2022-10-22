@@ -64,6 +64,48 @@ TEST(vector, get_set_reduce_default) {
     }
 }
 
+TEST(vector, get_set_reduce_plus) {
+    const spla::uint N    = 10;
+    const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
+
+    auto ivec = spla::make_vector(N, spla::INT);
+    ivec->set_reduce(spla::PLUS_INT);
+
+    for (spla::uint i = 0; i < N; ++i) {
+        ivec->set_int(i, X[i]);
+        ivec->set_int(i, X[i]);
+    }
+
+    for (spla::uint i = 0; i < N; ++i) {
+        int x;
+        ivec->get_int(i, x);
+        EXPECT_EQ(x, X[i] + X[i]);
+    }
+}
+
+TEST(vector, get_set_reduce_mult) {
+    const spla::uint N    = 10;
+    const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
+
+    auto ivec = spla::make_vector(N, spla::INT);
+
+    for (spla::uint i = 0; i < N; ++i) {
+        ivec->set_int(i, 4);
+    }
+
+    ivec->set_reduce(spla::MULT_INT);
+
+    for (spla::uint i = 0; i < N; ++i) {
+        ivec->set_int(i, X[i]);
+    }
+
+    for (spla::uint i = 0; i < N; ++i) {
+        int x;
+        ivec->get_int(i, x);
+        EXPECT_EQ(x, 4 * X[i]);
+    }
+}
+
 TEST(vector, reduce_plus) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;

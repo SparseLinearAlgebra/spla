@@ -62,7 +62,7 @@ namespace spla {
         auto& row   = lil.Ar[row_id];
 
         auto where = std::upper_bound(row.begin(), row.end(), Entry{col_id, element}, [](const Entry& val, const Entry& point) {
-            return val.first < point.first;
+            return val.first <= point.first;
         });
 
         if (where != row.end() && (*where).first == col_id) {

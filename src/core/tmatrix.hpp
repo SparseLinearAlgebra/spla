@@ -33,6 +33,7 @@
 
 #include <core/logger.hpp>
 #include <core/tdecoration.hpp>
+#include <core/top.hpp>
 #include <core/ttype.hpp>
 
 #include <sequential/cpu_coo.hpp>
@@ -66,6 +67,7 @@ namespace spla {
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
+        Status             set_reduce(ref_ptr<OpBinary> resolve_duplicates) override;
         Status             set_byte(uint row_id, uint col_id, std::int8_t value) override;
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
@@ -102,6 +104,7 @@ namespace spla {
 
         std::vector<ref_ptr<TDecoration<T>>> m_decorations;
         std::string                          m_label;
+        ref_ptr<TOpBinary<T, T, T>>          m_reduce;
     };
 
     template<typename T>
@@ -139,6 +142,23 @@ namespace spla {
     template<typename T>
     const std::string& TMatrix<T>::get_label() const {
         return m_label;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
+        m_reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
+
+        if (m_reduce) {
+            if (auto p_vec = get_dec_p<CpuLil<T>>()) {
+                p_vec->reduce = m_reduce->function;
+            }
+            if (auto p_vec = get_dec_p<CpuDok<T>>()) {
+                p_vec->reduce = m_reduce->function;
+            }
+            return Status::Ok;
+        }
+
+        return Status::InvalidArgument;
     }
 
     template<typename T>
@@ -301,6 +321,7 @@ namespace spla {
             }
 
             p_lil->update_version(m_version);
+            if (m_reduce) p_lil->reduce = m_reduce->function;
         }
     }
 
@@ -321,6 +342,7 @@ namespace spla {
             }
 
             p_dok->update_version(m_version);
+            if (m_reduce) p_dok->reduce = m_reduce->function;
         }
     }
 
