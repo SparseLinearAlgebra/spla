@@ -80,8 +80,8 @@ namespace spla {
             m_kernel.setArg(1, cl_sum);
             m_kernel.setArg(2, v->get_n_rows());
 
-            cl::NDRange global(block_size);
-            cl::NDRange local(block_size);
+            cl::NDRange global(m_block_size);
+            cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
             cl::copy(queue, cl_sum, sum, sum + 1);
 
@@ -94,10 +94,11 @@ namespace spla {
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
             if (m_compiled) return true;
 
+            m_block_size = get_acc_cl()->get_max_work_group_size();
+
             CLKernelBuilder kernel_builder;
             kernel_builder
-                    .add_define("BLOCK_SIZE", block_size)
-                    .add_define("WARP_SIZE", warp_size)
+                    .add_define("BLOCK_SIZE", m_block_size)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP1", op_reduce.template as<OpBinary>())
                     .add_code(source_vector_reduce);
@@ -113,9 +114,8 @@ namespace spla {
 
         cl::Kernel  m_kernel;
         cl::Program m_program;
-        int         block_size = 256;
-        int         warp_size  = 32;
-        bool        m_compiled = false;
+        uint        m_block_size = 0;
+        bool        m_compiled   = false;
     };
 
 }// namespace spla

@@ -51,12 +51,11 @@ namespace spla {
         m_registry = std::make_unique<Registry>();
         // Setup dispatcher (always available)
         m_dispatcher = std::make_unique<Dispatcher>();
+
         // Register build-in bin ops (id's done here, since registration depend on types)
         register_ops();
-
         // Register cpu algo version
         register_algo_cpu(m_registry.get());
-
 #if defined(SPLA_BUILD_OPENCL)
         // Register cl algo version
         register_algo_cl(m_registry.get());

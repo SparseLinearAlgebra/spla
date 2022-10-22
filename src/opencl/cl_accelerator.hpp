@@ -72,6 +72,10 @@ namespace spla {
         cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
 
+        const std::string& get_vendor_name() const { return m_vendor_name; }
+        uint               get_vendor_id() const { return m_vendor_id; }
+        uint               get_max_work_group_size() const { return m_max_work_group_size; }
+
     private:
         void build_description();
 
@@ -82,6 +86,9 @@ namespace spla {
         std::string m_name = "OpenCL";
         std::string m_description;
         std::string m_suffix = "__cl";
+        std::string m_vendor_name;
+        uint        m_vendor_id           = 0;
+        uint        m_max_work_group_size = 0;
 
         std::vector<cl::CommandQueue> m_queues;
     };
