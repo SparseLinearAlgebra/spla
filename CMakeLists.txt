@@ -233,7 +233,9 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_kernel_builder.hpp
             src/opencl/cl_dense_vec.hpp
             src/opencl/cl_formats.hpp
-            src/opencl/cl_vector_reduce.hpp)
+            src/opencl/cl_vector_assign.hpp
+            src/opencl/cl_vector_reduce.hpp
+            )
 endif ()
 
 add_library(spla SHARED

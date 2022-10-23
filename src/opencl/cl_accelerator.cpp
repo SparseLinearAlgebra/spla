@@ -83,9 +83,9 @@ namespace spla {
 
         build_description();
 
-        m_vendor_name         = m_device.getInfo<CL_DEVICE_VENDOR>();
-        m_vendor_id           = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
-        m_max_work_group_size = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
+        m_vendor_name = m_device.getInfo<CL_DEVICE_VENDOR>();
+        m_vendor_id   = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
+        m_max_wgs     = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
 
         return Status::Ok;
     }
@@ -113,6 +113,10 @@ namespace spla {
     }
     void CLAccelerator::build_description() {
         m_description = m_platform() && m_device() ? "OpenCL Acc " + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform or device";
+    }
+    uint CLAccelerator::get_grid_dim(uint n_work) const {
+        uint n_wgs = n_work / m_default_wgs + (n_work % m_default_wgs ? 1 : 0);
+        return n_wgs * m_default_wgs;
     }
 
 }// namespace spla

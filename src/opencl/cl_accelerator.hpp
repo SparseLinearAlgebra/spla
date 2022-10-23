@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 
-#ifdef SPLA_DEBUG
+#if defined(SPLA_DEBUG)
     #define CL_HPP_ENABLE_EXCEPTIONS
 #endif
 
@@ -74,7 +74,9 @@ namespace spla {
 
         const std::string& get_vendor_name() const { return m_vendor_name; }
         uint               get_vendor_id() const { return m_vendor_id; }
-        uint               get_max_work_group_size() const { return m_max_work_group_size; }
+        uint               get_max_wgs() const { return m_max_wgs; }
+        uint               get_default_wgz() const { return m_default_wgs; }
+        uint               get_grid_dim(uint n_work) const;
 
     private:
         void build_description();
@@ -87,8 +89,9 @@ namespace spla {
         std::string m_description;
         std::string m_suffix = "__cl";
         std::string m_vendor_name;
-        uint        m_vendor_id           = 0;
-        uint        m_max_work_group_size = 0;
+        uint        m_vendor_id   = 0;
+        uint        m_max_wgs     = 0;
+        uint        m_default_wgs = 64;
 
         std::vector<cl::CommandQueue> m_queues;
     };

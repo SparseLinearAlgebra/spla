@@ -61,11 +61,10 @@ namespace spla {
                            cl::CommandQueue& queue,
                            bool              blocking = true) {
         std::size_t buffer_size = size * sizeof(T);
-        cl::Buffer  staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_USE_HOST_PTR, buffer_size, values);
+        cl::Buffer  staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, buffer_size);
 
         queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
-
-        if (blocking) queue.finish();
+        queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);
     }
 
     /**

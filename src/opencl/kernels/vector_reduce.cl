@@ -6,7 +6,7 @@
 void reduction_group(uint block_size, uint lid, __local TYPE* s_sum) {
     if (BLOCK_SIZE >= block_size) {
         if (lid < (block_size / 2)) {
-            s_sum[lid] = OP1(s_sum[lid], s_sum[lid + (block_size / 2)]);
+            s_sum[lid] = OP_BINARY(s_sum[lid], s_sum[lid + (block_size / 2)]);
         }
         barrier(CLK_LOCAL_MEM_FENCE);
     }
@@ -29,7 +29,7 @@ __kernel void reduce(__global const TYPE* g_vec, __global TYPE* g_sum, uint n) {
 
     // Count stride sum with step of grid size
     while (i < n) {
-        sum = OP1(sum, g_vec[i]);
+        sum = OP_BINARY(sum, g_vec[i]);
         i += gsize;
     }
 

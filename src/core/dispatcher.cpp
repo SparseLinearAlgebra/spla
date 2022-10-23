@@ -31,6 +31,10 @@
 #include <core/logger.hpp>
 #include <core/registry.hpp>
 
+#if defined(SPLA_BUILD_OPENCL)
+    #include <opencl/cl_accelerator.hpp>
+#endif
+
 namespace spla {
 
     Status Dispatcher::dispatch(const DispatchContext& ctx) {
@@ -53,7 +57,14 @@ namespace spla {
         if (algo) {
             try {
                 return algo->execute(ctx);
-            } catch (const std::exception& ex) {
+            }
+#if defined(SPLA_BUILD_OPENCL) && defined(CL_HPP_ENABLE_EXCEPTIONS)
+            catch (const cl::BuildError& cl_ex) {
+                LOG_MSG(Status::Error, "not handled cl exception thrown: " << cl_ex.getBuildLog().front().second);
+                return Status::Error;
+            }
+#endif
+            catch (const std::exception& ex) {
                 LOG_MSG(Status::Error, "not handled exception thrown: " << ex.what());
                 return Status::Error;
             }

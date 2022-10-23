@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_reduce.hpp>
 
 namespace spla {
@@ -45,6 +46,31 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", PLUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", PLUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", PLUS_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MINUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MINUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MINUS_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MULT_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MULT_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", MULT_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", DIV_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", DIV_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", DIV_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", SECOND_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", SECOND_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", SECOND_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", ONE_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", ONE_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", ONE_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BOR_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BOR_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BAND_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BAND_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BXOR_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BXOR_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
     }
 
 }// namespace spla

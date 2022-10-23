@@ -1,7 +1,8 @@
-// #define TYPE
-// #define BLOCK_SIZE
-// #define WARP_SIZE
-// #define OP1(a, b)
+#define TYPE
+#define BLOCK_SIZE
+#define WARP_SIZE
+#define OP_SELECT(a)
+#define OP_BINARY(a, b)
 
 #define CLK_LOCAL_MEM_FENCE
 #define CLK_GLOBAL_MEM_FENCE

@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_VECTOR_REDUCE_HPP
-#define SPLA_CL_VECTOR_REDUCE_HPP
+#ifndef SPLA_CL_VECTOR_ASSIGN_HPP
+#define SPLA_CL_VECTOR_ASSIGN_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -39,75 +39,76 @@
 
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_kernel_builder.hpp>
-#include <opencl/generated/auto_vector_reduce.hpp>
+#include <opencl/generated/auto_vector_assign.hpp>
 
 #include <sstream>
 
 namespace spla {
 
     template<typename T>
-    class Algo_v_reduce_cl final : public RegistryAlgo {
+    class Algo_v_assign_masked_cl final : public RegistryAlgo {
     public:
-        ~Algo_v_reduce_cl() override = default;
+        ~Algo_v_assign_masked_cl() override = default;
 
         std::string get_name() override {
-            return "v_reduce";
+            return "v_assign_masked";
         }
 
         std::string get_description() override {
-            return "parallel vector reduction on opencl device";
+            return "parallel vector masked assignment on opencl device";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
-            auto r         = t->r.template cast<TScalar<T>>();
-            auto s         = t->s.template cast<TScalar<T>>();
-            auto v         = t->v.template cast<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+            auto r         = t->r.template cast<TVector<T>>();
+            auto mask      = t->mask.template cast<TVector<T>>();
+            auto value     = t->value.template cast<TScalar<T>>();
+            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
+            auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            v->cl_ensure_dense();
-            if (!ensure_kernel(op_reduce)) return Status::Error;
+            r->cl_ensure_dense();
+            mask->cl_ensure_dense();
+            if (!ensure_kernel(op_assign, op_select)) return Status::Error;
 
-            const auto* p_cl_dense_vec = v->template get_dec_p<CLDenseVec<T>>();
-            auto*       p_cl_acc       = get_acc_cl();
-            auto&       queue          = p_cl_acc->get_queue_default();
+            auto*       p_cl_r_dense    = r->template get_dec_p<CLDenseVec<T>>();
+            const auto* p_cl_mask_dense = mask->template get_dec_p<CLDenseVec<T>>();
+            auto*       p_cl_acc        = get_acc_cl();
+            auto&       queue           = p_cl_acc->get_queue_default();
 
-            T          sum[] = {s->get_value()};
-            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(T), sum);
+            T          assign_value[] = {value->get_value()};
+            cl::Buffer cl_assign_value(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), assign_value);
 
-            m_kernel.setArg(0, p_cl_dense_vec->Ax);
-            m_kernel.setArg(1, cl_sum);
-            m_kernel.setArg(2, v->get_n_rows());
+            m_kernel.setArg(0, p_cl_r_dense->Ax);
+            m_kernel.setArg(1, p_cl_mask_dense->Ax);
+            m_kernel.setArg(2, cl_assign_value);
+            m_kernel.setArg(3, r->get_n_rows());
 
-            cl::NDRange global(m_block_size);
-            cl::NDRange local(m_block_size);
+            cl::NDRange global(p_cl_acc->get_grid_dim(r->get_n_rows()));
+            cl::NDRange local(p_cl_acc->get_default_wgz());
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
             queue.finish();
-            cl::copy(queue, cl_sum, sum, sum + 1);
 
-            r->get_value() = sum[0];
+            r->cl_update_dense();
 
             return Status::Ok;
         }
 
     private:
-        bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
+        bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_assign, const ref_ptr<TOpSelect<T>>& op_select) {
             if (m_compiled) return true;
-
-            m_block_size = get_acc_cl()->get_max_wgs();
 
             CLKernelBuilder kernel_builder;
             kernel_builder
-                    .add_define("BLOCK_SIZE", m_block_size)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
-                    .add_op("OP_BINARY", op_reduce.template as<OpBinary>())
-                    .add_code(source_vector_reduce);
+                    .add_op("OP_BINARY", op_assign.template as<OpBinary>())
+                    .add_op("OP_SELECT", op_select.template as<OpSelect>())
+                    .add_code(source_vector_assign);
 
             if (!kernel_builder.build()) return false;
 
             m_program  = kernel_builder.get_program();
-            m_kernel   = cl::Kernel(m_program, "reduce");
+            m_kernel   = cl::Kernel(m_program, "assign");
             m_compiled = true;
 
             return true;
@@ -115,10 +116,9 @@ namespace spla {
 
         cl::Kernel  m_kernel;
         cl::Program m_program;
-        uint        m_block_size = 0;
-        bool        m_compiled   = false;
+        bool        m_compiled = false;
     };
 
 }// namespace spla
 
-#endif//SPLA_CL_VECTOR_REDUCE_HPP
+#endif//SPLA_CL_VECTOR_ASSIGN_HPP
