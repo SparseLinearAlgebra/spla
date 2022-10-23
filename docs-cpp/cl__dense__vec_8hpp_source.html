@@ -127,16 +127,15 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                           cl::CommandQueue&amp; queue,</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                           <span class="keywordtype">bool</span>              blocking = <span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        std::size_t buffer_size = size * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        cl::Buffer  staging(get_acc_cl()-&gt;get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_USE_HOST_PTR, buffer_size, values);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        cl::Buffer  staging(get_acc_cl()-&gt;get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, buffer_size);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        queue.enqueueCopyBuffer(storage.<a class="code" href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">Ax</a>, staging, 0, 0, buffer_size);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">if</span> (blocking) queue.finish();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DENSE_VEC_HPP</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DENSE_VEC_HPP</span></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1CLDenseVec_html"><div class="ttname"><a href="classspla_1_1CLDenseVec.html">spla::CLDenseVec</a></div><div class="ttdoc">OpenCL one-dim array for dense vector representation.</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:61</div></div>
 <div class="ttc" id="aclassspla_1_1CLDenseVec_html_af8698b0fae489eaf1b315b6a2a328186"><div class="ttname"><a href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">spla::CLDenseVec::Ax</a></div><div class="ttdeci">cl::Buffer Ax</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:67</div></div>
