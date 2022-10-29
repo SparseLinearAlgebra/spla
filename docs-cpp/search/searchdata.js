@@ -10,8 +10,7 @@ var indexSectionsWithContent =
   7: "afs",
   8: "acdeinops",
   9: "cdeglmos",
-  10: "is",
-  11: "s"
+  10: "is"
 };
 
 var indexSectionNames =
@@ -26,8 +25,7 @@ var indexSectionNames =
   7: "enums",
   8: "enumvalues",
   9: "defines",
-  10: "groups",
-  11: "pages"
+  10: "groups"
 };
 
 var indexSectionLabels =
@@ -42,7 +40,6 @@ var indexSectionLabels =
   7: "Enumerations",
   8: "Enumerator",
   9: "Macros",
-  10: "Modules",
-  11: "Pages"
+  10: "Modules"
 };
 
