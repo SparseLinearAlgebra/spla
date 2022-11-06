@@ -109,6 +109,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a516025afa2bcc0026878cf0f97846034"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a516025afa2bcc0026878cf0f97846034">set_default_callback</a> ()</td></tr>
 <tr class="memdesc:a516025afa2bcc0026878cf0f97846034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets default library callback to log messages to console.  <a href="classspla_1_1Library.html#a516025afa2bcc0026878cf0f97846034">More...</a><br /></td></tr>
 <tr class="separator:a516025afa2bcc0026878cf0f97846034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e0e21b7897ac3bcc404d80ec4b625f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a84e0e21b7897ac3bcc404d80ec4b625f">set_force_no_acceleration</a> (bool value)</td></tr>
+<tr class="memdesc:a84e0e21b7897ac3bcc404d80ec4b625f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets option to force cpu only usage without acceleration.  <a href="classspla_1_1Library.html#a84e0e21b7897ac3bcc404d80ec4b625f">More...</a><br /></td></tr>
+<tr class="separator:a84e0e21b7897ac3bcc404d80ec4b625f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20561e28307f40f22421683058da4817"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a20561e28307f40f22421683058da4817">is_set_force_no_acceleration</a> ()</td></tr>
+<tr class="separator:a20561e28307f40f22421683058da4817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af304f09c19214de82a5c4290b326218c"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1Accelerator.html">Accelerator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#af304f09c19214de82a5c4290b326218c">get_accelerator</a> ()</td></tr>
 <tr class="separator:af304f09c19214de82a5c4290b326218c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a910b479ed346d1331e3e7aed4c392862"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1Registry.html">Registry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a910b479ed346d1331e3e7aed4c392862">get_registry</a> ()</td></tr>
@@ -315,6 +320,23 @@ After this call no other library function call is allowed </dd></dl>
 
 </div>
 </div>
+<a id="a20561e28307f40f22421683058da4817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20561e28307f40f22421683058da4817">&#9670;&nbsp;</a></span>is_set_force_no_acceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool spla::Library::is_set_force_no_acceleration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af87f1437716ee9bfc10bbf0ebf83ebc8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af87f1437716ee9bfc10bbf0ebf83ebc8">&#9670;&nbsp;</a></span>set_accelerator()</h2>
 
@@ -383,6 +405,33 @@ After this call no other library function call is allowed </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>Device index in current platform devices</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Function call status </dd></dl>
+
+</div>
+</div>
+<a id="a84e0e21b7897ac3bcc404d80ec4b625f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84e0e21b7897ac3bcc404d80ec4b625f">&#9670;&nbsp;</a></span>set_force_no_acceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Library::set_force_no_acceleration </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets option to force cpu only usage without acceleration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>True to disable any acceleration</td></tr>
   </table>
   </dd>
 </dl>

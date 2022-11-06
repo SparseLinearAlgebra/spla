@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['validate_835',['validate',['../group__internal.html#gab07d28231458cdb4e1e7ff6a23319da7',1,'spla::TMatrix::validate()'],['../group__internal.html#gaf30e43ca0a8ea17e56d5d55663aa31c9',1,'spla::TVector::validate()']]]
+  ['update_5fdense_839',['update_dense',['../group__internal.html#gae631c31a49e08c307752ea8b82d9d3f3',1,'spla::TVector']]],
+  ['update_5fversion_840',['update_version',['../classspla_1_1TDecoration.html#a48c0c9c64dffd14c4eb1c8bd3ec28497',1,'spla::TDecoration::update_version()'],['../group__internal.html#gae784e3ed69cd0d6e0f7cc3213063bc31',1,'spla::TMatrix::update_version()'],['../group__internal.html#ga251222d3a7b5d30b63517f33e095b8ab',1,'spla::TVector::update_version()']]]
 ];

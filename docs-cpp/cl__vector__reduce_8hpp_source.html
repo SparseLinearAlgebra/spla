@@ -145,7 +145,7 @@ $(function() {
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span>&amp;       queue          = p_cl_acc-&gt;get_queue_default();</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            T          sum[] = {s-&gt;get_value()};</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            cl::Buffer cl_sum(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, <span class="keyword">sizeof</span>(T), sum);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            cl::Buffer cl_sum(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, <span class="keyword">sizeof</span>(T), sum);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            m_kernel.setArg(0, p_cl_dense_vec-&gt;Ax);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            m_kernel.setArg(1, cl_sum);</div>
