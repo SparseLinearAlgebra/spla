@@ -54,6 +54,11 @@ int main(int argc, const char* const* argv) {
         return 1;
     }
 
+    spla::Library* library = spla::get_library();
+    library->set_platform(args[OPT_PLATFORM].as<int>());
+    library->set_device(args[OPT_DEVICE].as<int>());
+    library->set_queues_count(1);
+
     const spla::uint            N = loader.get_n_rows();
     const spla::uint            s = args[OPT_SOURCE].as<int>();
     spla::ref_ptr<spla::Vector> v = spla::make_vector(N, spla::INT);
@@ -69,6 +74,8 @@ int main(int argc, const char* const* argv) {
     const int n_iters = args[OPT_NITERS].as<int>();
 
     if (args[OPT_RUN_CPU].as<bool>()) {
+        library->set_force_no_acceleration(true);
+
         for (int i = 0; i < n_iters; ++i) {
             v->clear();
 
@@ -79,6 +86,8 @@ int main(int argc, const char* const* argv) {
     }
 
     if (args[OPT_RUN_GPU].as<bool>()) {
+        library->set_force_no_acceleration(false);
+
         for (int i = 0; i < n_iters; ++i) {
             v->clear();
 
@@ -109,13 +118,13 @@ int main(int argc, const char* const* argv) {
 
     std::cout << "total(ms): " << timer.get_elapsed_ms() << std::endl;
     std::cout << "cpu(ms): ";
-    output_time(timer_cpu);
+    timer_cpu.print();
     std::cout << std::endl;
     std::cout << "gpu(ms): ";
-    output_time(timer_gpu);
+    timer_gpu.print();
     std::cout << std::endl;
     std::cout << "ref(ms): ";
-    output_time(timer_ref);
+    timer_ref.print();
     std::cout << std::endl;
 
     return 0;

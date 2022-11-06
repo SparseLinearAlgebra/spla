@@ -38,13 +38,15 @@
 namespace spla {
 
     Status Dispatcher::dispatch(const DispatchContext& ctx) {
-        Registry*    g_reg = get_registry();
-        Accelerator* g_acc = get_accelerator();
+        Library*     g_lib        = get_library();
+        Registry*    g_reg        = g_lib->get_registry();
+        Accelerator* g_acc        = g_lib->get_accelerator();
+        bool         force_no_acc = g_lib->is_set_force_no_acceleration();
 
         std::shared_ptr<RegistryAlgo> algo;
         std::string                   key = ctx.task->get_key();
 
-        if (g_acc) {
+        if (g_acc && !force_no_acc) {
             std::string key_acc = key + g_acc->get_suffix();
             algo                = g_reg->find(key_acc);
         }

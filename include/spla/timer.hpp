@@ -31,6 +31,8 @@
 #include "config.hpp"
 
 #include <chrono>
+#include <iostream>
+#include <ostream>
 #include <vector>
 
 namespace spla {
@@ -53,6 +55,7 @@ namespace spla {
         SPLA_API void                 stop();
         SPLA_API void                 lap_begin();
         SPLA_API void                 lap_end();
+        SPLA_API void                 print(std::ostream& out = std::cout) const;
         [[nodiscard]] SPLA_API double get_elapsed_ms() const;
         [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
         [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;

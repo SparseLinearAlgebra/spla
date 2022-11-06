@@ -132,6 +132,16 @@ namespace spla {
         return set_message_callback(callback);
     }
 
+    Status Library::set_force_no_acceleration(bool value) {
+        LOG_MSG(Status::Ok, "force no acc: " << value);
+        m_force_no_acc = value;
+        return Status::Ok;
+    }
+
+    bool Library::is_set_force_no_acceleration() {
+        return m_force_no_acc;
+    }
+
     class Accelerator* Library::get_accelerator() {
         return m_accelerator.get();
     }

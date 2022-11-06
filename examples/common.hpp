@@ -48,10 +48,4 @@ void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& 
     }
 }
 
-void output_time(const spla::Timer& timer) {
-    for (auto t : timer.get_laps_ms()) {
-        std::cout << t << ",";
-    }
-}
-
 #endif//SPLA_COMMON_HPP

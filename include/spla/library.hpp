@@ -121,6 +121,16 @@ namespace spla {
         SPLA_API Status set_default_callback();
 
         /**
+         * @brief Sets option to force cpu only usage without acceleration
+         *
+         * @param value True to disable any acceleration
+         *
+         * @return Function call status
+         */
+        SPLA_API Status set_force_no_acceleration(bool value);
+        SPLA_API bool   is_set_force_no_acceleration();
+
+        /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
@@ -149,6 +159,7 @@ namespace spla {
         std::unique_ptr<class Registry>    m_registry;
         std::unique_ptr<class Dispatcher>  m_dispatcher;
         std::unique_ptr<class Logger>      m_logger;
+        bool                               m_force_no_acc = false;
     };
 
     /**

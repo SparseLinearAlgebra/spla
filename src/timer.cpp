@@ -44,6 +44,11 @@ namespace spla {
         m_prev         = clock::now();
         m_laps.push_back(static_cast<double>(std::chrono::duration_cast<us>(m_prev - lap_start).count()) * 1e-3);
     }
+
+    void Timer::print(std::ostream& out) const {
+        for (auto t : m_laps) out << t << ", ";
+    }
+
     double Timer::get_elapsed_ms() const {
         return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_start).count()) * 1e-3;
     }

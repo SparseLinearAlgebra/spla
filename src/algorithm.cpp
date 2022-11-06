@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iostream>
 #include <queue>
 
 namespace spla {
@@ -54,6 +55,10 @@ namespace spla {
 
         frontier_prev->set_int(s, 1);
 
+#ifdef SPLA_DEBUG
+        std::cout << "start bfs from " << s << std::endl;
+#endif
+
         while (!frontier_empty) {
             depth->set_int(current_level);
             exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
@@ -64,6 +69,10 @@ namespace spla {
             frontier_size->get_int(observed_vertices);
 
             frontier_empty = observed_vertices == 0;
+
+#ifdef SPLA_DEBUG
+            std::cout << " - iter " << current_level << " front " << observed_vertices << std::endl;
+#endif
             current_level += 1;
 
             std::swap(frontier_prev, frontier_new);

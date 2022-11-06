@@ -30,12 +30,14 @@
 
 #include <cxxopts.hpp>
 
-#define OPT_MTXPATH "mtxpath"
-#define OPT_NITERS  "niters"
-#define OPT_SOURCE  "source"
-#define OPT_RUN_REF "run-ref"
-#define OPT_RUN_CPU "run-cpu"
-#define OPT_RUN_GPU "run-gpu"
+#define OPT_MTXPATH  "mtxpath"
+#define OPT_NITERS   "niters"
+#define OPT_SOURCE   "source"
+#define OPT_RUN_REF  "run-ref"
+#define OPT_RUN_CPU  "run-cpu"
+#define OPT_RUN_GPU  "run-gpu"
+#define OPT_PLATFORM "platform"
+#define OPT_DEVICE   "device"
 
 
 std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
@@ -48,8 +50,8 @@ std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const st
     options->add_option("", cxxopts::Option(OPT_RUN_CPU, "run algo with cpu backend", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option(OPT_RUN_GPU, "run algo with gpu (acc) backend", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option("undirected", "force graph to be undirected", cxxopts::value<bool>()->default_value("false")));
-    options->add_option("", cxxopts::Option("platform", "id of platform to run", cxxopts::value<int>()->default_value("0")));
-    options->add_option("", cxxopts::Option("devices", "id of device to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option(OPT_PLATFORM, "id of platform to run", cxxopts::value<int>()->default_value("0")));
+    options->add_option("", cxxopts::Option(OPT_DEVICE, "id of device to run", cxxopts::value<int>()->default_value("0")));
     options->add_option("", cxxopts::Option("verbose", "verbose std output", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option("debug-timing", "timing for each iteration of algorithm", cxxopts::value<bool>()->default_value("false")));
     return options;
