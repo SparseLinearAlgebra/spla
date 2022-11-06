@@ -89,7 +89,6 @@ namespace spla {
         ref_ptr<OpBinary> op_add;
         ref_ptr<OpSelect> op_select;
         ref_ptr<Scalar>   init;
-        bool              opt_complement;
     };
 
     /**

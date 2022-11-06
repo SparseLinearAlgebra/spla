@@ -115,8 +115,11 @@ namespace spla {
         m_description = m_platform() && m_device() ? "OpenCL Acc " + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform or device";
     }
     uint CLAccelerator::get_grid_dim(uint n_work) const {
-        uint n_wgs = n_work / m_default_wgs + (n_work % m_default_wgs ? 1 : 0);
-        return n_wgs * m_default_wgs;
+        return get_grid_dim(n_work, m_default_wgs);
+    }
+    uint CLAccelerator::get_grid_dim(uint n_work, uint n_work_in_group) const {
+        uint n_wgs = n_work / n_work_in_group + (n_work % n_work_in_group ? 1 : 0);
+        return n_wgs * n_work_in_group;
     }
 
 }// namespace spla

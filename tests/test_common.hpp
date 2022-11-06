@@ -53,4 +53,17 @@
         return __ret;                                    \
     }
 
+// Form temporary testing (allows to select platform)
+#define SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(id)       \
+    int main(int argc, char* argv[]) {                   \
+        ::testing::GTEST_FLAG(catch_exceptions) = false; \
+        ::testing::InitGoogleTest(&argc, argv);          \
+        spla::get_library()->set_platform(id);           \
+        spla::get_library()->set_device(0);              \
+        spla::get_library()->set_queues_count(1);        \
+        int __ret = RUN_ALL_TESTS();                     \
+        spla::get_library()->finalize();                 \
+        return __ret;                                    \
+    }
+
 #endif//SPLA_TEST_COMMON_HPP

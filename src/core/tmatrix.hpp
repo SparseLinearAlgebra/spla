@@ -43,6 +43,12 @@
 #include <memory>
 #include <vector>
 
+#if defined(SPLA_BUILD_OPENCL)
+    #include <opencl/cl_accelerator.hpp>
+    #include <opencl/cl_csr.hpp>
+    #include <opencl/cl_formats.hpp>
+#endif
+
 namespace spla {
 
     /**
@@ -94,6 +100,11 @@ namespace spla {
         void update_version();
         void ensure_lil_format();
         void ensure_dok_format();
+        void ensure_csr_format();
+#if defined(SPLA_BUILD_OPENCL)
+        void cl_update_csr();
+        void cl_ensure_csr();
+#endif
 
     private:
         uint      m_version    = 1;
@@ -184,6 +195,11 @@ namespace spla {
         if (format == Format::CpuCsc) {
             return m_decorations[index] = make_ref<CpuCsr<T>>();
         }
+#if defined(SPLA_BUILD_OPENCL)
+        if (format == Format::CLCsr) {
+            return m_decorations[index] = make_ref<CLCsr<T>>();
+        }
+#endif
 
         LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
         return m_decorations.back();
@@ -345,6 +361,47 @@ namespace spla {
             if (m_reduce) p_dok->reduce = m_reduce->function;
         }
     }
+
+    template<typename T>
+    void TMatrix<T>::ensure_csr_format() {
+        auto p_cpu_lil = get_dec_or_create_p<CpuLil<T>>();
+        auto p_cpu_csr = get_dec_or_create_p<CpuCsr<T>>();
+
+        if (p_cpu_csr->get_version() < m_version) {
+            ensure_lil_format();
+            p_cpu_csr->Ap.resize(get_n_rows() + 1);
+            p_cpu_csr->Aj.resize(p_cpu_lil->values);
+            p_cpu_csr->Ax.resize(p_cpu_lil->values);
+            cpu_lil_to_csr(m_n_rows, *p_cpu_lil, *p_cpu_csr);
+            p_cpu_csr->update_version(m_version);
+        }
+    }
+
+#if defined(SPLA_BUILD_OPENCL)
+    template<typename T>
+    void TMatrix<T>::cl_update_csr() {
+        auto p_csr = get_dec_or_create_p<CLCsr<T>>();
+        update_version();
+        p_csr->update_version(m_version);
+    }
+
+    template<typename T>
+    void TMatrix<T>::cl_ensure_csr() {
+        auto p_cpu_csr = get_dec_or_create_p<CpuCsr<T>>();
+        auto p_cl_csr  = get_dec_or_create_p<CLCsr<T>>();
+
+        if (p_cl_csr->get_version() < m_version) {
+            ensure_csr_format();
+            cl_csr_init(p_cpu_csr->Ap.size(),
+                        p_cpu_csr->Aj.size(),
+                        p_cpu_csr->Ap.data(),
+                        p_cpu_csr->Aj.data(),
+                        p_cpu_csr->Ax.data(),
+                        *p_cl_csr);// todo: if allocated copy using staging buffer
+            p_cl_csr->update_version(m_version);
+        }
+    }
+#endif
 
     /**
      * @}

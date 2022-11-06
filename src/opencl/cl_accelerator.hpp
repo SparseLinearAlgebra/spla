@@ -77,6 +77,7 @@ namespace spla {
         uint               get_max_wgs() const { return m_max_wgs; }
         uint               get_default_wgz() const { return m_default_wgs; }
         uint               get_grid_dim(uint n_work) const;
+        uint               get_grid_dim(uint n_work, uint n_work_in_group) const;
 
     private:
         void build_description();

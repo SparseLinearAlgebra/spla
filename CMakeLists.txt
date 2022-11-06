@@ -232,7 +232,9 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_kernel_builder.cpp
             src/opencl/cl_kernel_builder.hpp
             src/opencl/cl_dense_vec.hpp
+            src/opencl/cl_csr.hpp
             src/opencl/cl_formats.hpp
+            src/opencl/cl_mxv.hpp
             src/opencl/cl_vector_assign.hpp
             src/opencl/cl_vector_reduce.hpp
             )

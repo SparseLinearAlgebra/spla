@@ -96,19 +96,19 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Scheduled r<comp! mask> = M x V
+     * @brief Scheduled r<select(mask)> = M x V
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     * @note Semantic `r[i] = select(mask)? M[i] * v: init`
      *
-     * @param r
-     * @param mask
-     * @param M
-     * @param v
-     * @param op_multiply
-     * @param op_add
-     * @param op_select
-     * @param init
-     * @param opt_complement
+     * @param r Vector to store operation result
+     * @param mask Vector to select for which values to compute product
+     * @param M Matrix for product
+     * @param v Vector for product
+     * @param op_multiply Element-wise binary operator for matrix vector elements product
+     * @param op_add Element-wise binary operator for matrix vector products sum
+     * @param op_select Selection op to filter mask
+     * @param init Init of matrix row and vector product
      * @param desc Scheduled task descriptor; default is null
      * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *

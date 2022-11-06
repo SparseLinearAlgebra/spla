@@ -25,24 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_FORMATS_HPP
-#define SPLA_CL_FORMATS_HPP
+#ifndef SPLA_CL_CSR_HPP
+#define SPLA_CL_CSR_HPP
 
-#include <spla/config.hpp>
-
-#include <core/tdecoration.hpp>
-#include <util/pair_hash.hpp>
-
-#include <opencl/cl_accelerator.hpp>
-
-#include <algorithm>
-#include <cassert>
-#include <functional>
-#include <numeric>
-#include <string>
-#include <unordered_map>
-#include <utility>
-#include <vector>
+#include <opencl/cl_formats.hpp>
 
 namespace spla {
 
@@ -51,57 +37,24 @@ namespace spla {
      * @{
      */
 
-    /**
-     * @class CLDenseVec
-     * @brief OpenCL one-dim array for dense vector representation
-     *
-     * @tparam T Type of values stored
-     */
     template<typename T>
-    class CLDenseVec : public TDecoration<T> {
-    public:
-        static constexpr Format FORMAT = Format::CLDenseVec;
+    void cl_csr_init(std::size_t n_rows,
+                     std::size_t n_values,
+                     const uint* Ap,
+                     const uint* Aj,
+                     const T*    Ax,
+                     CLCsr<T>&   storage) {
+        auto& ctx   = get_acc_cl()->get_context();
+        auto  flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
 
-        ~CLDenseVec() override = default;
+        cl::Buffer cl_Ap(ctx, flags, n_rows * sizeof(uint), (void*) Ap);
+        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint), (void*) Aj);
+        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T), (void*) Ax);
 
-        cl::Buffer Ax;
-    };
-
-    /**
-     * @class CLCooVec
-     * @brief OpenCL list-of-coordinates sparse vector representation
-     *
-     * @tparam T Type of values stored
-     */
-    template<typename T>
-    class CLCooVec : public TDecoration<T> {
-    public:
-        static constexpr Format FORMAT = Format::CLCooVec;
-
-        ~CLCooVec() override = default;
-
-        cl::Buffer Ai;
-        cl::Buffer Ax;
-    };
-
-    /**
-     * @class CLCsr
-     * @brief OpenCL compressed sparse row matrix representation
-     *
-     * @tparam T Type of values stored
-     */
-    template<typename T>
-    class CLCsr : public TDecoration<T> {
-    public:
-        static constexpr Format FORMAT = Format::CLCsr;
-
-        ~CLCsr() override = default;
-
-        cl::Buffer Ap;
-        cl::Buffer Aj;
-        cl::Buffer Ax;
-    };
-
+        storage.Ap = std::move(cl_Ap);
+        storage.Aj = std::move(cl_Aj);
+        storage.Ax = std::move(cl_Ax);
+    }
 
     /**
      * @}
@@ -109,4 +62,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_FORMATS_HPP
+#endif//SPLA_CL_CSR_HPP

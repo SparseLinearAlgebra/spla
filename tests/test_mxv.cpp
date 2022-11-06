@@ -27,25 +27,26 @@
 
 #include "test_common.hpp"
 
+#include <iostream>
 #include <spla/spla.hpp>
 
-TEST(mxv_masked_comp, naive) {
+TEST(mxv_masked, naive) {
     spla::uint M = 4, N = 5;
 
     //            v 3 0 3 0 -1
     //
     // fr   ir   mask       M
     // _________________________
-    // 10 |  2 |  1 | 0 2 0 0 -9
-    // 24 | -5 |  0 | 2 0 0 0 -8
-    // 10 |  4 |  1 | 0 0 3 0  0
-    // 11 |  5 |  0 | 0 0 0 0 -1
+    // 0  |  2 |  1 | 0 2 0 0 -9
+    // 14 | -5 |  0 | 2 0 0 0 -8
+    // 0  |  4 |  1 | 0 0 3 0  0
+    // 1  |  5 |  0 | 0 0 0 0 -1
 
     auto ir    = spla::make_vector(M, spla::INT);
     auto imask = spla::make_vector(M, spla::INT);
     auto iv    = spla::make_vector(N, spla::INT);
     auto iM    = spla::make_matrix(M, N, spla::INT);
-    auto iinit = spla::make_int(10);
+    auto iinit = spla::make_int(0);
 
     ir->set_int(0, 2);
     ir->set_int(1, -5);
@@ -75,16 +76,63 @@ TEST(mxv_masked_comp, naive) {
     int r;
 
     ir->get_int(0, r);
-    EXPECT_EQ(r, 10);
+    EXPECT_EQ(r, 0);
 
     ir->get_int(1, r);
-    EXPECT_EQ(r, 24);
+    EXPECT_EQ(r, 14);
 
     ir->get_int(2, r);
-    EXPECT_EQ(r, 10);
+    EXPECT_EQ(r, 0);
 
     ir->get_int(3, r);
-    EXPECT_EQ(r, 11);
+    EXPECT_EQ(r, 1);
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+TEST(mxv_masked, perf) {
+    const int N     = 100000;
+    const int K     = 256;
+    const int S     = 10;
+    const int NITER = 10;
+
+    spla::Timer timer;
+
+    auto ir    = spla::make_vector(N, spla::INT);
+    auto imask = spla::make_vector(N, spla::INT);
+    auto iv    = spla::make_vector(N, spla::INT);
+    auto iM    = spla::make_matrix(N, N, spla::INT);
+    auto iinit = spla::make_int(0);
+
+    for (int i = 0; i < N; i++) {
+        imask->set_int(i, (i % S ? 1 : 0));
+        iv->set_int(i, 1);
+
+        for (int k = 0; k < K; k++) {
+            const int j = (i + k) % N;
+            iM->set_int(i, j, 1);
+        }
+    }
+
+    timer.start();
+
+    for (int i = 0; i < NITER; i++) {
+        timer.lap_begin();
+        spla::exec_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
+        timer.lap_end();
+    }
+
+    timer.stop();
+
+    for (int i = 0; i < N; i++) {
+        int r;
+        ir->get_int(i, r);
+        EXPECT_EQ(r, (i % S ? 0 : K));
+    }
+
+    std::cout << "timings (ms): ";
+    for (int i = 0; i < NITER; i++) {
+        std::cout << timer.get_laps_ms()[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_mxv.hpp>
 #include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_reduce.hpp>
 
@@ -71,6 +72,15 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BAND_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BXOR_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", BXOR_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", BAND_INT, BOR_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", BAND_UINT, BOR_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MULT_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MULT_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MULT_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
     }
 
 }// namespace spla
