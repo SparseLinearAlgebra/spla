@@ -116,6 +116,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLCooVec.html">spla::CLCooVec&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL list-of-coordinates sparse vector representation.  <a href="classspla_1_1CLCooVec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLCsr.html">spla::CLCsr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">OpenCL compressed sparse row matrix representation.  <a href="classspla_1_1CLCsr.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLKernelBuilder.html">spla::CLKernelBuilder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runtime opencl program builder.  <a href="classspla_1_1CLKernelBuilder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +172,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">spla::register_algo_cl</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all opencl-specific algorithms.  <a href="group__internal.html#gabb6fb799e1d7c70cdfc8e542369c0570">More...</a><br /></td></tr>
 <tr class="separator:gabb6fb799e1d7c70cdfc8e542369c0570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga309c5141b3f06d79e3e8b0bbf06466c7">spla::cl_csr_init</a> (std::size_t n_rows, std::size_t n_values, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ap, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Aj, const T *Ax, <a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaebb85b9d1aa094e2f5de8553f0fbabc2">spla::cl_dense_vec_init</a> (std::size_t size, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:gaebb85b9d1aa094e2f5de8553f0fbabc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,6 +268,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga9193100fdca1a3a7e25cc332859f9b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6bd68a85b7cfcee077a63f325314805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac6bd68a85b7cfcee077a63f325314805">spla::TMatrix&lt; T &gt;::ensure_dok_format</a> ()</td></tr>
 <tr class="separator:gac6bd68a85b7cfcee077a63f325314805"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d02fee52ecad628505b2301a834ea60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5d02fee52ecad628505b2301a834ea60">spla::TMatrix&lt; T &gt;::ensure_csr_format</a> ()</td></tr>
+<tr class="separator:ga5d02fee52ecad628505b2301a834ea60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeea8b2d2d47195a42fa72323011336d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaeea8b2d2d47195a42fa72323011336d4">spla::TOpBinary&lt; A0, A1, R &gt;::set_label</a> (std::string <a class="el" href="classspla_1_1TOpBinary.html#ae32c19ff6270e1f0b935d0f1a8d785d3">label</a>) override</td></tr>
 <tr class="separator:gaeea8b2d2d47195a42fa72323011336d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada52e4eb5734d6744268d459e5a4307b"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gada52e4eb5734d6744268d459e5a4307b">spla::TOpBinary&lt; A0, A1, R &gt;::get_label</a> () const override</td></tr>
@@ -381,6 +389,60 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga309c5141b3f06d79e3e8b0bbf06466c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga309c5141b3f06d79e3e8b0bbf06466c7">&#9670;&nbsp;</a></span>cl_csr_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cl_csr_init </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *&#160;</td>
+          <td class="paramname"><em>Ap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *&#160;</td>
+          <td class="paramname"><em>Aj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>Ax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="gaebb85b9d1aa094e2f5de8553f0fbabc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaebb85b9d1aa094e2f5de8553f0fbabc2">&#9670;&nbsp;</a></span>cl_dense_vec_init()</h2>
 
@@ -927,6 +989,22 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga5d02fee52ecad628505b2301a834ea60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d02fee52ecad628505b2301a834ea60">&#9670;&nbsp;</a></span>ensure_csr_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::ensure_csr_format</td>
         </tr>
       </table>
 </div><div class="memdoc">

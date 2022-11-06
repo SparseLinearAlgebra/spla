@@ -253,7 +253,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gab79daac2eadc8b4c074da567ec1d8a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled callback function.  <a href="group__spla.html#gab79daac2eadc8b4c074da567ec1d8a47">More...</a><br /></td></tr>
 <tr class="separator:gab79daac2eadc8b4c074da567ec1d8a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabd1c4346b3dd92badfb5c3f0bcec63cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gabd1c4346b3dd92badfb5c3f0bcec63cc">spla::exec_mxv_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; M, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_multiply, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_add, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; op_select, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; init, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
-<tr class="memdesc:gabd1c4346b3dd92badfb5c3f0bcec63cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;comp! mask&gt; = M x V.  <a href="group__spla.html#gabd1c4346b3dd92badfb5c3f0bcec63cc">More...</a><br /></td></tr>
+<tr class="memdesc:gabd1c4346b3dd92badfb5c3f0bcec63cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;select(mask)&gt; = M x V.  <a href="group__spla.html#gabd1c4346b3dd92badfb5c3f0bcec63cc">More...</a><br /></td></tr>
 <tr class="separator:gabd1c4346b3dd92badfb5c3f0bcec63cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1fdebb6a915c0afc2f97968b5e150d05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga1fdebb6a915c0afc2f97968b5e150d05">spla::exec_v_assign_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; value, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_assign, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; op_select, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:ga1fdebb6a915c0afc2f97968b5e150d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduled r&lt;select(mask)&gt; = value.  <a href="group__spla.html#ga1fdebb6a915c0afc2f97968b5e150d05">More...</a><br /></td></tr>
@@ -844,19 +844,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Scheduled r&lt;comp! mask&gt; = M x V. </p>
-<dl class="section note"><dt>Note</dt><dd>Pass valid <code>task_hnd</code> to store as a task, rather then execute immediately.</dd></dl>
+<p>Scheduled r&lt;select(mask)&gt; = M x V. </p>
+<dl class="section note"><dt>Note</dt><dd>Pass valid <code>task_hnd</code> to store as a task, rather then execute immediately. </dd>
+<dd>
+Semantic <code>r[i] = select(mask)? M[i] * v: init</code></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">r</td><td></td></tr>
-    <tr><td class="paramname">mask</td><td></td></tr>
-    <tr><td class="paramname">M</td><td></td></tr>
-    <tr><td class="paramname">v</td><td></td></tr>
-    <tr><td class="paramname">op_multiply</td><td></td></tr>
-    <tr><td class="paramname">op_add</td><td></td></tr>
-    <tr><td class="paramname">op_select</td><td></td></tr>
-    <tr><td class="paramname">init</td><td></td></tr>
-    <tr><td class="paramname">opt_complement</td><td></td></tr>
+    <tr><td class="paramname">r</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> to store operation result </td></tr>
+    <tr><td class="paramname">mask</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> to select for which values to compute product </td></tr>
+    <tr><td class="paramname">M</td><td><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> for product </td></tr>
+    <tr><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> for product </td></tr>
+    <tr><td class="paramname">op_multiply</td><td>Element-wise binary operator for matrix vector elements product </td></tr>
+    <tr><td class="paramname">op_add</td><td>Element-wise binary operator for matrix vector products sum </td></tr>
+    <tr><td class="paramname">op_select</td><td>Selection op to filter mask </td></tr>
+    <tr><td class="paramname">init</td><td>Init of matrix row and vector product </td></tr>
     <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
     <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
   </table>

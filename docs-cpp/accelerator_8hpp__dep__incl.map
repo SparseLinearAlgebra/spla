@@ -1,14 +1,16 @@
 <map id="src/core/accelerator.hpp" name="src/core/accelerator.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="158,5,319,32"/>
-<area shape="rect" id="node2" href="$dispatcher_8cpp.html" title=" " alt="" coords="5,80,163,107"/>
-<area shape="rect" id="node3" href="$library_8cpp.html" title=" " alt="" coords="187,80,290,107"/>
-<area shape="rect" id="node4" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="314,80,505,107"/>
-<area shape="rect" id="node5" href="$cl__accelerator_8cpp.html" title=" " alt="" coords="109,162,299,189"/>
-<area shape="rect" id="node6" href="$cl__formats_8hpp.html" title=" " alt="" coords="324,162,495,189"/>
-<area shape="rect" id="node11" href="$cl__kernel__builder_8hpp.html" title=" " alt="" coords="519,155,657,196"/>
-<area shape="rect" id="node7" href="$cl__dense__vec_8hpp.html" title=" " alt="" coords="185,244,324,285"/>
-<area shape="rect" id="node8" href="$cl__vector__assign_8hpp.html" title=" " alt="" coords="348,244,487,285"/>
-<area shape="rect" id="node10" href="$cl__vector__reduce_8hpp.html" title=" " alt="" coords="511,244,649,285"/>
-<area shape="rect" id="node9" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="435,333,562,375"/>
-<area shape="rect" id="node12" href="$cl__kernel__builder_8cpp.html" title=" " alt="" coords="673,244,812,285"/>
+<area shape="rect" id="node1" title=" " alt="" coords="163,5,324,32"/>
+<area shape="rect" id="node2" href="$dispatcher_8cpp.html" title=" " alt="" coords="10,80,167,107"/>
+<area shape="rect" id="node3" href="$library_8cpp.html" title=" " alt="" coords="192,80,295,107"/>
+<area shape="rect" id="node4" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="319,80,509,107"/>
+<area shape="rect" id="node5" href="$cl__accelerator_8cpp.html" title=" " alt="" coords="113,162,304,189"/>
+<area shape="rect" id="node6" href="$cl__formats_8hpp.html" title=" " alt="" coords="329,162,499,189"/>
+<area shape="rect" id="node13" href="$cl__kernel__builder_8hpp.html" title=" " alt="" coords="523,155,662,196"/>
+<area shape="rect" id="node7" href="$cl__csr_8hpp.html" title=" " alt="" coords="5,251,151,278"/>
+<area shape="rect" id="node8" href="$cl__dense__vec_8hpp.html" title=" " alt="" coords="175,244,314,285"/>
+<area shape="rect" id="node9" href="$cl__mxv_8hpp.html" title=" " alt="" coords="339,251,489,278"/>
+<area shape="rect" id="node11" href="$cl__vector__assign_8hpp.html" title=" " alt="" coords="514,244,653,285"/>
+<area shape="rect" id="node12" href="$cl__vector__reduce_8hpp.html" title=" " alt="" coords="677,244,815,285"/>
+<area shape="rect" id="node10" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="520,333,647,375"/>
+<area shape="rect" id="node14" href="$cl__kernel__builder_8cpp.html" title=" " alt="" coords="839,244,978,285"/>
 </map>

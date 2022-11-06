@@ -139,32 +139,33 @@ $(function() {
 <div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classspla_1_1CLAccelerator.html#a5c809281566ae7388630b358028e3323">   77</a></span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>               <a class="code" href="classspla_1_1CLAccelerator.html#a5c809281566ae7388630b358028e3323">get_max_wgs</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_max_wgs; }</div>
 <div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classspla_1_1CLAccelerator.html#aa2ba8adb30afdb4610354156182293c6">   78</a></span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>               <a class="code" href="classspla_1_1CLAccelerator.html#aa2ba8adb30afdb4610354156182293c6">get_default_wgz</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_default_wgs; }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>               <a class="code" href="classspla_1_1CLAccelerator.html#aee614203995c054f40c04412a0468a04">get_grid_dim</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_work) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">void</span> build_description();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        cl::Platform m_platform;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        cl::Device   m_device;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        cl::Context  m_context;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::string m_name = <span class="stringliteral">&quot;OpenCL&quot;</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        std::string m_description;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::string m_suffix = <span class="stringliteral">&quot;__cl&quot;</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        std::string m_vendor_name;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_vendor_id   = 0;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_max_wgs     = 0;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_default_wgs = 64;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        std::vector&lt;cl::CommandQueue&gt; m_queues;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    };</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> CLAccelerator* get_acc_cl() {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span>CLAccelerator*<span class="keyword">&gt;</span>(get_accelerator());</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_ACCELERATOR_HPP</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>               <a class="code" href="classspla_1_1CLAccelerator.html#aee614203995c054f40c04412a0468a04">get_grid_dim</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_work, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_work_in_group) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">void</span> build_description();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        cl::Platform m_platform;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        cl::Device   m_device;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        cl::Context  m_context;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        std::string m_name = <span class="stringliteral">&quot;OpenCL&quot;</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        std::string m_description;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        std::string m_suffix = <span class="stringliteral">&quot;__cl&quot;</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        std::string m_vendor_name;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_vendor_id   = 0;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_max_wgs     = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>        m_default_wgs = 64;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::vector&lt;cl::CommandQueue&gt; m_queues;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> CLAccelerator* get_acc_cl() {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span>CLAccelerator*<span class="keyword">&gt;</span>(get_accelerator());</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_ACCELERATOR_HPP</span></div>
 <div class="ttc" id="aaccelerator_8hpp_html"><div class="ttname"><a href="accelerator_8hpp.html">accelerator.hpp</a></div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Accelerator_html"><div class="ttname"><a href="classspla_1_1Accelerator.html">spla::Accelerator</a></div><div class="ttdoc">Interface for an computations acceleration backend.</div><div class="ttdef"><b>Definition:</b> accelerator.hpp:58</div></div>
