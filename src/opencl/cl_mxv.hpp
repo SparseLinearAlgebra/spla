@@ -119,7 +119,6 @@ namespace spla {
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
             queue.enqueueNDRangeKernel(m_kernel_exec, cl::NDRange(), exec_global, exec_local);
-
             queue.finish();
 
             r->cl_update_dense();

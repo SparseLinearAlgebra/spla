@@ -158,6 +158,42 @@ TEST(vector, reduce_mult) {
     EXPECT_EQ(result, isum);
 }
 
+TEST(vector, reduce_perf) {
+    const int N     = 2000000;
+    const int K     = 13;
+    const int NITER = 10;
+    int       R     = 0;
+
+    spla::Timer timer;
+
+    auto ivec   = spla::make_vector(N, spla::INT);
+    auto ir     = spla::make_scalar(spla::INT);
+    auto istart = spla::make_int(0);
+
+    for (int i = 0; i < N; ++i) {
+        ivec->set_int(i, 0);
+
+        if ((i % K) == 0) {
+            ivec->set_int(i, 1);
+            R += 1;
+        }
+    }
+
+    for (int i = 0; i < NITER; ++i) {
+        timer.lap_begin();
+        spla::exec_v_reduce(ir, istart, ivec, spla::PLUS_INT);
+        timer.lap_end();
+    }
+
+    int r;
+    ir->get_int(r);
+    EXPECT_EQ(r, R);
+
+    std::cout << "timings (ms): ";
+    timer.print();
+    std::cout << std::endl;
+}
+
 TEST(vector, assign_plus) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;
@@ -220,4 +256,39 @@ TEST(vector, assign_second) {
     }
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+TEST(vector, assign_perf) {
+    const int N     = 2000000;
+    const int K     = 10;
+    const int B     = 10;
+    const int V     = 20;
+    const int NITER = 10;
+
+    spla::Timer timer;
+
+    auto ivec  = spla::make_vector(N, spla::INT);
+    auto imask = spla::make_vector(N, spla::INT);
+    auto ival  = spla::make_int(V);
+
+    for (int i = 0; i < N; ++i) {
+        ivec->set_int(i, B);
+        imask->set_int(i, (i % K ? 0 : V));
+    }
+
+    for (int i = 0; i < NITER; ++i) {
+        timer.lap_begin();
+        spla::exec_v_assign_masked(ivec, imask, ival, spla::SECOND_INT, spla::NQZERO_INT);
+        timer.lap_end();
+    }
+
+    for (int i = 0; i < N; ++i) {
+        int r;
+        ivec->get_int(i, r);
+        EXPECT_EQ(r, (i % K ? B : V));
+    }
+
+    std::cout << "timings (ms): ";
+    timer.print();
+    std::cout << std::endl;
+}
+
+SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

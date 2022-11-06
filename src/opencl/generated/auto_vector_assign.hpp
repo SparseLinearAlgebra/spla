@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////
 
 static const char source_vector_assign[] = R"(
-__kernel void assign(__global TYPE* g_r,
+__kernel void assign(__global TYPE*       g_r,
                      __global const TYPE* g_mask,
                      __global const TYPE* g_init,
                      const uint           n) {

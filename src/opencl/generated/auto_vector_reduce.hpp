@@ -4,8 +4,8 @@
 ////////////////////////////////////////////////////////////////////
 
 static const char source_vector_reduce[] = R"(
-void reduction_group(uint    block_size,
-                     uint    lid,
+void reduction_group(uint          block_size,
+                     uint          lid,
                      __local TYPE* s_sum) {
     if (BLOCK_SIZE >= block_size) {
         if (lid < (block_size / 2)) {
@@ -16,25 +16,23 @@ void reduction_group(uint    block_size,
 }
 
 __kernel void reduce(__global const TYPE* g_vec,
-                     __global TYPE* g_sum,
-                     const uint     n) {
+                     __global TYPE*       g_sum,
+                     const uint           n) {
     const uint gid   = get_global_id(0);
     const uint lid   = get_local_id(0);
     const uint gsize = get_global_size(0);
 
-    uint i = gid;
-
     __local TYPE s_sum[BLOCK_SIZE];
     TYPE         sum = g_sum[0];
 
-    while (i < n) {
+    for (uint i = gid; i < n; i += gsize) {
         sum = OP_BINARY(sum, g_vec[i]);
-        i += gsize;
     }
 
     s_sum[lid] = sum;
     barrier(CLK_LOCAL_MEM_FENCE);
 
+    reduction_group(1024, lid, s_sum);
     reduction_group(512, lid, s_sum);
     reduction_group(256, lid, s_sum);
     reduction_group(128, lid, s_sum);

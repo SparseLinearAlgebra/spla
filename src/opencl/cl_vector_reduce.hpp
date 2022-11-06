@@ -74,7 +74,7 @@ namespace spla {
             auto&       queue          = p_cl_acc->get_queue_default();
 
             T          sum[] = {s->get_value()};
-            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(T), sum);
+            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(T), sum);
 
             m_kernel.setArg(0, p_cl_dense_vec->Ax);
             m_kernel.setArg(1, cl_sum);

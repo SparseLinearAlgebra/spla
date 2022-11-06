@@ -65,6 +65,7 @@ namespace spla {
 
         queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
         queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);
+        queue.finish();
     }
 
     /**

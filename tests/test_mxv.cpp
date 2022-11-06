@@ -112,15 +112,11 @@ TEST(mxv_masked, perf) {
         }
     }
 
-    timer.start();
-
     for (int i = 0; i < NITER; i++) {
         timer.lap_begin();
         spla::exec_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
         timer.lap_end();
     }
-
-    timer.stop();
 
     for (int i = 0; i < N; i++) {
         int r;
@@ -129,9 +125,7 @@ TEST(mxv_masked, perf) {
     }
 
     std::cout << "timings (ms): ";
-    for (int i = 0; i < NITER; i++) {
-        std::cout << timer.get_laps_ms()[i] << " ";
-    }
+    timer.print();
     std::cout << std::endl;
 }
 
