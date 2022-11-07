@@ -30,6 +30,8 @@
 
 #include <spla/schedule.hpp>
 
+#include <profiling/time_profiler.hpp>
+
 namespace spla {
 
     /**

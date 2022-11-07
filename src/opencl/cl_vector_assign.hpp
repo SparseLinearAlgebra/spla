@@ -59,6 +59,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
+            TIME_PROFILE_SCOPE("opencl/vector_assign");
+
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
             auto r         = t->r.template cast<TVector<T>>();

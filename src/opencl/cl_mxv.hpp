@@ -61,6 +61,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
+            TIME_PROFILE_SCOPE("opencl/mxv");
+
             auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
 
             ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();

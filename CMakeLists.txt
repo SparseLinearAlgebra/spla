@@ -75,7 +75,6 @@ elseif (CMAKE_BUILD_TYPE MATCHES Release)
     message(STATUS "Build spla in release mode (specified)")
 elseif (CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
     set(SPLA_RELEASE YES)
-    list(APPEND SPLA_DEFINES SPLA_RELEASE)
     list(APPEND SPLA_DEFINES SPLA_DEBUG_RELEASE)
     message(STATUS "Build spla in release mode with debug info (specified)")
 else ()
@@ -287,6 +286,8 @@ add_library(spla SHARED
         src/sequential/cpu_vector_assign.hpp
         src/sequential/cpu_vector_reduce.hpp
         src/util/pair_hash.hpp
+        src/profiling/time_profiler.cpp
+        src/profiling/time_profiler.hpp
         src/descriptor.cpp
         src/io.cpp
         src/library.cpp

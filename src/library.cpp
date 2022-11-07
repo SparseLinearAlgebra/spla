@@ -42,6 +42,8 @@
     #include <opencl/cl_algo_registry.hpp>
 #endif
 
+#include <profiling/time_profiler.hpp>
+
 namespace spla {
 
     Library::Library() {
@@ -54,11 +56,18 @@ namespace spla {
 
         // Register build-in bin ops (id's done here, since registration depend on types)
         register_ops();
+
         // Register cpu algo version
         register_algo_cpu(m_registry.get());
-#if defined(SPLA_BUILD_OPENCL)
+
+#ifdef SPLA_BUILD_OPENCL
         // Register cl algo version
         register_algo_cl(m_registry.get());
+#endif
+
+#ifndef SPLA_RELEASE
+        // Setup profiler (do not have only in release builds)
+        m_time_profiler = std::make_unique<TimeProfiler>();
 #endif
     }
 
@@ -142,6 +151,13 @@ namespace spla {
         return m_force_no_acc;
     }
 
+    Status Library::dump_time_profile_to_output() {
+#ifndef SPLA_RELEASE
+        m_time_profiler->dump(std::cout);
+#endif
+        return Status::Ok;
+    }
+
     class Accelerator* Library::get_accelerator() {
         return m_accelerator.get();
     }
@@ -158,17 +174,22 @@ namespace spla {
         return m_logger.get();
     }
 
+    class TimeProfiler* Library::get_time_profiler() {
+        return m_time_profiler.get();
+    }
+
     Library* get_library() {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {
             g_library = std::make_unique<Library>();
 
-#if defined(SPLA_DEBUG)
+#ifndef SPLA_RELEASE
             // In debug mode we automatically set default callback
             // to get log (error) messages from library start-up
             g_library->set_default_callback();
 #endif
+
             // On init we by default attempt to setup OpenCL runtime
             // If setup is failed error is ignored and library fallbacks to CPU computations only
             g_library->set_accelerator(AcceleratorType::OpenCL);

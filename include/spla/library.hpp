@@ -131,6 +131,13 @@ namespace spla {
         SPLA_API bool   is_set_force_no_acceleration();
 
         /**
+         * @brief Dumps to default output current time profile
+         *
+         * @return Function call status
+         */
+        SPLA_API Status dump_time_profile_to_output();
+
+        /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
@@ -154,12 +161,19 @@ namespace spla {
          */
         class Logger* get_logger();
 
+        /**
+         * @warning Internal usage only!
+         * @return Library time profiler
+         */
+        class TimeProfiler* get_time_profiler();
+
     private:
-        std::unique_ptr<class Accelerator> m_accelerator;
-        std::unique_ptr<class Registry>    m_registry;
-        std::unique_ptr<class Dispatcher>  m_dispatcher;
-        std::unique_ptr<class Logger>      m_logger;
-        bool                               m_force_no_acc = false;
+        std::unique_ptr<class Accelerator>  m_accelerator;
+        std::unique_ptr<class Registry>     m_registry;
+        std::unique_ptr<class Dispatcher>   m_dispatcher;
+        std::unique_ptr<class Logger>       m_logger;
+        std::unique_ptr<class TimeProfiler> m_time_profiler;
+        bool                                m_force_no_acc = false;
     };
 
     /**

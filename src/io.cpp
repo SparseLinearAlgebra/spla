@@ -43,9 +43,6 @@
 
 namespace spla {
 
-    static const uint   GROUPS_COUNT    = 10;
-    static const double DISPLAY_DENSITY = 100;
-
     MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {
     }
 
@@ -157,6 +154,8 @@ namespace spla {
         m_deg_avg = m_deg_avg / n;
         m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) / (n > 1.0 ? n - 1.0 : 1.0));
 
+        const uint GROUPS_COUNT = std::max(uint(10), uint(std::log2(double(m_n_rows)) * 10));
+
         auto range        = m_deg_max - m_deg_min;
         auto groups_count = std::max(std::min(GROUPS_COUNT, static_cast<uint>(range)), 1u);
         auto g            = static_cast<double>(groups_count);
@@ -191,6 +190,8 @@ namespace spla {
         const auto range        = m_deg_max - m_deg_min;
         const auto default_precision{std::cout.precision()};
         const auto n_digits = static_cast<uint>(std::log10(n) + 1.0);
+
+        const double DISPLAY_DENSITY = std::max(double(100), double(m_deg_distribution.size()));
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
             auto k       = static_cast<double>(i);

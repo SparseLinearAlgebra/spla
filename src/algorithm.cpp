@@ -55,7 +55,7 @@ namespace spla {
 
         frontier_prev->set_int(s, 1);
 
-#ifdef SPLA_DEBUG
+#ifndef SPLA_RELEASE
         std::cout << "start bfs from " << s << std::endl;
 #endif
 
@@ -68,11 +68,11 @@ namespace spla {
             int observed_vertices;
             frontier_size->get_int(observed_vertices);
 
-            frontier_empty = observed_vertices == 0;
-
-#ifdef SPLA_DEBUG
+#ifndef SPLA_RELEASE
             std::cout << " - iter " << current_level << " front " << observed_vertices << std::endl;
+            get_library()->dump_time_profile_to_output();
 #endif
+            frontier_empty = observed_vertices == 0;
             current_level += 1;
 
             std::swap(frontier_prev, frontier_new);
