@@ -27,7 +27,6 @@
 
 import subprocess
 import argparse
-import shared
 
 
 def main():
@@ -53,6 +52,8 @@ def main():
 
     subprocess.check_call(build_config_args)
     subprocess.check_call(build_run_args)
+
+    print(f"\nsuccessfully build target `{args.target}`")
 
 
 if __name__ == '__main__':

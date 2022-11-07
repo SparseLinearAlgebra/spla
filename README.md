@@ -76,13 +76,12 @@ $ pip uninstall pyspla
 
 ### Get source code
 
-The following code snippet downloads project source code repository, enters project root folder and runs submodules init
-in order to get dependencies source code initialized. Must be executed from the folder where you want to locate project.
+The following code snippet downloads project source code repository, and enters project root folder. Must be executed
+from the folder where you want to locate project.
 
 ```shell
 $ git clone https://github.com/JetBrains-Research/spla.git
 $ cd spla
-$ git submodule update --init --recursive
 ```
 
 ### Configure and run build

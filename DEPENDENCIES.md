@@ -1,5 +1,8 @@
 # Dependencies
 
+> Spla project uses `monolitic` repository model. All dependent libraries stored as-is inside main project repository.
+> Runtime dependencies are merged into single execution (.dll/.so/.dylib) object without external dependencies.
+
 - [cxxopts](https://github.com/jarro2783/cxxopts) - Lightweight C++ command line option parser.
 - [gtest](https://github.com/google/googletest) - Google C++ testing library.
 - [opencl headers](https://github.com/KhronosGroup/OpenCL-Headers) - Khronos OpenCL-Headers.
