@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a84e0e21b7897ac3bcc404d80ec4b625f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20561e28307f40f22421683058da4817"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a20561e28307f40f22421683058da4817">is_set_force_no_acceleration</a> ()</td></tr>
 <tr class="separator:a20561e28307f40f22421683058da4817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7765f3a6012bada37510c6a2fc1d64c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#ac7765f3a6012bada37510c6a2fc1d64c">dump_time_profile_to_output</a> ()</td></tr>
+<tr class="memdesc:ac7765f3a6012bada37510c6a2fc1d64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps to default output current time profile.  <a href="classspla_1_1Library.html#ac7765f3a6012bada37510c6a2fc1d64c">More...</a><br /></td></tr>
+<tr class="separator:ac7765f3a6012bada37510c6a2fc1d64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af304f09c19214de82a5c4290b326218c"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1Accelerator.html">Accelerator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#af304f09c19214de82a5c4290b326218c">get_accelerator</a> ()</td></tr>
 <tr class="separator:af304f09c19214de82a5c4290b326218c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a910b479ed346d1331e3e7aed4c392862"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1Registry.html">Registry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a910b479ed346d1331e3e7aed4c392862">get_registry</a> ()</td></tr>
@@ -122,6 +125,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0f2aedb7fe0b5c06c7899eb344fca951"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e632f513fa088821db9b09782931db8"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1Logger.html">Logger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a3e632f513fa088821db9b09782931db8">get_logger</a> ()</td></tr>
 <tr class="separator:a3e632f513fa088821db9b09782931db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60a794d436cdfa41cf5580f6f537400d"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1TimeProfiler.html">TimeProfiler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a60a794d436cdfa41cf5580f6f537400d">get_time_profiler</a> ()</td></tr>
+<tr class="separator:a60a794d436cdfa41cf5580f6f537400d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> global state automatically instantiated on lib init. </p>
@@ -221,6 +226,26 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac7765f3a6012bada37510c6a2fc1d64c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7765f3a6012bada37510c6a2fc1d64c">&#9670;&nbsp;</a></span>dump_time_profile_to_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Library::dump_time_profile_to_output </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dumps to default output current time profile. </p>
+<dl class="section return"><dt>Returns</dt><dd>Function call status </dd></dl>
+
+</div>
+</div>
 <a id="afd3dcb03984dfe6cc50718b36fd0163a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd3dcb03984dfe6cc50718b36fd0163a">&#9670;&nbsp;</a></span>finalize()</h2>
 
@@ -317,6 +342,25 @@ After this call no other library function call is allowed </dd></dl>
 </div><div class="memdoc">
 <dl class="section warning"><dt>Warning</dt><dd>Internal usage only! </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> algorithms registry </dd></dl>
+
+</div>
+</div>
+<a id="a60a794d436cdfa41cf5580f6f537400d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60a794d436cdfa41cf5580f6f537400d">&#9670;&nbsp;</a></span>get_time_profiler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">class <a class="el" href="classspla_1_1TimeProfiler.html">TimeProfiler</a> * spla::Library::get_time_profiler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section warning"><dt>Warning</dt><dd>Internal usage only! </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> time profiler </dd></dl>
 
 </div>
 </div>
