@@ -4,14 +4,16 @@
 ////////////////////////////////////////////////////////////////////
 
 static const char source_vector_reduce[] = R"(
-void reduction_group(uint          block_size,
-                     uint          lid,
-                     __local TYPE* s_sum) {
+void reduction_group(uint                   block_size,
+                     uint                   lid,
+                     volatile __local TYPE* s_sum) {
     if (BLOCK_SIZE >= block_size) {
         if (lid < (block_size / 2)) {
             s_sum[lid] = OP_BINARY(s_sum[lid], s_sum[lid + (block_size / 2)]);
         }
-        barrier(CLK_LOCAL_MEM_FENCE);
+        if (block_size > WARP_SIZE) {
+            barrier(CLK_LOCAL_MEM_FENCE);
+        }
     }
 }
 

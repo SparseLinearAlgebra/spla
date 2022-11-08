@@ -43,6 +43,10 @@
 #define CL_HPP_TARGET_OPENCL_VERSION  120
 #include <CL/opencl.hpp>
 
+#define VENDOR_CODE_NVIDIA "nvidia"
+#define VENDOR_CODE_INTEL  "intel"
+#define VENDOR_CODE_AMD    "amd"
+
 namespace spla {
 
     /**
@@ -72,12 +76,14 @@ namespace spla {
         cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
 
-        const std::string& get_vendor_name() const { return m_vendor_name; }
-        uint               get_vendor_id() const { return m_vendor_id; }
-        uint               get_max_wgs() const { return m_max_wgs; }
-        uint               get_default_wgz() const { return m_default_wgs; }
-        uint               get_grid_dim(uint n_work) const;
-        uint               get_grid_dim(uint n_work, uint n_work_in_group) const;
+        [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
+        [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
+        [[nodiscard]] uint               get_vendor_id() const { return m_vendor_id; }
+        [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
+        [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
+        [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
+        [[nodiscard]] uint               get_grid_dim(uint n_work) const;
+        [[nodiscard]] uint               get_grid_dim(uint n_work, uint n_work_in_group) const;
 
     private:
         void build_description();
@@ -90,9 +96,11 @@ namespace spla {
         std::string m_description;
         std::string m_suffix = "__cl";
         std::string m_vendor_name;
+        std::string m_vendor_code;
         uint        m_vendor_id   = 0;
         uint        m_max_wgs     = 0;
         uint        m_default_wgs = 64;
+        uint        m_wave_size   = 32;
 
         std::vector<cl::CommandQueue> m_queues;
     };

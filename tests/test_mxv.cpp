@@ -89,7 +89,7 @@ TEST(mxv_masked, naive) {
 }
 
 TEST(mxv_masked, perf) {
-    const int N     = 100000;
+    const int N     = 1000000;
     const int K     = 256;
     const int S     = 10;
     const int NITER = 10;

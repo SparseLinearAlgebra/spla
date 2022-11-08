@@ -142,6 +142,7 @@ namespace spla {
 
             CLKernelBuilder kernel_builder;
             kernel_builder
+                    .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_define("BLOCK_COUNT", m_block_count)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())

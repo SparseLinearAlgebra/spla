@@ -83,9 +83,43 @@ namespace spla {
 
         build_description();
 
+        m_vendor_code.clear();
         m_vendor_name = m_device.getInfo<CL_DEVICE_VENDOR>();
         m_vendor_id   = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
         m_max_wgs     = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
+
+        if (m_vendor_name.find("Intel") != std::string::npos ||
+            m_vendor_name.find("intel") != std::string::npos ||
+            m_vendor_name.find("INTEL") != std::string::npos ||
+            m_vendor_id == 32902) {
+            m_vendor_code = VENDOR_CODE_INTEL;
+            m_default_wgs = 64;
+            m_wave_size   = 8;
+        }
+        if (m_vendor_name.find("Nvidia") != std::string::npos ||
+            m_vendor_name.find("nvidia") != std::string::npos ||
+            m_vendor_name.find("NVIDIA") != std::string::npos ||
+            m_vendor_id == 4318) {
+            m_vendor_code = VENDOR_CODE_NVIDIA;
+            m_default_wgs = 64;
+            m_wave_size   = 32;
+        }
+        if (m_vendor_name.find("Amd") != std::string::npos ||
+            m_vendor_name.find("amd") != std::string::npos ||
+            m_vendor_name.find("AMD") != std::string::npos ||
+            m_vendor_name.find("Advanced Micro Devices") != std::string::npos ||
+            m_vendor_name.find("advanced micro devices") != std::string::npos ||
+            m_vendor_name.find("ADVANCED MICRO DEVICES") != std::string::npos) {
+            m_vendor_code = VENDOR_CODE_AMD;
+            m_default_wgs = 64;
+            m_wave_size   = 64;
+        }
+
+        if (m_vendor_code.empty()) {
+            LOG_MSG(Status::Error, "failed to match one of the pre-defined vendors");
+            m_default_wgs = 64;
+            m_wave_size   = 8;
+        }
 
         return Status::Ok;
     }

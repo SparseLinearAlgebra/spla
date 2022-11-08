@@ -32,6 +32,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace spla {
 
@@ -168,12 +169,13 @@ namespace spla {
         class TimeProfiler* get_time_profiler();
 
     private:
-        std::unique_ptr<class Accelerator>  m_accelerator;
-        std::unique_ptr<class Registry>     m_registry;
-        std::unique_ptr<class Dispatcher>   m_dispatcher;
-        std::unique_ptr<class Logger>       m_logger;
-        std::unique_ptr<class TimeProfiler> m_time_profiler;
-        bool                                m_force_no_acc = false;
+        std::unordered_map<std::string, std::string> m_env;
+        std::unique_ptr<class Accelerator>           m_accelerator;
+        std::unique_ptr<class Registry>              m_registry;
+        std::unique_ptr<class Dispatcher>            m_dispatcher;
+        std::unique_ptr<class Logger>                m_logger;
+        std::unique_ptr<class TimeProfiler>          m_time_profiler;
+        bool                                         m_force_no_acc = false;
     };
 
     /**
