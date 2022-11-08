@@ -40,6 +40,7 @@
 #include <sequential/cpu_csr.hpp>
 #include <sequential/cpu_lil.hpp>
 
+#include <array>
 #include <memory>
 #include <vector>
 
@@ -107,22 +108,21 @@ namespace spla {
 #endif
 
     private:
-        uint      m_version    = 1;
-        uint      m_n_rows     = 0;
-        uint      m_n_cols     = 0;
-        bool      m_valid      = false;
-        StateHint m_state_hint = StateHint::Default;
+        std::array<ref_ptr<TDecoration<T>>, static_cast<uint>(Format::CountMatrix) + 1> m_decorations;
 
-        std::vector<ref_ptr<TDecoration<T>>> m_decorations;
-        std::string                          m_label;
-        ref_ptr<TOpBinary<T, T, T>>          m_reduce;
+        uint                        m_version    = 1;
+        uint                        m_n_rows     = 0;
+        uint                        m_n_cols     = 0;
+        bool                        m_valid      = false;
+        StateHint                   m_state_hint = StateHint::Default;
+        std::string                 m_label;
+        ref_ptr<TOpBinary<T, T, T>> m_reduce;
     };
 
     template<typename T>
     TMatrix<T>::TMatrix(uint n_rows, uint n_cols) {
         m_n_rows = n_rows;
         m_n_cols = n_cols;
-        m_decorations.resize(static_cast<int>(Format::CountMatrix) + 1);
     }
 
     template<typename T>
