@@ -9,7 +9,7 @@ var indexSectionsWithContent =
   6: "ekmrstu",
   7: "afs",
   8: "acdeinops",
-  9: "cdeglmost",
+  9: "cdeglmostv",
   10: "is"
 };
 

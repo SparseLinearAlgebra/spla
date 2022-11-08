@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spla_1096',['Spla',['../group__spla.html',1,'']]]
+  ['spla_1106',['Spla',['../group__spla.html',1,'']]]
 ];
