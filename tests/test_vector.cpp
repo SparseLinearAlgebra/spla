@@ -159,7 +159,7 @@ TEST(vector, reduce_mult) {
 }
 
 TEST(vector, reduce_perf) {
-    const int N     = 2000000;
+    const int N     = 10000000;
     const int K     = 13;
     const int NITER = 10;
     int       R     = 0;

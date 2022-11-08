@@ -32,7 +32,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--build-dir", default="build", help="folder name to locate build files")
-    parser.add_argument("--build-type", default="Release", help="CMake type of build `Debug` or `Release`")
+    parser.add_argument("--build-type", default="Release", help="type of build: `Debug`, `Release` or `RelWithDebInfo`")
     parser.add_argument("--tests", default="YES", help="build tests")
     parser.add_argument("--examples", default="YES", help="build example applications")
     parser.add_argument("--opencl", default="YES", help="build opencl acceleration backend")
