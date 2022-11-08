@@ -87,6 +87,7 @@ namespace spla {
         double              m_deg_min = -1.0;
         double              m_deg_max = -1.0;
         std::vector<double> m_deg_distribution;
+        std::vector<uint>   m_deg_ranges;
     };
 
     /**
