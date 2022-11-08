@@ -94,6 +94,28 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_vxm_masked
+     * @brief Masked vector-matrix product
+     */
+    class ScheduleTask_vxm_masked final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_vxm_masked() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>   r;
+        ref_ptr<Vector>   mask;
+        ref_ptr<Vector>   v;
+        ref_ptr<Matrix>   M;
+        ref_ptr<OpBinary> op_multiply;
+        ref_ptr<OpBinary> op_add;
+        ref_ptr<OpSelect> op_select;
+        ref_ptr<Scalar>   init;
+    };
+
+    /**
      * @class ScheduleTask_v_assign_masked
      * @brief Masked vector assignment
      */

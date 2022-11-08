@@ -34,6 +34,7 @@
 #include <sequential/cpu_mxv.hpp>
 #include <sequential/cpu_vector_assign.hpp>
 #include <sequential/cpu_vector_reduce.hpp>
+#include <sequential/cpu_vxm.hpp>
 
 namespace spla {
 
@@ -84,6 +85,15 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_3("mxv_masked", MIN_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_mxv_masked<T_FLOAT>>());
+
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", BAND_INT, BOR_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", BAND_UINT, BOR_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MULT_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MULT_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MULT_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_vxm_masked<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MIN_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MIN_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_3("vxm_masked", MIN_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_vxm_masked<T_FLOAT>>());
     }
 
 }// namespace spla

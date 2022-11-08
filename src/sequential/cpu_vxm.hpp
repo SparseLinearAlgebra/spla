@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_MXV_HPP
-#define SPLA_CPU_MXV_HPP
+#ifndef SPLA_CPU_VXM_HPP
+#define SPLA_CPU_VXM_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -41,12 +41,12 @@
 namespace spla {
 
     template<typename T>
-    class Algo_mxv_masked final : public RegistryAlgo {
+    class Algo_vxm_masked final : public RegistryAlgo {
     public:
-        ~Algo_mxv_masked() override = default;
+        ~Algo_vxm_masked() override = default;
 
         std::string get_name() override {
-            return "mxv_masked";
+            return "vxm_masked";
         }
 
         std::string get_description() override {
@@ -54,18 +54,19 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
             auto r           = t->r.template cast<TVector<T>>();
             auto mask        = t->mask.template cast<TVector<T>>();
-            auto M           = t->M.template cast<TMatrix<T>>();
             auto v           = t->v.template cast<TVector<T>>();
+            auto M           = t->M.template cast<TMatrix<T>>();
             auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
             auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
             auto op_select   = t->op_select.template cast<TOpSelect<T>>();
             auto init        = t->init.template cast<TScalar<T>>();
 
             const uint DM       = M->get_n_rows();
+            const uint DN       = M->get_n_cols();
             const T    sum_init = init->get_value();
 
             r->ensure_dense_format();
@@ -82,19 +83,23 @@ namespace spla {
             auto& func_add      = op_add->function;
             auto& func_select   = op_select->function;
 
+            for (uint j = 0; j < DN; ++j) {
+                p_dense_r->Ax[j] = sum_init;
+            }
+
             for (uint i = 0; i < DM; ++i) {
-                T sum = sum_init;
+                const T     v_x = p_dense_v->Ax[i];
+                const auto& row = p_lil_M->Ar[i];
 
-                if (func_select(p_dense_mask->Ax[i])) {
-                    const auto& row = p_lil_M->Ar[i];
-
+                if (v_x) {
                     for (const auto& j_x : row) {
                         const uint j = j_x.first;
-                        sum          = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j]));
+
+                        if (func_select(p_dense_mask->Ax[j])) {
+                            p_dense_r->Ax[j] = func_add(p_dense_r->Ax[j], func_multiply(v_x, j_x.second));
+                        }
                     }
                 }
-
-                p_dense_r->Ax[i] = sum;
             }
 
             r->update_dense();
@@ -105,4 +110,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_MXV_HPP
+#endif//SPLA_CPU_VXM_HPP

@@ -30,12 +30,12 @@
 #include <iostream>
 #include <spla/spla.hpp>
 
-TEST(mxv_masked, naive) {
+TEST(vxm_masked, naive) {
     spla::uint M = 4, N = 5;
 
     //              v 3 0 3 0 -1
     //
-    // fr   ir   mask       M
+    // fr   ir   mask       M^T
     // _________________________
     // 0  |  2 |  1 | 0 2 0 0 -9
     // 14 | -5 |  0 | 2 0 0 0 -8
@@ -45,7 +45,7 @@ TEST(mxv_masked, naive) {
     auto ir    = spla::make_vector(M, spla::INT);
     auto imask = spla::make_vector(M, spla::INT);
     auto iv    = spla::make_vector(N, spla::INT);
-    auto iM    = spla::make_matrix(M, N, spla::INT);
+    auto iM    = spla::make_matrix(N, M, spla::INT);
     auto iinit = spla::make_int(0);
 
     ir->set_int(0, 2);
@@ -64,14 +64,14 @@ TEST(mxv_masked, naive) {
     iv->set_int(3, 0);
     iv->set_int(4, -1);
 
-    iM->set_int(0, 1, 2);
-    iM->set_int(0, 4, -9);
     iM->set_int(1, 0, 2);
-    iM->set_int(1, 4, -8);
+    iM->set_int(4, 0, -9);
+    iM->set_int(0, 1, 2);
+    iM->set_int(4, 1, -8);
     iM->set_int(2, 2, 3);
-    iM->set_int(3, 4, -1);
+    iM->set_int(4, 3, -1);
 
-    spla::exec_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
+    spla::exec_vxm_masked(ir, imask, iv, iM, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
 
     int r;
 
@@ -88,7 +88,7 @@ TEST(mxv_masked, naive) {
     EXPECT_EQ(r, 1);
 }
 
-TEST(mxv_masked, perf) {
+TEST(vxm_masked, perf) {
     const int N     = 1000000;
     const int K     = 256;
     const int S     = 10;
@@ -108,13 +108,13 @@ TEST(mxv_masked, perf) {
 
         for (int k = 0; k < K; k++) {
             const int j = (i + k) % N;
-            iM->set_int(i, j, 1);
+            iM->set_int(j, i, 1);
         }
     }
 
     for (int i = 0; i < NITER; i++) {
         timer.lap_begin();
-        spla::exec_mxv_masked(ir, imask, iM, iv, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
+        spla::exec_vxm_masked(ir, imask, iv, iM, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
         timer.lap_end();
     }
 

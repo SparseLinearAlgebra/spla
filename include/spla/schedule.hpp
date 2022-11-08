@@ -80,7 +80,7 @@ namespace spla {
     SPLA_API ref_ptr<Schedule> make_schedule();
 
     /**
-     * @brief Scheduled callback function
+     * @brief Execute (schedule) callback function
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
@@ -96,10 +96,10 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Scheduled r<select(mask)> = M x V
+     * @brief Execute (schedule) r<select(mask)> = Mxv
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic `r[i] = select(mask)? M[i] * v: init`
+     * @note Semantic `r[i] = select(mask)? M[i,*] * v: init`
      *
      * @param r Vector to store operation result
      * @param mask Vector to select for which values to compute product
@@ -127,7 +127,38 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Scheduled r<select(mask)> = value
+     * @brief Execute (schedule) r<select(mask)> = vxM
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     * @note Semantic `r[i] = select(mask)? v * M[*,i]: init`
+     *
+     * @param r Vector to store operation result
+     * @param mask Vector to select for which values to compute product
+     * @param v Vector for product
+     * @param M Matrix for product
+     * @param op_multiply Element-wise binary operator for matrix vector elements product
+     * @param op_add Element-wise binary operator for matrix vector products sum
+     * @param op_select Selection op to filter mask
+     * @param init Init of matrix row and vector product
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_vxm_masked(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        mask,
+            ref_ptr<Vector>        v,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpBinary>      op_multiply,
+            ref_ptr<OpBinary>      op_add,
+            ref_ptr<OpSelect>      op_select,
+            ref_ptr<Scalar>        init,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) r<select(mask)> = value
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
@@ -151,7 +182,7 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Scheduled r = reduce(s, v)
+     * @brief Execute (schedule) r = reduce(s, v)
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
