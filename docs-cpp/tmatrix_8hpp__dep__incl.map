@@ -1,8 +1,9 @@
 <map id="src/core/tmatrix.hpp" name="src/core/tmatrix.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="139,5,275,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="221,5,357,32"/>
 <area shape="rect" id="node2" href="$matrix_8cpp.html" title=" " alt="" coords="5,87,108,114"/>
 <area shape="rect" id="node3" href="$cl__mxv_8hpp.html" title=" " alt="" coords="132,87,283,114"/>
 <area shape="rect" id="node5" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="307,80,435,121"/>
+<area shape="rect" id="node7" href="$cpu__vxm_8hpp.html" title=" " alt="" coords="459,80,587,121"/>
 <area shape="rect" id="node4" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="144,169,271,211"/>
-<area shape="rect" id="node6" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="307,169,435,211"/>
+<area shape="rect" id="node6" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="383,169,511,211"/>
 </map>
