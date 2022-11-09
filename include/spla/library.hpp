@@ -133,10 +133,14 @@ namespace spla {
 
         /**
          * @brief Dumps to default output current time profile
-         *
          * @return Function call status
          */
-        SPLA_API Status dump_time_profile_to_output();
+        SPLA_API Status time_profile_dump();
+        /**
+         * @brief Reset current time profile
+         * @return Function call status
+         */
+        SPLA_API Status time_profile_reset();
 
         /**
          * @warning Internal usage only!

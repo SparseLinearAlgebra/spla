@@ -62,4 +62,11 @@ namespace spla {
         }
     }
 
+    void TimeProfiler::reset() {
+        for (const auto& entry : m_labels) {
+            const auto& label = entry.second;
+            label->nano.store(0);
+        }
+    }
+
 }// namespace spla

@@ -51,28 +51,51 @@ namespace spla {
         ref_ptr<Scalar> depth          = make_int(1);
         ref_ptr<Scalar> zero           = make_int(0);
         int             current_level  = 1;
+        int             front_size     = -1;
+        int             discovered     = 1;
         bool            frontier_empty = false;
 
         frontier_prev->set_int(s, 1);
 
-#ifndef SPLA_RELEASE
-        std::cout << "start bfs from " << s << std::endl;
-#endif
+        bool  push             = descriptor->get_push_only();
+        bool  pull             = descriptor->get_pull_only();
+        bool  push_pull        = descriptor->get_push_pull();
+        float push_pull_factor = descriptor->get_push_pull_factor();
 
+        if (!(push || pull || push_pull)) push = true;
+
+        std::string mode;
+        if (push_pull) mode = "(push_pull " + std::to_string(push_pull_factor * 100.0f) + "%)";
+        if (pull) mode = "(pull)";
+        if (push) mode = "(push)";
+
+#ifndef SPLA_RELEASE
+        std::cout << "start bfs from " << s << " " << mode << std::endl;
+#endif
         while (!frontier_empty) {
             depth->set_int(current_level);
             exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
-            exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero);
+
+            bool is_push_better = (float(front_size) / float(N) <= push_pull_factor) &&
+                                  (float(discovered) / float(N) <= push_pull_factor);
+
+            if (push || (push_pull && is_push_better)) {
+                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero);
+            } else {
+                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero);
+            }
+
             exec_v_reduce(frontier_size, zero, frontier_new, PLUS_INT);
 
-            int observed_vertices;
-            frontier_size->get_int(observed_vertices);
+            frontier_size->get_int(front_size);
 
 #ifndef SPLA_RELEASE
-            std::cout << " - iter " << current_level << " front " << observed_vertices << std::endl;
-            get_library()->dump_time_profile_to_output();
+            std::cout << " - iter " << current_level << " front " << front_size << " discovered " << discovered << std::endl;
+            get_library()->time_profile_dump();
+            get_library()->time_profile_reset();
 #endif
-            frontier_empty = observed_vertices == 0;
+            frontier_empty = front_size == 0;
+            discovered += front_size;
             current_level += 1;
 
             std::swap(frontier_prev, frontier_new);

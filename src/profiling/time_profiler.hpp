@@ -67,6 +67,7 @@ namespace spla {
     public:
         void add_label(TimeProfilerLabel* label);
         void dump(std::ostream& where);
+        void reset();
 
     private:
         std::map<std::string, TimeProfilerLabel*> m_labels;

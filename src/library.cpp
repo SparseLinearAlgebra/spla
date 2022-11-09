@@ -151,9 +151,16 @@ namespace spla {
         return m_force_no_acc;
     }
 
-    Status Library::dump_time_profile_to_output() {
+    Status Library::time_profile_dump() {
 #ifndef SPLA_RELEASE
         m_time_profiler->dump(std::cout);
+#endif
+        return Status::Ok;
+    }
+
+    Status Library::time_profile_reset() {
+#ifndef SPLA_RELEASE
+        m_time_profiler->reset();
 #endif
         return Status::Ok;
     }

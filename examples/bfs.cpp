@@ -59,10 +59,17 @@ int main(int argc, const char* const* argv) {
     library->set_device(args[OPT_DEVICE].as<int>());
     library->set_queues_count(1);
 
-    const spla::uint            N = loader.get_n_rows();
-    const spla::uint            s = args[OPT_SOURCE].as<int>();
-    spla::ref_ptr<spla::Vector> v = spla::make_vector(N, spla::INT);
-    spla::ref_ptr<spla::Matrix> A = spla::make_matrix(N, N, spla::INT);
+    const spla::uint                N     = loader.get_n_rows();
+    const spla::uint                s     = args[OPT_SOURCE].as<int>();
+    spla::ref_ptr<spla::Vector>     v_cpu = spla::make_vector(N, spla::INT);
+    spla::ref_ptr<spla::Vector>     v_acc = spla::make_vector(N, spla::INT);
+    spla::ref_ptr<spla::Matrix>     A     = spla::make_matrix(N, N, spla::INT);
+    spla::ref_ptr<spla::Descriptor> desc  = spla::make_desc();
+
+    desc->set_push_only(args[OPT_PUSH].as<bool>());
+    desc->set_pull_only(args[OPT_PULL].as<bool>());
+    desc->set_push_pull(args[OPT_PUSH_PULL].as<bool>());
+    desc->set_push_pull_factor(args[OPT_PUSH_PULL_FACTOR].as<float>());
 
     const auto& Ai = loader.get_Ai();
     const auto& Aj = loader.get_Aj();
@@ -77,10 +84,10 @@ int main(int argc, const char* const* argv) {
         library->set_force_no_acceleration(true);
 
         for (int i = 0; i < n_iters; ++i) {
-            v->clear();
+            v_cpu->clear();
 
             timer_cpu.lap_begin();
-            spla::bfs(v, A, s, spla::ref_ptr<spla::Descriptor>());
+            spla::bfs(v_cpu, A, s, desc);
             timer_cpu.lap_end();
         }
     }
@@ -89,10 +96,10 @@ int main(int argc, const char* const* argv) {
         library->set_force_no_acceleration(false);
 
         for (int i = 0; i < n_iters; ++i) {
-            v->clear();
+            v_acc->clear();
 
             timer_gpu.lap_begin();
-            spla::bfs(v, A, s, spla::ref_ptr<spla::Descriptor>());
+            spla::bfs(v_acc, A, s, desc);
             timer_gpu.lap_end();
         }
     }
@@ -109,7 +116,8 @@ int main(int argc, const char* const* argv) {
         spla::bfs_naive(ref_v, ref_A, s, spla::ref_ptr<spla::Descriptor>());
         timer_ref.lap_end();
 
-        verify_exact(v, ref_v);
+        verify_exact(v_cpu, ref_v);
+        verify_exact(v_acc, ref_v);
     }
 
     spla::get_library()->finalize();
