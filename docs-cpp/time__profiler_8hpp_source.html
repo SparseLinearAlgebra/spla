@@ -129,23 +129,25 @@ $(function() {
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1TimeProfiler.html#a6df6839dca4de43873715ca6100cf913">add_label</a>(<a class="code" href="structspla_1_1TimeProfilerLabel.html">TimeProfilerLabel</a>* label);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1TimeProfiler.html#ac8acac32b5b3649996cffc672a21e91a">dump</a>(std::ostream&amp; where);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        std::map&lt;std::string, TimeProfilerLabel*&gt; m_labels;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    };</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#ifndef SPLA_RELEASE</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">   80</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label)                                                     \</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __time_prof_static_laber(label, __FILE__, __FUNCTION__); \</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">        TimeProfilerScope        __time_prof_transient_scope(&amp;__time_prof_static_laber);</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label)</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_TIME_PROFILER_HPP</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classspla_1_1TimeProfiler.html#a109a2ebdb090d84f8ad6edbad1785573">reset</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::map&lt;std::string, TimeProfilerLabel*&gt; m_labels;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#ifndef SPLA_RELEASE</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">   81</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label)                                                     \</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __time_prof_static_laber(label, __FILE__, __FUNCTION__); \</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">        TimeProfilerScope        __time_prof_transient_scope(&amp;__time_prof_static_laber);</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label)</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_TIME_PROFILER_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1TimeProfiler_html"><div class="ttname"><a href="classspla_1_1TimeProfiler.html">spla::TimeProfiler</a></div><div class="ttdoc">Scope-based time profiler to measure perf of schedule tasks execution.</div><div class="ttdef"><b>Definition:</b> time_profiler.hpp:66</div></div>
+<div class="ttc" id="aclassspla_1_1TimeProfiler_html_a109a2ebdb090d84f8ad6edbad1785573"><div class="ttname"><a href="classspla_1_1TimeProfiler.html#a109a2ebdb090d84f8ad6edbad1785573">spla::TimeProfiler::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> time_profiler.cpp:65</div></div>
 <div class="ttc" id="aclassspla_1_1TimeProfiler_html_a6df6839dca4de43873715ca6100cf913"><div class="ttname"><a href="classspla_1_1TimeProfiler.html#a6df6839dca4de43873715ca6100cf913">spla::TimeProfiler::add_label</a></div><div class="ttdeci">void add_label(TimeProfilerLabel *label)</div><div class="ttdef"><b>Definition:</b> time_profiler.cpp:53</div></div>
 <div class="ttc" id="aclassspla_1_1TimeProfiler_html_ac8acac32b5b3649996cffc672a21e91a"><div class="ttname"><a href="classspla_1_1TimeProfiler.html#ac8acac32b5b3649996cffc672a21e91a">spla::TimeProfiler::dump</a></div><div class="ttdeci">void dump(std::ostream &amp;where)</div><div class="ttdef"><b>Definition:</b> time_profiler.cpp:57</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
