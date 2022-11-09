@@ -50,7 +50,7 @@ namespace spla {
         }
 
         std::string get_description() override {
-            return "sequential matrix-vector product on cpu";
+            return "sequential masked vector-matrix product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {

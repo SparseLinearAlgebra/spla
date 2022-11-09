@@ -90,9 +90,12 @@ TEST(vxm_masked, naive) {
 
 TEST(vxm_masked, perf) {
     const int N     = 1000000;
-    const int K     = 256;
+    const int K     = 10;
+    const int W     = 64;
     const int S     = 10;
     const int NITER = 10;
+
+    std::vector<int> result(N, 0);
 
     spla::Timer timer;
 
@@ -104,11 +107,16 @@ TEST(vxm_masked, perf) {
 
     for (int i = 0; i < N; i++) {
         imask->set_int(i, (i % S ? 1 : 0));
-        iv->set_int(i, 1);
+        iv->set_int(i, 0);
 
-        for (int k = 0; k < K; k++) {
-            const int j = (i + k) % N;
-            iM->set_int(j, i, 1);
+        if ((i % K) == 0) {
+            iv->set_int(i, 1);
+
+            for (int w = 0; w < W; w++) {
+                const int j = (i + w) % N;
+                iM->set_int(i, j, 1);
+                result[j] += 1;
+            }
         }
     }
 
@@ -121,7 +129,7 @@ TEST(vxm_masked, perf) {
     for (int i = 0; i < N; i++) {
         int r;
         ir->get_int(i, r);
-        EXPECT_EQ(r, (i % S ? 0 : K));
+        EXPECT_EQ(r, (i % S ? 0 : result[i]));
     }
 
     std::cout << "timings (ms): ";

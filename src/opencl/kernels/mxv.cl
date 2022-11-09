@@ -13,32 +13,32 @@ void reduction_group(uint                   block_size,
     }
 }
 
-__kernel void mxv_pull_prepare(__global const TYPE* g_mask,
-                               __global const TYPE* g_init,
-                               __global TYPE*       g_result,
-                               __global uint*       g_config_size,
-                               __global uint*       g_config,
-                               const uint           n) {
+__kernel void mxv_prepare(__global const TYPE* g_mask,
+                          __global const TYPE* g_init,
+                          __global TYPE*       g_result,
+                          __global uint*       g_config_size,
+                          __global uint*       g_config,
+                          const uint           n) {
     const uint gid = get_global_id(0);
 
     if (gid < n) {
         g_result[gid] = g_init[0];
 
         if (OP_SELECT(g_mask[gid])) {
-            uint id      = atomic_inc(g_config_size);
-            g_config[id] = gid;
+            const uint id = atomic_inc(g_config_size);
+            g_config[id]  = gid;
         }
     }
 }
 
-__kernel void mxv_pull_exec(__global const uint* g_Ap,
-                            __global const uint* g_Aj,
-                            __global const TYPE* g_Ax,
-                            __global const TYPE* g_vx,
-                            __global const TYPE* g_init,
-                            __global const uint* g_config,
-                            __global TYPE*       g_result,
-                            const uint           config_size) {
+__kernel void mxv_exec(__global const uint* g_Ap,
+                       __global const uint* g_Aj,
+                       __global const TYPE* g_Ax,
+                       __global const TYPE* g_vx,
+                       __global const TYPE* g_init,
+                       __global const uint* g_config,
+                       __global TYPE*       g_rx,
+                       const uint           config_size) {
     const uint lid     = get_local_id(1);   // thread id in a row
     const uint lsize   = get_local_size(1); // num threads to process row
     const uint lgroup  = get_local_id(0);   // num of rows inside a group
@@ -70,7 +70,7 @@ __kernel void mxv_pull_exec(__global const uint* g_Ap,
         reduction_group(2, lid, s_sum[lgroup]);
 
         if (lid == 0) {
-            g_result[row_id] = s_sum[lgroup][0];
+            g_rx[row_id] = s_sum[lgroup][0];
         }
     }
 }

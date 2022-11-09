@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_MXV_HPP
-#define SPLA_CL_MXV_HPP
+#ifndef SPLA_CL_VXM_HPP
+#define SPLA_CL_VXM_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -40,7 +40,7 @@
 
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_kernel_builder.hpp>
-#include <opencl/generated/auto_mxv.hpp>
+#include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
 #include <sstream>
@@ -48,27 +48,27 @@
 namespace spla {
 
     template<typename T>
-    class Algo_mxv_masked_cl final : public RegistryAlgo {
+    class Algo_vxm_masked_cl final : public RegistryAlgo {
     public:
-        ~Algo_mxv_masked_cl() override = default;
+        ~Algo_vxm_masked_cl() override = default;
 
         std::string get_name() override {
-            return "mxv_masked";
+            return "vxm_masked";
         }
 
         std::string get_description() override {
-            return "parallel matrix-vector masked product on opencl device";
+            return "parallel vector-matrix masked product on opencl device";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE("opencl/mxv");
+            TIME_PROFILE_SCOPE("opencl/vxm");
 
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
             ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
             ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
-            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
             ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
             ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
             ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
@@ -94,32 +94,35 @@ namespace spla {
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
             cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
 
-            m_kernel_prepare.setArg(0, p_cl_mask->Ax);
-            m_kernel_prepare.setArg(1, cl_init_value);
-            m_kernel_prepare.setArg(2, p_cl_r->Ax);
-            m_kernel_prepare.setArg(3, cl_config_size);
-            m_kernel_prepare.setArg(4, cl_config);
-            m_kernel_prepare.setArg(5, M->get_n_rows());
+            m_kernel_prepare.setArg(0, p_cl_v->Ax);
+            m_kernel_prepare.setArg(1, p_cl_M->Ap);
+            m_kernel_prepare.setArg(2, cl_init_value);
+            m_kernel_prepare.setArg(3, p_cl_r->Ax);
+            m_kernel_prepare.setArg(4, cl_config_size);
+            m_kernel_prepare.setArg(5, cl_config);
+            m_kernel_prepare.setArg(6, M->get_n_rows());
+            m_kernel_prepare.setArg(7, M->get_n_cols());
 
-            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows()));
+            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(std::max(M->get_n_rows(), M->get_n_cols())));
             cl::NDRange prepare_local(p_cl_acc->get_default_wgz());
             queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
 
             cl::copy(queue, cl_config_size, config_size, config_size + 1);
 
-            m_kernel_exec.setArg(0, p_cl_M->Ap);
-            m_kernel_exec.setArg(1, p_cl_M->Aj);
-            m_kernel_exec.setArg(2, p_cl_M->Ax);
-            m_kernel_exec.setArg(3, p_cl_v->Ax);
-            m_kernel_exec.setArg(4, cl_init_value);
+            m_kernel_exec.setArg(0, p_cl_v->Ax);
+            m_kernel_exec.setArg(1, p_cl_M->Ap);
+            m_kernel_exec.setArg(2, p_cl_M->Aj);
+            m_kernel_exec.setArg(3, p_cl_M->Ax);
+            m_kernel_exec.setArg(4, p_cl_mask->Ax);
             m_kernel_exec.setArg(5, cl_config);
             m_kernel_exec.setArg(6, p_cl_r->Ax);
             m_kernel_exec.setArg(7, config_size[0]);
+            m_kernel_exec.setArg(8, M->get_n_cols());
 
-            uint n_groups_to_dispatch = std::max(std::min(config_size[0] / m_block_count, uint(256)), uint(1));
+            const uint groups_count = 32;
 
-            cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
-            cl::NDRange exec_local(m_block_count, m_block_size);
+            cl::NDRange exec_global(1, p_cl_acc->get_wave_size() * groups_count);
+            cl::NDRange exec_local(1, p_cl_acc->get_wave_size());
             queue.enqueueNDRangeKernel(m_kernel_exec, cl::NDRange(), exec_global, exec_local);
             queue.finish();
 
@@ -134,28 +137,19 @@ namespace spla {
                            const ref_ptr<TOpSelect<T>>&       op_select) {
             if (m_compiled) return true;
 
-            m_block_size  = 32;
-            m_block_count = get_acc_cl()->get_default_wgz() / 32;
-
-            assert(m_block_count > 1);
-            assert(m_block_size * m_block_count == get_acc_cl()->get_default_wgz());
-
             CLKernelBuilder kernel_builder;
             kernel_builder
-                    .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
-                    .add_define("BLOCK_SIZE", m_block_size)
-                    .add_define("BLOCK_COUNT", m_block_count)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .add_code(source_mxv);
+                    .add_code(source_vxm);
 
             if (!kernel_builder.build()) return false;
 
             m_program        = kernel_builder.get_program();
-            m_kernel_prepare = cl::Kernel(m_program, "mxv_prepare");
-            m_kernel_exec    = cl::Kernel(m_program, "mxv_exec");
+            m_kernel_prepare = cl::Kernel(m_program, "vxm_prepare");
+            m_kernel_exec    = cl::Kernel(m_program, "vxm_exec");
             m_compiled       = true;
 
             return true;
@@ -164,11 +158,9 @@ namespace spla {
         cl::Kernel  m_kernel_prepare;
         cl::Kernel  m_kernel_exec;
         cl::Program m_program;
-        uint        m_block_size  = 0;
-        uint        m_block_count = 0;
-        bool        m_compiled    = false;
+        bool        m_compiled = false;
     };
 
 }// namespace spla
 
-#endif//SPLA_CL_MXV_HPP
+#endif//SPLA_CL_VXM_HPP
