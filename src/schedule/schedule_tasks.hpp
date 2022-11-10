@@ -135,9 +135,9 @@ namespace spla {
     };
 
     /**
-    * @class ScheduleTask_v_reduce
-    * @brief Vector reduction to scalar
-    */
+     * @class ScheduleTask_v_reduce
+     * @brief Vector reduction to scalar
+     */
     class ScheduleTask_v_reduce final : public ScheduleTaskBase {
     public:
         ~ScheduleTask_v_reduce() override = default;
@@ -150,6 +150,23 @@ namespace spla {
         ref_ptr<Scalar>   s;
         ref_ptr<Vector>   v;
         ref_ptr<OpBinary> op_reduce;
+    };
+
+    /**
+     * @class ScheduleTask_v_select_count
+     * @brief Vector select and count
+     */
+    class ScheduleTask_v_select_count final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_select_count() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Scalar>   r;
+        ref_ptr<Vector>   v;
+        ref_ptr<OpSelect> op_select;
     };
 
     /**

@@ -144,4 +144,18 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_select_count(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpSelect>      op_select,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task       = make_ref<ScheduleTask_v_select_count>();
+        task->r         = std::move(r);
+        task->v         = std::move(v);
+        task->op_select = std::move(op_select);
+        task->desc      = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
 }// namespace spla

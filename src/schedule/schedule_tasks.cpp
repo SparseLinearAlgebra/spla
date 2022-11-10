@@ -120,4 +120,18 @@ namespace spla {
         return {r.as<Object>(), s.as<Object>(), v.as<Object>(), op_reduce.as<Object>()};
     }
 
+    std::string ScheduleTask_v_select_count::get_name() {
+        return "v_select_count";
+    }
+    std::string ScheduleTask_v_select_count::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_select);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_v_select_count::get_args() {
+        return {r.as<Object>(), v.as<Object>(), op_select.as<Object>()};
+    }
+
 }// namespace spla

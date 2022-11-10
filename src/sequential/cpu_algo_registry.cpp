@@ -34,6 +34,7 @@
 #include <sequential/cpu_mxv.hpp>
 #include <sequential/cpu_vector_assign.hpp>
 #include <sequential/cpu_vector_reduce.hpp>
+#include <sequential/cpu_vector_select_count.hpp>
 #include <sequential/cpu_vxm.hpp>
 
 namespace spla {
@@ -51,6 +52,13 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_1("v_reduce", BOR_UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_1("v_reduce", BAND_INT), std::make_shared<Algo_v_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_1("v_reduce", BAND_UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
+
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_INT), std::make_shared<Algo_v_select_count_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_UINT), std::make_shared<Algo_v_select_count_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_FLOAT), std::make_shared<Algo_v_select_count_cpu<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_INT), std::make_shared<Algo_v_select_count_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_UINT), std::make_shared<Algo_v_select_count_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_FLOAT), std::make_shared<Algo_v_select_count_cpu<T_FLOAT>>());
 
         g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", PLUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", PLUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cpu<T_UINT>>());

@@ -287,6 +287,7 @@ add_library(spla SHARED
         src/sequential/cpu_vxm.hpp
         src/sequential/cpu_vector_assign.hpp
         src/sequential/cpu_vector_reduce.hpp
+        src/sequential/cpu_vector_select_count.hpp
         src/util/pair_hash.hpp
         src/profiling/time_profiler.cpp
         src/profiling/time_profiler.hpp

@@ -204,6 +204,26 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) r = Card({select(v[i])})
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Scalar (int) to save count of selected values
+     * @param v Vector to select values from
+     * @param op_select Option to select
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_select_count(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpSelect>      op_select,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @}
      */
 
