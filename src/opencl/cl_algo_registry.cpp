@@ -33,6 +33,7 @@
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_reduce.hpp>
+#include <opencl/cl_vector_select_count.hpp>
 #include <opencl/cl_vxm.hpp>
 
 namespace spla {
@@ -48,6 +49,13 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_INT), std::make_shared<Algo_v_select_count_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_UINT), std::make_shared<Algo_v_select_count_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", NQZERO_FLOAT), std::make_shared<Algo_v_select_count_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_INT), std::make_shared<Algo_v_select_count_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_UINT), std::make_shared<Algo_v_select_count_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_1("v_select_count", EQZERO_FLOAT), std::make_shared<Algo_v_select_count_cl<T_FLOAT>>());
 
         g_registry->add(MAKE_KEY_CL_2("v_assign_masked", PLUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_2("v_assign_masked", PLUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());

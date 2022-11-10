@@ -105,7 +105,6 @@ namespace spla {
             cl::NDRange global_phase_2(m_block_size);
             cl::NDRange local_phase_2(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);
-            queue.finish();
 
             cl::copy(queue, cl_sum, sum, sum + 1);
 

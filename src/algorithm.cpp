@@ -85,7 +85,7 @@ namespace spla {
                 exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero);
             }
 
-            exec_v_reduce(frontier_size, zero, frontier_new, PLUS_INT);
+            exec_v_select_count(frontier_size, frontier_new, NQZERO_INT);
 
             frontier_size->get_int(front_size);
 

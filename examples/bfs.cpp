@@ -116,8 +116,8 @@ int main(int argc, const char* const* argv) {
         spla::bfs_naive(ref_v, ref_A, s, spla::ref_ptr<spla::Descriptor>());
         timer_ref.lap_end();
 
-        verify_exact(v_cpu, ref_v);
-        verify_exact(v_acc, ref_v);
+        if (args[OPT_RUN_CPU].as<bool>()) verify_exact(v_cpu, ref_v);
+        if (args[OPT_RUN_GPU].as<bool>()) verify_exact(v_acc, ref_v);
     }
 
     spla::get_library()->finalize();

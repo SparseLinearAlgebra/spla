@@ -47,9 +47,9 @@ size_t get_group_id(uint dimindx);
 size_t get_global_offset(uint dimindx);
 uint   get_work_dim();
 
-#define atomic_add(p, val)          val
-#define atomic_sub(p, val)          val
-#define atomic_inc(p)               p[0]
-#define atomic_dec(p)               p[0]
-#define atomic_cmpxchg(p, cmp, val) p[0]
+#define atomic_add(p, val)          p[0] += val
+#define atomic_sub(p, val)          p[0] -= val
+#define atomic_inc(p)               (p)[0]
+#define atomic_dec(p)               (p)[0]
+#define atomic_cmpxchg(p, cmp, val) (p)[0]
 )";

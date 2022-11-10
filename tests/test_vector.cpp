@@ -293,7 +293,7 @@ TEST(vector, assign_perf) {
 
 TEST(vector, select_count_perf) {
     const int N     = 10000000;
-    const int K     = 13;
+    const int K     = 10000;
     const int NITER = 20;
     int       R     = 0;
 
