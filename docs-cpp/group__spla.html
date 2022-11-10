@@ -264,6 +264,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga21eb4a45303eddaa34138079f79c943c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga21eb4a45303eddaa34138079f79c943c">spla::exec_v_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; s, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_reduce, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:ga21eb4a45303eddaa34138079f79c943c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = reduce(s, v)  <a href="group__spla.html#ga21eb4a45303eddaa34138079f79c943c">More...</a><br /></td></tr>
 <tr class="separator:ga21eb4a45303eddaa34138079f79c943c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac71deeebe72eb7a37f8661c0b8067ae9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gac71deeebe72eb7a37f8661c0b8067ae9">spla::exec_v_select_count</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; op_select, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
+<tr class="memdesc:gac71deeebe72eb7a37f8661c0b8067ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = Card({select(v[i])})  <a href="group__spla.html#gac71deeebe72eb7a37f8661c0b8067ae9">More...</a><br /></td></tr>
+<tr class="separator:gac71deeebe72eb7a37f8661c0b8067ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2">spla::make_vector</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
 <tr class="memdesc:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new vector instance with specified dim and values type.  <a href="group__spla.html#ga995eb9040eb3ee83f172be6afdfaacb2">More...</a><br /></td></tr>
 <tr class="separator:ga995eb9040eb3ee83f172be6afdfaacb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1002,6 +1005,66 @@ Semantic <code>r[i] = select(mask)? M[i,*] * v: init</code></dd></dl>
     <tr><td class="paramname">s</td><td></td></tr>
     <tr><td class="paramname">v</td><td></td></tr>
     <tr><td class="paramname">op_reduce</td><td></td></tr>
+    <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
+    <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classStatus.html" title="Status of library operation execution.">Status</a> on task execution or status on hnd creation </dd></dl>
+
+</div>
+</div>
+<a id="gac71deeebe72eb7a37f8661c0b8067ae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac71deeebe72eb7a37f8661c0b8067ae9">&#9670;&nbsp;</a></span>exec_v_select_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::exec_v_select_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt;&#160;</td>
+          <td class="paramname"><em>op_select</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *&#160;</td>
+          <td class="paramname"><em>task_hnd</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Execute (schedule) r = Card({select(v[i])}) </p>
+<dl class="section note"><dt>Note</dt><dd>Pass valid <code>task_hnd</code> to store as a task, rather then execute immediately.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td><a class="el" href="classspla_1_1Scalar.html" title="Box for a single typed scalar value.">Scalar</a> (int) to save count of selected values </td></tr>
+    <tr><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> to select values from </td></tr>
+    <tr><td class="paramname">op_select</td><td>Option to select </td></tr>
     <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
     <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
   </table>
