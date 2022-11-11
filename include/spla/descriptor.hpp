@@ -50,12 +50,14 @@ namespace spla {
         void set_push_pull(bool value) { push_pull = value; }
         void set_front_factor(float value) { front_factor = value; }
         void set_discovered_factor(float value) { discovered_factor = value; }
+        void set_early_exit(bool value) { early_exit = value; }
 
         bool  get_push_only() const { return push_only; }
         bool  get_pull_only() const { return pull_only; }
         bool  get_push_pull() const { return push_pull; }
         float get_front_factor() const { return front_factor; }
         float get_discovered_factor() const { return discovered_factor; }
+        bool  get_early_exit() const { return early_exit; }
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -68,6 +70,7 @@ namespace spla {
         bool  push_pull         = true;
         float front_factor      = 0.1f;
         float discovered_factor = 0.7f;
+        bool  early_exit        = false;
     };
 
     /**

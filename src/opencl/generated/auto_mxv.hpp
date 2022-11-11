@@ -73,7 +73,8 @@ __kernel void mxv_scalar(__global const uint* g_Ap,
                          __global const TYPE* g_mask,
                          __global TYPE*       g_rx,
                          const TYPE           init,
-                         const uint           n) {
+                         const uint           n,
+                         const uint           early_exit) {
     const uint gid     = get_global_id(0);  // id of row to touch
     const uint gstride = get_global_size(0);// step between row ids
 
@@ -87,6 +88,8 @@ __kernel void mxv_scalar(__global const uint* g_Ap,
             for (uint i = start; i < end; i += 1) {
                 const uint col_id = g_Aj[i];
                 sum               = OP_BINARY2(sum, OP_BINARY1(g_Ax[i], g_vx[col_id]));
+
+                if (sum && early_exit) break;
             }
         }
 

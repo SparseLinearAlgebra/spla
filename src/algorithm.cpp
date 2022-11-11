@@ -55,6 +55,9 @@ namespace spla {
         int             discovered     = 1;
         bool            frontier_empty = false;
 
+        ref_ptr<Descriptor> desc = make_desc();
+        desc->set_early_exit(true);
+
         frontier_prev->set_int(s, 1);
 
         bool  push              = descriptor->get_push_only();
@@ -65,12 +68,12 @@ namespace spla {
 
         if (!(push || pull || push_pull)) push = true;
 
+#ifndef SPLA_RELEASE
         std::string mode;
         if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "% " + std::to_string(discovered_factor * 100.0f) + "%)";
         if (pull) mode = "(pull)";
         if (push) mode = "(push)";
 
-#ifndef SPLA_RELEASE
         std::cout << "start bfs from " << s << " " << mode << std::endl;
 #endif
         while (!frontier_empty) {
@@ -83,9 +86,9 @@ namespace spla {
             bool is_push_better = (front_density <= front_factor);
 
             if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero);
+                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             } else {
-                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero);
+                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             }
 
             exec_v_select_count(frontier_size, frontier_new, NQZERO_INT);

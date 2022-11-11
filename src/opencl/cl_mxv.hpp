@@ -137,10 +137,11 @@ namespace spla {
             v->cl_ensure_dense();
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
-            auto* p_cl_r    = r->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_mask = mask->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_M    = M->template get_dec_p<CLCsr<T>>();
-            auto* p_cl_v    = v->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_r     = r->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_mask  = mask->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_M     = M->template get_dec_p<CLCsr<T>>();
+            auto* p_cl_v     = v->template get_dec_p<CLDenseVec<T>>();
+            auto  early_exit = t->get_desc_or_default()->get_early_exit();
 
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
@@ -153,6 +154,7 @@ namespace spla {
             m_kernel_scalar.setArg(5, p_cl_r->Ax);
             m_kernel_scalar.setArg(6, init->get_value());
             m_kernel_scalar.setArg(7, r->get_n_rows());
+            m_kernel_scalar.setArg(8, uint(early_exit));
 
             uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(512)), uint(1));
 

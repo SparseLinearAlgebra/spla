@@ -63,7 +63,8 @@ __kernel void vxm_atomic_scalar(__global const TYPE* g_vx,
                                 __global const TYPE* g_Ax,
                                 __global const TYPE* g_mask,
                                 __global TYPE*       g_rx,
-                                const uint           n) {
+                                const uint           n,
+                                const uint           early_exit) {
     const uint gid     = get_global_id(0);  // id of row to touch
     const uint gstride = get_global_size(0);// step between row ids
 
@@ -83,6 +84,8 @@ __kernel void vxm_atomic_scalar(__global const TYPE* g_vx,
                     TYPE old     = g_rx[col_id];
 
                     while (!success) {
+                        if (old && early_exit) break;
+
                         const TYPE val = OP_BINARY2(old, prod);
 
                         if (val == old) break;

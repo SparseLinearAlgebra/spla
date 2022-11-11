@@ -77,6 +77,7 @@ namespace spla {
             const CpuDenseVec<T>* p_dense_mask = mask->template get_dec_p<CpuDenseVec<T>>();
             const CpuDenseVec<T>* p_dense_v    = v->template get_dec_p<CpuDenseVec<T>>();
             const CpuLil<T>*      p_lil_M      = M->template get_dec_p<CpuLil<T>>();
+            auto                  early_exit   = t->get_desc_or_default()->get_early_exit();
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
@@ -91,6 +92,8 @@ namespace spla {
                     for (const auto& j_x : row) {
                         const uint j = j_x.first;
                         sum          = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j]));
+
+                        if (sum && early_exit) break;
                     }
                 }
 
