@@ -88,41 +88,27 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            T          init_value[]  = {init->get_value()};
-            uint       config_size[] = {0};
-            cl::Buffer cl_init_value(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init_value);
-            cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
-            cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
+            m_kernel_prepare.setArg(0, p_cl_r->Ax);
+            m_kernel_prepare.setArg(1, init->get_value());
+            m_kernel_prepare.setArg(2, r->get_n_rows());
 
-            m_kernel_prepare.setArg(0, p_cl_v->Ax);
-            m_kernel_prepare.setArg(1, p_cl_M->Ap);
-            m_kernel_prepare.setArg(2, cl_init_value);
-            m_kernel_prepare.setArg(3, p_cl_r->Ax);
-            m_kernel_prepare.setArg(4, cl_config_size);
-            m_kernel_prepare.setArg(5, cl_config);
-            m_kernel_prepare.setArg(6, M->get_n_rows());
-            m_kernel_prepare.setArg(7, M->get_n_cols());
-
-            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(std::max(M->get_n_rows(), M->get_n_cols())));
-            cl::NDRange prepare_local(p_cl_acc->get_default_wgz());
+            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows(), p_cl_acc->get_wave_size()));
+            cl::NDRange prepare_local(p_cl_acc->get_wave_size());
             {
                 TIME_PROFILE_SCOPE("opencl/vxm:1_prepare");
                 queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
                 queue.finish();
             }
 
-            cl::copy(queue, cl_config_size, config_size, config_size + 1);
-
             m_kernel_exec_atomic.setArg(0, p_cl_v->Ax);
             m_kernel_exec_atomic.setArg(1, p_cl_M->Ap);
             m_kernel_exec_atomic.setArg(2, p_cl_M->Aj);
             m_kernel_exec_atomic.setArg(3, p_cl_M->Ax);
             m_kernel_exec_atomic.setArg(4, p_cl_mask->Ax);
-            m_kernel_exec_atomic.setArg(5, cl_config);
-            m_kernel_exec_atomic.setArg(6, p_cl_r->Ax);
-            m_kernel_exec_atomic.setArg(7, config_size[0]);
+            m_kernel_exec_atomic.setArg(5, p_cl_r->Ax);
+            m_kernel_exec_atomic.setArg(6, v->get_n_rows());
 
-            uint n_groups_to_dispatch = std::max(std::min(config_size[0] / m_block_count, uint(256)), uint(1));
+            uint n_groups_to_dispatch = std::max(std::min(v->get_n_rows() / m_block_count, uint(512)), uint(1));
 
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
@@ -144,10 +130,10 @@ namespace spla {
             if (m_compiled) return true;
 
             m_block_size  = 32;
-            m_block_count = get_acc_cl()->get_default_wgz() / 32;
+            m_block_count = get_acc_cl()->get_wave_size() / 32;
 
             assert(m_block_count > 1);
-            assert(m_block_size * m_block_count == get_acc_cl()->get_default_wgz());
+            assert(m_block_size * m_block_count == get_acc_cl()->get_wave_size());
 
             CLKernelBuilder kernel_builder;
             kernel_builder

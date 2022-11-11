@@ -51,5 +51,5 @@ uint   get_work_dim();
 #define atomic_sub(p, val)          p[0] -= val
 #define atomic_inc(p)               (p)[0]
 #define atomic_dec(p)               (p)[0]
-#define atomic_cmpxchg(p, cmp, val) ((p)[0] == cmp? val: (p)[0])
+#define atomic_cmpxchg(p, cmp, val) ((p)[0] == cmp ? val : (p)[0])
 )";

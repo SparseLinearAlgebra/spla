@@ -62,7 +62,7 @@ std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const st
     options->add_option("", cxxopts::Option(OPT_PULL, "run traversal in pull only", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option(OPT_PUSH_PULL, "run traversal in adaptive push-pull", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option(OPT_FRONT_FACTOR, "adaptive push-pull front sparsity factor", cxxopts::value<float>()->default_value("0.05")));
-    options->add_option("", cxxopts::Option(OPT_DISCOVERED_FACTOR, "adaptive push-pull discovered sparsity factor", cxxopts::value<float>()->default_value("0.2")));
+    options->add_option("", cxxopts::Option(OPT_DISCOVERED_FACTOR, "adaptive push-pull discovered sparsity factor", cxxopts::value<float>()->default_value("0.6")));
     return options;
 }
 
