@@ -80,7 +80,7 @@ namespace spla {
             float front_density      = float(front_size) / float(N);
             float discovered_density = float(discovered) / float(N);
 
-            bool is_push_better = (front_density <= front_factor) && (discovered_density < discovered_factor);
+            bool is_push_better = (front_density <= front_factor);
 
             if (push || (push_pull && is_push_better)) {
                 exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero);

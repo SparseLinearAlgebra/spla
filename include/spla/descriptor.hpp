@@ -66,8 +66,8 @@ namespace spla {
         bool  push_only         = false;
         bool  pull_only         = false;
         bool  push_pull         = true;
-        float front_factor      = 0.05f;
-        float discovered_factor = 0.6f;
+        float front_factor      = 0.1f;
+        float discovered_factor = 0.7f;
     };
 
     /**
