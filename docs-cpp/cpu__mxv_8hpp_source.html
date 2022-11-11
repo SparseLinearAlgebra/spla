@@ -148,35 +148,38 @@ $(function() {
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>* p_dense_mask = mask-&gt;template get_dec_p&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>* p_dense_v    = v-&gt;template get_dec_p&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuLil.html">CpuLil&lt;T&gt;</a>*      p_lil_M      = M-&gt;template get_dec_p&lt;CpuLil&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keyword">auto</span>&amp; func_multiply = op_multiply-&gt;function;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">auto</span>&amp; func_add      = op_add-&gt;function;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span>&amp; func_select   = op_select-&gt;function;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; DM; ++i) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                T sum = sum_init;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keywordflow">if</span> (func_select(p_dense_mask-&gt;Ax[i])) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; row = p_lil_M-&gt;<a class="code" href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">Ar</a>[i];</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> j = j_x.first;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                        sum          = func_add(sum, func_multiply(j_x.second, p_dense_v-&gt;Ax[j]));</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = sum;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keyword">auto</span>                  early_exit   = t-&gt;get_desc_or_default()-&gt;get_early_exit();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">auto</span>&amp; func_multiply = op_multiply-&gt;function;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span>&amp; func_add      = op_add-&gt;function;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">auto</span>&amp; func_select   = op_select-&gt;function;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; DM; ++i) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                T sum = sum_init;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keywordflow">if</span> (func_select(p_dense_mask-&gt;Ax[i])) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; row = p_lil_M-&gt;<a class="code" href="classspla_1_1CpuLil.html#ab3eaecd499d01432228fbbc02ba65fc0">Ar</a>[i];</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> j = j_x.first;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                        sum          = func_add(sum, func_multiply(j_x.second, p_dense_v-&gt;Ax[j]));</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                        <span class="keywordflow">if</span> (sum &amp;&amp; early_exit) <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            r-&gt;update_dense();</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    };</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXV_HPP</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = sum;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            r-&gt;update_dense();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    };</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXV_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html">spla::Algo_mxv_masked</a></div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:44</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__mxv__masked_html_a06bbbb808bc5d24c82d3d502e93fd004"><div class="ttname"><a href="classspla_1_1Algo__mxv__masked.html#a06bbbb808bc5d24c82d3d502e93fd004">spla::Algo_mxv_masked::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cpu_mxv.hpp:48</div></div>
