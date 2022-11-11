@@ -14,13 +14,14 @@ Example output of loading `bcsstk33.mtx` data from [SuiteSparse Matrix Collectio
 Loading matrix-market coordinate format data...
  Reading from "./bcsstk33.mtx"
  Matrix size 8738 rows, 8738 cols
- Removing self-loops
- Offsetting indices by -1
- Doubling edges
- Read data: 300334 lines, 300321 directed edges
- Parsed in 0.276823 sec
- Calc stats in 0.000554 sec
- Loaded in 0.279935 sec, 583166 edges total
+ Data: 300321 directed edges
+ Opt: remove self-loops
+ Opt: offset indices by -1
+ Opt: double edges
+ Reading data: ||||||||||||||||||||||||||||||||||| 100%
+ Parsed in 2.16565 sec 300334 lines
+ Calc stats in 0.003103 sec
+ Loaded in 2.1699 sec, 583166 edges total
  deg: min 19, max 140, avg 66.7391, sd 16.1078
  distribution:
   [  19 -   45):    9.6% *********
@@ -43,13 +44,14 @@ Example output of loading `hollywood-2009.mtx` data from [SuiteSparse Matrix Col
 Loading matrix-market coordinate format data...
  Reading from "./hollywood-2009.mtx"
  Matrix size 1139905 rows, 1139905 cols
- Removing self-loops
- Offsetting indices by -1
- Doubling edges
- Read data: 57515664 lines, 57515616 directed edges
- Parsed in 58.11 sec
- Calc stats in 0.084409 sec
- Loaded in 58.1974 sec, 112751422 edges total
+ Data: 57515616 directed edges
+ Opt: remove self-loops
+ Opt: offset indices by -1
+ Opt: double edges
+ Reading data: ||||||||||||||||||||||||||||||||||| 100%
+ Parsed in 58.566 sec 57515664 lines
+ Calc stats in 0.086161 sec
+ Loaded in 58.654 sec, 112751422 edges total
  deg: min 0, max 11467, avg 98.913, sd 271.865
  distribution:
   [      0 -       3):    7.2% *******

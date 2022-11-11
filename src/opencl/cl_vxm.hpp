@@ -105,7 +105,11 @@ namespace spla {
 
             cl::NDRange prepare_global(p_cl_acc->get_grid_dim(std::max(M->get_n_rows(), M->get_n_cols())));
             cl::NDRange prepare_local(p_cl_acc->get_default_wgz());
-            queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
+            {
+                TIME_PROFILE_SCOPE("opencl/vxm:1_prepare");
+                queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
+                queue.finish();
+            }
 
             cl::copy(queue, cl_config_size, config_size, config_size + 1);
 
@@ -122,8 +126,11 @@ namespace spla {
 
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel_exec_atomic, cl::NDRange(), exec_global, exec_local);
-            queue.finish();
+            {
+                TIME_PROFILE_SCOPE("opencl/vxm:2_exec");
+                queue.enqueueNDRangeKernel(m_kernel_exec_atomic, cl::NDRange(), exec_global, exec_local);
+                queue.finish();
+            }
 
             r->cl_update_dense();
 

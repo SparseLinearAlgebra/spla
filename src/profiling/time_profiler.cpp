@@ -58,7 +58,11 @@ namespace spla {
         for (const auto& entry : m_labels) {
             const auto& name  = entry.first;
             const auto& label = entry.second;
-            where << "  - " << name << " " << static_cast<double>(label->nano.load()) * 1e-6 << " ms\n";
+            const auto  value = label->nano.load();
+
+            if (value != 0) {
+                where << "  - " << name << " " << static_cast<double>(label->nano.load()) * 1e-6 << " ms\n";
+            }
         }
     }
 

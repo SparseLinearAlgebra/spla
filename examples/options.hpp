@@ -30,18 +30,19 @@
 
 #include <cxxopts.hpp>
 
-#define OPT_MTXPATH          "mtxpath"
-#define OPT_NITERS           "niters"
-#define OPT_SOURCE           "source"
-#define OPT_RUN_REF          "run-ref"
-#define OPT_RUN_CPU          "run-cpu"
-#define OPT_RUN_GPU          "run-gpu"
-#define OPT_PLATFORM         "platform"
-#define OPT_DEVICE           "device"
-#define OPT_PUSH             "push"
-#define OPT_PULL             "pull"
-#define OPT_PUSH_PULL        "push-pull"
-#define OPT_PUSH_PULL_FACTOR "push-pull-factor"
+#define OPT_MTXPATH           "mtxpath"
+#define OPT_NITERS            "niters"
+#define OPT_SOURCE            "source"
+#define OPT_RUN_REF           "run-ref"
+#define OPT_RUN_CPU           "run-cpu"
+#define OPT_RUN_GPU           "run-gpu"
+#define OPT_PLATFORM          "platform"
+#define OPT_DEVICE            "device"
+#define OPT_PUSH              "push"
+#define OPT_PULL              "pull"
+#define OPT_PUSH_PULL         "push-pull"
+#define OPT_FRONT_FACTOR      "front-factor"
+#define OPT_DISCOVERED_FACTOR "discovered-factor"
 
 std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
     std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
@@ -60,7 +61,8 @@ std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const st
     options->add_option("", cxxopts::Option(OPT_PUSH, "run traversal in push only", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option(OPT_PULL, "run traversal in pull only", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option(OPT_PUSH_PULL, "run traversal in adaptive push-pull", cxxopts::value<bool>()->default_value("true")));
-    options->add_option("", cxxopts::Option(OPT_PUSH_PULL_FACTOR, "adaptive push-pull front sparsity factor", cxxopts::value<float>()->default_value("0.05")));
+    options->add_option("", cxxopts::Option(OPT_FRONT_FACTOR, "adaptive push-pull front sparsity factor", cxxopts::value<float>()->default_value("0.05")));
+    options->add_option("", cxxopts::Option(OPT_DISCOVERED_FACTOR, "adaptive push-pull discovered sparsity factor", cxxopts::value<float>()->default_value("0.2")));
     return options;
 }
 

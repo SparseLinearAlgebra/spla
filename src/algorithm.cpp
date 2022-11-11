@@ -57,15 +57,16 @@ namespace spla {
 
         frontier_prev->set_int(s, 1);
 
-        bool  push             = descriptor->get_push_only();
-        bool  pull             = descriptor->get_pull_only();
-        bool  push_pull        = descriptor->get_push_pull();
-        float push_pull_factor = descriptor->get_push_pull_factor();
+        bool  push              = descriptor->get_push_only();
+        bool  pull              = descriptor->get_pull_only();
+        bool  push_pull         = descriptor->get_push_pull();
+        float front_factor      = descriptor->get_front_factor();
+        float discovered_factor = descriptor->get_discovered_factor();
 
         if (!(push || pull || push_pull)) push = true;
 
         std::string mode;
-        if (push_pull) mode = "(push_pull " + std::to_string(push_pull_factor * 100.0f) + "%)";
+        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "% " + std::to_string(discovered_factor * 100.0f) + "%)";
         if (pull) mode = "(pull)";
         if (push) mode = "(push)";
 
@@ -76,8 +77,11 @@ namespace spla {
             depth->set_int(current_level);
             exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
 
-            bool is_push_better = (float(front_size) / float(N) <= push_pull_factor) &&
-                                  (float(discovered) / float(N) <= push_pull_factor);
+            float front_density      = float(front_size) / float(N);
+            float discovered_density = float(discovered) / float(N);
+
+            bool is_push_better = front_density <= front_factor ||
+                                  (discovered_density <= 1.0f - discovered_factor && front_density <= discovered_density);
 
             if (push || (push_pull && is_push_better)) {
                 exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero);

@@ -72,13 +72,32 @@ namespace spla {
         std::stringstream header(line);
         header >> m_n_rows >> m_n_cols >> nnz;
 
-        std::size_t       to_read = nnz;
+        std::size_t       to_count = 0;
+        std::size_t       to_read  = nnz;
         std::vector<uint> Ai;
         std::vector<uint> Aj;
 
+        float job_done  = 0.0f;
+        float job_total = 35.0f;
+
+        std::cout << "Loading matrix-market coordinate format data... " << std::endl;
+        std::cout << " Reading from " << m_file_path << std::endl;
+        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols" << std::endl;
+        std::cout << " Data: " << nnz << " directed edges" << std::endl;
+        if (remove_loops) std::cout << " Opt: remove self-loops" << std::endl;
+        if (offset_indices) std::cout << " Opt: offset indices by -1" << std::endl;
+        if (make_undirected) std::cout << " Opt: double edges" << std::endl;
+        std::cout << " Reading data: ";
+
         while (to_read > 0) {
+            to_count++;
             to_read--;
             n_lines++;
+
+            while (float(to_count) / float(nnz) > job_done / job_total) {
+                job_done += 1.0f;
+                std::cout << "|";
+            }
 
             std::getline(file, line);
             std::stringstream entry(line);
@@ -115,14 +134,8 @@ namespace spla {
 
         t.stop();
 
-        std::cout << "Loading matrix-market coordinate format data... " << std::endl;
-        std::cout << " Reading from " << m_file_path << std::endl;
-        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols" << std::endl;
-        if (remove_loops) std::cout << " Removing self-loops" << std::endl;
-        if (offset_indices) std::cout << " Offsetting indices by -1" << std::endl;
-        if (make_undirected) std::cout << " Doubling edges" << std::endl;
-        std::cout << " Read data: " << n_lines << " lines, " << nnz << " directed edges" << std::endl;
-        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec" << std::endl;
+        std::cout << " 100%" << std::endl;
+        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec " << n_lines << " lines" << std::endl;
         std::cout << " Calc stats in " << t.get_laps_ms()[1] * 1e-3 << " sec" << std::endl;
         std::cout << " Loaded in " << t.get_elapsed_ms() * 1e-3 << " sec, " << m_n_values << " edges total" << std::endl;
 
