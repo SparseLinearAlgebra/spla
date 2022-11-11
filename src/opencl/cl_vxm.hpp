@@ -109,21 +109,20 @@ namespace spla {
 
             cl::copy(queue, cl_config_size, config_size, config_size + 1);
 
-            m_kernel_exec.setArg(0, p_cl_v->Ax);
-            m_kernel_exec.setArg(1, p_cl_M->Ap);
-            m_kernel_exec.setArg(2, p_cl_M->Aj);
-            m_kernel_exec.setArg(3, p_cl_M->Ax);
-            m_kernel_exec.setArg(4, p_cl_mask->Ax);
-            m_kernel_exec.setArg(5, cl_config);
-            m_kernel_exec.setArg(6, p_cl_r->Ax);
-            m_kernel_exec.setArg(7, config_size[0]);
-            m_kernel_exec.setArg(8, M->get_n_cols());
+            m_kernel_exec_atomic.setArg(0, p_cl_v->Ax);
+            m_kernel_exec_atomic.setArg(1, p_cl_M->Ap);
+            m_kernel_exec_atomic.setArg(2, p_cl_M->Aj);
+            m_kernel_exec_atomic.setArg(3, p_cl_M->Ax);
+            m_kernel_exec_atomic.setArg(4, p_cl_mask->Ax);
+            m_kernel_exec_atomic.setArg(5, cl_config);
+            m_kernel_exec_atomic.setArg(6, p_cl_r->Ax);
+            m_kernel_exec_atomic.setArg(7, config_size[0]);
 
-            const uint groups_count = 32;
+            uint n_groups_to_dispatch = std::max(std::min(config_size[0] / m_block_count, uint(256)), uint(1));
 
-            cl::NDRange exec_global(1, p_cl_acc->get_wave_size() * groups_count);
-            cl::NDRange exec_local(1, p_cl_acc->get_wave_size());
-            queue.enqueueNDRangeKernel(m_kernel_exec, cl::NDRange(), exec_global, exec_local);
+            cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
+            cl::NDRange exec_local(m_block_count, m_block_size);
+            queue.enqueueNDRangeKernel(m_kernel_exec_atomic, cl::NDRange(), exec_global, exec_local);
             queue.finish();
 
             r->cl_update_dense();
@@ -137,6 +136,12 @@ namespace spla {
                            const ref_ptr<TOpSelect<T>>&       op_select) {
             if (m_compiled) return true;
 
+            m_block_size  = 32;
+            m_block_count = get_acc_cl()->get_default_wgz() / 32;
+
+            assert(m_block_count > 1);
+            assert(m_block_size * m_block_count == get_acc_cl()->get_default_wgz());
+
             CLKernelBuilder kernel_builder;
             kernel_builder
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
@@ -147,18 +152,22 @@ namespace spla {
 
             if (!kernel_builder.build()) return false;
 
-            m_program        = kernel_builder.get_program();
-            m_kernel_prepare = cl::Kernel(m_program, "vxm_prepare");
-            m_kernel_exec    = cl::Kernel(m_program, "vxm_exec");
-            m_compiled       = true;
+            m_program            = kernel_builder.get_program();
+            m_kernel_prepare     = cl::Kernel(m_program, "vxm_prepare");
+            m_kernel_exec_serial = cl::Kernel(m_program, "vxm_exec_serial");
+            m_kernel_exec_atomic = cl::Kernel(m_program, "vxm_exec_atomic");
+            m_compiled           = true;
 
             return true;
         }
 
         cl::Kernel  m_kernel_prepare;
-        cl::Kernel  m_kernel_exec;
+        cl::Kernel  m_kernel_exec_serial;
+        cl::Kernel  m_kernel_exec_atomic;
         cl::Program m_program;
-        bool        m_compiled = false;
+        uint        m_block_size  = 0;
+        uint        m_block_count = 0;
+        bool        m_compiled    = false;
     };
 
 }// namespace spla

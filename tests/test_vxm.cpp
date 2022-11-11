@@ -88,7 +88,7 @@ TEST(vxm_masked, naive) {
     EXPECT_EQ(r, 1);
 }
 
-TEST(vxm_masked, perf) {
+TEST(vxm_masked, perf_mult_add) {
     const int N     = 1000000;
     const int K     = 10;
     const int W     = 64;
@@ -123,6 +123,55 @@ TEST(vxm_masked, perf) {
     for (int i = 0; i < NITER; i++) {
         timer.lap_begin();
         spla::exec_vxm_masked(ir, imask, iv, iM, spla::MULT_INT, spla::PLUS_INT, spla::EQZERO_INT, iinit);
+        timer.lap_end();
+    }
+
+    for (int i = 0; i < N; i++) {
+        int r;
+        ir->get_int(i, r);
+        EXPECT_EQ(r, (i % S ? 0 : result[i]));
+    }
+
+    std::cout << "timings (ms): ";
+    timer.print();
+    std::cout << std::endl;
+}
+
+TEST(vxm_masked, perf_and_or) {
+    const int N     = 1000000;
+    const int K     = 10;
+    const int W     = 64;
+    const int S     = 10;
+    const int NITER = 10;
+
+    std::vector<int> result(N, 0);
+
+    spla::Timer timer;
+
+    auto ir    = spla::make_vector(N, spla::INT);
+    auto imask = spla::make_vector(N, spla::INT);
+    auto iv    = spla::make_vector(N, spla::INT);
+    auto iM    = spla::make_matrix(N, N, spla::INT);
+    auto iinit = spla::make_int(0);
+
+    for (int i = 0; i < N; i++) {
+        imask->set_int(i, (i % S ? 1 : 0));
+        iv->set_int(i, 0);
+
+        if ((i % K) == 0) {
+            iv->set_int(i, 1);
+
+            for (int w = 0; w < W; w++) {
+                const int j = (i + w) % N;
+                iM->set_int(i, j, 1);
+                result[j] = 1;
+            }
+        }
+    }
+
+    for (int i = 0; i < NITER; i++) {
+        timer.lap_begin();
+        spla::exec_vxm_masked(ir, imask, iv, iM, spla::BAND_INT, spla::BOR_INT, spla::EQZERO_INT, iinit);
         timer.lap_end();
     }
 
