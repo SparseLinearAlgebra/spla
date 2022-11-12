@@ -171,7 +171,7 @@ $(function() {
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            cl::NDRange prepare_global(p_cl_acc-&gt;get_grid_dim(r-&gt;get_n_rows(), p_cl_acc-&gt;get_wave_size()));</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            cl::NDRange prepare_local(p_cl_acc-&gt;get_wave_size());</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/vector/1-prepare&quot;</span>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/vector:1-prepare&quot;</span>);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            }</div>
@@ -189,7 +189,7 @@ $(function() {
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            cl::NDRange exec_local(m_block_count, m_block_size);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/vector/2-exec&quot;</span>);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/vector:2-exec&quot;</span>);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                queue.enqueueNDRangeKernel(m_kernel_atomic_vector, cl::NDRange(), exec_global, exec_local);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            }</div>
@@ -235,7 +235,7 @@ $(function() {
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            cl::NDRange prepare_global(p_cl_acc-&gt;get_grid_dim(r-&gt;get_n_rows(), p_cl_acc-&gt;get_wave_size()));</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            cl::NDRange prepare_local(p_cl_acc-&gt;get_wave_size());</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/scalar/1-prepare&quot;</span>);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/scalar:1-prepare&quot;</span>);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            }</div>
@@ -254,7 +254,7 @@ $(function() {
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            cl::NDRange exec_local(m_block_size);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/scalar/2-exec&quot;</span>);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <a class="code" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vxm/scalar:2-exec&quot;</span>);</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                queue.enqueueNDRangeKernel(m_kernel_atomic_scalar, cl::NDRange(), exec_global, exec_local);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            }</div>
