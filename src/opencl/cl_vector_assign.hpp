@@ -78,16 +78,15 @@ namespace spla {
             auto*       p_cl_acc        = get_acc_cl();
             auto&       queue           = p_cl_acc->get_queue_default();
 
-            T          assign_value[] = {value->get_value()};
-            cl::Buffer cl_assign_value(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), assign_value);
-
             m_kernel.setArg(0, p_cl_r_dense->Ax);
             m_kernel.setArg(1, p_cl_mask_dense->Ax);
-            m_kernel.setArg(2, cl_assign_value);
+            m_kernel.setArg(2, value->get_value());
             m_kernel.setArg(3, r->get_n_rows());
 
-            cl::NDRange global(p_cl_acc->get_grid_dim(r->get_n_rows()));
-            cl::NDRange local(p_cl_acc->get_default_wgz());
+            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(256)), uint(1));
+
+            cl::NDRange global(m_block_size * n_groups_to_dispatch);
+            cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
             queue.finish();
 
@@ -99,6 +98,8 @@ namespace spla {
     private:
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_assign, const ref_ptr<TOpSelect<T>>& op_select) {
             if (m_compiled) return true;
+
+            m_block_size = get_acc_cl()->get_wave_size();
 
             CLKernelBuilder kernel_builder;
             kernel_builder
@@ -118,7 +119,8 @@ namespace spla {
 
         cl::Kernel  m_kernel;
         cl::Program m_program;
-        bool        m_compiled = false;
+        uint        m_block_size = 0;
+        bool        m_compiled   = false;
     };
 
 }// namespace spla

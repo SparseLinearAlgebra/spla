@@ -81,10 +81,10 @@ namespace spla {
             m_kernel.setArg(1, cl_count);
             m_kernel.setArg(2, v->get_n_rows());
 
-            const uint wgs = p_cl_acc->get_default_wgz();
+            uint n_groups_to_dispatch = std::max(std::min(v->get_n_rows() / m_block_size, uint(256)), uint(1));
 
-            cl::NDRange global(p_cl_acc->get_grid_dim(v->get_n_rows(), wgs));
-            cl::NDRange local(wgs);
+            cl::NDRange global(m_block_size * n_groups_to_dispatch);
+            cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
 
             cl::copy(queue, cl_count, count, count + 1);
@@ -97,6 +97,8 @@ namespace spla {
     private:
         bool ensure_kernel(const ref_ptr<TOpSelect<T>>& op_select) {
             if (m_compiled) return true;
+
+            m_block_size = get_acc_cl()->get_wave_size();
 
             CLKernelBuilder kernel_builder;
             kernel_builder
@@ -115,7 +117,8 @@ namespace spla {
 
         cl::Kernel  m_kernel;
         cl::Program m_program;
-        bool        m_compiled = false;
+        uint        m_block_size = 0;
+        bool        m_compiled   = false;
     };
 
 }// namespace spla

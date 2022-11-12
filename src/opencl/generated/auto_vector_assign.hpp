@@ -6,14 +6,14 @@
 static const char source_vector_assign[] = R"(
 __kernel void assign(__global TYPE*       g_r,
                      __global const TYPE* g_mask,
-                     __global const TYPE* g_init,
+                     const TYPE           init,
                      const uint           n) {
-    uint gid  = get_global_id(0);
-    TYPE init = g_init[0];
+    uint gid     = get_global_id(0);
+    uint gstride = get_global_size(0);
 
-    if (gid < n) {
-        if (OP_SELECT(g_mask[gid])) {
-            g_r[gid] = OP_BINARY(g_r[gid], init);
+    for (uint i = gid; i < n; i += gstride) {
+        if (OP_SELECT(g_mask[i])) {
+            g_r[i] = OP_BINARY(g_r[i], init);
         }
     }
 }

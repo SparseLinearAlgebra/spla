@@ -51,6 +51,7 @@ namespace spla {
         void set_front_factor(float value) { front_factor = value; }
         void set_discovered_factor(float value) { discovered_factor = value; }
         void set_early_exit(bool value) { early_exit = value; }
+        void set_struct_only(bool value) { struct_only = value; }
 
         bool  get_push_only() const { return push_only; }
         bool  get_pull_only() const { return pull_only; }
@@ -58,6 +59,7 @@ namespace spla {
         float get_front_factor() const { return front_factor; }
         float get_discovered_factor() const { return discovered_factor; }
         bool  get_early_exit() const { return early_exit; }
+        bool  get_struct_only() const { return struct_only; }
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -71,6 +73,7 @@ namespace spla {
         float front_factor      = 0.1f;
         float discovered_factor = 0.7f;
         bool  early_exit        = false;
+        bool  struct_only       = false;
     };
 
     /**

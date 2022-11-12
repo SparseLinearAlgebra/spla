@@ -30,6 +30,8 @@
 
 #include <spla/ref.hpp>
 
+#include <optional>
+
 namespace spla {
 
     /**
@@ -71,8 +73,9 @@ namespace spla {
         virtual bool is_valid_version(uint current_version) { return version == current_version; }
 
     public:
-        uint values  = 0;
-        uint version = 0;
+        uint                values  = 0;
+        uint                version = 0;
+        std::optional<uint> nnz;
     };
 
     /**

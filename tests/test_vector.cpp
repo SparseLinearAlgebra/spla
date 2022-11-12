@@ -292,9 +292,9 @@ TEST(vector, assign_perf) {
 }
 
 TEST(vector, select_count_perf) {
-    const int N     = 10000000;
-    const int K     = 10000;
-    const int NITER = 20;
+    const int N     = 2000000;
+    const int K     = 4000;
+    const int NITER = 40;
     int       R     = 0;
 
     spla::Timer timer;

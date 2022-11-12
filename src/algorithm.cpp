@@ -28,6 +28,7 @@
 #include <spla/algorithm.hpp>
 #include <spla/op.hpp>
 #include <spla/schedule.hpp>
+#include <spla/timer.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -57,6 +58,7 @@ namespace spla {
 
         ref_ptr<Descriptor> desc = make_desc();
         desc->set_early_exit(true);
+        desc->set_struct_only(true);
 
         frontier_prev->set_int(s, 1);
 
@@ -75,28 +77,33 @@ namespace spla {
         if (push) mode = "(push)";
 
         std::cout << "start bfs from " << s << " " << mode << std::endl;
+
+        Timer tight;
 #endif
         while (!frontier_empty) {
+#ifndef SPLA_RELEASE
+            tight.start();
+#endif
             depth->set_int(current_level);
             exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
 
             float front_density      = float(front_size) / float(N);
             float discovered_density = float(discovered) / float(N);
-
-            bool is_push_better = (front_density <= front_factor);
-
+            bool  is_push_better     = (front_density <= front_factor);
             if (push || (push_pull && is_push_better)) {
                 exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             } else {
                 exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             }
 
-            exec_v_select_count(frontier_size, frontier_new, NQZERO_INT);
-
+            exec_v_reduce(frontier_size, zero, frontier_new, PLUS_INT, desc);
             frontier_size->get_int(front_size);
 
 #ifndef SPLA_RELEASE
-            std::cout << " - iter " << current_level << " front " << front_size << " discovered " << discovered << std::endl;
+            tight.stop();
+            std::cout << " - iter " << current_level
+                      << " front " << front_size << " discovered " << discovered << " "
+                      << tight.get_elapsed_ms() << " ms" << std::endl;
             get_library()->time_profile_dump();
             get_library()->time_profile_reset();
 #endif

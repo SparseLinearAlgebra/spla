@@ -84,7 +84,7 @@ __kernel void vxm_atomic_scalar(__global const TYPE* g_vx,
                     TYPE old     = g_rx[col_id];
 
                     while (!success) {
-                        if (old && early_exit) break;
+                        if (early_exit && old) break;
 
                         const TYPE val = OP_BINARY2(old, prod);
 
