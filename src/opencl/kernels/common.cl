@@ -48,3 +48,6 @@ uint   get_work_dim();
 #define atomic_inc(p)               (p)[0]
 #define atomic_dec(p)               (p)[0]
 #define atomic_cmpxchg(p, cmp, val) ((p)[0] == cmp ? val : (p)[0])
+
+#define min(x, y) (x < y ? x : y)
+#define max(x, y) (x > y ? x : y)
