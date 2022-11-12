@@ -204,7 +204,7 @@ namespace spla {
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
             cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(256)), uint(1));
+            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(512)), uint(1));
 
             m_kernel_config.setArg(0, p_cl_mask->Ax);
             m_kernel_config.setArg(1, p_cl_r->Ax);

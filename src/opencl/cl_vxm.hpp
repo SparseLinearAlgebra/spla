@@ -234,7 +234,7 @@ namespace spla {
             m_kernel_config.setArg(5, M->get_n_rows());
             m_kernel_config.setArg(6, M->get_n_cols());
 
-            uint n_groups_to_dispatch = std::max(std::min(v->get_n_rows() / m_block_size, uint(256)), uint(1));
+            uint n_groups_to_dispatch = std::max(std::min(v->get_n_rows() / m_block_size, uint(512)), uint(1));
 
             cl::NDRange config_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange config_local(m_block_size);
