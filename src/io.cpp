@@ -221,12 +221,13 @@ namespace spla {
         const double DISPLAY_DENSITY = std::max(double(100), double(m_deg_distribution.size()));
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
+            auto deg     = m_deg_distribution[i] >= 0.01 ? m_deg_distribution[i] : 0.0;
             auto k_start = m_deg_ranges[i];
             auto k_end   = m_deg_ranges[i + 1];
-            auto k_count = std::round(static_cast<uint>(m_deg_distribution[i] * DISPLAY_DENSITY));
+            auto k_count = std::round(static_cast<uint>(deg * DISPLAY_DENSITY));
 
             std::cout << "  [" << std::setw(n_digits) << k_start << " - " << std::setw(n_digits) << k_end << "): ";
-            std::cout << std::setw(6) << std::setprecision(2) << m_deg_distribution[i] * 100.0 << std::setprecision(default_precision) << "% ";
+            std::cout << std::setw(6) << std::setprecision(2) << deg * 100.0 << std::setprecision(default_precision) << "% ";
             for (uint s = 0; s < k_count; ++s) { std::cout << "*"; }
             std::cout << std::endl;
         }

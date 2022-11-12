@@ -92,3 +92,52 @@ __kernel void mxv_scalar(__global const uint* g_Ap,
         g_rx[row_id] = sum;
     }
 }
+
+__kernel void mxv_config(__global const TYPE* g_mask,
+                         __global TYPE*       g_rx,
+                         __global uint*       g_config,
+                         __global uint*       g_config_size,
+                         const TYPE           init,
+                         const uint           n) {
+    const uint gid     = get_global_id(0);
+    const uint gstride = get_global_size(0);
+
+    for (uint i = gid; i < n; i += gstride) {
+        if (OP_SELECT(g_mask[i])) {
+            const uint id = atomic_inc(g_config_size);
+            g_config[id]  = i;
+        } else {
+            g_rx[i] = init;
+        }
+    }
+}
+
+__kernel void mxv_config_scalar(__global const uint* g_Ap,
+                                __global const uint* g_Aj,
+                                __global const TYPE* g_Ax,
+                                __global const TYPE* g_vx,
+                                __global const uint* g_config,
+                                __global TYPE*       g_rx,
+                                const TYPE           init,
+                                const uint           n,
+                                const uint           early_exit) {
+    const uint gid     = get_global_id(0);  // id of row to touch
+    const uint gstride = get_global_size(0);// step between row ids
+
+    for (uint cid = gid; cid < n; cid += gstride) {
+        const uint row_id = g_config[cid];
+        const uint start  = g_Ap[row_id];
+        const uint end    = g_Ap[row_id + 1];
+
+        TYPE sum = init;
+
+        for (uint i = start; i < end; i += 1) {
+            const uint col_id = g_Aj[i];
+            sum               = OP_BINARY2(sum, OP_BINARY1(g_Ax[i], g_vx[col_id]));
+
+            if (early_exit && sum) break;
+        }
+
+        g_rx[row_id] = sum;
+    }
+}

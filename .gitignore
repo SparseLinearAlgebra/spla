@@ -3,5 +3,9 @@
 /*build*/
 /**/.vscode
 
+# Graph files
+graph-dataset.zip
+dataset
+
 # Python cache files
 /**/__pycache__

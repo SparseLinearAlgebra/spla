@@ -65,12 +65,12 @@ __kernel void vxm_atomic_scalar(__global const TYPE* g_vx,
     const uint gstride = get_global_size(0);// step between row ids
 
     for (int row_id = gid; row_id < n; row_id += gstride) {
-        const uint start = g_Ap[row_id];
-        const uint end   = g_Ap[row_id + 1];
-
         const TYPE vx = g_vx[row_id];
 
         if (vx) {
+            const uint start = g_Ap[row_id];
+            const uint end   = g_Ap[row_id + 1];
+
             for (uint i = start; i < end; i += 1) {
                 const uint col_id = g_Aj[i];
                 const TYPE prod   = OP_BINARY1(vx, g_Ax[i]);
