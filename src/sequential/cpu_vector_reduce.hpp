@@ -62,7 +62,7 @@ namespace spla {
 
             T sum = s->get_value();
 
-            v->ensure_dense_format();
+            v->decorator_ensure(Format::CpuDenseVec);
             const auto* p_dense  = v->template get_dec_p<CpuDenseVec<T>>();
             const auto& function = op_reduce->function;
 

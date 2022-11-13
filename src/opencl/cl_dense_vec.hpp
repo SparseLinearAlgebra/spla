@@ -41,7 +41,10 @@ namespace spla {
     void cl_dense_vec_init(std::size_t    size,
                            const T*       values,
                            CLDenseVec<T>& storage) {
-        cl::Buffer buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, size * sizeof(T), (void*) values);
+        std::size_t buffer_size = size * sizeof(T);
+        auto        flags       = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | (values ? CL_MEM_COPY_HOST_PTR : 0);
+
+        cl::Buffer buffer(get_acc_cl()->get_context(), flags, buffer_size, (void*) values);
         storage.Ax = std::move(buffer);
     }
 

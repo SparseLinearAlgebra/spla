@@ -68,7 +68,7 @@ namespace spla {
             auto v         = t->v.template cast<TVector<T>>();
             auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
 
-            v->cl_ensure_dense();
+            v->decorator_ensure(Format::CLDenseVec);
             if (!ensure_kernel(op_reduce)) return Status::Error;
 
             const auto* p_cl_dense_vec = v->template get_dec_p<CLDenseVec<T>>();

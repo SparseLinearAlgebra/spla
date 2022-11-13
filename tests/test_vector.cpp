@@ -356,10 +356,7 @@ TEST(vector, sorting_naive) {
     timer.print();
     std::cout << std::endl;
 
-    std::cout << res[0];
-    std::cout << res[1];
-    std::cout << res[2];
-    std::cout << res[3];
+    for (auto r : res) std::cout << r << std::endl;
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

@@ -69,10 +69,10 @@ namespace spla {
             const uint DN       = M->get_n_cols();
             const T    sum_init = init->get_value();
 
-            r->ensure_dense_format();
-            mask->ensure_dense_format();
-            v->ensure_dense_format();
-            M->ensure_lil_format();
+            r->decorator_ensure(Format::CpuDenseVec);
+            mask->decorator_ensure(Format::CpuDenseVec);
+            v->decorator_ensure(Format::CpuDenseVec);
+            M->decorator_ensure(Format::CpuLil);
 
             CpuDenseVec<T>*       p_dense_r    = r->template get_dec_p<CpuDenseVec<T>>();
             const CpuDenseVec<T>* p_dense_mask = mask->template get_dec_p<CpuDenseVec<T>>();
@@ -102,7 +102,7 @@ namespace spla {
                 }
             }
 
-            r->update_dense();
+            r->decorator_update_version(Format::CpuDenseVec);
 
             return Status::Ok;
         }

@@ -79,10 +79,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->cl_ensure_dense();
-            mask->cl_ensure_dense();
-            M->cl_ensure_csr();
-            v->cl_ensure_dense();
+            r->decorator_ensure(Format::CLDenseVec);
+            mask->decorator_ensure(Format::CLDenseVec);
+            M->decorator_ensure(Format::CLCsr);
+            v->decorator_ensure(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
             auto* p_cl_r    = r->template get_dec_p<CLDenseVec<T>>();
@@ -112,7 +112,7 @@ namespace spla {
                 queue.finish();
             }
 
-            r->cl_update_dense();
+            r->decorator_update_version(Format::CLDenseVec);
 
             return Status::Ok;
         }
@@ -131,10 +131,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->cl_ensure_dense();
-            mask->cl_ensure_dense();
-            M->cl_ensure_csr();
-            v->cl_ensure_dense();
+            r->decorator_ensure(Format::CLDenseVec);
+            mask->decorator_ensure(Format::CLDenseVec);
+            M->decorator_ensure(Format::CLCsr);
+            v->decorator_ensure(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
             auto* p_cl_r     = r->template get_dec_p<CLDenseVec<T>>();
@@ -166,7 +166,7 @@ namespace spla {
                 queue.finish();
             }
 
-            r->cl_update_dense();
+            r->decorator_update_version(Format::CLDenseVec);
 
             return Status::Ok;
         }
@@ -185,10 +185,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->cl_ensure_dense();
-            mask->cl_ensure_dense();
-            M->cl_ensure_csr();
-            v->cl_ensure_dense();
+            r->decorator_ensure(Format::CLDenseVec);
+            mask->decorator_ensure(Format::CLDenseVec);
+            M->decorator_ensure(Format::CLCsr);
+            v->decorator_ensure(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
             auto* p_cl_r     = r->template get_dec_p<CLDenseVec<T>>();
@@ -204,7 +204,7 @@ namespace spla {
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
             cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(512)), uint(1));
+            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(1024)), uint(1));
 
             m_kernel_config.setArg(0, p_cl_mask->Ax);
             m_kernel_config.setArg(1, p_cl_r->Ax);
@@ -241,7 +241,7 @@ namespace spla {
                 queue.finish();
             }
 
-            r->cl_update_dense();
+            r->decorator_update_version(Format::CLDenseVec);
 
             return Status::Ok;
         }

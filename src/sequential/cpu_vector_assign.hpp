@@ -63,8 +63,8 @@ namespace spla {
 
             auto assign_value = value->get_value();
 
-            r->ensure_dense_format();
-            mask->ensure_dense_format();
+            r->decorator_ensure(Format::CpuDenseVec);
+            mask->decorator_ensure(Format::CpuDenseVec);
 
             auto*       p_r_dense    = r->template get_dec_p<CpuDenseVec<T>>();
             const auto* p_mask_dense = mask->template get_dec_p<CpuDenseVec<T>>();
@@ -79,7 +79,7 @@ namespace spla {
                 }
             }
 
-            r->update_dense();
+            r->decorator_update_version(Format::CpuDenseVec);
 
             return Status::Ok;
         }

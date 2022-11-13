@@ -94,15 +94,15 @@ namespace spla {
         Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
 
         bool is_valid();
+
+        void decorator_update_version(Format format);
+        void decorator_ensure(Format format);
+        bool decorator_is_ensured(Format format);
+
+    private:
         void validate();
         void invalidate();
         void update_version();
-        void update_dense();
-        void ensure_dense_format();
-#if defined(SPLA_BUILD_OPENCL)
-        void cl_update_dense();
-        void cl_ensure_dense();
-#endif
 
     private:
         std::array<ref_ptr<TDecoration<T>>, static_cast<uint>(Format::CountVector) + 1> m_decorations;
@@ -191,56 +191,56 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::set_byte(uint row_id, std::int8_t value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_byte(uint row_id, int8_t& value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         value = static_cast<int8_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_int(uint row_id, int32_t& value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         value = static_cast<int32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         value = static_cast<uint32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
-        ensure_dense_format();
+        decorator_ensure(Format::CpuDenseVec);
         value = static_cast<float>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
         return Status::Ok;
     }
@@ -273,57 +273,71 @@ namespace spla {
     }
 
     template<typename T>
-    void TVector<T>::update_dense() {
-        auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+    void TVector<T>::decorator_update_version(Format format) {
+        const int index = static_cast<int>(format);
+        assert(get_dec(index).is_not_null());
         update_version();
-        p_vec->update_version(m_version);
+        get_dec(index)->update_version(m_version);
     }
 
     template<typename T>
-    void TVector<T>::ensure_dense_format() {
-        auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+    void TVector<T>::decorator_ensure(Format format) {
+        switch (format) {
+            case Format::CpuDenseVec: {
+                auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+                if (p_vec->get_version() >= m_version) return;
 
-        if (p_vec->get_version() < m_version) {
-            if (is_valid()) {
+                if (is_valid()) {
 #if defined(SPLA_BUILD_OPENCL)
-                auto p_cl_acc       = get_acc_cl();
-                auto p_cl_dense_vec = get_dec_p<CLDenseVec<T>>();
-                if (p_cl_dense_vec && p_cl_dense_vec->is_valid_version(m_version)) {
+                    auto p_cl_acc       = get_acc_cl();
+                    auto p_cl_dense_vec = get_dec_p<CLDenseVec<T>>();
+
+                    assert(p_cl_dense_vec && p_cl_dense_vec->is_valid_version(m_version));
+
                     cpu_dense_vec_resize(m_n_rows, *p_vec);
                     cl_dense_vec_read(m_n_rows, p_vec->Ax.data(), *p_cl_dense_vec, p_cl_acc->get_queue_default());
+#endif
+                } else {
+                    validate();
+                    cpu_dense_vec_resize(m_n_rows, *p_vec);
                 }
-#endif
-            } else {
-                validate();
-                update_version();
-                cpu_dense_vec_resize(m_n_rows, *p_vec);
-            }
 
-            p_vec->update_version(m_version);
-            if (m_reduce) p_vec->reduce = m_reduce->function;
-        }
-    }
-
+                p_vec->update_version(m_version);
+                if (m_reduce) p_vec->reduce = m_reduce->function;
+            } break;
+            case Format::CpuCooVec: {
+                LOG_MSG(Status::NotImplemented, "not supported");
+            } break;
 #if defined(SPLA_BUILD_OPENCL)
-    template<typename T>
-    void TVector<T>::cl_update_dense() {
-        auto p_vec = get_dec_or_create_p<CLDenseVec<T>>();
-        update_version();
-        p_vec->update_version(m_version);
-    }
+            case Format::CLDenseVec: {
+                auto p_cpu_vec = get_dec_or_create_p<CpuDenseVec<T>>();
+                auto p_cl_vec  = get_dec_or_create_p<CLDenseVec<T>>();
+                if (p_cl_vec->get_version() >= m_version) return;
 
-    template<typename T>
-    void TVector<T>::cl_ensure_dense() {
-        auto p_cpu_vec = get_dec_or_create_p<CpuDenseVec<T>>();
-        auto p_cl_vec  = get_dec_or_create_p<CLDenseVec<T>>();
+                if (is_valid()) {
+                    decorator_ensure(Format::CpuDenseVec);
+                    cl_dense_vec_init(m_n_rows, p_cpu_vec->Ax.data(), *p_cl_vec);
+                } else {
+                    validate();
+                    cl_dense_vec_init<T>(m_n_rows, nullptr, *p_cl_vec);
+                }
 
-        if (p_cl_vec->get_version() < m_version) {
-            ensure_dense_format();
-            cl_dense_vec_init(m_n_rows, p_cpu_vec->Ax.data(), *p_cl_vec);// todo: if allocated copy using staging buffer
-            p_cl_vec->update_version(m_version);
+                p_cl_vec->update_version(m_version);
+            } break;
+            case Format::CLCooVec: {
+                LOG_MSG(Status::NotImplemented, "not supported");
+            } break;
+#endif
+            default:
+                break;
         }
     }
-#endif
+
+    template<typename T>
+    bool TVector<T>::decorator_is_ensured(Format format) {
+        const int index = static_cast<int>(format);
+        return get_dec(index).is_not_null() && (get_dec(index)->get_version() == m_version);
+    }
 
     /**
      * @}
