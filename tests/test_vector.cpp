@@ -326,4 +326,40 @@ TEST(vector, select_count_perf) {
     std::cout << std::endl;
 }
 
+
+TEST(vector, sorting_naive) {
+    const int        F     = 1000;
+    const int        W     = 4;
+    const int        N     = F * W;
+    const int        NITER = 10;
+    std::vector<int> setup(N);
+    std::vector<int> sorting(N);
+    std::vector<int> res;
+
+    spla::Timer timer;
+
+    for (int iter = 0; iter < NITER; ++iter) {
+        for (int i = 0; i < N; ++i) {
+            setup[i] = (i * i + i * W + F);
+        }
+
+        timer.lap_begin();
+        std::copy(setup.begin(), setup.end(), sorting.begin());
+        std::sort(sorting.begin(), sorting.end());
+        int sum = 0;
+        for (auto val : sorting) sum += val;
+        res.push_back(sum);
+        timer.lap_end();
+    }
+
+    std::cout << "timings (ms): ";
+    timer.print();
+    std::cout << std::endl;
+
+    std::cout << res[0];
+    std::cout << res[1];
+    std::cout << res[2];
+    std::cout << res[3];
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

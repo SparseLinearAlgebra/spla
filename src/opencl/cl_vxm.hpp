@@ -61,7 +61,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            return execute_config_scalar(ctx);
+            return execute_scalar(ctx);
         }
 
     private:
