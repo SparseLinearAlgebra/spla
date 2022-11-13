@@ -1,18 +1,18 @@
 var searchData=
 [
-  ['clcoo_1108',['CLCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e',1,'spla']]],
-  ['clcoovec_1109',['CLCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068',1,'spla']]],
-  ['clcsc_1110',['CLCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e',1,'spla']]],
-  ['clcsr_1111',['CLCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64',1,'spla']]],
-  ['cldensevec_1112',['CLDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef',1,'spla']]],
-  ['compute_1113',['Compute',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10',1,'spla']]],
-  ['countmatrix_1114',['CountMatrix',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f',1,'spla']]],
-  ['countvector_1115',['CountVector',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e',1,'spla']]],
-  ['cpucoo_1116',['CpuCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550',1,'spla']]],
-  ['cpucoovec_1117',['CpuCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d',1,'spla']]],
-  ['cpucsc_1118',['CpuCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1',1,'spla']]],
-  ['cpucsr_1119',['CpuCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4',1,'spla']]],
-  ['cpudensevec_1120',['CpuDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3',1,'spla']]],
-  ['cpudok_1121',['CpuDok',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1dc4506f3792165c9fa807e02e744160',1,'spla']]],
-  ['cpulil_1122',['CpuLil',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409',1,'spla']]]
+  ['clcoo_1100',['CLCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e',1,'spla']]],
+  ['clcoovec_1101',['CLCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068',1,'spla']]],
+  ['clcsc_1102',['CLCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e',1,'spla']]],
+  ['clcsr_1103',['CLCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64',1,'spla']]],
+  ['cldensevec_1104',['CLDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef',1,'spla']]],
+  ['compute_1105',['Compute',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10',1,'spla']]],
+  ['countmatrix_1106',['CountMatrix',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f',1,'spla']]],
+  ['countvector_1107',['CountVector',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e',1,'spla']]],
+  ['cpucoo_1108',['CpuCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550',1,'spla']]],
+  ['cpucoovec_1109',['CpuCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d',1,'spla']]],
+  ['cpucsc_1110',['CpuCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1',1,'spla']]],
+  ['cpucsr_1111',['CpuCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4',1,'spla']]],
+  ['cpudensevec_1112',['CpuDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3',1,'spla']]],
+  ['cpudok_1113',['CpuDok',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1dc4506f3792165c9fa807e02e744160',1,'spla']]],
+  ['cpulil_1114',['CpuLil',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409',1,'spla']]]
 ];

@@ -140,10 +140,10 @@ $(function() {
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> DN       = M-&gt;get_n_cols();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">const</span> T    sum_init = init-&gt;get_value();</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            r-&gt;ensure_dense_format();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mask-&gt;ensure_dense_format();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            v-&gt;ensure_dense_format();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            M-&gt;ensure_lil_format();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            r-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">Format::CpuDenseVec</a>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mask-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">Format::CpuDenseVec</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            v-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">Format::CpuDenseVec</a>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            M-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409">Format::CpuLil</a>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>*       p_dense_r    = r-&gt;template get_dec_p&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>* p_dense_mask = mask-&gt;template get_dec_p&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
@@ -173,7 +173,7 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                }</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            r-&gt;update_dense();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            r-&gt;decorator_update_version(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">Format::CpuDenseVec</a>);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div>
@@ -195,6 +195,8 @@ $(function() {
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
+<div class="ttc" id="agroup__spla_html_gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3"><div class="ttname"><a href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">spla::Format::CpuDenseVec</a></div><div class="ttdeci">@ CpuDenseVec</div></div>
+<div class="ttc" id="agroup__spla_html_gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409"><div class="ttname"><a href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409">spla::Format::CpuLil</a></div><div class="ttdeci">@ CpuLil</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>

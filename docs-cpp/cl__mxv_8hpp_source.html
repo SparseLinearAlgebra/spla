@@ -150,10 +150,10 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TOpSelect&lt;T&gt;</a>&gt;       op_select   = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TScalar&lt;T&gt;</a>&gt;         init        = t-&gt;init.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            r-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            mask-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            M-&gt;cl_ensure_csr();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            v-&gt;cl_ensure_dense();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            r-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            mask-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            M-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">Format::CLCsr</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            v-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(op_multiply, op_add, op_select)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">auto</span>* p_cl_r    = r-&gt;template get_dec_p&lt;CLDenseVec&lt;T&gt;&gt;();</div>
@@ -183,7 +183,7 @@ $(function() {
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            }</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            r-&gt;cl_update_dense();</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            r-&gt;decorator_update_version(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
@@ -202,10 +202,10 @@ $(function() {
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            ref_ptr&lt;TOpSelect&lt;T&gt;&gt;       op_select   = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            ref_ptr&lt;TScalar&lt;T&gt;&gt;         init        = t-&gt;init.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            r-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            mask-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            M-&gt;cl_ensure_csr();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            v-&gt;cl_ensure_dense();</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            r-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            mask-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            M-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">Format::CLCsr</a>);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            v-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(op_multiply, op_add, op_select)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keyword">auto</span>* p_cl_r     = r-&gt;template get_dec_p&lt;CLDenseVec&lt;T&gt;&gt;();</div>
@@ -237,7 +237,7 @@ $(function() {
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            }</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            r-&gt;cl_update_dense();</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            r-&gt;decorator_update_version(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
@@ -256,10 +256,10 @@ $(function() {
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            ref_ptr&lt;TOpSelect&lt;T&gt;&gt;       op_select   = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            ref_ptr&lt;TScalar&lt;T&gt;&gt;         init        = t-&gt;init.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            r-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            mask-&gt;cl_ensure_dense();</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            M-&gt;cl_ensure_csr();</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            v-&gt;cl_ensure_dense();</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            r-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            mask-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            M-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">Format::CLCsr</a>);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            v-&gt;decorator_ensure(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(op_multiply, op_add, op_select)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">Status::Error</a>;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keyword">auto</span>* p_cl_r     = r-&gt;template get_dec_p&lt;CLDenseVec&lt;T&gt;&gt;();</div>
@@ -275,7 +275,7 @@ $(function() {
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            cl::Buffer cl_config(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>) * M-&gt;get_n_rows());</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            cl::Buffer cl_config_size(p_cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>), config_size);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_groups_to_dispatch = <a class="code" href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">std::max</a>(<a class="code" href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">std::min</a>(r-&gt;get_n_rows() / m_block_size, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(512)), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(1));</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_groups_to_dispatch = <a class="code" href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">std::max</a>(<a class="code" href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">std::min</a>(r-&gt;get_n_rows() / m_block_size, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(1024)), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(1));</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            m_kernel_config.setArg(0, p_cl_mask-&gt;Ax);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            m_kernel_config.setArg(1, p_cl_r-&gt;Ax);</div>
@@ -312,7 +312,7 @@ $(function() {
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            }</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            r-&gt;cl_update_dense();</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            r-&gt;decorator_update_version(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div>
@@ -379,6 +379,8 @@ $(function() {
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">spla::Status::Error</a></div><div class="ttdeci">@ Error</div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
+<div class="ttc" id="agroup__spla_html_gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64"><div class="ttname"><a href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">spla::Format::CLCsr</a></div><div class="ttdeci">@ CLCsr</div></div>
+<div class="ttc" id="agroup__spla_html_gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef"><div class="ttname"><a href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">spla::Format::CLDenseVec</a></div><div class="ttdeci">@ CLDenseVec</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aop_8cpp_html_a2e1da8593b0244d8e9e3b84ef7b35e73"><div class="ttname"><a href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">max</a></div><div class="ttdeci">#define max</div><div class="ttdef"><b>Definition:</b> op.cpp:80</div></div>
 <div class="ttc" id="aop_8cpp_html_a3f06f0e9f7beb8214afeea0b18ef8377"><div class="ttname"><a href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">min</a></div><div class="ttdeci">#define min</div><div class="ttdef"><b>Definition:</b> op.cpp:79</div></div>
