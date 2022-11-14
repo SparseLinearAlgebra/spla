@@ -1,6 +1,0 @@
-<map id="spla::ScheduleSingleThread" name="spla::ScheduleSingleThread">
-<area shape="rect" id="node1" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="5,229,188,256"/>
-<area shape="rect" id="node2" href="$classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="43,155,150,181"/>
-<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="51,80,142,107"/>
-<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="51,5,143,32"/>
-</map>

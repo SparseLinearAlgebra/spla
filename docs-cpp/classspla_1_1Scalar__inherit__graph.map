@@ -1,6 +1,0 @@
-<map id="spla::Scalar" name="spla::Scalar">
-<area shape="rect" id="node1" title="Box for a single typed scalar value." alt="" coords="24,155,113,181"/>
-<area shape="rect" id="node4" href="$classspla_1_1TScalar.html" title=" " alt="" coords="5,229,132,256"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="23,80,114,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="23,5,115,32"/>
-</map>

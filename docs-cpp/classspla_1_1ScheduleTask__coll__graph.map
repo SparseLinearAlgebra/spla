@@ -1,5 +1,0 @@
-<map id="spla::ScheduleTask" name="spla::ScheduleTask">
-<area shape="rect" id="node1" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="5,155,140,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="27,80,118,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="27,5,119,32"/>
-</map>
