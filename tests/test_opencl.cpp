@@ -132,5 +132,54 @@ TEST(opencl, bitonic_sort_local) {
     }
 }
 
+TEST(opencl, bitonic_sort_global) {
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    cl::Platform platform = platforms.front();
+
+    std::vector<cl::Device> devices;
+    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    cl::Device device = devices.front();
+
+    cl::Context      context(device);
+    cl::CommandQueue queue(context);
+
+    const int                 N = 100000;
+    std::vector<unsigned int> keys(N);
+    std::vector<int>          values(N);
+
+    for (int i = 0; i < N; ++i) {
+        keys[i]   = N - i;
+        values[i] = ((N - i) % 2) * 10;
+    }
+
+    cl::Buffer buffer_keys(queue, keys.begin(), keys.end(), false, false);
+    cl::Buffer buffer_values(queue, values.begin(), values.end(), false, false);
+
+    std::string kernel_code = source_sort_bitonic;
+
+    cl::Program program(context, kernel_code);
+    program.build(device, "-cl-std=CL1.2 -DBITONIC_SORT_LOCAL_BUFFER_SIZE=8192 -DTYPE=int");
+
+    cl::Kernel kernel(program, "bitonic_sort_global");
+    kernel.setArg(0, buffer_keys);
+    kernel.setArg(1, buffer_values);
+    kernel.setArg(2, N);
+
+    cl::NDRange global(256);
+    cl::NDRange local(256);
+    queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
+
+    cl::copy(queue, buffer_keys, keys.begin(), keys.end());
+    cl::copy(queue, buffer_values, values.begin(), values.end());
+
+    for (int i = 0; i < N; ++i) {
+        EXPECT_EQ(keys[i], i + 1);
+    }
+
+    for (int i = 0; i < N; ++i) {
+        EXPECT_EQ(values[i], ((i + 1) % 2) * 10);
+    }
+}
 
 SPLA_GTEST_MAIN
