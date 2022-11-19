@@ -136,20 +136,22 @@ namespace spla {
 
         //////////////////////////////////////////////////
 
+        /** Vector dictionary of keys representation */
+        CpuDokVec = 0,
         /** Vector dense array of values representation */
-        CpuDenseVec = 0,
+        CpuDenseVec = 1,
         /** Vector list of values for sparse data */
-        CpuCooVec = 1,
+        CpuCooVec = 2,
         /** Vector acceleration structured dense format */
-        AccDenseVec = 2,
+        AccDenseVec = 3,
         /** Vector acceleration structured coo format */
-        AccCooVec = 3,
+        AccCooVec = 4,
         /** [EXTENSION] Vector opencl acceleration structured dense format */
-        CLDenseVec = 4,
+        CLDenseVec = 5,
         /** [EXTENSION] Vector opencl acceleration structured coo format */
-        CLCooVec = 5,
+        CLCooVec = 6,
         /** Total number of supported vector formats */
-        CountVector = 6
+        CountVector = 7
     };
 
     /**

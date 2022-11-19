@@ -79,16 +79,16 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->decorator_ensure(Format::CLDenseVec);
-            mask->decorator_ensure(Format::CLDenseVec);
-            M->decorator_ensure(Format::CLCsr);
-            v->decorator_ensure(Format::CLDenseVec);
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLDenseVec);
+            M->validate_rw(Format::CLCsr);
+            v->validate_rw(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
-            auto* p_cl_r    = r->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_mask = mask->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_M    = M->template get_dec_p<CLCsr<T>>();
-            auto* p_cl_v    = v->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_r    = r->template get<CLDenseVec<T>>();
+            auto* p_cl_mask = mask->template get<CLDenseVec<T>>();
+            auto* p_cl_M    = M->template get<CLCsr<T>>();
+            auto* p_cl_v    = v->template get<CLDenseVec<T>>();
 
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
@@ -142,16 +142,16 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->decorator_ensure(Format::CLDenseVec);
-            mask->decorator_ensure(Format::CLDenseVec);
-            M->decorator_ensure(Format::CLCsr);
-            v->decorator_ensure(Format::CLDenseVec);
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLDenseVec);
+            M->validate_rw(Format::CLCsr);
+            v->validate_rw(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
-            auto* p_cl_r     = r->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_mask  = mask->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_M     = M->template get_dec_p<CLCsr<T>>();
-            auto* p_cl_v     = v->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_r     = r->template get<CLDenseVec<T>>();
+            auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
+            auto* p_cl_M     = M->template get<CLCsr<T>>();
+            auto* p_cl_v     = v->template get<CLDenseVec<T>>();
             auto  early_exit = t->get_desc_or_default()->get_early_exit();
 
             auto* p_cl_acc = get_acc_cl();
@@ -188,8 +188,6 @@ namespace spla {
                 queue.finish();
             }
 
-            r->decorator_update_version(Format::CLDenseVec);
-
             return Status::Ok;
         }
 
@@ -207,16 +205,16 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->decorator_ensure(Format::CLDenseVec);
-            mask->decorator_ensure(Format::CLDenseVec);
-            M->decorator_ensure(Format::CLCsr);
-            v->decorator_ensure(Format::CLDenseVec);
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLDenseVec);
+            M->validate_rw(Format::CLCsr);
+            v->validate_rw(Format::CLDenseVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
-            auto* p_cl_r     = r->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_mask  = mask->template get_dec_p<CLDenseVec<T>>();
-            auto* p_cl_M     = M->template get_dec_p<CLCsr<T>>();
-            auto* p_cl_v     = v->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_r     = r->template get<CLDenseVec<T>>();
+            auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
+            auto* p_cl_M     = M->template get<CLCsr<T>>();
+            auto* p_cl_v     = v->template get<CLDenseVec<T>>();
             auto  early_exit = t->get_desc_or_default()->get_early_exit();
 
             auto* p_cl_acc = get_acc_cl();

@@ -25,10 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_CSR_HPP
-#define SPLA_CL_CSR_HPP
+#ifndef SPLA_CPU_COO_VEC_HPP
+#define SPLA_CPU_COO_VEC_HPP
 
-#include <opencl/cl_formats.hpp>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -38,22 +38,32 @@ namespace spla {
      */
 
     template<typename T>
-    void cl_csr_init(std::size_t n_rows,
-                     std::size_t n_values,
-                     const uint* Ap,
-                     const uint* Aj,
-                     const T*    Ax,
-                     CLCsr<T>&   storage) {
-        auto&      ctx   = get_acc_cl()->get_context();
-        const auto flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
+    void cpu_coo_vec_resize(const uint    n_values,
+                            CpuCooVec<T>& vec) {
+        vec.Ai.resize(n_values);
+        vec.Ax.resize(n_values);
+        vec.values = n_values;
+    }
 
-        cl::Buffer cl_Ap(ctx, flags, (n_rows + 1) * sizeof(uint), (void*) Ap);
-        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint), (void*) Aj);
-        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T), (void*) Ax);
+    template<typename T>
+    void cpu_coo_vec_clear(CpuCooVec<T>& vec) {
+        vec.Ai.clear();
+        vec.Ax.clear();
+        vec.values = 0;
+    }
 
-        storage.Ap = std::move(cl_Ap);
-        storage.Aj = std::move(cl_Aj);
-        storage.Ax = std::move(cl_Ax);
+    template<typename T>
+    void cpu_coo_vec_to_dok(const CpuCooVec<T>& in,
+                            CpuDokVec<T>&       out) {
+        assert(out.values == 0);
+        assert(out.Ax.empty());
+
+        for (std::size_t k = 0; k < in.Ai.size(); ++k) {
+            const uint i = in.Ai[k];
+            const T    x = in.Ax[k];
+            out.Ax[i]    = x;
+            out.values += 1;
+        }
     }
 
     /**
@@ -62,4 +72,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_CSR_HPP
+#endif//SPLA_CPU_COO_VEC_HPP

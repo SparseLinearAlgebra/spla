@@ -36,19 +36,8 @@
 #include <core/top.hpp>
 #include <core/ttype.hpp>
 
-#include <sequential/cpu_coo.hpp>
-#include <sequential/cpu_csr.hpp>
-#include <sequential/cpu_lil.hpp>
-
-#include <array>
-#include <memory>
-#include <vector>
-
-#if defined(SPLA_BUILD_OPENCL)
-    #include <opencl/cl_accelerator.hpp>
-    #include <opencl/cl_csr.hpp>
-    #include <opencl/cl_formats.hpp>
-#endif
+#include <storage/storage_manager.hpp>
+#include <storage/storage_manager_matrix.hpp>
 
 namespace spla {
 
@@ -85,43 +74,24 @@ namespace spla {
         Status             get_float(uint row_id, uint col_id, float& value) override;
         Status             clear() override;
 
-        ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
-        ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
-        ref_ptr<TDecoration<T>>&              get_dec_or_create(Format format);
-        std::vector<ref_ptr<TDecoration<T>>>& get_decs() { return m_decorations; }
-
         template<typename Decorator>
-        Decorator* get_dec_p() { return (Decorator*) (get_dec(Decorator::FORMAT).get()); }
-        template<typename Decorator>
-        Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
+        Decorator* get() { return m_storage.template get<Decorator>(); }
 
-        bool is_valid();
+        void validate_rw(Format format);
+        void validate_rwd(Format format);
+        void validate_wd(Format format);
+        void validate_ctor(Format format);
 
-        void decorator_update_version(Format format);
-        void decorator_ensure(Format format);
-        bool decorator_is_ensured(Format format);
+        static StorageManagerMatrix<T>* get_storage_manager();
 
     private:
-        void validate();
-        void invalidate();
-        void update_version();
-
-    private:
-        std::array<ref_ptr<TDecoration<T>>, static_cast<uint>(Format::CountMatrix) + 1> m_decorations;
-
-        uint                        m_version    = 1;
-        uint                        m_n_rows     = 0;
-        uint                        m_n_cols     = 0;
-        bool                        m_valid      = false;
-        StateHint                   m_state_hint = StateHint::Default;
-        std::string                 m_label;
-        ref_ptr<TOpBinary<T, T, T>> m_reduce;
+        typename StorageManagerMatrix<T>::Storage m_storage;
+        std::string                               m_label;
     };
 
     template<typename T>
     TMatrix<T>::TMatrix(uint n_rows, uint n_cols) {
-        m_n_rows = n_rows;
-        m_n_cols = n_cols;
+        m_storage.set_dims(n_rows, n_cols);
     }
 
     template<typename T>
@@ -131,12 +101,12 @@ namespace spla {
 
     template<typename T>
     uint TMatrix<T>::get_n_rows() {
-        return m_n_rows;
+        return m_storage.get_n_rows();
     }
 
     template<typename T>
     uint TMatrix<T>::get_n_cols() {
-        return m_n_cols;
+        return m_storage.get_n_cols();
     }
 
     template<typename T>
@@ -156,87 +126,51 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
-        m_reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
+        auto reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
 
-        if (m_reduce) {
-            if (auto p_vec = get_dec_p<CpuLil<T>>()) {
-                p_vec->reduce = m_reduce->function;
-            }
-            if (auto p_vec = get_dec_p<CpuDok<T>>()) {
-                p_vec->reduce = m_reduce->function;
-            }
-            return Status::Ok;
+        if (reduce) {
+            validate_ctor(Format::CpuLil);
+            get<CpuLil<T>>()->reduce = reduce->function;
+            validate_ctor(Format::CpuDok);
+            get<CpuDok<T>>()->reduce = reduce->function;
         }
 
         return Status::InvalidArgument;
     }
 
     template<typename T>
-    ref_ptr<TDecoration<T>>& TMatrix<T>::get_dec_or_create(Format format) {
-        auto index = static_cast<int>(format);
-
-        if (m_decorations[index]) {
-            return m_decorations[index];
-        }
-
-        if (format == Format::CpuLil) {
-            return m_decorations[index] = make_ref<CpuLil<T>>();
-        }
-        if (format == Format::CpuDok) {
-            return m_decorations[index] = make_ref<CpuDok<T>>();
-        }
-        if (format == Format::CpuCoo) {
-            return m_decorations[index] = make_ref<CpuCoo<T>>();
-        }
-        if (format == Format::CpuCsr) {
-            return m_decorations[index] = make_ref<CpuCsr<T>>();
-        }
-        if (format == Format::CpuCsc) {
-            return m_decorations[index] = make_ref<CpuCsr<T>>();
-        }
-#if defined(SPLA_BUILD_OPENCL)
-        if (format == Format::CLCsr) {
-            return m_decorations[index] = make_ref<CLCsr<T>>();
-        }
-#endif
-
-        LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
-        return m_decorations.back();
-    }
-
-    template<typename T>
     Status TMatrix<T>::set_byte(uint row_id, uint col_id, std::int8_t value) {
-        decorator_ensure(Format::CpuLil);
-        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        validate_rw(Format::CpuLil);
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TMatrix<T>::set_int(uint row_id, uint col_id, std::int32_t value) {
-        decorator_ensure(Format::CpuLil);
-        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        validate_rw(Format::CpuLil);
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TMatrix<T>::set_uint(uint row_id, uint col_id, std::uint32_t value) {
-        decorator_ensure(Format::CpuLil);
-        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        validate_rw(Format::CpuLil);
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TMatrix<T>::set_float(uint row_id, uint col_id, float value) {
-        decorator_ensure(Format::CpuLil);
-        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get_dec_p<CpuLil<T>>());
+        validate_rw(Format::CpuLil);
+        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TMatrix<T>::get_byte(uint row_id, uint col_id, int8_t& value) {
-        decorator_ensure(Format::CpuDok);
+        validate_rw(Format::CpuDok);
 
-        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
 
         if (entry != Ax.end()) {
@@ -249,9 +183,9 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::get_int(uint row_id, uint col_id, int32_t& value) {
-        decorator_ensure(Format::CpuDok);
+        validate_rw(Format::CpuDok);
 
-        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
 
         if (entry != Ax.end()) {
@@ -264,9 +198,9 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::get_uint(uint row_id, uint col_id, uint32_t& value) {
-        decorator_ensure(Format::CpuDok);
+        validate_rw(Format::CpuDok);
 
-        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
 
         if (entry != Ax.end()) {
@@ -279,9 +213,9 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::get_float(uint row_id, uint col_id, float& value) {
-        decorator_ensure(Format::CpuDok);
+        validate_rw(Format::CpuDok);
 
-        auto& Ax    = get_dec_p<CpuDok<T>>()->Ax;
+        auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
 
         if (entry != Ax.end()) {
@@ -294,115 +228,44 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::clear() {
-        invalidate();
-        update_version();
+        m_storage.invalidate();
         return Status::Ok;
     }
 
     template<typename T>
-    bool TMatrix<T>::is_valid() {
-        return m_valid;
+    void TMatrix<T>::validate_rw(Format format) {
+        StorageManagerMatrix<T>* manager = get_storage_manager();
+        manager->validate_rw(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::validate() {
-        m_valid = true;
+    void TMatrix<T>::validate_rwd(Format format) {
+        StorageManagerMatrix<T>* manager = get_storage_manager();
+        manager->validate_rwd(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::invalidate() {
-        m_valid = false;
+    void TMatrix<T>::validate_wd(Format format) {
+        StorageManagerMatrix<T>* manager = get_storage_manager();
+        manager->validate_wd(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::update_version() {
-        ++m_version;
+    void TMatrix<T>::validate_ctor(Format format) {
+        StorageManagerMatrix<T>* manager = get_storage_manager();
+        manager->validate_ctor(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::decorator_update_version(Format format) {
-        const int index = static_cast<int>(format);
-        assert(get_dec(index).is_not_null());
-        update_version();
-        get_dec(index)->update_version(m_version);
-    }
+    StorageManagerMatrix<T>* TMatrix<T>::get_storage_manager() {
+        static std::unique_ptr<StorageManagerMatrix<T>> storage_manager;
 
-    template<typename T>
-    void TMatrix<T>::decorator_ensure(Format format) {
-        switch (format) {
-            case Format::CpuLil: {
-                auto p_lil = get_dec_or_create_p<CpuLil<T>>();
-                if (p_lil->get_version() >= m_version) return;
-
-                if (is_valid()) {
-                    // todo: sync data
-                    LOG_MSG(Status::Error, "data invalidation, previous content lost");
-                    update_version();// todo: keep
-                    cpu_lil_resize(m_n_rows, *p_lil);
-                } else {
-                    validate();
-                    cpu_lil_resize(m_n_rows, *p_lil);
-                }
-
-                p_lil->update_version(m_version);
-                if (m_reduce) p_lil->reduce = m_reduce->function;
-            } break;
-            case Format::CpuDok: {
-                auto p_dok = get_dec_or_create_p<CpuDok<T>>();
-                if (p_dok->get_version() >= m_version) return;
-
-                if (is_valid()) {
-                    auto p_lil = get_dec_p<CpuLil<T>>();
-                    assert(!p_lil || p_lil->get_version() == m_version && "only lil read supported");
-
-                    if (p_lil && p_lil->get_version() == m_version) {
-                        LOG_MSG(Status::Ok, "copy data from lil, preserve content");
-                        cpu_lil_to_dok(m_n_rows, *p_lil, *p_dok);
-                    }
-                }
-
-                p_dok->update_version(m_version);
-                if (m_reduce) p_dok->reduce = m_reduce->function;
-            } break;
-            case Format::CpuCsr: {
-                auto p_cpu_lil = get_dec_or_create_p<CpuLil<T>>();
-                auto p_cpu_csr = get_dec_or_create_p<CpuCsr<T>>();
-                if (p_cpu_csr->get_version() >= m_version) return;
-
-                decorator_ensure(Format::CpuLil);
-                p_cpu_csr->Ap.resize(get_n_rows() + 1);
-                p_cpu_csr->Aj.resize(p_cpu_lil->values);
-                p_cpu_csr->Ax.resize(p_cpu_lil->values);
-                cpu_lil_to_csr(m_n_rows, *p_cpu_lil, *p_cpu_csr);
-
-                p_cpu_csr->update_version(m_version);
-            } break;
-#if defined(SPLA_BUILD_OPENCL)
-            case Format::CLCsr: {
-                auto p_cpu_csr = get_dec_or_create_p<CpuCsr<T>>();
-                auto p_cl_csr  = get_dec_or_create_p<CLCsr<T>>();
-                if (p_cl_csr->get_version() >= m_version) return;
-
-                decorator_ensure(Format::CpuCsr);
-                cl_csr_init(p_cpu_csr->Ap.size(),
-                            p_cpu_csr->Aj.size(),
-                            p_cpu_csr->Ap.data(),
-                            p_cpu_csr->Aj.data(),
-                            p_cpu_csr->Ax.data(),
-                            *p_cl_csr);
-
-                p_cl_csr->update_version(m_version);
-            } break;
-#endif
-            default:
-                break;
+        if (!storage_manager) {
+            storage_manager = std::make_unique<StorageManagerMatrix<T>>();
+            register_formats_matrix(*storage_manager);
         }
-    }
 
-    template<typename T>
-    bool TMatrix<T>::decorator_is_ensured(Format format) {
-        const int index = static_cast<int>(format);
-        return get_dec(index).is_not_null() && (get_dec(index)->get_version() == m_version);
+        return storage_manager.get();
     }
 
     /**

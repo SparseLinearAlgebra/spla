@@ -69,15 +69,15 @@ namespace spla {
             const uint DN       = M->get_n_cols();
             const T    sum_init = init->get_value();
 
-            r->decorator_ensure(Format::CpuDenseVec);
-            mask->decorator_ensure(Format::CpuDenseVec);
-            v->decorator_ensure(Format::CpuDenseVec);
-            M->decorator_ensure(Format::CpuLil);
+            r->validate_wd(Format::CpuDenseVec);
+            mask->validate_rw(Format::CpuDenseVec);
+            v->validate_rw(Format::CpuDenseVec);
+            M->validate_rw(Format::CpuLil);
 
-            CpuDenseVec<T>*       p_dense_r    = r->template get_dec_p<CpuDenseVec<T>>();
-            const CpuDenseVec<T>* p_dense_mask = mask->template get_dec_p<CpuDenseVec<T>>();
-            const CpuDenseVec<T>* p_dense_v    = v->template get_dec_p<CpuDenseVec<T>>();
-            const CpuLil<T>*      p_lil_M      = M->template get_dec_p<CpuLil<T>>();
+            CpuDenseVec<T>*       p_dense_r    = r->template get<CpuDenseVec<T>>();
+            const CpuDenseVec<T>* p_dense_mask = mask->template get<CpuDenseVec<T>>();
+            const CpuDenseVec<T>* p_dense_v    = v->template get<CpuDenseVec<T>>();
+            const CpuLil<T>*      p_lil_M      = M->template get<CpuLil<T>>();
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
@@ -101,8 +101,6 @@ namespace spla {
                     }
                 }
             }
-
-            r->decorator_update_version(Format::CpuDenseVec);
 
             return Status::Ok;
         }

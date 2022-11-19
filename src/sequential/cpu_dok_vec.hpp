@@ -25,10 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_CSR_HPP
-#define SPLA_CL_CSR_HPP
+#ifndef SPLA_CPU_DOK_VEC_HPP
+#define SPLA_CPU_DOK_VEC_HPP
 
-#include <opencl/cl_formats.hpp>
+#include <sequential/cpu_formats.hpp>
 
 namespace spla {
 
@@ -38,22 +38,53 @@ namespace spla {
      */
 
     template<typename T>
-    void cl_csr_init(std::size_t n_rows,
-                     std::size_t n_values,
-                     const uint* Ap,
-                     const uint* Aj,
-                     const T*    Ax,
-                     CLCsr<T>&   storage) {
-        auto&      ctx   = get_acc_cl()->get_context();
-        const auto flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
+    void cpu_dok_vec_to_coo(const CpuDokVec<T>& in,
+                            CpuCooVec<T>&       out) {
+        assert(out.Ai.size() == in.values);
+        assert(out.Ax.size() == in.values);
 
-        cl::Buffer cl_Ap(ctx, flags, (n_rows + 1) * sizeof(uint), (void*) Ap);
-        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint), (void*) Aj);
-        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T), (void*) Ax);
+        uint k = 0;
 
-        storage.Ap = std::move(cl_Ap);
-        storage.Aj = std::move(cl_Aj);
-        storage.Ax = std::move(cl_Ax);
+        for (const auto& entry : in.Ax) {
+            const uint i = entry.first;
+            const T    x = entry.second;
+            out.Ai[k]    = i;
+            out.Ax[k]    = x;
+            k += 1;
+        }
+    }
+
+    template<typename T>
+    void cpu_dok_vec_to_dense(const uint          n_rows,
+                              const CpuDokVec<T>& in,
+                              CpuDenseVec<T>&     out) {
+        assert(out.Ax.size() == n_rows);
+
+        for (const auto& entry : in.Ax) {
+            const uint i = entry.first;
+            const T    x = entry.second;
+            out.Ax[i]    = x;
+        }
+    }
+
+    template<typename T>
+    void cpu_dok_vec_add_element(uint          row_id,
+                                 T             element,
+                                 CpuDokVec<T>& vec) {
+        auto entry = vec.Ax.find(row_id);
+        if (entry != vec.Ax.end()) {
+            entry->second = vec.reduce(entry->second, element);
+            return;
+        }
+
+        vec.Ax[row_id] = element;
+        vec.values += 1;
+    }
+
+    template<typename T>
+    void cpu_dok_vec_clear(CpuDokVec<T>& vec) {
+        vec.values = 0;
+        vec.Ax.clear();
     }
 
     /**
@@ -62,4 +93,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_CSR_HPP
+#endif//SPLA_CPU_DOK_VEC_HPP

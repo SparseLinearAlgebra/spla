@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_CSR_HPP
-#define SPLA_CL_CSR_HPP
+#ifndef SPLA_CL_COO_VEC_HPP
+#define SPLA_CL_COO_VEC_HPP
 
 #include <opencl/cl_formats.hpp>
 
@@ -38,22 +38,41 @@ namespace spla {
      */
 
     template<typename T>
-    void cl_csr_init(std::size_t n_rows,
-                     std::size_t n_values,
-                     const uint* Ap,
-                     const uint* Aj,
-                     const T*    Ax,
-                     CLCsr<T>&   storage) {
-        auto&      ctx   = get_acc_cl()->get_context();
-        const auto flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
+    void cl_coo_vec_init(const std::size_t n_values,
+                         const uint*       Ai,
+                         const T*          Ax,
+                         CLCooVec<T>&      storage) {
+        assert(n_values > 0);
 
-        cl::Buffer cl_Ap(ctx, flags, (n_rows + 1) * sizeof(uint), (void*) Ap);
-        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint), (void*) Aj);
-        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T), (void*) Ax);
+        const std::size_t buffer_size_Ai = n_values * sizeof(uint);
+        const std::size_t buffer_size_Ax = n_values * sizeof(T);
+        const auto        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;
 
-        storage.Ap = std::move(cl_Ap);
-        storage.Aj = std::move(cl_Aj);
-        storage.Ax = std::move(cl_Ax);
+        cl::Buffer buffer_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai, (void*) Ai);
+        cl::Buffer buffer_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax, (void*) Ax);
+
+        storage.Ai = std::move(buffer_Ai);
+        storage.Ax = std::move(buffer_Ax);
+    }
+
+    template<typename T>
+    void cl_coo_vec_read(const std::size_t  n_values,
+                         uint*              Ai,
+                         T*                 Ax,
+                         const CLCooVec<T>& storage,
+                         cl::CommandQueue&  queue,
+                         bool               blocking = true) {
+        const std::size_t buffer_size_Ai = n_values * sizeof(uint);
+        const std::size_t buffer_size_Ax = n_values * sizeof(T);
+        const auto        flags          = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;
+
+        cl::Buffer staging_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai);
+        cl::Buffer staging_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
+
+        queue.enqueueCopyBuffer(storage.Ai, staging_Ai, 0, 0, buffer_size_Ai);
+        queue.enqueueCopyBuffer(storage.Ax, staging_Ax, 0, 0, buffer_size_Ax);
+        queue.enqueueReadBuffer(staging_Ai, blocking, 0, buffer_size_Ai, Ai);
+        queue.enqueueReadBuffer(staging_Ax, blocking, 0, buffer_size_Ax, Ax);
     }
 
     /**
@@ -62,4 +81,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_CSR_HPP
+#endif//SPLA_CL_COO_VEC_HPP

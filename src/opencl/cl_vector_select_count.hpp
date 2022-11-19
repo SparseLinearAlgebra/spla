@@ -67,10 +67,10 @@ namespace spla {
             auto v         = t->v.template cast<TVector<T>>();
             auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            v->decorator_ensure(Format::CLDenseVec);
+            v->validate_rw(Format::CLDenseVec);
             if (!ensure_kernel(op_select)) return Status::Error;
 
-            auto* p_cl_v_dense = v->template get_dec_p<CLDenseVec<T>>();
+            auto* p_cl_v_dense = v->template get<CLDenseVec<T>>();
             auto* p_cl_acc     = get_acc_cl();
             auto& queue        = p_cl_acc->get_queue_default();
 

@@ -62,8 +62,8 @@ namespace spla {
 
             T sum = s->get_value();
 
-            v->decorator_ensure(Format::CpuDenseVec);
-            const auto* p_dense  = v->template get_dec_p<CpuDenseVec<T>>();
+            v->validate_rw(Format::CpuDenseVec);
+            const auto* p_dense  = v->template get<CpuDenseVec<T>>();
             const auto& function = op_reduce->function;
 
             for (const auto& value : p_dense->Ax) {

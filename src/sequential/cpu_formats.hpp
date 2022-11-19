@@ -49,6 +49,19 @@ namespace spla {
      * @{
      */
 
+    template<typename T>
+    class CpuDokVec : public TDecoration<T> {
+    public:
+        static constexpr Format FORMAT = Format::CpuDokVec;
+
+        ~CpuDokVec() override = default;
+
+        using Reduce = std::function<T(T accum, T added)>;
+
+        std::unordered_map<uint, T> Ax{};
+        Reduce                      reduce = [](T, T a) { return a; };
+    };
+
     /**
      * @class CpuDenseVec
      * @brief CPU one-dim array for dense vector representation
@@ -62,10 +75,7 @@ namespace spla {
 
         ~CpuDenseVec() override = default;
 
-        using Reduce = std::function<T(T accum, T added)>;
-
         std::vector<T> Ax{};
-        Reduce         reduce = [](T, T a) { return a; };
     };
 
     /**
@@ -81,11 +91,8 @@ namespace spla {
 
         ~CpuCooVec() override = default;
 
-        using Reduce = std::function<T(T accum, T added)>;
-
         std::vector<uint> Ai;
         std::vector<T>    Ax;
-        Reduce            reduce = [](T, T a) { return a; };
     };
 
     /**

@@ -231,6 +231,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_kernel_builder.cpp
             src/opencl/cl_kernel_builder.hpp
             src/opencl/cl_dense_vec.hpp
+            src/opencl/cl_coo_vec.hpp
             src/opencl/cl_csr.hpp
             src/opencl/cl_formats.hpp
             src/opencl/cl_mxv.hpp
@@ -270,6 +271,9 @@ add_library(spla SHARED
         src/core/tscalar.hpp
         src/core/ttype.hpp
         src/core/tvector.hpp
+        src/storage/storage_manager.hpp
+        src/storage/storage_manager_matrix.hpp
+        src/storage/storage_manager_vector.hpp
         src/schedule/schedule_tasks.cpp
         src/schedule/schedule_tasks.hpp
         src/schedule/schedule_st.cpp
@@ -278,9 +282,11 @@ add_library(spla SHARED
         src/sequential/cpu_algo_registry.cpp
         src/sequential/cpu_algo_registry.hpp
         src/sequential/cpu_coo.hpp
+        src/sequential/cpu_coo_vec.hpp
         src/sequential/cpu_csr.hpp
         src/sequential/cpu_dense_vec.hpp
         src/sequential/cpu_dok.hpp
+        src/sequential/cpu_dok_vec.hpp
         src/sequential/cpu_lil.hpp
         src/sequential/cpu_formats.hpp
         src/sequential/cpu_mxv.hpp

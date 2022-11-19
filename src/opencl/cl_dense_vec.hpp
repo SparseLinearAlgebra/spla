@@ -38,37 +38,48 @@ namespace spla {
      */
 
     template<typename T>
-    void cl_dense_vec_init(std::size_t    size,
-                           const T*       values,
-                           CLDenseVec<T>& storage) {
-        std::size_t buffer_size = size * sizeof(T);
-        auto        flags       = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | (values ? CL_MEM_COPY_HOST_PTR : 0);
+    void cl_dense_vec_resize(const std::size_t n_rows,
+                             CLDenseVec<T>&    storage) {
+        const std::size_t buffer_size = n_rows * sizeof(T);
+        const auto        flags       = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;
+
+        cl::Buffer buffer(get_acc_cl()->get_context(), flags, buffer_size);
+        storage.Ax = std::move(buffer);
+    }
+
+    template<typename T>
+    void cl_dense_vec_init(const std::size_t n_rows,
+                           const T*          values,
+                           CLDenseVec<T>&    storage) {
+        assert(values);
+
+        const std::size_t buffer_size = n_rows * sizeof(T);
+        const auto        flags       = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
 
         cl::Buffer buffer(get_acc_cl()->get_context(), flags, buffer_size, (void*) values);
         storage.Ax = std::move(buffer);
     }
 
     template<typename T>
-    void cl_dense_vec_write(std::size_t       size,
+    void cl_dense_vec_write(const std::size_t n_rows,
                             const T*          values,
                             CLDenseVec<T>&    storage,
                             cl::CommandQueue& queue,
                             bool              blocking = true) {
-        queue.enqueueWriteBuffer(storage.Ax, blocking, 0, size * sizeof(T), values);
+        queue.enqueueWriteBuffer(storage.Ax, blocking, 0, n_rows * sizeof(T), values);
     }
 
     template<typename T>
-    void cl_dense_vec_read(std::size_t       size,
+    void cl_dense_vec_read(const std::size_t n_rows,
                            T*                values,
                            CLDenseVec<T>&    storage,
                            cl::CommandQueue& queue,
                            bool              blocking = true) {
-        std::size_t buffer_size = size * sizeof(T);
-        cl::Buffer  staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, buffer_size);
+        const std::size_t buffer_size = n_rows * sizeof(T);
+        cl::Buffer        staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, buffer_size);
 
         queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
         queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);
-        queue.finish();
     }
 
     /**

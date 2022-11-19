@@ -36,18 +36,8 @@
 #include <core/top.hpp>
 #include <core/ttype.hpp>
 
-#include <sequential/cpu_dense_vec.hpp>
-#include <sequential/cpu_formats.hpp>
-
-#include <array>
-#include <memory>
-#include <vector>
-
-#if defined(SPLA_BUILD_OPENCL)
-    #include <opencl/cl_accelerator.hpp>
-    #include <opencl/cl_dense_vec.hpp>
-    #include <opencl/cl_formats.hpp>
-#endif
+#include <storage/storage_manager.hpp>
+#include <storage/storage_manager_vector.hpp>
 
 namespace spla {
 
@@ -83,41 +73,24 @@ namespace spla {
         Status             get_float(uint row_id, float& value) override;
         Status             clear() override;
 
-        ref_ptr<TDecoration<T>>&              get_dec(int index) { return m_decorations[index]; }
-        ref_ptr<TDecoration<T>>&              get_dec(Format format) { return get_dec(static_cast<int>(format)); }
-        ref_ptr<TDecoration<T>>&              get_dec_or_create(Format format);
-        std::vector<ref_ptr<TDecoration<T>>>& get_decs() { return m_decorations; }
-
         template<typename Decorator>
-        Decorator* get_dec_p() { return (Decorator*) (get_dec(Decorator::FORMAT).get()); }
-        template<typename Decorator>
-        Decorator* get_dec_or_create_p() { return (Decorator*) (get_dec_or_create(Decorator::FORMAT).get()); }
+        Decorator* get() { return m_storage.template get<Decorator>(); }
 
-        bool is_valid();
+        void validate_rw(Format format);
+        void validate_rwd(Format format);
+        void validate_wd(Format format);
+        void validate_ctor(Format format);
 
-        void decorator_update_version(Format format);
-        void decorator_ensure(Format format);
-        bool decorator_is_ensured(Format format);
+        static StorageManagerVector<T>* get_storage_manager();
 
     private:
-        void validate();
-        void invalidate();
-        void update_version();
-
-    private:
-        std::array<ref_ptr<TDecoration<T>>, static_cast<uint>(Format::CountVector) + 1> m_decorations;
-
-        uint                        m_version    = 1;
-        uint                        m_n_rows     = 0;
-        bool                        m_valid      = false;
-        StateHint                   m_state_hint = StateHint::Default;
-        std::string                 m_label;
-        ref_ptr<TOpBinary<T, T, T>> m_reduce;
+        typename StorageManagerVector<T>::Storage m_storage;
+        std::string                               m_label;
     };
 
     template<typename T>
     TVector<T>::TVector(uint n_rows) {
-        m_n_rows = n_rows;
+        m_storage.set_dims(n_rows, 1);
     }
 
     template<typename T>
@@ -127,7 +100,7 @@ namespace spla {
 
     template<typename T>
     uint TVector<T>::get_n_rows() {
-        return m_n_rows;
+        return m_storage.get_n_rows();
     }
 
     template<typename T>
@@ -147,15 +120,12 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
-        m_reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
+        auto reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
 
-        if (m_reduce) {
-            if (auto p_vec = get_dec_p<CpuDenseVec<T>>()) {
-                p_vec->reduce = m_reduce->function;
-            }
-            if (auto p_vec = get_dec_p<CpuCooVec<T>>()) {
-                p_vec->reduce = m_reduce->function;
-            }
+        if (reduce) {
+            validate_ctor(Format::CpuDokVec);
+            auto* vec   = get<CpuDokVec<T>>();
+            vec->reduce = reduce->function;
             return Status::Ok;
         }
 
@@ -163,180 +133,133 @@ namespace spla {
     }
 
     template<typename T>
-    ref_ptr<TDecoration<T>>& TVector<T>::get_dec_or_create(Format format) {
-        auto index = static_cast<int>(format);
-
-        if (m_decorations[index]) {
-            return m_decorations[index];
-        }
-
-        if (format == Format::CpuDenseVec) {
-            return m_decorations[index] = make_ref<CpuDenseVec<T>>();
-        }
-        if (format == Format::CpuCooVec) {
-            return m_decorations[index] = make_ref<CpuCooVec<T>>();
-        }
-#if defined(SPLA_BUILD_OPENCL)
-        if (format == Format::CLDenseVec) {
-            return m_decorations[index] = make_ref<CLDenseVec<T>>();
-        }
-        if (format == Format::CLCooVec) {
-            return m_decorations[index] = make_ref<CLCooVec<T>>();
-        }
-#endif
-
-        LOG_MSG(Status::NotImplemented, "unable to create decoration of specified format");
-        return m_decorations.back();
-    }
-
-    template<typename T>
     Status TVector<T>::set_byte(uint row_id, std::int8_t value) {
-        decorator_ensure(Format::CpuDenseVec);
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
+        validate_rw(Format::CpuDokVec);
+        cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
-        decorator_ensure(Format::CpuDenseVec);
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
+        validate_rw(Format::CpuDokVec);
+        cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
-        decorator_ensure(Format::CpuDenseVec);
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
+        validate_rw(Format::CpuDokVec);
+        cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
-        decorator_ensure(Format::CpuDenseVec);
-        cpu_dense_vec_add_element(row_id, static_cast<T>(value), *get_dec_p<CpuDenseVec<T>>());
+        validate_rw(Format::CpuDokVec);
+        cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_byte(uint row_id, int8_t& value) {
-        decorator_ensure(Format::CpuDenseVec);
-        value = static_cast<int8_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
+        validate_rw(Format::CpuDokVec);
+
+        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        value             = int8_t();
+
+        if (entry != Ax.end()) {
+            value = static_cast<T_BYTE>(entry->second);
+        }
+
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_int(uint row_id, int32_t& value) {
-        decorator_ensure(Format::CpuDenseVec);
-        value = static_cast<int32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
+        validate_rw(Format::CpuDokVec);
+
+        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        value             = int32_t();
+
+        if (entry != Ax.end()) {
+            value = static_cast<T_INT>(entry->second);
+        }
+
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
-        decorator_ensure(Format::CpuDenseVec);
-        value = static_cast<uint32_t>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
+        validate_rw(Format::CpuDokVec);
+
+        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        value             = uint32_t();
+
+        if (entry != Ax.end()) {
+            value = static_cast<T_UINT>(entry->second);
+        }
+
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
-        decorator_ensure(Format::CpuDenseVec);
-        value = static_cast<float>(get_dec_p<CpuDenseVec<T>>()->Ax[row_id]);
+        validate_rw(Format::CpuDokVec);
+
+        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        value             = float();
+
+        if (entry != Ax.end()) {
+            value = static_cast<T_FLOAT>(entry->second);
+        }
+
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::clear() {
-        invalidate();
-        update_version();
+        m_storage.invalidate();
         return Status::Ok;
     }
 
     template<typename T>
-    bool TVector<T>::is_valid() {
-        return m_valid;
+    void TVector<T>::validate_rw(Format format) {
+        StorageManagerVector<T>* manager = get_storage_manager();
+        manager->validate_rw(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::validate() {
-        m_valid = true;
+    void TVector<T>::validate_rwd(Format format) {
+        StorageManagerVector<T>* manager = get_storage_manager();
+        manager->validate_rwd(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::invalidate() {
-        m_valid = false;
+    void TVector<T>::validate_wd(Format format) {
+        StorageManagerVector<T>* manager = get_storage_manager();
+        manager->validate_wd(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::update_version() {
-        ++m_version;
+    void TVector<T>::validate_ctor(Format format) {
+        StorageManagerVector<T>* manager = get_storage_manager();
+        manager->validate_ctor(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::decorator_update_version(Format format) {
-        const int index = static_cast<int>(format);
-        assert(get_dec(index).is_not_null());
-        update_version();
-        get_dec(index)->update_version(m_version);
-    }
+    StorageManagerVector<T>* TVector<T>::get_storage_manager() {
+        static std::unique_ptr<StorageManagerVector<T>> storage_manager;
 
-    template<typename T>
-    void TVector<T>::decorator_ensure(Format format) {
-        switch (format) {
-            case Format::CpuDenseVec: {
-                auto p_vec = get_dec_or_create_p<CpuDenseVec<T>>();
-                if (p_vec->get_version() >= m_version) return;
-
-                if (is_valid()) {
-#if defined(SPLA_BUILD_OPENCL)
-                    auto p_cl_acc       = get_acc_cl();
-                    auto p_cl_dense_vec = get_dec_p<CLDenseVec<T>>();
-
-                    assert(p_cl_dense_vec && p_cl_dense_vec->is_valid_version(m_version));
-
-                    cpu_dense_vec_resize(m_n_rows, *p_vec);
-                    cl_dense_vec_read(m_n_rows, p_vec->Ax.data(), *p_cl_dense_vec, p_cl_acc->get_queue_default());
-#endif
-                } else {
-                    validate();
-                    cpu_dense_vec_resize(m_n_rows, *p_vec);
-                }
-
-                p_vec->update_version(m_version);
-                if (m_reduce) p_vec->reduce = m_reduce->function;
-            } break;
-            case Format::CpuCooVec: {
-                LOG_MSG(Status::NotImplemented, "not supported");
-            } break;
-#if defined(SPLA_BUILD_OPENCL)
-            case Format::CLDenseVec: {
-                auto p_cpu_vec = get_dec_or_create_p<CpuDenseVec<T>>();
-                auto p_cl_vec  = get_dec_or_create_p<CLDenseVec<T>>();
-                if (p_cl_vec->get_version() >= m_version) return;
-
-                if (is_valid()) {
-                    decorator_ensure(Format::CpuDenseVec);
-                    cl_dense_vec_init(m_n_rows, p_cpu_vec->Ax.data(), *p_cl_vec);
-                } else {
-                    validate();
-                    cl_dense_vec_init<T>(m_n_rows, nullptr, *p_cl_vec);
-                }
-
-                p_cl_vec->update_version(m_version);
-            } break;
-            case Format::CLCooVec: {
-                LOG_MSG(Status::NotImplemented, "not supported");
-            } break;
-#endif
-            default:
-                break;
+        if (!storage_manager) {
+            storage_manager = std::make_unique<StorageManagerVector<T>>();
+            register_formats_vector(*storage_manager);
         }
-    }
 
-    template<typename T>
-    bool TVector<T>::decorator_is_ensured(Format format) {
-        const int index = static_cast<int>(format);
-        return get_dec(index).is_not_null() && (get_dec(index)->get_version() == m_version);
+        return storage_manager.get();
     }
 
     /**

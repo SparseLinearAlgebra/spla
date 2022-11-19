@@ -63,11 +63,11 @@ namespace spla {
 
             auto assign_value = value->get_value();
 
-            r->decorator_ensure(Format::CpuDenseVec);
-            mask->decorator_ensure(Format::CpuDenseVec);
+            r->validate_rwd(Format::CpuDenseVec);
+            mask->validate_rw(Format::CpuDenseVec);
 
-            auto*       p_r_dense    = r->template get_dec_p<CpuDenseVec<T>>();
-            const auto* p_mask_dense = mask->template get_dec_p<CpuDenseVec<T>>();
+            auto*       p_r_dense    = r->template get<CpuDenseVec<T>>();
+            const auto* p_mask_dense = mask->template get<CpuDenseVec<T>>();
             const auto& func_assign  = op_assign->function;
             const auto& func_select  = op_select->function;
 
@@ -78,8 +78,6 @@ namespace spla {
                     p_r_dense->Ax[i] = func_assign(p_r_dense->Ax[i], assign_value);
                 }
             }
-
-            r->decorator_update_version(Format::CpuDenseVec);
 
             return Status::Ok;
         }

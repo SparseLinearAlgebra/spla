@@ -69,12 +69,12 @@ namespace spla {
             auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
             auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            r->decorator_ensure(Format::CLDenseVec);
-            mask->decorator_ensure(Format::CLDenseVec);
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLDenseVec);
             if (!ensure_kernel(op_assign, op_select)) return Status::Error;
 
-            auto*       p_cl_r_dense    = r->template get_dec_p<CLDenseVec<T>>();
-            const auto* p_cl_mask_dense = mask->template get_dec_p<CLDenseVec<T>>();
+            auto*       p_cl_r_dense    = r->template get<CLDenseVec<T>>();
+            const auto* p_cl_mask_dense = mask->template get<CLDenseVec<T>>();
             auto*       p_cl_acc        = get_acc_cl();
             auto&       queue           = p_cl_acc->get_queue_default();
 
@@ -89,8 +89,6 @@ namespace spla {
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
             queue.finish();
-
-            r->decorator_update_version(Format::CLDenseVec);
 
             return Status::Ok;
         }

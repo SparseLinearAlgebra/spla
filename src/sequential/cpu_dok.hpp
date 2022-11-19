@@ -37,6 +37,12 @@ namespace spla {
      * @{
      */
 
+    template<typename T>
+    void cpu_dok_clear(CpuDok<T>& storage) {
+        storage.Ax.clear();
+        storage.values = 0;
+    }
+
     /**
      * @}
      */

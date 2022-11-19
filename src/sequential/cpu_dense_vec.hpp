@@ -38,24 +38,31 @@ namespace spla {
      */
 
     template<typename T>
-    void cpu_dense_vec_resize(uint            n_rows,
+    void cpu_dense_vec_resize(const uint      n_rows,
                               CpuDenseVec<T>& vec) {
-        vec.Ax.clear();
         vec.Ax.resize(n_rows);
         vec.values = n_rows;
     }
 
     template<typename T>
-    void cpu_dense_vec_fill(T               value,
+    void cpu_dense_vec_fill(const T         value,
                             CpuDenseVec<T>& vec) {
         std::fill(vec.Ax.begin(), vec.Ax.end(), value);
     }
 
     template<typename T>
-    void cpu_dense_vec_add_element(uint            row_id,
-                                   T               element,
-                                   CpuDenseVec<T>& vec) {
-        vec.Ax[row_id] = vec.reduce(vec.Ax[row_id], element);
+    void cpu_dense_vec_to_dok(const uint            n_rows,
+                              const CpuDenseVec<T>& in,
+                              CpuDokVec<T>&         out) {
+        assert(out.values == 0);
+        assert(out.Ax.empty());
+
+        for (uint i = 0; i < n_rows; ++i) {
+            if (in.Ax[i]) {
+                out.Ax[i] = in.Ax[i];
+                out.values += 1;
+            }
+        }
     }
 
     /**

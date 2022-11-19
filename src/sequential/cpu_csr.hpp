@@ -38,6 +38,16 @@ namespace spla {
      */
 
     template<typename T>
+    void cpu_csr_resize(const uint n_rows,
+                        const uint n_values,
+                        CpuCsr<T>& storage) {
+        storage.Ap.resize(n_rows + 1);
+        storage.Aj.resize(n_values);
+        storage.Ax.resize(n_values);
+        storage.values = n_values;
+    }
+
+    template<typename T>
     void cpu_csr_to_coo(uint             n_rows,
                         const CpuCsr<T>& in,
                         CpuCoo<T>&       out) {

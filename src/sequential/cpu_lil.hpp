@@ -40,9 +40,7 @@ namespace spla {
     template<typename T>
     void cpu_lil_resize(uint       n_rows,
                         CpuLil<T>& lil) {
-        lil.Ar.clear();
         lil.Ar.resize(n_rows);
-        lil.values = 0;
     }
 
     template<typename T>

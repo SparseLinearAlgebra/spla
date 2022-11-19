@@ -59,8 +59,8 @@ namespace spla {
             auto v         = t->v.template cast<TVector<T>>();
             auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            v->decorator_ensure(Format::CpuDenseVec);
-            const auto* p_dense  = v->template get_dec_p<CpuDenseVec<T>>();
+            v->validate_rw(Format::CpuDenseVec);
+            const auto* p_dense  = v->template get<CpuDenseVec<T>>();
             const auto& function = op_select->function;
 
             int count = 0;
