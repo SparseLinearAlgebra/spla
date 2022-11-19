@@ -1,0 +1,6 @@
+<map id="spla::OpBinary" name="spla::OpBinary">
+<area shape="rect" id="node1" title="Binary operation with 2&#45;arity." alt="" coords="5,229,111,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="23,155,93,181"/>
+<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="13,80,103,107"/>
+<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="12,5,104,32"/>
+</map>

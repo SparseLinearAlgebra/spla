@@ -1,0 +1,7 @@
+<map id="spla::ScheduleTaskBase" name="spla::ScheduleTaskBase">
+<area shape="rect" id="node1" title="Base schedule task class with common public properties." alt="" coords="105,261,270,288"/>
+<area shape="rect" id="node2" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="5,165,140,191"/>
+<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="27,81,118,108"/>
+<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="27,5,119,32"/>
+<area shape="rect" id="node5" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="164,157,288,199"/>
+</map>

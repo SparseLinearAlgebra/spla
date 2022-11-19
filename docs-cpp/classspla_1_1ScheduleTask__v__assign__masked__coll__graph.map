@@ -1,0 +1,12 @@
+<map id="spla::ScheduleTask_v_assign_masked" name="spla::ScheduleTask_v_assign_masked">
+<area shape="rect" id="node1" title="Masked vector assignment." alt="" coords="777,157,912,198"/>
+<area shape="rect" id="node2" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="501,40,667,67"/>
+<area shape="rect" id="node3" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="287,5,421,32"/>
+<area shape="rect" id="node4" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="147,5,237,32"/>
+<area shape="rect" id="node5" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node6" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="292,57,416,98"/>
+<area shape="rect" id="node7" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="522,91,646,133"/>
+<area shape="rect" id="node8" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="522,157,646,198"/>
+<area shape="rect" id="node9" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="522,222,646,263"/>
+<area shape="rect" id="node10" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="522,287,646,329"/>
+</map>
