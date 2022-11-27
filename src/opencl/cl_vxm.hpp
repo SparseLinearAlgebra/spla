@@ -66,7 +66,7 @@ namespace spla {
 
     private:
         Status execute_vector(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("opencl/vxm/vector");
+            TIME_PROFILE_SCOPE(vxm, "opencl/vxm/vector");
 
             auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
@@ -100,7 +100,7 @@ namespace spla {
             cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows(), p_cl_acc->get_wave_size()));
             cl::NDRange prepare_local(p_cl_acc->get_wave_size());
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/vector:1-prepare");
+                TIME_PROFILE_SUBSCOPE(vxm, config, "config");
                 queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
                 queue.finish();
             }
@@ -118,7 +118,7 @@ namespace spla {
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/vector:2-exec");
+                TIME_PROFILE_SUBSCOPE(vxm, exec, "exec");
                 queue.enqueueNDRangeKernel(m_kernel_atomic_vector, cl::NDRange(), exec_global, exec_local);
                 queue.finish();
             }
@@ -129,7 +129,7 @@ namespace spla {
         }
 
         Status execute_scalar(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("opencl/vxm/scalar");
+            TIME_PROFILE_SCOPE(vxm, "opencl/vxm/scalar");
 
             auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
@@ -164,7 +164,7 @@ namespace spla {
             cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows(), p_cl_acc->get_wave_size()));
             cl::NDRange prepare_local(p_cl_acc->get_wave_size());
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/scalar:1-prepare");
+                TIME_PROFILE_SUBSCOPE(vxm, config, "config");
                 queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
                 queue.finish();
             }
@@ -183,7 +183,7 @@ namespace spla {
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/scalar:2-exec");
+                TIME_PROFILE_SUBSCOPE(vxm, config, "exec");
                 queue.enqueueNDRangeKernel(m_kernel_atomic_scalar, cl::NDRange(), exec_global, exec_local);
                 queue.finish();
             }
@@ -192,7 +192,7 @@ namespace spla {
         }
 
         Status execute_config_scalar(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("opencl/vxm/config-scalar");
+            TIME_PROFILE_SCOPE(vxm, "opencl/vxm/config-scalar");
 
             auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
@@ -237,7 +237,7 @@ namespace spla {
             cl::NDRange config_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange config_local(m_block_size);
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/config-scalar:1-config");
+                TIME_PROFILE_SUBSCOPE(vxm, config, "config");
                 queue.enqueueNDRangeKernel(m_kernel_config, cl::NDRange(), config_global, config_local);
                 queue.finish();
             }
@@ -257,7 +257,7 @@ namespace spla {
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
             {
-                TIME_PROFILE_SCOPE("opencl/vxm/config-scalar:2-exec");
+                TIME_PROFILE_SUBSCOPE(vxm, exec, "exec");
                 queue.enqueueNDRangeKernel(m_kernel_config_atomic_scalar, cl::NDRange(), exec_global, exec_local);
                 queue.finish();
             }

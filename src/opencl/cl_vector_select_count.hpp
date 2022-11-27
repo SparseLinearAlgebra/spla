@@ -59,7 +59,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE("opencl/vector_select_count");
+            TIME_PROFILE_SCOPE(count, "opencl/vector_select_count");
 
             auto t = ctx.task.template cast<ScheduleTask_v_select_count>();
 

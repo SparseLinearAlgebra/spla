@@ -31,10 +31,16 @@
 
 namespace spla {
 
-    TimeProfilerLabel::TimeProfilerLabel(const char* in_name, const char* in_file, const char* in_function) {
+    TimeProfilerLabel::TimeProfilerLabel(TimeProfilerLabel* in_parent, const char* in_name, const char* in_file, const char* in_function) {
         name     = in_name;
         file     = in_file;
         function = in_function;
+        parent   = in_parent;
+
+        if (parent) {
+            name = parent->name + "/" + std::to_string(parent->child_count) + "-" + name;
+            parent->child_count += 1;
+        }
 
         get_library()->get_time_profiler()->add_label(this);
     }

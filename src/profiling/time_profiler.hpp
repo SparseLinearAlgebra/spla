@@ -42,12 +42,14 @@ namespace spla {
      */
 
     struct TimeProfilerLabel {
-        TimeProfilerLabel(const char* in_name, const char* in_file, const char* in_function);
+        TimeProfilerLabel(TimeProfilerLabel* in_parent, const char* in_name, const char* in_file, const char* in_function);
 
-        const char*          name;
+        std::string          name;
         const char*          file;
         const char*          function;
+        int                  child_count = 0;
         std::atomic_uint64_t nano;
+        TimeProfilerLabel*   parent;
     };
 
     struct TimeProfilerScope {
@@ -78,11 +80,16 @@ namespace spla {
      */
 
 #ifndef SPLA_RELEASE
-    #define TIME_PROFILE_SCOPE(label)                                                     \
-        static TimeProfilerLabel __time_prof_static_laber(label, __FILE__, __FUNCTION__); \
-        TimeProfilerScope        __time_prof_transient_scope(&__time_prof_static_laber);
+    #define TIME_PROFILE_SUBSCOPE(parent, label, name)                                           \
+        static TimeProfilerLabel __auto_##label(&__auto_##parent, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_scope_##label(&__auto_##label);
+
+    #define TIME_PROFILE_SCOPE(label, name)                                             \
+        static TimeProfilerLabel __auto_##label(nullptr, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_scope_##label(&__auto_##label);
 #else
     #define TIME_PROFILE_SCOPE(label)
+    #define TIME_PROFILE_SUBSCOPE(label, parent)
 #endif
 
 }// namespace spla

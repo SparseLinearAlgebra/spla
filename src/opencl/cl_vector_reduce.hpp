@@ -59,7 +59,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE("opencl/vector_reduce");
+            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce");
 
             auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
 
