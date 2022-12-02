@@ -88,8 +88,8 @@ namespace spla {
         static TimeProfilerLabel __auto_##label(nullptr, name, __FILE__, __FUNCTION__); \
         TimeProfilerScope        __auto_scope_##label(&__auto_##label);
 #else
-    #define TIME_PROFILE_SCOPE(label)
-    #define TIME_PROFILE_SUBSCOPE(label, parent)
+    #define TIME_PROFILE_SCOPE(label, name)
+    #define TIME_PROFILE_SUBSCOPE(parent, label, name)
 #endif
 
 }// namespace spla
