@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['time_5fprofile_5fscope_1230',['TIME_PROFILE_SCOPE',['../time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2',1,'time_profiler.hpp']]]
+  ['time_5fprofile_5fscope_1269',['TIME_PROFILE_SCOPE',['../time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057',1,'time_profiler.hpp']]],
+  ['time_5fprofile_5fsubscope_1270',['TIME_PROFILE_SUBSCOPE',['../time__profiler_8hpp.html#aaf5a4640546827297d89072adc3fbb8a',1,'time_profiler.hpp']]]
 ];

@@ -96,6 +96,9 @@ $(function() {
 , <a class="el" href="group__internal.html#ga7f94622efa83dc7c7b89fb74e3d49b24">spla::TVector&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Vector.html#ab9aa93a5476fb87aaf3ad085a3029bc2">spla::Vector</a>
 </li>
+<li>get_cache()
+: <a class="el" href="classspla_1_1CLAccelerator.html#a77f497e05a999617a5110c29f4729249">spla::CLAccelerator</a>
+</li>
 <li>get_code()
 : <a class="el" href="group__internal.html#gaed53dd20ed394c653f647f013f7fe259">spla::TType&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Type.html#a84c59e92fafacf0e84c2ee43444f405d">spla::Type</a>
@@ -109,6 +112,9 @@ $(function() {
 </li>
 <li>get_default_wgz()
 : <a class="el" href="classspla_1_1CLAccelerator.html#aa2ba8adb30afdb4610354156182293c6">spla::CLAccelerator</a>
+</li>
+<li>get_defines()
+: <a class="el" href="classspla_1_1CLProgram.html#a80408fb16f6e8791bb0515064653f0d3">spla::CLProgram</a>
 </li>
 <li>get_desc()
 : <a class="el" href="classspla_1_1ScheduleTask.html#a24ce243743cb2bf0118bed6f4b2ac1ed">spla::ScheduleTask</a>
@@ -154,6 +160,9 @@ $(function() {
 <li>get_elapsed_ms()
 : <a class="el" href="classspla_1_1Timer.html#a56dd0cc3d4b522fa88582b8b9db3081b">spla::Timer</a>
 </li>
+<li>get_elapsed_sec()
+: <a class="el" href="classspla_1_1Timer.html#a7ac231e43f5be5b7018fd19506ed2770">spla::Timer</a>
+</li>
 <li>get_float()
 : <a class="el" href="classspla_1_1Matrix.html#ac0031e98798866cadc82c407598f7874">spla::Matrix</a>
 , <a class="el" href="classspla_1_1Scalar.html#abd48825fd8f1d1334b8e1cad6e194fad">spla::Scalar</a>
@@ -165,8 +174,11 @@ $(function() {
 <li>get_front_factor()
 : <a class="el" href="classspla_1_1Descriptor.html#acce3b074941a2e45922d54534e08188f">spla::Descriptor</a>
 </li>
+<li>get_functions()
+: <a class="el" href="classspla_1_1CLProgram.html#a664af3736a521d3b3e180d43ef608bb1">spla::CLProgram</a>
+</li>
 <li>get_grid_dim()
-: <a class="el" href="classspla_1_1CLAccelerator.html#a053212f899cc5b73cbf29a13cb3aac1d">spla::CLAccelerator</a>
+: <a class="el" href="classspla_1_1CLAccelerator.html#aee614203995c054f40c04412a0468a04">spla::CLAccelerator</a>
 </li>
 <li>get_id()
 : <a class="el" href="group__internal.html#gadaa56ab34da4fcf8bbe070b3e9e07c3d">spla::TType&lt; T &gt;</a>
@@ -181,7 +193,8 @@ $(function() {
 , <a class="el" href="classspla_1_1Vector.html#a3d56c860e96988703bd20717d534620b">spla::Vector</a>
 </li>
 <li>get_key()
-: <a class="el" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">spla::Op</a>
+: <a class="el" href="classspla_1_1CLProgram.html#a932319c4b0514476aaf40f1bc175ba31">spla::CLProgram</a>
+, <a class="el" href="classspla_1_1Op.html#ad547628612bcfd8067f2d33e9c206f0d">spla::Op</a>
 , <a class="el" href="classspla_1_1ScheduleTask.html#af8983db7087467be68757944d59e0e0a">spla::ScheduleTask</a>
 , <a class="el" href="classspla_1_1ScheduleTask__callback.html#a21d5d94c538f29520dc054370bb89dbd">spla::ScheduleTask_callback</a>
 , <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a88b4d0cf11c6cb6cf541fb16b04d8b12">spla::ScheduleTask_mxv_masked</a>
@@ -262,7 +275,9 @@ $(function() {
 : <a class="el" href="classspla_1_1CLAccelerator.html#a2b9bbcefb51babb88928333ecee4e5ea">spla::CLAccelerator</a>
 </li>
 <li>get_program()
-: <a class="el" href="classspla_1_1CLKernelBuilder.html#a2a40aca08315202ebee2e4896398a9ec">spla::CLKernelBuilder</a>
+: <a class="el" href="classspla_1_1CLProgram.html#a4d0e59bf22f5d639510eaed1b2f6670f">spla::CLProgram</a>
+, <a class="el" href="classspla_1_1CLProgramBuilder.html#a254bc20025fd825d1513ae7b1f533c6e">spla::CLProgramBuilder</a>
+, <a class="el" href="classspla_1_1CLProgramCache.html#a1e71e91ce70ef07d3aa294108c70357a">spla::CLProgramCache</a>
 </li>
 <li>get_ptr()
 : <a class="el" href="classspla_1_1TDecorationStorage.html#a4f818ed9d76fda676968b488c41832d5">spla::TDecorationStorage&lt; T, capacity &gt;</a>
@@ -302,10 +317,13 @@ $(function() {
 , <a class="el" href="classspla_1_1Type.html#a7abba386d3654b5cf9e2a6aa291dcbcc">spla::Type</a>
 </li>
 <li>get_source()
-: <a class="el" href="classspla_1_1CLKernelBuilder.html#a33f40698a36384941eeda0298087267c">spla::CLKernelBuilder</a>
+: <a class="el" href="classspla_1_1CLProgram.html#a5b6e96ab3f7c9028be6a59667056edb2">spla::CLProgram</a>
 , <a class="el" href="classspla_1_1Op.html#a5d54ab769838fc640188b6811bdefa79">spla::Op</a>
 , <a class="el" href="group__internal.html#gac3c7ea25915cc06fdc1228726400849b">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga4f235d2154c82673182bca81a307dc96">spla::TOpSelect&lt; A0 &gt;</a>
+</li>
+<li>get_sources()
+: <a class="el" href="classspla_1_1CLProgram.html#ad21202d9546b1b18408cdd64f9011753">spla::CLProgram</a>
 </li>
 <li>get_storage_manager()
 : <a class="el" href="group__internal.html#ga4fbec25650532b2426b6a39f33bfa3c0">spla::TMatrix&lt; T &gt;</a>

@@ -98,8 +98,10 @@ Collaboration diagram for spla::CLAccelerator:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5b6790a6e85469f4b8b6eef59bd4b790"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a5b6790a6e85469f4b8b6eef59bd4b790">~CLAccelerator</a> () override=default</td></tr>
-<tr class="separator:a5b6790a6e85469f4b8b6eef59bd4b790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95813fbdd2cea23bbef37b007fdeaf59"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a95813fbdd2cea23bbef37b007fdeaf59">CLAccelerator</a> ()</td></tr>
+<tr class="separator:a95813fbdd2cea23bbef37b007fdeaf59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec01e5cfbefbb4c30a749a2a6716a1c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#aec01e5cfbefbb4c30a749a2a6716a1c0">~CLAccelerator</a> () override</td></tr>
+<tr class="separator:aec01e5cfbefbb4c30a749a2a6716a1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5805a39b25bfca20347ad8a57f91f11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#ac5805a39b25bfca20347ad8a57f91f11">init</a> () override</td></tr>
 <tr class="separator:ac5805a39b25bfca20347ad8a57f91f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57cc7a8023f25c6f5dc42f6039a3f35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#aa57cc7a8023f25c6f5dc42f6039a3f35">set_platform</a> (int index) override</td></tr>
@@ -124,6 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abc29ff42debbcdfee875b22804a39401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ac714092f32a2800dd4d8bacf5edd9a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cl::CommandQueue &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a1ac714092f32a2800dd4d8bacf5edd9a">get_queues</a> ()</td></tr>
 <tr class="separator:a1ac714092f32a2800dd4d8bacf5edd9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f497e05a999617a5110c29f4729249"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1CLProgramCache.html">CLProgramCache</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a77f497e05a999617a5110c29f4729249">get_cache</a> ()</td></tr>
+<tr class="separator:a77f497e05a999617a5110c29f4729249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6e30a436f565ec043e30023e8909f38"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#af6e30a436f565ec043e30023e8909f38">get_vendor_name</a> () const</td></tr>
 <tr class="separator:af6e30a436f565ec043e30023e8909f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add79452c6635923f6e921fb6cbe0972c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#add79452c6635923f6e921fb6cbe0972c">get_vendor_code</a> () const</td></tr>
@@ -147,8 +151,33 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Single-device OpenCL acceleration implementation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5b6790a6e85469f4b8b6eef59bd4b790"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b6790a6e85469f4b8b6eef59bd4b790">&#9670;&nbsp;</a></span>~CLAccelerator()</h2>
+<a id="a95813fbdd2cea23bbef37b007fdeaf59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95813fbdd2cea23bbef37b007fdeaf59">&#9670;&nbsp;</a></span>CLAccelerator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla::CLAccelerator::CLAccelerator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec01e5cfbefbb4c30a749a2a6716a1c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec01e5cfbefbb4c30a749a2a6716a1c0">&#9670;&nbsp;</a></span>~CLAccelerator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,6 +202,31 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a77f497e05a999617a5110c29f4729249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f497e05a999617a5110c29f4729249">&#9670;&nbsp;</a></span>get_cache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">class <a class="el" href="classspla_1_1CLProgramCache.html">CLProgramCache</a>* spla::CLAccelerator::get_cache </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad5fbf9983c5ff86aa8ee1b7653b90530"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5fbf9983c5ff86aa8ee1b7653b90530">&#9670;&nbsp;</a></span>get_context()</h2>
 

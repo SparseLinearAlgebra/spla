@@ -137,12 +137,14 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac1f80d3e565b92ef6dce4aef081e40e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time__profiler_8hpp.html#ac1f80d3e565b92ef6dce4aef081e40e2">TIME_PROFILE_SCOPE</a>(label)</td></tr>
-<tr class="separator:ac1f80d3e565b92ef6dce4aef081e40e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf5a4640546827297d89072adc3fbb8a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time__profiler_8hpp.html#aaf5a4640546827297d89072adc3fbb8a">TIME_PROFILE_SUBSCOPE</a>(parent,  label,  name)</td></tr>
+<tr class="separator:aaf5a4640546827297d89072adc3fbb8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617451274bd4b6292805d2ac40593057"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(label,  name)</td></tr>
+<tr class="separator:a617451274bd4b6292805d2ac40593057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ac1f80d3e565b92ef6dce4aef081e40e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1f80d3e565b92ef6dce4aef081e40e2">&#9670;&nbsp;</a></span>TIME_PROFILE_SCOPE</h2>
+<a id="a617451274bd4b6292805d2ac40593057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a617451274bd4b6292805d2ac40593057">&#9670;&nbsp;</a></span>TIME_PROFILE_SCOPE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,13 +153,59 @@ Macros</h2></td></tr>
           <td class="memname">#define TIME_PROFILE_SCOPE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">label</td><td>)</td>
+          <td class="paramname">label, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">        <span class="keyword">static</span> TimeProfilerLabel __time_prof_static_laber(label, __FILE__, __FUNCTION__); \</div>
-<div class="line">        TimeProfilerScope        __time_prof_transient_scope(&amp;__time_prof_static_laber);</div>
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keyword">static</span> TimeProfilerLabel __auto_##label(<span class="keyword">nullptr</span>, name, __FILE__, __FUNCTION__); \</div>
+<div class="line">        TimeProfilerScope        __auto_scope_##label(&amp;__auto_##label);</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aaf5a4640546827297d89072adc3fbb8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf5a4640546827297d89072adc3fbb8a">&#9670;&nbsp;</a></span>TIME_PROFILE_SUBSCOPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TIME_PROFILE_SUBSCOPE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">parent, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">label, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keyword">static</span> TimeProfilerLabel __auto_##label(&amp;__auto_##parent, name, __FILE__, __FUNCTION__); \</div>
+<div class="line">        TimeProfilerScope        __auto_scope_##label(&amp;__auto_##label);</div>
 </div><!-- fragment -->
 </div>
 </div>
