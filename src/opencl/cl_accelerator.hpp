@@ -60,7 +60,8 @@ namespace spla {
      */
     class CLAccelerator final : public Accelerator {
     public:
-        ~CLAccelerator() override = default;
+        CLAccelerator();
+        ~CLAccelerator() override;
 
         Status             init() override;
         Status             set_platform(int index) override;
@@ -75,6 +76,7 @@ namespace spla {
         cl::Context&                   get_context() { return m_context; }
         cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
+        class CLProgramCache*          get_cache() { return m_cache.get(); }
 
         [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
         [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
@@ -88,9 +90,10 @@ namespace spla {
     private:
         void build_description();
 
-        cl::Platform m_platform;
-        cl::Device   m_device;
-        cl::Context  m_context;
+        cl::Platform                          m_platform;
+        cl::Device                            m_device;
+        cl::Context                           m_context;
+        std::unique_ptr<class CLProgramCache> m_cache;
 
         std::string m_name = "OpenCL";
         std::string m_description;

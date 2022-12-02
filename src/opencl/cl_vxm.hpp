@@ -39,7 +39,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_kernel_builder.hpp>
+#include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
@@ -278,37 +278,38 @@ namespace spla {
             assert(m_block_count >= 1);
             assert(m_block_size * m_block_count == get_acc_cl()->get_wave_size());
 
-            CLKernelBuilder kernel_builder;
-            kernel_builder
+            CLProgramBuilder program_builder;
+            program_builder
+                    .set_key("vxm")
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
                     .add_code(source_vxm);
 
-            if (!kernel_builder.build()) return false;
+            if (!program_builder.build()) return false;
 
-            m_program                     = kernel_builder.get_program();
-            m_kernel_prepare              = cl::Kernel(m_program, "vxm_prepare");
-            m_kernel_atomic_vector        = cl::Kernel(m_program, "vxm_atomic_vector");
-            m_kernel_atomic_scalar        = cl::Kernel(m_program, "vxm_atomic_scalar");
-            m_kernel_config               = cl::Kernel(m_program, "vxm_config");
-            m_kernel_config_atomic_scalar = cl::Kernel(m_program, "vxm_config_atomic_scalar");
+            m_program                     = program_builder.get_program();
+            m_kernel_prepare              = m_program->make_kernel("vxm_prepare");
+            m_kernel_atomic_vector        = m_program->make_kernel("vxm_atomic_vector");
+            m_kernel_atomic_scalar        = m_program->make_kernel("vxm_atomic_scalar");
+            m_kernel_config               = m_program->make_kernel("vxm_config");
+            m_kernel_config_atomic_scalar = m_program->make_kernel("vxm_config_atomic_scalar");
             m_compiled                    = true;
 
             return true;
         }
 
-        cl::Kernel  m_kernel_prepare;
-        cl::Kernel  m_kernel_exec_serial;
-        cl::Kernel  m_kernel_atomic_vector;
-        cl::Kernel  m_kernel_atomic_scalar;
-        cl::Kernel  m_kernel_config;
-        cl::Kernel  m_kernel_config_atomic_scalar;
-        cl::Program m_program;
-        uint        m_block_size  = 0;
-        uint        m_block_count = 0;
-        bool        m_compiled    = false;
+        std::shared_ptr<CLProgram> m_program;
+        cl::Kernel                 m_kernel_prepare;
+        cl::Kernel                 m_kernel_exec_serial;
+        cl::Kernel                 m_kernel_atomic_vector;
+        cl::Kernel                 m_kernel_atomic_scalar;
+        cl::Kernel                 m_kernel_config;
+        cl::Kernel                 m_kernel_config_atomic_scalar;
+        uint                       m_block_size  = 0;
+        uint                       m_block_count = 0;
+        bool                       m_compiled    = false;
     };
 
 }// namespace spla

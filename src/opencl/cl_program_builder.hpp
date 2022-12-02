@@ -25,13 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_KERNEL_BUILDER_HPP
-#define SPLA_CL_KERNEL_BUILDER_HPP
+#ifndef SPLA_CL_PROGRAM_BUILDER_HPP
+#define SPLA_CL_PROGRAM_BUILDER_HPP
 
 #include <core/top.hpp>
 #include <core/ttype.hpp>
 #include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_program.hpp>
+#include <opencl/cl_program_cache.hpp>
 
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -44,28 +47,29 @@ namespace spla {
      */
 
     /**
-     * @class CLKernelBuilder
+     * @class CLProgramBuilder
      * @brief Runtime opencl program builder
      */
-    class CLKernelBuilder final {
+    class CLProgramBuilder final {
     public:
-        CLKernelBuilder& add_define(const char* define, int value);
-        CLKernelBuilder& add_type(const char* alias, const ref_ptr<Type>& type);
-        CLKernelBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
-        CLKernelBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
-        CLKernelBuilder& add_code(const char* source);
+        CLProgramBuilder& set_key(const char* key);
+        CLProgramBuilder& add_define(const char* define, int value);
+        CLProgramBuilder& add_type(const char* alias, const ref_ptr<Type>& type);
+        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
+        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
+        CLProgramBuilder& add_code(const char* source);
 
         bool build();
 
-        const std::string& get_source() { return m_source; };
-        const cl::Program& get_program() { return m_program; };
+        const std::shared_ptr<CLProgram>& get_program() { return m_program; };
 
     private:
-        std::vector<std::string> m_defines;
-        std::vector<std::string> m_functions;
-        std::vector<std::string> m_sources;
-        std::string              m_source;
-        cl::Program              m_program;
+        std::vector<std::string>   m_defines;
+        std::vector<std::string>   m_functions;
+        std::vector<std::string>   m_sources;
+        std::string                m_source;
+        std::string                m_key;
+        std::shared_ptr<CLProgram> m_program;
     };
 
     /**
@@ -74,4 +78,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_KERNEL_BUILDER_HPP
+#endif//SPLA_CL_PROGRAM_BUILDER_HPP

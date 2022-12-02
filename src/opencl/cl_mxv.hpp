@@ -39,7 +39,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_kernel_builder.hpp>
+#include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_mxv.hpp>
 
 #include <algorithm>
@@ -255,8 +255,9 @@ namespace spla {
             assert(m_block_count >= 1);
             assert(m_block_size * m_block_count == get_acc_cl()->get_wave_size());
 
-            CLKernelBuilder kernel_builder;
-            kernel_builder
+            CLProgramBuilder program_builder;
+            program_builder
+                    .set_key("mxv")
                     .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_define("BLOCK_COUNT", m_block_count)
@@ -266,26 +267,26 @@ namespace spla {
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
                     .add_code(source_mxv);
 
-            if (!kernel_builder.build()) return false;
+            if (!program_builder.build()) return false;
 
-            m_program              = kernel_builder.get_program();
-            m_kernel_vector        = cl::Kernel(m_program, "mxv_vector");
-            m_kernel_scalar        = cl::Kernel(m_program, "mxv_scalar");
-            m_kernel_config        = cl::Kernel(m_program, "mxv_config");
-            m_kernel_config_scalar = cl::Kernel(m_program, "mxv_config_scalar");
+            m_program              = program_builder.get_program();
+            m_kernel_vector        = m_program->make_kernel("mxv_vector");
+            m_kernel_scalar        = m_program->make_kernel("mxv_scalar");
+            m_kernel_config        = m_program->make_kernel("mxv_config");
+            m_kernel_config_scalar = m_program->make_kernel("mxv_config_scalar");
             m_compiled             = true;
 
             return true;
         }
 
-        cl::Kernel  m_kernel_vector;
-        cl::Kernel  m_kernel_scalar;
-        cl::Kernel  m_kernel_config;
-        cl::Kernel  m_kernel_config_scalar;
-        cl::Program m_program;
-        uint        m_block_size  = 0;
-        uint        m_block_count = 0;
-        bool        m_compiled    = false;
+        std::shared_ptr<CLProgram> m_program;
+        cl::Kernel                 m_kernel_vector;
+        cl::Kernel                 m_kernel_scalar;
+        cl::Kernel                 m_kernel_config;
+        cl::Kernel                 m_kernel_config_scalar;
+        uint                       m_block_size  = 0;
+        uint                       m_block_count = 0;
+        bool                       m_compiled    = false;
     };
 
 }// namespace spla

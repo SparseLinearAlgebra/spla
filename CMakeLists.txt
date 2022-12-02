@@ -228,8 +228,12 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_accelerator.hpp
             src/opencl/cl_algo_registry.cpp
             src/opencl/cl_algo_registry.hpp
-            src/opencl/cl_kernel_builder.cpp
-            src/opencl/cl_kernel_builder.hpp
+            src/opencl/cl_program.cpp
+            src/opencl/cl_program.hpp
+            src/opencl/cl_program_builder.cpp
+            src/opencl/cl_program_builder.hpp
+            src/opencl/cl_program_cache.cpp
+            src/opencl/cl_program_cache.hpp
             src/opencl/cl_dense_vec.hpp
             src/opencl/cl_coo_vec.hpp
             src/opencl/cl_csr.hpp

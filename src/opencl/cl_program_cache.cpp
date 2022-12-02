@@ -25,57 +25,17 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TIMER_HPP
-#define SPLA_TIMER_HPP
-
-#include "config.hpp"
-
-#include <chrono>
-#include <iostream>
-#include <ostream>
-#include <vector>
+#include "cl_program_cache.hpp"
 
 namespace spla {
 
-    /**
-     * @addtogroup spla
-     * @{
-     */
-
-    /**
-     * @class Timer
-     * @brief Simple timer to measure intervals of time on CPU-side
-     */
-    class Timer {
-    public:
-        SPLA_API Timer();
-        SPLA_API ~Timer();
-
-        SPLA_API void                 start();
-        SPLA_API void                 stop();
-        SPLA_API void                 lap_begin();
-        SPLA_API void                 lap_end();
-        SPLA_API void                 print(std::ostream& out = std::cout) const;
-        [[nodiscard]] SPLA_API double get_elapsed_ms() const;
-        [[nodiscard]] SPLA_API double get_elapsed_sec() const;
-        [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
-        [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;
-
-    private:
-        using clock = std::chrono::steady_clock;
-        using us    = std::chrono::microseconds;
-        using point = clock::time_point;
-
-        std::vector<double> m_laps;
-        point               m_start;
-        point               m_prev;
-        point               m_end;
-    };
-
-    /**
-     * @}
-     */
+    void CLProgramCache::add_program(const std::shared_ptr<CLProgram>& program) {
+        m_programs[program->get_source()] = program;
+        LOG_MSG(Status::Ok, "cache program '" << program->get_key() << "'");
+    }
+    std::shared_ptr<CLProgram> CLProgramCache::get_program(const std::string& source) {
+        auto query = m_programs.find(source);
+        return query != m_programs.end() ? query->second : nullptr;
+    }
 
 }// namespace spla
-
-#endif//SPLA_TIMER_HPP

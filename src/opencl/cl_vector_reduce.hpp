@@ -38,7 +38,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_kernel_builder.hpp>
+#include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_vector_reduce.hpp>
 
 #include <sstream>
@@ -119,29 +119,30 @@ namespace spla {
 
             m_block_size = std::min(uint(1024), get_acc_cl()->get_max_wgs());
 
-            CLKernelBuilder kernel_builder;
-            kernel_builder
+            CLProgramBuilder program_builder;
+            program_builder
+                    .set_key("vector_reduce")
                     .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY", op_reduce.template as<OpBinary>())
                     .add_code(source_vector_reduce);
 
-            if (!kernel_builder.build()) return false;
+            if (!program_builder.build()) return false;
 
-            m_program        = kernel_builder.get_program();
-            m_kernel_phase_1 = cl::Kernel(m_program, "reduce");
-            m_kernel_phase_2 = cl::Kernel(m_program, "reduce");
+            m_program        = program_builder.get_program();
+            m_kernel_phase_1 = m_program->make_kernel("reduce");
+            m_kernel_phase_2 = m_program->make_kernel("reduce");
             m_compiled       = true;
 
             return true;
         }
 
-        cl::Kernel  m_kernel_phase_1;
-        cl::Kernel  m_kernel_phase_2;
-        cl::Program m_program;
-        uint        m_block_size = 0;
-        bool        m_compiled   = false;
+        std::shared_ptr<CLProgram> m_program;
+        cl::Kernel                 m_kernel_phase_1;
+        cl::Kernel                 m_kernel_phase_2;
+        uint                       m_block_size = 0;
+        bool                       m_compiled   = false;
     };
 
 }// namespace spla

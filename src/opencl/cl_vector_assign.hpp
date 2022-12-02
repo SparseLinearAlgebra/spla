@@ -38,7 +38,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_kernel_builder.hpp>
+#include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_vector_assign.hpp>
 
 #include <sstream>
@@ -99,26 +99,27 @@ namespace spla {
 
             m_block_size = get_acc_cl()->get_wave_size();
 
-            CLKernelBuilder kernel_builder;
-            kernel_builder
+            CLProgramBuilder program_builder;
+            program_builder
+                    .set_key("vector_assign")
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY", op_assign.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
                     .add_code(source_vector_assign);
 
-            if (!kernel_builder.build()) return false;
+            if (!program_builder.build()) return false;
 
-            m_program  = kernel_builder.get_program();
-            m_kernel   = cl::Kernel(m_program, "assign");
+            m_program  = program_builder.get_program();
+            m_kernel   = m_program->make_kernel("assign");
             m_compiled = true;
 
             return true;
         }
 
-        cl::Kernel  m_kernel;
-        cl::Program m_program;
-        uint        m_block_size = 0;
-        bool        m_compiled   = false;
+        std::shared_ptr<CLProgram> m_program;
+        cl::Kernel                 m_kernel;
+        uint                       m_block_size = 0;
+        bool                       m_compiled   = false;
     };
 
 }// namespace spla

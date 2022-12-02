@@ -25,54 +25,39 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "cl_kernel_builder.hpp"
+#ifndef SPLA_CL_PROGRAM_CACHE_HPP
+#define SPLA_CL_PROGRAM_CACHE_HPP
+
+#include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_program.hpp>
+
+#include <string>
+#include <unordered_map>
 
 namespace spla {
 
-    CLKernelBuilder& CLKernelBuilder::add_define(const char* define, int value) {
-        m_defines.emplace_back(define + std::string(" ") + std::to_string(value));
-        return *this;
-    }
-    CLKernelBuilder& CLKernelBuilder::add_type(const char* define, const ref_ptr<Type>& type) {
-        m_defines.emplace_back(define + std::string(" ") + type->get_cpp());
-        return *this;
-    }
-    CLKernelBuilder& CLKernelBuilder::add_op(const char* name, const ref_ptr<OpBinary>& op) {
-        m_functions.emplace_back(op->get_type_res()->get_cpp() + " " + name + " " + op->get_source());
-        return *this;
-    }
-    CLKernelBuilder& CLKernelBuilder::add_op(const char* name, const ref_ptr<OpSelect>& op) {
-        m_functions.emplace_back(std::string("bool ") + name + " " + op->get_source());
-        return *this;
-    }
-    CLKernelBuilder& CLKernelBuilder::add_code(const char* source) {
-        m_sources.emplace_back(source);
-        return *this;
-    }
-    bool CLKernelBuilder::build() {
-        std::stringstream builder;
-        CLAccelerator*    acc = get_acc_cl();
+    /**
+     * @addtogroup internal
+     * @{
+     */
 
-        for (const auto& define : m_defines) {
-            builder << "#define " << define << "\n";
-        }
-        for (const auto& function : m_functions) {
-            builder << function << "\n";
-        }
-        for (const auto& source : m_sources) {
-            builder << source;
-        }
+    /**
+     * @class CLProgramCache
+     * @brief Runtime cache for compiled opencl programs
+     */
+    class CLProgramCache {
+    public:
+        void                       add_program(const std::shared_ptr<CLProgram>& program);
+        std::shared_ptr<CLProgram> get_program(const std::string& source);
 
-        m_source  = builder.str();
-        m_program = cl::Program(acc->get_context(), m_source);
+    private:
+        std::unordered_map<std::string, std::shared_ptr<CLProgram>> m_programs;
+    };
 
-        if (m_program.build("-cl-std=CL1.2") != CL_SUCCESS) {
-            LOG_MSG(Status::Error, "failed to build program: " << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(acc->get_device()));
-            LOG_MSG(Status::Error, "src\n" << m_source);
-            return false;
-        }
-
-        return true;
-    }
+    /**
+     * @}
+     */
 
 }// namespace spla
+
+#endif//SPLA_CL_PROGRAM_CACHE_HPP

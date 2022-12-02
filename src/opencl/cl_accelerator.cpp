@@ -27,7 +27,12 @@
 
 #include "cl_accelerator.hpp"
 
+#include <opencl/cl_program_cache.hpp>
+
 namespace spla {
+
+    CLAccelerator::CLAccelerator()  = default;
+    CLAccelerator::~CLAccelerator() = default;
 
     Status CLAccelerator::init() {
         if (set_platform(0) != Status::Ok)
@@ -40,6 +45,8 @@ namespace spla {
             return Status::Error;
 
         build_description();
+
+        m_cache = std::make_unique<CLProgramCache>();
 
         // Output handy info
         LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());

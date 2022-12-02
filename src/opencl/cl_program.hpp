@@ -25,51 +25,45 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_TIMER_HPP
-#define SPLA_TIMER_HPP
+#ifndef SPLA_CL_PROGRAM_HPP
+#define SPLA_CL_PROGRAM_HPP
 
-#include "config.hpp"
+#include <opencl/cl_accelerator.hpp>
 
-#include <chrono>
-#include <iostream>
-#include <ostream>
+#include <string>
 #include <vector>
 
 namespace spla {
 
     /**
-     * @addtogroup spla
+     * @addtogroup internal
      * @{
      */
 
     /**
-     * @class Timer
-     * @brief Simple timer to measure intervals of time on CPU-side
+     * @class CLProgram
+     * @brief Compiled opencl program from library sources
      */
-    class Timer {
+    class CLProgram {
     public:
-        SPLA_API Timer();
-        SPLA_API ~Timer();
+        cl::Kernel make_kernel(const char* name);
 
-        SPLA_API void                 start();
-        SPLA_API void                 stop();
-        SPLA_API void                 lap_begin();
-        SPLA_API void                 lap_end();
-        SPLA_API void                 print(std::ostream& out = std::cout) const;
-        [[nodiscard]] SPLA_API double get_elapsed_ms() const;
-        [[nodiscard]] SPLA_API double get_elapsed_sec() const;
-        [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
-        [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;
+        [[nodiscard]] const std::vector<std::string>& get_defines() const { return m_defines; }
+        [[nodiscard]] const std::vector<std::string>& get_functions() const { return m_functions; }
+        [[nodiscard]] const std::vector<std::string>& get_sources() const { return m_sources; }
+        [[nodiscard]] const std::string&              get_source() const { return m_source; }
+        [[nodiscard]] const std::string&              get_key() const { return m_key; }
+        [[nodiscard]] const cl::Program&              get_program() const { return m_program; }
 
     private:
-        using clock = std::chrono::steady_clock;
-        using us    = std::chrono::microseconds;
-        using point = clock::time_point;
+        friend class CLProgramBuilder;
 
-        std::vector<double> m_laps;
-        point               m_start;
-        point               m_prev;
-        point               m_end;
+        std::vector<std::string> m_defines;
+        std::vector<std::string> m_functions;
+        std::vector<std::string> m_sources;
+        std::string              m_source;
+        std::string              m_key;
+        cl::Program              m_program;
     };
 
     /**
@@ -78,4 +72,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_TIMER_HPP
+#endif//SPLA_CL_PROGRAM_HPP
