@@ -2,7 +2,7 @@
 Package version info.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
+__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
 
 __license__ = """
 MIT License

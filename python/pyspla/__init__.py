@@ -14,19 +14,19 @@ Links:
 - **Package page (test)**:
   [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
-  [https://github.com/JetBrains-Research/spla](https://github.com/JetBrains-Research/spla)
+  [https://github.com/SparseLinearAlgebra/spla](https://github.com/SparseLinearAlgebra/spla)
 - **Contributing**:
-  [https://github.com/JetBrains-Research/spla/CONTRIBUTING.md](https://github.com/JetBrains-Research/spla/blob/main/CONTRIBUTING.md)
+  [https://github.com/SparseLinearAlgebra/spla/CONTRIBUTING.md](https://github.com/SparseLinearAlgebra/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
-  [https://github.com/JetBrains-Research/spla/DEVELOPMENT.md](https://github.com/JetBrains-Research/spla/blob/main/DEVELOPMENT.md)
+  [https://github.com/SparseLinearAlgebra/spla/DEVELOPMENT.md](https://github.com/SparseLinearAlgebra/spla/blob/main/DEVELOPMENT.md)
 - **Examples**:
-  [https://github.com/JetBrains-Research/spla/EXAMPLES.md](https://github.com/JetBrains-Research/spla/blob/main/EXAMPLES.md)
+  [https://github.com/SparseLinearAlgebra/spla/EXAMPLES.md](https://github.com/SparseLinearAlgebra/spla/blob/main/EXAMPLES.md)
 - **C/C++ API Reference**:
-  [https://jetbrains-research.github.io/spla/docs-cpp](https://jetbrains-research.github.io/spla/docs-cpp/)
+  [https://SparseLinearAlgebra.github.io/spla/docs-cpp](https://SparseLinearAlgebra.github.io/spla/docs-cpp/)
 - **Bug report**:
-  [https://github.com/JetBrains-Research/spla/issues](https://github.com/JetBrains-Research/spla/issues)
+  [https://github.com/SparseLinearAlgebra/spla/issues](https://github.com/SparseLinearAlgebra/spla/issues)
 
-We are welcome for contributions. Join project development on [GitHub](https://github.com/JetBrains-Research/spla)!
+We are welcome for contributions. Join project development on [GitHub](https://github.com/SparseLinearAlgebra/spla)!
 
 Installation
 ------------
@@ -130,7 +130,7 @@ State of the library managed by internal `bridge` module. All resources are unlo
 on package exit. Library state finalized automatically.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
+__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
 
 __license__ = """
 MIT License

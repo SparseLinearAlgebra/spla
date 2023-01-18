@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/JetBrains-Research/spla                                     */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2021 JetBrains-Research                                          */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -44,9 +44,9 @@
  *  - Vector manipulation API
  *  - Schedule operations API
  *
- * @see Source code: https://github.com/JetBrains-Research/spla
- * @see Python Reference API: https://jetbrains-research.github.io/spla/docs-python/spla
- * @see C/C++ Reference API: https://jetbrains-research.github.io/spla/docs-cpp
+ * @see Source code: https://github.com/SparseLinearAlgebra/spla
+ * @see Python Reference API: https://SparseLinearAlgebra.github.io/spla/docs-python/spla
+ * @see C/C++ Reference API: https://SparseLinearAlgebra.github.io/spla/docs-cpp
  */
 
 #if defined(__cplusplus)

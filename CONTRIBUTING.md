@@ -33,6 +33,6 @@ the part of the project you want to contribute.
 If you want to fix something, ask a question, add new functionality or feature, have a look at our templates.
 
 - **Issue templates**:
-  [https://github.com/JetBrains-Research/spla/tree/main/.github/ISSUE_TEMPLATE](https://github.com/JetBrains-Research/spla/tree/main/.github/ISSUE_TEMPLATE)
+  [https://github.com/SparseLinearAlgebra/spla/tree/main/.github/ISSUE_TEMPLATE](https://github.com/SparseLinearAlgebra/spla/tree/main/.github/ISSUE_TEMPLATE)
 - **Pull-request templates**:
-  [https://github.com/JetBrains-Research/spla/tree/main/.github/PULL_REQUEST_TEMPLATE](https://github.com/JetBrains-Research/spla/tree/main/.github/PULL_REQUEST_TEMPLATE)
+  [https://github.com/SparseLinearAlgebra/spla/tree/main/.github/PULL_REQUEST_TEMPLATE](https://github.com/SparseLinearAlgebra/spla/tree/main/.github/PULL_REQUEST_TEMPLATE)

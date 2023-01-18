@@ -1,3 +1,5 @@
 # Spla project changes log
 
-> No releases yet!
+## Release 1.0.0
+
+> No releases yet! 

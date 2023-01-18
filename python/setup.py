@@ -33,10 +33,10 @@ setuptools.setup(
     description="spla library python bindings",
     long_description=get_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/JetBrains-Research/spla",
+    url="https://github.com/SparseLinearAlgebra/spla",
     project_urls={
-        "Spla project": "https://github.com/JetBrains-Research/spla",
-        "Bug Tracker": "https://github.com/JetBrains-Research/spla/issues"
+        "Spla project": "https://github.com/SparseLinearAlgebra/spla",
+        "Bug Tracker": "https://github.com/SparseLinearAlgebra/spla/issues"
     },
     classifiers=[
         "Development Status :: 1 - Planning",

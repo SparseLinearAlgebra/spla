@@ -2,7 +2,7 @@
 Main entry point.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 JetBrains-Research"
+__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
 
 __license__ = """
 MIT License
@@ -29,4 +29,4 @@ SOFTWARE.
 print("****** Spla Project ******")
 print("Python bindings for Spla library.")
 print("Import library as module to your python scripts.")
-print("See https://github.com/JetBrains-Research/spla")
+print("See https://github.com/SparseLinearAlgebra/spla")

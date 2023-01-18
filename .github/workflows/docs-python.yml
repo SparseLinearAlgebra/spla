@@ -10,7 +10,7 @@ on:
 jobs:
   documentation:
     # Do not attempt to deploy documentation on forks
-    if: github.repository_owner == 'JetBrains-Research'
+    if: github.repository_owner == 'SparseLinearAlgebra'
     runs-on: ubuntu-latest
     strategy:
       matrix:
