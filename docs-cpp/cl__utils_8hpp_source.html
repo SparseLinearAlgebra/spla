@@ -188,7 +188,7 @@ $(function() {
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            format.dense_to_sparse.setArg(4, n);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            queue.enqueueNDRangeKernel(format.dense_to_sparse, cl::NDRange(), global, local);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            cl::copy(queue, cl_count, &amp;count, &amp;count + 1);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            queue.enqueueReadBuffer(cl_count, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(count), &amp;count);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>

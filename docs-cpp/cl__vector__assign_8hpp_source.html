@@ -130,20 +130,20 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__assign__masked__cl.html#abfb6422a35cdbd1fdb439bec1bb1e2d2">   61</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__v__assign__masked__cl.html#abfb6422a35cdbd1fdb439bec1bb1e2d2">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span>                t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; r = t-&gt;r.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span>                t    = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; mask = t-&gt;mask.template cast&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (r-&gt;is_valid(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068">Format::CLCooVec</a>))</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (mask-&gt;is_valid(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068">Format::CLCooVec</a>))</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">return</span> execute_sp2dn(ctx);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">if</span> (r-&gt;is_valid(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>))</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">if</span> (mask-&gt;is_valid(<a class="code" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">Format::CLDenseVec</a>))</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keywordflow">return</span> execute_dn2dn(ctx);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span> execute_dn2dn(ctx);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span> execute_sp2dn(ctx);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn2dn(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(assign, <span class="stringliteral">&quot;opencl/vector_assign_dn2dn&quot;</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(assign, <span class="stringliteral">&quot;opencl/vector_assign_dense2dense&quot;</span>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
@@ -178,7 +178,7 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_sp2dn(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <a class="code" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(assign, <span class="stringliteral">&quot;opencl/vector_assign_sp2dn&quot;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <a class="code" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(assign, <span class="stringliteral">&quot;opencl/vector_assign_sparse2dense&quot;</span>);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">auto</span> t = ctx.task.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>

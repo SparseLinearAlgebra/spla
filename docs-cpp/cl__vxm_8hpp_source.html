@@ -313,7 +313,7 @@ $(function() {
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                queue.finish();</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            }</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            cl::copy(queue, cl_config_size, config_size, config_size + 1);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            queue.enqueueReadBuffer(cl_config_size, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(config_size[0]), config_size);</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            m_kernel_config_atomic_scalar.setArg(0, p_cl_v-&gt;Ax);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            m_kernel_config_atomic_scalar.setArg(1, p_cl_M-&gt;Ap);</div>

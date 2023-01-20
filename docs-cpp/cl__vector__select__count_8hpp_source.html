@@ -158,44 +158,43 @@ $(function() {
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            cl::NDRange local(m_block_size);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            cl::copy(queue, cl_count, count, count + 1);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            r-&gt;set_int(count[0]);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpSelect.html">TOpSelect&lt;T&gt;</a>&gt;&amp; op_select) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">if</span> (m_compiled) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            m_block_size = get_acc_cl()-&gt;get_wave_size();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> program_builder;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            program_builder</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#abdadfcd544b0aa43ac4d5ebfde9e3bf1">set_key</a>(<span class="stringliteral">&quot;vector_select_count&quot;</span>)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_SELECT&quot;</span>, op_select.template as&lt;OpSelect&gt;())</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#a27905a2e51a77caf4f371e6921e21638">add_code</a>(source_vector_select_count);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">if</span> (!program_builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#aa456bee219713027404a55b87c62ece8">build</a>()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            m_program  = program_builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a254bc20025fd825d1513ae7b1f533c6e">get_program</a>();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            m_kernel   = m_program-&gt;make_kernel(<span class="stringliteral">&quot;select_count&quot;</span>);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            m_compiled = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        std::shared_ptr&lt;CLProgram&gt; m_program;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        cl::Kernel                 m_kernel;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_size = 0;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordtype">bool</span>                       m_compiled   = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    };</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_SELECT_COUNT_HPP</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            queue.enqueueReadBuffer(cl_count, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(count[0]), count);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            r-&gt;set_int(count[0]);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpSelect.html">TOpSelect&lt;T&gt;</a>&gt;&amp; op_select) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">if</span> (m_compiled) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            m_block_size = get_acc_cl()-&gt;get_wave_size();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> program_builder;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            program_builder</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#abdadfcd544b0aa43ac4d5ebfde9e3bf1">set_key</a>(<span class="stringliteral">&quot;vector_select_count&quot;</span>)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_SELECT&quot;</span>, op_select.template as&lt;OpSelect&gt;())</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    .<a class="code" href="classspla_1_1CLProgramBuilder.html#a27905a2e51a77caf4f371e6921e21638">add_code</a>(source_vector_select_count);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">if</span> (!program_builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#aa456bee219713027404a55b87c62ece8">build</a>()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            m_program  = program_builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a254bc20025fd825d1513ae7b1f533c6e">get_program</a>();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            m_kernel   = m_program-&gt;make_kernel(<span class="stringliteral">&quot;select_count&quot;</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            m_compiled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        std::shared_ptr&lt;CLProgram&gt; m_program;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        cl::Kernel                 m_kernel;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_size = 0;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordtype">bool</span>                       m_compiled   = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    };</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_SELECT_COUNT_HPP</span></div>
 <div class="ttc" id="aauto__vector__select__count_8hpp_html"><div class="ttname"><a href="auto__vector__select__count_8hpp.html">auto_vector_select_count.hpp</a></div></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
 <div class="ttc" id="acl__program__builder_8hpp_html"><div class="ttname"><a href="cl__program__builder_8hpp.html">cl_program_builder.hpp</a></div></div>
