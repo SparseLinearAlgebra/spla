@@ -100,56 +100,94 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CL_COO_VEC_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__formats_8hpp.html">opencl/cl_formats.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">   41</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">cl_coo_vec_init</a>(<span class="keyword">const</span> std::size_t n_values,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                         <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>*       Ai,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                         <span class="keyword">const</span> T*          Ax,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                         <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp;      storage) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        assert(n_values &gt; 0);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ai = n_values * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ax = n_values * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span>        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        cl::Buffer buffer_Ai(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ai, (<span class="keywordtype">void</span>*) Ai);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        cl::Buffer buffer_Ax(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ax, (<span class="keywordtype">void</span>*) Ax);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a> = std::move(buffer_Ai);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a> = std::move(buffer_Ax);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__utils_8hpp.html">opencl/cl_utils.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">   42</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">cl_coo_vec_init</a>(<span class="keyword">const</span> std::size_t n_values,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                         <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>*       Ai,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                         <span class="keyword">const</span> T*          Ax,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                         <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp;      storage) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        assert(n_values &gt; 0);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ai = n_values * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ax = n_values * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span>        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        cl::Buffer buffer_Ai(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ai, (<span class="keywordtype">void</span>*) Ai);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        cl::Buffer buffer_Ax(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ax, (<span class="keywordtype">void</span>*) Ax);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a> = std::move(buffer_Ai);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a> = std::move(buffer_Ax);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">   59</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">cl_coo_vec_read</a>(<span class="keyword">const</span> std::size_t  n_values,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                         <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>*              Ai,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                         T*                 Ax,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                         <span class="keyword">const</span> <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp; storage,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                         cl::CommandQueue&amp;  queue,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                         <span class="keywordtype">bool</span>               blocking = <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ai = n_values * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ax = n_values * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span>        flags          = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        cl::Buffer staging_Ai(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ai);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        cl::Buffer staging_Ax(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ax);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        queue.enqueueCopyBuffer(storage.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>, staging_Ai, 0, 0, buffer_size_Ai);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        queue.enqueueCopyBuffer(storage.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>, staging_Ax, 0, 0, buffer_size_Ax);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        queue.enqueueReadBuffer(staging_Ai, blocking, 0, buffer_size_Ai, Ai);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        queue.enqueueReadBuffer(staging_Ax, blocking, 0, buffer_size_Ax, Ax);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_COO_VEC_HPP</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        storage.<a class="code" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = n_values;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="group__internal.html#ga3df913610769d7f2aa6ae28535d07c49">   62</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga3df913610769d7f2aa6ae28535d07c49">cl_coo_vec_resize</a>(<span class="keyword">const</span> std::size_t n_values,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                           <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp;      storage) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        assert(n_values &gt; 0);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ai = n_values * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ax = n_values * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span>        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        cl::Buffer buffer_Ai(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ai);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        cl::Buffer buffer_Ax(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ax);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a> = std::move(buffer_Ai);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        storage.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a> = std::move(buffer_Ax);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">   78</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">cl_coo_vec_read</a>(<span class="keyword">const</span> std::size_t  n_values,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                         <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>*              Ai,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                         T*                 Ax,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                         <span class="keyword">const</span> <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp; storage,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                         cl::CommandQueue&amp;  queue,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                         <span class="keywordtype">bool</span>               blocking = <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ai = n_values * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">const</span> std::size_t buffer_size_Ax = n_values * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span>        flags          = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        cl::Buffer staging_Ai(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ai);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        cl::Buffer staging_Ax(get_acc_cl()-&gt;get_context(), flags, buffer_size_Ax);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        queue.enqueueCopyBuffer(storage.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>, staging_Ai, 0, 0, buffer_size_Ai);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        queue.enqueueCopyBuffer(storage.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>, staging_Ax, 0, 0, buffer_size_Ax);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        queue.enqueueReadBuffer(staging_Ai, blocking, 0, buffer_size_Ai, Ai);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        queue.enqueueReadBuffer(staging_Ax, blocking, 0, buffer_size_Ax, Ax);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__internal.html#gadc9a43d841f79d5ed12a8b776087c9fb">   98</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gadc9a43d841f79d5ed12a8b776087c9fb">cl_coo_vec_to_dense</a>(<span class="keyword">const</span> std::size_t  n_rows,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                             <span class="keyword">const</span> std::size_t  n_values,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                             <span class="keyword">const</span> <a class="code" href="classspla_1_1CLCooVec.html">CLCooVec&lt;T&gt;</a>&amp; in,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                             <a class="code" href="classspla_1_1CLDenseVec.html">CLDenseVec&lt;T&gt;</a>&amp;     out,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                             cl::CommandQueue&amp;  queue) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">auto</span>* acc   = get_acc_cl();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">auto</span>* utils = acc-&gt;get_utils();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        utils-&gt;template fill_zero&lt;T&gt;(out.<a class="code" href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">Ax</a>, n_rows, queue);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        utils-&gt;template vec_coo_to_dense&lt;T&gt;(in.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>, in.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>, out.<a class="code" href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">Ax</a>, n_values, queue);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_COO_VEC_HPP</span></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
+<div class="ttc" id="acl__utils_8hpp_html"><div class="ttname"><a href="cl__utils_8hpp.html">cl_utils.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1CLCooVec_html"><div class="ttname"><a href="classspla_1_1CLCooVec.html">spla::CLCooVec</a></div><div class="ttdoc">OpenCL list-of-coordinates sparse vector representation.</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:77</div></div>
 <div class="ttc" id="aclassspla_1_1CLCooVec_html_a1c4900153c0e498ad416b71426634eeb"><div class="ttname"><a href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">spla::CLCooVec::Ax</a></div><div class="ttdeci">cl::Buffer Ax</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:84</div></div>
 <div class="ttc" id="aclassspla_1_1CLCooVec_html_a8ffec5006cbef2fed8b9fa2977c8aaca"><div class="ttname"><a href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">spla::CLCooVec::Ai</a></div><div class="ttdeci">cl::Buffer Ai</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:83</div></div>
-<div class="ttc" id="agroup__internal_html_ga2d463993b19f7f9a0be221d8d5f748cb"><div class="ttname"><a href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">spla::cl_coo_vec_read</a></div><div class="ttdeci">void cl_coo_vec_read(const std::size_t n_values, uint *Ai, T *Ax, const CLCooVec&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:59</div></div>
-<div class="ttc" id="agroup__internal_html_ga77828b7ffb6fe89f71a6db3c700fbc37"><div class="ttname"><a href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">spla::cl_coo_vec_init</a></div><div class="ttdeci">void cl_coo_vec_init(const std::size_t n_values, const uint *Ai, const T *Ax, CLCooVec&lt; T &gt; &amp;storage)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:41</div></div>
+<div class="ttc" id="aclassspla_1_1CLDenseVec_html"><div class="ttname"><a href="classspla_1_1CLDenseVec.html">spla::CLDenseVec</a></div><div class="ttdoc">OpenCL one-dim array for dense vector representation.</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:61</div></div>
+<div class="ttc" id="aclassspla_1_1CLDenseVec_html_af8698b0fae489eaf1b315b6a2a328186"><div class="ttname"><a href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">spla::CLDenseVec::Ax</a></div><div class="ttdeci">cl::Buffer Ax</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:67</div></div>
+<div class="ttc" id="aclassspla_1_1TDecoration_html_a3bce818ace934694373d236be753e739"><div class="ttname"><a href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">spla::TDecoration::values</a></div><div class="ttdeci">uint values</div><div class="ttdef"><b>Definition:</b> tdecoration.hpp:58</div></div>
+<div class="ttc" id="agroup__internal_html_ga2d463993b19f7f9a0be221d8d5f748cb"><div class="ttname"><a href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">spla::cl_coo_vec_read</a></div><div class="ttdeci">void cl_coo_vec_read(const std::size_t n_values, uint *Ai, T *Ax, const CLCooVec&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:78</div></div>
+<div class="ttc" id="agroup__internal_html_ga3df913610769d7f2aa6ae28535d07c49"><div class="ttname"><a href="group__internal.html#ga3df913610769d7f2aa6ae28535d07c49">spla::cl_coo_vec_resize</a></div><div class="ttdeci">void cl_coo_vec_resize(const std::size_t n_values, CLCooVec&lt; T &gt; &amp;storage)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:62</div></div>
+<div class="ttc" id="agroup__internal_html_ga77828b7ffb6fe89f71a6db3c700fbc37"><div class="ttname"><a href="group__internal.html#ga77828b7ffb6fe89f71a6db3c700fbc37">spla::cl_coo_vec_init</a></div><div class="ttdeci">void cl_coo_vec_init(const std::size_t n_values, const uint *Ai, const T *Ax, CLCooVec&lt; T &gt; &amp;storage)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:42</div></div>
+<div class="ttc" id="agroup__internal_html_gadc9a43d841f79d5ed12a8b776087c9fb"><div class="ttname"><a href="group__internal.html#gadc9a43d841f79d5ed12a8b776087c9fb">spla::cl_coo_vec_to_dense</a></div><div class="ttdeci">void cl_coo_vec_to_dense(const std::size_t n_rows, const std::size_t n_values, const CLCooVec&lt; T &gt; &amp;in, CLDenseVec&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:98</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 </div><!-- fragment --></div><!-- contents -->
