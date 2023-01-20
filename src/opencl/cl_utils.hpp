@@ -156,7 +156,7 @@ namespace spla {
                 std::shared_ptr<CLProgram> program;
                 cl::Kernel                 local;
                 cl::Kernel                 global;
-                int                        local_size = 1024 * 8;
+                int                        local_size = 1024 * 4;
                 bool                       ensure(const ref_ptr<Type>& type);
             } sort_bitonic;
 

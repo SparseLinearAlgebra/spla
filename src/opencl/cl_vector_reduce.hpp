@@ -62,10 +62,12 @@ namespace spla {
             auto                t = ctx.task.template cast<ScheduleTask_v_reduce>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (v->is_valid(Format::CLCooVec))
+            if (v->is_valid(Format::CLCooVec)) {
                 return execute_sp(ctx);
-            if (v->is_valid(Format::CLDenseVec))
+            }
+            if (v->is_valid(Format::CLDenseVec)) {
                 return execute_dn(ctx);
+            }
 
             return execute_sp(ctx);
         }
@@ -149,9 +151,13 @@ namespace spla {
 
             T          init[] = {s->get_value()};
             T          sum[1];
-            cl::Buffer cl_init(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init);
-            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(T));
-            cl::Buffer cl_sum_group(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, sizeof(T) * GROUPS_COUNT);
+            cl::Buffer cl_init;
+            cl::Buffer cl_sum;
+            cl::Buffer cl_sum_group;
+
+            cl_init      = cl::Buffer(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init);
+            cl_sum       = cl::Buffer(p_cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(T));
+            cl_sum_group = cl::Buffer(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, sizeof(T) * GROUPS_COUNT);
 
             m_kernel_phase_1.setArg(0, p_cl_coo_vec->Ax);
             m_kernel_phase_1.setArg(1, cl_init);
@@ -186,8 +192,6 @@ namespace spla {
         }
 
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
-            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce/ensure");
-
             if (m_compiled) return true;
 
             m_block_size = std::min(uint(1024), get_acc_cl()->get_max_wgs());

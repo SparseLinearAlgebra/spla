@@ -150,7 +150,6 @@ namespace spla {
             auto* cl_acc   = get_acc_cl();
             auto* cl_dense = s.template get<CLDenseVec<T>>();
             auto* cl_coo   = s.template get<CLCooVec<T>>();
-            cl_coo_vec_resize(s.get_n_rows(), *cl_coo);
             cl_dense_vec_to_coo(s.get_n_rows(), *cl_dense, *cl_coo, cl_acc->get_queue_default());
         });
 #endif

@@ -91,10 +91,19 @@ namespace spla {
         auto* acc   = get_acc_cl();
         auto* utils = acc->get_utils();
 
+        cl::Buffer temp_Ai(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(uint));
+        cl::Buffer temp_Ax(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(T));
+
         uint count;
-        utils->template vec_dense_to_coo<T>(in.Ax, out.Ai, out.Ax, n_rows, count, queue);
+        utils->template vec_dense_to_coo<T>(in.Ax, temp_Ai, temp_Ax, n_rows, count, queue);
 
         out.values = count;
+        out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(uint));
+        out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(T));
+
+        queue.enqueueCopyBuffer(temp_Ai, out.Ai, 0, 0, count * sizeof(uint));
+        queue.enqueueCopyBuffer(temp_Ax, out.Ax, 0, 0, count * sizeof(T));
+        queue.finish();
     }
 
 

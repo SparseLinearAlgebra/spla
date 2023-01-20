@@ -61,7 +61,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            return execute_scalar(ctx);
+            return execute_sparse(ctx);
         }
 
     private:
@@ -281,52 +281,100 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
+            r->validate_wd(Format::CLCooVec);
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
             v->validate_rw(Format::CLCooVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
-            auto* p_cl_r     = r->template get<CLDenseVec<T>>();
-            auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
-            auto* p_cl_M     = M->template get<CLCsr<T>>();
-            auto* p_cl_v     = v->template get<CLCooVec<T>>();
-            auto  early_exit = t->get_desc_or_default()->get_early_exit();
+            auto* p_cl_r    = r->template get<CLCooVec<T>>();
+            auto* p_cl_mask = mask->template get<CLDenseVec<T>>();
+            auto* p_cl_M    = M->template get<CLCsr<T>>();
+            auto* p_cl_v    = v->template get<CLCooVec<T>>();
 
-            auto* p_cl_acc = get_acc_cl();
-            auto& queue    = p_cl_acc->get_queue_default();
+            auto* p_cl_acc   = get_acc_cl();
+            auto* p_cl_utils = p_cl_acc->get_utils();
+            auto& queue      = p_cl_acc->get_queue_default();
 
-            m_kernel_prepare.setArg(0, p_cl_r->Ax);
-            m_kernel_prepare.setArg(1, init->get_value());
-            m_kernel_prepare.setArg(2, r->get_n_rows());
+            uint       prods_count[] = {0};
+            uint       rsize[]       = {0};
+            cl::Buffer cl_prods_count(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
+            cl::Buffer cl_prods_offset(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
+            cl::Buffer cl_rsize(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), rsize);
 
-            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows(), p_cl_acc->get_wave_size()));
-            cl::NDRange prepare_local(p_cl_acc->get_wave_size());
+            m_kernel_sparse_count.setArg(0, p_cl_v->Ai);
+            m_kernel_sparse_count.setArg(1, p_cl_v->Ax);
+            m_kernel_sparse_count.setArg(2, p_cl_M->Ap);
+            m_kernel_sparse_count.setArg(3, p_cl_M->Aj);
+            m_kernel_sparse_count.setArg(4, p_cl_mask->Ax);
+            m_kernel_sparse_count.setArg(5, cl_prods_count);
+            m_kernel_sparse_count.setArg(6, p_cl_v->values);
+
+            uint n_groups_to_dispatch_v = std::max(std::min(p_cl_v->values / m_block_size, uint(512)), uint(1));
+
+            cl::NDRange count_global(m_block_size * n_groups_to_dispatch_v);
+            cl::NDRange count_local(m_block_size);
             {
-                TIME_PROFILE_SUBSCOPE(vxm, config, "config");
-                queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
+                TIME_PROFILE_SUBSCOPE(vxm, count, "count");
+                queue.enqueueNDRangeKernel(m_kernel_sparse_count, cl::NDRange(), count_global, count_local);
                 queue.finish();
             }
 
-            m_kernel_sparse.setArg(0, p_cl_v->Ai);
-            m_kernel_sparse.setArg(1, p_cl_v->Ax);
-            m_kernel_sparse.setArg(2, p_cl_M->Ap);
-            m_kernel_sparse.setArg(3, p_cl_M->Aj);
-            m_kernel_sparse.setArg(4, p_cl_M->Ax);
-            m_kernel_sparse.setArg(5, p_cl_mask->Ax);
-            m_kernel_sparse.setArg(6, p_cl_r->Ax);
-            m_kernel_sparse.setArg(7, p_cl_v->values);
-            m_kernel_sparse.setArg(8, uint(early_exit));
-
-            uint n_groups_to_dispatch = std::max(std::min(p_cl_v->values / m_block_size, uint(512)), uint(1));
-
-            cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
-            cl::NDRange exec_local(m_block_size);
             {
-                TIME_PROFILE_SUBSCOPE(vxm, exec, "exec");
-                queue.enqueueNDRangeKernel(m_kernel_sparse, cl::NDRange(), exec_global, exec_local);
+                TIME_PROFILE_SUBSCOPE(vxm, copy_prods_count, "copy_prods_count");
+                queue.enqueueReadBuffer(cl_prods_count, true, 0, sizeof(prods_count[0]), prods_count);
+            }
+
+            LOG_MSG(Status::Ok, "temporary vi * A[,*] count " << prods_count[0]);
+
+            cl::Buffer cl_prodi(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(uint));
+            cl::Buffer cl_prodx(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(T));
+
+            m_kernel_sparse_collect.setArg(0, p_cl_v->Ai);
+            m_kernel_sparse_collect.setArg(1, p_cl_v->Ax);
+            m_kernel_sparse_collect.setArg(2, p_cl_M->Ap);
+            m_kernel_sparse_collect.setArg(3, p_cl_M->Aj);
+            m_kernel_sparse_collect.setArg(4, p_cl_M->Ax);
+            m_kernel_sparse_collect.setArg(5, p_cl_mask->Ax);
+            m_kernel_sparse_collect.setArg(6, cl_prodi);
+            m_kernel_sparse_collect.setArg(7, cl_prodx);
+            m_kernel_sparse_collect.setArg(8, cl_prods_offset);
+            m_kernel_sparse_collect.setArg(9, p_cl_v->values);
+
+            cl::NDRange collect_global(m_block_size * n_groups_to_dispatch_v);
+            cl::NDRange collect_local(m_block_size);
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, collect, "collect");
+                queue.enqueueNDRangeKernel(m_kernel_sparse_collect, cl::NDRange(), collect_global, collect_local);
                 queue.finish();
             }
+
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, sort, "sort");
+                p_cl_utils->template sort_by_key<T>(cl_prodi, cl_prodx, prods_count[0], queue);
+            }
+
+            m_kernel_sparse_reduce.setArg(0, cl_prodi);
+            m_kernel_sparse_reduce.setArg(1, cl_prodx);
+            m_kernel_sparse_reduce.setArg(2, cl_rsize);
+            m_kernel_sparse_reduce.setArg(3, prods_count);
+
+            cl::NDRange reduce_global(m_block_size);
+            cl::NDRange reduce_local(m_block_size);
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, reduce, "reduce");
+                queue.enqueueNDRangeKernel(m_kernel_sparse_reduce, cl::NDRange(), reduce_global, reduce_local);
+                queue.finish();
+            }
+
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, copy_rsize, "copy_rsize");
+                queue.enqueueReadBuffer(cl_rsize, true, 0, sizeof(rsize[0]), rsize);
+            }
+
+            p_cl_r->Ai     = cl_prodi;
+            p_cl_r->Ax     = cl_prodx;
+            p_cl_r->values = rsize[0];
 
             return Status::Ok;
         }
@@ -359,7 +407,9 @@ namespace spla {
             m_kernel_atomic_scalar        = m_program->make_kernel("vxm_atomic_scalar");
             m_kernel_config               = m_program->make_kernel("vxm_config");
             m_kernel_config_atomic_scalar = m_program->make_kernel("vxm_config_atomic_scalar");
-            m_kernel_sparse               = m_program->make_kernel("vxm_atomic_sparse");
+            m_kernel_sparse_count         = m_program->make_kernel("vxm_sparse_count");
+            m_kernel_sparse_collect       = m_program->make_kernel("vxm_sparse_collect");
+            m_kernel_sparse_reduce        = m_program->make_kernel("vxm_sparse_reduce");
             m_compiled                    = true;
 
             return true;
@@ -372,7 +422,9 @@ namespace spla {
         cl::Kernel                 m_kernel_atomic_scalar;
         cl::Kernel                 m_kernel_config;
         cl::Kernel                 m_kernel_config_atomic_scalar;
-        cl::Kernel                 m_kernel_sparse;
+        cl::Kernel                 m_kernel_sparse_count;
+        cl::Kernel                 m_kernel_sparse_collect;
+        cl::Kernel                 m_kernel_sparse_reduce;
         uint                       m_block_size  = 0;
         uint                       m_block_count = 0;
         bool                       m_compiled    = false;
