@@ -221,15 +221,14 @@ $(function() {
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keyword">auto</span>* cl_acc   = get_acc_cl();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keyword">auto</span>* cl_dense = s.template get&lt;CLDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keyword">auto</span>* cl_coo   = s.template get&lt;CLCooVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <a class="code" href="group__internal.html#ga3df913610769d7f2aa6ae28535d07c49">cl_coo_vec_resize</a>(s.get_n_rows(), *cl_coo);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <a class="code" href="group__internal.html#ga6b90d1e78d63a50f253da1134724ed55">cl_dense_vec_to_coo</a>(s.get_n_rows(), *cl_dense, *cl_coo, cl_acc-&gt;get_queue_default());</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        });</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_STORAGE_MAANGER_VECTOR_HPP</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <a class="code" href="group__internal.html#ga6b90d1e78d63a50f253da1134724ed55">cl_dense_vec_to_coo</a>(s.get_n_rows(), *cl_dense, *cl_coo, cl_acc-&gt;get_queue_default());</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        });</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_STORAGE_MAANGER_VECTOR_HPP</span></div>
 <div class="ttc" id="acl__accelerator_8hpp_html"><div class="ttname"><a href="cl__accelerator_8hpp.html">cl_accelerator.hpp</a></div></div>
 <div class="ttc" id="acl__coo__vec_8hpp_html"><div class="ttname"><a href="cl__coo__vec_8hpp.html">cl_coo_vec.hpp</a></div></div>
 <div class="ttc" id="acl__dense__vec_8hpp_html"><div class="ttname"><a href="cl__dense__vec_8hpp.html">cl_dense_vec.hpp</a></div></div>
@@ -246,7 +245,6 @@ $(function() {
 <div class="ttc" id="agroup__internal_html_ga0bbd9f97df45eadbb3281e003a67fc61"><div class="ttname"><a href="group__internal.html#ga0bbd9f97df45eadbb3281e003a67fc61">spla::cpu_coo_vec_clear</a></div><div class="ttdeci">void cpu_coo_vec_clear(CpuCooVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_coo_vec.hpp:49</div></div>
 <div class="ttc" id="agroup__internal_html_ga13037eb76a2718df616bcc09cfebc99e"><div class="ttname"><a href="group__internal.html#ga13037eb76a2718df616bcc09cfebc99e">spla::cpu_dok_vec_to_dense</a></div><div class="ttdeci">void cpu_dok_vec_to_dense(const uint n_rows, const CpuDokVec&lt; T &gt; &amp;in, CpuDenseVec&lt; T &gt; &amp;out)</div><div class="ttdef"><b>Definition:</b> cpu_dok_vec.hpp:60</div></div>
 <div class="ttc" id="agroup__internal_html_ga2d463993b19f7f9a0be221d8d5f748cb"><div class="ttname"><a href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">spla::cl_coo_vec_read</a></div><div class="ttdeci">void cl_coo_vec_read(const std::size_t n_values, uint *Ai, T *Ax, const CLCooVec&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:85</div></div>
-<div class="ttc" id="agroup__internal_html_ga3df913610769d7f2aa6ae28535d07c49"><div class="ttname"><a href="group__internal.html#ga3df913610769d7f2aa6ae28535d07c49">spla::cl_coo_vec_resize</a></div><div class="ttdeci">void cl_coo_vec_resize(const std::size_t n_values, CLCooVec&lt; T &gt; &amp;storage)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:62</div></div>
 <div class="ttc" id="agroup__internal_html_ga3ff18779de67829a0bd5183dc46b10c7"><div class="ttname"><a href="group__internal.html#ga3ff18779de67829a0bd5183dc46b10c7">spla::cl_coo_vec_clear</a></div><div class="ttdeci">void cl_coo_vec_clear(CLCooVec&lt; T &gt; &amp;storage)</div><div class="ttdef"><b>Definition:</b> cl_coo_vec.hpp:78</div></div>
 <div class="ttc" id="agroup__internal_html_ga4cabaa118bff0b6f0e7ee18fc185452d"><div class="ttname"><a href="group__internal.html#ga4cabaa118bff0b6f0e7ee18fc185452d">spla::cpu_dense_vec_fill</a></div><div class="ttdeci">void cpu_dense_vec_fill(const T value, CpuDenseVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_dense_vec.hpp:48</div></div>
 <div class="ttc" id="agroup__internal_html_ga5809b7bca1a7f597b423c2ca881c3040"><div class="ttname"><a href="group__internal.html#ga5809b7bca1a7f597b423c2ca881c3040">spla::cpu_coo_vec_resize</a></div><div class="ttdeci">void cpu_coo_vec_resize(const uint n_values, CpuCooVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_coo_vec.hpp:41</div></div>

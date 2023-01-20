@@ -157,16 +157,25 @@ $(function() {
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">auto</span>* acc   = get_acc_cl();</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">auto</span>* utils = acc-&gt;get_utils();</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> count;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        utils-&gt;template vec_dense_to_coo&lt;T&gt;(in.<a class="code" href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">Ax</a>, out.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>, out.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>, n_rows, count, queue);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        cl::Buffer temp_Ai(acc-&gt;get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>));</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        cl::Buffer temp_Ax(acc-&gt;get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        out.<a class="code" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = count;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> count;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        utils-&gt;template vec_dense_to_coo&lt;T&gt;(in.<a class="code" href="classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186">Ax</a>, temp_Ai, temp_Ax, n_rows, count, queue);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DENSE_VEC_HPP</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        out.<a class="code" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = count;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        out.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>     = cl::Buffer(acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        out.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>     = cl::Buffer(acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        queue.enqueueCopyBuffer(temp_Ai, out.<a class="code" href="classspla_1_1CLCooVec.html#a8ffec5006cbef2fed8b9fa2977c8aaca">Ai</a>, 0, 0, count * <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        queue.enqueueCopyBuffer(temp_Ax, out.<a class="code" href="classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb">Ax</a>, 0, 0, count * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        queue.finish();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DENSE_VEC_HPP</span></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
 <div class="ttc" id="acl__utils_8hpp_html"><div class="ttname"><a href="cl__utils_8hpp.html">cl_utils.hpp</a></div></div>
 <div class="ttc" id="aclassspla_1_1CLCooVec_html"><div class="ttname"><a href="classspla_1_1CLCooVec.html">spla::CLCooVec</a></div><div class="ttdoc">OpenCL list-of-coordinates sparse vector representation.</div><div class="ttdef"><b>Definition:</b> cl_formats.hpp:77</div></div>
