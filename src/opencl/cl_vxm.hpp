@@ -242,7 +242,7 @@ namespace spla {
                 queue.finish();
             }
 
-            cl::copy(queue, cl_config_size, config_size, config_size + 1);
+            queue.enqueueReadBuffer(cl_config_size, true, 0, sizeof(config_size[0]), config_size);
 
             m_kernel_config_atomic_scalar.setArg(0, p_cl_v->Ax);
             m_kernel_config_atomic_scalar.setArg(1, p_cl_M->Ap);

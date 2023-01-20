@@ -59,20 +59,20 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
-            ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
+            auto                t    = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+            ref_ptr<TVector<T>> mask = t->mask.template cast<TVector<T>>();
 
-            if (r->is_valid(Format::CLCooVec))
+            if (mask->is_valid(Format::CLCooVec))
                 return execute_sp2dn(ctx);
-            if (r->is_valid(Format::CLDenseVec))
+            if (mask->is_valid(Format::CLDenseVec))
                 return execute_dn2dn(ctx);
 
-            return execute_dn2dn(ctx);
+            return execute_sp2dn(ctx);
         }
 
     private:
         Status execute_dn2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_dn2dn");
+            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_dense2dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
@@ -107,7 +107,7 @@ namespace spla {
         }
 
         Status execute_sp2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_sp2dn");
+            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_sparse2dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 

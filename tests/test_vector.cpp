@@ -160,7 +160,7 @@ TEST(vector, reduce_mult) {
 
 TEST(vector, reduce_perf) {
     const int N     = 10000000;
-    const int K     = 13;
+    const int K     = 5000;
     const int NITER = 20;
     int       R     = 0;
 
@@ -171,8 +171,6 @@ TEST(vector, reduce_perf) {
     auto istart = spla::make_int(0);
 
     for (int i = 0; i < N; ++i) {
-        ivec->set_int(i, 0);
-
         if ((i % K) == 0) {
             ivec->set_int(i, 1);
             R += 1;

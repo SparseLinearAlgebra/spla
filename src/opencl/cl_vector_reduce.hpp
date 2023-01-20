@@ -59,7 +59,20 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce");
+            auto                t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+
+            if (v->is_valid(Format::CLCooVec))
+                return execute_sp(ctx);
+            if (v->is_valid(Format::CLDenseVec))
+                return execute_dn(ctx);
+
+            return execute_sp(ctx);
+        }
+
+    private:
+        Status execute_dn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce_dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
 
@@ -106,15 +119,75 @@ namespace spla {
             cl::NDRange local_phase_2(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);
 
-            cl::copy(queue, cl_sum, sum, sum + 1);
-
+            queue.enqueueReadBuffer(cl_sum, true, 0, sizeof(sum[0]), sum);
             r->get_value() = sum[0];
 
             return Status::Ok;
         }
 
-    private:
+        Status execute_sp(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce_sparse");
+
+            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+
+            auto r         = t->r.template cast<TScalar<T>>();
+            auto s         = t->s.template cast<TScalar<T>>();
+            auto v         = t->v.template cast<TVector<T>>();
+            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+
+            v->validate_rw(Format::CLCooVec);
+            if (!ensure_kernel(op_reduce)) return Status::Error;
+
+            const auto* p_cl_coo_vec = v->template get<CLCooVec<T>>();
+            auto*       p_cl_acc     = get_acc_cl();
+            auto&       queue        = p_cl_acc->get_queue_default();
+
+            const uint N             = p_cl_coo_vec->values;
+            const uint OPTIMAL_SPLIT = 64;
+            const uint STRIDE        = std::max(std::max(uint(N / OPTIMAL_SPLIT), uint((N + m_block_size) / m_block_size)), m_block_size);
+            const uint GROUPS_COUNT  = N / STRIDE + (N % STRIDE ? 1 : 0);
+
+            T          init[] = {s->get_value()};
+            T          sum[1];
+            cl::Buffer cl_init(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init);
+            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(T));
+            cl::Buffer cl_sum_group(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, sizeof(T) * GROUPS_COUNT);
+
+            m_kernel_phase_1.setArg(0, p_cl_coo_vec->Ax);
+            m_kernel_phase_1.setArg(1, cl_init);
+            m_kernel_phase_1.setArg(2, cl_sum_group);
+            m_kernel_phase_1.setArg(3, STRIDE);
+            m_kernel_phase_1.setArg(4, N);
+
+            cl::NDRange global_phase_1(m_block_size * GROUPS_COUNT);
+            cl::NDRange local_phase_1(m_block_size);
+            queue.enqueueNDRangeKernel(m_kernel_phase_1, cl::NDRange(), global_phase_1, local_phase_1);
+
+            if (GROUPS_COUNT == 1) {
+                queue.enqueueReadBuffer(cl_sum_group, true, 0, sizeof(sum[0]), sum);
+                r->get_value() = sum[0];
+                return Status::Ok;
+            }
+
+            m_kernel_phase_2.setArg(0, cl_sum_group);
+            m_kernel_phase_2.setArg(1, cl_init);
+            m_kernel_phase_2.setArg(2, cl_sum);
+            m_kernel_phase_2.setArg(3, STRIDE);
+            m_kernel_phase_2.setArg(4, GROUPS_COUNT);
+
+            cl::NDRange global_phase_2(m_block_size);
+            cl::NDRange local_phase_2(m_block_size);
+            queue.enqueueNDRangeKernel(m_kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);
+
+            queue.enqueueReadBuffer(cl_sum, true, 0, sizeof(sum[0]), sum);
+            r->get_value() = sum[0];
+
+            return Status::Ok;
+        }
+
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
+            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce/ensure");
+
             if (m_compiled) return true;
 
             m_block_size = std::min(uint(1024), get_acc_cl()->get_max_wgs());

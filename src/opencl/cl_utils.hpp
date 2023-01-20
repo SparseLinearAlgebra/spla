@@ -121,7 +121,7 @@ namespace spla {
             format.dense_to_sparse.setArg(4, n);
             queue.enqueueNDRangeKernel(format.dense_to_sparse, cl::NDRange(), global, local);
 
-            cl::copy(queue, cl_count, &count, &count + 1);
+            queue.enqueueReadBuffer(cl_count, true, 0, sizeof(count), &count);
 
             return true;
         }

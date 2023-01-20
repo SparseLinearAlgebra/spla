@@ -87,8 +87,7 @@ namespace spla {
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
 
-            cl::copy(queue, cl_count, count, count + 1);
-
+            queue.enqueueReadBuffer(cl_count, true, 0, sizeof(count[0]), count);
             r->set_int(count[0]);
 
             return Status::Ok;
