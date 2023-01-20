@@ -75,6 +75,13 @@ namespace spla {
     }
 
     template<typename T>
+    void cl_coo_vec_clear(CLCooVec<T>& storage) {
+        storage.Ai     = cl::Buffer();
+        storage.Ax     = cl::Buffer();
+        storage.values = 0;
+    }
+
+    template<typename T>
     void cl_coo_vec_read(const std::size_t  n_values,
                          uint*              Ai,
                          T*                 Ax,

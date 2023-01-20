@@ -106,6 +106,10 @@ namespace spla {
             s.get_ref(Format::CLDenseVec) = make_ref<CLDenseVec<T>>();
         });
 
+        manager.register_validator(Format::CLCooVec, [](Storage& s) {
+            auto* cl_coo = s.template get<CLCooVec<T>>();
+            cl_coo_vec_clear(*cl_coo);
+        });
         manager.register_validator(Format::CLDenseVec, [](Storage& s) {
             auto* cl_dense = s.template get<CLDenseVec<T>>();
             cl_dense_vec_resize(s.get_n_rows(), *cl_dense);

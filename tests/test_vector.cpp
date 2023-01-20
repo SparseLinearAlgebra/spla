@@ -257,8 +257,8 @@ TEST(vector, assign_second) {
 }
 
 TEST(vector, assign_perf) {
-    const int N     = 2000000;
-    const int K     = 10;
+    const int N     = 7000000;
+    const int K     = 1000;
     const int B     = 10;
     const int V     = 20;
     const int NITER = 10;
@@ -271,7 +271,7 @@ TEST(vector, assign_perf) {
 
     for (int i = 0; i < N; ++i) {
         ivec->set_int(i, B);
-        imask->set_int(i, (i % K ? 0 : V));
+        if (!(i % K)) imask->set_int(i, V);
     }
 
     for (int i = 0; i < NITER; ++i) {

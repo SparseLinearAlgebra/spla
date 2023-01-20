@@ -61,7 +61,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            return execute_sparse(ctx);
+            return execute_scalar(ctx);
         }
 
     private:
@@ -284,8 +284,7 @@ namespace spla {
             r->validate_rwd(Format::CLDenseVec);
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
-            v->validate_rwd(Format::CLDenseVec);
-            v->validate_rwd(Format::CLCooVec);
+            v->validate_rw(Format::CLCooVec);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();

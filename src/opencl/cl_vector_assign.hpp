@@ -59,7 +59,20 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign");
+            auto                t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+            ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
+
+            if (r->is_valid(Format::CLCooVec))
+                return execute_sp2dn(ctx);
+            if (r->is_valid(Format::CLDenseVec))
+                return execute_dn2dn(ctx);
+
+            return execute_dn2dn(ctx);
+        }
+
+    private:
+        Status execute_dn2dn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_dn2dn");
 
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
@@ -78,22 +91,57 @@ namespace spla {
             auto*       p_cl_acc        = get_acc_cl();
             auto&       queue           = p_cl_acc->get_queue_default();
 
-            m_kernel.setArg(0, p_cl_r_dense->Ax);
-            m_kernel.setArg(1, p_cl_mask_dense->Ax);
-            m_kernel.setArg(2, value->get_value());
-            m_kernel.setArg(3, r->get_n_rows());
+            m_kernel_dense_to_dense.setArg(0, p_cl_r_dense->Ax);
+            m_kernel_dense_to_dense.setArg(1, p_cl_mask_dense->Ax);
+            m_kernel_dense_to_dense.setArg(2, value->get_value());
+            m_kernel_dense_to_dense.setArg(3, r->get_n_rows());
 
             uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(256)), uint(1));
 
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel, cl::NDRange(), global, local);
+            queue.enqueueNDRangeKernel(m_kernel_dense_to_dense, cl::NDRange(), global, local);
             queue.finish();
 
             return Status::Ok;
         }
 
-    private:
+        Status execute_sp2dn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_sp2dn");
+
+            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+
+            auto r         = t->r.template cast<TVector<T>>();
+            auto mask      = t->mask.template cast<TVector<T>>();
+            auto value     = t->value.template cast<TScalar<T>>();
+            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
+            auto op_select = t->op_select.template cast<TOpSelect<T>>();
+
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLCooVec);
+            if (!ensure_kernel(op_assign, op_select)) return Status::Error;
+
+            auto*       p_cl_r_dense  = r->template get<CLDenseVec<T>>();
+            const auto* p_cl_mask_coo = mask->template get<CLCooVec<T>>();
+            auto*       p_cl_acc      = get_acc_cl();
+            auto&       queue         = p_cl_acc->get_queue_default();
+
+            m_kernel_sparse_to_dense.setArg(0, p_cl_r_dense->Ax);
+            m_kernel_sparse_to_dense.setArg(1, p_cl_mask_coo->Ai);
+            m_kernel_sparse_to_dense.setArg(2, p_cl_mask_coo->Ax);
+            m_kernel_sparse_to_dense.setArg(3, value->get_value());
+            m_kernel_sparse_to_dense.setArg(4, p_cl_mask_coo->values);
+
+            uint n_groups_to_dispatch = std::max(std::min(p_cl_mask_coo->values / m_block_size, uint(256)), uint(1));
+
+            cl::NDRange global(m_block_size * n_groups_to_dispatch);
+            cl::NDRange local(m_block_size);
+            queue.enqueueNDRangeKernel(m_kernel_sparse_to_dense, cl::NDRange(), global, local);
+            queue.finish();
+
+            return Status::Ok;
+        }
+
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_assign, const ref_ptr<TOpSelect<T>>& op_select) {
             if (m_compiled) return true;
 
@@ -109,15 +157,17 @@ namespace spla {
 
             if (!program_builder.build()) return false;
 
-            m_program  = program_builder.get_program();
-            m_kernel   = m_program->make_kernel("assign");
-            m_compiled = true;
+            m_program                = program_builder.get_program();
+            m_kernel_dense_to_dense  = m_program->make_kernel("assign_dense_to_dense");
+            m_kernel_sparse_to_dense = m_program->make_kernel("assign_sparse_to_dense");
+            m_compiled               = true;
 
             return true;
         }
 
         std::shared_ptr<CLProgram> m_program;
-        cl::Kernel                 m_kernel;
+        cl::Kernel                 m_kernel_dense_to_dense;
+        cl::Kernel                 m_kernel_sparse_to_dense;
         uint                       m_block_size = 0;
         bool                       m_compiled   = false;
     };
