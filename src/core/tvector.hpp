@@ -80,6 +80,7 @@ namespace spla {
         void validate_rwd(Format format);
         void validate_wd(Format format);
         void validate_ctor(Format format);
+        bool is_valid(Format format) const;
 
         static StorageManagerVector<T>* get_storage_manager();
 
@@ -248,6 +249,11 @@ namespace spla {
     void TVector<T>::validate_ctor(Format format) {
         StorageManagerVector<T>* manager = get_storage_manager();
         manager->validate_ctor(format, m_storage);
+    }
+
+    template<typename T>
+    bool TVector<T>::is_valid(Format format) const {
+        return m_storage.is_valid(format);
     }
 
     template<typename T>

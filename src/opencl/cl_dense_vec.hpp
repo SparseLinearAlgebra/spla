@@ -29,6 +29,7 @@
 #define SPLA_CL_DENSE_VEC_HPP
 
 #include <opencl/cl_formats.hpp>
+#include <opencl/cl_utils.hpp>
 
 namespace spla {
 
@@ -81,6 +82,21 @@ namespace spla {
         queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
         queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);
     }
+
+    template<typename T>
+    void cl_dense_vec_to_coo(const std::size_t    n_rows,
+                             const CLDenseVec<T>& in,
+                             CLCooVec<T>&         out,
+                             cl::CommandQueue&    queue) {
+        auto* acc   = get_acc_cl();
+        auto* utils = acc->get_utils();
+
+        uint count;
+        utils->template vec_dense_to_coo<T>(in.Ax, out.Ai, out.Ax, n_rows, count, queue);
+
+        out.values = count;
+    }
+
 
     /**
      * @}

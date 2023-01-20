@@ -135,6 +135,20 @@ namespace spla {
             cpu_coo_vec_resize(cl_coo->values, *cpu_coo);
             cl_coo_vec_read(cl_coo->values, cpu_coo->Ai.data(), cpu_coo->Ax.data(), *cl_coo, cl_acc->get_queue_default());
         });
+        manager.register_converter(Format::CLCooVec, Format::CLDenseVec, [](Storage& s) {
+            auto* cl_acc   = get_acc_cl();
+            auto* cl_coo   = s.template get<CLCooVec<T>>();
+            auto* cl_dense = s.template get<CLDenseVec<T>>();
+            cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
+            cl_coo_vec_to_dense(s.get_n_rows(), cl_coo->values, *cl_coo, *cl_dense, cl_acc->get_queue_default());
+        });
+        manager.register_converter(Format::CLDenseVec, Format::CLCooVec, [](Storage& s) {
+            auto* cl_acc   = get_acc_cl();
+            auto* cl_dense = s.template get<CLDenseVec<T>>();
+            auto* cl_coo   = s.template get<CLCooVec<T>>();
+            cl_coo_vec_resize(s.get_n_rows(), *cl_coo);
+            cl_dense_vec_to_coo(s.get_n_rows(), *cl_dense, *cl_coo, cl_acc->get_queue_default());
+        });
 #endif
     }
 

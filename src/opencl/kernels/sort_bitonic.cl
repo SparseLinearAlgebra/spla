@@ -25,7 +25,7 @@ __kernel void bitonic_sort_local(__global uint* g_keys,
     const uint n_threads = n_aligned / 2;
 
     __local uint s_keys[BITONIC_SORT_LOCAL_BUFFER_SIZE];
-    __local uint s_values[BITONIC_SORT_LOCAL_BUFFER_SIZE];
+    __local TYPE s_values[BITONIC_SORT_LOCAL_BUFFER_SIZE];
 
     for (uint i = lid; i < n; i += lsize) {
         s_keys[i]   = g_keys[i];

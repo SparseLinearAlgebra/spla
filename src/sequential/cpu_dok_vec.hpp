@@ -52,6 +52,8 @@ namespace spla {
             out.Ax[k]    = x;
             k += 1;
         }
+
+        out.values = in.values;
     }
 
     template<typename T>

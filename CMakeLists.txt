@@ -242,6 +242,8 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_vxm.hpp
             src/opencl/cl_vector_assign.hpp
             src/opencl/cl_vector_reduce.hpp
+            src/opencl/cl_utils.cpp
+            src/opencl/cl_utils.hpp
             )
 endif ()
 

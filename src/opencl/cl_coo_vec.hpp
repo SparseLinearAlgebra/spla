@@ -29,6 +29,7 @@
 #define SPLA_CL_COO_VEC_HPP
 
 #include <opencl/cl_formats.hpp>
+#include <opencl/cl_utils.hpp>
 
 namespace spla {
 
@@ -46,10 +47,28 @@ namespace spla {
 
         const std::size_t buffer_size_Ai = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
-        const auto        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;
+        const auto        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
 
         cl::Buffer buffer_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai, (void*) Ai);
         cl::Buffer buffer_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax, (void*) Ax);
+
+        storage.Ai = std::move(buffer_Ai);
+        storage.Ax = std::move(buffer_Ax);
+
+        storage.values = n_values;
+    }
+
+    template<typename T>
+    void cl_coo_vec_resize(const std::size_t n_values,
+                           CLCooVec<T>&      storage) {
+        assert(n_values > 0);
+
+        const std::size_t buffer_size_Ai = n_values * sizeof(uint);
+        const std::size_t buffer_size_Ax = n_values * sizeof(T);
+        const auto        flags          = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;
+
+        cl::Buffer buffer_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai);
+        cl::Buffer buffer_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
 
         storage.Ai = std::move(buffer_Ai);
         storage.Ax = std::move(buffer_Ax);
@@ -73,6 +92,19 @@ namespace spla {
         queue.enqueueCopyBuffer(storage.Ax, staging_Ax, 0, 0, buffer_size_Ax);
         queue.enqueueReadBuffer(staging_Ai, blocking, 0, buffer_size_Ai, Ai);
         queue.enqueueReadBuffer(staging_Ax, blocking, 0, buffer_size_Ax, Ax);
+    }
+
+    template<typename T>
+    void cl_coo_vec_to_dense(const std::size_t  n_rows,
+                             const std::size_t  n_values,
+                             const CLCooVec<T>& in,
+                             CLDenseVec<T>&     out,
+                             cl::CommandQueue&  queue) {
+        auto* acc   = get_acc_cl();
+        auto* utils = acc->get_utils();
+
+        utils->template fill_zero<T>(out.Ax, n_rows, queue);
+        utils->template vec_coo_to_dense<T>(in.Ai, in.Ax, out.Ax, n_values, queue);
     }
 
     /**

@@ -177,3 +177,49 @@ __kernel void vxm_config_atomic_scalar(__global const TYPE* g_vx,
         }
     }
 }
+
+__kernel void vxm_atomic_sparse(__global const uint* g_vi,
+                                __global const TYPE* g_vx,
+                                __global const uint* g_Ap,
+                                __global const uint* g_Aj,
+                                __global const TYPE* g_Ax,
+                                __global const TYPE* g_mask,
+                                __global TYPE*       g_rx,
+                                const uint           n,
+                                const uint           early_exit) {
+    const uint gid     = get_global_id(0);  // id of v entry to touch
+    const uint gstride = get_global_size(0);// step between v entries
+
+    for (int idx = gid; idx < n; idx += gstride) {
+        const uint vi = g_vi[idx];
+        const TYPE vx = g_vx[idx];
+
+        if (vx) {
+            const uint start = g_Ap[vi];
+            const uint end   = g_Ap[vi + 1];
+
+            for (uint i = start; i < end; i += 1) {
+                const uint col_id = g_Aj[i];
+                const TYPE prod   = OP_BINARY1(vx, g_Ax[i]);
+
+                if (OP_SELECT(g_mask[col_id])) {
+                    bool success = false;
+                    TYPE old     = g_rx[col_id];
+
+                    while (!success) {
+                        if (early_exit && old) break;
+
+                        const TYPE val = OP_BINARY2(old, prod);
+
+                        if (val == old) break;
+
+                        const TYPE res = atomic_cmpxchg(g_rx + col_id, old, val);
+
+                        success = old == res;
+                        old     = res;
+                    }
+                }
+            }
+        }
+    }
+}

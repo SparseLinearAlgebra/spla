@@ -28,6 +28,7 @@
 #include "cl_accelerator.hpp"
 
 #include <opencl/cl_program_cache.hpp>
+#include <opencl/cl_utils.hpp>
 
 namespace spla {
 
@@ -47,6 +48,7 @@ namespace spla {
         build_description();
 
         m_cache = std::make_unique<CLProgramCache>();
+        m_utils = std::make_unique<CLUtils>();
 
         // Output handy info
         LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());

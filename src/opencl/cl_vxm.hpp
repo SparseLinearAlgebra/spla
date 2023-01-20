@@ -61,7 +61,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            return execute_scalar(ctx);
+            return execute_sparse(ctx);
         }
 
     private:
@@ -183,7 +183,7 @@ namespace spla {
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
             {
-                TIME_PROFILE_SUBSCOPE(vxm, config, "exec");
+                TIME_PROFILE_SUBSCOPE(vxm, exec, "exec");
                 queue.enqueueNDRangeKernel(m_kernel_atomic_scalar, cl::NDRange(), exec_global, exec_local);
                 queue.finish();
             }
@@ -205,7 +205,7 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
+            r->validate_wd(Format::CLDenseVec);
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
             v->validate_rw(Format::CLDenseVec);
@@ -267,6 +267,71 @@ namespace spla {
             return Status::Ok;
         }
 
+        Status execute_sparse(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE(vxm, "opencl/vxm/sparse");
+
+            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
+
+            ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
+            ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
+            ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
+            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
+            ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
+
+            r->validate_rwd(Format::CLDenseVec);
+            mask->validate_rw(Format::CLDenseVec);
+            M->validate_rw(Format::CLCsr);
+            v->validate_rwd(Format::CLDenseVec);
+            v->validate_rwd(Format::CLCooVec);
+            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
+
+            auto* p_cl_r     = r->template get<CLDenseVec<T>>();
+            auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
+            auto* p_cl_M     = M->template get<CLCsr<T>>();
+            auto* p_cl_v     = v->template get<CLCooVec<T>>();
+            auto  early_exit = t->get_desc_or_default()->get_early_exit();
+
+            auto* p_cl_acc = get_acc_cl();
+            auto& queue    = p_cl_acc->get_queue_default();
+
+            m_kernel_prepare.setArg(0, p_cl_r->Ax);
+            m_kernel_prepare.setArg(1, init->get_value());
+            m_kernel_prepare.setArg(2, r->get_n_rows());
+
+            cl::NDRange prepare_global(p_cl_acc->get_grid_dim(r->get_n_rows(), p_cl_acc->get_wave_size()));
+            cl::NDRange prepare_local(p_cl_acc->get_wave_size());
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, config, "config");
+                queue.enqueueNDRangeKernel(m_kernel_prepare, cl::NDRange(), prepare_global, prepare_local);
+                queue.finish();
+            }
+
+            m_kernel_sparse.setArg(0, p_cl_v->Ai);
+            m_kernel_sparse.setArg(1, p_cl_v->Ax);
+            m_kernel_sparse.setArg(2, p_cl_M->Ap);
+            m_kernel_sparse.setArg(3, p_cl_M->Aj);
+            m_kernel_sparse.setArg(4, p_cl_M->Ax);
+            m_kernel_sparse.setArg(5, p_cl_mask->Ax);
+            m_kernel_sparse.setArg(6, p_cl_r->Ax);
+            m_kernel_sparse.setArg(7, p_cl_v->values);
+            m_kernel_sparse.setArg(8, uint(early_exit));
+
+            uint n_groups_to_dispatch = std::max(std::min(p_cl_v->values / m_block_size, uint(512)), uint(1));
+
+            cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
+            cl::NDRange exec_local(m_block_size);
+            {
+                TIME_PROFILE_SUBSCOPE(vxm, exec, "exec");
+                queue.enqueueNDRangeKernel(m_kernel_sparse, cl::NDRange(), exec_global, exec_local);
+                queue.finish();
+            }
+
+            return Status::Ok;
+        }
+
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_multiply,
                            const ref_ptr<TOpBinary<T, T, T>>& op_add,
                            const ref_ptr<TOpSelect<T>>&       op_select) {
@@ -295,6 +360,7 @@ namespace spla {
             m_kernel_atomic_scalar        = m_program->make_kernel("vxm_atomic_scalar");
             m_kernel_config               = m_program->make_kernel("vxm_config");
             m_kernel_config_atomic_scalar = m_program->make_kernel("vxm_config_atomic_scalar");
+            m_kernel_sparse               = m_program->make_kernel("vxm_atomic_sparse");
             m_compiled                    = true;
 
             return true;
@@ -307,6 +373,7 @@ namespace spla {
         cl::Kernel                 m_kernel_atomic_scalar;
         cl::Kernel                 m_kernel_config;
         cl::Kernel                 m_kernel_config_atomic_scalar;
+        cl::Kernel                 m_kernel_sparse;
         uint                       m_block_size  = 0;
         uint                       m_block_count = 0;
         bool                       m_compiled    = false;
