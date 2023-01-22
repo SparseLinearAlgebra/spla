@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['decl_5fop_5fbin_156',['DECL_OP_BIN',['../top_8hpp.html#a6fe5d0089ee3c73c28471d90deec890c',1,'top.hpp']]],
-  ['decl_5fop_5fbin_5fs_157',['DECL_OP_BIN_S',['../top_8hpp.html#ab24d7758955a4947bfe10fa945ad1950',1,'top.hpp']]],
-  ['decl_5fop_5fselect_158',['DECL_OP_SELECT',['../top_8hpp.html#a17d96c9b6041dedc244cf3068e92d4b2',1,'top.hpp']]],
-  ['default_159',['Default',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67',1,'spla']]],
-  ['dense_5fto_5fsparse_160',['dense_to_sparse',['../structspla_1_1CLUtils_1_1CachedState_1_1VectorFormats.html#a2c2c0cd930204513473929c0c20a59dd',1,'spla::CLUtils::CachedState::VectorFormats']]],
+  ['decl_5fop_5fbin_157',['DECL_OP_BIN',['../top_8hpp.html#a6fe5d0089ee3c73c28471d90deec890c',1,'top.hpp']]],
+  ['decl_5fop_5fbin_5fs_158',['DECL_OP_BIN_S',['../top_8hpp.html#ab24d7758955a4947bfe10fa945ad1950',1,'top.hpp']]],
+  ['decl_5fop_5fselect_159',['DECL_OP_SELECT',['../top_8hpp.html#a17d96c9b6041dedc244cf3068e92d4b2',1,'top.hpp']]],
+  ['default_160',['Default',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67',1,'spla']]],
   ['desc_161',['desc',['../classspla_1_1ScheduleTaskBase.html#a6f755a549eb262b11d6aa025ef6673fc',1,'spla::ScheduleTaskBase']]],
   ['descriptor_162',['Descriptor',['../classspla_1_1Descriptor.html',1,'spla']]],
   ['descriptor_2ecpp_163',['descriptor.cpp',['../descriptor_8cpp.html',1,'']]],
