@@ -257,7 +257,7 @@ namespace spla {
 
             CLProgramBuilder program_builder;
             program_builder
-                    .set_key("mxv")
+                    .set_name("mxv")
                     .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_define("BLOCK_COUNT", m_block_count)
@@ -265,7 +265,7 @@ namespace spla {
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .add_code(source_mxv);
+                    .set_source(source_mxv);
 
             if (!program_builder.build()) return false;
 

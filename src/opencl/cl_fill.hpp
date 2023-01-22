@@ -25,69 +25,62 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "cl_utils.hpp"
+#ifndef SPLA_CL_FILL_HPP
+#define SPLA_CL_FILL_HPP
 
+#include <opencl/cl_accelerator.hpp>
 #include <opencl/cl_program_builder.hpp>
-#include <opencl/cl_program_cache.hpp>
 #include <opencl/generated/auto_fill.hpp>
-#include <opencl/generated/auto_sort_bitonic.hpp>
-#include <opencl/generated/auto_vector_formats.hpp>
 
 namespace spla {
 
-    CLUtils::CLUtils() {
-        acquire_state<T_INT>().type   = get_ttype<T_INT>().as<Type>();
-        acquire_state<T_UINT>().type  = get_ttype<T_UINT>().as<Type>();
-        acquire_state<T_FLOAT>().type = get_ttype<T_FLOAT>().as<Type>();
+    template<typename T>
+    void cl_fill_zero(cl::CommandQueue& queue, const cl::Buffer& values, uint n) {
+        CLProgramBuilder builder;
+        builder.set_name("fill")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .set_source(source_fill);
+
+        if (!builder.build()) return;
+
+        auto  fill_zero = builder.make_kernel("fill_zero");
+        auto* acc       = get_acc_cl();
+
+        uint block_size           = acc->get_wave_size();
+        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(512)), uint(1));
+
+        cl::NDRange global(block_size * n_groups_to_dispatch);
+        cl::NDRange local(block_size);
+
+        fill_zero.setArg(0, values);
+        fill_zero.setArg(1, n);
+        queue.enqueueNDRangeKernel(fill_zero, cl::NDRange(), global, local);
     }
 
-    bool CLUtils::CachedState::SortBitonic::ensure(const ref_ptr<Type>& type) {
-        if (program) return true;
-
+    template<typename T>
+    void cl_fill_value(cl::CommandQueue& queue, const cl::Buffer& values, uint n, T value) {
         CLProgramBuilder builder;
-        builder.set_key("sort_bitonic")
-                .add_type("TYPE", type)
-                .add_define("BITONIC_SORT_LOCAL_BUFFER_SIZE", local_size)
-                .add_code(source_sort_bitonic);
+        builder.set_name("fill")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .set_source(source_fill);
 
-        if (!builder.build()) return false;
+        if (!builder.build()) return;
 
-        program = builder.get_program();
-        local   = program->make_kernel("bitonic_sort_local");
-        global  = program->make_kernel("bitonic_sort_global");
-        return true;
-    }
-    bool CLUtils::CachedState::VectorFormats::ensure(const ref_ptr<Type>& type) {
-        if (program) return true;
+        auto  fill_value = builder.make_kernel("fill_value");
+        auto* acc        = get_acc_cl();
 
-        CLProgramBuilder builder;
-        builder.set_key("vector_format")
-                .add_type("TYPE", type)
-                .add_code(source_vector_formats);
+        uint block_size           = acc->get_wave_size();
+        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(512)), uint(1));
 
-        if (!builder.build()) return false;
+        cl::NDRange global(block_size * n_groups_to_dispatch);
+        cl::NDRange local(block_size);
 
-        program         = builder.get_program();
-        sparse_to_dense = program->make_kernel("sparse_to_dense");
-        dense_to_sparse = program->make_kernel("dense_to_sparse");
-
-        return true;
-    }
-    bool CLUtils::CachedState::Fill::ensure(const ref_ptr<Type>& type) {
-        if (program) return true;
-
-        CLProgramBuilder builder;
-        builder.set_key("fill")
-                .add_type("TYPE", type)
-                .add_code(source_fill);
-
-        if (!builder.build()) return false;
-
-        program    = builder.get_program();
-        fill_zero  = program->make_kernel("fill_zero");
-        fill_value = program->make_kernel("fill_value");
-
-        return true;
+        fill_value.setArg(0, values);
+        fill_value.setArg(1, n);
+        fill_value.setArg(2, value);
+        queue.enqueueNDRangeKernel(fill_value, cl::NDRange(), global, local);
     }
 
 }// namespace spla
+
+#endif//SPLA_CL_FILL_HPP

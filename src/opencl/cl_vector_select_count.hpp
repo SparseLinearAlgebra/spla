@@ -101,10 +101,10 @@ namespace spla {
 
             CLProgramBuilder program_builder;
             program_builder
-                    .set_key("vector_select_count")
+                    .set_name("vector_select_count")
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .add_code(source_vector_select_count);
+                    .set_source(source_vector_select_count);
 
             if (!program_builder.build()) return false;
 

@@ -29,7 +29,9 @@
 #define SPLA_CL_DENSE_VEC_HPP
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_utils.hpp>
+#include <opencl/cl_program_builder.hpp>
+#include <opencl/cl_sort.hpp>
+#include <opencl/generated/auto_vector_formats.hpp>
 
 namespace spla {
 
@@ -88,24 +90,45 @@ namespace spla {
                              const CLDenseVec<T>& in,
                              CLCooVec<T>&         out,
                              cl::CommandQueue&    queue) {
-        auto* acc   = get_acc_cl();
-        auto* utils = acc->get_utils();
 
-        cl::Buffer temp_Ai(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(uint));
-        cl::Buffer temp_Ax(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(T));
+        CLProgramBuilder builder;
+        builder.set_name("vector_format")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .set_source(source_vector_formats);
 
-        uint count;
-        utils->template vec_dense_to_coo<T>(in.Ax, temp_Ai, temp_Ax, n_rows, count, queue);
+        if (!builder.build()) return;
 
-        out.values = count;
-        out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(uint));
-        out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(T));
+        auto* acc = get_acc_cl();
 
-        queue.enqueueCopyBuffer(temp_Ai, out.Ai, 0, 0, count * sizeof(uint));
-        queue.enqueueCopyBuffer(temp_Ax, out.Ax, 0, 0, count * sizeof(T));
+        uint       count[1] = {0};
+        cl::Buffer cl_count(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), count);
+        cl::Buffer temp_Ri(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(uint));
+        cl::Buffer temp_Rx(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(T));
+
+        uint block_size           = acc->get_wave_size();
+        uint n_groups_to_dispatch = std::max(std::min(uint(n_rows) / block_size, uint(512)), uint(1));
+
+        cl::NDRange global(block_size * n_groups_to_dispatch);
+        cl::NDRange local(block_size);
+
+        auto kernel = builder.make_kernel("dense_to_sparse");
+        kernel.setArg(0, in.Ax);
+        kernel.setArg(1, temp_Ri);
+        kernel.setArg(2, temp_Rx);
+        kernel.setArg(3, cl_count);
+        kernel.setArg(4, uint(n_rows));
+
+        queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
+        queue.enqueueReadBuffer(cl_count, true, 0, sizeof(count[0]), count);
+
+        out.values = count[0];
+        out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count[0] * sizeof(uint));
+        out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count[0] * sizeof(T));
+
+        queue.enqueueCopyBuffer(temp_Ri, out.Ai, 0, 0, count[0] * sizeof(uint));
+        queue.enqueueCopyBuffer(temp_Rx, out.Ax, 0, 0, count[0] * sizeof(T));
         queue.finish();
     }
-
 
     /**
      * @}

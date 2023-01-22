@@ -40,6 +40,7 @@
 
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
+#include <opencl/cl_sort.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
@@ -292,9 +293,8 @@ namespace spla {
             auto* p_cl_M    = M->template get<CLCsr<T>>();
             auto* p_cl_v    = v->template get<CLCooVec<T>>();
 
-            auto* p_cl_acc   = get_acc_cl();
-            auto* p_cl_utils = p_cl_acc->get_utils();
-            auto& queue      = p_cl_acc->get_queue_default();
+            auto* p_cl_acc = get_acc_cl();
+            auto& queue    = p_cl_acc->get_queue_default();
 
             uint       prods_count[] = {0};
             uint       rsize[]       = {0};
@@ -351,7 +351,8 @@ namespace spla {
 
             {
                 TIME_PROFILE_SUBSCOPE(vxm, sort, "sort");
-                p_cl_utils->template sort_by_key<T>(cl_prodi, cl_prodx, prods_count[0], queue);
+                cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, prods_count[0]);
+                queue.finish();
             }
 
             m_kernel_sparse_reduce.setArg(0, cl_prodi);
@@ -392,12 +393,13 @@ namespace spla {
 
             CLProgramBuilder program_builder;
             program_builder
-                    .set_key("vxm")
+                    .set_name("vxm")
+                    .add_define("BLOCK_SIZE", m_block_size)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .add_code(source_vxm);
+                    .set_source(source_vxm);
 
             if (!program_builder.build()) return false;
 

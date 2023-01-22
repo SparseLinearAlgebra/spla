@@ -31,8 +31,8 @@
 
 namespace spla {
 
-    CLProgramBuilder& CLProgramBuilder::set_key(const char* key) {
-        m_key = key;
+    CLProgramBuilder& CLProgramBuilder::set_name(const char* name) {
+        m_name = name;
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_define(const char* define, int value) {
@@ -51,14 +51,27 @@ namespace spla {
         m_functions.emplace_back(std::string("bool ") + name + " " + op->get_source());
         return *this;
     }
-    CLProgramBuilder& CLProgramBuilder::add_code(const char* source) {
-        m_sources.emplace_back(source);
+    CLProgramBuilder& CLProgramBuilder::set_source(const char* source) {
+        m_source = source;
         return *this;
     }
     bool CLProgramBuilder::build() {
+        CLAccelerator*  acc   = get_acc_cl();
+        CLProgramCache* cache = acc->get_cache();
+
+        std::stringstream cache_key;
+        cache_key << m_name;
+        for (auto& entry : m_defines) cache_key << entry;
+        for (auto& entry : m_functions) cache_key << entry;
+
+        m_program = cache->get_program(cache_key.str());
+
+        if (m_program) {
+            LOG_MSG(Status::Ok, "found program '" << m_name << "' in cache");
+            return true;
+        }
+
         std::stringstream builder;
-        CLAccelerator*    acc   = get_acc_cl();
-        CLProgramCache*   cache = acc->get_cache();
 
         for (const auto& define : m_defines) {
             builder << "#define " << define << "\n";
@@ -66,20 +79,11 @@ namespace spla {
         for (const auto& function : m_functions) {
             builder << function << "\n";
         }
-        for (const auto& source : m_sources) {
-            builder << source;
-        }
+        builder << m_source;
 
-        m_source  = builder.str();
-        m_program = cache->get_program(m_source);
-
-        if (m_program) {
-            LOG_MSG(Status::Ok, "found program '" << m_key << "' in cache");
-            return true;
-        }
-
+        m_program_code       = builder.str();
         m_program            = std::make_shared<CLProgram>();
-        m_program->m_program = cl::Program(acc->get_context(), m_source);
+        m_program->m_program = cl::Program(acc->get_context(), m_program_code);
 
         Timer t;
         t.start();
@@ -92,12 +96,13 @@ namespace spla {
             return false;
         }
 
+        m_program->m_sources.emplace_back(m_source);
         m_program->m_defines   = std::move(m_defines);
         m_program->m_functions = std::move(m_functions);
-        m_program->m_sources   = std::move(m_sources);
-        m_program->m_source    = std::move(m_source);
-        m_program->m_key       = std::move(m_key);
-        LOG_MSG(Status::Ok, "build program '" << m_program->m_key << "' in " << t.get_elapsed_sec() << "sec");
+        m_program->m_source    = std::move(m_program_code);
+        m_program->m_name      = std::move(m_name);
+        m_program->m_key       = cache_key.str();
+        LOG_MSG(Status::Ok, "build program '" << m_program->m_name << "' in " << t.get_elapsed_sec() << "sec");
 
         cache->add_program(m_program);
 

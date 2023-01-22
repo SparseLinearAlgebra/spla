@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,53 +25,47 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_PROGRAM_HPP
-#define SPLA_CL_PROGRAM_HPP
+#ifndef SPLA_CL_SORT_HPP
+#define SPLA_CL_SORT_HPP
 
 #include <opencl/cl_accelerator.hpp>
-
-#include <string>
-#include <vector>
+#include <opencl/cl_program_builder.hpp>
+#include <opencl/generated/auto_sort_bitonic.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    template<typename T>
+    void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+        const uint local_size = 1024 * 4;
 
-    /**
-     * @class CLProgram
-     * @brief Compiled opencl program from library sources
-     */
-    class CLProgram {
-    public:
-        cl::Kernel make_kernel(const char* name);
+        CLProgramBuilder builder;
+        builder.set_name("sort_bitonic")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .add_define("BITONIC_SORT_LOCAL_BUFFER_SIZE", local_size)
+                .set_source(source_sort_bitonic);
 
-        [[nodiscard]] const std::vector<std::string>& get_defines() const { return m_defines; }
-        [[nodiscard]] const std::vector<std::string>& get_functions() const { return m_functions; }
-        [[nodiscard]] const std::vector<std::string>& get_sources() const { return m_sources; }
-        [[nodiscard]] const std::string&              get_source() const { return m_source; }
-        [[nodiscard]] const std::string&              get_name() const { return m_name; }
-        [[nodiscard]] const std::string&              get_key() const { return m_key; }
-        [[nodiscard]] const cl::Program&              get_program() const { return m_program; }
+        if (!builder.build()) return;
 
-    private:
-        friend class CLProgramBuilder;
+        auto* acc = get_acc_cl();
 
-        std::vector<std::string> m_defines;
-        std::vector<std::string> m_functions;
-        std::vector<std::string> m_sources;
-        std::string              m_source;
-        std::string              m_name;
-        std::string              m_key;
-        cl::Program              m_program;
-    };
+        cl::NDRange global(acc->get_max_wgs());
+        cl::NDRange local(acc->get_max_wgs());
 
-    /**
-     * @}
-     */
+        if (size <= local_size) {
+            auto kernel_local = builder.make_kernel("bitonic_sort_local");
+            kernel_local.setArg(0, keys);
+            kernel_local.setArg(1, values);
+            kernel_local.setArg(2, size);
+            queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
+        } else {
+            auto kernel_global = builder.make_kernel("bitonic_sort_global");
+            kernel_global.setArg(0, keys);
+            kernel_global.setArg(1, values);
+            kernel_global.setArg(2, size);
+            queue.enqueueNDRangeKernel(kernel_global, cl::NDRange(), global, local);
+        }
+    }
 
 }// namespace spla
 
-#endif//SPLA_CL_PROGRAM_HPP
+#endif//SPLA_CL_SORT_HPP

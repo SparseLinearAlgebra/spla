@@ -28,8 +28,10 @@
 #ifndef SPLA_CL_COO_VEC_HPP
 #define SPLA_CL_COO_VEC_HPP
 
+#include <opencl/cl_fill.hpp>
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_utils.hpp>
+#include <opencl/cl_program_builder.hpp>
+#include <opencl/generated/auto_vector_formats.hpp>
 
 namespace spla {
 
@@ -107,11 +109,30 @@ namespace spla {
                              const CLCooVec<T>& in,
                              CLDenseVec<T>&     out,
                              cl::CommandQueue&  queue) {
-        auto* acc   = get_acc_cl();
-        auto* utils = acc->get_utils();
+        CLProgramBuilder builder;
+        builder.set_name("vector_format")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .set_source(source_vector_formats);
 
-        utils->template fill_zero<T>(out.Ax, n_rows, queue);
-        utils->template vec_coo_to_dense<T>(in.Ai, in.Ax, out.Ax, n_values, queue);
+        if (!builder.build()) return;
+
+        cl_fill_zero<T>(queue, out.Ax, n_rows);
+
+        auto* acc = get_acc_cl();
+
+        uint block_size           = acc->get_wave_size();
+        uint n_groups_to_dispatch = std::max(std::min(in.values / block_size, uint(512)), uint(1));
+
+        auto kernel = builder.make_kernel("sparse_to_dense");
+        kernel.setArg(0, in.Ai);
+        kernel.setArg(1, in.Ax);
+        kernel.setArg(2, out.Ax);
+        kernel.setArg(3, uint(in.values));
+
+        cl::NDRange global(block_size * n_groups_to_dispatch);
+        cl::NDRange local(block_size);
+        queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
+        queue.finish();
     }
 
     /**

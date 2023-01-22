@@ -198,12 +198,12 @@ namespace spla {
 
             CLProgramBuilder program_builder;
             program_builder
-                    .set_key("vector_reduce")
+                    .set_name("vector_reduce")
                     .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY", op_reduce.template as<OpBinary>())
-                    .add_code(source_vector_reduce);
+                    .set_source(source_vector_reduce);
 
             if (!program_builder.build()) return false;
 

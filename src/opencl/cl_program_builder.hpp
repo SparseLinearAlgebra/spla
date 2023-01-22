@@ -52,24 +52,25 @@ namespace spla {
      */
     class CLProgramBuilder final {
     public:
-        CLProgramBuilder& set_key(const char* key);
+        CLProgramBuilder& set_name(const char* name);
         CLProgramBuilder& add_define(const char* define, int value);
         CLProgramBuilder& add_type(const char* alias, const ref_ptr<Type>& type);
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
-        CLProgramBuilder& add_code(const char* source);
+        CLProgramBuilder& set_source(const char* source);
 
         bool build();
 
         const std::shared_ptr<CLProgram>& get_program() { return m_program; };
+        cl::Kernel                        make_kernel(const char* name) { return m_program->make_kernel(name); }
 
     private:
         std::vector<std::string>   m_defines;
         std::vector<std::string>   m_functions;
-        std::vector<std::string>   m_sources;
-        std::string                m_source;
-        std::string                m_key;
+        std::string                m_name;
+        const char*                m_source = nullptr;
         std::shared_ptr<CLProgram> m_program;
+        std::string                m_program_code;
     };
 
     /**

@@ -77,7 +77,6 @@ namespace spla {
         cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
         std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
         class CLProgramCache*          get_cache() { return m_cache.get(); }
-        class CLUtils*                 get_utils() { return m_utils.get(); }
 
         [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
         [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
@@ -95,7 +94,6 @@ namespace spla {
         cl::Device                            m_device;
         cl::Context                           m_context;
         std::unique_ptr<class CLProgramCache> m_cache;
-        std::unique_ptr<class CLUtils>        m_utils;
 
         std::string m_name = "OpenCL";
         std::string m_description;

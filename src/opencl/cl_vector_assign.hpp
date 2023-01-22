@@ -149,11 +149,11 @@ namespace spla {
 
             CLProgramBuilder program_builder;
             program_builder
-                    .set_key("vector_assign")
+                    .set_name("vector_assign")
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY", op_assign.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .add_code(source_vector_assign);
+                    .set_source(source_vector_assign);
 
             if (!program_builder.build()) return false;
 

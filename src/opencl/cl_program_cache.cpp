@@ -30,8 +30,8 @@
 namespace spla {
 
     void CLProgramCache::add_program(const std::shared_ptr<CLProgram>& program) {
-        m_programs[program->get_source()] = program;
-        LOG_MSG(Status::Ok, "cache program '" << program->get_key() << "'");
+        m_programs[program->get_key()] = program;
+        LOG_MSG(Status::Ok, "cache program '" << program->get_name() << "'");
     }
     std::shared_ptr<CLProgram> CLProgramCache::get_program(const std::string& source) {
         auto query = m_programs.find(source);
