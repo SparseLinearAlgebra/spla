@@ -37,11 +37,12 @@ var searchData=
   ['auto_5fcommon_2ehpp_34',['auto_common.hpp',['../auto__common_8hpp.html',1,'']]],
   ['auto_5ffill_2ehpp_35',['auto_fill.hpp',['../auto__fill_8hpp.html',1,'']]],
   ['auto_5fmxv_2ehpp_36',['auto_mxv.hpp',['../auto__mxv_8hpp.html',1,'']]],
-  ['auto_5fsort_5fbitonic_2ehpp_37',['auto_sort_bitonic.hpp',['../auto__sort__bitonic_8hpp.html',1,'']]],
-  ['auto_5fvector_5fassign_2ehpp_38',['auto_vector_assign.hpp',['../auto__vector__assign_8hpp.html',1,'']]],
-  ['auto_5fvector_5fformats_2ehpp_39',['auto_vector_formats.hpp',['../auto__vector__formats_8hpp.html',1,'']]],
-  ['auto_5fvector_5freduce_2ehpp_40',['auto_vector_reduce.hpp',['../auto__vector__reduce_8hpp.html',1,'']]],
-  ['auto_5fvector_5fselect_5fcount_2ehpp_41',['auto_vector_select_count.hpp',['../auto__vector__select__count_8hpp.html',1,'']]],
-  ['auto_5fvxm_2ehpp_42',['auto_vxm.hpp',['../auto__vxm_8hpp.html',1,'']]],
-  ['ax_43',['Ax',['../classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d',1,'spla::CpuCooVec::Ax()'],['../classspla_1_1CpuDok.html#a8fd21fe33ef6af259c20ef0095e7f809',1,'spla::CpuDok::Ax()'],['../classspla_1_1CpuCoo.html#a412c621b45adc2bdd66557b344fd5276',1,'spla::CpuCoo::Ax()'],['../classspla_1_1CpuCsr.html#a8c8ab7650daa7382536a6722b36ba363',1,'spla::CpuCsr::Ax()'],['../classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba',1,'spla::CpuDenseVec::Ax()'],['../classspla_1_1CpuDokVec.html#abfee9b38bc6bd2074a7b274ace8b0bf8',1,'spla::CpuDokVec::Ax()'],['../classspla_1_1CLCsr.html#a56198d0ac28ca5f70cdff828a417b86f',1,'spla::CLCsr::Ax()'],['../classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb',1,'spla::CLCooVec::Ax()'],['../classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186',1,'spla::CLDenseVec::Ax()']]]
+  ['auto_5fprefix_5fsum_2ehpp_37',['auto_prefix_sum.hpp',['../auto__prefix__sum_8hpp.html',1,'']]],
+  ['auto_5fsort_5fbitonic_2ehpp_38',['auto_sort_bitonic.hpp',['../auto__sort__bitonic_8hpp.html',1,'']]],
+  ['auto_5fvector_5fassign_2ehpp_39',['auto_vector_assign.hpp',['../auto__vector__assign_8hpp.html',1,'']]],
+  ['auto_5fvector_5fformats_2ehpp_40',['auto_vector_formats.hpp',['../auto__vector__formats_8hpp.html',1,'']]],
+  ['auto_5fvector_5freduce_2ehpp_41',['auto_vector_reduce.hpp',['../auto__vector__reduce_8hpp.html',1,'']]],
+  ['auto_5fvector_5fselect_5fcount_2ehpp_42',['auto_vector_select_count.hpp',['../auto__vector__select__count_8hpp.html',1,'']]],
+  ['auto_5fvxm_2ehpp_43',['auto_vxm.hpp',['../auto__vxm_8hpp.html',1,'']]],
+  ['ax_44',['Ax',['../classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d',1,'spla::CpuCooVec::Ax()'],['../classspla_1_1CpuDok.html#a8fd21fe33ef6af259c20ef0095e7f809',1,'spla::CpuDok::Ax()'],['../classspla_1_1CpuCoo.html#a412c621b45adc2bdd66557b344fd5276',1,'spla::CpuCoo::Ax()'],['../classspla_1_1CpuCsr.html#a8c8ab7650daa7382536a6722b36ba363',1,'spla::CpuCsr::Ax()'],['../classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba',1,'spla::CpuDenseVec::Ax()'],['../classspla_1_1CpuDokVec.html#abfee9b38bc6bd2074a7b274ace8b0bf8',1,'spla::CpuDokVec::Ax()'],['../classspla_1_1CLCsr.html#a56198d0ac28ca5f70cdff828a417b86f',1,'spla::CLCsr::Ax()'],['../classspla_1_1CLCooVec.html#a1c4900153c0e498ad416b71426634eeb',1,'spla::CLCooVec::Ax()'],['../classspla_1_1CLDenseVec.html#af8698b0fae489eaf1b315b6a2a328186',1,'spla::CLDenseVec::Ax()']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['spla_5facceleratortype_1212',['spla_AcceleratorType',['../spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330',1,'spla.h']]],
-  ['spla_5fstatus_1213',['spla_Status',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25',1,'spla.h']]],
-  ['statehint_1214',['StateHint',['../group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3',1,'spla']]],
-  ['status_1215',['Status',['../group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec',1,'spla']]]
+  ['spla_5facceleratortype_1220',['spla_AcceleratorType',['../spla_8h.html#a0a5c53bb86530583ddbbc5f3dedb0330',1,'spla.h']]],
+  ['spla_5fstatus_1221',['spla_Status',['../spla_8h.html#a90db1243ce3d935a3a2b3e7d6c59bf25',1,'spla.h']]],
+  ['statehint_1222',['StateHint',['../group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3',1,'spla']]],
+  ['status_1223',['Status',['../group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec',1,'spla']]]
 ];

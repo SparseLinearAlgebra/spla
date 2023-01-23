@@ -439,12 +439,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6b90d1e78d63a50f253da1134724ed55"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga6b90d1e78d63a50f253da1134724ed55"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6b90d1e78d63a50f253da1134724ed55">cl_dense_vec_to_coo</a> (const std::size_t n_rows, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga6b90d1e78d63a50f253da1134724ed55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae30ce9270c0989b0231d1baaed32cd2d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae30ce9270c0989b0231d1baaed32cd2d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#ae30ce9270c0989b0231d1baaed32cd2d">cl_fill_zero</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n)</td></tr>
-<tr class="separator:ae30ce9270c0989b0231d1baaed32cd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7131c53eb2dcc692652da24372a2aec4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7131c53eb2dcc692652da24372a2aec4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7131c53eb2dcc692652da24372a2aec4">cl_fill_zero</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n)</td></tr>
+<tr class="separator:a7131c53eb2dcc692652da24372a2aec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f196154fd16ba7a7e28d2f5c4173742"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a6f196154fd16ba7a7e28d2f5c4173742"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a6f196154fd16ba7a7e28d2f5c4173742">cl_fill_value</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, T value)</td></tr>
 <tr class="separator:a6f196154fd16ba7a7e28d2f5c4173742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e5901fa3b634778cedca8852d9e015f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6e5901fa3b634778cedca8852d9e015f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a6e5901fa3b634778cedca8852d9e015f">exclusive_scan</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;values, std::size_t n, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;op)</td></tr>
+<tr class="separator:a6e5901fa3b634778cedca8852d9e015f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a467ea9c71719d5fed0d88d389f045d46"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a467ea9c71719d5fed0d88d389f045d46"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a467ea9c71719d5fed0d88d389f045d46">cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> size)</td></tr>
 <tr class="separator:a467ea9c71719d5fed0d88d389f045d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -683,8 +686,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ae30ce9270c0989b0231d1baaed32cd2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae30ce9270c0989b0231d1baaed32cd2d">&#9670;&nbsp;</a></span>cl_fill_zero()</h2>
+<a id="a7131c53eb2dcc692652da24372a2aec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7131c53eb2dcc692652da24372a2aec4">&#9670;&nbsp;</a></span>cl_fill_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -700,7 +703,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const cl::Buffer &amp;&#160;</td>
+          <td class="paramtype">cl::Buffer &amp;&#160;</td>
           <td class="paramname"><em>values</em>, </td>
         </tr>
         <tr>
@@ -750,6 +753,48 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e5901fa3b634778cedca8852d9e015f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e5901fa3b634778cedca8852d9e015f">&#9670;&nbsp;</a></span>exclusive_scan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::exclusive_scan </td>
+          <td>(</td>
+          <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl::Buffer &amp;&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>op</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
