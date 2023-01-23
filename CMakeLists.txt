@@ -244,6 +244,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_vector_reduce.hpp
             src/opencl/cl_fill.hpp
             src/opencl/cl_sort.hpp
+            src/opencl/cl_prefix_sum.hpp
             )
 endif ()
 

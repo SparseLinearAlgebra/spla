@@ -1,5 +1,6 @@
 #define TYPE             int
 #define BLOCK_SIZE       32
+#define LM_NUM_MEM_BANKS 32
 #define BLOCK_COUNT      1
 #define WARP_SIZE        32
 #define OP_SELECT(a)     a

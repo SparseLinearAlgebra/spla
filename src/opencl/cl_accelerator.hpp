@@ -84,6 +84,7 @@ namespace spla {
         [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
         [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
+        [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
         [[nodiscard]] uint               get_grid_dim(uint n_work) const;
         [[nodiscard]] uint               get_grid_dim(uint n_work, uint n_work_in_group) const;
 
@@ -100,10 +101,11 @@ namespace spla {
         std::string m_suffix = "__cl";
         std::string m_vendor_name;
         std::string m_vendor_code;
-        uint        m_vendor_id   = 0;
-        uint        m_max_wgs     = 0;
-        uint        m_default_wgs = 64;
-        uint        m_wave_size   = 32;
+        uint        m_vendor_id        = 0;
+        uint        m_max_wgs          = 0;
+        uint        m_default_wgs      = 64;
+        uint        m_wave_size        = 32;
+        uint        m_num_of_mem_banks = 32;
 
         std::vector<cl::CommandQueue> m_queues;
     };

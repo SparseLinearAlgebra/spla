@@ -39,6 +39,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
+#include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_sort.hpp>
 #include <opencl/generated/auto_vxm.hpp>
