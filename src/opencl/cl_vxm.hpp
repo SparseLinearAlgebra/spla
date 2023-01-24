@@ -39,8 +39,8 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
+#include <opencl/cl_reduce_by_key.hpp>
 #include <opencl/cl_sort.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
@@ -298,10 +298,8 @@ namespace spla {
             auto& queue    = p_cl_acc->get_queue_default();
 
             uint       prods_count[] = {0};
-            uint       rsize[]       = {0};
             cl::Buffer cl_prods_count(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
             cl::Buffer cl_prods_offset(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
-            cl::Buffer cl_rsize(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), rsize);
 
             m_kernel_sparse_count.setArg(0, p_cl_v->Ai);
             m_kernel_sparse_count.setArg(1, p_cl_v->Ax);
@@ -356,27 +354,19 @@ namespace spla {
                 queue.finish();
             }
 
-            m_kernel_sparse_reduce.setArg(0, cl_prodi);
-            m_kernel_sparse_reduce.setArg(1, cl_prodx);
-            m_kernel_sparse_reduce.setArg(2, cl_rsize);
-            m_kernel_sparse_reduce.setArg(3, prods_count);
+            uint       reduced_size;
+            cl::Buffer reduced_keys;
+            cl::Buffer reduced_values;
 
-            cl::NDRange reduce_global(m_block_size);
-            cl::NDRange reduce_local(m_block_size);
             {
                 TIME_PROFILE_SUBSCOPE(vxm, reduce, "reduce");
-                queue.enqueueNDRangeKernel(m_kernel_sparse_reduce, cl::NDRange(), reduce_global, reduce_local);
+                cl_reduce_by_key(queue, cl_prodi, cl_prodx, prods_count[0], reduced_keys, reduced_values, reduced_size, op_add);
                 queue.finish();
             }
 
-            {
-                TIME_PROFILE_SUBSCOPE(vxm, copy_rsize, "copy_rsize");
-                queue.enqueueReadBuffer(cl_rsize, true, 0, sizeof(rsize[0]), rsize);
-            }
-
-            p_cl_r->Ai     = cl_prodi;
-            p_cl_r->Ax     = cl_prodx;
-            p_cl_r->values = rsize[0];
+            p_cl_r->Ai     = reduced_keys;
+            p_cl_r->Ax     = reduced_values;
+            p_cl_r->values = reduced_size;
 
             return Status::Ok;
         }

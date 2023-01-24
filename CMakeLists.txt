@@ -245,6 +245,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_fill.hpp
             src/opencl/cl_sort.hpp
             src/opencl/cl_prefix_sum.hpp
+            src/opencl/cl_reduce_by_key.hpp
             )
 endif ()
 

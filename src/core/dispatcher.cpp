@@ -31,6 +31,8 @@
 #include <core/logger.hpp>
 #include <core/registry.hpp>
 
+#include <cstdlib>
+
 #if defined(SPLA_BUILD_OPENCL)
     #include <opencl/cl_accelerator.hpp>
 #endif
@@ -63,11 +65,17 @@ namespace spla {
 #if defined(SPLA_BUILD_OPENCL) && defined(CL_HPP_ENABLE_EXCEPTIONS)
             catch (const cl::BuildError& cl_ex) {
                 LOG_MSG(Status::Error, "not handled cl exception thrown: " << cl_ex.getBuildLog().front().second);
+    #ifndef SPLA_RELEASE
+                std::abort();
+    #endif
                 return Status::Error;
             }
 #endif
             catch (const std::exception& ex) {
                 LOG_MSG(Status::Error, "not handled exception thrown: " << ex.what());
+#ifndef SPLA_RELEASE
+                std::abort();
+#endif
                 return Status::Error;
             }
         }

@@ -36,6 +36,10 @@ namespace spla {
 
     template<typename T>
     void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+        if (size <= 1) {
+            return;
+        }
+
         const uint local_size = 1024 * 4;
 
         CLProgramBuilder builder;
