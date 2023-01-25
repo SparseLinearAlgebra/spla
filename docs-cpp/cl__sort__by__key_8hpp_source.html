@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: src/opencl/cl_sort.hpp Source File</title>
+<title>spla: src/opencl/cl_sort_by_key.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,10 +66,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">cl_sort.hpp</div>  </div>
+<div class="title">cl_sort_by_key.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="cl__sort_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
+<a href="cl__sort__by__key_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">/* This file is part of spla project                                              */</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/* https://github.com/JetBrains-Research/spla                                     */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
@@ -96,8 +96,8 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">/* SOFTWARE.                                                                      */</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_CL_SORT_HPP</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CL_SORT_HPP</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_CL_SORT_BY_KEY_HPP</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CL_SORT_BY_KEY_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__accelerator_8hpp.html">opencl/cl_accelerator.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__program__builder_8hpp.html">opencl/cl_program_builder.hpp</a>&gt;</span></div>
@@ -143,7 +143,7 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_SORT_HPP</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_SORT_BY_KEY_HPP</span></div>
 <div class="ttc" id="aauto__sort__bitonic_8hpp_html"><div class="ttname"><a href="auto__sort__bitonic_8hpp.html">auto_sort_bitonic.hpp</a></div></div>
 <div class="ttc" id="acl__accelerator_8hpp_html"><div class="ttname"><a href="cl__accelerator_8hpp.html">cl_accelerator.hpp</a></div></div>
 <div class="ttc" id="acl__program__builder_8hpp_html"><div class="ttname"><a href="cl__program__builder_8hpp.html">cl_program_builder.hpp</a></div></div>
@@ -156,7 +156,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1CLProgramBuilder_html_adb03e247bea58bd93e56dee04c8de691"><div class="ttname"><a href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">spla::CLProgramBuilder::set_source</a></div><div class="ttdeci">CLProgramBuilder &amp; set_source(const char *source)</div><div class="ttdef"><b>Definition:</b> cl_program_builder.cpp:54</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
-<div class="ttc" id="anamespacespla_html_a467ea9c71719d5fed0d88d389f045d46"><div class="ttname"><a href="namespacespla.html#a467ea9c71719d5fed0d88d389f045d46">spla::cl_sort_by_key</a></div><div class="ttdeci">void cl_sort_by_key(cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint size)</div><div class="ttdef"><b>Definition:</b> cl_sort.hpp:38</div></div>
+<div class="ttc" id="anamespacespla_html_a467ea9c71719d5fed0d88d389f045d46"><div class="ttname"><a href="namespacespla.html#a467ea9c71719d5fed0d88d389f045d46">spla::cl_sort_by_key</a></div><div class="ttdeci">void cl_sort_by_key(cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint size)</div><div class="ttdef"><b>Definition:</b> cl_sort_by_key.hpp:38</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
