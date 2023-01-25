@@ -30,7 +30,7 @@
 
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
-#include <opencl/cl_sort.hpp>
+#include <opencl/cl_sort_by_key.hpp>
 #include <opencl/generated/auto_vector_formats.hpp>
 
 namespace spla {

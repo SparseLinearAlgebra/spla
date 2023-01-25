@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_vector_formats[] = R"(
+
 __kernel void sparse_to_dense(__global const uint* Ai,
                               __global const TYPE* Ax,
                               __global TYPE*       Rx,

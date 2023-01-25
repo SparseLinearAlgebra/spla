@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_mxv[] = R"(
+
 void reduction_group(uint                   block_size,
                      uint                   lid,
                      volatile __local TYPE* s_sum) {

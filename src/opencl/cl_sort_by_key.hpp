@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_SORT_HPP
-#define SPLA_CL_SORT_HPP
+#ifndef SPLA_CL_SORT_BY_KEY_HPP
+#define SPLA_CL_SORT_BY_KEY_HPP
 
 #include <opencl/cl_accelerator.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -72,4 +72,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_SORT_HPP
+#endif//SPLA_CL_SORT_BY_KEY_HPP

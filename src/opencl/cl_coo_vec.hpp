@@ -90,6 +90,11 @@ namespace spla {
                          const CLCooVec<T>& storage,
                          cl::CommandQueue&  queue,
                          bool               blocking = true) {
+        if (n_values == 0) {
+            LOG_MSG(Status::Ok, "nothing to do");
+            return;
+        }
+
         const std::size_t buffer_size_Ai = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
         const auto        flags          = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;

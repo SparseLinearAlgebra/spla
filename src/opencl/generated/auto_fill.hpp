@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_fill[] = R"(
+
 __kernel void fill_zero(__global TYPE* values,
                         const uint     n) {
     const uint gid     = get_global_id(0);

@@ -1,22 +1,5 @@
-#include "common.cl"
-
-// find first element in a sorted array such x <= element
-uint lower_bound(const uint           x,
-                 uint                 first,
-                 uint                 size,
-                 __global const uint* array) {
-    while (size > 0) {
-        int step = size / 2;
-
-        if (array[first + step] < x) {
-            first = first + step + 1;
-            size -= step + 1;
-        } else {
-            size = step;
-        }
-    }
-    return first;
-}
+#include "common_incl.cl"
+#include "defines.cl"
 
 // generate uint offsets for unique keys to store result
 __kernel void reduce_by_key_generate_offsets(__global const uint* g_keys,

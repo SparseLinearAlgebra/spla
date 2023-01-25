@@ -6,6 +6,8 @@
 #pragma once
 
 static const char source_vector_reduce[] = R"(
+
+// wave-wide reduction in local memory
 void reduction_group(uint                   block_size,
                      uint                   lid,
                      volatile __local TYPE* s_sum) {

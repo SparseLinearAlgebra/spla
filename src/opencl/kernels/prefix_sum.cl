@@ -1,11 +1,9 @@
-#include "common.cl"
+#include "common_incl.cl"
+#include "defines.cl"
 
 // gpu parallel prefix scan (blelloch)
 // - https://developer.nvidia.com/gpugems/gpugems3/part-vi-gpu-computing/chapter-39-parallel-prefix-sum-scan-cuda
 // - http://users.umiacs.umd.edu/~ramani/cmsc828e_gpusci/ScanTalk.pdf
-
-#define LM_ADDR(address) (address + ((address) / LM_NUM_MEM_BANKS))
-#define LM_SIZE(size)    (size + (size) / LM_NUM_MEM_BANKS)
 
 void prefix_sum_sweep_up(const uint             lid,
                          const uint             d,

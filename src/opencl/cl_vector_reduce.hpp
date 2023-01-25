@@ -144,6 +144,12 @@ namespace spla {
             auto*       p_cl_acc     = get_acc_cl();
             auto&       queue        = p_cl_acc->get_queue_default();
 
+            if (p_cl_coo_vec->values == 0) {
+                LOG_MSG(Status::Ok, "nothing to do");
+                r->get_value() = s->get_value();
+                return Status::Ok;
+            }
+
             const uint N             = p_cl_coo_vec->values;
             const uint OPTIMAL_SPLIT = 64;
             const uint STRIDE        = std::max(std::max(uint(N / OPTIMAL_SPLIT), uint((N + m_block_size) / m_block_size)), m_block_size);

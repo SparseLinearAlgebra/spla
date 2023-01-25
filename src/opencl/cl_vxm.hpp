@@ -41,7 +41,7 @@
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_reduce_by_key.hpp>
-#include <opencl/cl_sort.hpp>
+#include <opencl/cl_sort_by_key.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
@@ -325,6 +325,16 @@ namespace spla {
             }
 
             LOG_MSG(Status::Ok, "temporary vi * A[,*] count " << prods_count[0]);
+
+            if (prods_count[0] == 0) {
+                LOG_MSG(Status::Ok, "nothing to do");
+
+                p_cl_r->Ai     = cl::Buffer();
+                p_cl_r->Ax     = cl::Buffer();
+                p_cl_r->values = 0;
+
+                return Status::Ok;
+            }
 
             cl::Buffer cl_prodi(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(uint));
             cl::Buffer cl_prodx(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(T));

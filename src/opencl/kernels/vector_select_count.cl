@@ -1,4 +1,4 @@
-#include "common.cl"
+#include "defines.cl"
 
 __kernel void select_count(__global const TYPE* g_v,
                            __global int*        g_count,

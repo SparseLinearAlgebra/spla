@@ -1,4 +1,4 @@
-#include "common.cl"
+#include "defines.cl"
 
 __kernel void sparse_to_dense(__global const uint* Ai,
                               __global const TYPE* Ax,

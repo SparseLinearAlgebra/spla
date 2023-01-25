@@ -1,4 +1,4 @@
-#include "common.cl"
+#include "defines.cl"
 
 __kernel void assign_dense_to_dense(__global TYPE*       g_r,
                                     __global const TYPE* g_mask,

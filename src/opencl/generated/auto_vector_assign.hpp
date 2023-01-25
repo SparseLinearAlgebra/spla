@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_vector_assign[] = R"(
+
 __kernel void assign_dense_to_dense(__global TYPE*       g_r,
                                     __global const TYPE* g_mask,
                                     const TYPE           init,

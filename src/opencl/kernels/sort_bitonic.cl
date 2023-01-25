@@ -1,20 +1,5 @@
-#include "common.cl"
-
-#define SWAP_KEYS(x, y) \
-    uint tmp1 = x;      \
-    x         = y;      \
-    y         = tmp1;
-
-#define SWAP_VALUES(x, y) \
-    TYPE tmp2 = x;        \
-    x         = y;        \
-    y         = tmp2;
-
-uint ceil_to_pow2(uint n) {
-    uint r = 1;
-    while (r < n) r *= 2;
-    return r;
-}
+#include "common_incl.cl"
+#include "defines.cl"
 
 __kernel void bitonic_sort_local(__global uint* g_keys,
                                  __global TYPE* g_values,

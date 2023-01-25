@@ -6,6 +6,30 @@
 #pragma once
 
 static const char source_reduce_by_key[] = R"(
+
+// memory bank conflict-free address and local buffer size
+#ifdef LM_NUM_MEM_BANKS
+    #define LM_ADDR(address) (address + ((address) / LM_NUM_MEM_BANKS))
+    #define LM_SIZE(size)    (size + (size) / LM_NUM_MEM_BANKS)
+#endif
+
+#define SWAP_KEYS(x, y) \
+    uint tmp1 = x;      \
+    x         = y;      \
+    y         = tmp1;
+
+#define SWAP_VALUES(x, y) \
+    TYPE tmp2 = x;        \
+    x         = y;        \
+    y         = tmp2;
+
+// nearest power of two number greater equals n
+uint ceil_to_pow2(uint n) {
+    uint r = 1;
+    while (r < n) r *= 2;
+    return r;
+}
+
 // find first element in a sorted array such x <= element
 uint lower_bound(const uint           x,
                  uint                 first,
@@ -23,7 +47,6 @@ uint lower_bound(const uint           x,
     }
     return first;
 }
-
 // generate uint offsets for unique keys to store result
 __kernel void reduce_by_key_generate_offsets(__global const uint* g_keys,
                                              __global uint*       g_offsets,

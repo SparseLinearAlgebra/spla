@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_vector_select_count[] = R"(
+
 __kernel void select_count(__global const TYPE* g_v,
                            __global int*        g_count,
                            const uint           n) {
