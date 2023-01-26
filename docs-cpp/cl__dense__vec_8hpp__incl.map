@@ -1,9 +1,9 @@
 <map id="src/opencl/cl_dense_vec.hpp" name="src/opencl/cl_dense_vec.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="1769,5,1908,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1763,5,1901,47"/>
 <area shape="rect" id="node2" href="$cl__formats_8hpp.html" title=" " alt="" coords="523,423,672,449"/>
 <area shape="rect" id="node27" href="$cl__program__builder_8hpp.html" title=" " alt="" coords="1677,191,1875,218"/>
-<area shape="rect" id="node35" href="$cl__sort__by__key_8hpp.html" title=" " alt="" coords="1814,102,1989,129"/>
-<area shape="rect" id="node37" href="$auto__vector__formats_8hpp.html" title=" " alt="" coords="2013,95,2163,136"/>
+<area shape="rect" id="node35" href="$cl__sort__by__key__bitonic_8hpp.html" title=" " alt="" coords="1814,95,1965,136"/>
+<area shape="rect" id="node37" href="$auto__vector__formats_8hpp.html" title=" " alt="" coords="1989,95,2139,136"/>
 <area shape="rect" id="node3" href="$config_8hpp.html" title=" " alt="" coords="1421,647,1529,673"/>
 <area shape="rect" id="node5" title=" " alt="" coords="605,721,683,748"/>
 <area shape="rect" id="node6" href="$tdecoration_8hpp.html" title=" " alt="" coords="347,497,485,524"/>

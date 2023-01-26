@@ -20,7 +20,7 @@ var searchData=
   ['cl_5fprogram_5fcache_2ecpp_764',['cl_program_cache.cpp',['../cl__program__cache_8cpp.html',1,'']]],
   ['cl_5fprogram_5fcache_2ehpp_765',['cl_program_cache.hpp',['../cl__program__cache_8hpp.html',1,'']]],
   ['cl_5freduce_5fby_5fkey_2ehpp_766',['cl_reduce_by_key.hpp',['../cl__reduce__by__key_8hpp.html',1,'']]],
-  ['cl_5fsort_5fby_5fkey_2ehpp_767',['cl_sort_by_key.hpp',['../cl__sort__by__key_8hpp.html',1,'']]],
+  ['cl_5fsort_5fby_5fkey_5fbitonic_2ehpp_767',['cl_sort_by_key_bitonic.hpp',['../cl__sort__by__key__bitonic_8hpp.html',1,'']]],
   ['cl_5fsort_5fby_5fkey_5fradix_2ehpp_768',['cl_sort_by_key_radix.hpp',['../cl__sort__by__key__radix_8hpp.html',1,'']]],
   ['cl_5fvector_5fassign_2ehpp_769',['cl_vector_assign.hpp',['../cl__vector__assign_8hpp.html',1,'']]],
   ['cl_5fvector_5freduce_2ehpp_770',['cl_vector_reduce.hpp',['../cl__vector__reduce_8hpp.html',1,'']]],
