@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_SORT_BY_KEY_HPP
-#define SPLA_CL_SORT_BY_KEY_HPP
+#ifndef SPLA_CL_SORT_BY_KEY_BITONIC_HPP
+#define SPLA_CL_SORT_BY_KEY_BITONIC_HPP
 
 #include <opencl/cl_accelerator.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -35,7 +35,7 @@
 namespace spla {
 
     template<typename T>
-    void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+    void cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
         if (size <= 1) {
             return;
         }
@@ -72,4 +72,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_SORT_BY_KEY_HPP
+#endif//SPLA_CL_SORT_BY_KEY_BITONIC_HPP
