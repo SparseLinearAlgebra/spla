@@ -42,6 +42,7 @@
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_reduce_by_key.hpp>
 #include <opencl/cl_sort_by_key.hpp>
+#include <opencl/cl_sort_by_key_radix.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
@@ -360,7 +361,8 @@ namespace spla {
 
             {
                 TIME_PROFILE_SUBSCOPE(vxm, sort, "sort");
-                cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, prods_count[0]);
+                const uint max_key = r->get_n_rows() - 1;
+                cl_sort_by_key_radix<T>(queue, cl_prodi, cl_prodx, prods_count[0], max_key);
                 queue.finish();
             }
 

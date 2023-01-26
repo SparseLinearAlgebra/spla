@@ -6,6 +6,8 @@
 #pragma once
 
 static const char source_defines[] = R"(
+#pragma once
+
 #define TYPE             int
 #define BLOCK_SIZE       32
 #define LM_NUM_MEM_BANKS 32
