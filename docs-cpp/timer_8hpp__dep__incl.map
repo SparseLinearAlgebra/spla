@@ -1,7 +1,10 @@
 <map id="include/spla/timer.hpp" name="include/spla/timer.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="185,5,333,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="255,5,403,32"/>
 <area shape="rect" id="node2" href="$algorithm_8cpp.html" title=" " alt="" coords="5,87,127,114"/>
 <area shape="rect" id="node3" href="$io_8cpp.html" title=" " alt="" coords="151,87,229,114"/>
 <area shape="rect" id="node4" href="$cl__program__builder_8cpp.html" title=" " alt="" coords="253,80,404,121"/>
-<area shape="rect" id="node5" href="$timer_8cpp.html" title=" " alt="" coords="428,87,525,114"/>
+<area shape="rect" id="node5" href="$cl__reduce__by__key_8hpp.html" title=" " alt="" coords="428,80,571,121"/>
+<area shape="rect" id="node8" href="$timer_8cpp.html" title=" " alt="" coords="595,87,692,114"/>
+<area shape="rect" id="node6" href="$cl__vxm_8hpp.html" title=" " alt="" coords="424,169,575,196"/>
+<area shape="rect" id="node7" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="436,244,563,285"/>
 </map>

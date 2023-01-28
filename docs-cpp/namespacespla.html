@@ -518,6 +518,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a21d53c45dfffe94a9375e80976eec4a9">cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
 <tr class="separator:a21d53c45dfffe94a9375e80976eec4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a1161401b46ca0b120dbb7db348b4c1c7">cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
+<tr class="separator:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20aad7bef09204f31bc5096c47750b68"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a20aad7bef09204f31bc5096c47750b68"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a20aad7bef09204f31bc5096c47750b68">register_formats_matrix</a> (<a class="el" href="namespacespla.html#acee5e1578d8fb47b09c106210ce37be9">StorageManagerMatrix</a>&lt; T &gt; &amp;manager)</td></tr>
 <tr class="separator:a20aad7bef09204f31bc5096c47750b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -821,6 +824,54 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>reduce_op</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1161401b46ca0b120dbb7db348b4c1c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1161401b46ca0b120dbb7db348b4c1c7">&#9670;&nbsp;</a></span>cl_sort_by_key()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cl_sort_by_key </td>
+          <td>(</td>
+          <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl::Buffer &amp;&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl::Buffer &amp;&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>max_key</em> = <code>0xffffffff</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
