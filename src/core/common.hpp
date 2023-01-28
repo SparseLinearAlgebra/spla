@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,41 +25,37 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_CSR_HPP
-#define SPLA_CL_CSR_HPP
+#ifndef SPLA_COMMON_HPP
+#define SPLA_COMMON_HPP
 
-#include <opencl/cl_formats.hpp>
+#include <spla/config.hpp>
+
+#include <cmath>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    template<typename T>
-    void cl_csr_init(std::size_t n_rows,
-                     std::size_t n_values,
-                     const uint* Ap,
-                     const uint* Aj,
-                     const T*    Ax,
-                     CLCsr<T>&   storage) {
-        auto&      ctx   = get_acc_cl()->get_context();
-        const auto flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR;
-
-        cl::Buffer cl_Ap(ctx, flags, (n_rows + 1) * sizeof(uint), (void*) Ap);
-        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint), (void*) Aj);
-        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T), (void*) Ax);
-
-        storage.Ap = std::move(cl_Ap);
-        storage.Aj = std::move(cl_Aj);
-        storage.Ax = std::move(cl_Ax);
+    static inline uint clamp(uint x, uint left, uint right) {
+        return std::min(std::max(x, left), right);
     }
 
-    /**
-     * @}
-     */
+    static inline uint div_up(uint what, uint by) {
+        return what / by + (what % by ? 1 : 0);
+    }
+
+    static inline uint div_up_clamp(uint what, uint by, uint left, uint right) {
+        return clamp(div_up(what, by), left, right);
+    }
+
+    static inline uint align(uint what, uint alignment) {
+        return what + (what % alignment ? alignment - (what % alignment) : 0);
+    }
+
+    static inline uint ceil_to_pow2(uint n) {
+        uint r = 1;
+        while (r < n) r *= 2u;
+        return r;
+    }
 
 }// namespace spla
 
-#endif//SPLA_CL_CSR_HPP
+#endif//SPLA_COMMON_HPP

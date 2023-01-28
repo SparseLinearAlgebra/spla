@@ -64,11 +64,9 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
         Status             set_reduce(ref_ptr<OpBinary> resolve_duplicates) override;
-        Status             set_byte(uint row_id, uint col_id, std::int8_t value) override;
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
         Status             set_float(uint row_id, uint col_id, float value) override;
-        Status             get_byte(uint row_id, uint col_id, int8_t& value) override;
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
@@ -139,13 +137,6 @@ namespace spla {
     }
 
     template<typename T>
-    Status TMatrix<T>::set_byte(uint row_id, uint col_id, std::int8_t value) {
-        validate_rw(Format::CpuLil);
-        cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
-        return Status::Ok;
-    }
-
-    template<typename T>
     Status TMatrix<T>::set_int(uint row_id, uint col_id, std::int32_t value) {
         validate_rw(Format::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
@@ -164,21 +155,6 @@ namespace spla {
         validate_rw(Format::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
-    }
-
-    template<typename T>
-    Status TMatrix<T>::get_byte(uint row_id, uint col_id, int8_t& value) {
-        validate_rw(Format::CpuDok);
-
-        auto& Ax    = get<CpuDok<T>>()->Ax;
-        auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
-
-        if (entry != Ax.end()) {
-            value = static_cast<int8_t>(entry->second);
-            return Status::Ok;
-        }
-
-        return Status::NoValue;
     }
 
     template<typename T>

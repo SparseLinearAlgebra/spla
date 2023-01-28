@@ -51,11 +51,9 @@ namespace spla {
         ~TScalar() override = default;
 
         ref_ptr<Type> get_type() override;
-        Status        set_byte(std::int8_t value) override;
         Status        set_int(std::int32_t value) override;
         Status        set_uint(std::uint32_t value) override;
         Status        set_float(float value) override;
-        Status        get_byte(std::int8_t& value) override;
         Status        get_int(std::int32_t& value) override;
         Status        get_uint(std::uint32_t& value) override;
         Status        get_float(float& value) override;
@@ -81,32 +79,18 @@ namespace spla {
     }
 
     template<typename T>
-    Status TScalar<T>::set_byte(std::int8_t value) {
-        m_value = static_cast<T>(value);
-        return Status::Ok;
-    }
-
-    template<typename T>
     Status TScalar<T>::set_int(std::int32_t value) {
         m_value = static_cast<T>(value);
         return Status::Ok;
     }
-
     template<typename T>
     Status TScalar<T>::set_uint(std::uint32_t value) {
         m_value = static_cast<T>(value);
         return Status::Ok;
     }
-
     template<typename T>
     Status TScalar<T>::set_float(float value) {
         m_value = static_cast<T>(value);
-        return Status::Ok;
-    }
-
-    template<typename T>
-    Status TScalar<T>::get_byte(std::int8_t& value) {
-        value = static_cast<std::int8_t>(m_value);
         return Status::Ok;
     }
 
@@ -115,13 +99,11 @@ namespace spla {
         value = static_cast<std::int32_t>(m_value);
         return Status::Ok;
     }
-
     template<typename T>
     Status TScalar<T>::get_uint(std::uint32_t& value) {
         value = static_cast<std::uint32_t>(m_value);
         return Status::Ok;
     }
-
     template<typename T>
     Status TScalar<T>::get_float(float& value) {
         value = static_cast<float>(m_value);

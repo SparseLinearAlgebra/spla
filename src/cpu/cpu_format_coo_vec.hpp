@@ -25,22 +25,51 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_SPLA_HPP
-#define SPLA_SPLA_HPP
+#ifndef SPLA_CPU_FORMAT_COO_VEC_HPP
+#define SPLA_CPU_FORMAT_COO_VEC_HPP
 
-#include "algorithm.hpp"
-#include "config.hpp"
-#include "descriptor.hpp"
-#include "io.hpp"
-#include "library.hpp"
-#include "matrix.hpp"
-#include "object.hpp"
-#include "op.hpp"
-#include "ref.hpp"
-#include "scalar.hpp"
-#include "schedule.hpp"
-#include "timer.hpp"
-#include "type.hpp"
-#include "vector.hpp"
+#include <cpu/cpu_formats.hpp>
 
-#endif//SPLA_SPLA_HPP
+namespace spla {
+
+    /**
+     * @addtogroup internal
+     * @{
+     */
+
+    template<typename T>
+    void cpu_coo_vec_resize(const uint    n_values,
+                            CpuCooVec<T>& vec) {
+        vec.Ai.resize(n_values);
+        vec.Ax.resize(n_values);
+        vec.values = n_values;
+    }
+
+    template<typename T>
+    void cpu_coo_vec_clear(CpuCooVec<T>& vec) {
+        vec.Ai.clear();
+        vec.Ax.clear();
+        vec.values = 0;
+    }
+
+    template<typename T>
+    void cpu_coo_vec_to_dok(const CpuCooVec<T>& in,
+                            CpuDokVec<T>&       out) {
+        assert(out.values == 0);
+        assert(out.Ax.empty());
+
+        for (std::size_t k = 0; k < in.Ai.size(); ++k) {
+            const uint i = in.Ai[k];
+            const T    x = in.Ax[k];
+            out.Ax[i]    = x;
+            out.values += 1;
+        }
+    }
+
+    /**
+     * @}
+     */
+
+}// namespace spla
+
+#endif//SPLA_CPU_FORMAT_COO_VEC_HPP

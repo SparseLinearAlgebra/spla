@@ -27,7 +27,7 @@
 
 #include "test_common.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 TEST(vector, get_set_naive) {
     const spla::uint N    = 10;

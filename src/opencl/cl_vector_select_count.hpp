@@ -59,7 +59,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE(count, "opencl/vector_select_count");
+            TIME_PROFILE_SCOPE("opencl/vector_select_count");
 
             auto t = ctx.task.template cast<ScheduleTask_v_select_count>();
 
@@ -81,7 +81,7 @@ namespace spla {
             m_kernel.setArg(1, cl_count);
             m_kernel.setArg(2, v->get_n_rows());
 
-            uint n_groups_to_dispatch = std::max(std::min(v->get_n_rows() / m_block_size, uint(256)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(v->get_n_rows(), m_block_size, 1, 256);
 
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);

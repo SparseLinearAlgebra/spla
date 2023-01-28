@@ -27,7 +27,7 @@
 
 #include "test_common.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 TEST(library, default_log) {
     spla::get_library()->set_default_callback();
@@ -47,12 +47,10 @@ TEST(library, default_accelerator_select_props) {
 }
 
 TEST(library, default_types) {
-    EXPECT_EQ(spla::BYTE->get_size(), 1);
     EXPECT_EQ(spla::INT->get_size(), 4);
     EXPECT_EQ(spla::UINT->get_size(), 4);
     EXPECT_EQ(spla::FLOAT->get_size(), 4);
 
-    std::cout << "Type " << spla::BYTE->get_description() << " id=" << spla::BYTE->get_id() << std::endl;
     std::cout << "Type " << spla::INT->get_description() << " id=" << spla::INT->get_id() << std::endl;
     std::cout << "Type " << spla::UINT->get_description() << " id=" << spla::UINT->get_id() << std::endl;
     std::cout << "Type " << spla::FLOAT->get_description() << " id=" << spla::FLOAT->get_id() << std::endl;

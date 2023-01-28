@@ -195,42 +195,6 @@ namespace spla {
     SPLA_API Library* get_library();
 
     /**
-     * @brief Global library computations accelerator if presented
-     *
-     * @warning Internal usage only!
-     *
-     * @return Library computations accelerator if presented
-     */
-    static class Accelerator* get_accelerator() { return get_library()->get_accelerator(); }
-
-    /**
-     * @brief Global library algorithms registry
-     *
-     * @warning Internal usage only!
-     *
-     * @return Library algorithms registry
-     */
-    static class Registry* get_registry() { return get_library()->get_registry(); }
-
-    /**
-     * @brief Global library algorithms dispatcher
-     *
-     * @warning Internal usage only!
-     *
-     * @return Library algorithms dispatcher
-     */
-    static class Dispatcher* get_dispatcher() { return get_library()->get_dispatcher(); }
-
-    /**
-     * @brief Global library logger
-     *
-     * @warning Internal usage only!
-     *
-     * @return Library logger
-     */
-    static class Logger* get_logger() { return get_library()->get_logger(); }
-
-    /**
      * @}
      */
 

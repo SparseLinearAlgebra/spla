@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_MXV_HPP
-#define SPLA_CPU_MXV_HPP
+#ifndef SPLA_CPU_VXM_HPP
+#define SPLA_CPU_VXM_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -41,64 +41,84 @@
 namespace spla {
 
     template<typename T>
-    class Algo_mxv_masked final : public RegistryAlgo {
+    class Algo_vxm_masked final : public RegistryAlgo {
     public:
-        ~Algo_mxv_masked() override = default;
+        ~Algo_vxm_masked() override = default;
 
         std::string get_name() override {
-            return "mxv_masked";
+            return "vxm_masked";
         }
 
         std::string get_description() override {
-            return "sequential masked matrix-vector product on cpu";
+            return "sequential masked vector-matrix product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            TIME_PROFILE_SCOPE("cpu/vxm");
+
+            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
 
             auto r           = t->r.template cast<TVector<T>>();
             auto mask        = t->mask.template cast<TVector<T>>();
-            auto M           = t->M.template cast<TMatrix<T>>();
             auto v           = t->v.template cast<TVector<T>>();
+            auto M           = t->M.template cast<TMatrix<T>>();
             auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
             auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
             auto op_select   = t->op_select.template cast<TOpSelect<T>>();
             auto init        = t->init.template cast<TScalar<T>>();
 
-            const uint DM       = M->get_n_rows();
-            const T    sum_init = init->get_value();
+            const T sum_init = init->get_value();
 
-            r->validate_wd(Format::CpuDenseVec);
+            r->validate_wd(Format::CpuCooVec);
             mask->validate_rw(Format::CpuDenseVec);
-            v->validate_rw(Format::CpuDenseVec);
+            v->validate_rw(Format::CpuCooVec);
             M->validate_rw(Format::CpuLil);
 
-            CpuDenseVec<T>*       p_dense_r    = r->template get<CpuDenseVec<T>>();
+            CpuCooVec<T>*         p_sparse_r   = r->template get<CpuCooVec<T>>();
             const CpuDenseVec<T>* p_dense_mask = mask->template get<CpuDenseVec<T>>();
-            const CpuDenseVec<T>* p_dense_v    = v->template get<CpuDenseVec<T>>();
+            const CpuCooVec<T>*   p_sparse_v   = v->template get<CpuCooVec<T>>();
             const CpuLil<T>*      p_lil_M      = M->template get<CpuLil<T>>();
-            auto                  early_exit   = t->get_desc_or_default()->get_early_exit();
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
             auto& func_select   = op_select->function;
 
-            for (uint i = 0; i < DM; ++i) {
-                T sum = sum_init;
+            const uint N = p_sparse_v->values;
 
-                if (func_select(p_dense_mask->Ax[i])) {
-                    const auto& row = p_lil_M->Ar[i];
+            std::unordered_map<uint, T> r_tmp;
 
+            for (uint idx = 0; idx < N; ++idx) {
+                const uint v_i = p_sparse_v->Ai[idx];
+                const T    v_x = p_sparse_v->Ax[idx];
+
+                const auto& row = p_lil_M->Ar[v_i];
+
+                if (v_x) {
                     for (const auto& j_x : row) {
                         const uint j = j_x.first;
-                        sum          = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j]));
 
-                        if (sum && early_exit) break;
+                        if (func_select(p_dense_mask->Ax[j])) {
+                            auto r_x = r_tmp.find(j);
+
+                            if (r_x != r_tmp.end())
+                                r_x->second = func_add(r_x->second, func_multiply(v_x, j_x.second));
+                            else
+                                r_tmp[j] = func_multiply(v_x, j_x.second);
+                        }
                     }
                 }
-
-                p_dense_r->Ax[i] = sum;
             }
+
+            std::vector<std::pair<uint, T>> r_entries(r_tmp.size());
+            std::copy(r_tmp.begin(), r_tmp.end(), r_entries.begin());
+            std::sort(r_entries.begin(), r_entries.end());
+
+            for (const auto& e : r_entries) {
+                p_sparse_r->Ai.push_back(e.first);
+                p_sparse_r->Ax.push_back(e.second);
+            }
+
+            p_sparse_r->values = uint(r_tmp.size());
 
             return Status::Ok;
         }
@@ -106,4 +126,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_MXV_HPP
+#endif//SPLA_CPU_VXM_HPP

@@ -30,15 +30,15 @@
 
 #include <storage/storage_manager.hpp>
 
-#include <sequential/cpu_coo_vec.hpp>
-#include <sequential/cpu_dense_vec.hpp>
-#include <sequential/cpu_dok_vec.hpp>
-#include <sequential/cpu_formats.hpp>
+#include <cpu/cpu_format_coo_vec.hpp>
+#include <cpu/cpu_format_dense_vec.hpp>
+#include <cpu/cpu_format_dok_vec.hpp>
+#include <cpu/cpu_formats.hpp>
 
 #if defined(SPLA_BUILD_OPENCL)
     #include <opencl/cl_accelerator.hpp>
-    #include <opencl/cl_coo_vec.hpp>
-    #include <opencl/cl_dense_vec.hpp>
+    #include <opencl/cl_format_coo_vec.hpp>
+    #include <opencl/cl_format_dense_vec.hpp>
     #include <opencl/cl_formats.hpp>
 #endif
 

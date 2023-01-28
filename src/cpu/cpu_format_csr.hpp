@@ -25,64 +25,57 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_ASSIGN_HPP
-#define SPLA_CPU_VECTOR_ASSIGN_HPP
+#ifndef SPLA_CPU_FORMAT_CSR_HPP
+#define SPLA_CPU_FORMAT_CSR_HPP
 
-#include <schedule/schedule_tasks.hpp>
-
-#include <core/dispatcher.hpp>
-#include <core/registry.hpp>
-#include <core/top.hpp>
-#include <core/tscalar.hpp>
-#include <core/ttype.hpp>
-#include <core/tvector.hpp>
+#include <cpu/cpu_formats.hpp>
 
 namespace spla {
 
+    /**
+     * @addtogroup internal
+     * @{
+     */
+
     template<typename T>
-    class Algo_v_assign_masked_cpu final : public RegistryAlgo {
-    public:
-        ~Algo_v_assign_masked_cpu() override = default;
+    void cpu_csr_resize(const uint n_rows,
+                        const uint n_values,
+                        CpuCsr<T>& storage) {
+        storage.Ap.resize(n_rows + 1);
+        storage.Aj.resize(n_values);
+        storage.Ax.resize(n_values);
+        storage.values = n_values;
+    }
 
-        std::string get_name() override {
-            return "v_assign_masked";
-        }
+    template<typename T>
+    void cpu_csr_to_coo(uint             n_rows,
+                        const CpuCsr<T>& in,
+                        CpuCoo<T>&       out) {
+        auto& Ap = in.Ap;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
 
-        std::string get_description() override {
-            return "sequential masked vector assignment";
-        }
+        auto& Ri = out.Ai;
+        auto& Rj = out.Aj;
+        auto& Rx = out.Ax;
 
-        Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+        assert(Ri.size() == in.values);
+        assert(Rj.size() == in.values);
+        assert(Rx.size() == in.values);
 
-            auto r         = t->r.template cast<TVector<T>>();
-            auto mask      = t->mask.template cast<TVector<T>>();
-            auto value     = t->value.template cast<TScalar<T>>();
-            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
-            auto op_select = t->op_select.template cast<TOpSelect<T>>();
-
-            auto assign_value = value->get_value();
-
-            r->validate_rwd(Format::CpuDenseVec);
-            mask->validate_rw(Format::CpuDenseVec);
-
-            auto*       p_r_dense    = r->template get<CpuDenseVec<T>>();
-            const auto* p_mask_dense = mask->template get<CpuDenseVec<T>>();
-            const auto& func_assign  = op_assign->function;
-            const auto& func_select  = op_select->function;
-
-            uint N = r->get_n_rows();
-
-            for (uint i = 0; i < N; ++i) {
-                if (func_select(p_mask_dense->Ax[i])) {
-                    p_r_dense->Ax[i] = func_assign(p_r_dense->Ax[i], assign_value);
-                }
+        for (uint i = 0; i < n_rows; i++) {
+            for (uint j = Ap[i]; j < Ap[i + 1]; j++) {
+                Ri[j] = i;
+                Rj[j] = Aj[j];
+                Rx[j] = Ax[j];
             }
-
-            return Status::Ok;
         }
-    };
+    }
+
+    /**
+     * @}
+     */
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_ASSIGN_HPP
+#endif//SPLA_CPU_FORMAT_CSR_HPP

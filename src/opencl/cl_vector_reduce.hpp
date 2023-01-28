@@ -74,7 +74,7 @@ namespace spla {
 
     private:
         Status execute_dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce_dense");
+            TIME_PROFILE_SCOPE("opencl/vector_reduce_dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
 
@@ -128,7 +128,7 @@ namespace spla {
         }
 
         Status execute_sp(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(reduce, "opencl/vector_reduce_sparse");
+            TIME_PROFILE_SCOPE("opencl/vector_reduce_sparse");
 
             auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
 
@@ -153,7 +153,7 @@ namespace spla {
             const uint N             = p_cl_coo_vec->values;
             const uint OPTIMAL_SPLIT = 64;
             const uint STRIDE        = std::max(std::max(uint(N / OPTIMAL_SPLIT), uint((N + m_block_size) / m_block_size)), m_block_size);
-            const uint GROUPS_COUNT  = N / STRIDE + (N % STRIDE ? 1 : 0);
+            const uint GROUPS_COUNT  = div_up(N, STRIDE);
 
             T          init[] = {s->get_value()};
             T          sum[1];

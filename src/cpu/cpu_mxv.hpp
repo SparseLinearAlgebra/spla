@@ -25,13 +25,14 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_REDUCE_HPP
-#define SPLA_CPU_VECTOR_REDUCE_HPP
+#ifndef SPLA_CPU_MXV_HPP
+#define SPLA_CPU_MXV_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
 #include <core/dispatcher.hpp>
 #include <core/registry.hpp>
+#include <core/tmatrix.hpp>
 #include <core/top.hpp>
 #include <core/tscalar.hpp>
 #include <core/ttype.hpp>
@@ -40,37 +41,66 @@
 namespace spla {
 
     template<typename T>
-    class Algo_v_reduce_cpu final : public RegistryAlgo {
+    class Algo_mxv_masked final : public RegistryAlgo {
     public:
-        ~Algo_v_reduce_cpu() override = default;
+        ~Algo_mxv_masked() override = default;
 
         std::string get_name() override {
-            return "v_reduce";
+            return "mxv_masked";
         }
 
         std::string get_description() override {
-            return "sequential vector reduction on cpu";
+            return "sequential masked matrix-vector product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            TIME_PROFILE_SCOPE("cpu/mxv");
 
-            auto r         = t->r.template cast<TScalar<T>>();
-            auto s         = t->s.template cast<TScalar<T>>();
-            auto v         = t->v.template cast<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
 
-            T sum = s->get_value();
+            auto r           = t->r.template cast<TVector<T>>();
+            auto mask        = t->mask.template cast<TVector<T>>();
+            auto M           = t->M.template cast<TMatrix<T>>();
+            auto v           = t->v.template cast<TVector<T>>();
+            auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
+            auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
+            auto op_select   = t->op_select.template cast<TOpSelect<T>>();
+            auto init        = t->init.template cast<TScalar<T>>();
 
+            const uint DM       = M->get_n_rows();
+            const T    sum_init = init->get_value();
+
+            r->validate_wd(Format::CpuDenseVec);
+            mask->validate_rw(Format::CpuDenseVec);
             v->validate_rw(Format::CpuDenseVec);
-            const auto* p_dense  = v->template get<CpuDenseVec<T>>();
-            const auto& function = op_reduce->function;
+            M->validate_rw(Format::CpuLil);
 
-            for (const auto& value : p_dense->Ax) {
-                sum = function(sum, value);
+            CpuDenseVec<T>*       p_dense_r    = r->template get<CpuDenseVec<T>>();
+            const CpuDenseVec<T>* p_dense_mask = mask->template get<CpuDenseVec<T>>();
+            const CpuDenseVec<T>* p_dense_v    = v->template get<CpuDenseVec<T>>();
+            const CpuLil<T>*      p_lil_M      = M->template get<CpuLil<T>>();
+            auto                  early_exit   = t->get_desc_or_default()->get_early_exit();
+
+            auto& func_multiply = op_multiply->function;
+            auto& func_add      = op_add->function;
+            auto& func_select   = op_select->function;
+
+            for (uint i = 0; i < DM; ++i) {
+                T sum = sum_init;
+
+                if (func_select(p_dense_mask->Ax[i])) {
+                    const auto& row = p_lil_M->Ar[i];
+
+                    for (const auto& j_x : row) {
+                        const uint j = j_x.first;
+                        sum          = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j]));
+
+                        if (sum && early_exit) break;
+                    }
+                }
+
+                p_dense_r->Ax[i] = sum;
             }
-
-            r->get_value() = sum;
 
             return Status::Ok;
         }
@@ -78,4 +108,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_REDUCE_HPP
+#endif//SPLA_CPU_MXV_HPP

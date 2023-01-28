@@ -28,7 +28,7 @@
 #include "test_common.hpp"
 
 #include <iostream>
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 TEST(mxv_masked, naive) {
     spla::uint M = 4, N = 5;

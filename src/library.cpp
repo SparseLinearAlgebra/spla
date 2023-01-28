@@ -33,7 +33,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
-#include <sequential/cpu_algo_registry.hpp>
+#include <cpu/cpu_algo_registry.hpp>
 
 #include <iostream>
 

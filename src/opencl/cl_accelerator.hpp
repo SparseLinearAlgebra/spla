@@ -29,6 +29,7 @@
 #define SPLA_CL_ACCELERATOR_HPP
 
 #include <core/accelerator.hpp>
+#include <core/common.hpp>
 #include <core/logger.hpp>
 #include <spla/library.hpp>
 
@@ -85,8 +86,6 @@ namespace spla {
         [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
-        [[nodiscard]] uint               get_grid_dim(uint n_work) const;
-        [[nodiscard]] uint               get_grid_dim(uint n_work, uint n_work_in_group) const;
 
     private:
         void build_description();
@@ -116,7 +115,7 @@ namespace spla {
      * @return OpenCL accelerator if present
      */
     static inline CLAccelerator* get_acc_cl() {
-        return dynamic_cast<CLAccelerator*>(get_accelerator());
+        return dynamic_cast<CLAccelerator*>(get_library()->get_accelerator());
     }
 
     /**

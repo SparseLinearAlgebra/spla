@@ -1,4 +1,4 @@
-#include "defines.cl"
+#include "common_def.cl"
 
 __kernel void vxm_prepare(__global TYPE* g_rx,
                           const TYPE     init,

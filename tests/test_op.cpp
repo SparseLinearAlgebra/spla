@@ -27,7 +27,7 @@
 
 #include "test_common.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 #include <iostream>
 

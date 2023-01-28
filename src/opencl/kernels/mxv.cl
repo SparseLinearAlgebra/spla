@@ -1,4 +1,4 @@
-#include "defines.cl"
+#include "common_def.cl"
 
 void reduction_group(uint                   block_size,
                      uint                   lid,

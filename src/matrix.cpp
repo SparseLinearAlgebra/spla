@@ -42,9 +42,6 @@ namespace spla {
 
         get_library();
 
-        if (type == BYTE) {
-            return ref_ptr<Matrix>(new TMatrix<std::int8_t>(n_rows, n_cols));
-        }
         if (type == INT) {
             return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));
         }

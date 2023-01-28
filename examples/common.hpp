@@ -28,7 +28,7 @@
 #ifndef SPLA_COMMON_HPP
 #define SPLA_COMMON_HPP
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 #include <iostream>
 #include <vector>

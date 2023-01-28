@@ -63,11 +63,9 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
         Status             set_reduce(ref_ptr<OpBinary> resolve_duplicates) override;
-        Status             set_byte(uint row_id, std::int8_t value) override;
         Status             set_int(uint row_id, std::int32_t value) override;
         Status             set_uint(uint row_id, std::uint32_t value) override;
         Status             set_float(uint row_id, float value) override;
-        Status             get_byte(uint row_id, int8_t& value) override;
         Status             get_int(uint row_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint32_t& value) override;
         Status             get_float(uint row_id, float& value) override;
@@ -134,13 +132,6 @@ namespace spla {
     }
 
     template<typename T>
-    Status TVector<T>::set_byte(uint row_id, std::int8_t value) {
-        validate_rw(Format::CpuDokVec);
-        cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
-        return Status::Ok;
-    }
-
-    template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
         validate_rw(Format::CpuDokVec);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
@@ -158,21 +149,6 @@ namespace spla {
     Status TVector<T>::set_float(uint row_id, float value) {
         validate_rw(Format::CpuDokVec);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
-        return Status::Ok;
-    }
-
-    template<typename T>
-    Status TVector<T>::get_byte(uint row_id, int8_t& value) {
-        validate_rw(Format::CpuDokVec);
-
-        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
-        const auto  entry = Ax.find(row_id);
-        value             = int8_t();
-
-        if (entry != Ax.end()) {
-            value = static_cast<T_BYTE>(entry->second);
-        }
-
         return Status::Ok;
     }
 

@@ -28,8 +28,8 @@
 #ifndef SPLA_C_CONFIG_HPP
 #define SPLA_C_CONFIG_HPP
 
-#include <spla/spla.hpp>
-#include <spla_c/spla.h>
+#include <spla.h>
+#include <spla.hpp>
 
 namespace spla {
 

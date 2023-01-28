@@ -71,7 +71,7 @@ namespace spla {
         kernel_gen_offsets.setArg(1, offsets);
         kernel_gen_offsets.setArg(2, size);
 
-        cl::NDRange gen_offsets_global(cl_acc->get_grid_dim(size, block_size));
+        cl::NDRange gen_offsets_global(align(size, block_size));
         cl::NDRange gen_offsets_local(block_size);
         queue.enqueueNDRangeKernel(kernel_gen_offsets, cl::NDRange(), gen_offsets_global, gen_offsets_local);
 
@@ -95,7 +95,7 @@ namespace spla {
         kernel_reduce_naive.setArg(5, size);
         kernel_reduce_naive.setArg(6, reduced_size);
 
-        cl::NDRange reduce_naive_global(cl_acc->get_grid_dim(reduced_size, block_size));
+        cl::NDRange reduce_naive_global(align(reduced_size, block_size));
         cl::NDRange reduce_naive_local(block_size);
         queue.enqueueNDRangeKernel(kernel_reduce_naive, cl::NDRange(), reduce_naive_global, reduce_naive_local);
     }

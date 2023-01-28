@@ -61,8 +61,8 @@ namespace spla {
 
         if (!builder.build()) return;
 
-        const uint n_treads_total = cl_acc->get_grid_dim(n, block_size);
-        const uint n_groups       = n_treads_total / block_size;
+        const uint n_treads_total = align(n, block_size);
+        const uint n_groups       = div_up(n, block_size);
         const uint n_blocks_sizes = n_groups * BITS_VALS;
 
         cl::Buffer cl_temp_keys(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * n);
@@ -74,7 +74,7 @@ namespace spla {
         auto kernel_scatter = builder.make_kernel("radix_sort_scatter");
 
         const uint bits_in_max_key = static_cast<uint>(std::floor(std::log2(float(max_key)))) + 1;
-        const uint bits_aligned    = bits_in_max_key + (bits_in_max_key % BITS_COUNT ? BITS_COUNT - (bits_in_max_key % BITS_COUNT) : 0);
+        const uint bits_aligned    = align(bits_in_max_key, BITS_COUNT);
         const uint max_bits        = std::min(32u, bits_aligned);
 
         cl::Buffer in_keys    = keys;

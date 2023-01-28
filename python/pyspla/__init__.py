@@ -93,7 +93,6 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
 
-- `BYTE`  - 1-byte-sized signed integral value
 - `INT`   - 4-byte-sized signed integral value
 - `UINT`  - 4-byte-sized unsigned integral value
 - `FLOAT` - 4-byte-sized single-precision floating point value

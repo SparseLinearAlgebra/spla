@@ -28,7 +28,7 @@
 #include "common.hpp"
 #include "options.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 
 int main(int argc, const char* const* argv) {

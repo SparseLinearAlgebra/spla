@@ -28,6 +28,7 @@
 #ifndef SPLA_SCHEDULE_TASKS_HPP
 #define SPLA_SCHEDULE_TASKS_HPP
 
+#include <spla/exec.hpp>
 #include <spla/schedule.hpp>
 
 #include <profiling/time_profiler.hpp>

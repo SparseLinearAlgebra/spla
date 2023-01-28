@@ -38,6 +38,7 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_mxv.hpp>
@@ -66,7 +67,7 @@ namespace spla {
 
     private:
         Status execute_vector(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(mxv, "opencl/mxv/vector");
+            TIME_PROFILE_SCOPE("opencl/mxv/vector");
 
             auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
 
@@ -102,15 +103,11 @@ namespace spla {
             m_kernel_vector.setArg(6, init->get_value());
             m_kernel_vector.setArg(7, r->get_n_rows());
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_count, uint(512)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_count, 1, 512);
 
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
-            {
-                TIME_PROFILE_SUBSCOPE(mxv, exec, "exec");
-                queue.enqueueNDRangeKernel(m_kernel_vector, cl::NDRange(), exec_global, exec_local);
-                queue.finish();
-            }
+            CL_DISPATCH_PROFILED("exec", queue, m_kernel_vector, cl::NDRange(), exec_global, exec_local);
 
             r->decorator_update_version(Format::CLDenseVec);
 
@@ -118,7 +115,7 @@ namespace spla {
         }
 
         Status execute_scalar(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(mxv, "opencl/mxv/scalar");
+            TIME_PROFILE_SCOPE("opencl/mxv/scalar");
 
             auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
 
@@ -156,15 +153,11 @@ namespace spla {
             m_kernel_scalar.setArg(7, r->get_n_rows());
             m_kernel_scalar.setArg(8, uint(early_exit));
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(512)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 512);
 
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
-            {
-                TIME_PROFILE_SUBSCOPE(mxv, exec, "exec");
-                queue.enqueueNDRangeKernel(m_kernel_scalar, cl::NDRange(), exec_global, exec_local);
-                queue.finish();
-            }
+            CL_DISPATCH_PROFILED("exec", queue, m_kernel_scalar, cl::NDRange(), exec_global, exec_local);
 
             r->decorator_update_version(Format::CLDenseVec);
 
@@ -172,7 +165,7 @@ namespace spla {
         }
 
         Status execute_config_scalar(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(mxv, "opencl/mxv/config-scalar");
+            TIME_PROFILE_SCOPE("opencl/mxv/config-scalar");
 
             auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
 
@@ -204,7 +197,7 @@ namespace spla {
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
             cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(1024)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 1024);
 
             m_kernel_config.setArg(0, p_cl_mask->Ax);
             m_kernel_config.setArg(1, p_cl_r->Ax);
@@ -215,13 +208,9 @@ namespace spla {
 
             cl::NDRange config_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange config_local(m_block_size);
-            {
-                TIME_PROFILE_SUBSCOPE(mxv, config, "config");
-                queue.enqueueNDRangeKernel(m_kernel_config, cl::NDRange(), config_global, config_local);
-                queue.finish();
-            }
+            CL_DISPATCH_PROFILED("config", queue, m_kernel_config, cl::NDRange(), config_global, config_local);
 
-            queue.enqueueReadBuffer(cl_config_size, true, 0, sizeof(config_size[0]), config_size);
+            CL_READ_PROFILED("config-size", queue, cl_config_size, true, 0, sizeof(config_size[0]), config_size);
 
             m_kernel_config_scalar.setArg(0, p_cl_M->Ap);
             m_kernel_config_scalar.setArg(1, p_cl_M->Aj);
@@ -235,11 +224,7 @@ namespace spla {
 
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
-            {
-                TIME_PROFILE_SUBSCOPE(mxv, exec, "exec");
-                queue.enqueueNDRangeKernel(m_kernel_config_scalar, cl::NDRange(), exec_global, exec_local);
-                queue.finish();
-            }
+            CL_DISPATCH_PROFILED("exec", queue, m_kernel_config_scalar, cl::NDRange(), exec_global, exec_local);
 
             return Status::Ok;
         }

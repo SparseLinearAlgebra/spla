@@ -1,5 +1,5 @@
-#include "common_incl.cl"
-#include "defines.cl"
+#include "common_def.cl"
+#include "common_func.cl"
 
 // gpu parallel prefix scan (blelloch)
 // - https://developer.nvidia.com/gpugems/gpugems3/part-vi-gpu-computing/chapter-39-parallel-prefix-sum-scan-cuda

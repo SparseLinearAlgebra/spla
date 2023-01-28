@@ -27,7 +27,7 @@
 
 #include "test_common.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 TEST(matrix, get_set_naive) {
     const spla::uint M = 10, N = 10, K = 8;

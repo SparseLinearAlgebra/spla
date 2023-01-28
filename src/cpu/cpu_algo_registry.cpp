@@ -30,12 +30,12 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
-#include <sequential/cpu_algo_callback.hpp>
-#include <sequential/cpu_mxv.hpp>
-#include <sequential/cpu_vector_assign.hpp>
-#include <sequential/cpu_vector_reduce.hpp>
-#include <sequential/cpu_vector_select_count.hpp>
-#include <sequential/cpu_vxm.hpp>
+#include <cpu/cpu_algo_callback.hpp>
+#include <cpu/cpu_mxv.hpp>
+#include <cpu/cpu_vector_assign.hpp>
+#include <cpu/cpu_vector_reduce.hpp>
+#include <cpu/cpu_vector_select_count.hpp>
+#include <cpu/cpu_vxm.hpp>
 
 namespace spla {
 

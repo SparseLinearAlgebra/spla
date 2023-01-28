@@ -224,6 +224,7 @@ set(SRC_OPENCL)
 
 if (SPLA_BUILD_OPENCL)
     set(SRC_OPENCL
+            src/opencl/cl_debug.hpp
             src/opencl/cl_accelerator.cpp
             src/opencl/cl_accelerator.hpp
             src/opencl/cl_algo_registry.cpp
@@ -234,9 +235,9 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_program_builder.hpp
             src/opencl/cl_program_cache.cpp
             src/opencl/cl_program_cache.hpp
-            src/opencl/cl_dense_vec.hpp
-            src/opencl/cl_coo_vec.hpp
-            src/opencl/cl_csr.hpp
+            src/opencl/cl_format_dense_vec.hpp
+            src/opencl/cl_format_coo_vec.hpp
+            src/opencl/cl_format_csr.hpp
             src/opencl/cl_formats.hpp
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
@@ -252,10 +253,11 @@ endif ()
 
 add_library(spla SHARED
         # C++ core
-        include/spla/spla.hpp
+        include/spla.hpp
         include/spla/algorithm.hpp
         include/spla/config.hpp
         include/spla/descriptor.hpp
+        include/spla/exec.hpp
         include/spla/io.hpp
         include/spla/library.hpp
         include/spla/matrix.hpp
@@ -268,6 +270,7 @@ add_library(spla SHARED
         include/spla/type.hpp
         include/spla/vector.hpp
         src/core/accelerator.hpp
+        src/core/common.hpp
         src/core/dispatcher.cpp
         src/core/dispatcher.hpp
         src/core/logger.cpp
@@ -287,27 +290,28 @@ add_library(spla SHARED
         src/schedule/schedule_tasks.hpp
         src/schedule/schedule_st.cpp
         src/schedule/schedule_st.hpp
-        src/sequential/cpu_algo_callback.hpp
-        src/sequential/cpu_algo_registry.cpp
-        src/sequential/cpu_algo_registry.hpp
-        src/sequential/cpu_coo.hpp
-        src/sequential/cpu_coo_vec.hpp
-        src/sequential/cpu_csr.hpp
-        src/sequential/cpu_dense_vec.hpp
-        src/sequential/cpu_dok.hpp
-        src/sequential/cpu_dok_vec.hpp
-        src/sequential/cpu_lil.hpp
-        src/sequential/cpu_formats.hpp
-        src/sequential/cpu_mxv.hpp
-        src/sequential/cpu_vxm.hpp
-        src/sequential/cpu_vector_assign.hpp
-        src/sequential/cpu_vector_reduce.hpp
-        src/sequential/cpu_vector_select_count.hpp
+        src/cpu/cpu_algo_callback.hpp
+        src/cpu/cpu_algo_registry.cpp
+        src/cpu/cpu_algo_registry.hpp
+        src/cpu/cpu_format_coo.hpp
+        src/cpu/cpu_format_coo_vec.hpp
+        src/cpu/cpu_format_csr.hpp
+        src/cpu/cpu_format_dense_vec.hpp
+        src/cpu/cpu_format_dok.hpp
+        src/cpu/cpu_format_dok_vec.hpp
+        src/cpu/cpu_format_lil.hpp
+        src/cpu/cpu_formats.hpp
+        src/cpu/cpu_mxv.hpp
+        src/cpu/cpu_vxm.hpp
+        src/cpu/cpu_vector_assign.hpp
+        src/cpu/cpu_vector_reduce.hpp
+        src/cpu/cpu_vector_select_count.hpp
         src/util/pair_hash.hpp
         src/profiling/time_profiler.cpp
         src/profiling/time_profiler.hpp
         src/descriptor.cpp
         src/io.cpp
+        src/exec.cpp
         src/library.cpp
         src/matrix.cpp
         src/algorithm.cpp
@@ -318,7 +322,7 @@ add_library(spla SHARED
         src/type.cpp
         src/vector.cpp
         # C bindings
-        include/spla_c/spla.h
+        include/spla.h
         src/binding/c_config.hpp
         src/binding/c_library.cpp
         # C++ optional part

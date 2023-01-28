@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include <spla/algorithm.hpp>
+#include <spla/exec.hpp>
 #include <spla/op.hpp>
 #include <spla/schedule.hpp>
 #include <spla/timer.hpp>

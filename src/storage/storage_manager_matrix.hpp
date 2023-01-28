@@ -30,14 +30,14 @@
 
 #include <storage/storage_manager.hpp>
 
-#include <sequential/cpu_csr.hpp>
-#include <sequential/cpu_dok.hpp>
-#include <sequential/cpu_formats.hpp>
-#include <sequential/cpu_lil.hpp>
+#include <cpu/cpu_format_csr.hpp>
+#include <cpu/cpu_format_dok.hpp>
+#include <cpu/cpu_format_lil.hpp>
+#include <cpu/cpu_formats.hpp>
 
 #if defined(SPLA_BUILD_OPENCL)
     #include <opencl/cl_accelerator.hpp>
-    #include <opencl/cl_csr.hpp>
+    #include <opencl/cl_format_csr.hpp>
     #include <opencl/cl_formats.hpp>
 #endif
 

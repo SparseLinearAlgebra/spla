@@ -54,12 +54,10 @@ namespace spla {
         SPLA_API virtual int                get_id()          = 0;
     };
 
-    using T_BYTE  = std::int8_t;
     using T_INT   = std::int32_t;
     using T_UINT  = std::uint32_t;
     using T_FLOAT = float;
 
-    SPLA_API extern ref_ptr<Type> BYTE;
     SPLA_API extern ref_ptr<Type> INT;
     SPLA_API extern ref_ptr<Type> UINT;
     SPLA_API extern ref_ptr<Type> FLOAT;

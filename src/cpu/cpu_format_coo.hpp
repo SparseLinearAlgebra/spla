@@ -25,10 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_COO_HPP
-#define SPLA_CPU_COO_HPP
+#ifndef SPLA_CPU_FORMAT_COO_HPP
+#define SPLA_CPU_FORMAT_COO_HPP
 
-#include <sequential/cpu_formats.hpp>
+#include <cpu/cpu_formats.hpp>
 
 namespace spla {
 
@@ -73,4 +73,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_COO_HPP
+#endif//SPLA_CPU_FORMAT_COO_HPP

@@ -27,7 +27,7 @@
 
 #include "test_common.hpp"
 
-#include <spla/spla.hpp>
+#include <spla.hpp>
 
 TEST(schedule, task_callback) {
     spla::ref_ptr<spla::Schedule>     schedule = spla::make_schedule();

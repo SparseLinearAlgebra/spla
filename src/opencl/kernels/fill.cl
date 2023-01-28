@@ -1,4 +1,4 @@
-#include "defines.cl"
+#include "common_def.cl"
 
 __kernel void fill_zero(__global TYPE* values,
                         const uint     n) {

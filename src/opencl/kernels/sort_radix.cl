@@ -1,4 +1,4 @@
-#include "defines.cl"
+#include "common_def.cl"
 
 #ifdef RADIX_SORT
 // Number of different values in a mask, equals 1 << bits count

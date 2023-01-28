@@ -25,10 +25,10 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_COO_VEC_HPP
-#define SPLA_CPU_COO_VEC_HPP
+#ifndef SPLA_CPU_FORMAT_DENSE_VEC_HPP
+#define SPLA_CPU_FORMAT_DENSE_VEC_HPP
 
-#include <sequential/cpu_formats.hpp>
+#include <cpu/cpu_formats.hpp>
 
 namespace spla {
 
@@ -38,31 +38,30 @@ namespace spla {
      */
 
     template<typename T>
-    void cpu_coo_vec_resize(const uint    n_values,
-                            CpuCooVec<T>& vec) {
-        vec.Ai.resize(n_values);
-        vec.Ax.resize(n_values);
-        vec.values = n_values;
+    void cpu_dense_vec_resize(const uint      n_rows,
+                              CpuDenseVec<T>& vec) {
+        vec.Ax.resize(n_rows);
+        vec.values = n_rows;
     }
 
     template<typename T>
-    void cpu_coo_vec_clear(CpuCooVec<T>& vec) {
-        vec.Ai.clear();
-        vec.Ax.clear();
-        vec.values = 0;
+    void cpu_dense_vec_fill(const T         value,
+                            CpuDenseVec<T>& vec) {
+        std::fill(vec.Ax.begin(), vec.Ax.end(), value);
     }
 
     template<typename T>
-    void cpu_coo_vec_to_dok(const CpuCooVec<T>& in,
-                            CpuDokVec<T>&       out) {
+    void cpu_dense_vec_to_dok(const uint            n_rows,
+                              const CpuDenseVec<T>& in,
+                              CpuDokVec<T>&         out) {
         assert(out.values == 0);
         assert(out.Ax.empty());
 
-        for (std::size_t k = 0; k < in.Ai.size(); ++k) {
-            const uint i = in.Ai[k];
-            const T    x = in.Ax[k];
-            out.Ax[i]    = x;
-            out.values += 1;
+        for (uint i = 0; i < n_rows; ++i) {
+            if (in.Ax[i]) {
+                out.Ax[i] = in.Ax[i];
+                out.values += 1;
+            }
         }
     }
 
@@ -72,4 +71,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_COO_VEC_HPP
+#endif//SPLA_CPU_FORMAT_DENSE_VEC_HPP

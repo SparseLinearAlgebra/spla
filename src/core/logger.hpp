@@ -62,11 +62,11 @@ namespace spla {
 
 }// namespace spla
 
-#define LOG_MSG(status, msg)                                                                           \
-    do {                                                                                               \
-        std::stringstream __ss;                                                                        \
-        __ss << msg;                                                                                   \
-        get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
+#define LOG_MSG(status, msg)                                                                                          \
+    do {                                                                                                              \
+        std::stringstream __ss;                                                                                       \
+        __ss << msg;                                                                                                  \
+        get_library()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
     } while (false);
 
 #endif//SPLA_LOGGER_HPP

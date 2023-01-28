@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_DENSE_VEC_HPP
-#define SPLA_CL_DENSE_VEC_HPP
+#ifndef SPLA_CL_FORMAT_DENSE_VEC_HPP
+#define SPLA_CL_FORMAT_DENSE_VEC_HPP
 
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -136,4 +136,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_DENSE_VEC_HPP
+#endif//SPLA_CL_FORMAT_DENSE_VEC_HPP

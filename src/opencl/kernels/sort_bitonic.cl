@@ -1,5 +1,5 @@
-#include "common_incl.cl"
-#include "defines.cl"
+#include "common_def.cl"
+#include "common_func.cl"
 
 __kernel void bitonic_sort_local(__global uint* g_keys,
                                  __global TYPE* g_values,

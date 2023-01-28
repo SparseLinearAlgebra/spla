@@ -80,16 +80,16 @@ namespace spla {
      */
 
 #ifndef SPLA_RELEASE
-    #define TIME_PROFILE_SUBSCOPE(parent, label, name)                                           \
-        static TimeProfilerLabel __auto_##label(&__auto_##parent, name, __FILE__, __FUNCTION__); \
-        TimeProfilerScope        __auto_scope_##label(&__auto_##label);
+    #define TIME_PROFILE_SUBSCOPE(name)                                                                        \
+        static TimeProfilerLabel __auto_profile_sublabel(&__auto_profile_label, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_profile_subscope(&__auto_profile_sublabel);
 
-    #define TIME_PROFILE_SCOPE(label, name)                                             \
-        static TimeProfilerLabel __auto_##label(nullptr, name, __FILE__, __FUNCTION__); \
-        TimeProfilerScope        __auto_scope_##label(&__auto_##label);
+    #define TIME_PROFILE_SCOPE(name)                                                          \
+        static TimeProfilerLabel __auto_profile_label(nullptr, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_profile_scope(&__auto_profile_label);
 #else
-    #define TIME_PROFILE_SCOPE(label, name)
-    #define TIME_PROFILE_SUBSCOPE(parent, label, name)
+    #define TIME_PROFILE_SCOPE(name)
+    #define TIME_PROFILE_SUBSCOPE(name)
 #endif
 
 }// namespace spla

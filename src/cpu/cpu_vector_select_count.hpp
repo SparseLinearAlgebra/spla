@@ -25,57 +25,58 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_CSR_HPP
-#define SPLA_CPU_CSR_HPP
+#ifndef SPLA_CPU_VECTOR_SELECT_COUNT_HPP
+#define SPLA_CPU_VECTOR_SELECT_COUNT_HPP
 
-#include <sequential/cpu_formats.hpp>
+#include <schedule/schedule_tasks.hpp>
+
+#include <core/dispatcher.hpp>
+#include <core/registry.hpp>
+#include <core/top.hpp>
+#include <core/tscalar.hpp>
+#include <core/ttype.hpp>
+#include <core/tvector.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
     template<typename T>
-    void cpu_csr_resize(const uint n_rows,
-                        const uint n_values,
-                        CpuCsr<T>& storage) {
-        storage.Ap.resize(n_rows + 1);
-        storage.Aj.resize(n_values);
-        storage.Ax.resize(n_values);
-        storage.values = n_values;
-    }
+    class Algo_v_select_count_cpu final : public RegistryAlgo {
+    public:
+        ~Algo_v_select_count_cpu() override = default;
 
-    template<typename T>
-    void cpu_csr_to_coo(uint             n_rows,
-                        const CpuCsr<T>& in,
-                        CpuCoo<T>&       out) {
-        auto& Ap = in.Ap;
-        auto& Aj = in.Aj;
-        auto& Ax = in.Ax;
-
-        auto& Ri = out.Ai;
-        auto& Rj = out.Aj;
-        auto& Rx = out.Ax;
-
-        assert(Ri.size() == in.values);
-        assert(Rj.size() == in.values);
-        assert(Rx.size() == in.values);
-
-        for (uint i = 0; i < n_rows; i++) {
-            for (uint j = Ap[i]; j < Ap[i + 1]; j++) {
-                Ri[j] = i;
-                Rj[j] = Aj[j];
-                Rx[j] = Ax[j];
-            }
+        std::string get_name() override {
+            return "v_reduce";
         }
-    }
 
-    /**
-     * @}
-     */
+        std::string get_description() override {
+            return "sequential vector select count on cpu";
+        }
+
+        Status execute(const DispatchContext& ctx) override {
+            TIME_PROFILE_SCOPE("cpu/vector_select_count");
+
+            auto t = ctx.task.template cast<ScheduleTask_v_select_count>();
+
+            auto r         = t->r;
+            auto v         = t->v.template cast<TVector<T>>();
+            auto op_select = t->op_select.template cast<TOpSelect<T>>();
+
+            v->validate_rw(Format::CpuDenseVec);
+            const auto* p_dense  = v->template get<CpuDenseVec<T>>();
+            const auto& function = op_select->function;
+
+            int count = 0;
+
+            for (const auto& value : p_dense->Ax) {
+                if (function(value)) ++count;
+            }
+
+            r->set_int(count);
+
+            return Status::Ok;
+        }
+    };
 
 }// namespace spla
 
-#endif//SPLA_CPU_CSR_HPP
+#endif//SPLA_CPU_VECTOR_SELECT_COUNT_HPP

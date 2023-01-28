@@ -1,4 +1,4 @@
-#include "defines.cl"
+#include "common_def.cl"
 
 // wave-wide reduction in local memory
 void reduction_group(uint                   block_size,

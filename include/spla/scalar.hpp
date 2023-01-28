@@ -46,11 +46,9 @@ namespace spla {
     public:
         SPLA_API ~Scalar() override                                   = default;
         SPLA_API virtual ref_ptr<Type> get_type()                     = 0;
-        SPLA_API virtual Status        set_byte(std::int8_t value)    = 0;
         SPLA_API virtual Status        set_int(std::int32_t value)    = 0;
         SPLA_API virtual Status        set_uint(std::uint32_t value)  = 0;
         SPLA_API virtual Status        set_float(float value)         = 0;
-        SPLA_API virtual Status        get_byte(std::int8_t& value)   = 0;
         SPLA_API virtual Status        get_int(std::int32_t& value)   = 0;
         SPLA_API virtual Status        get_uint(std::uint32_t& value) = 0;
         SPLA_API virtual Status        get_float(float& value)        = 0;

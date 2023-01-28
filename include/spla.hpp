@@ -25,50 +25,23 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_DENSE_VEC_HPP
-#define SPLA_CPU_DENSE_VEC_HPP
+#ifndef SPLA_SPLA_HPP
+#define SPLA_SPLA_HPP
 
-#include <sequential/cpu_formats.hpp>
+#include "spla/algorithm.hpp"
+#include "spla/config.hpp"
+#include "spla/descriptor.hpp"
+#include "spla/exec.hpp"
+#include "spla/io.hpp"
+#include "spla/library.hpp"
+#include "spla/matrix.hpp"
+#include "spla/object.hpp"
+#include "spla/op.hpp"
+#include "spla/ref.hpp"
+#include "spla/scalar.hpp"
+#include "spla/schedule.hpp"
+#include "spla/timer.hpp"
+#include "spla/type.hpp"
+#include "spla/vector.hpp"
 
-namespace spla {
-
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    template<typename T>
-    void cpu_dense_vec_resize(const uint      n_rows,
-                              CpuDenseVec<T>& vec) {
-        vec.Ax.resize(n_rows);
-        vec.values = n_rows;
-    }
-
-    template<typename T>
-    void cpu_dense_vec_fill(const T         value,
-                            CpuDenseVec<T>& vec) {
-        std::fill(vec.Ax.begin(), vec.Ax.end(), value);
-    }
-
-    template<typename T>
-    void cpu_dense_vec_to_dok(const uint            n_rows,
-                              const CpuDenseVec<T>& in,
-                              CpuDokVec<T>&         out) {
-        assert(out.values == 0);
-        assert(out.Ax.empty());
-
-        for (uint i = 0; i < n_rows; ++i) {
-            if (in.Ax[i]) {
-                out.Ax[i] = in.Ax[i];
-                out.values += 1;
-            }
-        }
-    }
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_CPU_DENSE_VEC_HPP
+#endif//SPLA_SPLA_HPP

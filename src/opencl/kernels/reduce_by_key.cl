@@ -1,5 +1,5 @@
-#include "common_incl.cl"
-#include "defines.cl"
+#include "common_def.cl"
+#include "common_func.cl"
 
 // generate uint offsets for unique keys to store result
 __kernel void reduce_by_key_generate_offsets(__global const uint* g_keys,

@@ -38,9 +38,6 @@ namespace spla {
 
         get_library();
 
-        if (type == BYTE) {
-            return ref_ptr<Scalar>(new TScalar<std::int8_t>());
-        }
         if (type == INT) {
             return ref_ptr<Scalar>(new TScalar<std::int32_t>());
         }

@@ -72,7 +72,7 @@ namespace spla {
 
     private:
         Status execute_dn2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_dense2dense");
+            TIME_PROFILE_SCOPE("opencl/vector_assign_dense2dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
@@ -96,7 +96,7 @@ namespace spla {
             m_kernel_dense_to_dense.setArg(2, value->get_value());
             m_kernel_dense_to_dense.setArg(3, r->get_n_rows());
 
-            uint n_groups_to_dispatch = std::max(std::min(r->get_n_rows() / m_block_size, uint(256)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 256);
 
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);
@@ -107,7 +107,7 @@ namespace spla {
         }
 
         Status execute_sp2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE(assign, "opencl/vector_assign_sparse2dense");
+            TIME_PROFILE_SCOPE("opencl/vector_assign_sparse2dense");
 
             auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
 
@@ -132,7 +132,7 @@ namespace spla {
             m_kernel_sparse_to_dense.setArg(3, value->get_value());
             m_kernel_sparse_to_dense.setArg(4, p_cl_mask_coo->values);
 
-            uint n_groups_to_dispatch = std::max(std::min(p_cl_mask_coo->values / m_block_size, uint(256)), uint(1));
+            uint n_groups_to_dispatch = div_up_clamp(p_cl_mask_coo->values, m_block_size, 1, 256);
 
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);

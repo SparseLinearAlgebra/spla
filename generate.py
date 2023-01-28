@@ -51,7 +51,7 @@ def process_includes(source_lines, processed_lines, disabled_files, dir_in):
 
 def convert_file(file_prefix, file_in, file_out, dir_in):
     processed_file = []
-    disabled_files = {"defines.cl"}
+    disabled_files = {"common_def.cl"}
     process_includes(read_file(file_in), processed_file, disabled_files, dir_in)
 
     with open(file_out, "w") as destination:

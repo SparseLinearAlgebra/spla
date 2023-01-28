@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_COO_VEC_HPP
-#define SPLA_CL_COO_VEC_HPP
+#ifndef SPLA_CL_FORMAT_COO_VEC_HPP
+#define SPLA_CL_FORMAT_COO_VEC_HPP
 
 #include <opencl/cl_fill.hpp>
 #include <opencl/cl_formats.hpp>
@@ -146,4 +146,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_COO_VEC_HPP
+#endif//SPLA_CL_FORMAT_COO_VEC_HPP
