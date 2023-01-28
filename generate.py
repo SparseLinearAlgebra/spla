@@ -40,13 +40,16 @@ def read_file(file):
 
 def process_includes(source_lines, processed_lines, disabled_files, dir_in):
     for line in source_lines:
+        if line.startswith("/*"):
+            continue
         if line.startswith("#include"):
             file_name = line.replace("#include ", "").replace("\"", "").replace("\n", "")
             if file_name not in disabled_files:
                 disabled_files.add(file_name)
                 process_includes(read_file(dir_in / file_name), processed_lines, disabled_files, dir_in)
-        else:
-            processed_lines.append(line)
+            continue
+
+        processed_lines.append(line)
 
 
 def convert_file(file_prefix, file_in, file_out, dir_in):

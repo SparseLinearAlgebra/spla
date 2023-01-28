@@ -169,6 +169,7 @@ endfunction()
 ## Dependencies config
 
 add_subdirectory(deps/robin_hood)
+add_subdirectory(deps/svector)
 
 if (SPLA_BUILD_OPENCL)
     if (SPLA_TARGET_MACOSX)
@@ -337,6 +338,7 @@ set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
 
 target_link_libraries(spla PRIVATE robin_hood)
+target_link_libraries(spla PRIVATE svector)
 
 if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)

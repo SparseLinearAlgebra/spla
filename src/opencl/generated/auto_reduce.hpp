@@ -7,6 +7,7 @@
 
 static const char source_reduce[] = R"(
 
+
 // wave-wide reduction in local memory
 void reduction_group(uint                   block_size,
                      uint                   lid,

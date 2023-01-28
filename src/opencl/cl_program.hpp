@@ -30,6 +30,8 @@
 
 #include <opencl/cl_accelerator.hpp>
 
+#include <svector.hpp>
+
 #include <string>
 #include <vector>
 
@@ -48,24 +50,24 @@ namespace spla {
     public:
         cl::Kernel make_kernel(const char* name);
 
-        [[nodiscard]] const std::vector<std::string>& get_defines() const { return m_defines; }
-        [[nodiscard]] const std::vector<std::string>& get_functions() const { return m_functions; }
-        [[nodiscard]] const std::vector<std::string>& get_sources() const { return m_sources; }
-        [[nodiscard]] const std::string&              get_source() const { return m_source; }
-        [[nodiscard]] const std::string&              get_name() const { return m_name; }
-        [[nodiscard]] const std::string&              get_key() const { return m_key; }
-        [[nodiscard]] const cl::Program&              get_program() const { return m_program; }
+        [[nodiscard]] const ankerl::svector<std::string, 8>& get_defines() const { return m_defines; }
+        [[nodiscard]] const ankerl::svector<std::string, 8>& get_functions() const { return m_functions; }
+        [[nodiscard]] const ankerl::svector<std::string, 2>& get_sources() const { return m_sources; }
+        [[nodiscard]] const std::string&                     get_source() const { return m_source; }
+        [[nodiscard]] const std::string&                     get_name() const { return m_name; }
+        [[nodiscard]] const std::string&                     get_key() const { return m_key; }
+        [[nodiscard]] const cl::Program&                     get_program() const { return m_program; }
 
     private:
         friend class CLProgramBuilder;
 
-        std::vector<std::string> m_defines;
-        std::vector<std::string> m_functions;
-        std::vector<std::string> m_sources;
-        std::string              m_source;
-        std::string              m_name;
-        std::string              m_key;
-        cl::Program              m_program;
+        ankerl::svector<std::string, 8> m_defines;
+        ankerl::svector<std::string, 8> m_functions;
+        ankerl::svector<std::string, 2> m_sources;
+        std::string                     m_source;
+        std::string                     m_name;
+        std::string                     m_key;
+        cl::Program                     m_program;
     };
 
     /**

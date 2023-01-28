@@ -7,6 +7,8 @@
 
 static const char source_sort_bitonic[] = R"(
 
+
+
 // memory bank conflict-free address and local buffer size
 #ifdef LM_NUM_MEM_BANKS
     #define LM_ADDR(address) (address + ((address) / LM_NUM_MEM_BANKS))

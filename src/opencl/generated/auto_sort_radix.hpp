@@ -7,6 +7,7 @@
 
 static const char source_sort_radix[] = R"(
 
+
 #ifdef RADIX_SORT
 // Number of different values in a mask, equals 1 << bits count
     #define BITS_VALS 4

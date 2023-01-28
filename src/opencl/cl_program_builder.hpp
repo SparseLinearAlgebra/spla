@@ -34,6 +34,8 @@
 #include <opencl/cl_program.hpp>
 #include <opencl/cl_program_cache.hpp>
 
+#include <svector.hpp>
+
 #include <memory>
 #include <sstream>
 #include <string>
@@ -65,12 +67,12 @@ namespace spla {
         cl::Kernel                        make_kernel(const char* name) { return m_program->make_kernel(name); }
 
     private:
-        std::vector<std::string>   m_defines;
-        std::vector<std::string>   m_functions;
-        std::string                m_name;
-        const char*                m_source = nullptr;
-        std::shared_ptr<CLProgram> m_program;
-        std::string                m_program_code;
+        ankerl::svector<std::string, 8> m_defines;
+        ankerl::svector<std::string, 8> m_functions;
+        std::string                     m_name;
+        const char*                     m_source = nullptr;
+        std::shared_ptr<CLProgram>      m_program;
+        std::string                     m_program_code;
     };
 
     /**

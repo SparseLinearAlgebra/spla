@@ -10,3 +10,4 @@
 - [opencl icd loader](https://github.com/KhronosGroup/OpenCL-ICD-Loader) - The OpenCL ICD Loader project.
 - [robin-hood hashing](https://github.com/martinus/robin-hood-hashing) - Fast & memory efficient hashtable based on
   robin hood hashing for C++11/14/17/20.
+- [svector](https://github.com/martinus/svector) - Compact SVO optimized vector for C++17 or higher.

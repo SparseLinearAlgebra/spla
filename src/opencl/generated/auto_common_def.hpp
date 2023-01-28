@@ -6,6 +6,7 @@
 #pragma once
 
 static const char source_common_def[] = R"(
+
 #pragma once
 
 #define TYPE             int
