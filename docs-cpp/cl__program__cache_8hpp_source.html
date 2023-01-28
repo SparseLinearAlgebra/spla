@@ -102,26 +102,27 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__accelerator_8hpp.html">opencl/cl_accelerator.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__program_8hpp.html">opencl/cl_program.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1CLProgramCache.html">   48</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1CLProgramCache.html">CLProgramCache</a> {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">void</span>                       <a class="code" href="classspla_1_1CLProgramCache.html#a77c2d68a6be9875ccf1b49838e0e0794">add_program</a>(<span class="keyword">const</span> std::shared_ptr&lt;CLProgram&gt;&amp; program);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::shared_ptr&lt;CLProgram&gt; <a class="code" href="classspla_1_1CLProgramCache.html#a1e71e91ce70ef07d3aa294108c70357a">get_program</a>(<span class="keyword">const</span> std::string&amp; source);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        std::unordered_map&lt;std::string, std::shared_ptr&lt;CLProgram&gt;&gt; m_programs;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_PROGRAM_CACHE_HPP</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;robin_hood.hpp&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classspla_1_1CLProgramCache.html">   49</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1CLProgramCache.html">CLProgramCache</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span>                       <a class="code" href="classspla_1_1CLProgramCache.html#a77c2d68a6be9875ccf1b49838e0e0794">add_program</a>(<span class="keyword">const</span> std::shared_ptr&lt;CLProgram&gt;&amp; program);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::shared_ptr&lt;CLProgram&gt; <a class="code" href="classspla_1_1CLProgramCache.html#a1e71e91ce70ef07d3aa294108c70357a">get_program</a>(<span class="keyword">const</span> std::string&amp; source);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        robin_hood::unordered_flat_map&lt;std::string, std::shared_ptr&lt;CLProgram&gt;&gt; m_programs;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_PROGRAM_CACHE_HPP</span></div>
 <div class="ttc" id="acl__accelerator_8hpp_html"><div class="ttname"><a href="cl__accelerator_8hpp.html">cl_accelerator.hpp</a></div></div>
 <div class="ttc" id="acl__program_8hpp_html"><div class="ttname"><a href="cl__program_8hpp.html">cl_program.hpp</a></div></div>
-<div class="ttc" id="aclassspla_1_1CLProgramCache_html"><div class="ttname"><a href="classspla_1_1CLProgramCache.html">spla::CLProgramCache</a></div><div class="ttdoc">Runtime cache for compiled opencl programs.</div><div class="ttdef"><b>Definition:</b> cl_program_cache.hpp:48</div></div>
+<div class="ttc" id="aclassspla_1_1CLProgramCache_html"><div class="ttname"><a href="classspla_1_1CLProgramCache.html">spla::CLProgramCache</a></div><div class="ttdoc">Runtime cache for compiled opencl programs.</div><div class="ttdef"><b>Definition:</b> cl_program_cache.hpp:49</div></div>
 <div class="ttc" id="aclassspla_1_1CLProgramCache_html_a1e71e91ce70ef07d3aa294108c70357a"><div class="ttname"><a href="classspla_1_1CLProgramCache.html#a1e71e91ce70ef07d3aa294108c70357a">spla::CLProgramCache::get_program</a></div><div class="ttdeci">std::shared_ptr&lt; CLProgram &gt; get_program(const std::string &amp;source)</div><div class="ttdef"><b>Definition:</b> cl_program_cache.cpp:36</div></div>
 <div class="ttc" id="aclassspla_1_1CLProgramCache_html_a77c2d68a6be9875ccf1b49838e0e0794"><div class="ttname"><a href="classspla_1_1CLProgramCache.html#a77c2d68a6be9875ccf1b49838e0e0794">spla::CLProgramCache::add_program</a></div><div class="ttdeci">void add_program(const std::shared_ptr&lt; CLProgram &gt; &amp;program)</div><div class="ttdef"><b>Definition:</b> cl_program_cache.cpp:32</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>

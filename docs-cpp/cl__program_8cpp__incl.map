@@ -1,9 +1,10 @@
 <map id="src/opencl/cl_program.cpp" name="src/opencl/cl_program.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="415,5,589,32"/>
-<area shape="rect" id="node2" href="$cl__program_8hpp.html" title=" " alt="" coords="447,80,557,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="476,5,651,32"/>
+<area shape="rect" id="node2" href="$cl__program_8hpp.html" title=" " alt="" coords="508,80,619,107"/>
 <area shape="rect" id="node3" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="417,155,587,181"/>
 <area shape="rect" id="node8" title=" " alt="" coords="235,304,289,331"/>
 <area shape="rect" id="node17" title=" " alt="" coords="881,229,939,256"/>
+<area shape="rect" id="node19" title=" " alt="" coords="663,155,752,181"/>
 <area shape="rect" id="node4" href="$accelerator_8hpp.html" title=" " alt="" coords="433,229,571,256"/>
 <area shape="rect" id="node9" href="$common_8hpp.html" title=" " alt="" coords="595,229,721,256"/>
 <area shape="rect" id="node11" href="$logger_8hpp.html" title=" " alt="" coords="745,229,856,256"/>
