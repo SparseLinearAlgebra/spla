@@ -49,20 +49,43 @@ uint lower_bound(const uint           x,
     }
     return first;
 }
+
+// find first element in a sorted array such x <= element
+uint lower_bound_local(const uint          x,
+                       uint                first,
+                       uint                size,
+                       __local const uint* array) {
+    while (size > 0) {
+        int step = size / 2;
+
+        if (array[first + step] < x) {
+            first = first + step + 1;
+            size -= step + 1;
+        } else {
+            size = step;
+        }
+    }
+    return first;
+}
 __kernel void bitonic_sort_local(__global uint* g_keys,
                                  __global TYPE* g_values,
-                                 const uint     n) {
-    const uint lid       = get_local_id(0);
-    const uint lsize     = get_local_size(0);
+                                 const uint     total_n) {
+    const uint grid  = get_group_id(0);
+    const uint lid   = get_local_id(0);
+    const uint lsize = get_local_size(0);
+
+    const uint offset    = grid * BLOCK_SIZE;
+    const uint border    = min(offset + BLOCK_SIZE, total_n);
+    const uint n         = border - offset;
     const uint n_aligned = ceil_to_pow2(n);
     const uint n_threads = n_aligned / 2;
 
-    __local uint s_keys[BITONIC_SORT_LOCAL_BUFFER_SIZE];
-    __local TYPE s_values[BITONIC_SORT_LOCAL_BUFFER_SIZE];
+    __local uint s_keys[BLOCK_SIZE];
+    __local TYPE s_values[BLOCK_SIZE];
 
-    for (uint i = lid; i < n; i += lsize) {
-        s_keys[i]   = g_keys[i];
-        s_values[i] = g_values[i];
+    for (uint i = lid; i + offset < border; i += lsize) {
+        s_keys[i]   = g_keys[i + offset];
+        s_values[i] = g_values[i + offset];
     }
 
     barrier(CLK_LOCAL_MEM_FENCE);
@@ -104,21 +127,22 @@ __kernel void bitonic_sort_local(__global uint* g_keys,
         }
     }
 
-    for (uint i = lid; i < n; i += lsize) {
-        g_keys[i]   = s_keys[i];
-        g_values[i] = s_values[i];
+    for (uint i = lid; i + offset < border; i += lsize) {
+        g_keys[i + offset]   = s_keys[i];
+        g_values[i + offset] = s_values[i];
     }
 }
 
 __kernel void bitonic_sort_global(__global uint* g_keys,
                                   __global TYPE* g_values,
-                                  const uint     n) {
+                                  const uint     n,
+                                  const uint     segment_start) {
     const uint lid       = get_local_id(0);
     const uint lsize     = get_local_size(0);
     const uint n_aligned = ceil_to_pow2(n);
     const uint n_threads = n_aligned / 2;
 
-    for (uint segment_size = 2; segment_size <= n_aligned; segment_size *= 2) {
+    for (uint segment_size = segment_start; segment_size <= n_aligned; segment_size *= 2) {
         const uint segment_size_half = segment_size / 2;
 
         for (uint tid = lid; tid < n_threads; tid += lsize) {

@@ -25,17 +25,73 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_SORT_BY_KEY_RADIX_HPP
-#define SPLA_CL_SORT_BY_KEY_RADIX_HPP
+#ifndef SPLA_CL_SORT_BY_KEY_HPP
+#define SPLA_CL_SORT_BY_KEY_HPP
 
 #include <opencl/cl_accelerator.hpp>
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
+#include <opencl/generated/auto_sort_bitonic.hpp>
 #include <opencl/generated/auto_sort_radix.hpp>
 
 #include <cmath>
 
 namespace spla {
+
+    template<typename T>
+    void cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+        if (size <= 1) {
+            LOG_MSG(Status::Ok, "nothing to do");
+            return;
+        }
+
+        auto* acc = get_acc_cl();
+
+        const uint pair_size            = sizeof(uint) + sizeof(T);
+        const uint local_size           = floor_to_pow2(acc->get_max_local_mem() / pair_size);
+        const uint max_treads_per_block = std::min(acc->get_max_wgs(), local_size / 2u);
+
+        assert(local_size > 2);
+
+        CLProgramBuilder builder;
+        builder.set_name("sort_bitonic")
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .add_define("BLOCK_SIZE", local_size)
+                .set_source(source_sort_bitonic);
+
+        if (!builder.build()) return;
+
+        auto kernel_local = builder.make_kernel("bitonic_sort_local");
+        kernel_local.setArg(0, keys);
+        kernel_local.setArg(1, values);
+        kernel_local.setArg(2, size);
+
+        if (size <= local_size) {
+            const uint wave_size = acc->get_wave_size();
+            const uint n_threads = align(std::min(size, max_treads_per_block), wave_size);
+
+            cl::NDRange global(n_threads);
+            cl::NDRange local(n_threads);
+            queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
+            return;
+        }
+
+        const uint n_groups = div_up(size, local_size);
+
+        cl::NDRange step_pre_sort_global(max_treads_per_block * n_groups);
+        cl::NDRange step_pre_sort_local(max_treads_per_block);
+        queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), step_pre_sort_global, step_pre_sort_local);
+
+        auto kernel_global = builder.make_kernel("bitonic_sort_global");
+        kernel_global.setArg(0, keys);
+        kernel_global.setArg(1, values);
+        kernel_global.setArg(2, size);
+        kernel_global.setArg(3, uint(local_size * 2));
+
+        cl::NDRange step_final_global(acc->get_max_wgs());
+        cl::NDRange step_final_local(acc->get_max_wgs());
+        queue.enqueueNDRangeKernel(kernel_global, cl::NDRange(), step_final_global, step_final_local);
+    }
 
     template<typename T>
     void cl_sort_by_key_radix(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, uint max_key = 0xffffffff) {
@@ -44,7 +100,7 @@ namespace spla {
             return;
         }
 
-        const uint BITS_COUNT = 2;
+        const uint BITS_COUNT = 4;
         const uint BITS_VALS  = 1 << BITS_COUNT;
         const uint BITS_MASK  = BITS_VALS - 1;
 
@@ -113,6 +169,22 @@ namespace spla {
         values = in_values;
     }
 
+    template<typename T>
+    void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, uint max_key = 0xffffffff) {
+        if (n <= 1) {
+            LOG_MSG(Status::Ok, "nothing to do");
+            return;
+        }
+
+        const uint sort_switch = 2u << 14u;
+
+        if (n <= sort_switch) {
+            cl_sort_by_key_bitonic<T>(queue, keys, values, n);
+        } else {
+            cl_sort_by_key_radix<T>(queue, keys, values, n, max_key);
+        }
+    }
+
 }// namespace spla
 
-#endif//SPLA_CL_SORT_BY_KEY_RADIX_HPP
+#endif//SPLA_CL_SORT_BY_KEY_HPP

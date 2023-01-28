@@ -56,6 +56,14 @@ namespace spla {
         return r;
     }
 
+    static inline uint floor_to_pow2(uint n) {
+        uint r = 1;
+        while (r <= n) {
+            r *= 2;
+        }
+        return r / 2;
+    }
+
 }// namespace spla
 
 #endif//SPLA_COMMON_HPP

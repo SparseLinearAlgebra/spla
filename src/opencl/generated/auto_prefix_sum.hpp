@@ -49,6 +49,24 @@ uint lower_bound(const uint           x,
     }
     return first;
 }
+
+// find first element in a sorted array such x <= element
+uint lower_bound_local(const uint          x,
+                       uint                first,
+                       uint                size,
+                       __local const uint* array) {
+    while (size > 0) {
+        int step = size / 2;
+
+        if (array[first + step] < x) {
+            first = first + step + 1;
+            size -= step + 1;
+        } else {
+            size = step;
+        }
+    }
+    return first;
+}
 // gpu parallel prefix scan (blelloch)
 // - https://developer.nvidia.com/gpugems/gpugems3/part-vi-gpu-computing/chapter-39-parallel-prefix-sum-scan-cuda
 // - http://users.umiacs.umd.edu/~ramani/cmsc828e_gpusci/ScanTalk.pdf

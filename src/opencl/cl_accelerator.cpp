@@ -91,9 +91,10 @@ namespace spla {
         build_description();
 
         m_vendor_code.clear();
-        m_vendor_name = m_device.getInfo<CL_DEVICE_VENDOR>();
-        m_vendor_id   = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
-        m_max_wgs     = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
+        m_vendor_name   = m_device.getInfo<CL_DEVICE_VENDOR>();
+        m_vendor_id     = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
+        m_max_wgs       = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
+        m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
 
         if (m_vendor_name.find("Intel") != std::string::npos ||
             m_vendor_name.find("intel") != std::string::npos ||

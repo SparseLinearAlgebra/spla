@@ -42,8 +42,7 @@
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_reduce_by_key.hpp>
-#include <opencl/cl_sort_by_key_bitonic.hpp>
-#include <opencl/cl_sort_by_key_radix.hpp>
+#include <opencl/cl_sort_by_key.hpp>
 #include <opencl/generated/auto_vxm.hpp>
 
 #include <algorithm>
@@ -325,15 +324,9 @@ namespace spla {
             CL_DISPATCH_PROFILED("collect", queue, m_kernel_sparse_collect, cl::NDRange(), collect_global, collect_local);
 
             CL_PROFILE_BEGIN("sort", queue)
-            const uint max_key     = r->get_n_rows() - 1;
-            const uint n_elements  = prods_count[0];
-            const uint sort_switch = 1024 * 8;
-
-            if (n_elements <= sort_switch) {
-                cl_sort_by_key_bitonic<T>(queue, cl_prodi, cl_prodx, n_elements);
-            } else {
-                cl_sort_by_key_radix<T>(queue, cl_prodi, cl_prodx, n_elements, max_key);
-            }
+            const uint max_key    = r->get_n_rows() - 1;
+            const uint n_elements = prods_count[0];
+            cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, n_elements, max_key);
             CL_PROFILE_END();
 
             uint       reduced_size;

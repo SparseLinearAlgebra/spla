@@ -32,6 +32,7 @@
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_reduce_by_key.hpp>
+#include <spla/timer.hpp>
 
 namespace spla {
 
@@ -40,16 +41,20 @@ namespace spla {
                           const cl::Buffer& keys, const cl::Buffer& values, const uint size,
                           cl::Buffer& unique_keys, cl::Buffer& reduce_values, uint& reduced_size,
                           const ref_ptr<TOpBinary<T, T, T>>& reduce_op) {
+        auto* cl_acc = get_acc_cl();
+
         CLProgramBuilder builder;
         builder.set_name("reduce_by_key")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .add_define("BLOCK_SIZE", cl_acc->get_max_wgs())
                 .add_op("OP_BINARY", reduce_op.template as<OpBinary>())
                 .set_source(source_reduce_by_key);
 
         if (!builder.build()) return;
 
-        auto*      cl_acc     = get_acc_cl();
-        const uint block_size = cl_acc->get_default_wgz();
+        const uint block_size        = cl_acc->get_default_wgz();
+        const uint sequential_switch = 32;
+        const uint small_switch      = cl_acc->get_max_wgs();
 
         if (size == 0) {
             reduced_size = 0;
@@ -61,6 +66,25 @@ namespace spla {
             reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * reduced_size);
             queue.enqueueCopyBuffer(keys, unique_keys, 0, 0, sizeof(uint) * reduced_size);
             queue.enqueueCopyBuffer(values, reduce_values, 0, 0, sizeof(T) * reduced_size);
+            return;
+        }
+        if (size <= small_switch) {
+            cl::Buffer cl_reduced_count(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
+            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
+            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+
+            auto kernel_sequential = builder.make_kernel("reduce_by_key_small");
+            kernel_sequential.setArg(0, keys);
+            kernel_sequential.setArg(1, values);
+            kernel_sequential.setArg(2, unique_keys);
+            kernel_sequential.setArg(3, reduce_values);
+            kernel_sequential.setArg(4, cl_reduced_count);
+            kernel_sequential.setArg(5, size);
+
+            cl::NDRange global(cl_acc->get_max_wgs());
+            cl::NDRange local(cl_acc->get_max_wgs());
+            queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);
+            queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
             return;
         }
 
@@ -86,18 +110,18 @@ namespace spla {
         unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * reduced_size);
         reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * reduced_size);
 
-        auto kernel_reduce_naive = builder.make_kernel("reduce_by_key_naive");
-        kernel_reduce_naive.setArg(0, keys);
-        kernel_reduce_naive.setArg(1, values);
-        kernel_reduce_naive.setArg(2, offsets);
-        kernel_reduce_naive.setArg(3, unique_keys);
-        kernel_reduce_naive.setArg(4, reduce_values);
-        kernel_reduce_naive.setArg(5, size);
-        kernel_reduce_naive.setArg(6, reduced_size);
+        auto kernel_reduce_scalar = builder.make_kernel("reduce_by_key_scalar");
+        kernel_reduce_scalar.setArg(0, keys);
+        kernel_reduce_scalar.setArg(1, values);
+        kernel_reduce_scalar.setArg(2, offsets);
+        kernel_reduce_scalar.setArg(3, unique_keys);
+        kernel_reduce_scalar.setArg(4, reduce_values);
+        kernel_reduce_scalar.setArg(5, size);
+        kernel_reduce_scalar.setArg(6, reduced_size);
 
         cl::NDRange reduce_naive_global(align(reduced_size, block_size));
         cl::NDRange reduce_naive_local(block_size);
-        queue.enqueueNDRangeKernel(kernel_reduce_naive, cl::NDRange(), reduce_naive_global, reduce_naive_local);
+        queue.enqueueNDRangeKernel(kernel_reduce_scalar, cl::NDRange(), reduce_naive_global, reduce_naive_local);
     }
 
 }// namespace spla

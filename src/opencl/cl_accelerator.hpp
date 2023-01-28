@@ -83,6 +83,7 @@ namespace spla {
         [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
         [[nodiscard]] uint               get_vendor_id() const { return m_vendor_id; }
         [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
+        [[nodiscard]] uint               get_max_local_mem() const { return m_max_local_mem; }
         [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
@@ -102,6 +103,7 @@ namespace spla {
         std::string m_vendor_code;
         uint        m_vendor_id        = 0;
         uint        m_max_wgs          = 0;
+        uint        m_max_local_mem    = 0;
         uint        m_default_wgs      = 64;
         uint        m_wave_size        = 32;
         uint        m_num_of_mem_banks = 32;
