@@ -31,8 +31,9 @@
 #include <spla/config.hpp>
 #include <spla/schedule.hpp>
 
+#include <robin_hood.hpp>
+
 #include <string>
-#include <unordered_map>
 
 namespace spla {
 
@@ -79,7 +80,7 @@ namespace spla {
         virtual std::shared_ptr<RegistryAlgo> find(const std::string& key);
 
     private:
-        std::unordered_map<std::string, std::shared_ptr<RegistryAlgo>> m_registry;
+        robin_hood::unordered_flat_map<std::string, std::shared_ptr<RegistryAlgo>> m_registry;
     };
 
     /**

@@ -33,6 +33,8 @@
 #include <core/tdecoration.hpp>
 #include <util/pair_hash.hpp>
 
+#include <robin_hood.hpp>
+
 #include <algorithm>
 #include <cassert>
 #include <functional>
@@ -58,8 +60,8 @@ namespace spla {
 
         using Reduce = std::function<T(T accum, T added)>;
 
-        std::unordered_map<uint, T> Ax{};
-        Reduce                      reduce = [](T, T a) { return a; };
+        robin_hood::unordered_flat_map<uint, T> Ax{};
+        Reduce                                  reduce = [](T, T a) { return a; };
     };
 
     /**
@@ -132,8 +134,8 @@ namespace spla {
         using Key    = std::pair<uint, uint>;
         using Reduce = std::function<T(T accum, T added)>;
 
-        std::unordered_map<Key, T, pair_hash> Ax;
-        Reduce                                reduce = [](T, T a) { return a; };
+        robin_hood::unordered_flat_map<Key, T, pair_hash> Ax;
+        Reduce                                            reduce = [](T, T a) { return a; };
     };
 
     /**

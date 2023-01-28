@@ -38,6 +38,8 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <robin_hood.hpp>
+
 namespace spla {
 
     template<typename T>
@@ -85,7 +87,7 @@ namespace spla {
 
             const uint N = p_sparse_v->values;
 
-            std::unordered_map<uint, T> r_tmp;
+            robin_hood::unordered_flat_map<uint, T> r_tmp;
 
             for (uint idx = 0; idx < N; ++idx) {
                 const uint v_i = p_sparse_v->Ai[idx];
@@ -109,16 +111,20 @@ namespace spla {
                 }
             }
 
-            std::vector<std::pair<uint, T>> r_entries(r_tmp.size());
-            std::copy(r_tmp.begin(), r_tmp.end(), r_entries.begin());
+            std::vector<std::pair<uint, T>> r_entries;
+            r_entries.reserve(r_tmp.size());
+            for (const auto& e : r_tmp) {
+                r_entries.emplace_back(e.first, e.second);
+            }
             std::sort(r_entries.begin(), r_entries.end());
 
+            p_sparse_r->values = uint(r_tmp.size());
+            p_sparse_r->Ai.reserve(r_tmp.size());
+            p_sparse_r->Ax.reserve(r_tmp.size());
             for (const auto& e : r_entries) {
                 p_sparse_r->Ai.push_back(e.first);
                 p_sparse_r->Ax.push_back(e.second);
             }
-
-            p_sparse_r->values = uint(r_tmp.size());
 
             return Status::Ok;
         }

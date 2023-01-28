@@ -31,8 +31,9 @@
 #include <opencl/cl_accelerator.hpp>
 #include <opencl/cl_program.hpp>
 
+#include <robin_hood.hpp>
+
 #include <string>
-#include <unordered_map>
 
 namespace spla {
 
@@ -51,7 +52,7 @@ namespace spla {
         std::shared_ptr<CLProgram> get_program(const std::string& source);
 
     private:
-        std::unordered_map<std::string, std::shared_ptr<CLProgram>> m_programs;
+        robin_hood::unordered_flat_map<std::string, std::shared_ptr<CLProgram>> m_programs;
     };
 
     /**

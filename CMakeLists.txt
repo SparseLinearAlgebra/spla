@@ -168,6 +168,8 @@ endfunction()
 ######################################################################
 ## Dependencies config
 
+add_subdirectory(deps/robin_hood)
+
 if (SPLA_BUILD_OPENCL)
     if (SPLA_TARGET_MACOSX)
         message(STATUS "Add standard Apple OpenCL package")
@@ -333,6 +335,8 @@ target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
 
 set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
+
+target_link_libraries(spla PRIVATE robin_hood)
 
 if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)
