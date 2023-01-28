@@ -138,16 +138,16 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#ifndef SPLA_RELEASE</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#aaf5a4640546827297d89072adc3fbb8a">   83</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SUBSCOPE(parent, label, name)                                           \</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __auto_##label(&amp;__auto_##parent, name, __FILE__, __FUNCTION__); \</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">        TimeProfilerScope        __auto_scope_##label(&amp;__auto_##label);</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#a3e0692da014ade0b0162cd943a348a84">   83</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SUBSCOPE(name)                                                                        \</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __auto_profile_sublabel(&amp;__auto_profile_label, name, __FILE__, __FUNCTION__); \</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">        TimeProfilerScope        __auto_profile_subscope(&amp;__auto_profile_sublabel);</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">   87</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label, name)                                             \</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __auto_##label(nullptr, name, __FILE__, __FUNCTION__); \</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">        TimeProfilerScope        __auto_scope_##label(&amp;__auto_##label);</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">   87</a></span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(name)                                                          \</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">        static TimeProfilerLabel __auto_profile_label(nullptr, name, __FILE__, __FUNCTION__); \</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">        TimeProfilerScope        __auto_profile_scope(&amp;__auto_profile_label);</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(label, name)</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SUBSCOPE(parent, label, name)</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SCOPE(name)</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">    #define TIME_PROFILE_SUBSCOPE(name)</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}<span class="comment">// namespace spla</span></div>

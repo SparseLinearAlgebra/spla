@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: src/sequential/cpu_algo_registry.cpp File Reference</title>
+<title>spla: src/cpu/cpu_algo_registry.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_58b1a0b8b44d44f15ea7004973fcf660.html">sequential</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2c61f424fd391396db977702a2beee9a.html">cpu</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -75,67 +75,67 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="cpu__algo__registry_8hpp_source.html">cpu_algo_registry.hpp</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="registry_8hpp_source.html">core/registry.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="top_8hpp_source.html">core/top.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__algo__callback_8hpp_source.html">sequential/cpu_algo_callback.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__mxv_8hpp_source.html">sequential/cpu_mxv.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__vector__assign_8hpp_source.html">sequential/cpu_vector_assign.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__vector__reduce_8hpp_source.html">sequential/cpu_vector_reduce.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__vector__select__count_8hpp_source.html">sequential/cpu_vector_select_count.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="cpu__vxm_8hpp_source.html">sequential/cpu_vxm.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__algo__callback_8hpp_source.html">cpu/cpu_algo_callback.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__mxv_8hpp_source.html">cpu/cpu_mxv.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__vector__assign_8hpp_source.html">cpu/cpu_vector_assign.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__vector__reduce_8hpp_source.html">cpu/cpu_vector_reduce.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__vector__select__count_8hpp_source.html">cpu/cpu_vector_select_count.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cpu__vxm_8hpp_source.html">cpu/cpu_vxm.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cpu_algo_registry.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="cpu__algo__registry_8cpp__incl.png" border="0" usemap="#asrc_2sequential_2cpu__algo__registry_8cpp" alt=""/></div>
-<map name="asrc_2sequential_2cpu__algo__registry_8cpp" id="asrc_2sequential_2cpu__algo__registry_8cpp">
-<area shape="rect" title=" " alt="" coords="813,5,941,47"/>
-<area shape="rect" href="cpu__algo__registry_8hpp.html" title=" " alt="" coords="5,102,152,129"/>
-<area shape="rect" href="registry_8hpp.html" title=" " alt="" coords="489,266,607,293"/>
-<area shape="rect" href="top_8hpp.html" title=" " alt="" coords="1417,266,1511,293"/>
-<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="467,95,605,136"/>
-<area shape="rect" href="cpu__mxv_8hpp.html" title=" " alt="" coords="1150,102,1311,129"/>
-<area shape="rect" href="cpu__vector__assign_8hpp.html" title=" " alt="" coords="629,95,779,136"/>
-<area shape="rect" href="cpu__vector__reduce_8hpp.html" title=" " alt="" coords="976,95,1125,136"/>
-<area shape="rect" href="cpu__vector__select__count_8hpp.html" title=" " alt="" coords="803,95,952,136"/>
-<area shape="rect" href="cpu__vxm_8hpp.html" title=" " alt="" coords="1335,102,1497,129"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="1913,796,2021,823"/>
-<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="757,348,883,375"/>
-<area shape="rect" title=" " alt="" coords="930,796,985,823"/>
-<area shape="rect" title=" " alt="" coords="382,796,493,823"/>
-<area shape="rect" title=" " alt="" coords="1929,871,2004,897"/>
-<area shape="rect" title=" " alt="" coords="2206,871,2285,897"/>
-<area shape="rect" href="descriptor_8hpp.html" title=" " alt="" coords="807,572,910,599"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="955,647,1037,673"/>
-<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="1218,423,1299,449"/>
-<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="1138,497,1198,524"/>
-<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="879,497,961,524"/>
-<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="959,423,1041,449"/>
-<area shape="rect" title=" " alt="" coords="1476,423,1535,449"/>
-<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="956,721,1036,748"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="1372,721,1433,748"/>
-<area shape="rect" title=" " alt="" coords="1189,796,1251,823"/>
-<area shape="rect" title=" " alt="" coords="1738,796,1790,823"/>
-<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="1037,572,1107,599"/>
-<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="1161,348,1263,375"/>
-<area shape="rect" title=" " alt="" coords="2212,348,2281,375"/>
-<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="481,184,615,211"/>
-<area shape="rect" href="schedule__tasks_8hpp.html" title=" " alt="" coords="691,184,885,211"/>
-<area shape="rect" href="time__profiler_8hpp.html" title=" " alt="" coords="466,721,630,748"/>
-<area shape="rect" title=" " alt="" coords="517,796,579,823"/>
-<area shape="rect" title=" " alt="" coords="603,796,650,823"/>
-<area shape="rect" title=" " alt="" coords="288,796,357,823"/>
-<area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="1812,184,1927,211"/>
-<area shape="rect" href="tscalar_8hpp.html" title=" " alt="" coords="1061,184,1176,211"/>
-<area shape="rect" href="tvector_8hpp.html" title=" " alt="" coords="1504,184,1619,211"/>
-<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="2279,266,2390,293"/>
-<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="1609,423,1748,449"/>
-<area shape="rect" href="storage__manager_8hpp.html" title=" " alt="" coords="1714,348,1907,375"/>
-<area shape="rect" href="storage__manager__matrix_8hpp.html" title=" " alt="" coords="2085,259,2254,300"/>
-<area shape="rect" title=" " alt="" coords="2306,348,2363,375"/>
-<area shape="rect" title=" " alt="" coords="1609,497,1660,524"/>
-<area shape="rect" title=" " alt="" coords="1685,497,1739,524"/>
-<area shape="rect" title=" " alt="" coords="1855,423,1929,449"/>
-<area shape="rect" title=" " alt="" coords="1773,423,1830,449"/>
-<area shape="rect" href="cpu__csr_8hpp.html" title=" " alt="" coords="2033,348,2188,375"/>
-<area shape="rect" href="storage__manager__vector_8hpp.html" title=" " alt="" coords="1738,259,1907,300"/>
+<div class="center"><img src="cpu__algo__registry_8cpp__incl.png" border="0" usemap="#asrc_2cpu_2cpu__algo__registry_8cpp" alt=""/></div>
+<map name="asrc_2cpu_2cpu__algo__registry_8cpp" id="asrc_2cpu_2cpu__algo__registry_8cpp">
+<area shape="rect" title=" " alt="" coords="779,5,973,32"/>
+<area shape="rect" href="cpu__algo__registry_8hpp.html" title=" " alt="" coords="5,87,152,114"/>
+<area shape="rect" href="registry_8hpp.html" title=" " alt="" coords="315,251,432,278"/>
+<area shape="rect" href="top_8hpp.html" title=" " alt="" coords="1365,251,1459,278"/>
+<area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="377,87,556,114"/>
+<area shape="rect" href="cpu__mxv_8hpp.html" title=" " alt="" coords="1169,87,1292,114"/>
+<area shape="rect" href="cpu__vector__assign_8hpp.html" title=" " alt="" coords="581,87,761,114"/>
+<area shape="rect" href="cpu__vector__reduce_8hpp.html" title=" " alt="" coords="785,87,967,114"/>
+<area shape="rect" href="cpu__vector__select__count_8hpp.html" title=" " alt="" coords="991,80,1145,121"/>
+<area shape="rect" href="cpu__vxm_8hpp.html" title=" " alt="" coords="1316,87,1439,114"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="1435,707,1543,733"/>
+<area shape="rect" href="schedule_8hpp.html" title=" " alt="" coords="554,333,681,360"/>
+<area shape="rect" title=" " alt="" coords="643,707,698,733"/>
+<area shape="rect" title=" " alt="" coords="450,707,561,733"/>
+<area shape="rect" title=" " alt="" coords="1452,781,1527,808"/>
+<area shape="rect" title=" " alt="" coords="2099,781,2178,808"/>
+<area shape="rect" href="descriptor_8hpp.html" title=" " alt="" coords="662,408,765,435"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="919,557,1001,584"/>
+<area shape="rect" title=" " alt="" coords="1552,408,1611,435"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="560,632,640,659"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="1939,632,2000,659"/>
+<area shape="rect" title=" " alt="" coords="1027,707,1088,733"/>
+<area shape="rect" title=" " alt="" coords="2038,707,2090,733"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="1200,408,1288,435"/>
+<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="1222,333,1325,360"/>
+<area shape="rect" title=" " alt="" coords="2035,333,2104,360"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="1049,483,1119,509"/>
+<area shape="rect" href="dispatcher_8hpp.html" title=" " alt="" coords="531,169,666,196"/>
+<area shape="rect" href="schedule__tasks_8hpp.html" title=" " alt="" coords="742,169,935,196"/>
+<area shape="rect" href="exec_8hpp.html" title=" " alt="" coords="725,251,827,278"/>
+<area shape="rect" href="time__profiler_8hpp.html" title=" " alt="" coords="131,632,295,659"/>
+<area shape="rect" href="matrix_8hpp.html" title=" " alt="" coords="1117,333,1198,360"/>
+<area shape="rect" href="scalar_8hpp.html" title=" " alt="" coords="891,408,973,435"/>
+<area shape="rect" href="vector_8hpp.html" title=" " alt="" coords="959,333,1041,360"/>
+<area shape="rect" title=" " alt="" coords="104,707,165,733"/>
+<area shape="rect" title=" " alt="" coords="190,707,237,733"/>
+<area shape="rect" title=" " alt="" coords="261,707,331,733"/>
+<area shape="rect" href="tmatrix_8hpp.html" title=" " alt="" coords="1893,169,2008,196"/>
+<area shape="rect" href="tscalar_8hpp.html" title=" " alt="" coords="1011,169,1125,196"/>
+<area shape="rect" href="tvector_8hpp.html" title=" " alt="" coords="1403,169,1517,196"/>
+<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="2177,251,2287,278"/>
+<area shape="rect" href="tdecoration_8hpp.html" title=" " alt="" coords="1917,408,2056,435"/>
+<area shape="rect" href="storage__manager_8hpp.html" title=" " alt="" coords="1766,333,1959,360"/>
+<area shape="rect" href="storage__manager__matrix_8hpp.html" title=" " alt="" coords="1881,244,2050,285"/>
+<area shape="rect" title=" " alt="" coords="2179,333,2237,360"/>
+<area shape="rect" title=" " alt="" coords="1819,483,1869,509"/>
+<area shape="rect" title=" " alt="" coords="1894,483,1949,509"/>
+<area shape="rect" title=" " alt="" coords="1736,408,1811,435"/>
+<area shape="rect" title=" " alt="" coords="1835,408,1893,435"/>
+<area shape="rect" href="storage__manager__vector_8hpp.html" title=" " alt="" coords="1483,244,1653,285"/>
 </map>
 </div>
 </div><table class="memberdecls">

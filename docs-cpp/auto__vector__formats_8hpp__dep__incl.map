@@ -1,5 +1,5 @@
 <map id="src/opencl/generated/auto_vector_formats.hpp" name="src/opencl/generated/auto_vector_formats.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="99,5,269,47"/>
-<area shape="rect" id="node2" href="$cl__coo__vec_8hpp.html" title=" " alt="" coords="5,102,181,129"/>
-<area shape="rect" id="node3" href="$cl__dense__vec_8hpp.html" title=" " alt="" coords="205,95,344,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="72,5,241,47"/>
+<area shape="rect" id="node2" href="$cl__format__coo__vec_8hpp.html" title=" " alt="" coords="5,95,145,136"/>
+<area shape="rect" id="node3" href="$cl__format__dense__vec_8hpp.html" title=" " alt="" coords="169,95,309,136"/>
 </map>

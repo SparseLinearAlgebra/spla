@@ -1,11 +1,11 @@
 <map id="src/storage/storage_manager_matrix.hpp" name="src/storage/storage_manager_matrix.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="309,5,455,47"/>
-<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="314,95,450,121"/>
-<area shape="rect" id="node3" href="$matrix_8cpp.html" title=" " alt="" coords="5,177,108,203"/>
-<area shape="rect" id="node4" href="$cl__mxv_8hpp.html" title=" " alt="" coords="132,177,283,203"/>
-<area shape="rect" id="node6" href="$cl__vxm_8hpp.html" title=" " alt="" coords="307,177,457,203"/>
-<area shape="rect" id="node7" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="482,169,610,211"/>
-<area shape="rect" id="node9" href="$cpu__vxm_8hpp.html" title=" " alt="" coords="634,169,762,211"/>
-<area shape="rect" id="node5" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="232,259,359,300"/>
-<area shape="rect" id="node8" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="558,259,686,300"/>
+<area shape="rect" id="node1" title=" " alt="" coords="323,5,468,47"/>
+<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="327,95,463,121"/>
+<area shape="rect" id="node3" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="5,169,151,196"/>
+<area shape="rect" id="node5" href="$cpu__vxm_8hpp.html" title=" " alt="" coords="175,169,320,196"/>
+<area shape="rect" id="node6" href="$matrix_8cpp.html" title=" " alt="" coords="344,169,447,196"/>
+<area shape="rect" id="node7" href="$cl__mxv_8hpp.html" title=" " alt="" coords="471,169,621,196"/>
+<area shape="rect" id="node9" href="$cl__vxm_8hpp.html" title=" " alt="" coords="645,169,796,196"/>
+<area shape="rect" id="node4" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="66,251,261,278"/>
+<area shape="rect" id="node8" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="569,244,696,285"/>
 </map>

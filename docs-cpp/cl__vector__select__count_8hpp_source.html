@@ -130,7 +130,7 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__select__count__cl.html#a1e2918424fc5d903b83281e597f5f515">   61</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__v__select__count__cl.html#a1e2918424fc5d903b83281e597f5f515">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a>(count, <span class="stringliteral">&quot;opencl/vector_select_count&quot;</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vector_select_count&quot;</span>);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_select_count&gt;();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
@@ -152,7 +152,7 @@ $(function() {
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            m_kernel.setArg(1, cl_count);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            m_kernel.setArg(2, v-&gt;get_n_rows());</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_groups_to_dispatch = <a class="code" href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">std::max</a>(<a class="code" href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">std::min</a>(v-&gt;get_n_rows() / m_block_size, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(256)), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(1));</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_groups_to_dispatch = div_up_clamp(v-&gt;get_n_rows(), m_block_size, 1, 256);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            cl::NDRange global(m_block_size * n_groups_to_dispatch);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            cl::NDRange local(m_block_size);</div>
@@ -220,13 +220,11 @@ $(function() {
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="agroup__spla_html_gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef"><div class="ttname"><a href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">spla::Format::CLDenseVec</a></div><div class="ttdeci">@ CLDenseVec</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
-<div class="ttc" id="aop_8cpp_html_a2e1da8593b0244d8e9e3b84ef7b35e73"><div class="ttname"><a href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">max</a></div><div class="ttdeci">#define max</div><div class="ttdef"><b>Definition:</b> op.cpp:80</div></div>
-<div class="ttc" id="aop_8cpp_html_a3f06f0e9f7beb8214afeea0b18ef8377"><div class="ttname"><a href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">min</a></div><div class="ttdeci">#define min</div><div class="ttdef"><b>Definition:</b> op.cpp:79</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
 <div class="ttc" id="astructspla_1_1DispatchContext_html"><div class="ttname"><a href="structspla_1_1DispatchContext.html">spla::DispatchContext</a></div><div class="ttdoc">Execution context of a single task.</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:46</div></div>
 <div class="ttc" id="astructspla_1_1DispatchContext_html_a98e2290d311615d7d9ccdcff5e5fff25"><div class="ttname"><a href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">spla::DispatchContext::task</a></div><div class="ttdeci">ref_ptr&lt; ScheduleTask &gt; task</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:48</div></div>
-<div class="ttc" id="atime__profiler_8hpp_html_a617451274bd4b6292805d2ac40593057"><div class="ttname"><a href="time__profiler_8hpp.html#a617451274bd4b6292805d2ac40593057">TIME_PROFILE_SCOPE</a></div><div class="ttdeci">#define TIME_PROFILE_SCOPE(label, name)</div><div class="ttdef"><b>Definition:</b> time_profiler.hpp:87</div></div>
+<div class="ttc" id="atime__profiler_8hpp_html_aa9f47295bb25f79153ff2a3af8e3d198"><div class="ttname"><a href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a></div><div class="ttdeci">#define TIME_PROFILE_SCOPE(name)</div><div class="ttdef"><b>Definition:</b> time_profiler.hpp:87</div></div>
 <div class="ttc" id="atop_8hpp_html"><div class="ttname"><a href="top_8hpp.html">top.hpp</a></div></div>
 <div class="ttc" id="atscalar_8hpp_html"><div class="ttname"><a href="tscalar_8hpp.html">tscalar.hpp</a></div></div>
 <div class="ttc" id="attype_8hpp_html"><div class="ttname"><a href="ttype_8hpp.html">ttype.hpp</a></div></div>

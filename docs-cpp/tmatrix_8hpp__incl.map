@@ -7,7 +7,7 @@
 <area shape="rect" id="node23" href="$top_8hpp.html" title=" " alt="" coords="403,80,496,107"/>
 <area shape="rect" id="node24" href="$ttype_8hpp.html" title=" " alt="" coords="25,162,127,189"/>
 <area shape="rect" id="node25" href="$storage__manager_8hpp.html" title=" " alt="" coords="1331,319,1525,345"/>
-<area shape="rect" id="node29" href="$storage__manager__matrix_8hpp.html" title=" " alt="" coords="969,155,1138,196"/>
+<area shape="rect" id="node29" href="$storage__manager__matrix_8hpp.html" title=" " alt="" coords="978,155,1147,196"/>
 <area shape="rect" id="node3" title=" " alt="" coords="523,543,597,569"/>
 <area shape="rect" id="node4" title=" " alt="" coords="718,543,797,569"/>
 <area shape="rect" id="node6" href="$object_8hpp.html" title=" " alt="" coords="181,319,262,345"/>
@@ -28,10 +28,10 @@
 <area shape="rect" id="node26" title=" " alt="" coords="1233,393,1308,420"/>
 <area shape="rect" id="node27" title=" " alt="" coords="1679,393,1737,420"/>
 <area shape="rect" id="node28" title=" " alt="" coords="1332,393,1391,420"/>
-<area shape="rect" id="node30" href="$cpu__csr_8hpp.html" title=" " alt="" coords="1147,244,1301,271"/>
-<area shape="rect" id="node31" href="$cpu__formats_8hpp.html" title=" " alt="" coords="908,319,1089,345"/>
-<area shape="rect" id="node34" href="$cpu__dok_8hpp.html" title=" " alt="" coords="742,244,901,271"/>
-<area shape="rect" id="node35" href="$cpu__lil_8hpp.html" title=" " alt="" coords="925,244,1072,271"/>
+<area shape="rect" id="node30" href="$cpu__format__csr_8hpp.html" title=" " alt="" coords="1157,244,1318,271"/>
+<area shape="rect" id="node31" href="$cpu__formats_8hpp.html" title=" " alt="" coords="934,319,1077,345"/>
+<area shape="rect" id="node34" href="$cpu__format__dok_8hpp.html" title=" " alt="" coords="741,244,905,271"/>
+<area shape="rect" id="node35" href="$cpu__format__lil_8hpp.html" title=" " alt="" coords="929,244,1081,271"/>
 <area shape="rect" id="node32" href="$pair__hash_8hpp.html" title=" " alt="" coords="1087,393,1209,420"/>
 <area shape="rect" id="node33" title=" " alt="" coords="842,393,910,420"/>
 </map>

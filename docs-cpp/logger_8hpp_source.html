@@ -120,11 +120,11 @@ $(function() {
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">   65</a></span>&#160;<span class="preprocessor">#define LOG_MSG(status, msg)                                                                           \</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">    do {                                                                                               \</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">        std::stringstream __ss;                                                                        \</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">        __ss &lt;&lt; msg;                                                                                   \</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">        get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast&lt;int&gt;(__LINE__)); \</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">   65</a></span>&#160;<span class="preprocessor">#define LOG_MSG(status, msg)                                                                                          \</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">    do {                                                                                                              \</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">        std::stringstream __ss;                                                                                       \</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">        __ss &lt;&lt; msg;                                                                                                  \</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">        get_library()-&gt;get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast&lt;int&gt;(__LINE__)); \</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">    } while (false);</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_LOGGER_HPP</span></div>

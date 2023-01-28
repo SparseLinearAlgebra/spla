@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['matrix_2ecpp_800',['matrix.cpp',['../matrix_8cpp.html',1,'']]],
-  ['matrix_2ehpp_801',['matrix.hpp',['../matrix_8hpp.html',1,'']]]
+  ['library_2ecpp_779',['library.cpp',['../library_8cpp.html',1,'']]],
+  ['library_2ehpp_780',['library.hpp',['../library_8hpp.html',1,'']]],
+  ['logger_2ecpp_781',['logger.cpp',['../logger_8cpp.html',1,'']]],
+  ['logger_2ehpp_782',['logger.hpp',['../logger_8hpp.html',1,'']]]
 ];
