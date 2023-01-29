@@ -434,42 +434,41 @@ $(function() {
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY1&quot;</span>, op_multiply.template as&lt;OpBinary&gt;())</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY2&quot;</span>, op_add.template as&lt;OpBinary&gt;())</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_SELECT&quot;</span>, op_select.template as&lt;OpSelect&gt;())</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                    .set_source(source_vxm);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            <span class="keywordflow">if</span> (!program_builder.build()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            m_program                     = program_builder.get_program();</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            m_kernel_prepare              = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_prepare&quot;</span>);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            m_kernel_atomic_vector        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_atomic_vector&quot;</span>);</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            m_kernel_atomic_scalar        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_atomic_scalar&quot;</span>);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            m_kernel_config               = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_config&quot;</span>);</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;            m_kernel_config_atomic_scalar = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_config_atomic_scalar&quot;</span>);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            m_kernel_sparse_count         = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_count&quot;</span>);</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            m_kernel_sparse_collect       = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_collect&quot;</span>);</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            m_kernel_sparse_reduce        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_reduce&quot;</span>);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;            m_compiled                    = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        std::shared_ptr&lt;CLProgram&gt; m_program;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        cl::Kernel                 m_kernel_prepare;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        cl::Kernel                 m_kernel_exec_serial;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        cl::Kernel                 m_kernel_atomic_vector;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        cl::Kernel                 m_kernel_atomic_scalar;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        cl::Kernel                 m_kernel_config;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        cl::Kernel                 m_kernel_config_atomic_scalar;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        cl::Kernel                 m_kernel_sparse_count;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        cl::Kernel                 m_kernel_sparse_collect;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        cl::Kernel                 m_kernel_sparse_reduce;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_size  = 0;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_count = 0;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <span class="keywordtype">bool</span>                       m_compiled    = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    };</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VXM_HPP</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                    .set_source(source_vxm)</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                    .acquire();</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            m_program                     = program_builder.get_program();</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            m_kernel_prepare              = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_prepare&quot;</span>);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            m_kernel_atomic_vector        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_atomic_vector&quot;</span>);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            m_kernel_atomic_scalar        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_atomic_scalar&quot;</span>);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            m_kernel_config               = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_config&quot;</span>);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            m_kernel_config_atomic_scalar = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_config_atomic_scalar&quot;</span>);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;            m_kernel_sparse_count         = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_count&quot;</span>);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            m_kernel_sparse_collect       = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_collect&quot;</span>);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            m_kernel_sparse_reduce        = m_program-&gt;make_kernel(<span class="stringliteral">&quot;vxm_sparse_reduce&quot;</span>);</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            m_compiled                    = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        std::shared_ptr&lt;CLProgram&gt; m_program;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        cl::Kernel                 m_kernel_prepare;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        cl::Kernel                 m_kernel_exec_serial;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        cl::Kernel                 m_kernel_atomic_vector;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        cl::Kernel                 m_kernel_atomic_scalar;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        cl::Kernel                 m_kernel_config;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        cl::Kernel                 m_kernel_config_atomic_scalar;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        cl::Kernel                 m_kernel_sparse_count;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        cl::Kernel                 m_kernel_sparse_collect;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        cl::Kernel                 m_kernel_sparse_reduce;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_size  = 0;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>                       m_block_count = 0;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordtype">bool</span>                       m_compiled    = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    };</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VXM_HPP</span></div>
 <div class="ttc" id="aauto__vxm_8hpp_html"><div class="ttname"><a href="auto__vxm_8hpp.html">auto_vxm.hpp</a></div></div>
 <div class="ttc" id="acl__debug_8hpp_html"><div class="ttname"><a href="cl__debug_8hpp.html">cl_debug.hpp</a></div></div>
 <div class="ttc" id="acl__debug_8hpp_html_a55c51e7a066c67b7b54075b3e176ede6"><div class="ttname"><a href="cl__debug_8hpp.html#a55c51e7a066c67b7b54075b3e176ede6">CL_PROFILE_END</a></div><div class="ttdeci">#define CL_PROFILE_END()</div><div class="ttdef"><b>Definition:</b> cl_debug.hpp:63</div></div>

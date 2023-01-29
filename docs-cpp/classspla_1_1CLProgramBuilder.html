@@ -92,8 +92,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aec4d1df67d43c24aa87e79e3a4a408e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb03e247bea58bd93e56dee04c8de691"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">set_source</a> (const char *source)</td></tr>
 <tr class="separator:adb03e247bea58bd93e56dee04c8de691"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa456bee219713027404a55b87c62ece8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLProgramBuilder.html#aa456bee219713027404a55b87c62ece8">build</a> ()</td></tr>
-<tr class="separator:aa456bee219713027404a55b87c62ece8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef20d4d8f4cb6b9ef594b43a509e83ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLProgramBuilder.html#aef20d4d8f4cb6b9ef594b43a509e83ef">acquire</a> ()</td></tr>
+<tr class="separator:aef20d4d8f4cb6b9ef594b43a509e83ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a254bc20025fd825d1513ae7b1f533c6e"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; <a class="el" href="classspla_1_1CLProgram.html">CLProgram</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLProgramBuilder.html#a254bc20025fd825d1513ae7b1f533c6e">get_program</a> ()</td></tr>
 <tr class="separator:a254bc20025fd825d1513ae7b1f533c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76d29d3dfe73256ce0178e095d74ff4"><td class="memItemLeft" align="right" valign="top">cl::Kernel&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a> (const char *name)</td></tr>
@@ -102,6 +102,23 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Runtime opencl program builder. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aef20d4d8f4cb6b9ef594b43a509e83ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef20d4d8f4cb6b9ef594b43a509e83ef">&#9670;&nbsp;</a></span>acquire()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::CLProgramBuilder::acquire </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a254defbd5336051b836f215ec05c2c84"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a254defbd5336051b836f215ec05c2c84">&#9670;&nbsp;</a></span>add_define()</h2>
 
@@ -208,23 +225,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa456bee219713027404a55b87c62ece8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa456bee219713027404a55b87c62ece8">&#9670;&nbsp;</a></span>build()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool spla::CLProgramBuilder::build </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
