@@ -181,11 +181,11 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                                                              \</div>
-<div class="line">        std::stringstream __ss;                                                                                       \</div>
-<div class="line">        __ss &lt;&lt; msg;                                                                                                  \</div>
-<div class="line">        get_library()-&gt;get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(__LINE__)); \</div>
-<div class="line">    } <span class="keywordflow">while</span> (<span class="keyword">false</span>);</div>
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                                              \</div>
+<div class="line">            std::stringstream __ss;                                                                                       \</div>
+<div class="line">            __ss &lt;&lt; msg;                                                                                                  \</div>
+<div class="line">            get_library()-&gt;get_logger()-&gt;log_msg(status, __ss.str(), __FILE__, __FUNCTION__, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(__LINE__)); \</div>
+<div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>);</div>
 </div><!-- fragment -->
 </div>
 </div>

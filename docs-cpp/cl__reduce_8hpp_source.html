@@ -141,62 +141,58 @@ $(function() {
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            kernel.setArg(1, cl_sum);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            kernel.setArg(2, init);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            kernel.setArg(3, n);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            kernel.setArg(4, n);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            cl::NDRange global(block_size_small);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            cl::NDRange local(block_size_small);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            queue.enqueueReadBuffer(cl_sum, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> builder;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a834141c0214d3d249ddf1f125fc4f36c">set_name</a>(<span class="stringliteral">&quot;reduce_wide&quot;</span>)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, get_acc_cl()-&gt;get_wave_size())</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, block_size)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_BINARY&quot;</span>, op_reduce.template as&lt;OpBinary&gt;())</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">set_source</a>(source_reduce)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#aef20d4d8f4cb6b9ef594b43a509e83ef">acquire</a>();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> optimal_split = 64;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> stride        = <a class="code" href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">std::max</a>(<a class="code" href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">std::max</a>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(n / optimal_split), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>((n + block_size) / block_size)), block_size);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> groups_count  = div_up(n, stride);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            cl::NDRange global(block_size_small);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            cl::NDRange local(block_size_small);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            queue.enqueueReadBuffer(cl_sum, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> builder;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a834141c0214d3d249ddf1f125fc4f36c">set_name</a>(<span class="stringliteral">&quot;reduce_wide&quot;</span>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, get_acc_cl()-&gt;get_wave_size())</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, block_size)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_BINARY&quot;</span>, op_reduce.template as&lt;OpBinary&gt;())</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">set_source</a>(source_reduce)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#aef20d4d8f4cb6b9ef594b43a509e83ef">acquire</a>();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> optimal_split = 64;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> groups_count  = div_up_clamp(n, block_size, 1, optimal_split);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        cl::Buffer cl_sum_group(cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, <span class="keyword">sizeof</span>(T) * groups_count);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        cl::Buffer cl_sum_group(cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, <span class="keyword">sizeof</span>(T) * groups_count);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keyword">auto</span> kernel_phase_1 = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;reduce&quot;</span>);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        kernel_phase_1.setArg(0, values);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        kernel_phase_1.setArg(1, cl_sum_group);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        kernel_phase_1.setArg(2, init);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        kernel_phase_1.setArg(3, stride);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        kernel_phase_1.setArg(4, n);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        cl::NDRange global_phase_1(block_size * groups_count);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        cl::NDRange local_phase_1(block_size);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        queue.enqueueNDRangeKernel(kernel_phase_1, cl::NDRange(), global_phase_1, local_phase_1);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">if</span> (groups_count == 1) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            queue.enqueueReadBuffer(cl_sum_group, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keyword">auto</span> kernel_phase_2 = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;reduce&quot;</span>);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        kernel_phase_2.setArg(0, cl_sum_group);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        kernel_phase_2.setArg(1, cl_sum);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        kernel_phase_2.setArg(2, init);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        kernel_phase_2.setArg(3, stride);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        kernel_phase_2.setArg(4, groups_count);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        cl::NDRange global_phase_2(block_size);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        cl::NDRange local_phase_2(block_size);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        queue.enqueueNDRangeKernel(kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        queue.enqueueReadBuffer(cl_sum, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_REDUCE_HPP</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">auto</span> kernel_phase_1 = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;reduce&quot;</span>);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        kernel_phase_1.setArg(0, values);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        kernel_phase_1.setArg(1, cl_sum_group);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        kernel_phase_1.setArg(2, init);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        kernel_phase_1.setArg(3, n);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        cl::NDRange global_phase_1(block_size * groups_count);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        cl::NDRange local_phase_1(block_size);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        queue.enqueueNDRangeKernel(kernel_phase_1, cl::NDRange(), global_phase_1, local_phase_1);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">if</span> (groups_count == 1) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            queue.enqueueReadBuffer(cl_sum_group, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">auto</span> kernel_phase_2 = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;reduce&quot;</span>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        kernel_phase_2.setArg(0, cl_sum_group);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        kernel_phase_2.setArg(1, cl_sum);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        kernel_phase_2.setArg(2, init);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        kernel_phase_2.setArg(3, groups_count);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        cl::NDRange global_phase_2(block_size);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        cl::NDRange local_phase_2(block_size);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        queue.enqueueNDRangeKernel(kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        queue.enqueueReadBuffer(cl_sum, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(result), &amp;result);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_REDUCE_HPP</span></div>
 <div class="ttc" id="aauto__reduce_8hpp_html"><div class="ttname"><a href="auto__reduce_8hpp.html">auto_reduce.hpp</a></div></div>
 <div class="ttc" id="acl__accelerator_8hpp_html"><div class="ttname"><a href="cl__accelerator_8hpp.html">cl_accelerator.hpp</a></div></div>
 <div class="ttc" id="acl__program__builder_8hpp_html"><div class="ttname"><a href="cl__program__builder_8hpp.html">cl_program_builder.hpp</a></div></div>
@@ -213,7 +209,6 @@ $(function() {
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:54</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="anamespacespla_html_ab796022784de945e9f37114a512a3ea3"><div class="ttname"><a href="namespacespla.html#ab796022784de945e9f37114a512a3ea3">spla::cl_reduce</a></div><div class="ttdeci">void cl_reduce(cl::CommandQueue &amp;queue, const cl::Buffer &amp;values, uint n, T init, const ref_ptr&lt; TOpBinary&lt; T, T, T &gt;&gt; &amp;op_reduce, T &amp;result)</div><div class="ttdef"><b>Definition:</b> cl_reduce.hpp:38</div></div>
-<div class="ttc" id="aop_8cpp_html_a2e1da8593b0244d8e9e3b84ef7b35e73"><div class="ttname"><a href="op_8cpp.html#a2e1da8593b0244d8e9e3b84ef7b35e73">max</a></div><div class="ttdeci">#define max</div><div class="ttdef"><b>Definition:</b> op.cpp:80</div></div>
 <div class="ttc" id="aop_8cpp_html_a3f06f0e9f7beb8214afeea0b18ef8377"><div class="ttname"><a href="op_8cpp.html#a3f06f0e9f7beb8214afeea0b18ef8377">min</a></div><div class="ttdeci">#define min</div><div class="ttdef"><b>Definition:</b> op.cpp:79</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
