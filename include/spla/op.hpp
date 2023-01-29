@@ -46,10 +46,11 @@ namespace spla {
      */
     class Op : public Object {
     public:
-        SPLA_API ~Op() override                   = default;
-        SPLA_API virtual std::string get_name()   = 0;
-        SPLA_API virtual std::string get_source() = 0;
-        SPLA_API virtual std::string get_key()    = 0;
+        SPLA_API ~Op() override                       = default;
+        SPLA_API virtual std::string   get_name()     = 0;
+        SPLA_API virtual std::string   get_source()   = 0;
+        SPLA_API virtual std::string   get_key()      = 0;
+        SPLA_API virtual ref_ptr<Type> get_type_res() = 0;
     };
 
     /**
@@ -60,7 +61,6 @@ namespace spla {
     public:
         SPLA_API ~OpUnary() override                    = default;
         SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
-        SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
     };
 
     /**
@@ -72,7 +72,6 @@ namespace spla {
         SPLA_API ~OpBinary() override                   = default;
         SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
         SPLA_API virtual ref_ptr<Type> get_type_arg_1() = 0;
-        SPLA_API virtual ref_ptr<Type> get_type_res()   = 0;
     };
 
     /**

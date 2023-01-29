@@ -117,9 +117,8 @@ namespace spla {
         CLProgramBuilder builder;
         builder.set_name("vector_format")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
-                .set_source(source_vector_formats);
-
-        if (!builder.build()) return;
+                .set_source(source_vector_formats)
+                .acquire();
 
         cl_fill_zero<T>(queue, out.Ax, n_rows);
 

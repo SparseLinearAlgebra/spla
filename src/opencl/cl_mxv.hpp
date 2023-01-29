@@ -250,9 +250,8 @@ namespace spla {
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .set_source(source_mxv);
-
-            if (!program_builder.build()) return false;
+                    .set_source(source_mxv)
+                    .acquire();
 
             m_program              = program_builder.get_program();
             m_kernel_vector        = m_program->make_kernel("mxv_vector");

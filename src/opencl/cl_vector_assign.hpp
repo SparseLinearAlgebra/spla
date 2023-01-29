@@ -153,9 +153,8 @@ namespace spla {
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY", op_assign.template as<OpBinary>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .set_source(source_vector_assign);
-
-            if (!program_builder.build()) return false;
+                    .set_source(source_vector_assign)
+                    .acquire();
 
             m_program                = program_builder.get_program();
             m_kernel_dense_to_dense  = m_program->make_kernel("assign_dense_to_dense");

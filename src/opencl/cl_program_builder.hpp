@@ -60,19 +60,18 @@ namespace spla {
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
         CLProgramBuilder& set_source(const char* source);
-
-        bool build();
+        void              acquire();
 
         const std::shared_ptr<CLProgram>& get_program() { return m_program; };
         cl::Kernel                        make_kernel(const char* name) { return m_program->make_kernel(name); }
 
     private:
-        ankerl::svector<std::string, 8> m_defines;
-        ankerl::svector<std::string, 8> m_functions;
-        std::string                     m_name;
-        const char*                     m_source = nullptr;
-        std::shared_ptr<CLProgram>      m_program;
-        std::string                     m_program_code;
+        ankerl::svector<std::pair<std::string, std::string>, 8> m_defines;
+        ankerl::svector<std::pair<std::string, ref_ptr<Op>>, 8> m_functions;
+        std::string                                             m_name;
+        const char*                                             m_source = nullptr;
+        std::shared_ptr<CLProgram>                              m_program;
+        std::string                                             m_program_code;
     };
 
     /**

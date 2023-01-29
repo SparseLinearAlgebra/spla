@@ -104,9 +104,8 @@ namespace spla {
                     .set_name("vector_select_count")
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .set_source(source_vector_select_count);
-
-            if (!program_builder.build()) return false;
+                    .set_source(source_vector_select_count)
+                    .acquire();
 
             m_program  = program_builder.get_program();
             m_kernel   = m_program->make_kernel("select_count");

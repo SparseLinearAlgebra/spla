@@ -32,13 +32,14 @@
 namespace spla {
 
     Status ScheduleSingleThread::step_task(ref_ptr<ScheduleTask> task) {
-        std::vector<ref_ptr<ScheduleTask>> step = {task};
-        m_steps.push_back(std::move(step));
+        m_steps.emplace_back().push_back(std::move(task));
         return Status::Ok;
     }
 
     Status ScheduleSingleThread::step_tasks(std::vector<ref_ptr<ScheduleTask>> tasks) {
-        m_steps.push_back(std::move(tasks));
+        auto& step = m_steps.emplace_back();
+        step.reserve(tasks.size());
+        for (auto& task : tasks) step.push_back(std::move(task));
         return Status::Ok;
     }
 

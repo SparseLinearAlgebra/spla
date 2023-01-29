@@ -38,8 +38,7 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_program_builder.hpp>
-#include <opencl/generated/auto_vector_reduce.hpp>
+#include <opencl/cl_reduce.hpp>
 
 #include <sstream>
 
@@ -84,45 +83,12 @@ namespace spla {
             auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
 
             v->validate_rw(Format::CLDenseVec);
-            if (!ensure_kernel(op_reduce)) return Status::Error;
 
             const auto* p_cl_dense_vec = v->template get<CLDenseVec<T>>();
             auto*       p_cl_acc       = get_acc_cl();
             auto&       queue          = p_cl_acc->get_queue_default();
 
-            const uint N             = v->get_n_rows();
-            const uint OPTIMAL_SPLIT = 64;
-            const uint STRIDE        = std::max(std::max(uint(N / OPTIMAL_SPLIT), uint((N + m_block_size) / m_block_size)), m_block_size);
-            const uint GROUPS_COUNT  = N / STRIDE + (N % STRIDE ? 1 : 0);
-
-            T          init[] = {s->get_value()};
-            T          sum[1];
-            cl::Buffer cl_init(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init);
-            cl::Buffer cl_sum(p_cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(T));
-            cl::Buffer cl_sum_group(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * GROUPS_COUNT);
-
-            m_kernel_phase_1.setArg(0, p_cl_dense_vec->Ax);
-            m_kernel_phase_1.setArg(1, cl_init);
-            m_kernel_phase_1.setArg(2, cl_sum_group);
-            m_kernel_phase_1.setArg(3, STRIDE);
-            m_kernel_phase_1.setArg(4, N);
-
-            cl::NDRange global_phase_1(m_block_size * GROUPS_COUNT);
-            cl::NDRange local_phase_1(m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel_phase_1, cl::NDRange(), global_phase_1, local_phase_1);
-
-            m_kernel_phase_2.setArg(0, cl_sum_group);
-            m_kernel_phase_2.setArg(1, cl_init);
-            m_kernel_phase_2.setArg(2, cl_sum);
-            m_kernel_phase_2.setArg(3, STRIDE);
-            m_kernel_phase_2.setArg(4, GROUPS_COUNT);
-
-            cl::NDRange global_phase_2(m_block_size);
-            cl::NDRange local_phase_2(m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);
-
-            queue.enqueueReadBuffer(cl_sum, true, 0, sizeof(sum[0]), sum);
-            r->get_value() = sum[0];
+            cl_reduce<T>(queue, p_cl_dense_vec->Ax, v->get_n_rows(), s->get_value(), op_reduce, r->get_value());
 
             return Status::Ok;
         }
@@ -138,94 +104,15 @@ namespace spla {
             auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
 
             v->validate_rw(Format::CLCooVec);
-            if (!ensure_kernel(op_reduce)) return Status::Error;
 
             const auto* p_cl_coo_vec = v->template get<CLCooVec<T>>();
             auto*       p_cl_acc     = get_acc_cl();
             auto&       queue        = p_cl_acc->get_queue_default();
 
-            if (p_cl_coo_vec->values == 0) {
-                LOG_MSG(Status::Ok, "nothing to do");
-                r->get_value() = s->get_value();
-                return Status::Ok;
-            }
-
-            const uint N             = p_cl_coo_vec->values;
-            const uint OPTIMAL_SPLIT = 64;
-            const uint STRIDE        = std::max(std::max(uint(N / OPTIMAL_SPLIT), uint((N + m_block_size) / m_block_size)), m_block_size);
-            const uint GROUPS_COUNT  = div_up(N, STRIDE);
-
-            T          init[] = {s->get_value()};
-            T          sum[1];
-            cl::Buffer cl_init;
-            cl::Buffer cl_sum;
-            cl::Buffer cl_sum_group;
-
-            cl_init      = cl::Buffer(p_cl_acc->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR, sizeof(T), init);
-            cl_sum       = cl::Buffer(p_cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(T));
-            cl_sum_group = cl::Buffer(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, sizeof(T) * GROUPS_COUNT);
-
-            m_kernel_phase_1.setArg(0, p_cl_coo_vec->Ax);
-            m_kernel_phase_1.setArg(1, cl_init);
-            m_kernel_phase_1.setArg(2, cl_sum_group);
-            m_kernel_phase_1.setArg(3, STRIDE);
-            m_kernel_phase_1.setArg(4, N);
-
-            cl::NDRange global_phase_1(m_block_size * GROUPS_COUNT);
-            cl::NDRange local_phase_1(m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel_phase_1, cl::NDRange(), global_phase_1, local_phase_1);
-
-            if (GROUPS_COUNT == 1) {
-                queue.enqueueReadBuffer(cl_sum_group, true, 0, sizeof(sum[0]), sum);
-                r->get_value() = sum[0];
-                return Status::Ok;
-            }
-
-            m_kernel_phase_2.setArg(0, cl_sum_group);
-            m_kernel_phase_2.setArg(1, cl_init);
-            m_kernel_phase_2.setArg(2, cl_sum);
-            m_kernel_phase_2.setArg(3, STRIDE);
-            m_kernel_phase_2.setArg(4, GROUPS_COUNT);
-
-            cl::NDRange global_phase_2(m_block_size);
-            cl::NDRange local_phase_2(m_block_size);
-            queue.enqueueNDRangeKernel(m_kernel_phase_2, cl::NDRange(), global_phase_2, local_phase_2);
-
-            queue.enqueueReadBuffer(cl_sum, true, 0, sizeof(sum[0]), sum);
-            r->get_value() = sum[0];
+            cl_reduce<T>(queue, p_cl_coo_vec->Ax, p_cl_coo_vec->values, s->get_value(), op_reduce, r->get_value());
 
             return Status::Ok;
         }
-
-        bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_reduce) {
-            if (m_compiled) return true;
-
-            m_block_size = std::min(uint(1024), get_acc_cl()->get_max_wgs());
-
-            CLProgramBuilder program_builder;
-            program_builder
-                    .set_name("vector_reduce")
-                    .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
-                    .add_define("BLOCK_SIZE", m_block_size)
-                    .add_type("TYPE", get_ttype<T>().template as<Type>())
-                    .add_op("OP_BINARY", op_reduce.template as<OpBinary>())
-                    .set_source(source_vector_reduce);
-
-            if (!program_builder.build()) return false;
-
-            m_program        = program_builder.get_program();
-            m_kernel_phase_1 = m_program->make_kernel("reduce");
-            m_kernel_phase_2 = m_program->make_kernel("reduce");
-            m_compiled       = true;
-
-            return true;
-        }
-
-        std::shared_ptr<CLProgram> m_program;
-        cl::Kernel                 m_kernel_phase_1;
-        cl::Kernel                 m_kernel_phase_2;
-        uint                       m_block_size = 0;
-        bool                       m_compiled   = false;
     };
 
 }// namespace spla

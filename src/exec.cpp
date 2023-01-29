@@ -26,16 +26,22 @@
 /**********************************************************************************/
 
 #include <spla/exec.hpp>
+#include <spla/library.hpp>
 
+#include <core/dispatcher.hpp>
 #include <schedule/schedule_tasks.hpp>
 #include <utility>
 
 namespace spla {
 
     static Status execute_immediate(ref_ptr<ScheduleTask> task) {
-        auto schedule = make_schedule();
-        schedule->step_task(std::move(task));
-        return schedule->submit();
+        Dispatcher*     g_dispatcher = get_library()->get_dispatcher();
+        DispatchContext ctx{};
+        ctx.thread_id = 0;
+        ctx.step_id   = 0;
+        ctx.task_id   = 0;
+        ctx.task      = std::move(task);
+        return g_dispatcher->dispatch(ctx);
     }
 
 #define EXEC_OR_MAKE_TASK                                  \

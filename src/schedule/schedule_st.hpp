@@ -30,8 +30,9 @@
 
 #include <spla/schedule.hpp>
 
+#include <svector.hpp>
+
 #include <string>
-#include <vector>
 
 namespace spla {
 
@@ -54,8 +55,11 @@ namespace spla {
         const std::string& get_label() const override;
 
     private:
-        std::vector<std::vector<ref_ptr<ScheduleTask>>> m_steps;
-        std::string                                     m_label;
+        using vector_step  = ankerl::svector<ref_ptr<ScheduleTask>, 4>;
+        using vector_steps = ankerl::svector<vector_step, 4>;
+
+        vector_steps m_steps;
+        std::string  m_label;
     };
 
     /**

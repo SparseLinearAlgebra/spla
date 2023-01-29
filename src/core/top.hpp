@@ -160,6 +160,7 @@ namespace spla {
         std::string        get_source() override;
         std::string        get_key() override;
         ref_ptr<Type>      get_type_arg_0() override;
+        ref_ptr<Type>      get_type_res() override;
 
         std::function<bool(A0)> function;
         std::string             name;
@@ -191,6 +192,10 @@ namespace spla {
     template<typename A0>
     ref_ptr<Type> TOpSelect<A0>::get_type_arg_0() {
         return get_ttype<A0>().template as<Type>();
+    }
+    template<typename A0>
+    ref_ptr<Type> TOpSelect<A0>::get_type_res() {
+        return BOOL.template as<Type>();
     }
 
     /**

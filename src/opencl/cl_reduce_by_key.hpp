@@ -48,9 +48,8 @@ namespace spla {
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
                 .add_define("BLOCK_SIZE", cl_acc->get_max_wgs())
                 .add_op("OP_BINARY", reduce_op.template as<OpBinary>())
-                .set_source(source_reduce_by_key);
-
-        if (!builder.build()) return;
+                .set_source(source_reduce_by_key)
+                .acquire();
 
         const uint block_size        = cl_acc->get_default_wgz();
         const uint sequential_switch = 32;

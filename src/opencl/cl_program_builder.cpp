@@ -29,6 +29,8 @@
 
 #include <spla/timer.hpp>
 
+#include <stdexcept>
+
 namespace spla {
 
     CLProgramBuilder& CLProgramBuilder::set_name(const char* name) {
@@ -36,48 +38,49 @@ namespace spla {
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_define(const char* define, int value) {
-        m_defines.emplace_back(define + std::string(" ") + std::to_string(value));
+        m_defines.emplace_back(define, std::to_string(value));
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_type(const char* define, const ref_ptr<Type>& type) {
-        m_defines.emplace_back(define + std::string(" ") + type->get_cpp());
+        m_defines.emplace_back(define, type->get_cpp());
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpBinary>& op) {
-        m_functions.emplace_back(op->get_type_res()->get_cpp() + " " + name + " " + op->get_source());
+        m_functions.emplace_back(name, op.as<Op>());
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpSelect>& op) {
-        m_functions.emplace_back(std::string("bool ") + name + " " + op->get_source());
+        m_functions.emplace_back(name, op.as<Op>());
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::set_source(const char* source) {
         m_source = source;
         return *this;
     }
-    bool CLProgramBuilder::build() {
+    void CLProgramBuilder::acquire() {
         CLAccelerator*  acc   = get_acc_cl();
         CLProgramCache* cache = acc->get_cache();
 
         std::stringstream cache_key;
         cache_key << m_name;
-        for (auto& entry : m_defines) cache_key << entry;
-        for (auto& entry : m_functions) cache_key << entry;
+        for (auto& entry : m_defines) cache_key << entry.first << entry.second;
+        for (auto& entry : m_functions) cache_key << entry.first << entry.second->get_name();
 
         m_program = cache->get_program(cache_key.str());
 
         if (m_program) {
             LOG_MSG(Status::Ok, "found program '" << m_name << "' in cache");
-            return true;
+            return;
         }
 
         std::stringstream builder;
 
         for (const auto& define : m_defines) {
-            builder << "#define " << define << "\n";
+            builder << "#define " << define.first << " " << define.second << "\n";
         }
         for (const auto& function : m_functions) {
-            builder << function << "\n";
+            builder << function.second->get_type_res()->get_cpp() << " "
+                    << function.first << function.second->get_source() << "\n";
         }
         builder << m_source;
 
@@ -93,7 +96,7 @@ namespace spla {
         if (status != CL_SUCCESS) {
             LOG_MSG(Status::Error, "failed to build program: " << m_program->m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(acc->get_device()));
             LOG_MSG(Status::Error, "src\n" << m_source);
-            return false;
+            throw std::runtime_error("failed to build program");
         }
 
         m_program->m_sources.emplace_back(m_source);
@@ -105,8 +108,6 @@ namespace spla {
         LOG_MSG(Status::Ok, "build program '" << m_program->m_name << "' in " << t.get_elapsed_sec() << "sec");
 
         cache->add_program(m_program);
-
-        return true;
     }
 
 }// namespace spla

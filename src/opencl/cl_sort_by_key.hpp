@@ -57,9 +57,8 @@ namespace spla {
         builder.set_name("sort_bitonic")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
                 .add_define("BLOCK_SIZE", local_size)
-                .set_source(source_sort_bitonic);
-
-        if (!builder.build()) return;
+                .set_source(source_sort_bitonic)
+                .acquire();
 
         auto kernel_local = builder.make_kernel("bitonic_sort_local");
         kernel_local.setArg(0, keys);
@@ -113,9 +112,8 @@ namespace spla {
                 .add_define("BITS_VALS", BITS_VALS)
                 .add_define("BITS_MASK", BITS_MASK)
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
-                .set_source(source_sort_radix);
-
-        if (!builder.build()) return;
+                .set_source(source_sort_radix)
+                .acquire();
 
         const uint n_treads_total = align(n, block_size);
         const uint n_groups       = div_up(n, block_size);

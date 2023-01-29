@@ -94,9 +94,8 @@ namespace spla {
         CLProgramBuilder builder;
         builder.set_name("vector_format")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
-                .set_source(source_vector_formats);
-
-        if (!builder.build()) return;
+                .set_source(source_vector_formats)
+                .acquire();
 
         auto* acc = get_acc_cl();
 

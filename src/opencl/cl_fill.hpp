@@ -39,9 +39,8 @@ namespace spla {
         CLProgramBuilder builder;
         builder.set_name("fill")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
-                .set_source(source_fill);
-
-        if (!builder.build()) return;
+                .set_source(source_fill)
+                .acquire();
 
         auto  fill_zero = builder.make_kernel("fill_zero");
         auto* acc       = get_acc_cl();
@@ -62,9 +61,8 @@ namespace spla {
         CLProgramBuilder builder;
         builder.set_name("fill")
                 .add_type("TYPE", get_ttype<T>().template as<Type>())
-                .set_source(source_fill);
-
-        if (!builder.build()) return;
+                .set_source(source_fill)
+                .acquire();
 
         auto  fill_value = builder.make_kernel("fill_value");
         auto* acc        = get_acc_cl();

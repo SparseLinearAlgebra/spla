@@ -53,9 +53,8 @@ namespace spla {
                 .add_define("WARP_SIZE", cl_acc->get_wave_size())
                 .add_define("LM_NUM_MEM_BANKS", cl_acc->get_num_of_mem_banks())
                 .add_op("OP_BINARY", op.template as<OpBinary>())
-                .set_source(source_prefix_sum);
-
-        if (!builder.build()) return;
+                .set_source(source_prefix_sum)
+                .acquire();
 
         uint       n_groups_to_run = n / values_per_block + (n % values_per_block ? 1 : 0);
         cl::Buffer cl_carry(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * n_groups_to_run, nullptr);
