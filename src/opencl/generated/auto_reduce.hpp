@@ -25,19 +25,18 @@ void reduction_group(uint                   block_size,
 __kernel void reduce(__global const TYPE* g_vec,
                      __global TYPE*       g_sum,
                      const TYPE           init,
-                     const uint           stride,
                      const uint           n) {
     const uint gid   = get_group_id(0);
+    const uint gsize = get_global_size(0);
     const uint lsize = get_local_size(0);
     const uint lid   = get_local_id(0);
 
     __local TYPE s_sum[BLOCK_SIZE];
     TYPE         sum = init;
 
-    const uint gstart = gid * stride;
-    const uint gend   = gstart + stride;
+    const uint gstart = gid * lsize;
 
-    for (uint i = gstart + lid; i < gend && i < n; i += lsize) {
+    for (uint i = gstart + lid; i < n; i += gsize) {
         sum = OP_BINARY(sum, g_vec[i]);
     }
 

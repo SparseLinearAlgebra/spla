@@ -70,7 +70,6 @@ namespace spla {
             kernel.setArg(1, cl_sum);
             kernel.setArg(2, init);
             kernel.setArg(3, n);
-            kernel.setArg(4, n);
 
             cl::NDRange global(block_size_small);
             cl::NDRange local(block_size_small);
@@ -89,8 +88,7 @@ namespace spla {
                 .acquire();
 
         const uint optimal_split = 64;
-        const uint stride        = std::max(std::max(uint(n / optimal_split), uint((n + block_size) / block_size)), block_size);
-        const uint groups_count  = div_up(n, stride);
+        const uint groups_count  = div_up_clamp(n, block_size, 1, optimal_split);
 
         cl::Buffer cl_sum_group(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY, sizeof(T) * groups_count);
 
@@ -98,8 +96,7 @@ namespace spla {
         kernel_phase_1.setArg(0, values);
         kernel_phase_1.setArg(1, cl_sum_group);
         kernel_phase_1.setArg(2, init);
-        kernel_phase_1.setArg(3, stride);
-        kernel_phase_1.setArg(4, n);
+        kernel_phase_1.setArg(3, n);
 
         cl::NDRange global_phase_1(block_size * groups_count);
         cl::NDRange local_phase_1(block_size);
@@ -114,8 +111,7 @@ namespace spla {
         kernel_phase_2.setArg(0, cl_sum_group);
         kernel_phase_2.setArg(1, cl_sum);
         kernel_phase_2.setArg(2, init);
-        kernel_phase_2.setArg(3, stride);
-        kernel_phase_2.setArg(4, groups_count);
+        kernel_phase_2.setArg(3, groups_count);
 
         cl::NDRange global_phase_2(block_size);
         cl::NDRange local_phase_2(block_size);

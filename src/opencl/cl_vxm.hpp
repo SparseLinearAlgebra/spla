@@ -118,8 +118,6 @@ namespace spla {
             cl::NDRange exec_local(m_block_count, m_block_size);
             CL_DISPATCH_PROFILED("exec", queue, m_kernel_atomic_vector, cl::NDRange(), exec_global, exec_local);
 
-            r->decorator_update_version(Format::CLDenseVec);
-
             return Status::Ok;
         }
 
@@ -240,8 +238,6 @@ namespace spla {
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
             CL_DISPATCH_PROFILED("exec", queue, m_kernel_config_atomic_scalar, cl::NDRange(), exec_global, exec_local);
-
-            r->decorator_update_version(Format::CLDenseVec);
 
             return Status::Ok;
         }

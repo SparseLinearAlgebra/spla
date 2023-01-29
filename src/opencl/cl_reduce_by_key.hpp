@@ -67,12 +67,12 @@ namespace spla {
             queue.enqueueCopyBuffer(values, reduce_values, 0, 0, sizeof(T) * reduced_size);
             return;
         }
-        if (size <= small_switch) {
+        if (size <= sequential_switch) {
             cl::Buffer cl_reduced_count(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
             unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
             reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
 
-            auto kernel_sequential = builder.make_kernel("reduce_by_key_small");
+            auto kernel_sequential = builder.make_kernel("reduce_by_key_sequential");
             kernel_sequential.setArg(0, keys);
             kernel_sequential.setArg(1, values);
             kernel_sequential.setArg(2, unique_keys);
@@ -80,9 +80,28 @@ namespace spla {
             kernel_sequential.setArg(4, cl_reduced_count);
             kernel_sequential.setArg(5, size);
 
+            cl::NDRange global(1u);
+            cl::NDRange local(1u);
+            queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);
+            queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
+            return;
+        }
+        if (size <= small_switch) {
+            cl::Buffer cl_reduced_count(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
+            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
+            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+
+            auto kernel_small = builder.make_kernel("reduce_by_key_small");
+            kernel_small.setArg(0, keys);
+            kernel_small.setArg(1, values);
+            kernel_small.setArg(2, unique_keys);
+            kernel_small.setArg(3, reduce_values);
+            kernel_small.setArg(4, cl_reduced_count);
+            kernel_small.setArg(5, size);
+
             cl::NDRange global(cl_acc->get_max_wgs());
             cl::NDRange local(cl_acc->get_max_wgs());
-            queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);
+            queue.enqueueNDRangeKernel(kernel_small, cl::NDRange(), global, local);
             queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
             return;
         }
