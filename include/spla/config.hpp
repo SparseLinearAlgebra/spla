@@ -30,6 +30,7 @@
 
 #include <cinttypes>
 #include <functional>
+#include <string>
 
 #ifdef SPLA_MSVC
     #ifdef SPLA_EXPORTS

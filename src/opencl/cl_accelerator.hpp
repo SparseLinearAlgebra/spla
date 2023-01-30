@@ -36,6 +36,8 @@
 #include <string>
 #include <vector>
 
+#include <svector.hpp>
+
 #if defined(SPLA_DEBUG)
     #define CL_HPP_ENABLE_EXCEPTIONS
 #endif
@@ -72,12 +74,11 @@ namespace spla {
         const std::string& get_description() override;
         const std::string& get_suffix() override;
 
-        cl::Platform&                  get_platform() { return m_platform; }
-        cl::Device&                    get_device() { return m_device; }
-        cl::Context&                   get_context() { return m_context; }
-        cl::CommandQueue&              get_queue_default() { return m_queues.front(); }
-        std::vector<cl::CommandQueue>& get_queues() { return m_queues; }
-        class CLProgramCache*          get_cache() { return m_cache.get(); }
+        cl::Platform&         get_platform() { return m_platform; }
+        cl::Device&           get_device() { return m_device; }
+        cl::Context&          get_context() { return m_context; }
+        cl::CommandQueue&     get_queue_default() { return m_queues.front(); }
+        class CLProgramCache* get_cache() { return m_cache.get(); }
 
         [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
         [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
@@ -108,7 +109,7 @@ namespace spla {
         uint        m_wave_size        = 32;
         uint        m_num_of_mem_banks = 32;
 
-        std::vector<cl::CommandQueue> m_queues;
+        ankerl::svector<cl::CommandQueue, 2> m_queues;
     };
 
     /**

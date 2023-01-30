@@ -33,72 +33,128 @@
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_reduce.hpp>
-#include <opencl/cl_vector_select_count.hpp>
 #include <opencl/cl_vxm.hpp>
 
 namespace spla {
 
     void register_algo_cl(class Registry* g_registry) {
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", PLUS_FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", MULT_FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", BOR_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_reduce", BAND_UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        // algorthm v_reduce
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_INT>>());
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        }
 
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", NQZERO_INT), std::make_shared<Algo_v_select_count_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", NQZERO_UINT), std::make_shared<Algo_v_select_count_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", NQZERO_FLOAT), std::make_shared<Algo_v_select_count_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", EQZERO_INT), std::make_shared<Algo_v_select_count_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", EQZERO_UINT), std::make_shared<Algo_v_select_count_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_1("v_select_count", EQZERO_FLOAT), std::make_shared<Algo_v_select_count_cl<T_FLOAT>>());
+        // algorthm v_assign_masked
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            for (const auto& op1 : {EQZERO_INT, NQZERO_INT}) {
+                g_registry->add(MAKE_KEY_CL_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+            }
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT}) {
+                g_registry->add(MAKE_KEY_CL_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+            }
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            for (const auto& op1 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+                g_registry->add(MAKE_KEY_CL_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+            }
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            for (const auto& op1 : {EQZERO_INT, NQZERO_INT}) {
+                g_registry->add(MAKE_KEY_CL_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
+            }
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT}) {
+                g_registry->add(MAKE_KEY_CL_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+            }
+        }
 
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", PLUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", PLUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", PLUS_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MINUS_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MINUS_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MINUS_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MULT_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MULT_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", MULT_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", DIV_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", DIV_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", DIV_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", SECOND_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", SECOND_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", SECOND_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", ONE_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", ONE_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", ONE_FLOAT, NQZERO_FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BOR_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BOR_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BAND_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BAND_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BXOR_INT, NQZERO_INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_2("v_assign_masked", BXOR_UINT, NQZERO_UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
+        // algorthm mxv_masked
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            for (const auto& op1 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                    g_registry->add(MAKE_KEY_CL_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            for (const auto& op1 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                    g_registry->add(MAKE_KEY_CL_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            for (const auto& op1 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+                    g_registry->add(MAKE_KEY_CL_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            for (const auto& op1 : {BOR_INT, BAND_INT, BXOR_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                    g_registry->add(MAKE_KEY_CL_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            for (const auto& op1 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                    g_registry->add(MAKE_KEY_CL_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
+                }
+            }
+        }
 
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", BAND_INT, BOR_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", BAND_UINT, BOR_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MULT_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MULT_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MULT_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MIN_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MIN_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("mxv_masked", MIN_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
-
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", BAND_INT, BOR_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", BAND_UINT, BOR_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MULT_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MULT_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MULT_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_vxm_masked_cl<T_FLOAT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MIN_INT, PLUS_INT, EQZERO_INT), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MIN_UINT, PLUS_UINT, EQZERO_UINT), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
-        g_registry->add(MAKE_KEY_CL_3("vxm_masked", MIN_FLOAT, PLUS_FLOAT, EQZERO_FLOAT), std::make_shared<Algo_vxm_masked_cl<T_FLOAT>>());
+        // algorthm vxm_masked
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            for (const auto& op1 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                    g_registry->add(MAKE_KEY_CL_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            for (const auto& op1 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                    g_registry->add(MAKE_KEY_CL_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            for (const auto& op1 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+                    g_registry->add(MAKE_KEY_CL_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cl<T_FLOAT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            for (const auto& op1 : {BOR_INT, BAND_INT, BXOR_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                    g_registry->add(MAKE_KEY_CL_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
+                }
+            }
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            for (const auto& op1 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                    g_registry->add(MAKE_KEY_CL_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
+                }
+            }
+        }
     }
 
 }// namespace spla

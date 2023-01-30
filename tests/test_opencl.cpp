@@ -182,4 +182,52 @@ TEST(opencl, bitonic_sort_global) {
     }
 }
 
+TEST(opencl, custom_value) {
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    cl::Platform platform = platforms.front();
+
+    std::vector<cl::Device> devices;
+    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    cl::Device device = devices.front();
+
+    cl::Context      context(device);
+    cl::CommandQueue queue(context);
+
+    struct f2 {
+        float x;
+        float y;
+    };
+
+    f2 init{1.0f, 2.0f};
+
+    const int       N = 64;
+    std::vector<f2> host(N);
+    cl::Buffer      buffer(context, CL_MEM_WRITE_ONLY, sizeof(f2) * N);
+
+    std::string kernel_code =
+            "struct f2 {\n"
+            "        float x;\n"
+            "        float y;\n"
+            "};"
+            ""
+            "__kernel void fill(__global struct f2* buffer, struct f2 value) {"
+            "  buffer[get_global_id(0)] = value;"
+            "}";
+
+    cl::Program program(context, kernel_code);
+    program.build(device, "-cl-std=CL1.2");
+
+    cl::Kernel kernel(program, "fill");
+    kernel.setArg(0, buffer);
+    kernel.setArg(1, init);
+    queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(N), cl::NDRange(32));
+    queue.enqueueReadBuffer(buffer, true, 0, sizeof(f2) * N, host.data());
+
+    for (auto& v : host) {
+        EXPECT_EQ(v.x, init.x);
+        EXPECT_EQ(v.y, init.y);
+    }
+}
+
 SPLA_GTEST_MAIN

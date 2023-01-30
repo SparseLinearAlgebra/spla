@@ -41,9 +41,9 @@
 namespace spla {
 
     template<typename T>
-    class Algo_mxv_masked final : public RegistryAlgo {
+    class Algo_mxv_masked_cpu final : public RegistryAlgo {
     public:
-        ~Algo_mxv_masked() override = default;
+        ~Algo_mxv_masked_cpu() override = default;
 
         std::string get_name() override {
             return "mxv_masked";

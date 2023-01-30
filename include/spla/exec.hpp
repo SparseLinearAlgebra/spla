@@ -176,7 +176,7 @@ namespace spla {
      *
      * @return Status on task execution or status on hnd creation
      */
-    SPLA_API Status exec_v_select_count(
+    SPLA_API Status exec_v_count_by(
             ref_ptr<Scalar>        r,
             ref_ptr<Vector>        v,
             ref_ptr<OpSelect>      op_select,

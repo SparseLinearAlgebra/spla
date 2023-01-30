@@ -25,39 +25,64 @@
 # SOFTWARE.                                                                      #
 ##################################################################################
 
-import subprocess
 import argparse
 
 
+def make_signature(ops, platform, arity, algo, t):
+    return f"g_registry->add(MAKE_KEY_{platform.upper()}_{arity}(\"{algo}\",{ops}), " \
+           f"std::make_shared<Algo_{algo}_{platform.lower()}<T_{t}>>());\n"
+
+
+def make_ops_list(ops, t):
+    return "{" + ",".join([f"{op}_{t}" for op in ops]) + "}"
+
+
+def generate(file, algo, platform, ts, ops):
+    arity = len(ops)
+
+    for t in ts:
+        for i, op in enumerate(ops):
+            file.write(f"for (const auto& op{i}:" + make_ops_list(op, t) + ") {")
+
+        file.write(make_signature(",".join([f"op{i}" for i in range(arity)]), platform, arity, algo, t))
+
+        for i in range(arity):
+            file.write("}")
+
+
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--build-dir", default="build", help="folder name to locate build files")
-    parser.add_argument("--build-type", default="Release", help="type of build: `Debug`, `Release` or `RelWithDebInfo`")
-    parser.add_argument("--tests", default="YES", help="build tests")
-    parser.add_argument("--examples", default="YES", help="build example applications")
-    parser.add_argument("--opencl", default="YES", help="build opencl acceleration backend")
-    parser.add_argument("--target", default="all", help="which target to build")
-    parser.add_argument("--nt", default="4", help="number of os threads for build")
-    parser.add_argument("--arch", help="target architecture on MacOS `x64` or `arm64`")
-    parser.add_argument("--verbose", help="allow verbose compiler output")
+    parser = argparse.ArgumentParser("generate all possible algorithm variation")
+    parser.add_argument("--out", help="file to save generated code", default="registry.txt")
+    parser.add_argument("--platform", help="target backend platform to generate", default="cpu")
     args = parser.parse_args()
 
-    build_config_args = ["cmake", ".", "-B", args.build_dir, "-G", "Ninja", f"-DCMAKE_BUILD_TYPE={args.build_type}",
-                         f"-DSPLA_BUILD_TESTS={args.tests}", f"-DSPLA_BUILD_EXAMPLES={args.examples}",
-                         f"-DSPLA_BUILD_OPENCL={args.opencl}"]
+    ts = ["INT", "UINT", "FLOAT"]
+    ts_integral = ["INT", "UINT"]
+    ops_bin = ["PLUS", "MINUS", "MULT", "DIV", "FIRST", "SECOND", "ONE", "MIN", "MAX"]
+    ops_bin_x = ["BOR", "BAND", "BXOR"]
+    ops_select = ["EQZERO", "NQZERO"]
+    algos_1 = ["v_reduce"]
+    algos_2 = ["v_assign_masked"]
+    algos_3 = ["mxv_masked", "vxm_masked"]
 
-    if args.arch:
-        build_config_args += [f"-DCMAKE_OSX_ARCHITECTURES={args.arch}"]
+    p = args.platform
 
-    build_run_args = ["cmake", "--build", args.build_dir, "--target", args.target, "-j", args.nt]
-
-    if args.verbose:
-        build_run_args += ["--verbose"]
-
-    subprocess.check_call(build_config_args)
-    subprocess.check_call(build_run_args)
-
-    print(f"\nsuccessfully build target `{args.target}`")
+    with open(args.out, "w") as file:
+        for algo in algos_1:
+            file.write(f"// algorthm {algo}\n")
+            generate(file, algo, p, ts, [ops_bin])
+            generate(file, algo, p, ts_integral, [ops_bin_x])
+            file.write("\n\n")
+        for algo in algos_2:
+            file.write(f"// algorthm {algo}\n")
+            generate(file, algo, p, ts, [ops_bin, ops_select])
+            generate(file, algo, p, ts_integral, [ops_bin_x, ops_select])
+            file.write("\n\n")
+        for algo in algos_3:
+            file.write(f"// algorthm {algo}\n")
+            generate(file, algo, p, ts, [ops_bin, ops_bin, ops_select])
+            generate(file, algo, p, ts_integral, [ops_bin_x, ops_bin_x, ops_select])
+            file.write("\n\n")
 
 
 if __name__ == '__main__':

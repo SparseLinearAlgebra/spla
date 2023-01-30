@@ -289,42 +289,6 @@ TEST(vector, assign_perf) {
     std::cout << std::endl;
 }
 
-TEST(vector, select_count_perf) {
-    const int N     = 2000000;
-    const int K     = 4000;
-    const int NITER = 40;
-    int       R     = 0;
-
-    spla::Timer timer;
-
-    auto ivec = spla::make_vector(N, spla::INT);
-    auto ir   = spla::make_scalar(spla::INT);
-
-    for (int i = 0; i < N; ++i) {
-        ivec->set_int(i, 0);
-
-        if ((i % K) == 0) {
-            ivec->set_int(i, 100);
-            R += 1;
-        }
-    }
-
-    for (int i = 0; i < NITER; ++i) {
-        timer.lap_begin();
-        spla::exec_v_select_count(ir, ivec, spla::NQZERO_INT);
-        timer.lap_end();
-    }
-
-    int r;
-    ir->get_int(r);
-    EXPECT_EQ(r, R);
-
-    std::cout << "timings (ms): ";
-    timer.print();
-    std::cout << std::endl;
-}
-
-
 TEST(vector, sorting_naive) {
     const int        F     = 1000;
     const int        W     = 4;

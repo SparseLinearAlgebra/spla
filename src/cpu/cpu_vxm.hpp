@@ -43,9 +43,9 @@
 namespace spla {
 
     template<typename T>
-    class Algo_vxm_masked final : public RegistryAlgo {
+    class Algo_vxm_masked_cpu final : public RegistryAlgo {
     public:
-        ~Algo_vxm_masked() override = default;
+        ~Algo_vxm_masked_cpu() override = default;
 
         std::string get_name() override {
             return "vxm_masked";

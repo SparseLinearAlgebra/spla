@@ -34,9 +34,9 @@
 
 namespace spla {
 
-    class Algo_callback final : public RegistryAlgo {
+    class Algo_callback_cpu final : public RegistryAlgo {
     public:
-        ~Algo_callback() override = default;
+        ~Algo_callback_cpu() override = default;
         std::string get_name() override {
             return "callback";
         }
