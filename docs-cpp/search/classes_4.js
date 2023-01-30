@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['library_660',['Library',['../classspla_1_1Library.html',1,'spla']]],
-  ['logger_661',['Logger',['../classspla_1_1Logger.html',1,'spla']]]
+  ['library_650',['Library',['../classspla_1_1Library.html',1,'spla']]],
+  ['logger_651',['Logger',['../classspla_1_1Logger.html',1,'spla']]]
 ];
