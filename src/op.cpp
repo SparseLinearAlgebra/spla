@@ -75,6 +75,24 @@ namespace spla {
     ref_ptr<OpSelect> NQZERO_INT;
     ref_ptr<OpSelect> NQZERO_UINT;
     ref_ptr<OpSelect> NQZERO_FLOAT;
+    ref_ptr<OpSelect> GTZERO_INT;
+    ref_ptr<OpSelect> GTZERO_UINT;
+    ref_ptr<OpSelect> GTZERO_FLOAT;
+    ref_ptr<OpSelect> GEZERO_INT;
+    ref_ptr<OpSelect> GEZERO_UINT;
+    ref_ptr<OpSelect> GEZERO_FLOAT;
+    ref_ptr<OpSelect> LTZERO_INT;
+    ref_ptr<OpSelect> LTZERO_UINT;
+    ref_ptr<OpSelect> LTZERO_FLOAT;
+    ref_ptr<OpSelect> LEZERO_INT;
+    ref_ptr<OpSelect> LEZERO_UINT;
+    ref_ptr<OpSelect> LEZERO_FLOAT;
+    ref_ptr<OpSelect> ALWAYS_INT;
+    ref_ptr<OpSelect> ALWAYS_UINT;
+    ref_ptr<OpSelect> ALWAYS_FLOAT;
+    ref_ptr<OpSelect> NEVER_INT;
+    ref_ptr<OpSelect> NEVER_UINT;
+    ref_ptr<OpSelect> NEVER_FLOAT;
 
 #define min std::min
 #define max std::max
@@ -124,6 +142,24 @@ namespace spla {
         DECL_OP_SELECT(NQZERO_INT, NQZERO, T_INT, { return a != 0; });
         DECL_OP_SELECT(NQZERO_UINT, NQZERO, T_UINT, { return a != 0; });
         DECL_OP_SELECT(NQZERO_FLOAT, NQZERO, T_FLOAT, { return a != 0; });
+        DECL_OP_SELECT(GTZERO_INT, GTZERO, T_INT, { return a > 0; });
+        DECL_OP_SELECT(GTZERO_UINT, GTZERO, T_UINT, { return a > 0; });
+        DECL_OP_SELECT(GTZERO_FLOAT, GTZERO, T_FLOAT, { return a > 0; });
+        DECL_OP_SELECT(GEZERO_INT, GEZERO, T_INT, { return a >= 0; });
+        DECL_OP_SELECT(GEZERO_UINT, GEZERO, T_UINT, { return a >= 0; });
+        DECL_OP_SELECT(GEZERO_FLOAT, GEZERO, T_FLOAT, { return a >= 0; });
+        DECL_OP_SELECT(LTZERO_INT, LTZERO, T_INT, { return a < 0; });
+        DECL_OP_SELECT(LTZERO_UINT, LTZERO, T_UINT, { return a < 0; });
+        DECL_OP_SELECT(LTZERO_FLOAT, LTZERO, T_FLOAT, { return a < 0; });
+        DECL_OP_SELECT(LEZERO_INT, LEZERO, T_INT, { return a <= 0; });
+        DECL_OP_SELECT(LEZERO_UINT, LEZERO, T_UINT, { return a <= 0; });
+        DECL_OP_SELECT(LEZERO_FLOAT, LEZERO, T_FLOAT, { return a <= 0; });
+        DECL_OP_SELECT(ALWAYS_INT, ALWAYS, T_INT, { return 1; });
+        DECL_OP_SELECT(ALWAYS_UINT, ALWAYS, T_UINT, { return 1; });
+        DECL_OP_SELECT(ALWAYS_FLOAT, ALWAYS, T_FLOAT, { return 1; });
+        DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
+        DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
+        DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
     }
 
 }// namespace spla

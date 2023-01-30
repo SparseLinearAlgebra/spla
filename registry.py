@@ -60,7 +60,7 @@ def main():
     ts_integral = ["INT", "UINT"]
     ops_bin = ["PLUS", "MINUS", "MULT", "DIV", "FIRST", "SECOND", "ONE", "MIN", "MAX"]
     ops_bin_x = ["BOR", "BAND", "BXOR"]
-    ops_select = ["EQZERO", "NQZERO"]
+    ops_select = ["EQZERO", "NQZERO", "GTZERO", "GEZERO", "LTZERO", "LEZERO", "ALWAYS", "NEVER"]
     algos_1 = ["v_reduce"]
     algos_2 = ["v_assign_masked"]
     algos_3 = ["mxv_masked", "vxm_masked"]

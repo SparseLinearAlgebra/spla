@@ -128,6 +128,24 @@ namespace spla {
     SPLA_API extern ref_ptr<OpSelect> NQZERO_INT;
     SPLA_API extern ref_ptr<OpSelect> NQZERO_UINT;
     SPLA_API extern ref_ptr<OpSelect> NQZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> GTZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> GTZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> GTZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> GEZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> GEZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> GEZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> LTZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> LTZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> LTZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> LEZERO_INT;
+    SPLA_API extern ref_ptr<OpSelect> LEZERO_UINT;
+    SPLA_API extern ref_ptr<OpSelect> LEZERO_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> ALWAYS_INT;
+    SPLA_API extern ref_ptr<OpSelect> ALWAYS_UINT;
+    SPLA_API extern ref_ptr<OpSelect> ALWAYS_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> NEVER_INT;
+    SPLA_API extern ref_ptr<OpSelect> NEVER_UINT;
+    SPLA_API extern ref_ptr<OpSelect> NEVER_FLOAT;
 
     /**
      * @}

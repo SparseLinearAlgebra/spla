@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run clang-format style check
-        uses: jidicula/clang-format-action@v4.9.0
+        uses: jidicula/clang-format-action@v4.10.1
         with:
           clang-format-version: '15'
           check-path: ${{ matrix.path }}

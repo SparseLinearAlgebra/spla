@@ -60,27 +60,27 @@ namespace spla {
 
         // algorthm v_assign_masked
         for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
-            for (const auto& op1 : {EQZERO_INT, NQZERO_INT}) {
+            for (const auto& op1 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                 g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cpu<T_INT>>());
             }
         }
         for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
-            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT}) {
+            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                 g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cpu<T_UINT>>());
             }
         }
         for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
-            for (const auto& op1 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+            for (const auto& op1 : {EQZERO_FLOAT, NQZERO_FLOAT, GTZERO_FLOAT, GEZERO_FLOAT, LTZERO_FLOAT, LEZERO_FLOAT, ALWAYS_FLOAT, NEVER_FLOAT}) {
                 g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cpu<T_FLOAT>>());
             }
         }
         for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
-            for (const auto& op1 : {EQZERO_INT, NQZERO_INT}) {
+            for (const auto& op1 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                 g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cpu<T_INT>>());
             }
         }
         for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
-            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT}) {
+            for (const auto& op1 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                 g_registry->add(MAKE_KEY_CPU_2("v_assign_masked", op0, op1), std::make_shared<Algo_v_assign_masked_cpu<T_UINT>>());
             }
         }
@@ -88,35 +88,35 @@ namespace spla {
         // algorthm mxv_masked
         for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
             for (const auto& op1 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
-                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                     g_registry->add(MAKE_KEY_CPU_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());
                 }
             }
         }
         for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
             for (const auto& op1 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
-                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                     g_registry->add(MAKE_KEY_CPU_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cpu<T_UINT>>());
                 }
             }
         }
         for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
             for (const auto& op1 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
-                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT, GTZERO_FLOAT, GEZERO_FLOAT, LTZERO_FLOAT, LEZERO_FLOAT, ALWAYS_FLOAT, NEVER_FLOAT}) {
                     g_registry->add(MAKE_KEY_CPU_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cpu<T_FLOAT>>());
                 }
             }
         }
         for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
             for (const auto& op1 : {BOR_INT, BAND_INT, BXOR_INT}) {
-                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                     g_registry->add(MAKE_KEY_CPU_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());
                 }
             }
         }
         for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
             for (const auto& op1 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
-                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                     g_registry->add(MAKE_KEY_CPU_3("mxv_masked", op0, op1, op2), std::make_shared<Algo_mxv_masked_cpu<T_UINT>>());
                 }
             }
@@ -125,35 +125,35 @@ namespace spla {
         // algorthm vxm_masked
         for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
             for (const auto& op1 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
-                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                     g_registry->add(MAKE_KEY_CPU_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
                 }
             }
         }
         for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
             for (const auto& op1 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
-                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                     g_registry->add(MAKE_KEY_CPU_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cpu<T_UINT>>());
                 }
             }
         }
         for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
             for (const auto& op1 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
-                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT}) {
+                for (const auto& op2 : {EQZERO_FLOAT, NQZERO_FLOAT, GTZERO_FLOAT, GEZERO_FLOAT, LTZERO_FLOAT, LEZERO_FLOAT, ALWAYS_FLOAT, NEVER_FLOAT}) {
                     g_registry->add(MAKE_KEY_CPU_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cpu<T_FLOAT>>());
                 }
             }
         }
         for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
             for (const auto& op1 : {BOR_INT, BAND_INT, BXOR_INT}) {
-                for (const auto& op2 : {EQZERO_INT, NQZERO_INT}) {
+                for (const auto& op2 : {EQZERO_INT, NQZERO_INT, GTZERO_INT, GEZERO_INT, LTZERO_INT, LEZERO_INT, ALWAYS_INT, NEVER_INT}) {
                     g_registry->add(MAKE_KEY_CPU_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
                 }
             }
         }
         for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
             for (const auto& op1 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
-                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT}) {
+                for (const auto& op2 : {EQZERO_UINT, NQZERO_UINT, GTZERO_UINT, GEZERO_UINT, LTZERO_UINT, LEZERO_UINT, ALWAYS_UINT, NEVER_UINT}) {
                     g_registry->add(MAKE_KEY_CPU_3("vxm_masked", op0, op1, op2), std::make_shared<Algo_vxm_masked_cpu<T_UINT>>());
                 }
             }
