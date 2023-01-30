@@ -1,11 +1,5 @@
 var searchData=
 [
-  ['s_1167',['s',['../classspla_1_1ScheduleTask__v__reduce.html#adbd735df0bdb0d46c863085b4ca1edb2',1,'spla::ScheduleTask_v_reduce']]],
-  ['schedule_1168',['schedule',['../structspla_1_1DispatchContext.html#a426d57a5b7f3991fcdf92e6c544edeb5',1,'spla::DispatchContext']]],
-  ['second_5ffloat_1169',['SECOND_FLOAT',['../group__spla.html#gacd139ecc8fbbcf2a63adff65a362d4f8',1,'spla']]],
-  ['second_5fint_1170',['SECOND_INT',['../group__spla.html#gabbffe14df8fa617fd119937871a9c428',1,'spla']]],
-  ['second_5fuint_1171',['SECOND_UINT',['../group__spla.html#gae358dd22579d56ee7062ce0aa1638061',1,'spla']]],
-  ['source_1172',['source',['../classspla_1_1TOpBinary.html#a0842f4af9a5f91b3a9ae8781dfb0c196',1,'spla::TOpBinary::source()'],['../classspla_1_1TOpSelect.html#a84bbc86719331201769ada6375c7a487',1,'spla::TOpSelect::source()']]],
-  ['start_1173',['start',['../structspla_1_1TimeProfilerScope.html#a69df3a8c033d955d17140f60032ebbd2',1,'spla::TimeProfilerScope']]],
-  ['step_5fid_1174',['step_id',['../structspla_1_1DispatchContext.html#a120488d7eecd385ff26068b054030f24',1,'spla::DispatchContext']]]
+  ['r_1201',['r',['../classspla_1_1ScheduleTask__mxv__masked.html#a4ae45fa54053f9ad93a2b9d63974f4f7',1,'spla::ScheduleTask_mxv_masked::r()'],['../classspla_1_1ScheduleTask__vxm__masked.html#ab6c89d1984a94d430a6b0649811a86f1',1,'spla::ScheduleTask_vxm_masked::r()'],['../classspla_1_1ScheduleTask__v__assign__masked.html#aae487127e8bbce370d7a70979382666f',1,'spla::ScheduleTask_v_assign_masked::r()'],['../classspla_1_1ScheduleTask__v__reduce.html#a615fa7d17191076f8b1f6dc4818b48ea',1,'spla::ScheduleTask_v_reduce::r()'],['../classspla_1_1ScheduleTask__v__select__count.html#a44aae0bb79c098cceb3ca7402b4ba98a',1,'spla::ScheduleTask_v_select_count::r()']]],
+  ['reduce_1202',['reduce',['../classspla_1_1CpuDokVec.html#ae1be921f6347f8cff544ba3d4d9a8d91',1,'spla::CpuDokVec::reduce()'],['../classspla_1_1CpuLil.html#ad5f1a1f136308f0ad1d61e23f37a98c2',1,'spla::CpuLil::reduce()'],['../classspla_1_1CpuDok.html#a23fa70de8d614ce5d909d14374ef45ce',1,'spla::CpuDok::reduce()']]]
 ];
