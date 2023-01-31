@@ -52,6 +52,9 @@ namespace spla {
         SPLA_API virtual Status        get_int(std::int32_t& value)   = 0;
         SPLA_API virtual Status        get_uint(std::uint32_t& value) = 0;
         SPLA_API virtual Status        get_float(float& value)        = 0;
+        SPLA_API virtual T_INT         as_int()                       = 0;
+        SPLA_API virtual T_UINT        as_uint()                      = 0;
+        SPLA_API virtual T_FLOAT       as_float()                     = 0;
     };
 
     SPLA_API ref_ptr<Scalar> make_scalar(const ref_ptr<Type>& type);

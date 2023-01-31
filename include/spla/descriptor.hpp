@@ -43,21 +43,23 @@ namespace spla {
      */
     class Descriptor final : public Object {
     public:
+        enum class TraversalMode {
+            Push,
+            Pull,
+            PushPull
+        };
+
         ~Descriptor() override = default;
 
-        void set_push_only(bool value) { push_only = value; }
-        void set_pull_only(bool value) { pull_only = value; }
-        void set_push_pull(bool value) { push_pull = value; }
+        void set_traversal_mode(TraversalMode value) { mode = value; }
         void set_front_factor(float value) { front_factor = value; }
-        void set_discovered_factor(float value) { discovered_factor = value; }
         void set_early_exit(bool value) { early_exit = value; }
         void set_struct_only(bool value) { struct_only = value; }
 
-        bool  get_push_only() const { return push_only; }
-        bool  get_pull_only() const { return pull_only; }
-        bool  get_push_pull() const { return push_pull; }
+        bool  get_push_only() const { return mode == TraversalMode::Push; }
+        bool  get_pull_only() const { return mode == TraversalMode::Pull; }
+        bool  get_push_pull() const { return mode == TraversalMode::PushPull; }
         float get_front_factor() const { return front_factor; }
-        float get_discovered_factor() const { return discovered_factor; }
         bool  get_early_exit() const { return early_exit; }
         bool  get_struct_only() const { return struct_only; }
 
@@ -67,13 +69,10 @@ namespace spla {
     private:
         std::string m_label;
 
-        bool  push_only         = false;
-        bool  pull_only         = false;
-        bool  push_pull         = true;
-        float front_factor      = 0.1f;
-        float discovered_factor = 0.7f;
-        bool  early_exit        = false;
-        bool  struct_only       = false;
+        TraversalMode mode         = TraversalMode::PushPull;
+        float         front_factor = 0.1f;
+        bool          early_exit   = false;
+        bool          struct_only  = false;
     };
 
     /**

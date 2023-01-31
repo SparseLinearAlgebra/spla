@@ -63,17 +63,16 @@ namespace spla {
 
         frontier_prev->set_int(s, 1);
 
-        bool  push              = descriptor->get_push_only();
-        bool  pull              = descriptor->get_pull_only();
-        bool  push_pull         = descriptor->get_push_pull();
-        float front_factor      = descriptor->get_front_factor();
-        float discovered_factor = descriptor->get_discovered_factor();
+        bool  push         = descriptor->get_push_only();
+        bool  pull         = descriptor->get_pull_only();
+        bool  push_pull    = descriptor->get_push_pull();
+        float front_factor = descriptor->get_front_factor();
 
         if (!(push || pull || push_pull)) push = true;
 
 #ifndef SPLA_RELEASE
         std::string mode;
-        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "% " + std::to_string(discovered_factor * 100.0f) + "%)";
+        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
         if (pull) mode = "(pull)";
         if (push) mode = "(push)";
 
@@ -88,17 +87,17 @@ namespace spla {
             depth->set_int(current_level);
             exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
 
-            float front_density      = float(front_size) / float(N);
-            float discovered_density = float(discovered) / float(N);
-            bool  is_push_better     = (front_density <= front_factor);
+            float front_density  = float(front_size) / float(N);
+            bool  is_push_better = (front_density <= front_factor);
+
             if (push || (push_pull && is_push_better)) {
                 exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             } else {
                 exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             }
 
-            exec_v_reduce(frontier_size, zero, frontier_new, PLUS_INT, desc);
-            frontier_size->get_int(front_size);
+            exec_v_count_nz(frontier_size, frontier_new);
+            front_size = frontier_size->as_int();
 
 #ifndef SPLA_RELEASE
             tight.stop();

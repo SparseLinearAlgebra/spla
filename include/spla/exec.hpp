@@ -164,7 +164,7 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = Card({select(v[i])})
+     * @brief Execute (schedule) r = Card({v[i]: select(v[i])})
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
@@ -176,10 +176,34 @@ namespace spla {
      *
      * @return Status on task execution or status on hnd creation
      */
-    SPLA_API Status exec_v_count_by(
+    SPLA_API Status exec_v_count_if(
             ref_ptr<Scalar>        r,
             ref_ptr<Vector>        v,
             ref_ptr<OpSelect>      op_select,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) r = Card({v[i]: v[i] != 0})
+     *
+     * Count number of non-zero entries in the provided vector container.
+     * Use this function to obtain actual number of non-zero values in a container.
+     * Since container can use sparse or dense storage schema, actual number on
+     * non-zeros must be explicitly evaluated. This functions is useful for
+     * algorithms which employ sparsity of input.
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Scalar (int) to store count of non-zero entries
+     * @param v Vector to count number of non-zero entries
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_count_nz(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Vector>        v,
             ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 

@@ -66,11 +66,8 @@ int main(int argc, const char* const* argv) {
     spla::ref_ptr<spla::Matrix>     A     = spla::make_matrix(N, N, spla::INT);
     spla::ref_ptr<spla::Descriptor> desc  = spla::make_desc();
 
-    desc->set_push_only(args[OPT_PUSH].as<bool>());
-    desc->set_pull_only(args[OPT_PULL].as<bool>());
-    desc->set_push_pull(args[OPT_PUSH_PULL].as<bool>());
+    desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
     desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());
-    desc->set_discovered_factor(args[OPT_DISCOVERED_FACTOR].as<float>());
 
     const auto& Ai = loader.get_Ai();
     const auto& Aj = loader.get_Aj();

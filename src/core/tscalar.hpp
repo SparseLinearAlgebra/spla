@@ -57,6 +57,9 @@ namespace spla {
         Status        get_int(std::int32_t& value) override;
         Status        get_uint(std::uint32_t& value) override;
         Status        get_float(float& value) override;
+        T_INT         as_int() override { return static_cast<T_INT>(m_value); }
+        T_UINT        as_uint() override { return static_cast<T_UINT>(m_value); }
+        T_FLOAT       as_float() override { return static_cast<T_FLOAT>(m_value); }
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;

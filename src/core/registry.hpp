@@ -38,15 +38,18 @@
 namespace spla {
 
 #define CPU_SUFFIX                          "__cpu"
-#define GPU_SUFFIX                          "__gpu"
 #define GPU_CL_SUFFIX                       "__cl"
 #define OP_KEY(op)                          "_" + (op)->get_key()
+#define TYPE_KEY(type)                      "_" + (type)->get_code()
+#define MAKE_KEY_0(name, type)              std::string(name) + TYPE_KEY(type)
 #define MAKE_KEY_1(name, op)                std::string(name) + OP_KEY(op)
 #define MAKE_KEY_2(name, op1, op2)          std::string(name) + OP_KEY(op1) + OP_KEY(op2)
 #define MAKE_KEY_3(name, op1, op2, op3)     std::string(name) + OP_KEY(op1) + OP_KEY(op2) + OP_KEY(op3)
+#define MAKE_KEY_CPU_0(name, type)          MAKE_KEY_0(name, type) + CPU_SUFFIX
 #define MAKE_KEY_CPU_1(name, op)            MAKE_KEY_1(name, op) + CPU_SUFFIX
 #define MAKE_KEY_CPU_2(name, op1, op2)      MAKE_KEY_2(name, op1, op2) + CPU_SUFFIX
 #define MAKE_KEY_CPU_3(name, op1, op2, op3) MAKE_KEY_3(name, op1, op2, op3) + CPU_SUFFIX
+#define MAKE_KEY_CL_0(name, type)           MAKE_KEY_0(name, type) + GPU_CL_SUFFIX
 #define MAKE_KEY_CL_1(name, op)             MAKE_KEY_1(name, op) + GPU_CL_SUFFIX
 #define MAKE_KEY_CL_2(name, op1, op2)       MAKE_KEY_2(name, op1, op2) + GPU_CL_SUFFIX
 #define MAKE_KEY_CL_3(name, op1, op2, op3)  MAKE_KEY_3(name, op1, op2, op3) + GPU_CL_SUFFIX
@@ -62,10 +65,10 @@ namespace spla {
      */
     class RegistryAlgo {
     public:
-        virtual ~RegistryAlgo()                                       = default;
-        virtual std::string get_name()                                = 0;
-        virtual std::string get_description()                         = 0;
-        virtual Status      execute(const class DispatchContext& ctx) = 0;
+        virtual ~RegistryAlgo()                                        = default;
+        virtual std::string get_name()                                 = 0;
+        virtual std::string get_description()                          = 0;
+        virtual Status      execute(const struct DispatchContext& ctx) = 0;
     };
 
     /**

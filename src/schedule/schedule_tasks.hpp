@@ -171,6 +171,22 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_v_count_nz
+     * @brief Vector count nz
+     */
+    class ScheduleTask_v_count_nz final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_count_nz() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Scalar> r;
+        ref_ptr<Vector> v;
+    };
+
+    /**
      * @}
      */
 

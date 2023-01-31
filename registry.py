@@ -29,7 +29,7 @@ import argparse
 
 
 def make_signature(ops, platform, arity, algo, t):
-    return f"g_registry->add(MAKE_KEY_{platform.upper()}_{arity}(\"{algo}\",{ops}), " \
+    return f"g_registry->add(MAKE_KEY_{platform.upper()}_{arity}(\"{algo}\"{ops}), " \
            f"std::make_shared<Algo_{algo}_{platform.lower()}<T_{t}>>());\n"
 
 
@@ -44,7 +44,8 @@ def generate(file, algo, platform, ts, ops):
         for i, op in enumerate(ops):
             file.write(f"for (const auto& op{i}:" + make_ops_list(op, t) + ") {")
 
-        file.write(make_signature(",".join([f"op{i}" for i in range(arity)]), platform, arity, algo, t))
+        key = f",{t}" if arity == 0 else "".join([f",op{i}" for i in range(arity)])
+        file.write(make_signature(key, platform, arity, algo, t))
 
         for i in range(arity):
             file.write("}")
@@ -53,7 +54,7 @@ def generate(file, algo, platform, ts, ops):
 def main():
     parser = argparse.ArgumentParser("generate all possible algorithm variation")
     parser.add_argument("--out", help="file to save generated code", default="registry.txt")
-    parser.add_argument("--platform", help="target backend platform to generate", default="cpu")
+    parser.add_argument("--platform", help="target backend platform to generate", default="cl")
     args = parser.parse_args()
 
     ts = ["INT", "UINT", "FLOAT"]
@@ -61,6 +62,7 @@ def main():
     ops_bin = ["PLUS", "MINUS", "MULT", "DIV", "FIRST", "SECOND", "ONE", "MIN", "MAX"]
     ops_bin_x = ["BOR", "BAND", "BXOR"]
     ops_select = ["EQZERO", "NQZERO", "GTZERO", "GEZERO", "LTZERO", "LEZERO", "ALWAYS", "NEVER"]
+    algos_0 = ["v_count_nz"]
     algos_1 = ["v_reduce"]
     algos_2 = ["v_assign_masked"]
     algos_3 = ["mxv_masked", "vxm_masked"]
@@ -68,6 +70,10 @@ def main():
     p = args.platform
 
     with open(args.out, "w") as file:
+        for algo in algos_0:
+            file.write(f"// algorthm {algo}\n")
+            generate(file, algo, p, ts, [])
+            file.write("\n\n")
         for algo in algos_1:
             file.write(f"// algorthm {algo}\n")
             generate(file, algo, p, ts, [ops_bin])

@@ -32,12 +32,18 @@
 
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_vector_assign.hpp>
+#include <opencl/cl_vector_count_nz.hpp>
 #include <opencl/cl_vector_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
 
 namespace spla {
 
     void register_algo_cl(class Registry* g_registry) {
+        // algorthm v_count_nz
+        g_registry->add(MAKE_KEY_CL_0("v_count_nz", INT), std::make_shared<Algo_v_count_nz_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_count_nz", UINT), std::make_shared<Algo_v_count_nz_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_count_nz", FLOAT), std::make_shared<Algo_v_count_nz_cl<T_FLOAT>>());
+
         // algorthm v_reduce
         for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
             g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_INT>>());
