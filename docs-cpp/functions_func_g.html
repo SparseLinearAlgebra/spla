@@ -84,6 +84,7 @@ $(function() {
 , <a class="el" href="classspla_1_1ScheduleTask__callback.html#a6d5c17f8f73603797a9d7e1a953c0ee1">spla::ScheduleTask_callback</a>
 , <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a345850c3378e3dc5804d8411a5f6d453">spla::ScheduleTask_mxv_masked</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a99547e6ec1163bfc6e4661a6452604a2">spla::ScheduleTask_v_assign_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#ae67d670ded3065a30fbc2a09b5983b1c">spla::ScheduleTask_v_count_nz</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#ad587b5b95ee984eb1a26787d00d75a63">spla::ScheduleTask_v_reduce</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a37511d064f49953d335812defccca023">spla::ScheduleTask_v_select_count</a>
 , <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#a6e5eee87f6d25e30ef2a54cb808bb8f5">spla::ScheduleTask_vxm_masked</a>
@@ -126,6 +127,8 @@ $(function() {
 , <a class="el" href="classspla_1_1Algo__mxv__masked__cpu.html#a1f39a3bcf41d9c5fc250a7b4cfd9abbf">spla::Algo_mxv_masked_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__assign__masked__cl.html#ae1b314b678a5efa254694d83df58ed4a">spla::Algo_v_assign_masked_cl&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__assign__masked__cpu.html#adc58309b2d68edc60bf3f97cedc911f4">spla::Algo_v_assign_masked_cpu&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Algo__v__count__nz__cl.html#abb56964eb3efa26aab63e0789e07d535">spla::Algo_v_count_nz_cl&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Algo__v__count__nz__cpu.html#a48ccc1c91527ac9c7e8b35f1b38823ac">spla::Algo_v_count_nz_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__reduce__cl.html#a4aabad0c88fcafc70cc256e5e26e9b8a">spla::Algo_v_reduce_cl&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__reduce__cpu.html#a685090efb5e47529ffa3f09b44f8f484">spla::Algo_v_reduce_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__vxm__masked__cl.html#af0a425fdc621636978346323ddbbd6c7">spla::Algo_vxm_masked_cl&lt; T &gt;</a>
@@ -137,9 +140,6 @@ $(function() {
 </li>
 <li>get_device()
 : <a class="el" href="classspla_1_1CLAccelerator.html#a4ba183a02d5f02fcf6b3a11f79fc6e78">spla::CLAccelerator</a>
-</li>
-<li>get_discovered_factor()
-: <a class="el" href="classspla_1_1Descriptor.html#adeb2df85bad565e4b8c1aa4e5d8de4ca">spla::Descriptor</a>
 </li>
 <li>get_dispatcher()
 : <a class="el" href="classspla_1_1Library.html#a0f2aedb7fe0b5c06c7899eb344fca951">spla::Library</a>
@@ -192,6 +192,7 @@ $(function() {
 , <a class="el" href="classspla_1_1ScheduleTask__callback.html#a21d5d94c538f29520dc054370bb89dbd">spla::ScheduleTask_callback</a>
 , <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a88b4d0cf11c6cb6cf541fb16b04d8b12">spla::ScheduleTask_mxv_masked</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a5ec96835b813a417d87a78a813e12b74">spla::ScheduleTask_v_assign_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#a9142022ddb8dcdf3f032ee5dbefda798">spla::ScheduleTask_v_count_nz</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a287741eed5888ba1496a9e1bd93745a5">spla::ScheduleTask_v_reduce</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#af1376eefe1399388ac68d163c2052781">spla::ScheduleTask_v_select_count</a>
 , <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7fcee14fda0438076bc802d0e8148bf">spla::ScheduleTask_vxm_masked</a>
@@ -246,6 +247,8 @@ $(function() {
 , <a class="el" href="classspla_1_1Algo__mxv__masked__cpu.html#a75ab9634baa6d3fff75df41fd1662122">spla::Algo_mxv_masked_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__assign__masked__cl.html#a6d0643d76fe328ee48a2da0dbaef804d">spla::Algo_v_assign_masked_cl&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__assign__masked__cpu.html#a6f9c1844616d1b1c81fb095fd0525bb3">spla::Algo_v_assign_masked_cpu&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Algo__v__count__nz__cl.html#ae3e94366a1ee38165a1a624320d9863a">spla::Algo_v_count_nz_cl&lt; T &gt;</a>
+, <a class="el" href="classspla_1_1Algo__v__count__nz__cpu.html#a56e30dd56fd1b59812d0f83ebeed21e4">spla::Algo_v_count_nz_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__reduce__cl.html#ace6cfc24402a00acff9ba7ed8d54e8ed">spla::Algo_v_reduce_cl&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__v__reduce__cpu.html#aa44cf17be65a9091cf3040ad5f4edc56">spla::Algo_v_reduce_cpu&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Algo__vxm__masked__cl.html#a0451bb13217309a4f8a27598f67505c3">spla::Algo_vxm_masked_cl&lt; T &gt;</a>
@@ -258,6 +261,7 @@ $(function() {
 , <a class="el" href="classspla_1_1ScheduleTask__callback.html#a2f25eb318091f922aca8f9796d9a81a4">spla::ScheduleTask_callback</a>
 , <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#ae03149969f7eec6a52c7e271c54b6ba8">spla::ScheduleTask_mxv_masked</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#aa868792553475323f103af8a728cc2f2">spla::ScheduleTask_v_assign_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#a554142dea12a912db4b0bba884127ea7">spla::ScheduleTask_v_count_nz</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a8de1509c51c0923d5ba4c9b1b74772cf">spla::ScheduleTask_v_reduce</a>
 , <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a714b1f3acf56672e19e30a83d939db64">spla::ScheduleTask_v_select_count</a>
 , <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7b46585a1da4c7e43cddafc7b574e6c">spla::ScheduleTask_vxm_masked</a>

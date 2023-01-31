@@ -82,16 +82,17 @@ Inheritance diagram for spla::ScheduleTask:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1ScheduleTask__inherit__graph.png" border="0" usemap="#aspla_1_1ScheduleTask_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1ScheduleTask_inherit__map" id="aspla_1_1ScheduleTask_inherit__map">
-<area shape="rect" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,177,419,203"/>
-<area shape="rect" href="classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,177,632,203"/>
-<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,177,236,203"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,177,97,203"/>
+<area shape="rect" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,209,419,235"/>
+<area shape="rect" href="classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,209,632,235"/>
+<area shape="rect" href="classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,209,236,235"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,209,97,235"/>
 <area shape="rect" href="classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="680,5,815,47"/>
 <area shape="rect" href="classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="680,71,815,112"/>
 <area shape="rect" href="classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="680,136,815,177"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="680,201,815,243"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__select__count.html" title="Vector select and count." alt="" coords="680,267,815,308"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="680,332,815,373"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__count__nz.html" title="Vector count nz." alt="" coords="680,201,815,243"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="680,267,815,308"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__select__count.html" title="Vector select and count." alt="" coords="680,332,815,373"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="680,397,815,439"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -190,7 +191,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a37511d064f49953d335812defccca023">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#ad587b5b95ee984eb1a26787d00d75a63">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a99547e6ec1163bfc6e4661a6452604a2">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#a6e5eee87f6d25e30ef2a54cb808bb8f5">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a345850c3378e3dc5804d8411a5f6d453">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a6d5c17f8f73603797a9d7e1a953c0ee1">spla::ScheduleTask_callback</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#ae67d670ded3065a30fbc2a09b5983b1c">spla::ScheduleTask_v_count_nz</a>, <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a37511d064f49953d335812defccca023">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#ad587b5b95ee984eb1a26787d00d75a63">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a99547e6ec1163bfc6e4661a6452604a2">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#a6e5eee87f6d25e30ef2a54cb808bb8f5">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a345850c3378e3dc5804d8411a5f6d453">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a6d5c17f8f73603797a9d7e1a953c0ee1">spla::ScheduleTask_callback</a>.</p>
 
 </div>
 </div>
@@ -271,7 +272,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#af1376eefe1399388ac68d163c2052781">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a287741eed5888ba1496a9e1bd93745a5">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a5ec96835b813a417d87a78a813e12b74">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7fcee14fda0438076bc802d0e8148bf">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a88b4d0cf11c6cb6cf541fb16b04d8b12">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a21d5d94c538f29520dc054370bb89dbd">spla::ScheduleTask_callback</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#a9142022ddb8dcdf3f032ee5dbefda798">spla::ScheduleTask_v_count_nz</a>, <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#af1376eefe1399388ac68d163c2052781">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a287741eed5888ba1496a9e1bd93745a5">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#a5ec96835b813a417d87a78a813e12b74">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7fcee14fda0438076bc802d0e8148bf">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a88b4d0cf11c6cb6cf541fb16b04d8b12">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a21d5d94c538f29520dc054370bb89dbd">spla::ScheduleTask_callback</a>.</p>
 
 </div>
 </div>
@@ -298,7 +299,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a714b1f3acf56672e19e30a83d939db64">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a8de1509c51c0923d5ba4c9b1b74772cf">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#aa868792553475323f103af8a728cc2f2">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7b46585a1da4c7e43cddafc7b574e6c">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#ae03149969f7eec6a52c7e271c54b6ba8">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a2f25eb318091f922aca8f9796d9a81a4">spla::ScheduleTask_callback</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html#a554142dea12a912db4b0bba884127ea7">spla::ScheduleTask_v_count_nz</a>, <a class="el" href="classspla_1_1ScheduleTask__v__select__count.html#a714b1f3acf56672e19e30a83d939db64">spla::ScheduleTask_v_select_count</a>, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#a8de1509c51c0923d5ba4c9b1b74772cf">spla::ScheduleTask_v_reduce</a>, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#aa868792553475323f103af8a728cc2f2">spla::ScheduleTask_v_assign_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7b46585a1da4c7e43cddafc7b574e6c">spla::ScheduleTask_vxm_masked</a>, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#ae03149969f7eec6a52c7e271c54b6ba8">spla::ScheduleTask_mxv_masked</a>, and <a class="el" href="classspla_1_1ScheduleTask__callback.html#a2f25eb318091f922aca8f9796d9a81a4">spla::ScheduleTask_callback</a>.</p>
 
 </div>
 </div>
