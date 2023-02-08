@@ -151,8 +151,8 @@ $(function() {
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            kernel_sequential.setArg(4, cl_reduced_count);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            kernel_sequential.setArg(5, size);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            cl::NDRange global(1u);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            cl::NDRange local(1u);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            cl::NDRange global(cl_acc-&gt;get_wave_size());</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            cl::NDRange local(cl_acc-&gt;get_wave_size());</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            queue.enqueueReadBuffer(cl_reduced_count, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>), &amp;reduced_size);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span>;</div>
@@ -170,8 +170,8 @@ $(function() {
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            kernel_small.setArg(4, cl_reduced_count);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            kernel_small.setArg(5, size);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            cl::NDRange global(cl_acc-&gt;get_max_wgs());</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            cl::NDRange local(cl_acc-&gt;get_max_wgs());</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            cl::NDRange global(align(size, cl_acc-&gt;get_wave_size()));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            cl::NDRange local = global;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            queue.enqueueNDRangeKernel(kernel_small, cl::NDRange(), global, local);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            queue.enqueueReadBuffer(cl_reduced_count, <span class="keyword">true</span>, 0, <span class="keyword">sizeof</span>(<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>), &amp;reduced_size);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span>;</div>
