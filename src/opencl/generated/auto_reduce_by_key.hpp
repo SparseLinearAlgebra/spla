@@ -108,7 +108,8 @@ __kernel void reduce_by_key_small(__global const uint* g_keys,
                                   __global TYPE*       g_reduce_values,
                                   __global uint*       g_reduced_count,
                                   const uint           n_keys) {
-    const uint lid = get_local_id(0);
+    const uint lid       = get_local_id(0);
+    const uint n_aligned = ceil_to_pow2(n_keys);
 
     __local uint s_offsets[BLOCK_SIZE];
 
@@ -120,7 +121,7 @@ __kernel void reduce_by_key_small(__global const uint* g_keys,
     }
     s_offsets[lid] = gen_key;
 
-    for (uint offset = 1; offset < BLOCK_SIZE; offset *= 2) {
+    for (uint offset = 1; offset < n_aligned; offset *= 2) {
         barrier(CLK_LOCAL_MEM_FENCE);
         uint value = s_offsets[lid];
 
@@ -133,7 +134,7 @@ __kernel void reduce_by_key_small(__global const uint* g_keys,
     }
 
     barrier(CLK_LOCAL_MEM_FENCE);
-    const uint n_values = s_offsets[BLOCK_SIZE - 1];
+    const uint n_values = s_offsets[n_keys - 1];
 
     if (lid < n_values) {
         const uint id        = lid + 1;
@@ -159,24 +160,28 @@ __kernel void reduce_by_key_sequential(__global const uint* g_keys,
                                        __global TYPE*       g_reduce_values,
                                        __global uint*       g_reduced_count,
                                        const uint           n_keys) {
-    uint count         = 0;
-    uint current_key   = g_keys[0];
-    TYPE current_value = g_values[0];
+    const uint gid = get_global_id(0);
 
-    for (uint read_offset = 1; read_offset < n_keys; read_offset += 1) {
-        if (g_keys[read_offset] == current_key) {
-            current_value = OP_BINARY(current_value, g_values[read_offset]);
-        } else {
-            g_unique_keys[count]   = current_key;
-            g_reduce_values[count] = current_value;
-            current_key            = g_keys[read_offset];
-            current_value          = g_values[read_offset];
-            count += 1;
+    if (gid == 0) {
+        uint count         = 0;
+        uint current_key   = g_keys[0];
+        TYPE current_value = g_values[0];
+
+        for (uint read_offset = 1; read_offset < n_keys; read_offset += 1) {
+            if (g_keys[read_offset] == current_key) {
+                current_value = OP_BINARY(current_value, g_values[read_offset]);
+            } else {
+                g_unique_keys[count]   = current_key;
+                g_reduce_values[count] = current_value;
+                current_key            = g_keys[read_offset];
+                current_value          = g_values[read_offset];
+                count += 1;
+            }
         }
-    }
 
-    g_unique_keys[count]   = current_key;
-    g_reduce_values[count] = current_value;
-    g_reduced_count[0]     = count + 1;
+        g_unique_keys[count]   = current_key;
+        g_reduce_values[count] = current_value;
+        g_reduced_count[0]     = count + 1;
+    }
 }
 )";

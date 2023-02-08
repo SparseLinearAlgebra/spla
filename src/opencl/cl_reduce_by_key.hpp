@@ -80,8 +80,8 @@ namespace spla {
             kernel_sequential.setArg(4, cl_reduced_count);
             kernel_sequential.setArg(5, size);
 
-            cl::NDRange global(1u);
-            cl::NDRange local(1u);
+            cl::NDRange global(cl_acc->get_wave_size());
+            cl::NDRange local(cl_acc->get_wave_size());
             queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);
             queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
             return;
@@ -99,8 +99,8 @@ namespace spla {
             kernel_small.setArg(4, cl_reduced_count);
             kernel_small.setArg(5, size);
 
-            cl::NDRange global(cl_acc->get_max_wgs());
-            cl::NDRange local(cl_acc->get_max_wgs());
+            cl::NDRange global(align(size, cl_acc->get_wave_size()));
+            cl::NDRange local = global;
             queue.enqueueNDRangeKernel(kernel_small, cl::NDRange(), global, local);
             queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
             return;
