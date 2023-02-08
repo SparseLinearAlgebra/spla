@@ -75,6 +75,8 @@ namespace spla {
         InvalidArgument = 6,
         /** No such requested value in matrix, vector or scalar storage */
         NoValue = 7,
+        /** Failed to compile GPU/ACC kernel */
+        CompilationError = 8,
         /** Some library feature is not implemented */
         NotImplemented = 1024
     };

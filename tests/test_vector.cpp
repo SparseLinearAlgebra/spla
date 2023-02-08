@@ -192,6 +192,46 @@ TEST(vector, reduce_perf) {
     std::cout << std::endl;
 }
 
+TEST(vector, eadd_fdb_min) {
+    const spla::uint N    = 20;
+    const spla::uint K    = 8;
+    const int        S    = 5;
+    const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
+    const int        V[K] = {8, 6, 5, 4, 3, 7, 1, 1};
+    int              R[N];
+    int              F[N];
+
+    auto ir   = spla::make_vector(N, spla::INT);
+    auto iv   = spla::make_vector(N, spla::INT);
+    auto ifdb = spla::make_vector(N, spla::INT);
+
+    for (int k = 0; k < N; ++k) {
+        ir->set_int(k, S);
+        R[k] = S;
+        F[k] = 0;
+    }
+
+    for (int k = 0; k < K; ++k) {
+        iv->set_int(I[k], V[k]);
+        R[I[k]] = std::min(R[I[k]], V[k]);
+        if (R[I[k]] != S) F[I[k]] = R[I[k]];
+    }
+
+    spla::exec_v_eadd_fdb(ir, iv, ifdb, spla::MIN_INT);
+
+    for (int k = 0; k < N; k++) {
+        int r;
+        ir->get_int(k, r);
+        EXPECT_EQ(R[k], r);
+    }
+
+    for (int k = 0; k < N; k++) {
+        int r;
+        ifdb->get_int(k, r);
+        EXPECT_EQ(F[k], r);
+    }
+}
+
 TEST(vector, assign_plus) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;

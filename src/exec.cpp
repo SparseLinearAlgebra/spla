@@ -111,6 +111,22 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_eadd_fdb(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        v,
+            ref_ptr<Vector>        fdb,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task  = make_ref<ScheduleTask_v_eadd_fdb>();
+        task->r    = std::move(r);
+        task->v    = std::move(v);
+        task->fdb  = std::move(fdb);
+        task->op   = std::move(op);
+        task->desc = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_assign_masked(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        mask,

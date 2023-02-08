@@ -34,6 +34,7 @@
 #include <cpu/cpu_mxv.hpp>
 #include <cpu/cpu_vector_assign.hpp>
 #include <cpu/cpu_vector_count_nz.hpp>
+#include <cpu/cpu_vector_eadd_fdb.hpp>
 #include <cpu/cpu_vector_reduce.hpp>
 #include <cpu/cpu_vxm.hpp>
 
@@ -62,6 +63,23 @@ namespace spla {
         }
         for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
             g_registry->add(MAKE_KEY_CPU_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
+        }
+
+        // algorthm v_eadd_fdb
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            g_registry->add(MAKE_KEY_CPU_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cpu<T_INT>>());
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            g_registry->add(MAKE_KEY_CPU_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cpu<T_UINT>>());
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            g_registry->add(MAKE_KEY_CPU_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cpu<T_FLOAT>>());
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            g_registry->add(MAKE_KEY_CPU_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cpu<T_INT>>());
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            g_registry->add(MAKE_KEY_CPU_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cpu<T_UINT>>());
         }
 
         // algorthm v_assign_masked

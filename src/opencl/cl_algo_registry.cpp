@@ -33,6 +33,7 @@
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_count_nz.hpp>
+#include <opencl/cl_vector_eadd_fdb.hpp>
 #include <opencl/cl_vector_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
 
@@ -59,6 +60,23 @@ namespace spla {
         }
         for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
             g_registry->add(MAKE_KEY_CL_1("v_reduce", op0), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
+        }
+
+        // algorthm v_eadd_fdb
+        for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cl<T_INT>>());
+        }
+        for (const auto& op0 : {PLUS_UINT, MINUS_UINT, MULT_UINT, DIV_UINT, FIRST_UINT, SECOND_UINT, ONE_UINT, MIN_UINT, MAX_UINT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cl<T_UINT>>());
+        }
+        for (const auto& op0 : {PLUS_FLOAT, MINUS_FLOAT, MULT_FLOAT, DIV_FLOAT, FIRST_FLOAT, SECOND_FLOAT, ONE_FLOAT, MIN_FLOAT, MAX_FLOAT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cl<T_FLOAT>>());
+        }
+        for (const auto& op0 : {BOR_INT, BAND_INT, BXOR_INT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cl<T_INT>>());
+        }
+        for (const auto& op0 : {BOR_UINT, BAND_UINT, BXOR_UINT}) {
+            g_registry->add(MAKE_KEY_CL_1("v_eadd_fdb", op0), std::make_shared<Algo_v_eadd_fdb_cl<T_UINT>>());
         }
 
         // algorthm v_assign_masked

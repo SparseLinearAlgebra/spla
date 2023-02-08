@@ -84,7 +84,7 @@ namespace spla {
 
             r->validate_rwd(Format::CLDenseVec);
             mask->validate_rw(Format::CLDenseVec);
-            if (!ensure_kernel(op_assign, op_select)) return Status::Error;
+            if (!ensure_kernel(op_assign, op_select)) return Status::CompilationError;
 
             auto*       p_cl_r_dense    = r->template get<CLDenseVec<T>>();
             const auto* p_cl_mask_dense = mask->template get<CLDenseVec<T>>();
@@ -119,7 +119,7 @@ namespace spla {
 
             r->validate_rwd(Format::CLDenseVec);
             mask->validate_rw(Format::CLCooVec);
-            if (!ensure_kernel(op_assign, op_select)) return Status::Error;
+            if (!ensure_kernel(op_assign, op_select)) return Status::CompilationError;
 
             auto*       p_cl_r_dense  = r->template get<CLDenseVec<T>>();
             const auto* p_cl_mask_coo = mask->template get<CLCooVec<T>>();

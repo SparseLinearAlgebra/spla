@@ -84,7 +84,7 @@ namespace spla {
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
             v->validate_rw(Format::CLDenseVec);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
+            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r    = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask = mask->template get<CLDenseVec<T>>();
@@ -130,7 +130,7 @@ namespace spla {
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
             v->validate_rw(Format::CLDenseVec);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
+            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
@@ -178,7 +178,7 @@ namespace spla {
             mask->validate_rw(Format::CLDenseVec);
             M->validate_rw(Format::CLCsr);
             v->validate_rw(Format::CLDenseVec);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::Error;
+            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();

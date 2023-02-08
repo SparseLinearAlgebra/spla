@@ -7,6 +7,7 @@
 
 static const char source_count[] = R"(
 
+
 __kernel void count_nz(__global const TYPE* g_vec,
                        __global uint*       g_count,
                        const uint           n) {

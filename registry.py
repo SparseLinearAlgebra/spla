@@ -54,7 +54,7 @@ def generate(file, algo, platform, ts, ops):
 def main():
     parser = argparse.ArgumentParser("generate all possible algorithm variation")
     parser.add_argument("--out", help="file to save generated code", default="registry.txt")
-    parser.add_argument("--platform", help="target backend platform to generate", default="cl")
+    parser.add_argument("--platform", help="target backend platform to generate", default="cpu")
     args = parser.parse_args()
 
     ts = ["INT", "UINT", "FLOAT"]
@@ -63,7 +63,7 @@ def main():
     ops_bin_x = ["BOR", "BAND", "BXOR"]
     ops_select = ["EQZERO", "NQZERO", "GTZERO", "GEZERO", "LTZERO", "LEZERO", "ALWAYS", "NEVER"]
     algos_0 = ["v_count_nz"]
-    algos_1 = ["v_reduce"]
+    algos_1 = ["v_reduce", "v_eadd_fdb"]
     algos_2 = ["v_assign_masked"]
     algos_3 = ["mxv_masked", "vxm_masked"]
 
