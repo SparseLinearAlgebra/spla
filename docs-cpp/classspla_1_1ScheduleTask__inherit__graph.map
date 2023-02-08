@@ -1,13 +1,14 @@
 <map id="spla::ScheduleTask" name="spla::ScheduleTask">
-<area shape="rect" id="node1" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,209,419,235"/>
-<area shape="rect" id="node4" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,209,632,235"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,209,236,235"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,209,97,235"/>
+<area shape="rect" id="node1" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,242,419,269"/>
+<area shape="rect" id="node4" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="467,242,632,269"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="145,242,236,269"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,242,97,269"/>
 <area shape="rect" id="node5" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="680,5,815,47"/>
 <area shape="rect" id="node6" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="680,71,815,112"/>
 <area shape="rect" id="node7" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="680,136,815,177"/>
 <area shape="rect" id="node8" href="$classspla_1_1ScheduleTask__v__count__nz.html" title="Vector count nz." alt="" coords="680,201,815,243"/>
-<area shape="rect" id="node9" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="680,267,815,308"/>
-<area shape="rect" id="node10" href="$classspla_1_1ScheduleTask__v__select__count.html" title="Vector select and count." alt="" coords="680,332,815,373"/>
-<area shape="rect" id="node11" href="$classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="680,397,815,439"/>
+<area shape="rect" id="node9" href="$classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="680,267,815,308"/>
+<area shape="rect" id="node10" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="680,332,815,373"/>
+<area shape="rect" id="node11" href="$classspla_1_1ScheduleTask__v__select__count.html" title="Vector select and count." alt="" coords="680,397,815,439"/>
+<area shape="rect" id="node12" href="$classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="680,463,815,504"/>
 </map>
