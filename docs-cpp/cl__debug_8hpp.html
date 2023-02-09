@@ -151,13 +151,20 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                     \</div>
-<div class="line">            CL_FINISH(queue);                                    \</div>
-<div class="line">            {                                                    \</div>
-<div class="line">                TIME_PROFILE_SUBSCOPE(name);                     \</div>
-<div class="line">                queue.enqueueNDRangeKernel(kernel, __VA_ARGS__); \</div>
-<div class="line">                CL_FINISH(queue);                                \</div>
-<div class="line">            }                                                    \</div>
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                                      \</div>
+<div class="line">            CL_FINISH(queue);                                                                                     \</div>
+<div class="line">            {                                                                                                     \</div>
+<div class="line">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</div>
+<div class="line">                cl::Event __cl_event;                                                                             \</div>
+<div class="line">                queue.enqueueNDRangeKernel(kernel, __VA_ARGS__, <span class="keyword">nullptr</span>, &amp;__cl_event);                            \</div>
+<div class="line">                __cl_event.wait();                                                                                \</div>
+<div class="line">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</div>
+<div class="line">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</div>
+<div class="line">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</div>
+<div class="line">                CL_FINISH(queue);                                                                                 \</div>
+<div class="line">            }                                                                                                     \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
 </div>
@@ -271,13 +278,20 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                  \</div>
-<div class="line">            CL_FINISH(queue);                                 \</div>
-<div class="line">            {                                                 \</div>
-<div class="line">                TIME_PROFILE_SUBSCOPE(name);                  \</div>
-<div class="line">                queue.enqueueReadBuffer(buffer, __VA_ARGS__); \</div>
-<div class="line">                CL_FINISH(queue);                             \</div>
-<div class="line">            }                                                 \</div>
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                                      \</div>
+<div class="line">            CL_FINISH(queue);                                                                                     \</div>
+<div class="line">            {                                                                                                     \</div>
+<div class="line">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</div>
+<div class="line">                cl::Event __cl_event;                                                                             \</div>
+<div class="line">                queue.enqueueReadBuffer(buffer, __VA_ARGS__, <span class="keyword">nullptr</span>, &amp;__cl_event);                               \</div>
+<div class="line">                __cl_event.wait();                                                                                \</div>
+<div class="line">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</div>
+<div class="line">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</div>
+<div class="line">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</div>
+<div class="line">                CL_FINISH(queue);                                                                                 \</div>
+<div class="line">            }                                                                                                     \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
 </div>

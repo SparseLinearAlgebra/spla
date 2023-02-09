@@ -104,47 +104,61 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef SPLA_RELEASE</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a8353df1772db97ecb4d0c8b202fcf09d">   34</a></span>&#160;<span class="preprocessor">    #define CL_FINISH(queue) queue.finish()</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a8e196a33819338e2a866bbb0f29c1dc1">   36</a></span>&#160;<span class="preprocessor">    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...)       \</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">        do {                                                     \</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">            CL_FINISH(queue);                                    \</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">            {                                                    \</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);                     \</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">                queue.enqueueNDRangeKernel(kernel, __VA_ARGS__); \</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">                CL_FINISH(queue);                                \</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">            }                                                    \</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">        } while (false)</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a94a12c0d98db0f97f12b3a6fda54e787">   46</a></span>&#160;<span class="preprocessor">    #define CL_READ_PROFILED(name, queue, buffer, ...)        \</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">        do {                                                  \</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">            CL_FINISH(queue);                                 \</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">            {                                                 \</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);                  \</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">                queue.enqueueReadBuffer(buffer, __VA_ARGS__); \</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">                CL_FINISH(queue);                             \</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">            }                                                 \</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">        } while (false)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#aa72b9aed76892df41d12c50c06baf740">   56</a></span>&#160;<span class="preprocessor">    #define CL_PROFILE_BEGIN(name, queue) \</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">        do {                              \</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">            auto&amp; __prfq = queue;         \</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">            CL_FINISH(__prfq);            \</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">            {                             \</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a55c51e7a066c67b7b54075b3e176ede6">   63</a></span>&#160;<span class="preprocessor">    #define CL_PROFILE_END() \</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">        }                    \</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">        CL_FINISH(__prfq);   \</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">        }                    \</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">        while (false)</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">    #define CL_FINISH(queue)</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...) queue.enqueueNDRangeKernel(kernel, __VA_ARGS__);</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">    #define CL_READ_PROFILED(name, queue, buffer, ...)     queue.enqueueReadBuffer(buffer, __VA_ARGS__);</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">    #define CL_PROFILE_BEGIN(name, queue)</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">    #define CL_PROFILE_END()</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DEBUG_HPP</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a8e196a33819338e2a866bbb0f29c1dc1">   36</a></span>&#160;<span class="preprocessor">    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...)                                                        \</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">        do {                                                                                                      \</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">            CL_FINISH(queue);                                                                                     \</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">            {                                                                                                     \</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">                cl::Event __cl_event;                                                                             \</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">                queue.enqueueNDRangeKernel(kernel, __VA_ARGS__, nullptr, &amp;__cl_event);                            \</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">                __cl_event.wait();                                                                                \</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">                CL_FINISH(queue);                                                                                 \</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">            }                                                                                                     \</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">        } while (false)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a94a12c0d98db0f97f12b3a6fda54e787">   53</a></span>&#160;<span class="preprocessor">    #define CL_READ_PROFILED(name, queue, buffer, ...)                                                            \</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">        do {                                                                                                      \</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">            CL_FINISH(queue);                                                                                     \</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">            {                                                                                                     \</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">                cl::Event __cl_event;                                                                             \</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">                queue.enqueueReadBuffer(buffer, __VA_ARGS__, nullptr, &amp;__cl_event);                               \</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">                __cl_event.wait();                                                                                \</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">                CL_FINISH(queue);                                                                                 \</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">            }                                                                                                     \</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">        } while (false)</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#aa72b9aed76892df41d12c50c06baf740">   70</a></span>&#160;<span class="preprocessor">    #define CL_PROFILE_BEGIN(name, queue) \</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">        do {                              \</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">            auto&amp; __prfq = queue;         \</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">            CL_FINISH(__prfq);            \</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">            {                             \</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">                TIME_PROFILE_SUBSCOPE(name);</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="cl__debug_8hpp.html#a55c51e7a066c67b7b54075b3e176ede6">   77</a></span>&#160;<span class="preprocessor">    #define CL_PROFILE_END() \</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">        }                    \</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">        CL_FINISH(__prfq);   \</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">        }                    \</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">        while (false)</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    #define CL_FINISH(queue)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...) queue.enqueueNDRangeKernel(kernel, __VA_ARGS__);</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">    #define CL_READ_PROFILED(name, queue, buffer, ...)     queue.enqueueReadBuffer(buffer, __VA_ARGS__);</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">    #define CL_PROFILE_BEGIN(name, queue)</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">    #define CL_PROFILE_END()</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_DEBUG_HPP</span></div>
 <div class="ttc" id="atime__profiler_8hpp_html"><div class="ttname"><a href="time__profiler_8hpp.html">time_profiler.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
