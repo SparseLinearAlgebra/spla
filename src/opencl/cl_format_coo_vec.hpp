@@ -110,7 +110,6 @@ namespace spla {
 
     template<typename T>
     void cl_coo_vec_to_dense(const std::size_t  n_rows,
-                             const std::size_t  n_values,
                              const CLCooVec<T>& in,
                              CLDenseVec<T>&     out,
                              cl::CommandQueue&  queue) {

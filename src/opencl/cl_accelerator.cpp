@@ -93,6 +93,7 @@ namespace spla {
         m_vendor_code.clear();
         m_vendor_name   = m_device.getInfo<CL_DEVICE_VENDOR>();
         m_vendor_id     = m_device.getInfo<CL_DEVICE_VENDOR_ID>();
+        m_max_cu        = m_device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>();
         m_max_wgs       = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
         m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
 
@@ -121,6 +122,9 @@ namespace spla {
             m_vendor_code = VENDOR_CODE_AMD;
             m_default_wgs = 64;
             m_wave_size   = 64;
+
+            // Likely, it is an integrated amd device
+            if (m_max_wgs <= 256 || m_max_cu == 1) m_wave_size = 16;
         }
 
         if (m_vendor_code.empty()) {
@@ -128,6 +132,9 @@ namespace spla {
             m_default_wgs = 64;
             m_wave_size   = 8;
         }
+
+        LOG_MSG(Status::Ok, "vendor:" << m_vendor_code << " mcu:" << m_max_cu
+                                      << " wave:" << m_wave_size << " mwgs:" << m_max_wgs);
 
         return Status::Ok;
     }

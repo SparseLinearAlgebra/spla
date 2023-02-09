@@ -113,6 +113,7 @@ namespace spla {
         manager.register_validator(Format::CLDenseVec, [](Storage& s) {
             auto* cl_dense = s.template get<CLDenseVec<T>>();
             cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
+            cl_dense_vec_fill_zero(s.get_n_rows(), *cl_dense);
         });
 
         manager.register_converter(Format::CpuDenseVec, Format::CLDenseVec, [](Storage& s) {
@@ -144,7 +145,7 @@ namespace spla {
             auto* cl_coo   = s.template get<CLCooVec<T>>();
             auto* cl_dense = s.template get<CLDenseVec<T>>();
             cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
-            cl_coo_vec_to_dense(s.get_n_rows(), cl_coo->values, *cl_coo, *cl_dense, cl_acc->get_queue_default());
+            cl_coo_vec_to_dense(s.get_n_rows(), *cl_coo, *cl_dense, cl_acc->get_queue_default());
         });
         manager.register_converter(Format::CLDenseVec, Format::CLCooVec, [](Storage& s) {
             auto* cl_acc   = get_acc_cl();

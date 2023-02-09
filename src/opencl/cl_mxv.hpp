@@ -189,11 +189,9 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            uint       config_size[] = {0};
+            uint       config_size = 0;
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
-            cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), config_size);
-
-            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 1024);
+            cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), &config_size);
 
             m_kernel_config.setArg(0, p_cl_mask->Ax);
             m_kernel_config.setArg(1, p_cl_r->Ax);
@@ -202,11 +200,13 @@ namespace spla {
             m_kernel_config.setArg(4, init->get_value());
             m_kernel_config.setArg(5, M->get_n_rows());
 
+            uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 1024);
+
             cl::NDRange config_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange config_local(m_block_size);
             CL_DISPATCH_PROFILED("config", queue, m_kernel_config, cl::NDRange(), config_global, config_local);
 
-            CL_READ_PROFILED("config-size", queue, cl_config_size, true, 0, sizeof(config_size[0]), config_size);
+            CL_READ_PROFILED("config-size", queue, cl_config_size, true, 0, sizeof(config_size), &config_size);
 
             m_kernel_config_scalar.setArg(0, p_cl_M->Ap);
             m_kernel_config_scalar.setArg(1, p_cl_M->Aj);
@@ -217,6 +217,8 @@ namespace spla {
             m_kernel_config_scalar.setArg(6, init->get_value());
             m_kernel_config_scalar.setArg(7, config_size);
             m_kernel_config_scalar.setArg(8, uint(early_exit));
+
+            n_groups_to_dispatch = div_up_clamp(config_size, m_block_size, 1, 1024);
 
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);

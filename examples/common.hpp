@@ -43,7 +43,7 @@ void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& 
         assert(expected == actual);
 
         if (expected != actual) {
-            std::cerr << " VERIFY: expected " << expected << " actual" << actual << std::endl;
+            std::cerr << " VERIFY: " << i << " expected " << expected << " actual " << actual << std::endl;
         }
     }
 }

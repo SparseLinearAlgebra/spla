@@ -41,6 +41,8 @@ namespace spla {
                           const cl::Buffer& keys, const cl::Buffer& values, const uint size,
                           cl::Buffer& unique_keys, cl::Buffer& reduce_values, uint& reduced_size,
                           const ref_ptr<TOpBinary<T, T, T>>& reduce_op) {
+        TIME_PROFILE_SCOPE("opencl/reduce_by_key");
+
         auto* cl_acc = get_acc_cl();
 
         CLProgramBuilder builder;
@@ -87,22 +89,30 @@ namespace spla {
             return;
         }
         if (size <= small_switch) {
-            cl::Buffer cl_reduced_count(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
-            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
-            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+            cl::Buffer cl_reduced_count;
 
-            auto kernel_small = builder.make_kernel("reduce_by_key_small");
+            CL_PROFILE_BEGIN("alloc-buffers", queue);
+            cl_reduced_count = cl::Buffer(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
+            unique_keys      = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
+            reduce_values    = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+            CL_PROFILE_END();
+
+            cl::Kernel kernel_small;
+
+            CL_PROFILE_BEGIN("setup-kernel", queue);
+            kernel_small = builder.make_kernel("reduce_by_key_small");
             kernel_small.setArg(0, keys);
             kernel_small.setArg(1, values);
             kernel_small.setArg(2, unique_keys);
             kernel_small.setArg(3, reduce_values);
             kernel_small.setArg(4, cl_reduced_count);
             kernel_small.setArg(5, size);
+            CL_PROFILE_END();
 
             cl::NDRange global(align(size, cl_acc->get_wave_size()));
             cl::NDRange local = global;
-            queue.enqueueNDRangeKernel(kernel_small, cl::NDRange(), global, local);
-            queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
+            CL_DISPATCH_PROFILED("dispatch-kernel", queue, kernel_small, cl::NDRange(), global, local);
+            CL_READ_PROFILED("copy-count", queue, cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
             return;
         }
 

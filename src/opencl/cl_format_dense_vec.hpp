@@ -51,6 +51,12 @@ namespace spla {
     }
 
     template<typename T>
+    void cl_dense_vec_fill_zero(const std::size_t n_rows,
+                                CLDenseVec<T>&    storage) {
+        cl_fill_zero<T>(get_acc_cl()->get_queue_default(), storage.Ax, n_rows);
+    }
+
+    template<typename T>
     void cl_dense_vec_init(const std::size_t n_rows,
                            const T*          values,
                            CLDenseVec<T>&    storage) {

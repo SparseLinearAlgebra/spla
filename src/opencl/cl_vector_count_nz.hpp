@@ -92,14 +92,16 @@ namespace spla {
             auto& queue  = cl_acc->get_queue_default();
 
             uint       count = 0;
-            cl::Buffer cl_count(cl_acc->get_context(), CL_READ_WRITE_CACHE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), &count);
+            cl::Buffer cl_count(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), &count);
 
             auto kernel = m_program->make_kernel("count_nz");
             kernel.setArg(0, dec_v->Ax);
             kernel.setArg(1, cl_count);
             kernel.setArg(2, v->get_n_rows());
 
-            cl::NDRange global(align(v->get_n_rows(), m_block_size));
+            const uint n_groups = div_up_clamp(v->get_n_rows(), m_block_size, 1, 1024);
+
+            cl::NDRange global(m_block_size * n_groups);
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
             queue.enqueueReadBuffer(cl_count, true, 0, sizeof(uint), &count);
