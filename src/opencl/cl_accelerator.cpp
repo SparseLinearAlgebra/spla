@@ -144,7 +144,11 @@ namespace spla {
         m_queues.reserve(count);
 
         for (int i = 0; i < count; i++) {
-            cl::CommandQueue queue(m_context);
+            cl_command_queue_properties properties = 0;
+#ifndef SPLA_RELEASE
+            properties = CL_QUEUE_PROFILING_ENABLE;
+#endif
+            cl::CommandQueue queue(m_context, properties);
             m_queues.emplace_back(std::move(queue));
         }
 

@@ -49,6 +49,8 @@ namespace spla {
         const char*          function;
         int                  child_count = 0;
         std::atomic_uint64_t nano;
+        std::uint64_t        queued_nano   = 0;
+        std::uint64_t        executed_nano = 0;
         TimeProfilerLabel*   parent;
     };
 
@@ -80,14 +82,19 @@ namespace spla {
      */
 
 #ifndef SPLA_RELEASE
-    #define TIME_PROFILE_SUBSCOPE(name)                                                                        \
-        static TimeProfilerLabel __auto_profile_sublabel(&__auto_profile_label, name, __FILE__, __FUNCTION__); \
-        TimeProfilerScope        __auto_profile_subscope(&__auto_profile_sublabel);
+    #define TIME_PROFILE_LABEL    __auto_profile_label
+    #define TIME_PROFILE_SUBLABEL __auto_profile_sublabel
 
-    #define TIME_PROFILE_SCOPE(name)                                                          \
-        static TimeProfilerLabel __auto_profile_label(nullptr, name, __FILE__, __FUNCTION__); \
-        TimeProfilerScope        __auto_profile_scope(&__auto_profile_label);
+    #define TIME_PROFILE_SUBSCOPE(name)                                                                      \
+        static TimeProfilerLabel TIME_PROFILE_SUBLABEL(&__auto_profile_label, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_profile_subscope(&TIME_PROFILE_SUBLABEL);
+
+    #define TIME_PROFILE_SCOPE(name)                                                        \
+        static TimeProfilerLabel TIME_PROFILE_LABEL(nullptr, name, __FILE__, __FUNCTION__); \
+        TimeProfilerScope        __auto_profile_scope(&TIME_PROFILE_LABEL);
 #else
+    #define TIME_PROFILE_LABEL
+    #define TIME_PROFILE_SUBLABEL
     #define TIME_PROFILE_SCOPE(name)
     #define TIME_PROFILE_SUBSCOPE(name)
 #endif

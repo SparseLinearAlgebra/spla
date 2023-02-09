@@ -69,7 +69,9 @@ namespace spla {
         m_program = cache->get_program(cache_key.str());
 
         if (m_program) {
+#ifdef SPLA_DEBUG
             LOG_MSG(Status::Ok, "found program '" << m_name << "' in cache");
+#endif
             return;
         }
 
