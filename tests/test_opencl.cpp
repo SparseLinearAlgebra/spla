@@ -33,6 +33,7 @@
 #include <CL/opencl.hpp>
 
 #include <iostream>
+#include <thread>
 #include <vector>
 
 TEST(opencl, basic_gpu) {
@@ -94,7 +95,7 @@ TEST(opencl, bitonic_sort_local) {
     cl::Context      context(device);
     cl::CommandQueue queue(context);
 
-    const int                 N = 8000;
+    const int                 N = 2000;
     std::vector<unsigned int> keys(N);
     std::vector<int>          values(N);
 
@@ -109,7 +110,7 @@ TEST(opencl, bitonic_sort_local) {
     std::string kernel_code = source_sort_bitonic;
 
     cl::Program program(context, kernel_code);
-    program.build(device, "-cl-std=CL1.2 -DBITONIC_SORT_LOCAL_BUFFER_SIZE=8192 -DTYPE=int");
+    program.build(device, "-cl-std=CL1.2 -DBLOCK_SIZE=2048 -DTYPE=int");
 
     cl::Kernel kernel(program, "bitonic_sort_local");
     kernel.setArg(0, buffer_keys);
@@ -159,12 +160,13 @@ TEST(opencl, bitonic_sort_global) {
     std::string kernel_code = source_sort_bitonic;
 
     cl::Program program(context, kernel_code);
-    program.build(device, "-cl-std=CL1.2 -DBITONIC_SORT_LOCAL_BUFFER_SIZE=8192 -DTYPE=int");
+    program.build(device, "-cl-std=CL1.2 -DBLOCK_SIZE=2048 -DTYPE=int");
 
     cl::Kernel kernel(program, "bitonic_sort_global");
     kernel.setArg(0, buffer_keys);
     kernel.setArg(1, buffer_values);
     kernel.setArg(2, N);
+    kernel.setArg(3, 2);
 
     cl::NDRange global(256);
     cl::NDRange local(256);
