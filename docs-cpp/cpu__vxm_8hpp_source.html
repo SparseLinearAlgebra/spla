@@ -166,44 +166,42 @@ $(function() {
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span>&amp; row = p_lil_M-&gt;Ar[v_i];</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keywordflow">if</span> (v_x) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> j = j_x.first;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        <span class="keywordflow">if</span> (func_select(p_dense_mask-&gt;Ax[j])) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                            <span class="keyword">auto</span> r_x = r_tmp.find(j);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                            <span class="keywordflow">if</span> (r_x != r_tmp.end())</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                r_x-&gt;second = func_add(r_x-&gt;second, func_multiply(v_x, j_x.second));</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                r_tmp[j] = func_multiply(v_x, j_x.second);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                        }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            std::vector&lt;std::pair&lt;uint, T&gt;&gt; r_entries;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            r_entries.reserve(r_tmp.size());</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : r_tmp) {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                r_entries.emplace_back(e.first, e.second);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            std::sort(r_entries.begin(), r_entries.end());</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(r_tmp.size());</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d">Ai</a>.reserve(r_tmp.size());</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d">Ax</a>.reserve(r_tmp.size());</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : r_entries) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d">Ai</a>.push_back(e.first);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d">Ax</a>.push_back(e.second);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j_x : row) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> j = j_x.first;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    <span class="keywordflow">if</span> (func_select(p_dense_mask-&gt;Ax[j])) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        <span class="keyword">auto</span> r_x = r_tmp.find(j);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                        <span class="keywordflow">if</span> (r_x != r_tmp.end())</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                            r_x-&gt;second = func_add(r_x-&gt;second, func_multiply(v_x, j_x.second));</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                            r_tmp[j] = func_multiply(v_x, j_x.second);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            std::vector&lt;std::pair&lt;uint, T&gt;&gt; r_entries;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            r_entries.reserve(r_tmp.size());</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : r_tmp) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                r_entries.emplace_back(e.first, e.second);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            std::sort(r_entries.begin(), r_entries.end());</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1TDecoration.html#a3bce818ace934694373d236be753e739">values</a> = <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(r_tmp.size());</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d">Ai</a>.reserve(r_tmp.size());</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d">Ax</a>.reserve(r_tmp.size());</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : r_entries) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ac493d56f333e1f1829a547372bfb786d">Ai</a>.push_back(e.first);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                p_sparse_r-&gt;<a class="code" href="classspla_1_1CpuCooVec.html#ad5d72e062787a5d4404883bfe247495d">Ax</a>.push_back(e.second);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    };</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_VXM_HPP</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_VXM_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__vxm__masked__cpu_html"><div class="ttname"><a href="classspla_1_1Algo__vxm__masked__cpu.html">spla::Algo_vxm_masked_cpu</a></div><div class="ttdef"><b>Definition:</b> cpu_vxm.hpp:46</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__vxm__masked__cpu_html_a352694325f8a606daa1a96aa64168a44"><div class="ttname"><a href="classspla_1_1Algo__vxm__masked__cpu.html#a352694325f8a606daa1a96aa64168a44">spla::Algo_vxm_masked_cpu::~Algo_vxm_masked_cpu</a></div><div class="ttdeci">~Algo_vxm_masked_cpu() override=default</div></div>

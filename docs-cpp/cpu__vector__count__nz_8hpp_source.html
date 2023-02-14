@@ -139,46 +139,52 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dok(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">auto</span>                t     = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="classspla_1_1CpuDokVec.html">CpuDokVec&lt;T&gt;</a>*       dec_v = v-&gt;template get&lt;CpuDokVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            t-&gt;r-&gt;set_uint(dec_v-&gt;values);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/v_count_nz_dok&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span>                t     = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="classspla_1_1CpuDokVec.html">CpuDokVec&lt;T&gt;</a>*       dec_v = v-&gt;template get&lt;CpuDokVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_coo(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keyword">auto</span>                t     = ctx.task.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            ref_ptr&lt;TVector&lt;T&gt;&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            CpuCooVec&lt;T&gt;*       dec_v = v-&gt;template get&lt;CpuCooVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            t-&gt;r-&gt;set_uint(dec_v-&gt;values);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_coo(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/v_count_nz_coo&quot;</span>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            t-&gt;r-&gt;set_uint(dec_v-&gt;values);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dense(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">auto</span>                t     = ctx.task.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            ref_ptr&lt;TVector&lt;T&gt;&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            CpuDenseVec&lt;T&gt;*     dec_v = v-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> values = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">auto</span>                t     = ctx.task.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            ref_ptr&lt;TVector&lt;T&gt;&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            CpuCooVec&lt;T&gt;*       dec_v = v-&gt;template get&lt;CpuCooVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            t-&gt;r-&gt;set_uint(dec_v-&gt;values);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dense(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/v_count_nz_dense&quot;</span>);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; v-&gt;get_n_rows(); i++) {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keywordflow">if</span> (dec_v-&gt;Ax[i] != 0) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    values += 1;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span>                t     = ctx.task.template cast&lt;ScheduleTask_v_count_nz&gt;();</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            ref_ptr&lt;TVector&lt;T&gt;&gt; v     = t-&gt;v.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            CpuDenseVec&lt;T&gt;*     dec_v = v-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> values = 0;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            t-&gt;r-&gt;set_uint(values);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    };</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = 0; i &lt; v-&gt;get_n_rows(); i++) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">if</span> (dec_v-&gt;Ax[i] != 0) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    values += 1;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            t-&gt;r-&gt;set_uint(values);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_VECTOR_COUNT_NZ_HPP</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    };</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_VECTOR_COUNT_NZ_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__v__count__nz__cpu_html"><div class="ttname"><a href="classspla_1_1Algo__v__count__nz__cpu.html">spla::Algo_v_count_nz_cpu</a></div><div class="ttdef"><b>Definition:</b> cpu_vector_count_nz.hpp:43</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__v__count__nz__cpu_html_a48ccc1c91527ac9c7e8b35f1b38823ac"><div class="ttname"><a href="classspla_1_1Algo__v__count__nz__cpu.html#a48ccc1c91527ac9c7e8b35f1b38823ac">spla::Algo_v_count_nz_cpu::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cpu_vector_count_nz.hpp:51</div></div>
@@ -199,6 +205,7 @@ $(function() {
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
 <div class="ttc" id="astructspla_1_1DispatchContext_html"><div class="ttname"><a href="structspla_1_1DispatchContext.html">spla::DispatchContext</a></div><div class="ttdoc">Execution context of a single task.</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:46</div></div>
 <div class="ttc" id="astructspla_1_1DispatchContext_html_a98e2290d311615d7d9ccdcff5e5fff25"><div class="ttname"><a href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">spla::DispatchContext::task</a></div><div class="ttdeci">ref_ptr&lt; ScheduleTask &gt; task</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:48</div></div>
+<div class="ttc" id="atime__profiler_8hpp_html_aa9f47295bb25f79153ff2a3af8e3d198"><div class="ttname"><a href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a></div><div class="ttdeci">#define TIME_PROFILE_SCOPE(name)</div><div class="ttdef"><b>Definition:</b> time_profiler.hpp:92</div></div>
 <div class="ttc" id="atop_8hpp_html"><div class="ttname"><a href="top_8hpp.html">top.hpp</a></div></div>
 <div class="ttc" id="atscalar_8hpp_html"><div class="ttname"><a href="tscalar_8hpp.html">tscalar.hpp</a></div></div>
 <div class="ttc" id="attype_8hpp_html"><div class="ttname"><a href="ttype_8hpp.html">ttype.hpp</a></div></div>
