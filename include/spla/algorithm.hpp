@@ -72,6 +72,38 @@ namespace spla {
                               const ref_ptr<Descriptor>&            descriptor);
 
     /**
+     * @brief Single-source shortest path algorithm
+     *
+     * @param v float vector to store reached distances
+     * @param A float matrix filled with >0.0f distances where exist edge from i to j otherwise 0.0f
+     * @param s start vertex id to search
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status sssp(const ref_ptr<Vector>&     v,
+                         const ref_ptr<Matrix>&     A,
+                         uint                       s,
+                         const ref_ptr<Descriptor>& descriptor);
+
+    /**
+     * @brief Naive single-source shortest path algorithm
+     *
+     * @param v float vector to store reached distances
+     * @param Ai uint matrix column indices
+     * @param Ax float matrix values with >0.0f distances where exist edge from i to j
+     * @param s start vertex id to search
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status sssp_naive(std::vector<float>&              v,
+                               std::vector<std::vector<uint>>&  Ai,
+                               std::vector<std::vector<float>>& Ax,
+                               uint                             s,
+                               const ref_ptr<Descriptor>&       descriptor);
+
+    /**
      * @}
      */
 

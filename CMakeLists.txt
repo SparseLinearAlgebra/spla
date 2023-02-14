@@ -368,6 +368,7 @@ if (SPLA_BUILD_EXAMPLES)
     endfunction()
 
     spla_example_application(bfs)
+    spla_example_application(sssp)
 endif ()
 
 ######################################################################

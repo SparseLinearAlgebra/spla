@@ -95,18 +95,16 @@ namespace spla {
 
                 const auto& row = p_lil_M->Ar[v_i];
 
-                if (v_x) {
-                    for (const auto& j_x : row) {
-                        const uint j = j_x.first;
+                for (const auto& j_x : row) {
+                    const uint j = j_x.first;
 
-                        if (func_select(p_dense_mask->Ax[j])) {
-                            auto r_x = r_tmp.find(j);
+                    if (func_select(p_dense_mask->Ax[j])) {
+                        auto r_x = r_tmp.find(j);
 
-                            if (r_x != r_tmp.end())
-                                r_x->second = func_add(r_x->second, func_multiply(v_x, j_x.second));
-                            else
-                                r_tmp[j] = func_multiply(v_x, j_x.second);
-                        }
+                        if (r_x != r_tmp.end())
+                            r_x->second = func_add(r_x->second, func_multiply(v_x, j_x.second));
+                        else
+                            r_tmp[j] = func_multiply(v_x, j_x.second);
                     }
                 }
             }

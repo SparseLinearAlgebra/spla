@@ -230,4 +230,138 @@ TEST(opencl, custom_value) {
     }
 }
 
+TEST(opencl, reduce_by_key_small) {
+    std::vector<cl::Platform> platforms;
+    cl::Platform::get(&platforms);
+    cl::Platform platform = platforms.front();
+
+    std::vector<cl::Device> devices;
+    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    cl::Device device = devices.front();
+
+    cl::Context      context(device);
+    cl::CommandQueue queue(context, CL_QUEUE_PROFILING_ENABLE);
+
+    std::string kernel_code =
+            R"( uint ceil_to_pow2(uint n) {
+                    uint r = 1;
+                    while (r < n) r *= 2;
+                    return r;
+                }
+                uint lower_bound_local(const uint          x,
+                                       uint                first,
+                                       uint                size,
+                                       __local const uint* array) {
+                    while (size > 0) {
+                        int step = size / 2;
+
+                        if (array[first + step] < x) {
+                            first = first + step + 1;
+                            size -= step + 1;
+                        } else {
+                            size = step;
+                        }
+                    }
+                    return first;
+                }
+                __kernel void reduce_by_key_small(__global const uint* g_keys,
+                                                 __global const int*  g_values,
+                                                 __global uint*       g_unique_keys,
+                                                 __global int*        g_reduce_values,
+                                                 __global uint*       g_reduced_count,
+                                                 const uint           n_keys) {
+                    const uint lid       = get_local_id(0);
+                    const uint n_aligned = ceil_to_pow2(n_keys);
+
+                    __local uint s_offsets[1024];
+
+                    uint gen_key = 0;
+                    if (lid < n_keys) {
+                        bool is_neq   = lid > 0 && g_keys[lid] != g_keys[lid - 1];
+                        bool is_first = lid == 0;
+                        gen_key       = is_neq || is_first ? 1 : 0;
+                    }
+                    s_offsets[lid] = gen_key;
+
+                    for (uint offset = 1; offset < n_aligned; offset *= 2) {
+                        barrier(CLK_LOCAL_MEM_FENCE);
+                        uint value = s_offsets[lid];
+
+                        if (offset <= lid) {
+                            value += s_offsets[lid - offset];
+                        }
+
+                        barrier(CLK_LOCAL_MEM_FENCE);
+                        s_offsets[lid] = value;
+                    }
+
+                    barrier(CLK_LOCAL_MEM_FENCE);
+                    const uint n_values = s_offsets[n_keys - 1];
+
+                    if (lid < n_values) {
+                        const uint id        = lid + 1;
+                        const uint start_idx = lower_bound_local(id, 0, n_keys, s_offsets);
+                        int        value     = g_values[start_idx];
+
+                        for (uint i = start_idx + 1; i < n_keys && id == s_offsets[i]; i += 1) {
+                            value = value | g_values[i];
+                        }
+
+                        g_unique_keys[lid]   = g_keys[start_idx];
+                            g_reduce_values[lid] = value;
+                        }
+
+                    if (lid == 0) {
+                        g_reduced_count[0] = n_values;
+                    }
+                })";
+
+    cl::Program program(context, kernel_code);
+    program.build(device, "-cl-std=CL1.2");
+
+    const uint32_t        N = 109;
+    std::vector<uint32_t> keys(N);
+    std::vector<int>      values(N);
+
+    cl::Buffer cl_keys_in(context, CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint32_t) * N);
+    cl::Buffer cl_vals_in(context, CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(int) * N);
+    cl::Buffer cl_keys_out(context, CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint32_t) * N);
+    cl::Buffer cl_vals_out(context, CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(int) * N);
+    cl::Buffer cl_count(context, CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint32_t));
+
+    cl::Kernel kernel(program, "reduce_by_key_small");
+    kernel.setArg(0, cl_keys_in);
+    kernel.setArg(1, cl_vals_in);
+    kernel.setArg(2, cl_keys_out);
+    kernel.setArg(3, cl_vals_out);
+    kernel.setArg(4, cl_count);
+    kernel.setArg(5, N);
+
+    cl::Event event;
+
+    cl::NDRange global(128);
+    cl::NDRange local = global;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds{10});
+
+    for (int i = 0; i < 20; i++) {
+        queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local, nullptr, &event);
+        event.wait();
+
+        double kernel_queue = event.getProfilingInfo<CL_PROFILING_COMMAND_END>() - event.getProfilingInfo<CL_PROFILING_COMMAND_QUEUED>();
+        double kernel_exec  = event.getProfilingInfo<CL_PROFILING_COMMAND_END>() - event.getProfilingInfo<CL_PROFILING_COMMAND_START>();
+
+        uint32_t count;
+
+        queue.enqueueReadBuffer(cl_count, true, 0, sizeof(count), &count, nullptr, &event);
+        event.wait();
+
+        double copy_queue = event.getProfilingInfo<CL_PROFILING_COMMAND_END>() - event.getProfilingInfo<CL_PROFILING_COMMAND_QUEUED>();
+        double copy_exec  = event.getProfilingInfo<CL_PROFILING_COMMAND_END>() - event.getProfilingInfo<CL_PROFILING_COMMAND_START>();
+
+        std::cout << "kernel " << kernel_queue * 1e-6 << " " << kernel_exec * 1e-6 << " ms\n";
+        std::cout << "copy " << copy_queue * 1e-6 << " " << copy_exec * 1e-6 << " ms\n";
+    }
+}
+
 SPLA_GTEST_MAIN

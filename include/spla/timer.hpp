@@ -58,7 +58,6 @@ namespace spla {
         SPLA_API void                 print(std::ostream& out = std::cout) const;
         [[nodiscard]] SPLA_API double get_elapsed_ms() const;
         [[nodiscard]] SPLA_API double get_elapsed_sec() const;
-        [[nodiscard]] SPLA_API double get_elapsed_lap_ms() const;
         [[nodiscard]] SPLA_API const std::vector<double>& get_laps_ms() const;
 
     private:

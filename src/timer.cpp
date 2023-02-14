@@ -50,14 +50,12 @@ namespace spla {
     }
 
     double Timer::get_elapsed_ms() const {
-        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_start).count()) * 1e-3;
+        return static_cast<double>(std::chrono::duration_cast<us>(m_end - m_start).count()) * 1e-3;
     }
     double Timer::get_elapsed_sec() const {
-        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_start).count()) * 1e-6;
+        return static_cast<double>(std::chrono::duration_cast<us>(m_end - m_start).count()) * 1e-6;
     }
-    double Timer::get_elapsed_lap_ms() const {
-        return static_cast<double>(std::chrono::duration_cast<us>(clock::now() - m_prev).count()) * 1e-3;
-    }
+
     const std::vector<double>& Timer::get_laps_ms() const {
         return m_laps;
     }

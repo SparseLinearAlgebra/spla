@@ -28,6 +28,7 @@
 #ifndef SPLA_CL_FORMAT_DENSE_VEC_HPP
 #define SPLA_CL_FORMAT_DENSE_VEC_HPP
 
+#include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_sort_by_key.hpp>
@@ -132,7 +133,7 @@ namespace spla {
 
         queue.enqueueCopyBuffer(temp_Ri, out.Ai, 0, 0, count[0] * sizeof(uint));
         queue.enqueueCopyBuffer(temp_Rx, out.Ax, 0, 0, count[0] * sizeof(T));
-        queue.finish();
+        CL_FINISH(queue);
     }
 
     /**

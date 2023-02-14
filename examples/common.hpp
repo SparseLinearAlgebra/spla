@@ -30,6 +30,7 @@
 
 #include <spla.hpp>
 
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -43,6 +44,23 @@ void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& 
         assert(expected == actual);
 
         if (expected != actual) {
+            std::cerr << " VERIFY: " << i << " expected " << expected << " actual " << actual << std::endl;
+        }
+    }
+}
+
+void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<float>& b, const float error = 0.005f) {
+    const auto N = a->get_n_rows();
+    for (spla::uint i = 0; i < N; i++) {
+        float expected = b[i];
+        float actual;
+        a->get_float(i, actual);
+
+        bool equals = std::abs(expected - actual) <= error;
+
+        assert(equals);
+
+        if (!equals) {
             std::cerr << " VERIFY: " << i << " expected " << expected << " actual " << actual << std::endl;
         }
     }

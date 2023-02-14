@@ -101,7 +101,7 @@ namespace spla {
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel_dense_to_dense, cl::NDRange(), global, local);
-            queue.finish();
+            CL_FINISH(queue);
 
             return Status::Ok;
         }
@@ -137,7 +137,7 @@ namespace spla {
             cl::NDRange global(m_block_size * n_groups_to_dispatch);
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(m_kernel_sparse_to_dense, cl::NDRange(), global, local);
-            queue.finish();
+            CL_FINISH(queue);
 
             return Status::Ok;
         }

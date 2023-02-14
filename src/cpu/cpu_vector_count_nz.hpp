@@ -68,6 +68,8 @@ namespace spla {
 
     private:
         Status execute_dok(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/v_count_nz_dok");
+
             auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
             ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
             CpuDokVec<T>*       dec_v = v->template get<CpuDokVec<T>>();
@@ -77,6 +79,8 @@ namespace spla {
             return Status::Ok;
         }
         Status execute_coo(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/v_count_nz_coo");
+
             auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
             ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
             CpuCooVec<T>*       dec_v = v->template get<CpuCooVec<T>>();
@@ -86,6 +90,8 @@ namespace spla {
             return Status::Ok;
         }
         Status execute_dense(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/v_count_nz_dense");
+
             auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
             ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
             CpuDenseVec<T>*     dec_v = v->template get<CpuDenseVec<T>>();

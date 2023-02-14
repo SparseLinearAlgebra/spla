@@ -28,6 +28,7 @@
 #ifndef SPLA_CL_FORMAT_COO_VEC_HPP
 #define SPLA_CL_FORMAT_COO_VEC_HPP
 
+#include <opencl/cl_debug.hpp>
 #include <opencl/cl_fill.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -135,7 +136,7 @@ namespace spla {
         cl::NDRange global(block_size * n_groups_to_dispatch);
         cl::NDRange local(block_size);
         queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
-        queue.finish();
+        CL_FINISH(queue);
     }
 
     /**

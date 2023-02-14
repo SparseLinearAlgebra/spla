@@ -39,6 +39,8 @@
 #include <storage/storage_manager.hpp>
 #include <storage/storage_manager_vector.hpp>
 
+#include <algorithm>
+
 namespace spla {
 
     /**
@@ -69,6 +71,9 @@ namespace spla {
         Status             get_int(uint row_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint32_t& value) override;
         Status             get_float(uint row_id, float& value) override;
+        Status             fill_int(T_INT value) override;
+        Status             fill_uint(T_UINT value) override;
+        Status             fill_float(T_FLOAT value) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -101,7 +106,6 @@ namespace spla {
     uint TVector<T>::get_n_rows() {
         return m_storage.get_n_rows();
     }
-
     template<typename T>
     ref_ptr<Type> TVector<T>::get_type() {
         return get_ttype<T>().template as<Type>();
@@ -111,7 +115,6 @@ namespace spla {
     void TVector<T>::set_label(std::string label) {
         m_label = std::move(label);
     }
-
     template<typename T>
     const std::string& TVector<T>::get_label() const {
         return m_label;
@@ -133,21 +136,34 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
-        validate_rw(Format::CpuDokVec);
+        if (is_valid(Format::CpuDenseVec)) {
+            get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
+            return Status::Ok;
+        }
+
+        validate_rwd(Format::CpuDokVec);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
-
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
-        validate_rw(Format::CpuDokVec);
+        if (is_valid(Format::CpuDenseVec)) {
+            get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
+            return Status::Ok;
+        }
+
+        validate_rwd(Format::CpuDokVec);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
-
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
-        validate_rw(Format::CpuDokVec);
+        if (is_valid(Format::CpuDenseVec)) {
+            get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
+            return Status::Ok;
+        }
+
+        validate_rwd(Format::CpuDokVec);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
@@ -166,7 +182,6 @@ namespace spla {
 
         return Status::Ok;
     }
-
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
         validate_rw(Format::CpuDokVec);
@@ -181,7 +196,6 @@ namespace spla {
 
         return Status::Ok;
     }
-
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
         validate_rw(Format::CpuDokVec);
@@ -193,6 +207,37 @@ namespace spla {
         if (entry != Ax.end()) {
             value = static_cast<T_FLOAT>(entry->second);
         }
+
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::fill_int(T_INT value) {
+        validate_wd(Format::CpuDenseVec);
+
+        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
+        const T t  = static_cast<T>(value);
+        std::fill(Ax.begin(), Ax.end(), t);
+
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TVector<T>::fill_uint(T_UINT value) {
+        validate_wd(Format::CpuDenseVec);
+
+        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
+        const T t  = static_cast<T>(value);
+        std::fill(Ax.begin(), Ax.end(), t);
+
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TVector<T>::fill_float(T_FLOAT value) {
+        validate_wd(Format::CpuDenseVec);
+
+        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
+        const T t  = static_cast<T>(value);
+        std::fill(Ax.begin(), Ax.end(), t);
 
         return Status::Ok;
     }
