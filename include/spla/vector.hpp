@@ -30,6 +30,7 @@
 
 #include "object.hpp"
 #include "op.hpp"
+#include "scalar.hpp"
 #include "type.hpp"
 
 namespace spla {
@@ -46,9 +47,10 @@ namespace spla {
     class Vector : public Object {
     public:
         SPLA_API ~Vector() override                                                     = default;
-        SPLA_API virtual Status        hint_state(StateHint hint)                       = 0;
         SPLA_API virtual uint          get_n_rows()                                     = 0;
         SPLA_API virtual ref_ptr<Type> get_type()                                       = 0;
+        SPLA_API virtual Status        set_format(FormatVector format)                  = 0;
+        SPLA_API virtual Status        set_fill_value(const ref_ptr<Scalar>& value)     = 0;
         SPLA_API virtual Status        set_reduce(ref_ptr<OpBinary> resolve_duplicates) = 0;
         SPLA_API virtual Status        set_int(uint row_id, T_INT value)                = 0;
         SPLA_API virtual Status        set_uint(uint row_id, T_UINT value)              = 0;

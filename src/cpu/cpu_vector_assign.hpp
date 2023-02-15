@@ -56,9 +56,9 @@ namespace spla {
             auto                t    = ctx.task.template cast<ScheduleTask_v_assign_masked>();
             ref_ptr<TVector<T>> mask = t->mask.template cast<TVector<T>>();
 
-            if (mask->is_valid(Format::CpuCooVec))
+            if (mask->is_valid(FormatVector::CpuCoo))
                 return execute_sp2dn(ctx);
-            if (mask->is_valid(Format::CpuDenseVec))
+            if (mask->is_valid(FormatVector::CpuDense))
                 return execute_dn2dn(ctx);
 
             return execute_sp2dn(ctx);
@@ -78,8 +78,8 @@ namespace spla {
 
             auto assign_value = value->get_value();
 
-            r->validate_rwd(Format::CpuDenseVec);
-            mask->validate_rw(Format::CpuCooVec);
+            r->validate_rwd(FormatVector::CpuDense);
+            mask->validate_rw(FormatVector::CpuCoo);
 
             auto*       p_r_dense     = r->template get<CpuDenseVec<T>>();
             const auto* p_mask_sparse = mask->template get<CpuCooVec<T>>();
@@ -112,8 +112,8 @@ namespace spla {
 
             auto assign_value = value->get_value();
 
-            r->validate_rwd(Format::CpuDenseVec);
-            mask->validate_rw(Format::CpuDenseVec);
+            r->validate_rwd(FormatVector::CpuDense);
+            mask->validate_rw(FormatVector::CpuDense);
 
             auto*       p_r_dense    = r->template get<CpuDenseVec<T>>();
             const auto* p_mask_dense = mask->template get<CpuDenseVec<T>>();

@@ -28,6 +28,7 @@
 #ifndef SPLA_CL_FORMAT_DENSE_VEC_HPP
 #define SPLA_CL_FORMAT_DENSE_VEC_HPP
 
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -52,9 +53,10 @@ namespace spla {
     }
 
     template<typename T>
-    void cl_dense_vec_fill_zero(const std::size_t n_rows,
-                                CLDenseVec<T>&    storage) {
-        cl_fill_zero<T>(get_acc_cl()->get_queue_default(), storage.Ax, n_rows);
+    void cl_dense_vec_fill_value(const std::size_t n_rows,
+                                 const T           value,
+                                 CLDenseVec<T>&    storage) {
+        cl_fill_value<T>(get_acc_cl()->get_queue_default(), storage.Ax, n_rows, value);
     }
 
     template<typename T>
@@ -68,15 +70,6 @@ namespace spla {
 
         cl::Buffer buffer(get_acc_cl()->get_context(), flags, buffer_size, (void*) values);
         storage.Ax = std::move(buffer);
-    }
-
-    template<typename T>
-    void cl_dense_vec_write(const std::size_t n_rows,
-                            const T*          values,
-                            CLDenseVec<T>&    storage,
-                            cl::CommandQueue& queue,
-                            bool              blocking = true) {
-        queue.enqueueWriteBuffer(storage.Ax, blocking, 0, n_rows * sizeof(T), values);
     }
 
     template<typename T>
@@ -94,6 +87,7 @@ namespace spla {
 
     template<typename T>
     void cl_dense_vec_to_coo(const std::size_t    n_rows,
+                             const T              fill_value,
                              const CLDenseVec<T>& in,
                              CLCooVec<T>&         out,
                              cl::CommandQueue&    queue) {
@@ -106,10 +100,11 @@ namespace spla {
 
         auto* acc = get_acc_cl();
 
-        uint       count[1] = {0};
-        cl::Buffer cl_count(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), count);
-        cl::Buffer temp_Ri(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(uint));
-        cl::Buffer temp_Rx(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(T));
+        CLCounterWrapper cl_count;
+        cl::Buffer       temp_Ri(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(uint));
+        cl::Buffer       temp_Rx(acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_NO_ACCESS, n_rows * sizeof(T));
+
+        cl_count.set(queue, 0);
 
         uint block_size           = acc->get_wave_size();
         uint n_groups_to_dispatch = std::max(std::min(uint(n_rows) / block_size, uint(512)), uint(1));
@@ -121,18 +116,19 @@ namespace spla {
         kernel.setArg(0, in.Ax);
         kernel.setArg(1, temp_Ri);
         kernel.setArg(2, temp_Rx);
-        kernel.setArg(3, cl_count);
+        kernel.setArg(3, cl_count.buffer());
         kernel.setArg(4, uint(n_rows));
+        kernel.setArg(5, fill_value);
 
         queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
-        queue.enqueueReadBuffer(cl_count, true, 0, sizeof(count[0]), count);
+        uint count = cl_count.get(queue);
 
-        out.values = count[0];
-        out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count[0] * sizeof(uint));
-        out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count[0] * sizeof(T));
+        out.values = count;
+        out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(uint));
+        out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(T));
 
-        queue.enqueueCopyBuffer(temp_Ri, out.Ai, 0, 0, count[0] * sizeof(uint));
-        queue.enqueueCopyBuffer(temp_Rx, out.Ax, 0, 0, count[0] * sizeof(T));
+        queue.enqueueCopyBuffer(temp_Ri, out.Ai, 0, 0, count * sizeof(uint));
+        queue.enqueueCopyBuffer(temp_Rx, out.Ax, 0, 0, count * sizeof(T));
         CL_FINISH(queue);
     }
 

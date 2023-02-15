@@ -56,11 +56,11 @@ namespace spla {
             auto                t = ctx.task.template cast<ScheduleTask_v_count_nz>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (v->is_valid(Format::CpuDokVec))
+            if (v->is_valid(FormatVector::CpuDok))
                 return execute_dok(ctx);
-            if (v->is_valid(Format::CpuCooVec))
+            if (v->is_valid(FormatVector::CpuCoo))
                 return execute_coo(ctx);
-            if (v->is_valid(Format::CpuDenseVec))
+            if (v->is_valid(FormatVector::CpuDense))
                 return execute_dense(ctx);
 
             return execute_coo(ctx);

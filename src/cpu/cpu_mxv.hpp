@@ -70,10 +70,10 @@ namespace spla {
             const uint DM       = M->get_n_rows();
             const T    sum_init = init->get_value();
 
-            r->validate_wd(Format::CpuDenseVec);
-            mask->validate_rw(Format::CpuDenseVec);
-            v->validate_rw(Format::CpuDenseVec);
-            M->validate_rw(Format::CpuLil);
+            r->validate_wd(FormatVector::CpuDense);
+            mask->validate_rw(FormatVector::CpuDense);
+            v->validate_rw(FormatVector::CpuDense);
+            M->validate_rw(FormatMatrix::CpuLil);
 
             CpuDenseVec<T>*       p_dense_r    = r->template get<CpuDenseVec<T>>();
             const CpuDenseVec<T>* p_dense_mask = mask->template get<CpuDenseVec<T>>();

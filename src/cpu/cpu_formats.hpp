@@ -54,7 +54,7 @@ namespace spla {
     template<typename T>
     class CpuDokVec : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuDokVec;
+        static constexpr FormatVector FORMAT = FormatVector::CpuDok;
 
         ~CpuDokVec() override = default;
 
@@ -73,7 +73,7 @@ namespace spla {
     template<typename T>
     class CpuDenseVec : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuDenseVec;
+        static constexpr FormatVector FORMAT = FormatVector::CpuDense;
 
         ~CpuDenseVec() override = default;
 
@@ -89,7 +89,7 @@ namespace spla {
     template<typename T>
     class CpuCooVec : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuCooVec;
+        static constexpr FormatVector FORMAT = FormatVector::CpuCoo;
 
         ~CpuCooVec() override = default;
 
@@ -106,7 +106,7 @@ namespace spla {
     template<typename T>
     class CpuLil : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuLil;
+        static constexpr FormatMatrix FORMAT = FormatMatrix::CpuLil;
 
         ~CpuLil() override = default;
 
@@ -127,7 +127,7 @@ namespace spla {
     template<typename T>
     class CpuDok : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuDok;
+        static constexpr FormatMatrix FORMAT = FormatMatrix::CpuDok;
 
         ~CpuDok() override = default;
 
@@ -147,7 +147,7 @@ namespace spla {
     template<typename T>
     class CpuCoo : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuCoo;
+        static constexpr FormatMatrix FORMAT = FormatMatrix::CpuCoo;
 
         ~CpuCoo() override = default;
 
@@ -165,7 +165,7 @@ namespace spla {
     template<typename T>
     class CpuCsr : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CpuCsr;
+        static constexpr FormatMatrix FORMAT = FormatMatrix::CpuCsr;
 
         ~CpuCsr() override = default;
 

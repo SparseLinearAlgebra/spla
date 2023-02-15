@@ -56,10 +56,10 @@ namespace spla {
             auto                t = ctx.task.template cast<ScheduleTask_v_reduce>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (v->is_valid(Format::CpuCooVec)) {
+            if (v->is_valid(FormatVector::CpuCoo)) {
                 return execute_sp(ctx);
             }
-            if (v->is_valid(Format::CpuDenseVec)) {
+            if (v->is_valid(FormatVector::CpuDense)) {
                 return execute_dn(ctx);
             }
 
@@ -79,7 +79,7 @@ namespace spla {
 
             T sum = s->get_value();
 
-            v->validate_rw(Format::CpuCooVec);
+            v->validate_rw(FormatVector::CpuCoo);
             const auto* p_sparse = v->template get<CpuCooVec<T>>();
             const auto& function = op_reduce->function;
 
@@ -104,7 +104,7 @@ namespace spla {
 
             T sum = s->get_value();
 
-            v->validate_rw(Format::CpuDenseVec);
+            v->validate_rw(FormatVector::CpuDense);
             const auto* p_dense  = v->template get<CpuDenseVec<T>>();
             const auto& function = op_reduce->function;
 

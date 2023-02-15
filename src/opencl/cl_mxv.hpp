@@ -81,10 +81,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
-            mask->validate_rw(Format::CLDenseVec);
-            M->validate_rw(Format::CLCsr);
-            v->validate_rw(Format::CLDenseVec);
+            r->validate_rwd(FormatVector::AccDense);
+            mask->validate_rw(FormatVector::AccDense);
+            M->validate_rw(FormatMatrix::AccCsr);
+            v->validate_rw(FormatVector::AccDense);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r    = r->template get<CLDenseVec<T>>();
@@ -127,10 +127,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
-            mask->validate_rw(Format::CLDenseVec);
-            M->validate_rw(Format::CLCsr);
-            v->validate_rw(Format::CLDenseVec);
+            r->validate_rwd(FormatVector::AccDense);
+            mask->validate_rw(FormatVector::AccDense);
+            M->validate_rw(FormatMatrix::AccCsr);
+            v->validate_rw(FormatVector::AccDense);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();
@@ -175,10 +175,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
-            mask->validate_rw(Format::CLDenseVec);
-            M->validate_rw(Format::CLCsr);
-            v->validate_rw(Format::CLDenseVec);
+            r->validate_rwd(FormatVector::AccDense);
+            mask->validate_rw(FormatVector::AccDense);
+            M->validate_rw(FormatMatrix::AccCsr);
+            v->validate_rw(FormatVector::AccDense);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();

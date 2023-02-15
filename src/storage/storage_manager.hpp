@@ -50,24 +50,25 @@ namespace spla {
      * @brief General format converter for vector or matrix decoration storage
      *
      * @tparam T Type of elements stored
+     * @tparam F Format of stored data
      * @tparam capacity Capacity if storage
      */
-    template<typename T, int capacity>
+    template<typename T, typename F, int capacity>
     class StorageManager final {
     public:
-        typedef TDecorationStorage<T, capacity>       Storage;
+        typedef TDecorationStorage<T, F, capacity>    Storage;
         typedef std::function<void(Storage& storage)> Function;
 
         explicit StorageManager();
 
-        void register_constructor(Format format, Function function);
-        void register_validator(Format format, Function function);
-        void register_converter(Format from, Format to, Function function);
+        void register_constructor(F format, Function function);
+        void register_validator(F format, Function function);
+        void register_converter(F from, F to, Function function);
 
-        void validate_ctor(Format format, Storage& storage);
-        void validate_rw(Format format, Storage& storage);
-        void validate_rwd(Format format, Storage& storage);
-        void validate_wd(Format format, Storage& storage);
+        void validate_ctor(F format, Storage& storage);
+        void validate_rw(F format, Storage& storage);
+        void validate_rwd(F format, Storage& storage);
+        void validate_wd(F format, Storage& storage);
 
     private:
         std::vector<std::vector<std::pair<int, int>>> m_convert_rules;
@@ -76,25 +77,25 @@ namespace spla {
         std::vector<Function>                         m_converters;
     };
 
-    template<typename T, int capacity>
-    StorageManager<T, capacity>::StorageManager() {
+    template<typename T, typename F, int capacity>
+    StorageManager<T, F, capacity>::StorageManager() {
         m_convert_rules.resize(capacity);
         m_constructors.resize(capacity);
         m_validators.resize(capacity);
     }
 
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::register_constructor(Format format, StorageManager::Function function) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::register_constructor(F format, StorageManager::Function function) {
         const int i       = static_cast<int>(format);
         m_constructors[i] = std::move(function);
     }
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::register_validator(Format format, StorageManager::Function function) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::register_validator(F format, StorageManager::Function function) {
         const int i     = static_cast<int>(format);
         m_validators[i] = std::move(function);
     }
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::register_converter(Format from, Format to, StorageManager::Function function) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::register_converter(F from, F to, StorageManager::Function function) {
         const int i  = static_cast<int>(from);
         const int j  = static_cast<int>(to);
         const int id = static_cast<int>(m_converters.size());
@@ -102,15 +103,15 @@ namespace spla {
         m_converters.push_back(std::move(function));
     }
 
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::validate_ctor(Format format, Storage& storage) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::validate_ctor(F format, Storage& storage) {
         const int i = static_cast<int>(format);
         if (!storage.get_ptr_i(i)) {
             m_constructors[i](storage);
         }
     }
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::validate_rw(Format format, Storage& storage) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::validate_rw(F format, Storage& storage) {
         if (storage.is_valid(format)) {
             return;
         }
@@ -164,17 +165,17 @@ namespace spla {
             }
 
             m_converters[rule->second](storage);
-            storage.validate(static_cast<Format>(from_to.second));
+            storage.validate(static_cast<F>(from_to.second));
         }
     }
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::validate_rwd(Format format, Storage& storage) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::validate_rwd(F format, Storage& storage) {
         validate_rw(format, storage);
         storage.invalidate();
         storage.validate(format);
     }
-    template<typename T, int capacity>
-    void StorageManager<T, capacity>::validate_wd(Format format, Storage& storage) {
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::validate_wd(F format, Storage& storage) {
         const int i = static_cast<int>(format);
         if (!storage.get_ptr_i(i)) {
             m_constructors[i](storage);

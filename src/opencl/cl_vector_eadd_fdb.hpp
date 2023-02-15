@@ -62,7 +62,7 @@ namespace spla {
             ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (r->is_valid(Format::CLDenseVec) && v->is_valid(Format::CLCooVec)) {
+            if (r->is_valid(FormatVector::AccDense) && v->is_valid(FormatVector::AccCoo)) {
                 return execute_sp2dn(ctx);
             }
 
@@ -81,9 +81,9 @@ namespace spla {
 
             if (!ensure_kernel(op)) return Status::CompilationError;
 
-            r->validate_rwd(Format::CLDenseVec);
-            v->validate_rw(Format::CLCooVec);
-            fdb->validate_wd(Format::CLCooVec);
+            r->validate_rwd(FormatVector::AccDense);
+            v->validate_rw(FormatVector::AccCoo);
+            fdb->validate_wd(FormatVector::AccCoo);
 
             auto*       p_cl_r   = r->template get<CLDenseVec<T>>();
             const auto* p_cl_v   = v->template get<CLCooVec<T>>();

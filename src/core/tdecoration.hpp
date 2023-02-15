@@ -63,24 +63,28 @@ namespace spla {
      * @brief Storage for decorators with data of a particular vector or matrix object
      *
      * @tparam T Type of elements stored in decorators
+     * @tparam F Format of stored data
      * @tparam capacity Static storage capacity to allocate decorators
      */
-    template<typename T, int capacity>
+    template<typename T, typename F, int capacity>
     class TDecorationStorage {
     public:
         ref_ptr<TDecoration<T>>& get_ref_i(int index) { return m_decorations[index]; }
         TDecoration<T>*          get_ptr_i(int index) { return m_decorations[index].get(); }
-        ref_ptr<TDecoration<T>>& get_ref(Format format) { return get_ref_i(static_cast<int>(format)); }
-        TDecoration<T>*          get_ptr(Format format) { return get_ptr_i(static_cast<int>(format)); }
+        ref_ptr<TDecoration<T>>& get_ref(F format) { return get_ref_i(static_cast<int>(format)); }
+        TDecoration<T>*          get_ptr(F format) { return get_ptr_i(static_cast<int>(format)); }
 
         template<class DecorationClass>
         DecorationClass* get() { return dynamic_cast<DecorationClass*>(get_ptr(DecorationClass::FORMAT)); }
 
         [[nodiscard]] bool is_valid_any() const { return m_is_valid.any(); }
         [[nodiscard]] bool is_valid_i(int index) const { return m_is_valid.test(index); }
-        [[nodiscard]] bool is_valid(Format format) const { return is_valid_i(static_cast<int>(format)); }
-        void               validate(Format format) { m_is_valid.set(static_cast<int>(format), true); }
+        [[nodiscard]] bool is_valid(F format) const { return is_valid_i(static_cast<int>(format)); }
+        void               validate(F format) { m_is_valid.set(static_cast<int>(format), true); }
         void               invalidate() { m_is_valid.reset(); }
+
+        void set_fill_value(T value) { m_fill_value = value; }
+        T    get_fill_value() const { return m_fill_value; }
 
         [[nodiscard]] uint get_n_rows() const { return m_n_rows; }
         [[nodiscard]] uint get_n_cols() const { return m_n_cols; }
@@ -93,8 +97,9 @@ namespace spla {
     private:
         std::array<ref_ptr<TDecoration<T>>, capacity> m_decorations;
         std::bitset<capacity>                         m_is_valid;
-        uint                                          m_n_rows = 0;
-        uint                                          m_n_cols = 0;
+        uint                                          m_n_rows     = 0;
+        uint                                          m_n_cols     = 0;
+        T                                             m_fill_value = T();
     };
 
     /**

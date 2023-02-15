@@ -44,39 +44,39 @@
 namespace spla {
 
     template<typename T>
-    using StorageManagerMatrix = StorageManager<T, static_cast<int>(Format::CountMatrix)>;
+    using StorageManagerMatrix = StorageManager<T, FormatMatrix, static_cast<int>(FormatMatrix::Count)>;
 
     template<typename T>
     void register_formats_matrix(StorageManagerMatrix<T>& manager) {
         using Storage = typename StorageManagerMatrix<T>::Storage;
 
-        manager.register_constructor(Format::CpuLil, [](Storage& s) {
-            s.get_ref(Format::CpuLil) = make_ref<CpuLil<T>>();
+        manager.register_constructor(FormatMatrix::CpuLil, [](Storage& s) {
+            s.get_ref(FormatMatrix::CpuLil) = make_ref<CpuLil<T>>();
         });
-        manager.register_constructor(Format::CpuDok, [](Storage& s) {
-            s.get_ref(Format::CpuDok) = make_ref<CpuDok<T>>();
+        manager.register_constructor(FormatMatrix::CpuDok, [](Storage& s) {
+            s.get_ref(FormatMatrix::CpuDok) = make_ref<CpuDok<T>>();
         });
-        manager.register_constructor(Format::CpuCsr, [](Storage& s) {
-            s.get_ref(Format::CpuCsr) = make_ref<CpuCsr<T>>();
+        manager.register_constructor(FormatMatrix::CpuCsr, [](Storage& s) {
+            s.get_ref(FormatMatrix::CpuCsr) = make_ref<CpuCsr<T>>();
         });
 
-        manager.register_validator(Format::CpuLil, [](Storage& s) {
+        manager.register_validator(FormatMatrix::CpuLil, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
             cpu_lil_resize(s.get_n_rows(), *lil);
             cpu_lil_clear(*lil);
         });
-        manager.register_validator(Format::CpuDok, [](Storage& s) {
+        manager.register_validator(FormatMatrix::CpuDok, [](Storage& s) {
             auto* dok = s.template get<CpuDok<T>>();
             cpu_dok_clear(*dok);
         });
 
-        manager.register_converter(Format::CpuLil, Format::CpuDok, [](Storage& s) {
+        manager.register_converter(FormatMatrix::CpuLil, FormatMatrix::CpuDok, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
             auto* dok = s.template get<CpuDok<T>>();
             cpu_dok_clear(*dok);
             cpu_lil_to_dok(s.get_n_rows(), *lil, *dok);
         });
-        manager.register_converter(Format::CpuLil, Format::CpuCsr, [](Storage& s) {
+        manager.register_converter(FormatMatrix::CpuLil, FormatMatrix::CpuCsr, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
             auto* csr = s.template get<CpuCsr<T>>();
             cpu_csr_resize(s.get_n_rows(), lil->values, *csr);
@@ -84,11 +84,11 @@ namespace spla {
         });
 
 #if defined(SPLA_BUILD_OPENCL)
-        manager.register_constructor(Format::CLCsr, [](Storage& s) {
-            s.get_ref(Format::CLCsr) = make_ref<CLCsr<T>>();
+        manager.register_constructor(FormatMatrix::AccCsr, [](Storage& s) {
+            s.get_ref(FormatMatrix::AccCsr) = make_ref<CLCsr<T>>();
         });
 
-        manager.register_converter(Format::CpuCsr, Format::CLCsr, [](Storage& s) {
+        manager.register_converter(FormatMatrix::CpuCsr, FormatMatrix::AccCsr, [](Storage& s) {
             auto* cpu_csr = s.template get<CpuCsr<T>>();
             auto* cl_csr  = s.template get<CLCsr<T>>();
             cl_csr_init(s.get_n_rows(), cpu_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr);

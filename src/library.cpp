@@ -46,6 +46,27 @@
 
 namespace spla {
 
+    static const char* to_string(Status status) {
+#define STATUS_MAP(value) \
+    case Status::value:   \
+        return #value
+
+        switch (status) {
+            STATUS_MAP(Ok);
+            STATUS_MAP(Error);
+            STATUS_MAP(NoAcceleration);
+            STATUS_MAP(PlatformNotFound);
+            STATUS_MAP(DeviceNotFound);
+            STATUS_MAP(InvalidState);
+            STATUS_MAP(InvalidArgument);
+            STATUS_MAP(NoValue);
+            STATUS_MAP(NotImplemented);
+            default:
+                return "none";
+        }
+#undef STATUS_MAP
+    }
+
     Library::Library() {
         // Setup logger (always present in the system)
         m_logger = std::make_unique<Logger>();

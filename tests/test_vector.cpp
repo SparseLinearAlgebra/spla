@@ -361,4 +361,33 @@ TEST(vector, sorting_naive) {
     for (auto r : res) std::cout << r << std::endl;
 }
 
+TEST(vector, fill_value) {
+    const int fill = 13;
+    const int set  = 7;
+    const int N    = 10000;
+    const int S    = 2;
+
+    auto v = spla::make_vector(N, spla::INT);
+
+    v->set_fill_value(spla::make_int(fill));
+
+    for (int i = 0; i < N; i++) {
+        if (i % S) v->set_int(i, set);
+    }
+
+    for (int i = 0; i < N; i++) {
+        int r;
+        v->get_int(i, r);
+        EXPECT_EQ(r, (i % S ? set : fill));
+    }
+
+    v->set_fill_value(spla::make_int(set));
+
+    for (int i = 0; i < N; i++) {
+        int r;
+        v->get_int(i, r);
+        EXPECT_EQ(r, set);
+    }
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

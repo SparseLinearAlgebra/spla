@@ -57,12 +57,13 @@ namespace spla {
     public:
         TMatrix(uint n_rows, uint n_cols);
         ~TMatrix() override = default;
-        Status             hint_state(StateHint hint) override;
         uint               get_n_rows() override;
         uint               get_n_cols() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
+        Status             set_format(FormatMatrix format) override;
+        Status             set_fill_value(const ref_ptr<Scalar>& value) override;
         Status             set_reduce(ref_ptr<OpBinary> resolve_duplicates) override;
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
@@ -75,10 +76,10 @@ namespace spla {
         template<typename Decorator>
         Decorator* get() { return m_storage.template get<Decorator>(); }
 
-        void validate_rw(Format format);
-        void validate_rwd(Format format);
-        void validate_wd(Format format);
-        void validate_ctor(Format format);
+        void validate_rw(FormatMatrix format);
+        void validate_rwd(FormatMatrix format);
+        void validate_wd(FormatMatrix format);
+        void validate_ctor(FormatMatrix format);
 
         static StorageManagerMatrix<T>* get_storage_manager();
 
@@ -93,20 +94,13 @@ namespace spla {
     }
 
     template<typename T>
-    Status TMatrix<T>::hint_state(StateHint hint) {
-        return Status::InvalidState;
-    }
-
-    template<typename T>
     uint TMatrix<T>::get_n_rows() {
         return m_storage.get_n_rows();
     }
-
     template<typename T>
     uint TMatrix<T>::get_n_cols() {
         return m_storage.get_n_cols();
     }
-
     template<typename T>
     ref_ptr<Type> TMatrix<T>::get_type() {
         return get_ttype<T>().template as<Type>();
@@ -116,20 +110,38 @@ namespace spla {
     void TMatrix<T>::set_label(std::string label) {
         m_label = std::move(label);
     }
-
     template<typename T>
     const std::string& TMatrix<T>::get_label() const {
         return m_label;
     }
 
     template<typename T>
+    Status TMatrix<T>::set_format(FormatMatrix format) {
+        validate_rw(format);
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TMatrix<T>::set_fill_value(const ref_ptr<Scalar>& value) {
+        if (value) {
+            m_storage.invalidate();
+
+            if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
+            if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
+            if constexpr (std::is_same<T, T_FLOAT>::value) m_storage.set_fill_value(value->as_float());
+
+            return Status::Ok;
+        }
+
+        return Status::InvalidArgument;
+    }
+    template<typename T>
     Status TMatrix<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
         auto reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
 
         if (reduce) {
-            validate_ctor(Format::CpuLil);
+            validate_ctor(FormatMatrix::CpuLil);
             get<CpuLil<T>>()->reduce = reduce->function;
-            validate_ctor(Format::CpuDok);
+            validate_ctor(FormatMatrix::CpuDok);
             get<CpuDok<T>>()->reduce = reduce->function;
         }
 
@@ -138,68 +150,64 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::set_int(uint row_id, uint col_id, std::int32_t value) {
-        validate_rw(Format::CpuLil);
+        validate_rw(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
-
     template<typename T>
     Status TMatrix<T>::set_uint(uint row_id, uint col_id, std::uint32_t value) {
-        validate_rw(Format::CpuLil);
+        validate_rw(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
-
     template<typename T>
     Status TMatrix<T>::set_float(uint row_id, uint col_id, float value) {
-        validate_rw(Format::CpuLil);
+        validate_rw(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TMatrix<T>::get_int(uint row_id, uint col_id, int32_t& value) {
-        validate_rw(Format::CpuDok);
+        validate_rw(FormatMatrix::CpuDok);
 
         auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+        value       = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<int32_t>(entry->second);
-            return Status::Ok;
         }
 
-        return Status::NoValue;
+        return Status::Ok;
     }
-
     template<typename T>
     Status TMatrix<T>::get_uint(uint row_id, uint col_id, uint32_t& value) {
-        validate_rw(Format::CpuDok);
+        validate_rw(FormatMatrix::CpuDok);
 
         auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+        value       = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<uint32_t>(entry->second);
-            return Status::Ok;
         }
 
-        return Status::NoValue;
+        return Status::Ok;
     }
-
     template<typename T>
     Status TMatrix<T>::get_float(uint row_id, uint col_id, float& value) {
-        validate_rw(Format::CpuDok);
+        validate_rw(FormatMatrix::CpuDok);
 
         auto& Ax    = get<CpuDok<T>>()->Ax;
         auto  entry = Ax.find(typename CpuDok<T>::Key(row_id, col_id));
+        value       = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<float>(entry->second);
-            return Status::Ok;
         }
 
-        return Status::NoValue;
+        return Status::Ok;
     }
 
     template<typename T>
@@ -209,25 +217,25 @@ namespace spla {
     }
 
     template<typename T>
-    void TMatrix<T>::validate_rw(Format format) {
+    void TMatrix<T>::validate_rw(FormatMatrix format) {
         StorageManagerMatrix<T>* manager = get_storage_manager();
         manager->validate_rw(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::validate_rwd(Format format) {
+    void TMatrix<T>::validate_rwd(FormatMatrix format) {
         StorageManagerMatrix<T>* manager = get_storage_manager();
         manager->validate_rwd(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::validate_wd(Format format) {
+    void TMatrix<T>::validate_wd(FormatMatrix format) {
         StorageManagerMatrix<T>* manager = get_storage_manager();
         manager->validate_wd(format, m_storage);
     }
 
     template<typename T>
-    void TMatrix<T>::validate_ctor(Format format) {
+    void TMatrix<T>::validate_ctor(FormatMatrix format) {
         StorageManagerMatrix<T>* manager = get_storage_manager();
         manager->validate_ctor(format, m_storage);
     }

@@ -59,11 +59,12 @@ namespace spla {
     public:
         explicit TVector(uint n_rows);
         ~TVector() override = default;
-        Status             hint_state(StateHint hint) override;
         uint               get_n_rows() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
+        Status             set_format(FormatVector format) override;
+        Status             set_fill_value(const ref_ptr<Scalar>& value) override;
         Status             set_reduce(ref_ptr<OpBinary> resolve_duplicates) override;
         Status             set_int(uint row_id, std::int32_t value) override;
         Status             set_uint(uint row_id, std::uint32_t value) override;
@@ -79,11 +80,11 @@ namespace spla {
         template<typename Decorator>
         Decorator* get() { return m_storage.template get<Decorator>(); }
 
-        void validate_rw(Format format);
-        void validate_rwd(Format format);
-        void validate_wd(Format format);
-        void validate_ctor(Format format);
-        bool is_valid(Format format) const;
+        void validate_rw(FormatVector format);
+        void validate_rwd(FormatVector format);
+        void validate_wd(FormatVector format);
+        void validate_ctor(FormatVector format);
+        bool is_valid(FormatVector format) const;
 
         static StorageManagerVector<T>* get_storage_manager();
 
@@ -95,11 +96,6 @@ namespace spla {
     template<typename T>
     TVector<T>::TVector(uint n_rows) {
         m_storage.set_dims(n_rows, 1);
-    }
-
-    template<typename T>
-    Status TVector<T>::hint_state(StateHint hint) {
-        return Status::InvalidState;
     }
 
     template<typename T>
@@ -121,11 +117,30 @@ namespace spla {
     }
 
     template<typename T>
+    Status TVector<T>::set_format(FormatVector format) {
+        validate_rw(format);
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TVector<T>::set_fill_value(const ref_ptr<Scalar>& value) {
+        if (value) {
+            m_storage.invalidate();
+
+            if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
+            if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
+            if constexpr (std::is_same<T, T_FLOAT>::value) m_storage.set_fill_value(value->as_float());
+
+            return Status::Ok;
+        }
+
+        return Status::InvalidArgument;
+    }
+    template<typename T>
     Status TVector<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
         auto reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
 
         if (reduce) {
-            validate_ctor(Format::CpuDokVec);
+            validate_ctor(FormatVector::CpuDok);
             auto* vec   = get<CpuDokVec<T>>();
             vec->reduce = reduce->function;
             return Status::Ok;
@@ -136,45 +151,45 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
-        if (is_valid(Format::CpuDenseVec)) {
+        if (is_valid(FormatVector::CpuDense)) {
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }
 
-        validate_rwd(Format::CpuDokVec);
+        validate_rwd(FormatVector::CpuDok);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
-        if (is_valid(Format::CpuDenseVec)) {
+        if (is_valid(FormatVector::CpuDense)) {
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }
 
-        validate_rwd(Format::CpuDokVec);
+        validate_rwd(FormatVector::CpuDok);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
-        if (is_valid(Format::CpuDenseVec)) {
+        if (is_valid(FormatVector::CpuDense)) {
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }
 
-        validate_rwd(Format::CpuDokVec);
+        validate_rwd(FormatVector::CpuDok);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
 
     template<typename T>
     Status TVector<T>::get_int(uint row_id, int32_t& value) {
-        validate_rw(Format::CpuDokVec);
+        validate_rw(FormatVector::CpuDok);
 
         const auto& Ax    = get<CpuDokVec<T>>()->Ax;
         const auto  entry = Ax.find(row_id);
-        value             = int32_t();
+        value             = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<T_INT>(entry->second);
@@ -184,11 +199,11 @@ namespace spla {
     }
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
-        validate_rw(Format::CpuDokVec);
+        validate_rw(FormatVector::CpuDok);
 
         const auto& Ax    = get<CpuDokVec<T>>()->Ax;
         const auto  entry = Ax.find(row_id);
-        value             = uint32_t();
+        value             = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<T_UINT>(entry->second);
@@ -198,11 +213,11 @@ namespace spla {
     }
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
-        validate_rw(Format::CpuDokVec);
+        validate_rw(FormatVector::CpuDok);
 
         const auto& Ax    = get<CpuDokVec<T>>()->Ax;
         const auto  entry = Ax.find(row_id);
-        value             = float();
+        value             = m_storage.get_fill_value();
 
         if (entry != Ax.end()) {
             value = static_cast<T_FLOAT>(entry->second);
@@ -213,7 +228,7 @@ namespace spla {
 
     template<typename T>
     Status TVector<T>::fill_int(T_INT value) {
-        validate_wd(Format::CpuDenseVec);
+        validate_wd(FormatVector::CpuDense);
 
         auto&   Ax = get<CpuDenseVec<T>>()->Ax;
         const T t  = static_cast<T>(value);
@@ -223,7 +238,7 @@ namespace spla {
     }
     template<typename T>
     Status TVector<T>::fill_uint(T_UINT value) {
-        validate_wd(Format::CpuDenseVec);
+        validate_wd(FormatVector::CpuDense);
 
         auto&   Ax = get<CpuDenseVec<T>>()->Ax;
         const T t  = static_cast<T>(value);
@@ -233,7 +248,7 @@ namespace spla {
     }
     template<typename T>
     Status TVector<T>::fill_float(T_FLOAT value) {
-        validate_wd(Format::CpuDenseVec);
+        validate_wd(FormatVector::CpuDense);
 
         auto&   Ax = get<CpuDenseVec<T>>()->Ax;
         const T t  = static_cast<T>(value);
@@ -249,31 +264,31 @@ namespace spla {
     }
 
     template<typename T>
-    void TVector<T>::validate_rw(Format format) {
+    void TVector<T>::validate_rw(FormatVector format) {
         StorageManagerVector<T>* manager = get_storage_manager();
         manager->validate_rw(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::validate_rwd(Format format) {
+    void TVector<T>::validate_rwd(FormatVector format) {
         StorageManagerVector<T>* manager = get_storage_manager();
         manager->validate_rwd(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::validate_wd(Format format) {
+    void TVector<T>::validate_wd(FormatVector format) {
         StorageManagerVector<T>* manager = get_storage_manager();
         manager->validate_wd(format, m_storage);
     }
 
     template<typename T>
-    void TVector<T>::validate_ctor(Format format) {
+    void TVector<T>::validate_ctor(FormatVector format) {
         StorageManagerVector<T>* manager = get_storage_manager();
         manager->validate_ctor(format, m_storage);
     }
 
     template<typename T>
-    bool TVector<T>::is_valid(Format format) const {
+    bool TVector<T>::is_valid(FormatVector format) const {
         return m_storage.is_valid(format);
     }
 

@@ -93,25 +93,12 @@ namespace spla {
     };
 
     /**
-     * @class StateHint
-     * @brief Hint used to explicitly prepare matrix state
-     */
-    enum class StateHint {
-        /** Default state of container (empty) */
-        Default = 0,
-        /** Prepare for incremental build */
-        Incremental = 1,
-        /** Commits build data to optimal storage format */
-        Compute = 2,
-    };
-
-    /**
-     * @class Format
-     * @brief Named storage format for library data objects
+     * @class FormatMatrix
+     * @brief Named storage format for library matrix data objects
      *
      * @warning Do not change order and values
      */
-    enum class Format {
+    enum class FormatMatrix {
         /** Matrix list of lists format for fast increment build */
         CpuLil = 0,
         /** Matrix dictionary of keys for fast look-up of values */
@@ -128,33 +115,29 @@ namespace spla {
         AccCsr = 6,
         /** Matrix acceleration structured csc format */
         AccCsc = 7,
-        /** [EXTENSION] Matrix opencl acceleration structured coo format */
-        CLCoo = 8,
-        /** [EXTENSION] Matrix opencl acceleration structured csr format */
-        CLCsr = 9,
-        /** [EXTENSION] Matrix opencl acceleration structured csc format */
-        CLCsc = 10,
         /** Total number of supported matrix formats */
-        CountMatrix = 11,
+        Count = 8
+    };
 
-        //////////////////////////////////////////////////
-
+    /**
+     * @class FormatVector
+     * @brief Named storage format for library vector data objects
+     *
+     * @warning Do not change order and values
+     */
+    enum class FormatVector {
         /** Vector dictionary of keys representation */
-        CpuDokVec = 0,
+        CpuDok = 0,
         /** Vector dense array of values representation */
-        CpuDenseVec = 1,
+        CpuDense = 1,
         /** Vector list of values for sparse data */
-        CpuCooVec = 2,
+        CpuCoo = 2,
         /** Vector acceleration structured dense format */
-        AccDenseVec = 3,
+        AccDense = 3,
         /** Vector acceleration structured coo format */
-        AccCooVec = 4,
-        /** [EXTENSION] Vector opencl acceleration structured dense format */
-        CLDenseVec = 5,
-        /** [EXTENSION] Vector opencl acceleration structured coo format */
-        CLCooVec = 6,
+        AccCoo = 4,
         /** Total number of supported vector formats */
-        CountVector = 7
+        Count = 5
     };
 
     /**
@@ -182,34 +165,6 @@ namespace spla {
      * of schedule execution and allows perform some tasks inside running schedule.
      */
     using ScheduleCallback = std::function<void()>;
-
-    /**
-     * @brief Convert status value to string
-     *
-     * @param status Status value
-     *
-     * @return String value
-     */
-    static const char* to_string(Status status) {
-#define STATUS_MAP(value) \
-    case Status::value:   \
-        return #value
-
-        switch (status) {
-            STATUS_MAP(Ok);
-            STATUS_MAP(Error);
-            STATUS_MAP(NoAcceleration);
-            STATUS_MAP(PlatformNotFound);
-            STATUS_MAP(DeviceNotFound);
-            STATUS_MAP(InvalidState);
-            STATUS_MAP(InvalidArgument);
-            STATUS_MAP(NoValue);
-            STATUS_MAP(NotImplemented);
-            default:
-                return "none";
-        }
-#undef STATUS_MAP
-    }
 
     /**
      * @}

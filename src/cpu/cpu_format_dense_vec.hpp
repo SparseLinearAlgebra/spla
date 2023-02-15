@@ -45,20 +45,21 @@ namespace spla {
     }
 
     template<typename T>
-    void cpu_dense_vec_fill(const T         value,
+    void cpu_dense_vec_fill(const T         fill_value,
                             CpuDenseVec<T>& vec) {
-        std::fill(vec.Ax.begin(), vec.Ax.end(), value);
+        std::fill(vec.Ax.begin(), vec.Ax.end(), fill_value);
     }
 
     template<typename T>
     void cpu_dense_vec_to_dok(const uint            n_rows,
+                              const T               fill_value,
                               const CpuDenseVec<T>& in,
                               CpuDokVec<T>&         out) {
         assert(out.values == 0);
         assert(out.Ax.empty());
 
         for (uint i = 0; i < n_rows; ++i) {
-            if (in.Ax[i]) {
+            if (in.Ax[i] != fill_value) {
                 out.Ax[i] = in.Ax[i];
                 out.values += 1;
             }

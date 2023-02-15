@@ -43,12 +43,13 @@ __kernel void dense_to_sparse(__global const TYPE* Ax,
                               __global uint*       Ri,
                               __global TYPE*       Rx,
                               __global uint*       count,
-                              const uint           n) {
+                              const uint           n,
+                              const TYPE           fill_value) {
     const uint gid     = get_global_id(0);
     const uint gstrige = get_global_size(0);
 
     for (uint i = gid; i < n; i += gstrige) {
-        if (Ax[i]) {
+        if (Ax[i] != fill_value) {
             const uint offset = atomic_inc(count);
             Ri[offset]        = i;
             Rx[offset]        = Ax[i];

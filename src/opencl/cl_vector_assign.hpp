@@ -62,9 +62,9 @@ namespace spla {
             auto                t    = ctx.task.template cast<ScheduleTask_v_assign_masked>();
             ref_ptr<TVector<T>> mask = t->mask.template cast<TVector<T>>();
 
-            if (mask->is_valid(Format::CLCooVec))
+            if (mask->is_valid(FormatVector::AccCoo))
                 return execute_sp2dn(ctx);
-            if (mask->is_valid(Format::CLDenseVec))
+            if (mask->is_valid(FormatVector::AccDense))
                 return execute_dn2dn(ctx);
 
             return execute_sp2dn(ctx);
@@ -82,8 +82,8 @@ namespace spla {
             auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
             auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
-            mask->validate_rw(Format::CLDenseVec);
+            r->validate_rwd(FormatVector::AccDense);
+            mask->validate_rw(FormatVector::AccDense);
             if (!ensure_kernel(op_assign, op_select)) return Status::CompilationError;
 
             auto*       p_cl_r_dense    = r->template get<CLDenseVec<T>>();
@@ -117,8 +117,8 @@ namespace spla {
             auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
             auto op_select = t->op_select.template cast<TOpSelect<T>>();
 
-            r->validate_rwd(Format::CLDenseVec);
-            mask->validate_rw(Format::CLCooVec);
+            r->validate_rwd(FormatVector::AccDense);
+            mask->validate_rw(FormatVector::AccCoo);
             if (!ensure_kernel(op_assign, op_select)) return Status::CompilationError;
 
             auto*       p_cl_r_dense  = r->template get<CLDenseVec<T>>();

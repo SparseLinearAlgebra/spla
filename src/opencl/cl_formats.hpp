@@ -60,7 +60,7 @@ namespace spla {
     template<typename T>
     class CLDenseVec : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CLDenseVec;
+        static constexpr FormatVector FORMAT = FormatVector::AccDense;
 
         ~CLDenseVec() override = default;
 
@@ -76,7 +76,7 @@ namespace spla {
     template<typename T>
     class CLCooVec : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CLCooVec;
+        static constexpr FormatVector FORMAT = FormatVector::AccCoo;
 
         ~CLCooVec() override = default;
 
@@ -93,7 +93,7 @@ namespace spla {
     template<typename T>
     class CLCsr : public TDecoration<T> {
     public:
-        static constexpr Format FORMAT = Format::CLCsr;
+        static constexpr FormatMatrix FORMAT = FormatMatrix::AccCsr;
 
         ~CLCsr() override = default;
 

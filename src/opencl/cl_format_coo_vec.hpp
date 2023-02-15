@@ -111,6 +111,7 @@ namespace spla {
 
     template<typename T>
     void cl_coo_vec_to_dense(const std::size_t  n_rows,
+                             const T            fill_value,
                              const CLCooVec<T>& in,
                              CLDenseVec<T>&     out,
                              cl::CommandQueue&  queue) {
@@ -120,7 +121,7 @@ namespace spla {
                 .set_source(source_vector_formats)
                 .acquire();
 
-        cl_fill_zero<T>(queue, out.Ax, n_rows);
+        cl_fill_value<T>(queue, out.Ax, n_rows, fill_value);
 
         auto* acc = get_acc_cl();
 

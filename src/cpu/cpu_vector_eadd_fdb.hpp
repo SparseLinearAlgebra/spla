@@ -57,7 +57,7 @@ namespace spla {
             ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (r->is_valid(Format::CpuDenseVec) && v->is_valid(Format::CpuCooVec)) {
+            if (r->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuCoo)) {
                 return execute_sp2dn(ctx);
             }
 
@@ -74,9 +74,9 @@ namespace spla {
             ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
             ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
 
-            r->validate_rwd(Format::CpuDenseVec);
-            v->validate_rw(Format::CpuCooVec);
-            fdb->validate_wd(Format::CpuCooVec);
+            r->validate_rwd(FormatVector::CpuDense);
+            v->validate_rw(FormatVector::CpuCoo);
+            fdb->validate_wd(FormatVector::CpuCoo);
 
             auto*       p_r      = r->template get<CpuDenseVec<T>>();
             const auto* p_v      = v->template get<CpuCooVec<T>>();

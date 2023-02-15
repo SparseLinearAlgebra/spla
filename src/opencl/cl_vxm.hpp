@@ -83,10 +83,10 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
 
-            r->validate_wd(Format::CLCooVec);
-            mask->validate_rw(Format::CLDenseVec);
-            M->validate_rw(Format::CLCsr);
-            v->validate_rw(Format::CLCooVec);
+            r->validate_wd(FormatVector::AccCoo);
+            mask->validate_rw(FormatVector::AccDense);
+            M->validate_rw(FormatMatrix::AccCsr);
+            v->validate_rw(FormatVector::AccCoo);
             if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
 
             auto* p_cl_r    = r->template get<CLCooVec<T>>();

@@ -61,10 +61,10 @@ namespace spla {
             auto                t = ctx.task.template cast<ScheduleTask_v_reduce>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (v->is_valid(Format::CLCooVec)) {
+            if (v->is_valid(FormatVector::AccCoo)) {
                 return execute_sp(ctx);
             }
-            if (v->is_valid(Format::CLDenseVec)) {
+            if (v->is_valid(FormatVector::AccDense)) {
                 return execute_dn(ctx);
             }
 
@@ -82,7 +82,7 @@ namespace spla {
             auto v         = t->v.template cast<TVector<T>>();
             auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
 
-            v->validate_rw(Format::CLDenseVec);
+            v->validate_rw(FormatVector::AccDense);
 
             const auto* p_cl_dense_vec = v->template get<CLDenseVec<T>>();
             auto*       p_cl_acc       = get_acc_cl();
@@ -103,7 +103,7 @@ namespace spla {
             auto v         = t->v.template cast<TVector<T>>();
             auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
 
-            v->validate_rw(Format::CLCooVec);
+            v->validate_rw(FormatVector::AccCoo);
 
             const auto* p_cl_coo_vec = v->template get<CLCooVec<T>>();
             auto*       p_cl_acc     = get_acc_cl();

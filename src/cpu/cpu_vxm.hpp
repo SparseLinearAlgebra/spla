@@ -71,10 +71,10 @@ namespace spla {
 
             const T sum_init = init->get_value();
 
-            r->validate_wd(Format::CpuCooVec);
-            mask->validate_rw(Format::CpuDenseVec);
-            v->validate_rw(Format::CpuCooVec);
-            M->validate_rw(Format::CpuLil);
+            r->validate_wd(FormatVector::CpuCoo);
+            mask->validate_rw(FormatVector::CpuDense);
+            v->validate_rw(FormatVector::CpuCoo);
+            M->validate_rw(FormatMatrix::CpuLil);
 
             CpuCooVec<T>*         p_sparse_r   = r->template get<CpuCooVec<T>>();
             const CpuDenseVec<T>* p_dense_mask = mask->template get<CpuDenseVec<T>>();
