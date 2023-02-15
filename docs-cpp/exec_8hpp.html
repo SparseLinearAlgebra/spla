@@ -120,13 +120,13 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" href="cpu__algo__callback_8hpp.html" title=" " alt="" coords="125,177,325,203"/>
 <area shape="rect" href="cpu__mxv_8hpp.html" title=" " alt="" coords="349,177,495,203"/>
 <area shape="rect" href="cpu__vector__assign_8hpp.html" title=" " alt="" coords="519,169,653,211"/>
-<area shape="rect" href="cpu__vector__count__nz_8hpp.html" title=" " alt="" coords="677,169,810,211"/>
+<area shape="rect" href="cpu__vector__count__mf_8hpp.html" title=" " alt="" coords="677,169,810,211"/>
 <area shape="rect" href="cpu__vector__eadd__fdb_8hpp.html" title=" " alt="" coords="834,169,967,211"/>
 <area shape="rect" href="cpu__vector__reduce_8hpp.html" title=" " alt="" coords="991,169,1125,211"/>
 <area shape="rect" href="cpu__vxm_8hpp.html" title=" " alt="" coords="1149,177,1295,203"/>
 <area shape="rect" href="cl__mxv_8hpp.html" title=" " alt="" coords="1319,177,1469,203"/>
 <area shape="rect" href="cl__vector__assign_8hpp.html" title=" " alt="" coords="1494,169,1633,211"/>
-<area shape="rect" href="cl__vector__count__nz_8hpp.html" title=" " alt="" coords="1657,169,1795,211"/>
+<area shape="rect" href="cl__vector__count__mf_8hpp.html" title=" " alt="" coords="1657,169,1795,211"/>
 <area shape="rect" href="cl__vector__eadd__fdb_8hpp.html" title=" " alt="" coords="1819,169,1958,211"/>
 <area shape="rect" href="cl__vector__reduce_8hpp.html" title=" " alt="" coords="1982,169,2121,211"/>
 <area shape="rect" href="cl__vxm_8hpp.html" title=" " alt="" coords="2145,177,2296,203"/>
@@ -163,12 +163,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a21eb4a45303eddaa34138079f79c943c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a21eb4a45303eddaa34138079f79c943c">spla::exec_v_reduce</a> (ref_ptr&lt; Scalar &gt; r, ref_ptr&lt; Scalar &gt; s, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; OpBinary &gt; op_reduce, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;(), ref_ptr&lt; ScheduleTask &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:a21eb4a45303eddaa34138079f79c943c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = reduce(s, v)  <a href="namespacespla.html#a21eb4a45303eddaa34138079f79c943c">More...</a><br /></td></tr>
 <tr class="separator:a21eb4a45303eddaa34138079f79c943c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bbc1854f1389af4518299bc9859f570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a6bbc1854f1389af4518299bc9859f570">spla::exec_v_count_if</a> (ref_ptr&lt; Scalar &gt; r, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; OpSelect &gt; op_select, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;(), ref_ptr&lt; ScheduleTask &gt; *task_hnd=nullptr)</td></tr>
-<tr class="memdesc:a6bbc1854f1389af4518299bc9859f570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = Card({v[i]: select(v[i])})  <a href="namespacespla.html#a6bbc1854f1389af4518299bc9859f570">More...</a><br /></td></tr>
-<tr class="separator:a6bbc1854f1389af4518299bc9859f570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18dae379365c0e43f5c888b1fb7dfb20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a18dae379365c0e43f5c888b1fb7dfb20">spla::exec_v_count_nz</a> (ref_ptr&lt; Scalar &gt; r, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;(), ref_ptr&lt; ScheduleTask &gt; *task_hnd=nullptr)</td></tr>
-<tr class="memdesc:a18dae379365c0e43f5c888b1fb7dfb20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = Card({v[i]: v[i] != 0})  <a href="namespacespla.html#a18dae379365c0e43f5c888b1fb7dfb20">More...</a><br /></td></tr>
-<tr class="separator:a18dae379365c0e43f5c888b1fb7dfb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29e9c49b75b973856554b765b4f1778"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStatus.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ac29e9c49b75b973856554b765b4f1778">spla::exec_v_count_mf</a> (ref_ptr&lt; Scalar &gt; r, ref_ptr&lt; Vector &gt; v, ref_ptr&lt; Descriptor &gt; desc=ref_ptr&lt; Descriptor &gt;(), ref_ptr&lt; ScheduleTask &gt; *task_hnd=nullptr)</td></tr>
+<tr class="memdesc:ac29e9c49b75b973856554b765b4f1778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) r = Card({v[i]: v[i] != v.fill_value})  <a href="namespacespla.html#ac29e9c49b75b973856554b765b4f1778">More...</a><br /></td></tr>
+<tr class="separator:ac29e9c49b75b973856554b765b4f1778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
