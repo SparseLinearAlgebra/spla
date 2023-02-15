@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['format_728',['Format',['../classFormat.html',1,'']]]
+  ['formatmatrix_723',['FormatMatrix',['../classFormatMatrix.html',1,'']]],
+  ['formatvector_724',['FormatVector',['../classFormatVector.html',1,'']]]
 ];

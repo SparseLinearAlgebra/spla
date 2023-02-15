@@ -92,7 +92,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for typed decoration for storage object.  <a href="classspla_1_1TDecoration.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecorationStorage.html">spla::TDecorationStorage&lt; T, capacity &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecorationStorage.html">spla::TDecorationStorage&lt; T, F, capacity &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage for decorators with data of a particular vector or matrix object.  <a href="classspla_1_1TDecorationStorage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix&lt; T &gt;</a></td></tr>
@@ -188,7 +188,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__count__nz.html">spla::ScheduleTask_v_count_nz</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> count nz.  <a href="classspla_1_1ScheduleTask__v__count__nz.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager&lt; T, capacity &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager&lt; T, F, capacity &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">General format converter for vector or matrix decoration storage.  <a href="classspla_1_1StorageManager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspla_1_1pair__hash.html">spla::pair_hash</a></td></tr>
@@ -226,12 +226,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gabe61f9db17f82c8ffe02a42763044b5d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gabe61f9db17f82c8ffe02a42763044b5d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gabe61f9db17f82c8ffe02a42763044b5d">spla::cpu_dense_vec_resize</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="classspla_1_1CpuDenseVec.html">CpuDenseVec</a>&lt; T &gt; &amp;vec)</td></tr>
 <tr class="separator:gabe61f9db17f82c8ffe02a42763044b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4cabaa118bff0b6f0e7ee18fc185452d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga4cabaa118bff0b6f0e7ee18fc185452d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4cabaa118bff0b6f0e7ee18fc185452d">spla::cpu_dense_vec_fill</a> (const T value, <a class="el" href="classspla_1_1CpuDenseVec.html">CpuDenseVec</a>&lt; T &gt; &amp;vec)</td></tr>
-<tr class="separator:ga4cabaa118bff0b6f0e7ee18fc185452d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae32f4a90f11adf6562dc39cd96945115"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gae32f4a90f11adf6562dc39cd96945115"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gae32f4a90f11adf6562dc39cd96945115">spla::cpu_dense_vec_to_dok</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuDenseVec.html">CpuDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDokVec.html">CpuDokVec</a>&lt; T &gt; &amp;out)</td></tr>
-<tr class="separator:gae32f4a90f11adf6562dc39cd96945115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6624b93f439825f2f20f12752ba243d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gab6624b93f439825f2f20f12752ba243d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gab6624b93f439825f2f20f12752ba243d">spla::cpu_dense_vec_fill</a> (const T fill_value, <a class="el" href="classspla_1_1CpuDenseVec.html">CpuDenseVec</a>&lt; T &gt; &amp;vec)</td></tr>
+<tr class="separator:gab6624b93f439825f2f20f12752ba243d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8bf456de9da9422797190ab89d1458b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gae8bf456de9da9422797190ab89d1458b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gae8bf456de9da9422797190ab89d1458b">spla::cpu_dense_vec_to_dok</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const T fill_value, const <a class="el" href="classspla_1_1CpuDenseVec.html">CpuDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDokVec.html">CpuDokVec</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:gae8bf456de9da9422797190ab89d1458b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga14946f8c4b05185871d5df4d8705518f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga14946f8c4b05185871d5df4d8705518f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga14946f8c4b05185871d5df4d8705518f">spla::cpu_dok_clear</a> (<a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:ga14946f8c4b05185871d5df4d8705518f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,34 +280,29 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">spla::cl_coo_vec_read</a> (const std::size_t n_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ai, T *Ax, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
 <tr class="separator:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0aa4c29b9ffa43b172b25cd33f13f47a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga0aa4c29b9ffa43b172b25cd33f13f47a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0aa4c29b9ffa43b172b25cd33f13f47a">spla::cl_coo_vec_to_dense</a> (const std::size_t n_rows, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
-<tr class="separator:ga0aa4c29b9ffa43b172b25cd33f13f47a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga38770e53f9bbca2ad48a0d96106570c3">spla::cl_coo_vec_to_dense</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
+<tr class="separator:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga309c5141b3f06d79e3e8b0bbf06466c7">spla::cl_csr_init</a> (std::size_t n_rows, std::size_t n_values, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ap, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Aj, const T *Ax, <a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:ga309c5141b3f06d79e3e8b0bbf06466c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfb9efc056b21096a784a2113ab069c6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gacfb9efc056b21096a784a2113ab069c6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gacfb9efc056b21096a784a2113ab069c6">spla::cl_dense_vec_resize</a> (const std::size_t n_rows, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:gacfb9efc056b21096a784a2113ab069c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9c0c4a83df03ea4c904faa518b01e95"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gaf9c0c4a83df03ea4c904faa518b01e95"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf9c0c4a83df03ea4c904faa518b01e95">spla::cl_dense_vec_fill_zero</a> (const std::size_t n_rows, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
-<tr class="separator:gaf9c0c4a83df03ea4c904faa518b01e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75266b09f529dd81be30498a7bfbae93"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga75266b09f529dd81be30498a7bfbae93"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga75266b09f529dd81be30498a7bfbae93">spla::cl_dense_vec_fill_value</a> (const std::size_t n_rows, const T value, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:ga75266b09f529dd81be30498a7bfbae93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6c51985843ce62c9858f3b7a8f31d50c">spla::cl_dense_vec_init</a> (const std::size_t n_rows, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad1ba39c7a1ad885d91fbc59e458883c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gad1ba39c7a1ad885d91fbc59e458883c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gad1ba39c7a1ad885d91fbc59e458883c9">spla::cl_dense_vec_write</a> (const std::size_t n_rows, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
-<tr class="separator:gad1ba39c7a1ad885d91fbc59e458883c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gafaacecf12b98cec3ae6244aaf8a5b6f5">spla::cl_dense_vec_read</a> (const std::size_t n_rows, T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
 <tr class="separator:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b90d1e78d63a50f253da1134724ed55"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga6b90d1e78d63a50f253da1134724ed55"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6b90d1e78d63a50f253da1134724ed55">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
-<tr class="separator:ga6b90d1e78d63a50f253da1134724ed55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga274cd3c51e824f27c8583aa556d74454">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
+<tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c">spla::TMatrix&lt; T &gt;::TMatrix</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols)</td></tr>
 <tr class="separator:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8db8a9702b5f7d2435abf73caa7ee980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8db8a9702b5f7d2435abf73caa7ee980">spla::TMatrix&lt; T &gt;::hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint) override</td></tr>
-<tr class="separator:ga8db8a9702b5f7d2435abf73caa7ee980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad86ffe7ca4ad6ec30c11fbad6c14ef33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix&lt; T &gt;::get_n_rows</a> () override</td></tr>
 <tr class="separator:gad86ffe7ca4ad6ec30c11fbad6c14ef33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f2f8fd19836935ea992bbd572a33d72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">spla::TMatrix&lt; T &gt;::get_n_cols</a> () override</td></tr>
@@ -318,6 +313,10 @@ Functions</h2></td></tr>
 <tr class="separator:gab64ccb60bbb75231ef8ff0d32e5d3a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga675a106c14ae2d45dd55d6ff937f613c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;::get_label</a> () const override</td></tr>
 <tr class="separator:ga675a106c14ae2d45dd55d6ff937f613c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad0e524477cbfddcca264d586d0076e07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad0e524477cbfddcca264d586d0076e07">spla::TMatrix&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format) override</td></tr>
+<tr class="separator:gad0e524477cbfddcca264d586d0076e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6bb2423388fcb829bfdcbe099c256329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6bb2423388fcb829bfdcbe099c256329">spla::TMatrix&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
+<tr class="separator:ga6bb2423388fcb829bfdcbe099c256329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe44d7e8c42b14c8a8ae75b5e875fc0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafe44d7e8c42b14c8a8ae75b5e875fc0c">spla::TMatrix&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
 <tr class="separator:gafe44d7e8c42b14c8a8ae75b5e875fc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga855824f38344446f38e410fa53c3a05d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga855824f38344446f38e410fa53c3a05d">spla::TMatrix&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::int32_t value) override</td></tr>
@@ -334,15 +333,15 @@ Functions</h2></td></tr>
 <tr class="separator:ga93a4a55724e8617e4f38bf06212ffc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7da1865b613a0987a69404e6ce0a31f7">spla::TMatrix&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacaf6668f158a438d60ada24f5ff15618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacaf6668f158a438d60ada24f5ff15618">spla::TMatrix&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:gacaf6668f158a438d60ada24f5ff15618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga730c4bd14ee4155b5355f453ec80bd0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga730c4bd14ee4155b5355f453ec80bd0f">spla::TMatrix&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:ga730c4bd14ee4155b5355f453ec80bd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6be21b484d298559f00e000d706991b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa6be21b484d298559f00e000d706991b">spla::TMatrix&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:gaa6be21b484d298559f00e000d706991b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5c5ee48b4713c80995b10fce2e502538"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5c5ee48b4713c80995b10fce2e502538">spla::TMatrix&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:ga5c5ee48b4713c80995b10fce2e502538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4fbec25650532b2426b6a39f33bfa3c0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#acee5e1578d8fb47b09c106210ce37be9">StorageManagerMatrix</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4fbec25650532b2426b6a39f33bfa3c0">spla::TMatrix&lt; T &gt;::get_storage_manager</a> ()</td></tr>
+<tr class="memitem:ga69667baa2ffe3f46cf26efebadeb0fc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga69667baa2ffe3f46cf26efebadeb0fc1">spla::TMatrix&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="separator:ga69667baa2ffe3f46cf26efebadeb0fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c8ee7585a2b9f77da83ef3e739b1ba9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3c8ee7585a2b9f77da83ef3e739b1ba9">spla::TMatrix&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="separator:ga3c8ee7585a2b9f77da83ef3e739b1ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b5268d9fd8ae17521a6b149378a0a78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3b5268d9fd8ae17521a6b149378a0a78">spla::TMatrix&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="separator:ga3b5268d9fd8ae17521a6b149378a0a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae12694d56335e4e7fbb6b5c222e064e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae12694d56335e4e7fbb6b5c222e064e9">spla::TMatrix&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="separator:gae12694d56335e4e7fbb6b5c222e064e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4fbec25650532b2426b6a39f33bfa3c0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#aede37fa7427e4e3745aeb2e6a593dbda">StorageManagerMatrix</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4fbec25650532b2426b6a39f33bfa3c0">spla::TMatrix&lt; T &gt;::get_storage_manager</a> ()</td></tr>
 <tr class="separator:ga4fbec25650532b2426b6a39f33bfa3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeea8b2d2d47195a42fa72323011336d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaeea8b2d2d47195a42fa72323011336d4">spla::TOpBinary&lt; A0, A1, R &gt;::set_label</a> (std::string <a class="el" href="classspla_1_1TOpBinary.html#ae32c19ff6270e1f0b935d0f1a8d785d3">label</a>) override</td></tr>
 <tr class="separator:gaeea8b2d2d47195a42fa72323011336d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -414,8 +413,6 @@ Functions</h2></td></tr>
 <tr class="separator:gae0014fa21689ed7c89214674bf3a844f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga83e2cdb83c6b5223bb1d23af42ad69c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga83e2cdb83c6b5223bb1d23af42ad69c2">spla::TVector&lt; T &gt;::TVector</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows)</td></tr>
 <tr class="separator:ga83e2cdb83c6b5223bb1d23af42ad69c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacaf81f5ac855c678c9b96401d5404a13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacaf81f5ac855c678c9b96401d5404a13">spla::TVector&lt; T &gt;::hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint) override</td></tr>
-<tr class="separator:gacaf81f5ac855c678c9b96401d5404a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33d638f7b24cab450f016a8659eebbfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga33d638f7b24cab450f016a8659eebbfc">spla::TVector&lt; T &gt;::get_n_rows</a> () override</td></tr>
 <tr class="separator:ga33d638f7b24cab450f016a8659eebbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga664b93ce0fae6d5eddee4571873610f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga664b93ce0fae6d5eddee4571873610f1">spla::TVector&lt; T &gt;::get_type</a> () override</td></tr>
@@ -424,6 +421,10 @@ Functions</h2></td></tr>
 <tr class="separator:ga43aad595aecb6adf7683258b3c632223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabe33fea2ef6c4d3207b1fa422e621c35"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;::get_label</a> () const override</td></tr>
 <tr class="separator:gabe33fea2ef6c4d3207b1fa422e621c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab72a073e117df0263129d9f8eb58bd87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab72a073e117df0263129d9f8eb58bd87">spla::TVector&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format) override</td></tr>
+<tr class="separator:gab72a073e117df0263129d9f8eb58bd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf20b9a41d1264ad2aa2d6ef4b77c4c7d">spla::TVector&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
+<tr class="separator:gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf8bcc040bd8e596582653a7a7bdbd646"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf8bcc040bd8e596582653a7a7bdbd646">spla::TVector&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
 <tr class="separator:gaf8bcc040bd8e596582653a7a7bdbd646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a08ee46c989711d6e8246930e783dc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3a08ee46c989711d6e8246930e783dc5">spla::TVector&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, std::int32_t value) override</td></tr>
@@ -446,34 +447,34 @@ Functions</h2></td></tr>
 <tr class="separator:gabd51ab761b5bf2c6098240bfbdf4fc68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadebaf3fc07d3814e3abd3442a12f6ec6">spla::TVector&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab447aef7e9be83fd1c25abb80f2a55bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab447aef7e9be83fd1c25abb80f2a55bb">spla::TVector&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:gab447aef7e9be83fd1c25abb80f2a55bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa98f01e9ece302ad9314698ab1d1a30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafa98f01e9ece302ad9314698ab1d1a30">spla::TVector&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:gafa98f01e9ece302ad9314698ab1d1a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa5ff462dae777808db42884006c62fea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa5ff462dae777808db42884006c62fea">spla::TVector&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:gaa5ff462dae777808db42884006c62fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d5eb8ea73ed93642c46d1aee8bb1846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3d5eb8ea73ed93642c46d1aee8bb1846">spla::TVector&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format)</td></tr>
-<tr class="separator:ga3d5eb8ea73ed93642c46d1aee8bb1846"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2bee9f77cf666f9357b9b156922db01a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2bee9f77cf666f9357b9b156922db01a">spla::TVector&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format) const</td></tr>
-<tr class="separator:ga2bee9f77cf666f9357b9b156922db01a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea40f16bc6c972ed2a1f6056ed7d22f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#a5edc729677595d58d0b840cf1c06223e">StorageManagerVector</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaea40f16bc6c972ed2a1f6056ed7d22f4">spla::TVector&lt; T &gt;::get_storage_manager</a> ()</td></tr>
+<tr class="memitem:gad2b50d4ac195e188c2c21c38e34c4467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad2b50d4ac195e188c2c21c38e34c4467">spla::TVector&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="separator:gad2b50d4ac195e188c2c21c38e34c4467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3115b63ba560c5f4cd113d86ca51d62f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3115b63ba560c5f4cd113d86ca51d62f">spla::TVector&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="separator:ga3115b63ba560c5f4cd113d86ca51d62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b355facf49c588795bc0d9d03b6d598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7b355facf49c588795bc0d9d03b6d598">spla::TVector&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="separator:ga7b355facf49c588795bc0d9d03b6d598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae03341af4762a2d4a847cdd72e995592"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae03341af4762a2d4a847cdd72e995592">spla::TVector&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="separator:gae03341af4762a2d4a847cdd72e995592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6799b7087e1ae22926dfdef9fecff258"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6799b7087e1ae22926dfdef9fecff258">spla::TVector&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format) const</td></tr>
+<tr class="separator:ga6799b7087e1ae22926dfdef9fecff258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea40f16bc6c972ed2a1f6056ed7d22f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#a1b0ff75c5ab472c45906f5d0bbca11e0">StorageManagerVector</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaea40f16bc6c972ed2a1f6056ed7d22f4">spla::TVector&lt; T &gt;::get_storage_manager</a> ()</td></tr>
 <tr class="separator:gaea40f16bc6c972ed2a1f6056ed7d22f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaa30af83df7ec03e8f684c36762733e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaaa30af83df7ec03e8f684c36762733e7">spla::StorageManager&lt; T, capacity &gt;::StorageManager</a> ()</td></tr>
-<tr class="separator:gaaa30af83df7ec03e8f684c36762733e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac8bed1e4e09afc2101c731755d1361c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac8bed1e4e09afc2101c731755d1361c1">spla::StorageManager&lt; T, capacity &gt;::register_constructor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:gac8bed1e4e09afc2101c731755d1361c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8f802a79cc0b7cf75937984c26f95f20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8f802a79cc0b7cf75937984c26f95f20">spla::StorageManager&lt; T, capacity &gt;::register_validator</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:ga8f802a79cc0b7cf75937984c26f95f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa249e0dc61387c13d006a706299d006"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafa249e0dc61387c13d006a706299d006">spla::StorageManager&lt; T, capacity &gt;::register_converter</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> from, <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> to, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:gafa249e0dc61387c13d006a706299d006"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2f244a40dd5fbe5a5a026e6d21567848"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f244a40dd5fbe5a5a026e6d21567848">spla::StorageManager&lt; T, capacity &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga2f244a40dd5fbe5a5a026e6d21567848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0f10f23005b443bc26adc9e9c86b346f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0f10f23005b443bc26adc9e9c86b346f">spla::StorageManager&lt; T, capacity &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga0f10f23005b443bc26adc9e9c86b346f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga17e7bc48022b506f64aecba04aa1f822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga17e7bc48022b506f64aecba04aa1f822">spla::StorageManager&lt; T, capacity &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga17e7bc48022b506f64aecba04aa1f822"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4e84ef162912f6a3e519acfe93dc111a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4e84ef162912f6a3e519acfe93dc111a">spla::StorageManager&lt; T, capacity &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga4e84ef162912f6a3e519acfe93dc111a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40bd18bae468d2581e4fa6dcd026302e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga40bd18bae468d2581e4fa6dcd026302e">spla::StorageManager&lt; T, F, capacity &gt;::StorageManager</a> ()</td></tr>
+<tr class="separator:ga40bd18bae468d2581e4fa6dcd026302e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff92dc845e91171abdf7cc38e6570c4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaff92dc845e91171abdf7cc38e6570c4c">spla::StorageManager&lt; T, F, capacity &gt;::register_constructor</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:gaff92dc845e91171abdf7cc38e6570c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf3839c13bdebe924f40ee4c73e592af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadf3839c13bdebe924f40ee4c73e592af">spla::StorageManager&lt; T, F, capacity &gt;::register_validator</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:gadf3839c13bdebe924f40ee4c73e592af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga296e0cd6965b99fa46bc58d664541215"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga296e0cd6965b99fa46bc58d664541215">spla::StorageManager&lt; T, F, capacity &gt;::register_converter</a> (F from, F to, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:ga296e0cd6965b99fa46bc58d664541215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac9341c980f3831e21ee1ba6c1ea68105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac9341c980f3831e21ee1ba6c1ea68105">spla::StorageManager&lt; T, F, capacity &gt;::validate_ctor</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:gac9341c980f3831e21ee1ba6c1ea68105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b966107b9ef69b57fb13a50f31120b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5b966107b9ef69b57fb13a50f31120b1">spla::StorageManager&lt; T, F, capacity &gt;::validate_rw</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:ga5b966107b9ef69b57fb13a50f31120b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf348af6c29f12ef96c8e7048c14e011"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">spla::StorageManager&lt; T, F, capacity &gt;::validate_rwd</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:gacf348af6c29f12ef96c8e7048c14e011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47956ee8969d75dfe6f32bb44f4a1757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">spla::StorageManager&lt; T, F, capacity &gt;::validate_wd</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:ga47956ee8969d75dfe6f32bb44f4a1757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
@@ -623,8 +624,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga0aa4c29b9ffa43b172b25cd33f13f47a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0aa4c29b9ffa43b172b25cd33f13f47a">&#9670;&nbsp;</a></span>cl_coo_vec_to_dense()</h2>
+<a id="ga38770e53f9bbca2ad48a0d96106570c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga38770e53f9bbca2ad48a0d96106570c3">&#9670;&nbsp;</a></span>cl_coo_vec_to_dense()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -636,6 +637,12 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T&#160;</td>
+          <td class="paramname"><em>fill_value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -719,8 +726,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gaf9c0c4a83df03ea4c904faa518b01e95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf9c0c4a83df03ea4c904faa518b01e95">&#9670;&nbsp;</a></span>cl_dense_vec_fill_zero()</h2>
+<a id="ga75266b09f529dd81be30498a7bfbae93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga75266b09f529dd81be30498a7bfbae93">&#9670;&nbsp;</a></span>cl_dense_vec_fill_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -728,10 +735,16 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void spla::cl_dense_vec_fill_zero </td>
+          <td class="memname">void spla::cl_dense_vec_fill_value </td>
           <td>(</td>
           <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -863,8 +876,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga6b90d1e78d63a50f253da1134724ed55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6b90d1e78d63a50f253da1134724ed55">&#9670;&nbsp;</a></span>cl_dense_vec_to_coo()</h2>
+<a id="ga274cd3c51e824f27c8583aa556d74454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga274cd3c51e824f27c8583aa556d74454">&#9670;&nbsp;</a></span>cl_dense_vec_to_coo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -876,6 +889,12 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T&#160;</td>
+          <td class="paramname"><em>fill_value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -894,54 +913,6 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="gad1ba39c7a1ad885d91fbc59e458883c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad1ba39c7a1ad885d91fbc59e458883c9">&#9670;&nbsp;</a></span>cl_dense_vec_write()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void spla::cl_dense_vec_write </td>
-          <td>(</td>
-          <td class="paramtype">const std::size_t&#160;</td>
-          <td class="paramname"><em>n_rows</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const T *&#160;</td>
-          <td class="paramname"><em>values</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>storage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
-          <td class="paramname"><em>queue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>blocking</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1193,8 +1164,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga4cabaa118bff0b6f0e7ee18fc185452d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4cabaa118bff0b6f0e7ee18fc185452d">&#9670;&nbsp;</a></span>cpu_dense_vec_fill()</h2>
+<a id="gab6624b93f439825f2f20f12752ba243d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6624b93f439825f2f20f12752ba243d">&#9670;&nbsp;</a></span>cpu_dense_vec_fill()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1205,7 +1176,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">void spla::cpu_dense_vec_fill </td>
           <td>(</td>
           <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
+          <td class="paramname"><em>fill_value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1253,8 +1224,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gae32f4a90f11adf6562dc39cd96945115"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae32f4a90f11adf6562dc39cd96945115">&#9670;&nbsp;</a></span>cpu_dense_vec_to_dok()</h2>
+<a id="gae8bf456de9da9422797190ab89d1458b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8bf456de9da9422797190ab89d1458b">&#9670;&nbsp;</a></span>cpu_dense_vec_to_dok()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1266,6 +1237,12 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T&#160;</td>
+          <td class="paramname"><em>fill_value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2481,7 +2458,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacespla.html#acee5e1578d8fb47b09c106210ce37be9">StorageManagerMatrix</a>&lt; T &gt; * <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_storage_manager</td>
+          <td class="memname"><a class="el" href="namespacespla.html#aede37fa7427e4e3745aeb2e6a593dbda">StorageManagerMatrix</a>&lt; T &gt; * <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_storage_manager</td>
         </tr>
       </table>
   </td>
@@ -2505,7 +2482,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacespla.html#a5edc729677595d58d0b840cf1c06223e">StorageManagerVector</a>&lt; T &gt; * <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_storage_manager</td>
+          <td class="memname"><a class="el" href="namespacespla.html#a1b0ff75c5ab472c45906f5d0bbca11e0">StorageManagerVector</a>&lt; T &gt; * <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_storage_manager</td>
         </tr>
       </table>
   </td>
@@ -2888,68 +2865,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga8db8a9702b5f7d2435abf73caa7ee980"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8db8a9702b5f7d2435abf73caa7ee980">&#9670;&nbsp;</a></span>hint_state() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::hint_state </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a>&#160;</td>
-          <td class="paramname"><em>hint</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classspla_1_1Matrix.html#a5d8eb3037d7d2219610bf2b6260f9c9e">spla::Matrix</a>.</p>
-
-</div>
-</div>
-<a id="gacaf81f5ac855c678c9b96401d5404a13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacaf81f5ac855c678c9b96401d5404a13">&#9670;&nbsp;</a></span>hint_state() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::hint_state </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a>&#160;</td>
-          <td class="paramname"><em>hint</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classspla_1_1Vector.html#a0b951af71f444d3606c269ceaeef46fd">spla::Vector</a>.</p>
-
-</div>
-</div>
-<a id="ga2bee9f77cf666f9357b9b156922db01a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2bee9f77cf666f9357b9b156922db01a">&#9670;&nbsp;</a></span>is_valid()</h2>
+<a id="ga6799b7087e1ae22926dfdef9fecff258"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6799b7087e1ae22926dfdef9fecff258">&#9670;&nbsp;</a></span>is_valid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2959,7 +2876,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::is_valid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -3076,24 +2993,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gac8bed1e4e09afc2101c731755d1361c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac8bed1e4e09afc2101c731755d1361c1">&#9670;&nbsp;</a></span>register_constructor()</h2>
+<a id="gaff92dc845e91171abdf7cc38e6570c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff92dc845e91171abdf7cc38e6570c4c">&#9670;&nbsp;</a></span>register_constructor()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::register_constructor </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_constructor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a>&#160;</td>
           <td class="paramname"><em>function</em>&#160;</td>
         </tr>
         <tr>
@@ -3106,30 +3023,30 @@ template&lt;typename T , int capacity&gt; </div>
 
 </div>
 </div>
-<a id="gafa249e0dc61387c13d006a706299d006"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafa249e0dc61387c13d006a706299d006">&#9670;&nbsp;</a></span>register_converter()</h2>
+<a id="ga296e0cd6965b99fa46bc58d664541215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga296e0cd6965b99fa46bc58d664541215">&#9670;&nbsp;</a></span>register_converter()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::register_converter </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_converter </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>from</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>to</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a>&#160;</td>
           <td class="paramname"><em>function</em>&#160;</td>
         </tr>
         <tr>
@@ -3161,24 +3078,24 @@ template&lt;typename T , int capacity&gt; </div>
 
 </div>
 </div>
-<a id="ga8f802a79cc0b7cf75937984c26f95f20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8f802a79cc0b7cf75937984c26f95f20">&#9670;&nbsp;</a></span>register_validator()</h2>
+<a id="gadf3839c13bdebe924f40ee4c73e592af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadf3839c13bdebe924f40ee4c73e592af">&#9670;&nbsp;</a></span>register_validator()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::register_validator </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_validator </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a>&#160;</td>
           <td class="paramname"><em>function</em>&#160;</td>
         </tr>
         <tr>
@@ -3188,6 +3105,66 @@ template&lt;typename T , int capacity&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6bb2423388fcb829bfdcbe099c256329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6bb2423388fcb829bfdcbe099c256329">&#9670;&nbsp;</a></span>set_fill_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_fill_value </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Matrix.html#a31e920fcf54db0c1f632bc2d16687a61">spla::Matrix</a>.</p>
+
+</div>
+</div>
+<a id="gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf20b9a41d1264ad2aa2d6ef4b77c4c7d">&#9670;&nbsp;</a></span>set_fill_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_fill_value </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Vector.html#a7b313aaa0001cca4e8fbbd7bc3079643">spla::Vector</a>.</p>
 
 </div>
 </div>
@@ -3304,6 +3281,66 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classspla_1_1Matrix.html#ad48185ed7a9fe231d9019480fdd2f60c">spla::Matrix</a>.</p>
+
+</div>
+</div>
+<a id="gad0e524477cbfddcca264d586d0076e07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad0e524477cbfddcca264d586d0076e07">&#9670;&nbsp;</a></span>set_format() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_format </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Matrix.html#abb92b436e20701ddebed86ee9966c02c">spla::Matrix</a>.</p>
+
+</div>
+</div>
+<a id="gab72a073e117df0263129d9f8eb58bd87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab72a073e117df0263129d9f8eb58bd87">&#9670;&nbsp;</a></span>set_format() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_format </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Vector.html#a65baa3983dd7d6848ee5d25af7a28ec4">spla::Vector</a>.</p>
 
 </div>
 </div>
@@ -3749,19 +3786,19 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gaaa30af83df7ec03e8f684c36762733e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaa30af83df7ec03e8f684c36762733e7">&#9670;&nbsp;</a></span>StorageManager()</h2>
+<a id="ga40bd18bae468d2581e4fa6dcd026302e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga40bd18bae468d2581e4fa6dcd026302e">&#9670;&nbsp;</a></span>StorageManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html">StorageManager</a></td>
+          <td class="memname"><a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html">StorageManager</a></td>
         </tr>
       </table>
   </td>
@@ -3859,8 +3896,38 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga5c5ee48b4713c80995b10fce2e502538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5c5ee48b4713c80995b10fce2e502538">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[1/3]</span></h2>
+<a id="gac9341c980f3831e21ee1ba6c1ea68105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac9341c980f3831e21ee1ba6c1ea68105">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename F , int capacity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::validate_ctor </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae12694d56335e4e7fbb6b5c222e064e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae12694d56335e4e7fbb6b5c222e064e9">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3870,7 +3937,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_ctor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3879,8 +3946,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga3d5eb8ea73ed93642c46d1aee8bb1846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3d5eb8ea73ed93642c46d1aee8bb1846">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[2/3]</span></h2>
+<a id="gae03341af4762a2d4a847cdd72e995592"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae03341af4762a2d4a847cdd72e995592">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3890,7 +3957,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_ctor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3899,24 +3966,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga2f244a40dd5fbe5a5a026e6d21567848"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2f244a40dd5fbe5a5a026e6d21567848">&#9670;&nbsp;</a></span>validate_ctor() <span class="overload">[3/3]</span></h2>
+<a id="ga5b966107b9ef69b57fb13a50f31120b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b966107b9ef69b57fb13a50f31120b1">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::validate_ctor </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::validate_rw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;&#160;</td>
           <td class="paramname"><em>storage</em>&#160;</td>
         </tr>
         <tr>
@@ -3929,8 +3996,8 @@ template&lt;typename T , int capacity&gt; </div>
 
 </div>
 </div>
-<a id="gacaf6668f158a438d60ada24f5ff15618"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacaf6668f158a438d60ada24f5ff15618">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[1/3]</span></h2>
+<a id="ga69667baa2ffe3f46cf26efebadeb0fc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga69667baa2ffe3f46cf26efebadeb0fc1">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3940,7 +4007,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_rw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3949,8 +4016,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gab447aef7e9be83fd1c25abb80f2a55bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab447aef7e9be83fd1c25abb80f2a55bb">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[2/3]</span></h2>
+<a id="gad2b50d4ac195e188c2c21c38e34c4467"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad2b50d4ac195e188c2c21c38e34c4467">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3960,7 +4027,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_rw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3969,24 +4036,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga0f10f23005b443bc26adc9e9c86b346f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0f10f23005b443bc26adc9e9c86b346f">&#9670;&nbsp;</a></span>validate_rw() <span class="overload">[3/3]</span></h2>
+<a id="gacf348af6c29f12ef96c8e7048c14e011"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf348af6c29f12ef96c8e7048c14e011">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::validate_rw </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::validate_rwd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;&#160;</td>
           <td class="paramname"><em>storage</em>&#160;</td>
         </tr>
         <tr>
@@ -3999,8 +4066,8 @@ template&lt;typename T , int capacity&gt; </div>
 
 </div>
 </div>
-<a id="ga730c4bd14ee4155b5355f453ec80bd0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga730c4bd14ee4155b5355f453ec80bd0f">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[1/3]</span></h2>
+<a id="ga3c8ee7585a2b9f77da83ef3e739b1ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c8ee7585a2b9f77da83ef3e739b1ba9">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4010,7 +4077,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_rwd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4019,8 +4086,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gafa98f01e9ece302ad9314698ab1d1a30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafa98f01e9ece302ad9314698ab1d1a30">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[2/3]</span></h2>
+<a id="ga3115b63ba560c5f4cd113d86ca51d62f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3115b63ba560c5f4cd113d86ca51d62f">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4030,7 +4097,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_rwd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4039,24 +4106,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga17e7bc48022b506f64aecba04aa1f822"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga17e7bc48022b506f64aecba04aa1f822">&#9670;&nbsp;</a></span>validate_rwd() <span class="overload">[3/3]</span></h2>
+<a id="ga47956ee8969d75dfe6f32bb44f4a1757"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga47956ee8969d75dfe6f32bb44f4a1757">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::validate_rwd </td>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::validate_wd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;&#160;</td>
           <td class="paramname"><em>storage</em>&#160;</td>
         </tr>
         <tr>
@@ -4069,8 +4136,8 @@ template&lt;typename T , int capacity&gt; </div>
 
 </div>
 </div>
-<a id="gaa6be21b484d298559f00e000d706991b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa6be21b484d298559f00e000d706991b">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[1/3]</span></h2>
+<a id="ga3b5268d9fd8ae17521a6b149378a0a78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b5268d9fd8ae17521a6b149378a0a78">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4080,7 +4147,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_wd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4089,8 +4156,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gaa5ff462dae777808db42884006c62fea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa5ff462dae777808db42884006c62fea">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[2/3]</span></h2>
+<a id="ga7b355facf49c588795bc0d9d03b6d598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b355facf49c588795bc0d9d03b6d598">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4100,39 +4167,9 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_wd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ga4e84ef162912f6a3e519acfe93dc111a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4e84ef162912f6a3e519acfe93dc111a">&#9670;&nbsp;</a></span>validate_wd() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::validate_wd </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a>&#160;</td>
-          <td class="paramname"><em>format</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;&#160;</td>
-          <td class="paramname"><em>storage</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

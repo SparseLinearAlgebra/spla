@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['format_1332',['Format',['../group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0',1,'spla']]]
+  ['formatmatrix_1328',['FormatMatrix',['../group__spla.html#gab5469439090c0103e6b2f57d655afde5',1,'spla']]],
+  ['formatvector_1329',['FormatVector',['../group__spla.html#ga18f36606767531338114557ba1962933',1,'spla']]]
 ];

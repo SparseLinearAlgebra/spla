@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>spla: spla::StorageManager&lt; T, capacity &gt; Class Template Reference</title>
+<title>spla: spla::StorageManager&lt; T, F, capacity &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classspla_1_1StorageManager-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">spla::StorageManager&lt; T, capacity &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
+<div class="title">spla::StorageManager&lt; T, F, capacity &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group__internal.html">Internal</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -81,69 +81,70 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a062eb171d488257b09ce88078be52b75"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classspla_1_1TDecorationStorage.html">TDecorationStorage</a>&lt; T, capacity &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a></td></tr>
-<tr class="separator:a062eb171d488257b09ce88078be52b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a747f194a15ee0f6d8e84795138b88f06"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a></td></tr>
-<tr class="separator:a747f194a15ee0f6d8e84795138b88f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51827d49ae299c61ab756998bdb9230c"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classspla_1_1TDecorationStorage.html">TDecorationStorage</a>&lt; T, F, capacity &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a></td></tr>
+<tr class="separator:a51827d49ae299c61ab756998bdb9230c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eb213d8c6d56d5596d4d556fd372681"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a></td></tr>
+<tr class="separator:a1eb213d8c6d56d5596d4d556fd372681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:gaaa30af83df7ec03e8f684c36762733e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaaa30af83df7ec03e8f684c36762733e7">StorageManager</a> ()</td></tr>
-<tr class="separator:gaaa30af83df7ec03e8f684c36762733e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac8bed1e4e09afc2101c731755d1361c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac8bed1e4e09afc2101c731755d1361c1">register_constructor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:gac8bed1e4e09afc2101c731755d1361c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8f802a79cc0b7cf75937984c26f95f20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8f802a79cc0b7cf75937984c26f95f20">register_validator</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:ga8f802a79cc0b7cf75937984c26f95f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafa249e0dc61387c13d006a706299d006"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafa249e0dc61387c13d006a706299d006">register_converter</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> from, <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> to, <a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a> function)</td></tr>
-<tr class="separator:gafa249e0dc61387c13d006a706299d006"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2f244a40dd5fbe5a5a026e6d21567848"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f244a40dd5fbe5a5a026e6d21567848">validate_ctor</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga2f244a40dd5fbe5a5a026e6d21567848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0f10f23005b443bc26adc9e9c86b346f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0f10f23005b443bc26adc9e9c86b346f">validate_rw</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga0f10f23005b443bc26adc9e9c86b346f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga17e7bc48022b506f64aecba04aa1f822"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga17e7bc48022b506f64aecba04aa1f822">validate_rwd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga17e7bc48022b506f64aecba04aa1f822"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4e84ef162912f6a3e519acfe93dc111a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4e84ef162912f6a3e519acfe93dc111a">validate_wd</a> (<a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">Format</a> format, <a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a> &amp;storage)</td></tr>
-<tr class="separator:ga4e84ef162912f6a3e519acfe93dc111a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40bd18bae468d2581e4fa6dcd026302e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga40bd18bae468d2581e4fa6dcd026302e">StorageManager</a> ()</td></tr>
+<tr class="separator:ga40bd18bae468d2581e4fa6dcd026302e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff92dc845e91171abdf7cc38e6570c4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaff92dc845e91171abdf7cc38e6570c4c">register_constructor</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:gaff92dc845e91171abdf7cc38e6570c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf3839c13bdebe924f40ee4c73e592af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadf3839c13bdebe924f40ee4c73e592af">register_validator</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:gadf3839c13bdebe924f40ee4c73e592af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga296e0cd6965b99fa46bc58d664541215"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga296e0cd6965b99fa46bc58d664541215">register_converter</a> (F from, F to, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:ga296e0cd6965b99fa46bc58d664541215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac9341c980f3831e21ee1ba6c1ea68105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac9341c980f3831e21ee1ba6c1ea68105">validate_ctor</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:gac9341c980f3831e21ee1ba6c1ea68105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b966107b9ef69b57fb13a50f31120b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5b966107b9ef69b57fb13a50f31120b1">validate_rw</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:ga5b966107b9ef69b57fb13a50f31120b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf348af6c29f12ef96c8e7048c14e011"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">validate_rwd</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:gacf348af6c29f12ef96c8e7048c14e011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47956ee8969d75dfe6f32bb44f4a1757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">validate_wd</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
+<tr class="separator:ga47956ee8969d75dfe6f32bb44f4a1757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T, int capacity&gt;<br />
-class spla::StorageManager&lt; T, capacity &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, typename F, int capacity&gt;<br />
+class spla::StorageManager&lt; T, F, capacity &gt;</h3>
 
 <p>General format converter for vector or matrix decoration storage. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> of elements stored </td></tr>
+    <tr><td class="paramname">F</td><td>Format of stored data </td></tr>
     <tr><td class="paramname">capacity</td><td>Capacity if storage </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a747f194a15ee0f6d8e84795138b88f06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a747f194a15ee0f6d8e84795138b88f06">&#9670;&nbsp;</a></span>Function</h2>
+<a id="a1eb213d8c6d56d5596d4d556fd372681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eb213d8c6d56d5596d4d556fd372681">&#9670;&nbsp;</a></span>Function</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;void(<a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a>&amp; storage)&gt; <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06">Function</a></td>
+          <td class="memname">typedef std::function&lt;void(<a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a>&amp; storage)&gt; <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a062eb171d488257b09ce88078be52b75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a062eb171d488257b09ce88078be52b75">&#9670;&nbsp;</a></span>Storage</h2>
+<a id="a51827d49ae299c61ab756998bdb9230c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51827d49ae299c61ab756998bdb9230c">&#9670;&nbsp;</a></span>Storage</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , int capacity&gt; </div>
+template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classspla_1_1TDecorationStorage.html">TDecorationStorage</a>&lt;T, capacity&gt; <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a062eb171d488257b09ce88078be52b75">Storage</a></td>
+          <td class="memname">typedef <a class="el" href="classspla_1_1TDecorationStorage.html">TDecorationStorage</a>&lt;T, F, capacity&gt; <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a></td>
         </tr>
       </table>
 </div><div class="memdoc">

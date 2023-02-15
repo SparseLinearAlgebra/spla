@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['function_1317',['Function',['../classspla_1_1StorageManager.html#a747f194a15ee0f6d8e84795138b88f06',1,'spla::StorageManager']]]
+  ['function_1313',['Function',['../classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681',1,'spla::StorageManager']]]
 ];

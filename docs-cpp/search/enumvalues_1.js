@@ -1,20 +1,11 @@
 var searchData=
 [
-  ['clcoo_1341',['CLCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e',1,'spla']]],
-  ['clcoovec_1342',['CLCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068',1,'spla']]],
-  ['clcsc_1343',['CLCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e',1,'spla']]],
-  ['clcsr_1344',['CLCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64',1,'spla']]],
-  ['cldensevec_1345',['CLDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef',1,'spla']]],
-  ['compilationerror_1346',['CompilationError',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e',1,'spla']]],
-  ['compute_1347',['Compute',['../group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10',1,'spla']]],
-  ['countmatrix_1348',['CountMatrix',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f',1,'spla']]],
-  ['countvector_1349',['CountVector',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e',1,'spla']]],
-  ['cpucoo_1350',['CpuCoo',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550',1,'spla']]],
-  ['cpucoovec_1351',['CpuCooVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d',1,'spla']]],
-  ['cpucsc_1352',['CpuCsc',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1',1,'spla']]],
-  ['cpucsr_1353',['CpuCsr',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4',1,'spla']]],
-  ['cpudensevec_1354',['CpuDenseVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3',1,'spla']]],
-  ['cpudok_1355',['CpuDok',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1dc4506f3792165c9fa807e02e744160',1,'spla']]],
-  ['cpudokvec_1356',['CpuDokVec',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a010ba9c8d7e507e8322d5be9472cc21e',1,'spla']]],
-  ['cpulil_1357',['CpuLil',['../group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409',1,'spla']]]
+  ['compilationerror_1336',['CompilationError',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e',1,'spla']]],
+  ['count_1337',['Count',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5ae93f994f01c537c4e2f7d8528c3eb5e9',1,'spla::Count()'],['../group__spla.html#gga18f36606767531338114557ba1962933ae93f994f01c537c4e2f7d8528c3eb5e9',1,'spla::Count()']]],
+  ['cpucoo_1338',['CpuCoo',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5aef57428d77b9c784bcb0c28ca1fd4550',1,'spla::CpuCoo()'],['../group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550',1,'spla::CpuCoo()']]],
+  ['cpucsc_1339',['CpuCsc',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1',1,'spla']]],
+  ['cpucsr_1340',['CpuCsr',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5aa0c0552e8397082033dfed7fdddf09d4',1,'spla']]],
+  ['cpudense_1341',['CpuDense',['../group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43',1,'spla']]],
+  ['cpudok_1342',['CpuDok',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5a1dc4506f3792165c9fa807e02e744160',1,'spla::CpuDok()'],['../group__spla.html#gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160',1,'spla::CpuDok()']]],
+  ['cpulil_1343',['CpuLil',['../group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6fbd0e9f8af4e1afcbb4a7229b810409',1,'spla']]]
 ];

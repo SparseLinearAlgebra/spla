@@ -68,7 +68,7 @@ $(function() {
 : <a class="el" href="classspla_1_1CLCounter.html#ac3618fa2e6d3ec85223e287eb7454f0d">spla::CLCounter</a>
 , <a class="el" href="classspla_1_1CLCounterWrapper.html#a1ef8e9eefe8d9cd2796e5193e50883c2">spla::CLCounterWrapper</a>
 , <a class="el" href="classspla_1_1ref__ptr.html#a4c5e4ec850094be8a85609e76253da35">spla::ref_ptr&lt; T &gt;</a>
-, <a class="el" href="classspla_1_1TDecorationStorage.html#ac6bf7717b781f7ab20c6f9ae7732b27a">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+, <a class="el" href="classspla_1_1TDecorationStorage.html#ab938632da6532f5b00bc9f19f215bad3">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 , <a class="el" href="classspla_1_1TMatrix.html#a436f087ffe8be4737613ab3f38cba401">spla::TMatrix&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1TVector.html#a47c34e4ab4c8fe82a93406e7634129a6">spla::TVector&lt; T &gt;</a>
 </li>
@@ -161,6 +161,9 @@ $(function() {
 <li>get_elapsed_sec()
 : <a class="el" href="classspla_1_1Timer.html#a7ac231e43f5be5b7018fd19506ed2770">spla::Timer</a>
 </li>
+<li>get_fill_value()
+: <a class="el" href="classspla_1_1TDecorationStorage.html#a1c6924cc806ca53825adaaf7d46e4123">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
+</li>
 <li>get_float()
 : <a class="el" href="classspla_1_1Matrix.html#ac0031e98798866cadc82c407598f7874">spla::Matrix</a>
 , <a class="el" href="classspla_1_1Scalar.html#abd48825fd8f1d1334b8e1cad6e194fad">spla::Scalar</a>
@@ -234,13 +237,13 @@ $(function() {
 <li>get_n_cols()
 : <a class="el" href="classspla_1_1Matrix.html#a9aa24a2ce5381576a7f03d1db7b3a737">spla::Matrix</a>
 , <a class="el" href="classspla_1_1MtxLoader.html#afbccfa3ae45f663a2c3940530e4bbf66">spla::MtxLoader</a>
-, <a class="el" href="classspla_1_1TDecorationStorage.html#ab47963c186c6af5cf74fc5603a85bf0c">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+, <a class="el" href="classspla_1_1TDecorationStorage.html#a0556b5e2da9536f819a3c3f7e0b44ce2">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 , <a class="el" href="group__internal.html#ga6f2f8fd19836935ea992bbd572a33d72">spla::TMatrix&lt; T &gt;</a>
 </li>
 <li>get_n_rows()
 : <a class="el" href="classspla_1_1Matrix.html#af554f600e4b34be4b26791c128a28634">spla::Matrix</a>
 , <a class="el" href="classspla_1_1MtxLoader.html#a1765e0d3cb9f8be35096978898eaac14">spla::MtxLoader</a>
-, <a class="el" href="classspla_1_1TDecorationStorage.html#a8df39e10433f496fc26dad50209c4723">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+, <a class="el" href="classspla_1_1TDecorationStorage.html#a68e85556ff8131dbb309abe77770b7e7">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 , <a class="el" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix&lt; T &gt;</a>
 , <a class="el" href="group__internal.html#ga33d638f7b24cab450f016a8659eebbfc">spla::TVector&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Vector.html#a4a715fa86ea65cab68b0f7d0d6f37ffe">spla::Vector</a>
@@ -294,10 +297,10 @@ $(function() {
 , <a class="el" href="classspla_1_1CLProgramCache.html#a1e71e91ce70ef07d3aa294108c70357a">spla::CLProgramCache</a>
 </li>
 <li>get_ptr()
-: <a class="el" href="classspla_1_1TDecorationStorage.html#a4f818ed9d76fda676968b488c41832d5">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+: <a class="el" href="classspla_1_1TDecorationStorage.html#adf56c3727a2c4f69e52c9999a81fcafa">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 </li>
 <li>get_ptr_i()
-: <a class="el" href="classspla_1_1TDecorationStorage.html#ab7ba379d16a6884940a4b3d8bb52d1eb">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+: <a class="el" href="classspla_1_1TDecorationStorage.html#aca4ad9efe386ac1a32fb9114478b5b49">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 </li>
 <li>get_pull_only()
 : <a class="el" href="classspla_1_1Descriptor.html#a53558586aca1760871b76f305b15d7d4">spla::Descriptor</a>
@@ -312,10 +315,10 @@ $(function() {
 : <a class="el" href="classspla_1_1CLAccelerator.html#abc29ff42debbcdfee875b22804a39401">spla::CLAccelerator</a>
 </li>
 <li>get_ref()
-: <a class="el" href="classspla_1_1TDecorationStorage.html#ac4262669e06d381c5ba932d68e2d6dc4">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+: <a class="el" href="classspla_1_1TDecorationStorage.html#a3fbc40d9bfb2eee05e5298e1097d1958">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 </li>
 <li>get_ref_i()
-: <a class="el" href="classspla_1_1TDecorationStorage.html#a41fe194923b0a0e0b23a1f6183e9413b">spla::TDecorationStorage&lt; T, capacity &gt;</a>
+: <a class="el" href="classspla_1_1TDecorationStorage.html#af8a975f12881a4a8c9544e0349e5e325">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 </li>
 <li>get_refs()
 : <a class="el" href="classspla_1_1RefCnt.html#ad9f5c8c5b1e345b9c9edcba923bc2214">spla::RefCnt</a>

@@ -103,12 +103,14 @@ Collaboration diagram for spla::Vector:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a26c85b7ad49c745b6a02e62e7c062192"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a26c85b7ad49c745b6a02e62e7c062192">~Vector</a> () override=default</td></tr>
 <tr class="separator:a26c85b7ad49c745b6a02e62e7c062192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b951af71f444d3606c269ceaeef46fd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a0b951af71f444d3606c269ceaeef46fd">hint_state</a> (<a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a> hint)=0</td></tr>
-<tr class="separator:a0b951af71f444d3606c269ceaeef46fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a715fa86ea65cab68b0f7d0d6f37ffe"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a4a715fa86ea65cab68b0f7d0d6f37ffe">get_n_rows</a> ()=0</td></tr>
 <tr class="separator:a4a715fa86ea65cab68b0f7d0d6f37ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5599281179d68083eb56ea6fc6ae5e7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#ac5599281179d68083eb56ea6fc6ae5e7">get_type</a> ()=0</td></tr>
 <tr class="separator:ac5599281179d68083eb56ea6fc6ae5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65baa3983dd7d6848ee5d25af7a28ec4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a65baa3983dd7d6848ee5d25af7a28ec4">set_format</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)=0</td></tr>
+<tr class="separator:a65baa3983dd7d6848ee5d25af7a28ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b313aaa0001cca4e8fbbd7bc3079643"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a7b313aaa0001cca4e8fbbd7bc3079643">set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value)=0</td></tr>
+<tr class="separator:a7b313aaa0001cca4e8fbbd7bc3079643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90ab8c429b1c65e1b023bf60061d53f3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#a90ab8c429b1c65e1b023bf60061d53f3">set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates)=0</td></tr>
 <tr class="separator:a90ab8c429b1c65e1b023bf60061d53f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7840693087171cbf3f2b098d21158dd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Vector.html#ac7840693087171cbf3f2b098d21158dd">set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga08c8487fc2e68b8e8e7b30a0c8bd709f">T_INT</a> value)=0</td></tr>
@@ -454,8 +456,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0b951af71f444d3606c269ceaeef46fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b951af71f444d3606c269ceaeef46fd">&#9670;&nbsp;</a></span>hint_state()</h2>
+<a id="a7b313aaa0001cca4e8fbbd7bc3079643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b313aaa0001cca4e8fbbd7bc3079643">&#9670;&nbsp;</a></span>set_fill_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -464,10 +466,10 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Vector::hint_state </td>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Vector::set_fill_value </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">StateHint</a>&#160;</td>
-          <td class="paramname"><em>hint</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -478,7 +480,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="group__internal.html#gacaf81f5ac855c678c9b96401d5404a13">spla::TVector&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="group__internal.html#gaf20b9a41d1264ad2aa2d6ef4b77c4c7d">spla::TVector&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -517,6 +519,34 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="group__internal.html#ga4a8acdabad7636b3276946c217fad91a">spla::TVector&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a65baa3983dd7d6848ee5d25af7a28ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65baa3983dd7d6848ee5d25af7a28ec4">&#9670;&nbsp;</a></span>set_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::Vector::set_format </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="group__internal.html#gab72a073e117df0263129d9f8eb58bd87">spla::TVector&lt; T &gt;</a>.</p>
 
 </div>
 </div>

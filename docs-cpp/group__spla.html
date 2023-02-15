@@ -131,11 +131,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAcceleratorType.html">AcceleratorType</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of supported accelerators for computations.  <a href="classAcceleratorType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStateHint.html">StateHint</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hint used to explicitly prepare matrix state.  <a href="classStateHint.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatMatrix.html">FormatMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage format for library matrix data objects.  <a href="classFormatMatrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormat.html">Format</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage format for library data objects.  <a href="classFormat.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatVector.html">FormatVector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage format for library vector data objects.  <a href="classFormatVector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMessageCallback.html">MessageCallback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function called on library message event.  <a href="classMessageCallback.html#details">More...</a><br /></td></tr>
@@ -184,39 +184,32 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47">spla::OpenCL</a> = 1
  }</td></tr>
 <tr class="separator:gae53f1b66beabcefa387bdcfce49f251a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">spla::StateHint</a> { <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67">spla::Default</a> = 0
-, <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f">spla::Incremental</a> = 1
-, <a class="el" href="group__spla.html#gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10">spla::Compute</a> = 2
- }</td></tr>
-<tr class="separator:ga8eed27bc4c4b81483b248c47eb8bffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">spla::Format</a> { <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 1
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
+<tr class="memitem:gab5469439090c0103e6b2f57d655afde5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">spla::FormatMatrix</a> { <br />
+&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 1
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 5
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 6
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 7
+&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 5
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 6
+, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e">spla::CLCoo</a> = 8
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64">spla::CLCsr</a> = 9
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e">spla::CLCsc</a> = 10
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f">spla::CountMatrix</a> = 11
-, <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a010ba9c8d7e507e8322d5be9472cc21e">spla::CpuDokVec</a> = 0
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3">spla::CpuDenseVec</a> = 1
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d">spla::CpuCooVec</a> = 2
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ad2d223e6b9e395dece529e2a329c1d33">spla::AccDenseVec</a> = 3
-, <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0aa273506ffa38aee155d32ba2a5968bf9">spla::AccCooVec</a> = 4
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef">spla::CLDenseVec</a> = 5
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068">spla::CLCooVec</a> = 6
-, <a class="el" href="group__spla.html#gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e">spla::CountVector</a> = 7
+&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5ae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 8
 <br />
  }</td></tr>
-<tr class="separator:ga9ac48ae2db6acc9a1f428a36ca1421c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gab5469439090c0103e6b2f57d655afde5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18f36606767531338114557ba1962933"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">spla::FormatVector</a> { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 0
+, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">spla::CpuDense</a> = 1
+, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
+, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">spla::AccDense</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 4
+, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933ae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 5
+<br />
+ }</td></tr>
+<tr class="separator:ga18f36606767531338114557ba1962933"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -517,8 +510,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga9ac48ae2db6acc9a1f428a36ca1421c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9ac48ae2db6acc9a1f428a36ca1421c0">&#9670;&nbsp;</a></span>Format</h2>
+<a id="gab5469439090c0103e6b2f57d655afde5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab5469439090c0103e6b2f57d655afde5">&#9670;&nbsp;</a></span>FormatMatrix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -527,7 +520,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#ga9ac48ae2db6acc9a1f428a36ca1421c0">spla::Format</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">spla::FormatMatrix</a></td>
         </tr>
       </table>
   </td>
@@ -537,52 +530,30 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> list of lists format for fast increment build </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> list of lists format for fast increment build </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> dictionary of keys for fast look-up of values </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> dictionary of keys for fast look-up of values </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> coordinates list format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> coordinates list format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse rows format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse rows format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse columns format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse columns format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured coo format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured coo format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csr format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csr format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csc format </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csc format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a3575d96313249e77228e4a2f6a89690e"></a>CLCoo&#160;</td><td class="fielddoc"><p>[EXTENSION] <a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> opencl acceleration structured coo format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a2c57be3b361ad41fe56e9cbf08e3ce64"></a>CLCsr&#160;</td><td class="fielddoc"><p>[EXTENSION] <a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> opencl acceleration structured csr format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a261426f759a13dcb5cb8347a8cd4025e"></a>CLCsc&#160;</td><td class="fielddoc"><p>[EXTENSION] <a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> opencl acceleration structured csc format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a72fff0a8ce3d6faa4845bd9f6c640a0f"></a>CountMatrix&#160;</td><td class="fielddoc"><p>Total number of supported matrix formats </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a010ba9c8d7e507e8322d5be9472cc21e"></a>CpuDokVec&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dictionary of keys representation </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a249a0060d95f9a066f763d482e5f48e3"></a>CpuDenseVec&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dense array of values representation </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a14e748b9e97e12280b8b924e036ec72d"></a>CpuCooVec&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> list of values for sparse data </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0ad2d223e6b9e395dece529e2a329c1d33"></a>AccDenseVec&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured dense format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0aa273506ffa38aee155d32ba2a5968bf9"></a>AccCooVec&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured coo format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a4cfc185f5eaa847248a050324ad655ef"></a>CLDenseVec&#160;</td><td class="fielddoc"><p>[EXTENSION] <a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> opencl acceleration structured dense format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0ae5a0a350bc8bf827622f7cab96d08068"></a>CLCooVec&#160;</td><td class="fielddoc"><p>[EXTENSION] <a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> opencl acceleration structured coo format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9ac48ae2db6acc9a1f428a36ca1421c0a1e832d19a7ca32f884f20e612816973e"></a>CountVector&#160;</td><td class="fielddoc"><p>Total number of supported vector formats </p>
+<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5ae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported matrix formats </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="ga8eed27bc4c4b81483b248c47eb8bffd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8eed27bc4c4b81483b248c47eb8bffd3">&#9670;&nbsp;</a></span>StateHint</h2>
+<a id="ga18f36606767531338114557ba1962933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga18f36606767531338114557ba1962933">&#9670;&nbsp;</a></span>FormatVector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,7 +562,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#ga8eed27bc4c4b81483b248c47eb8bffd3">spla::StateHint</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">spla::FormatVector</a></td>
         </tr>
       </table>
   </td>
@@ -601,11 +572,17 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"><p>Default state of container (empty) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dictionary of keys representation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3a482be0da5798aaaecbf7416714e6607f"></a>Incremental&#160;</td><td class="fielddoc"><p>Prepare for incremental build </p>
+<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43"></a>CpuDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dense array of values representation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga8eed27bc4c4b81483b248c47eb8bffd3aa623a8d0366bf079411aa30be45b2d10"></a>Compute&#160;</td><td class="fielddoc"><p>Commits build data to optimal storage format </p>
+<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> list of values for sparse data </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f"></a>AccDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured dense format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured coo format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933ae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported vector formats </p>
 </td></tr>
 </table>
 
