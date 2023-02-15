@@ -134,17 +134,17 @@ namespace spla {
         return {r.as<Object>(), s.as<Object>(), v.as<Object>(), op_reduce.as<Object>()};
     }
 
-    std::string ScheduleTask_v_count_nz::get_name() {
-        return "v_count_nz";
+    std::string ScheduleTask_v_count_mf::get_name() {
+        return "v_count_mf";
     }
-    std::string ScheduleTask_v_count_nz::get_key() {
+    std::string ScheduleTask_v_count_mf::get_key() {
         std::stringstream key;
         key << get_name()
             << TYPE_KEY(v->get_type());
 
         return key.str();
     }
-    std::vector<ref_ptr<Object>> ScheduleTask_v_count_nz::get_args() {
+    std::vector<ref_ptr<Object>> ScheduleTask_v_count_mf::get_args() {
         return {r.as<Object>(), v.as<Object>()};
     }
 

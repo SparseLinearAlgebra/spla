@@ -247,7 +247,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
             src/opencl/cl_vector_assign.hpp
-            src/opencl/cl_vector_count_nz.hpp
+            src/opencl/cl_vector_count_mf.hpp
             src/opencl/cl_vector_eadd_fdb.hpp
             src/opencl/cl_vector_reduce.hpp
             src/opencl/cl_fill.hpp
@@ -311,7 +311,7 @@ add_library(spla SHARED
         src/cpu/cpu_mxv.hpp
         src/cpu/cpu_vxm.hpp
         src/cpu/cpu_vector_assign.hpp
-        src/cpu/cpu_vector_count_nz.hpp
+        src/cpu/cpu_vector_count_mf.hpp
         src/cpu/cpu_vector_eadd_fdb.hpp
         src/cpu/cpu_vector_reduce.hpp
         src/util/pair_hash.hpp

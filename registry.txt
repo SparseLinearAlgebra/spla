@@ -1,7 +1,7 @@
-// algorthm v_count_nz
-g_registry->add(MAKE_KEY_CL_0("v_count_nz",INT), std::make_shared<Algo_v_count_nz_cl<T_INT>>());
-g_registry->add(MAKE_KEY_CL_0("v_count_nz",UINT), std::make_shared<Algo_v_count_nz_cl<T_UINT>>());
-g_registry->add(MAKE_KEY_CL_0("v_count_nz",FLOAT), std::make_shared<Algo_v_count_nz_cl<T_FLOAT>>());
+// algorthm v_count_mf
+g_registry->add(MAKE_KEY_CL_0("v_count_mf",INT), std::make_shared<Algo_v_count_mf_cl<T_INT>>());
+g_registry->add(MAKE_KEY_CL_0("v_count_mf",UINT), std::make_shared<Algo_v_count_mf_cl<T_UINT>>());
+g_registry->add(MAKE_KEY_CL_0("v_count_mf",FLOAT), std::make_shared<Algo_v_count_mf_cl<T_FLOAT>>());
 
 
 // algorthm v_reduce

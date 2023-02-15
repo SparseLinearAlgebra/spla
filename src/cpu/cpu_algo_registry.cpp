@@ -33,7 +33,7 @@
 #include <cpu/cpu_algo_callback.hpp>
 #include <cpu/cpu_mxv.hpp>
 #include <cpu/cpu_vector_assign.hpp>
-#include <cpu/cpu_vector_count_nz.hpp>
+#include <cpu/cpu_vector_count_mf.hpp>
 #include <cpu/cpu_vector_eadd_fdb.hpp>
 #include <cpu/cpu_vector_reduce.hpp>
 #include <cpu/cpu_vxm.hpp>
@@ -43,10 +43,10 @@ namespace spla {
     void register_algo_cpu(Registry* g_registry) {
         g_registry->add("callback" CPU_SUFFIX, std::make_shared<Algo_callback_cpu>());
 
-        // algorthm v_count_nz
-        g_registry->add(MAKE_KEY_CPU_0("v_count_nz", INT), std::make_shared<Algo_v_count_nz_cpu<T_INT>>());
-        g_registry->add(MAKE_KEY_CPU_0("v_count_nz", UINT), std::make_shared<Algo_v_count_nz_cpu<T_UINT>>());
-        g_registry->add(MAKE_KEY_CPU_0("v_count_nz", FLOAT), std::make_shared<Algo_v_count_nz_cpu<T_FLOAT>>());
+        // algorthm v_count_mf
+        g_registry->add(MAKE_KEY_CPU_0("v_count_mf", INT), std::make_shared<Algo_v_count_mf_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_count_mf", UINT), std::make_shared<Algo_v_count_mf_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_count_mf", FLOAT), std::make_shared<Algo_v_count_mf_cpu<T_FLOAT>>());
 
         // algorthm v_reduce
         for (const auto& op0 : {PLUS_INT, MINUS_INT, MULT_INT, DIV_INT, FIRST_INT, SECOND_INT, ONE_INT, MIN_INT, MAX_INT}) {

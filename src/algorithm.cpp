@@ -96,7 +96,7 @@ namespace spla {
                 exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             }
 
-            exec_v_count_nz(frontier_size, frontier_new);
+            exec_v_count_mf(frontier_size, frontier_new);
 
 #ifndef SPLA_RELEASE
             tight.stop();
@@ -203,7 +203,7 @@ namespace spla {
             //            }
 
             exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
-            exec_v_count_nz(feedback_size, feedback);
+            exec_v_count_mf(feedback_size, feedback);
 
 #ifndef SPLA_RELEASE
             tight.stop();

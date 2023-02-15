@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_COUNT_NZ_HPP
-#define SPLA_CPU_VECTOR_COUNT_NZ_HPP
+#ifndef SPLA_CL_VECTOR_COUNT_MF_HPP
+#define SPLA_CL_VECTOR_COUNT_MF_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -37,80 +37,104 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_counter.hpp>
+#include <opencl/cl_formats.hpp>
+#include <opencl/cl_program_builder.hpp>
+#include <opencl/generated/auto_count.hpp>
+
+#include <sstream>
+
 namespace spla {
 
     template<typename T>
-    class Algo_v_count_nz_cpu final : public RegistryAlgo {
+    class Algo_v_count_mf_cl final : public RegistryAlgo {
     public:
-        ~Algo_v_count_nz_cpu() override = default;
+        ~Algo_v_count_mf_cl() override = default;
 
         std::string get_name() override {
-            return "v_count_nz";
+            return "v_count_mf";
         }
 
         std::string get_description() override {
-            return "sequential count nz";
+            return "parallel opencl vector count mf";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_count_nz>();
+            auto                t = ctx.task.template cast<ScheduleTask_v_count_mf>();
             ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
 
-            if (v->is_valid(FormatVector::CpuDok))
-                return execute_dok(ctx);
-            if (v->is_valid(FormatVector::CpuCoo))
-                return execute_coo(ctx);
-            if (v->is_valid(FormatVector::CpuDense))
-                return execute_dense(ctx);
+            if (v->is_valid(FormatVector::AccCoo))
+                return execute_sp(ctx);
+            if (v->is_valid(FormatVector::AccDense))
+                return execute_dn(ctx);
 
-            return execute_coo(ctx);
+            return execute_sp(ctx);
         }
 
     private:
-        Status execute_dok(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_nz_dok");
-
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
+        Status execute_sp(const DispatchContext& ctx) {
+            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
             ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
-            CpuDokVec<T>*       dec_v = v->template get<CpuDokVec<T>>();
+            CLCooVec<T>*        dec_v = v->template get<CLCooVec<T>>();
 
             t->r->set_uint(dec_v->values);
 
             return Status::Ok;
         }
-        Status execute_coo(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_nz_coo");
 
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
+        Status execute_dn(const DispatchContext& ctx) {
+            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
             ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
-            CpuCooVec<T>*       dec_v = v->template get<CpuCooVec<T>>();
+            CLDenseVec<T>*      dec_v = v->template get<CLDenseVec<T>>();
 
-            t->r->set_uint(dec_v->values);
+            if (!ensure_kernel()) return Status::CompilationError;
+
+            auto* cl_acc = get_acc_cl();
+            auto& queue  = cl_acc->get_queue_default();
+
+            CLCounterWrapper cl_count;
+            cl_count.set(queue, 0);
+
+            auto kernel = m_program->make_kernel("count_mf");
+            kernel.setArg(0, dec_v->Ax);
+            kernel.setArg(1, cl_count.buffer());
+            kernel.setArg(2, v->get_n_rows());
+            kernel.setArg(3, v->get_fill_value());
+
+            const uint n_groups = div_up_clamp(v->get_n_rows(), m_block_size, 1, 1024);
+
+            cl::NDRange global(m_block_size * n_groups);
+            cl::NDRange local(m_block_size);
+            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
+
+            t->r->set_uint(cl_count.get(queue));
 
             return Status::Ok;
         }
-        Status execute_dense(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_nz_dense");
 
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_nz>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
-            CpuDenseVec<T>*     dec_v = v->template get<CpuDenseVec<T>>();
+        bool ensure_kernel() {
+            if (m_compiled) return true;
 
-            uint values = 0;
+            m_block_size = get_acc_cl()->get_default_wgz();
 
-            for (uint i = 0; i < v->get_n_rows(); i++) {
-                if (dec_v->Ax[i] != 0) {
-                    values += 1;
-                }
-            }
+            CLProgramBuilder program_builder;
+            program_builder
+                    .set_name("count")
+                    .add_type("TYPE", get_ttype<T>().template as<Type>())
+                    .set_source(source_count)
+                    .acquire();
 
-            t->r->set_uint(values);
+            m_program  = program_builder.get_program();
+            m_compiled = true;
 
-            return Status::Ok;
+            return true;
         }
+
+        std::shared_ptr<CLProgram> m_program;
+        uint                       m_block_size = 0;
+        bool                       m_compiled   = false;
     };
 
 }// namespace spla
 
-
-#endif//SPLA_CPU_VECTOR_COUNT_NZ_HPP
+#endif//SPLA_CL_VECTOR_COUNT_MF_HPP

@@ -161,12 +161,12 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
-    Status exec_v_count_nz(
+    Status exec_v_count_mf(
             ref_ptr<Scalar>        r,
             ref_ptr<Vector>        v,
             ref_ptr<Descriptor>    desc,
             ref_ptr<ScheduleTask>* task_hnd) {
-        auto task  = make_ref<ScheduleTask_v_count_nz>();
+        auto task  = make_ref<ScheduleTask_v_count_mf>();
         task->r    = std::move(r);
         task->v    = std::move(v);
         task->desc = std::move(desc);

@@ -85,6 +85,7 @@ namespace spla {
         void validate_wd(FormatVector format);
         void validate_ctor(FormatVector format);
         bool is_valid(FormatVector format) const;
+        T    get_fill_value() const { return m_storage.get_fill_value(); }
 
         static StorageManagerVector<T>* get_storage_manager();
 

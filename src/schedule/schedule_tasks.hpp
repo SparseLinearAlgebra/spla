@@ -172,29 +172,12 @@ namespace spla {
     };
 
     /**
-     * @class ScheduleTask_v_select_count
-     * @brief Vector select and count
+     * @class ScheduleTask_v_count_mf
+     * @brief Vector count meaningful elements
      */
-    class ScheduleTask_v_select_count final : public ScheduleTaskBase {
+    class ScheduleTask_v_count_mf final : public ScheduleTaskBase {
     public:
-        ~ScheduleTask_v_select_count() override = default;
-
-        std::string                  get_name() override;
-        std::string                  get_key() override;
-        std::vector<ref_ptr<Object>> get_args() override;
-
-        ref_ptr<Scalar>   r;
-        ref_ptr<Vector>   v;
-        ref_ptr<OpSelect> op_select;
-    };
-
-    /**
-     * @class ScheduleTask_v_count_nz
-     * @brief Vector count nz
-     */
-    class ScheduleTask_v_count_nz final : public ScheduleTaskBase {
-    public:
-        ~ScheduleTask_v_count_nz() override = default;
+        ~ScheduleTask_v_count_mf() override = default;
 
         std::string                  get_name() override;
         std::string                  get_key() override;

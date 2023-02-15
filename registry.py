@@ -62,7 +62,7 @@ def main():
     ops_bin = ["PLUS", "MINUS", "MULT", "DIV", "FIRST", "SECOND", "ONE", "MIN", "MAX"]
     ops_bin_x = ["BOR", "BAND", "BXOR"]
     ops_select = ["EQZERO", "NQZERO", "GTZERO", "GEZERO", "LTZERO", "LEZERO", "ALWAYS", "NEVER"]
-    algos_0 = ["v_count_nz"]
+    algos_0 = ["v_count_mf"]
     algos_1 = ["v_reduce", "v_eadd_fdb"]
     algos_2 = ["v_assign_masked"]
     algos_3 = ["mxv_masked", "vxm_masked"]
