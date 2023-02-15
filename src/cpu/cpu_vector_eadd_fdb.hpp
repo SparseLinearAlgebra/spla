@@ -60,6 +60,9 @@ namespace spla {
             if (r->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuCoo)) {
                 return execute_sp2dn(ctx);
             }
+            if (r->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuDense)) {
+                return execute_dn2dn(ctx);
+            }
 
             return execute_sp2dn(ctx);
         }
@@ -94,6 +97,41 @@ namespace spla {
                     p_fdb->values += 1;
                     p_fdb->Ai.push_back(i);
                     p_fdb->Ax.push_back(p_r->Ax[i]);
+                }
+            }
+
+            return Status::Ok;
+        }
+
+        Status execute_dn2dn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/vector_eadd_fdb_dn2dn");
+
+            auto                        t   = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>>         r   = t->r.template cast<TVector<T>>();
+            ref_ptr<TVector<T>>         v   = t->v.template cast<TVector<T>>();
+            ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
+
+            r->validate_rwd(FormatVector::CpuDense);
+            v->validate_rw(FormatVector::CpuDense);
+            fdb->validate_wd(FormatVector::CpuDense);
+
+            auto*       p_r      = r->template get<CpuDenseVec<T>>();
+            const auto* p_v      = v->template get<CpuDenseVec<T>>();
+            auto*       p_fdb    = fdb->template get<CpuDenseVec<T>>();
+            const auto& function = op->function;
+
+            const uint N          = v->get_n_rows();
+            const T    fill_value = fdb->get_fill_value();
+
+            cpu_dense_vec_fill(fdb->get_fill_value(), *p_fdb);
+
+            for (uint i = 0; i < N; i++) {
+                T prev     = p_r->Ax[i];
+                p_r->Ax[i] = function(prev, p_v->Ax[i]);
+
+                if (prev != p_r->Ax[i]) {
+                    p_fdb->Ax[i] = p_r->Ax[i];
                 }
             }
 

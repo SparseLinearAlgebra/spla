@@ -95,7 +95,7 @@ namespace spla {
                         const uint j = j_x.first;
                         sum          = func_add(sum, func_multiply(j_x.second, p_dense_v->Ax[j]));
 
-                        if (sum && early_exit) break;
+                        if ((sum != sum_init) && early_exit) break;
                     }
                 }
 

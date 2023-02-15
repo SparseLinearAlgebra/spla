@@ -166,9 +166,12 @@ namespace spla {
         int             current_level  = 1;
         bool            feedback_empty = false;
 
-        v->fill_float(inf);
+        v->set_fill_value(inf_init);
+        feedback->set_fill_value(inf_init);
+        frontier->set_fill_value(inf_init);
+
         v->set_float(s, 0.0f);
-        feedback->set_int(s, 0.0f);
+        feedback->set_float(s, 0.0f);
 
         bool  push         = descriptor->get_push_only();
         bool  pull         = descriptor->get_pull_only();
@@ -194,13 +197,11 @@ namespace spla {
             float front_density  = float(feedback_size->as_int()) / float(N);
             bool  is_push_better = (front_density <= front_factor);
 
-            exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-
-            //            if (push || (push_pull && is_push_better)) {
-            //                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            //            } else {
-            //                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            //            }
+            if (push || (push_pull && is_push_better)) {
+                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
+            } else {
+                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
+            }
 
             exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
             exec_v_count_mf(feedback_size, feedback);

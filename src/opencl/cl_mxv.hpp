@@ -63,7 +63,14 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            return execute_config_scalar(ctx);
+            auto t          = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto early_exit = t->get_desc_or_default()->get_early_exit();
+
+            if (early_exit) {
+                return execute_config_scalar(ctx);
+            } else {
+                return execute_vector(ctx);
+            }
         }
 
     private:

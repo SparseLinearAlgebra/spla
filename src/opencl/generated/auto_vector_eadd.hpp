@@ -31,4 +31,22 @@ __kernel void sparse_to_dense(__global TYPE*       g_rx,
         }
     }
 }
+
+__kernel void dense_to_dense(__global TYPE*       g_rx,
+                             __global const TYPE* g_vx,
+                             __global TYPE*       g_fdbx,
+                             const uint           n) {
+    const uint gid   = get_global_id(0);
+    const uint gsize = get_global_size(0);
+
+    for (uint i = gid; i < n; i += gsize) {
+        const TYPE prev = g_rx[i];
+
+        g_rx[i] = OP_BINARY(prev, g_vx[i]);
+
+        if (prev != g_rx[i]) {
+            g_fdbx[i] = g_rx[i];
+        }
+    }
+}
 )";

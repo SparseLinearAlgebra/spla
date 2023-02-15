@@ -69,12 +69,12 @@ int main(int argc, const char* const* argv) {
     desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
     desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());
 
-    const spla::uint fact = 64;
-    const auto&      Ai   = loader.get_Ai();
-    const auto&      Aj   = loader.get_Aj();
+    const spla::uint w  = 1.0f;
+    const auto&      Ai = loader.get_Ai();
+    const auto&      Aj = loader.get_Aj();
 
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        A->set_float(Ai[k], Aj[k], 1.0f * float(k % fact));
+        A->set_float(Ai[k], Aj[k], w);
     }
 
     const int n_iters = args[OPT_NITERS].as<int>();
@@ -110,7 +110,7 @@ int main(int argc, const char* const* argv) {
 
         for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
             ref_Ai[Ai[k]].push_back(Aj[k]);
-            ref_Ax[Ai[k]].push_back(1.0f * float(k % fact));
+            ref_Ax[Ai[k]].push_back(w);
         }
 
         timer_ref.lap_begin();
