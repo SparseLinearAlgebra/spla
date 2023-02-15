@@ -110,12 +110,126 @@ Macros</h2></td></tr>
 <tr class="separator:a8e196a33819338e2a866bbb0f29c1dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94a12c0d98db0f97f12b3a6fda54e787"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl__debug_8hpp.html#a94a12c0d98db0f97f12b3a6fda54e787">CL_READ_PROFILED</a>(name,  queue,  buffer, ...)</td></tr>
 <tr class="separator:a94a12c0d98db0f97f12b3a6fda54e787"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871f888b62340bb92c684db3fae1a5e5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl__debug_8hpp.html#a871f888b62340bb92c684db3fae1a5e5">CL_COUNTER_GET</a>(name,  queue,  counter,  value)</td></tr>
+<tr class="separator:a871f888b62340bb92c684db3fae1a5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e1ee15e638d225873d0aa6feabcc2db"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl__debug_8hpp.html#a7e1ee15e638d225873d0aa6feabcc2db">CL_COUNTER_SET</a>(name,  queue,  counter,  value)</td></tr>
+<tr class="separator:a7e1ee15e638d225873d0aa6feabcc2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa72b9aed76892df41d12c50c06baf740"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl__debug_8hpp.html#aa72b9aed76892df41d12c50c06baf740">CL_PROFILE_BEGIN</a>(name,  queue)</td></tr>
 <tr class="separator:aa72b9aed76892df41d12c50c06baf740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c51e7a066c67b7b54075b3e176ede6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl__debug_8hpp.html#a55c51e7a066c67b7b54075b3e176ede6">CL_PROFILE_END</a>()</td></tr>
 <tr class="separator:a55c51e7a066c67b7b54075b3e176ede6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a871f888b62340bb92c684db3fae1a5e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a871f888b62340bb92c684db3fae1a5e5">&#9670;&nbsp;</a></span>CL_COUNTER_GET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CL_COUNTER_GET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">queue, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">counter, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                                      \</div>
+<div class="line">            CL_FINISH(queue);                                                                                     \</div>
+<div class="line">            {                                                                                                     \</div>
+<div class="line">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</div>
+<div class="line">                cl::Event __cl_event;                                                                             \</div>
+<div class="line">                (value) = (counter).get(queue, &amp;__cl_event);                                                      \</div>
+<div class="line">                __cl_event.wait();                                                                                \</div>
+<div class="line">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</div>
+<div class="line">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</div>
+<div class="line">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</div>
+<div class="line">                CL_FINISH(queue);                                                                                 \</div>
+<div class="line">            }                                                                                                     \</div>
+<div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a7e1ee15e638d225873d0aa6feabcc2db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e1ee15e638d225873d0aa6feabcc2db">&#9670;&nbsp;</a></span>CL_COUNTER_SET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CL_COUNTER_SET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">queue, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">counter, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                                      \</div>
+<div class="line">            CL_FINISH(queue);                                                                                     \</div>
+<div class="line">            {                                                                                                     \</div>
+<div class="line">                TIME_PROFILE_SUBSCOPE(name);                                                                      \</div>
+<div class="line">                cl::Event __cl_event;                                                                             \</div>
+<div class="line">                (counter).<span class="keyword">set</span>(queue, (value), &amp;__cl_event);                                                       \</div>
+<div class="line">                __cl_event.wait();                                                                                \</div>
+<div class="line">                cl_ulong __queued                   = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_QUEUED&gt;(); \</div>
+<div class="line">                cl_ulong __start                    = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_START&gt;();  \</div>
+<div class="line">                cl_ulong __end                      = __cl_event.getProfilingInfo&lt;CL_PROFILING_COMMAND_END&gt;();    \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \</div>
+<div class="line">                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \</div>
+<div class="line">                CL_FINISH(queue);                                                                                 \</div>
+<div class="line">            }                                                                                                     \</div>
+<div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a8e196a33819338e2a866bbb0f29c1dc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e196a33819338e2a866bbb0f29c1dc1">&#9670;&nbsp;</a></span>CL_DISPATCH_PROFILED</h2>
 

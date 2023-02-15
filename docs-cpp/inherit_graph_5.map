@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classspla_1_1CLProgram.html" title="Compiled opencl program from library sources." alt="" coords="5,5,124,32"/>
+<area shape="rect" id="node1" href="$classspla_1_1Accelerator.html" title="Interface for an computations acceleration backend." alt="" coords="5,5,124,32"/>
+<area shape="rect" id="node2" href="$classspla_1_1CLAccelerator.html" title="Single&#45;device OpenCL acceleration implementation." alt="" coords="172,5,307,32"/>
 </map>
