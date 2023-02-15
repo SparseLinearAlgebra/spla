@@ -38,6 +38,7 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>

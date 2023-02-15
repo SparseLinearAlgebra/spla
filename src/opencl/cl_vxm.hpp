@@ -38,6 +38,7 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -96,16 +97,16 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            uint       prods_count[] = {0};
-            cl::Buffer cl_prods_count(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
-            cl::Buffer cl_prods_offset(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), prods_count);
+            uint             prods_count;
+            CLCounterWrapper cl_prods_count;
+            CL_COUNTER_SET("init-prods-cnt", queue, cl_prods_count, 0);
 
             m_kernel_sparse_count.setArg(0, p_cl_v->Ai);
             m_kernel_sparse_count.setArg(1, p_cl_v->Ax);
             m_kernel_sparse_count.setArg(2, p_cl_M->Ap);
             m_kernel_sparse_count.setArg(3, p_cl_M->Aj);
             m_kernel_sparse_count.setArg(4, p_cl_mask->Ax);
-            m_kernel_sparse_count.setArg(5, cl_prods_count);
+            m_kernel_sparse_count.setArg(5, cl_prods_count.buffer());
             m_kernel_sparse_count.setArg(6, p_cl_v->values);
 
             uint n_groups_to_dispatch_v = div_up_clamp(p_cl_v->values, m_block_size, 1, 512);
@@ -114,10 +115,10 @@ namespace spla {
             cl::NDRange count_local(m_block_size);
             CL_DISPATCH_PROFILED("count", queue, m_kernel_sparse_count, cl::NDRange(), count_global, count_local);
 
-            CL_READ_PROFILED("copy_prods_count", queue, cl_prods_count, true, 0, sizeof(prods_count[0]), prods_count);
-            LOG_MSG(Status::Ok, "temporary vi * A[,*] count " << prods_count[0]);
+            CL_COUNTER_GET("copy_prods_count", queue, cl_prods_count, prods_count);
+            LOG_MSG(Status::Ok, "temporary vi * A[,*] count " << prods_count);
 
-            if (prods_count[0] == 0) {
+            if (prods_count == 0) {
                 LOG_MSG(Status::Ok, "nothing to do");
 
                 p_cl_r->Ai     = cl::Buffer();
@@ -127,8 +128,11 @@ namespace spla {
                 return Status::Ok;
             }
 
-            cl::Buffer cl_prodi(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(uint));
-            cl::Buffer cl_prodx(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count[0] * sizeof(T));
+            cl::Buffer cl_prodi(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count * sizeof(uint));
+            cl::Buffer cl_prodx(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count * sizeof(T));
+
+            CLCounterWrapper cl_prods_offset;
+            CL_COUNTER_SET("init-offsets-cnt", queue, cl_prods_offset, 0);
 
             m_kernel_sparse_collect.setArg(0, p_cl_v->Ai);
             m_kernel_sparse_collect.setArg(1, p_cl_v->Ax);
@@ -138,7 +142,7 @@ namespace spla {
             m_kernel_sparse_collect.setArg(5, p_cl_mask->Ax);
             m_kernel_sparse_collect.setArg(6, cl_prodi);
             m_kernel_sparse_collect.setArg(7, cl_prodx);
-            m_kernel_sparse_collect.setArg(8, cl_prods_offset);
+            m_kernel_sparse_collect.setArg(8, cl_prods_offset.buffer());
             m_kernel_sparse_collect.setArg(9, p_cl_v->values);
 
             cl::NDRange collect_global(m_block_size * n_groups_to_dispatch_v);
@@ -147,7 +151,7 @@ namespace spla {
 
             CL_PROFILE_BEGIN("sort", queue)
             const uint max_key    = r->get_n_rows() - 1;
-            const uint n_elements = prods_count[0];
+            const uint n_elements = prods_count;
             cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, n_elements, max_key);
             CL_PROFILE_END();
 
@@ -156,7 +160,7 @@ namespace spla {
             cl::Buffer reduced_values;
 
             CL_PROFILE_BEGIN("reduce", queue)
-            cl_reduce_by_key(queue, cl_prodi, cl_prodx, prods_count[0], reduced_keys, reduced_values, reduced_size, op_add);
+            cl_reduce_by_key(queue, cl_prodi, cl_prodx, prods_count, reduced_keys, reduced_values, reduced_size, op_add);
             CL_PROFILE_END();
 
             p_cl_r->Ai     = reduced_keys;

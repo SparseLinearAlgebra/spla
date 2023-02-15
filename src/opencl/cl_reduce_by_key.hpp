@@ -29,6 +29,7 @@
 #define SPLA_CL_REDUCE_BY_KEY_HPP
 
 #include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_reduce_by_key.hpp>
@@ -70,7 +71,7 @@ namespace spla {
             return;
         }
         if (size <= sequential_switch) {
-            cl::Buffer cl_reduced_count(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
+            CLCounterWrapper cl_reduced_count;
             unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
             reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
 
@@ -79,22 +80,21 @@ namespace spla {
             kernel_sequential.setArg(1, values);
             kernel_sequential.setArg(2, unique_keys);
             kernel_sequential.setArg(3, reduce_values);
-            kernel_sequential.setArg(4, cl_reduced_count);
+            kernel_sequential.setArg(4, cl_reduced_count.buffer());
             kernel_sequential.setArg(5, size);
 
             cl::NDRange global(cl_acc->get_wave_size());
             cl::NDRange local(cl_acc->get_wave_size());
             queue.enqueueNDRangeKernel(kernel_sequential, cl::NDRange(), global, local);
-            queue.enqueueReadBuffer(cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
+            reduced_size = cl_reduced_count.get(queue);
             return;
         }
         if (size <= small_switch) {
-            cl::Buffer cl_reduced_count;
+            CLCounterWrapper cl_reduced_count;
 
             CL_PROFILE_BEGIN("alloc-buffers", queue);
-            cl_reduced_count = cl::Buffer(cl_acc->get_context(), CL_MEM_WRITE_ONLY | CL_MEM_HOST_READ_ONLY, sizeof(uint));
-            unique_keys      = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
-            reduce_values    = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
+            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
             CL_PROFILE_END();
 
             cl::Kernel kernel_small;
@@ -105,14 +105,14 @@ namespace spla {
             kernel_small.setArg(1, values);
             kernel_small.setArg(2, unique_keys);
             kernel_small.setArg(3, reduce_values);
-            kernel_small.setArg(4, cl_reduced_count);
+            kernel_small.setArg(4, cl_reduced_count.buffer());
             kernel_small.setArg(5, size);
             CL_PROFILE_END();
 
             cl::NDRange global(align(size, cl_acc->get_wave_size()));
             cl::NDRange local = global;
             CL_DISPATCH_PROFILED("dispatch-kernel", queue, kernel_small, cl::NDRange(), global, local);
-            CL_READ_PROFILED("copy-count", queue, cl_reduced_count, true, 0, sizeof(uint), &reduced_size);
+            CL_COUNTER_GET("copy-count", queue, cl_reduced_count, reduced_size);
             return;
         }
 

@@ -67,6 +67,40 @@
             }                                                                                                     \
         } while (false)
 
+    #define CL_COUNTER_GET(name, queue, counter, value)                                                           \
+        do {                                                                                                      \
+            CL_FINISH(queue);                                                                                     \
+            {                                                                                                     \
+                TIME_PROFILE_SUBSCOPE(name);                                                                      \
+                cl::Event __cl_event;                                                                             \
+                (value) = (counter).get(queue, &__cl_event);                                                      \
+                __cl_event.wait();                                                                                \
+                cl_ulong __queued                   = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_QUEUED>(); \
+                cl_ulong __start                    = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_START>();  \
+                cl_ulong __end                      = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_END>();    \
+                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \
+                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \
+                CL_FINISH(queue);                                                                                 \
+            }                                                                                                     \
+        } while (false)
+
+    #define CL_COUNTER_SET(name, queue, counter, value)                                                           \
+        do {                                                                                                      \
+            CL_FINISH(queue);                                                                                     \
+            {                                                                                                     \
+                TIME_PROFILE_SUBSCOPE(name);                                                                      \
+                cl::Event __cl_event;                                                                             \
+                (counter).set(queue, (value), &__cl_event);                                                       \
+                __cl_event.wait();                                                                                \
+                cl_ulong __queued                   = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_QUEUED>(); \
+                cl_ulong __start                    = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_START>();  \
+                cl_ulong __end                      = __cl_event.getProfilingInfo<CL_PROFILING_COMMAND_END>();    \
+                TIME_PROFILE_SUBLABEL.queued_nano   = __end - __queued;                                           \
+                TIME_PROFILE_SUBLABEL.executed_nano = __end - __start;                                            \
+                CL_FINISH(queue);                                                                                 \
+            }                                                                                                     \
+        } while (false)
+
     #define CL_PROFILE_BEGIN(name, queue) \
         do {                              \
             auto& __prfq = queue;         \
@@ -81,8 +115,10 @@
         while (false)
 #else
     #define CL_FINISH(queue)
-    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...) queue.enqueueNDRangeKernel(kernel, __VA_ARGS__);
-    #define CL_READ_PROFILED(name, queue, buffer, ...)     queue.enqueueReadBuffer(buffer, __VA_ARGS__);
+    #define CL_DISPATCH_PROFILED(name, queue, kernel, ...) queue.enqueueNDRangeKernel(kernel, __VA_ARGS__)
+    #define CL_READ_PROFILED(name, queue, buffer, ...)     queue.enqueueReadBuffer(buffer, __VA_ARGS__)
+    #define CL_COUNTER_GET(name, queue, counter, value)    (value) = (counter).get(queue)
+    #define CL_COUNTER_SET(name, queue, counter, value)    (counter).set(queue, (value))
     #define CL_PROFILE_BEGIN(name, queue)
     #define CL_PROFILE_END()
 #endif

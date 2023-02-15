@@ -27,6 +27,7 @@
 
 #include "cl_accelerator.hpp"
 
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_program_cache.hpp>
 
 namespace spla {
@@ -46,7 +47,8 @@ namespace spla {
 
         build_description();
 
-        m_cache = std::make_unique<CLProgramCache>();
+        m_cache        = std::make_unique<CLProgramCache>();
+        m_counter_pool = std::make_unique<CLCounterPool>();
 
         // Output handy info
         LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());
@@ -151,6 +153,8 @@ namespace spla {
             cl::CommandQueue queue(m_context, properties);
             m_queues.emplace_back(std::move(queue));
         }
+
+        m_counter_pool = std::make_unique<CLCounterPool>();
 
         LOG_MSG(Status::Ok, "configure " << count << " queues for computations");
         return Status::Ok;

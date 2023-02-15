@@ -37,6 +37,7 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_counter.hpp>
 #include <opencl/cl_formats.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_count.hpp>
@@ -91,12 +92,12 @@ namespace spla {
             auto* cl_acc = get_acc_cl();
             auto& queue  = cl_acc->get_queue_default();
 
-            uint       count = 0;
-            cl::Buffer cl_count(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), &count);
+            CLCounterWrapper cl_count;
+            cl_count.set(queue, 0);
 
             auto kernel = m_program->make_kernel("count_nz");
             kernel.setArg(0, dec_v->Ax);
-            kernel.setArg(1, cl_count);
+            kernel.setArg(1, cl_count.buffer());
             kernel.setArg(2, v->get_n_rows());
 
             const uint n_groups = div_up_clamp(v->get_n_rows(), m_block_size, 1, 1024);
@@ -104,9 +105,8 @@ namespace spla {
             cl::NDRange global(m_block_size * n_groups);
             cl::NDRange local(m_block_size);
             queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
-            queue.enqueueReadBuffer(cl_count, true, 0, sizeof(uint), &count);
 
-            t->r->set_uint(count);
+            t->r->set_uint(cl_count.get(queue));
 
             return Status::Ok;
         }
