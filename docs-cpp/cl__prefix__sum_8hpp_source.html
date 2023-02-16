@@ -100,65 +100,69 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CL_PREFIX_SUM_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__accelerator_8hpp.html">opencl/cl_accelerator.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__program__builder_8hpp.html">opencl/cl_program_builder.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__prefix__sum_8hpp.html">opencl/generated/auto_prefix_sum.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacespla.html#a4118fb39cfcbbd2eedaa6c22fd9a5a8c">   38</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="namespacespla.html#a4118fb39cfcbbd2eedaa6c22fd9a5a8c">cl_exclusive_scan</a>(cl::CommandQueue&amp; queue, cl::Buffer&amp; values, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpBinary.html">TOpBinary&lt;T, T, T&gt;</a>&gt;&amp; op) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">auto</span>*      cl_acc           = get_acc_cl();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> block_size       = <a class="code" href="namespacespla.html#aa18eb03c6788c62d9d70dfbaaabc7ea6">std::min</a>(cl_acc-&gt;get_max_wgs(), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(256));</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> values_per_block = block_size * 2;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment">// Note on perf:</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment">//  - no BC (basic) : 500k values in ms: 1.382, 1.501, 1.461, 1.405, 1.524, 1.354, 1.418, 1.4, 1.43</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="comment">//  - no BC (unroll): 500k values in ms: 1.41, 1.402, 1.394, 1.37, 1.4, 1.347, 1.444, 1.408, 1.369</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment">//  - no BC (basic) : 1M values in ms: 2.727, 2.822, 2.726, 2.83, 2.773, 2.773, 2.841, 2.824, 2.792</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="comment">//  - no BC (unroll): 1M values in ms: 2.862, 2.775, 2.776, 2.77, 2.653, 2.677, 2.93, 2.748, 2.693</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> builder;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a834141c0214d3d249ddf1f125fc4f36c">set_name</a>(<span class="stringliteral">&quot;prefix_sum&quot;</span>)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, block_size)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, cl_acc-&gt;get_wave_size())</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;LM_NUM_MEM_BANKS&quot;</span>, cl_acc-&gt;get_num_of_mem_banks())</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_BINARY&quot;</span>, op.template as&lt;OpBinary&gt;())</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">set_source</a>(source_prefix_sum)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#aef20d4d8f4cb6b9ef594b43a509e83ef">acquire</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>       n_groups_to_run = n / values_per_block + (n % values_per_block ? 1 : 0);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        cl::Buffer cl_carry(cl_acc-&gt;get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, <span class="keyword">sizeof</span>(T) * n_groups_to_run, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">auto</span> kernel_prescan = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;prefix_sum_prescan_unroll&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        kernel_prescan.setArg(0, values);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        kernel_prescan.setArg(1, cl_carry);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        kernel_prescan.setArg(2, n);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        cl::NDRange prescan_global(n_groups_to_run * block_size);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        cl::NDRange prescan_local(block_size);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        queue.enqueueNDRangeKernel(kernel_prescan, cl::NDRange(), prescan_global, prescan_local);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> (n_groups_to_run &gt; 1) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            cl_exclusive_scan&lt;T&gt;(queue, cl_carry, n_groups_to_run, op);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> kernel_propagate = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;prefix_sum_propagate&quot;</span>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            kernel_propagate.setArg(0, values);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            kernel_propagate.setArg(1, cl_carry);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            kernel_propagate.setArg(2, n);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            cl::NDRange propagate_global((n_groups_to_run - 1) * values_per_block);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            cl::NDRange propagate_local(block_size);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            queue.enqueueNDRangeKernel(kernel_propagate, cl::NDRange(), propagate_global, propagate_local);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_PREFIX_SUM_HPP</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__alloc_8hpp.html">opencl/cl_alloc.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__program__builder_8hpp.html">opencl/cl_program_builder.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__prefix__sum_8hpp.html">opencl/generated/auto_prefix_sum.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespacespla.html#a06daa3434e54f6c83611de2dbdfdca49">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="namespacespla.html#a06daa3434e54f6c83611de2dbdfdca49">cl_exclusive_scan</a>(cl::CommandQueue&amp; queue, cl::Buffer&amp; values, <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <span class="keyword">const</span> <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="code" href="classspla_1_1TOpBinary.html">TOpBinary&lt;T, T, T&gt;</a>&gt;&amp; op, <a class="code" href="classspla_1_1CLAlloc.html">CLAlloc</a>* tmp_alloc) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">auto</span>*      cl_acc           = get_acc_cl();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> block_size       = <a class="code" href="namespacespla.html#aa18eb03c6788c62d9d70dfbaaabc7ea6">std::min</a>(cl_acc-&gt;get_max_wgs(), <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>(256));</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> values_per_block = block_size * 2;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment">// Note on perf:</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="comment">//  - no BC (basic) : 500k values in ms: 1.382, 1.501, 1.461, 1.405, 1.524, 1.354, 1.418, 1.4, 1.43</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment">//  - no BC (unroll): 500k values in ms: 1.41, 1.402, 1.394, 1.37, 1.4, 1.347, 1.444, 1.408, 1.369</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="comment">//  - no BC (basic) : 1M values in ms: 2.727, 2.822, 2.726, 2.83, 2.773, 2.773, 2.841, 2.824, 2.792</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">//  - no BC (unroll): 1M values in ms: 2.862, 2.775, 2.776, 2.77, 2.653, 2.677, 2.93, 2.748, 2.693</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> builder;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#a834141c0214d3d249ddf1f125fc4f36c">set_name</a>(<span class="stringliteral">&quot;prefix_sum&quot;</span>)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#ad121c1778c65655fb6707765af7247e6">add_type</a>(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, block_size)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, cl_acc-&gt;get_wave_size())</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">add_define</a>(<span class="stringliteral">&quot;LM_NUM_MEM_BANKS&quot;</span>, cl_acc-&gt;get_num_of_mem_banks())</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">add_op</a>(<span class="stringliteral">&quot;OP_BINARY&quot;</span>, op.template as&lt;OpBinary&gt;())</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#adb03e247bea58bd93e56dee04c8de691">set_source</a>(source_prefix_sum)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                .<a class="code" href="classspla_1_1CLProgramBuilder.html#aef20d4d8f4cb6b9ef594b43a509e83ef">acquire</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>       n_groups_to_run = n / values_per_block + (n % values_per_block ? 1 : 0);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        cl::Buffer cl_carry        = tmp_alloc-&gt;<a class="code" href="classspla_1_1CLAlloc.html#afa0b3d2b1196428f98f8fb33740fe383">alloc</a>(<span class="keyword">sizeof</span>(T) * n_groups_to_run);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">auto</span> kernel_prescan = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;prefix_sum_prescan_unroll&quot;</span>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        kernel_prescan.setArg(0, values);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        kernel_prescan.setArg(1, cl_carry);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        kernel_prescan.setArg(2, n);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        cl::NDRange prescan_global(n_groups_to_run * block_size);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        cl::NDRange prescan_local(block_size);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        queue.enqueueNDRangeKernel(kernel_prescan, cl::NDRange(), prescan_global, prescan_local);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">if</span> (n_groups_to_run &gt; 1) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            cl_exclusive_scan&lt;T&gt;(queue, cl_carry, n_groups_to_run, op, tmp_alloc);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> kernel_propagate = builder.<a class="code" href="classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4">make_kernel</a>(<span class="stringliteral">&quot;prefix_sum_propagate&quot;</span>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            kernel_propagate.setArg(0, values);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            kernel_propagate.setArg(1, cl_carry);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            kernel_propagate.setArg(2, n);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            cl::NDRange propagate_global((n_groups_to_run - 1) * values_per_block);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            cl::NDRange propagate_local(block_size);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            queue.enqueueNDRangeKernel(kernel_propagate, cl::NDRange(), propagate_global, propagate_local);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_PREFIX_SUM_HPP</span></div>
 <div class="ttc" id="aauto__prefix__sum_8hpp_html"><div class="ttname"><a href="auto__prefix__sum_8hpp.html">auto_prefix_sum.hpp</a></div></div>
 <div class="ttc" id="acl__accelerator_8hpp_html"><div class="ttname"><a href="cl__accelerator_8hpp.html">cl_accelerator.hpp</a></div></div>
+<div class="ttc" id="acl__alloc_8hpp_html"><div class="ttname"><a href="cl__alloc_8hpp.html">cl_alloc.hpp</a></div></div>
 <div class="ttc" id="acl__program__builder_8hpp_html"><div class="ttname"><a href="cl__program__builder_8hpp.html">cl_program_builder.hpp</a></div></div>
+<div class="ttc" id="aclassspla_1_1CLAlloc_html"><div class="ttname"><a href="classspla_1_1CLAlloc.html">spla::CLAlloc</a></div><div class="ttdoc">Base class for any device-local opencl buffer allocator.</div><div class="ttdef"><b>Definition:</b> cl_alloc.hpp:39</div></div>
+<div class="ttc" id="aclassspla_1_1CLAlloc_html_afa0b3d2b1196428f98f8fb33740fe383"><div class="ttname"><a href="classspla_1_1CLAlloc.html#afa0b3d2b1196428f98f8fb33740fe383">spla::CLAlloc::alloc</a></div><div class="ttdeci">virtual cl::Buffer alloc(std::size_t size)=0</div></div>
 <div class="ttc" id="aclassspla_1_1CLProgramBuilder_html"><div class="ttname"><a href="classspla_1_1CLProgramBuilder.html">spla::CLProgramBuilder</a></div><div class="ttdoc">Runtime opencl program builder.</div><div class="ttdef"><b>Definition:</b> cl_program_builder.hpp:55</div></div>
 <div class="ttc" id="aclassspla_1_1CLProgramBuilder_html_a254defbd5336051b836f215ec05c2c84"><div class="ttname"><a href="classspla_1_1CLProgramBuilder.html#a254defbd5336051b836f215ec05c2c84">spla::CLProgramBuilder::add_define</a></div><div class="ttdeci">CLProgramBuilder &amp; add_define(const char *define, int value)</div><div class="ttdef"><b>Definition:</b> cl_program_builder.cpp:40</div></div>
 <div class="ttc" id="aclassspla_1_1CLProgramBuilder_html_a5eb4ea32c4be76c0e18f424c580124a4"><div class="ttname"><a href="classspla_1_1CLProgramBuilder.html#a5eb4ea32c4be76c0e18f424c580124a4">spla::CLProgramBuilder::add_op</a></div><div class="ttdeci">CLProgramBuilder &amp; add_op(const char *name, const ref_ptr&lt; OpBinary &gt; &amp;op)</div><div class="ttdef"><b>Definition:</b> cl_program_builder.cpp:48</div></div>
@@ -171,7 +175,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1ref__ptr_html"><div class="ttname"><a href="classspla_1_1ref__ptr.html">spla::ref_ptr</a></div><div class="ttdoc">Automates reference counting and behaves as shared smart pointer.</div><div class="ttdef"><b>Definition:</b> ref.hpp:116</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:55</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
-<div class="ttc" id="anamespacespla_html_a4118fb39cfcbbd2eedaa6c22fd9a5a8c"><div class="ttname"><a href="namespacespla.html#a4118fb39cfcbbd2eedaa6c22fd9a5a8c">spla::cl_exclusive_scan</a></div><div class="ttdeci">void cl_exclusive_scan(cl::CommandQueue &amp;queue, cl::Buffer &amp;values, uint n, const ref_ptr&lt; TOpBinary&lt; T, T, T &gt;&gt; &amp;op)</div><div class="ttdef"><b>Definition:</b> cl_prefix_sum.hpp:38</div></div>
+<div class="ttc" id="anamespacespla_html_a06daa3434e54f6c83611de2dbdfdca49"><div class="ttname"><a href="namespacespla.html#a06daa3434e54f6c83611de2dbdfdca49">spla::cl_exclusive_scan</a></div><div class="ttdeci">void cl_exclusive_scan(cl::CommandQueue &amp;queue, cl::Buffer &amp;values, uint n, const ref_ptr&lt; TOpBinary&lt; T, T, T &gt;&gt; &amp;op, CLAlloc *tmp_alloc)</div><div class="ttdef"><b>Definition:</b> cl_prefix_sum.hpp:39</div></div>
 <div class="ttc" id="anamespacespla_html_aa18eb03c6788c62d9d70dfbaaabc7ea6"><div class="ttname"><a href="namespacespla.html#aa18eb03c6788c62d9d70dfbaaabc7ea6">spla::min</a></div><div class="ttdeci">T min(T a, T b)</div><div class="ttdef"><b>Definition:</b> op.cpp:98</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

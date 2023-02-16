@@ -201,6 +201,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-device OpenCL acceleration implementation.  <a href="classspla_1_1CLAccelerator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for any device-local opencl buffer allocator.  <a href="classspla_1_1CLAlloc.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAllocGeneral.html">CLAllocGeneral</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for default OpenCL buffer allcoation.  <a href="classspla_1_1CLAllocGeneral.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAllocLinear.html">CLAllocLinear</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear allocator for temporary device local buffer allocations.  <a href="classspla_1_1CLAllocLinear.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLCounter.html">CLCounter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsigned integer reusable counter for operations.  <a href="classspla_1_1CLCounter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -532,24 +541,24 @@ Functions</h2></td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga274cd3c51e824f27c8583aa556d74454">cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4118fb39cfcbbd2eedaa6c22fd9a5a8c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4118fb39cfcbbd2eedaa6c22fd9a5a8c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a4118fb39cfcbbd2eedaa6c22fd9a5a8c">cl_exclusive_scan</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;op)</td></tr>
-<tr class="separator:a4118fb39cfcbbd2eedaa6c22fd9a5a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06daa3434e54f6c83611de2dbdfdca49"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a06daa3434e54f6c83611de2dbdfdca49"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a06daa3434e54f6c83611de2dbdfdca49">cl_exclusive_scan</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;op, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc)</td></tr>
+<tr class="separator:a06daa3434e54f6c83611de2dbdfdca49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab796022784de945e9f37114a512a3ea3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab796022784de945e9f37114a512a3ea3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#ab796022784de945e9f37114a512a3ea3">cl_reduce</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, T init, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;op_reduce, T &amp;result)</td></tr>
 <tr class="separator:ab796022784de945e9f37114a512a3ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ca16886cc2a90641e04ba7954831e9c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a5ca16886cc2a90641e04ba7954831e9c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a5ca16886cc2a90641e04ba7954831e9c">cl_reduce_by_key</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;keys, const cl::Buffer &amp;values, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> size, cl::Buffer &amp;unique_keys, cl::Buffer &amp;reduce_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &amp;reduced_size, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;reduce_op)</td></tr>
-<tr class="separator:a5ca16886cc2a90641e04ba7954831e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f85acdd04ab83c9f48311e89d8aef5b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2f85acdd04ab83c9f48311e89d8aef5b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a2f85acdd04ab83c9f48311e89d8aef5b">cl_reduce_by_key</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;keys, const cl::Buffer &amp;values, const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> size, cl::Buffer &amp;unique_keys, cl::Buffer &amp;reduce_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &amp;reduced_size, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;reduce_op, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc)</td></tr>
+<tr class="separator:a2f85acdd04ab83c9f48311e89d8aef5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#afe2473735a8554abc0e9a9ddbfaa02e6">cl_sort_by_key_bitonic</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> size)</td></tr>
 <tr class="separator:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a21d53c45dfffe94a9375e80976eec4a9">cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
-<tr class="separator:a21d53c45dfffe94a9375e80976eec4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a1161401b46ca0b120dbb7db348b4c1c7">cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
-<tr class="separator:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c021748ff037119279445c31141919d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7c021748ff037119279445c31141919d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7c021748ff037119279445c31141919d">cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
+<tr class="separator:a7c021748ff037119279445c31141919d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0962d6560e7d246184020314c7051f95"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0962d6560e7d246184020314c7051f95"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a0962d6560e7d246184020314c7051f95">cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> max_key=0xffffffff)</td></tr>
+<tr class="separator:a0962d6560e7d246184020314c7051f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20aad7bef09204f31bc5096c47750b68"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a20aad7bef09204f31bc5096c47750b68"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a20aad7bef09204f31bc5096c47750b68">register_formats_matrix</a> (<a class="el" href="namespacespla.html#aede37fa7427e4e3745aeb2e6a593dbda">StorageManagerMatrix</a>&lt; T &gt; &amp;manager)</td></tr>
 <tr class="separator:a20aad7bef09204f31bc5096c47750b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -716,8 +725,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a4118fb39cfcbbd2eedaa6c22fd9a5a8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4118fb39cfcbbd2eedaa6c22fd9a5a8c">&#9670;&nbsp;</a></span>cl_exclusive_scan()</h2>
+<a id="a06daa3434e54f6c83611de2dbdfdca49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06daa3434e54f6c83611de2dbdfdca49">&#9670;&nbsp;</a></span>cl_exclusive_scan()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -746,7 +755,13 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>op</em>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *&#160;</td>
+          <td class="paramname"><em>tmp_alloc</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -890,8 +905,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a5ca16886cc2a90641e04ba7954831e9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ca16886cc2a90641e04ba7954831e9c">&#9670;&nbsp;</a></span>cl_reduce_by_key()</h2>
+<a id="a2f85acdd04ab83c9f48311e89d8aef5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f85acdd04ab83c9f48311e89d8aef5b">&#9670;&nbsp;</a></span>cl_reduce_by_key()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -944,7 +959,13 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>reduce_op</em>&#160;</td>
+          <td class="paramname"><em>reduce_op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *&#160;</td>
+          <td class="paramname"><em>tmp_alloc</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -956,8 +977,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a1161401b46ca0b120dbb7db348b4c1c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1161401b46ca0b120dbb7db348b4c1c7">&#9670;&nbsp;</a></span>cl_sort_by_key()</h2>
+<a id="a0962d6560e7d246184020314c7051f95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0962d6560e7d246184020314c7051f95">&#9670;&nbsp;</a></span>cl_sort_by_key()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -987,6 +1008,12 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *&#160;</td>
+          <td class="paramname"><em>tmp_alloc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1046,8 +1073,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a21d53c45dfffe94a9375e80976eec4a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21d53c45dfffe94a9375e80976eec4a9">&#9670;&nbsp;</a></span>cl_sort_by_key_radix()</h2>
+<a id="a7c021748ff037119279445c31141919d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c021748ff037119279445c31141919d">&#9670;&nbsp;</a></span>cl_sort_by_key_radix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1077,6 +1104,12 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *&#160;</td>
+          <td class="paramname"><em>tmp_alloc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -128,6 +128,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a77f497e05a999617a5110c29f4729249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9881ed13e1c0e1f5a0fb3b0b4f0143c"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1CLCounterPool.html">CLCounterPool</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#ad9881ed13e1c0e1f5a0fb3b0b4f0143c">get_counter_pool</a> ()</td></tr>
 <tr class="separator:ad9881ed13e1c0e1f5a0fb3b0b4f0143c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad401bd1064ebbb048cddfcd579118332"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1CLAllocGeneral.html">CLAllocGeneral</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#ad401bd1064ebbb048cddfcd579118332">get_alloc_general</a> ()</td></tr>
+<tr class="separator:ad401bd1064ebbb048cddfcd579118332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aa8e64a8f4435a6a33198ea10c8f39a"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a5aa8e64a8f4435a6a33198ea10c8f39a">get_alloc_tmp</a> ()</td></tr>
+<tr class="separator:a5aa8e64a8f4435a6a33198ea10c8f39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6e30a436f565ec043e30023e8909f38"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#af6e30a436f565ec043e30023e8909f38">get_vendor_name</a> () const</td></tr>
 <tr class="separator:af6e30a436f565ec043e30023e8909f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add79452c6635923f6e921fb6cbe0972c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#add79452c6635923f6e921fb6cbe0972c">get_vendor_code</a> () const</td></tr>
@@ -140,6 +144,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5c809281566ae7388630b358028e3323"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2729a287878a8b82d72a7b9d0a69c8cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#a2729a287878a8b82d72a7b9d0a69c8cf">get_max_local_mem</a> () const</td></tr>
 <tr class="separator:a2729a287878a8b82d72a7b9d0a69c8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a9fe2dee80883241ac75fa659952d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#ae3a9fe2dee80883241ac75fa659952d0">get_addr_align</a> () const</td></tr>
+<tr class="separator:ae3a9fe2dee80883241ac75fa659952d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2ba8adb30afdb4610354156182293c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#aa2ba8adb30afdb4610354156182293c6">get_default_wgz</a> () const</td></tr>
 <tr class="separator:aa2ba8adb30afdb4610354156182293c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca4baf3208e65e75f052003fc1cb191b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1CLAccelerator.html#aca4baf3208e65e75f052003fc1cb191b">get_wave_size</a> () const</td></tr>
@@ -204,6 +210,81 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae3a9fe2dee80883241ac75fa659952d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3a9fe2dee80883241ac75fa659952d0">&#9670;&nbsp;</a></span>get_addr_align()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> spla::CLAccelerator::get_addr_align </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad401bd1064ebbb048cddfcd579118332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad401bd1064ebbb048cddfcd579118332">&#9670;&nbsp;</a></span>get_alloc_general()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">class <a class="el" href="classspla_1_1CLAllocGeneral.html">CLAllocGeneral</a>* spla::CLAccelerator::get_alloc_general </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5aa8e64a8f4435a6a33198ea10c8f39a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aa8e64a8f4435a6a33198ea10c8f39a">&#9670;&nbsp;</a></span>get_alloc_tmp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">class <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a>* spla::CLAccelerator::get_alloc_tmp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a77f497e05a999617a5110c29f4729249"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77f497e05a999617a5110c29f4729249">&#9670;&nbsp;</a></span>get_cache()</h2>
 

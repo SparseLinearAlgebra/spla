@@ -73,6 +73,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="cl__accelerator_8hpp_source.html">opencl/cl_accelerator.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cl__alloc_8hpp_source.html">opencl/cl_alloc.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="cl__alloc__general_8hpp_source.html">opencl/cl_alloc_general.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="cl__prefix__sum_8hpp_source.html">opencl/cl_prefix_sum.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="cl__program__builder_8hpp_source.html">opencl/cl_program_builder.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="auto__sort__bitonic_8hpp_source.html">opencl/generated/auto_sort_bitonic.hpp</a>&gt;</code><br />
@@ -83,41 +85,43 @@ Include dependency graph for cl_sort_by_key.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="cl__sort__by__key_8hpp__incl.png" border="0" usemap="#asrc_2opencl_2cl__sort__by__key_8hpp" alt=""/></div>
 <map name="asrc_2opencl_2cl__sort__by__key_8hpp" id="asrc_2opencl_2cl__sort__by__key_8hpp">
-<area shape="rect" title=" " alt="" coords="1493,5,1618,47"/>
-<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="1001,423,1171,449"/>
-<area shape="rect" title=" " alt="" coords="1459,572,1518,599"/>
-<area shape="rect" href="cl__prefix__sum_8hpp.html" title=" " alt="" coords="1279,102,1445,129"/>
-<area shape="rect" href="cl__program__builder_8hpp.html" title=" " alt="" coords="814,191,1011,218"/>
-<area shape="rect" href="auto__sort__bitonic_8hpp.html" title=" " alt="" coords="1644,95,1795,136"/>
-<area shape="rect" href="auto__sort__radix_8hpp.html" title=" " alt="" coords="1819,95,1969,136"/>
-<area shape="rect" href="accelerator_8hpp.html" title=" " alt="" coords="1083,647,1222,673"/>
-<area shape="rect" title=" " alt="" coords="629,796,684,823"/>
-<area shape="rect" href="common_8hpp.html" title=" " alt="" coords="1310,497,1435,524"/>
-<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="1175,497,1285,524"/>
-<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="745,647,853,673"/>
-<area shape="rect" title=" " alt="" coords="694,497,753,524"/>
-<area shape="rect" title=" " alt="" coords="777,497,867,524"/>
-<area shape="rect" title=" " alt="" coords="943,497,1048,524"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="983,721,1091,748"/>
-<area shape="rect" title=" " alt="" coords="999,796,1074,823"/>
-<area shape="rect" title=" " alt="" coords="807,796,885,823"/>
-<area shape="rect" title=" " alt="" coords="1175,572,1232,599"/>
-<area shape="rect" title=" " alt="" coords="449,572,518,599"/>
-<area shape="rect" title=" " alt="" coords="1373,721,1441,748"/>
-<area shape="rect" title=" " alt="" coords="796,721,907,748"/>
-<area shape="rect" href="auto__prefix__sum_8hpp.html" title=" " alt="" coords="1265,184,1416,225"/>
-<area shape="rect" href="top_8hpp.html" title=" " alt="" coords="275,348,369,375"/>
-<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="5,423,108,449"/>
-<area shape="rect" href="cl__program_8hpp.html" title=" " alt="" coords="489,348,641,375"/>
-<area shape="rect" href="cl__program__cache_8hpp.html" title=" " alt="" coords="630,273,825,300"/>
-<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="278,423,366,449"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="191,572,272,599"/>
-<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="131,497,201,524"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="327,647,389,673"/>
-<area shape="rect" title=" " alt="" coords="239,721,301,748"/>
-<area shape="rect" title=" " alt="" coords="325,721,391,748"/>
-<area shape="rect" title=" " alt="" coords="415,721,467,748"/>
-<area shape="rect" title=" " alt="" coords="665,348,774,375"/>
+<area shape="rect" title=" " alt="" coords="417,5,543,47"/>
+<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="379,423,549,449"/>
+<area shape="rect" title=" " alt="" coords="5,572,64,599"/>
+<area shape="rect" href="cl__alloc_8hpp.html" title=" " alt="" coords="279,191,411,218"/>
+<area shape="rect" href="cl__alloc__general_8hpp.html" title=" " alt="" coords="201,102,383,129"/>
+<area shape="rect" href="cl__prefix__sum_8hpp.html" title=" " alt="" coords="458,102,625,129"/>
+<area shape="rect" href="cl__program__builder_8hpp.html" title=" " alt="" coords="867,191,1064,218"/>
+<area shape="rect" href="auto__sort__bitonic_8hpp.html" title=" " alt="" coords="701,95,851,136"/>
+<area shape="rect" href="auto__sort__radix_8hpp.html" title=" " alt="" coords="875,95,1026,136"/>
+<area shape="rect" href="accelerator_8hpp.html" title=" " alt="" coords="401,647,540,673"/>
+<area shape="rect" title=" " alt="" coords="995,796,1050,823"/>
+<area shape="rect" href="common_8hpp.html" title=" " alt="" coords="43,497,168,524"/>
+<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="193,497,303,524"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="810,647,918,673"/>
+<area shape="rect" title=" " alt="" coords="775,497,833,524"/>
+<area shape="rect" title=" " alt="" coords="610,497,699,524"/>
+<area shape="rect" title=" " alt="" coords="327,497,433,524"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="394,721,502,748"/>
+<area shape="rect" title=" " alt="" coords="401,796,476,823"/>
+<area shape="rect" title=" " alt="" coords="501,796,579,823"/>
+<area shape="rect" title=" " alt="" coords="218,572,275,599"/>
+<area shape="rect" title=" " alt="" coords="1421,572,1491,599"/>
+<area shape="rect" title=" " alt="" coords="917,721,985,748"/>
+<area shape="rect" title=" " alt="" coords="730,721,841,748"/>
+<area shape="rect" href="auto__prefix__sum_8hpp.html" title=" " alt="" coords="435,184,586,225"/>
+<area shape="rect" href="top_8hpp.html" title=" " alt="" coords="1152,348,1245,375"/>
+<area shape="rect" href="ttype_8hpp.html" title=" " alt="" coords="1267,423,1370,449"/>
+<area shape="rect" href="cl__program_8hpp.html" title=" " alt="" coords="801,348,953,375"/>
+<area shape="rect" href="cl__program__cache_8hpp.html" title=" " alt="" coords="708,273,903,300"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="1155,423,1243,449"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="1175,572,1257,599"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="1299,497,1370,524"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="1185,647,1247,673"/>
+<area shape="rect" title=" " alt="" coords="1111,721,1172,748"/>
+<area shape="rect" title=" " alt="" coords="1197,721,1262,748"/>
+<area shape="rect" title=" " alt="" coords="1286,721,1338,748"/>
+<area shape="rect" title=" " alt="" coords="617,348,727,375"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -144,12 +148,12 @@ Functions</h2></td></tr>
 <tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#afe2473735a8554abc0e9a9ddbfaa02e6">spla::cl_sort_by_key_bitonic</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint size)</td></tr>
 <tr class="separator:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a21d53c45dfffe94a9375e80976eec4a9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a21d53c45dfffe94a9375e80976eec4a9">spla::cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint n, uint max_key=0xffffffff)</td></tr>
-<tr class="separator:a21d53c45dfffe94a9375e80976eec4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a1161401b46ca0b120dbb7db348b4c1c7">spla::cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint n, uint max_key=0xffffffff)</td></tr>
-<tr class="separator:a1161401b46ca0b120dbb7db348b4c1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c021748ff037119279445c31141919d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7c021748ff037119279445c31141919d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a7c021748ff037119279445c31141919d">spla::cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint n, CLAlloc *tmp_alloc, uint max_key=0xffffffff)</td></tr>
+<tr class="separator:a7c021748ff037119279445c31141919d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0962d6560e7d246184020314c7051f95"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0962d6560e7d246184020314c7051f95"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacespla.html#a0962d6560e7d246184020314c7051f95">spla::cl_sort_by_key</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, uint n, CLAlloc *tmp_alloc, uint max_key=0xffffffff)</td></tr>
+<tr class="separator:a0962d6560e7d246184020314c7051f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

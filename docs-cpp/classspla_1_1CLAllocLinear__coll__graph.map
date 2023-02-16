@@ -1,0 +1,4 @@
+<map id="spla::CLAllocLinear" name="spla::CLAllocLinear">
+<area shape="rect" id="node1" title="Linear allocator for temporary device local buffer allocations." alt="" coords="5,80,140,107"/>
+<area shape="rect" id="node2" href="$classspla_1_1CLAlloc.html" title="Base class for any device&#45;local opencl buffer allocator." alt="" coords="23,5,122,32"/>
+</map>
