@@ -25,49 +25,25 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMMON_HPP
-#define SPLA_COMMON_HPP
+#ifndef SPLA_CL_ALLOC_HPP
+#define SPLA_CL_ALLOC_HPP
 
-#include <spla/config.hpp>
-
-#include <cmath>
+#include <opencl/cl_accelerator.hpp>
 
 namespace spla {
 
-    static inline uint clamp(uint x, uint left, uint right) {
-        return std::min(std::max(x, left), right);
-    }
-
-    static inline uint div_up(uint what, uint by) {
-        return what / by + (what % by ? 1 : 0);
-    }
-
-    static inline uint div_up_clamp(uint what, uint by, uint left, uint right) {
-        return clamp(div_up(what, by), left, right);
-    }
-
-    static inline uint align(uint what, uint alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline std::size_t aligns(std::size_t what, std::size_t alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline uint ceil_to_pow2(uint n) {
-        uint r = 1;
-        while (r < n) r *= 2u;
-        return r;
-    }
-
-    static inline uint floor_to_pow2(uint n) {
-        uint r = 1;
-        while (r <= n) {
-            r *= 2;
-        }
-        return r / 2;
-    }
+    /**
+     * @class CLAlloc
+     * @brief Base class for any device-local opencl buffer allocator
+     */
+    class CLAlloc {
+    public:
+        virtual ~CLAlloc()                         = default;
+        virtual cl::Buffer alloc(std::size_t size) = 0;
+        virtual void       free(cl::Buffer buffer) = 0;
+        virtual void       free_all()              = 0;
+    };
 
 }// namespace spla
 
-#endif//SPLA_COMMON_HPP
+#endif//SPLA_CL_ALLOC_HPP

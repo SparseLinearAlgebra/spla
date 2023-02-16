@@ -29,13 +29,14 @@
 #define SPLA_CL_PREFIX_SUM_HPP
 
 #include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_alloc.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_prefix_sum.hpp>
 
 namespace spla {
 
     template<typename T>
-    void cl_exclusive_scan(cl::CommandQueue& queue, cl::Buffer& values, uint n, const ref_ptr<TOpBinary<T, T, T>>& op) {
+    void cl_exclusive_scan(cl::CommandQueue& queue, cl::Buffer& values, uint n, const ref_ptr<TOpBinary<T, T, T>>& op, CLAlloc* tmp_alloc) {
         auto*      cl_acc           = get_acc_cl();
         const uint block_size       = std::min(cl_acc->get_max_wgs(), uint(256));
         const uint values_per_block = block_size * 2;
@@ -57,7 +58,7 @@ namespace spla {
                 .acquire();
 
         uint       n_groups_to_run = n / values_per_block + (n % values_per_block ? 1 : 0);
-        cl::Buffer cl_carry(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * n_groups_to_run, nullptr);
+        cl::Buffer cl_carry        = tmp_alloc->alloc(sizeof(T) * n_groups_to_run);
 
         auto kernel_prescan = builder.make_kernel("prefix_sum_prescan_unroll");
         kernel_prescan.setArg(0, values);
@@ -69,7 +70,7 @@ namespace spla {
         queue.enqueueNDRangeKernel(kernel_prescan, cl::NDRange(), prescan_global, prescan_local);
 
         if (n_groups_to_run > 1) {
-            cl_exclusive_scan<T>(queue, cl_carry, n_groups_to_run, op);
+            cl_exclusive_scan<T>(queue, cl_carry, n_groups_to_run, op, tmp_alloc);
 
             auto kernel_propagate = builder.make_kernel("prefix_sum_propagate");
             kernel_propagate.setArg(0, values);

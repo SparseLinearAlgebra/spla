@@ -5,7 +5,7 @@
 
 # Graph files
 graph-dataset.zip
-dataset
+dataset*
 
 # Python cache files
 /**/__pycache__

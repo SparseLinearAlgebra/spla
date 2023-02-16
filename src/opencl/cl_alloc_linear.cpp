@@ -25,49 +25,64 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMMON_HPP
-#define SPLA_COMMON_HPP
+#include "cl_alloc_linear.hpp"
 
-#include <spla/config.hpp>
+#include <core/logger.hpp>
 
-#include <cmath>
+#include <cassert>
 
 namespace spla {
 
-    static inline uint clamp(uint x, uint left, uint right) {
-        return std::min(std::max(x, left), right);
+    CLAllocLinear::CLAllocLinear(std::size_t arena_size, std::size_t alignment) {
+        assert(m_arena_size > 0);
+        assert(alignment > 0);
+        m_arena_size = arena_size;
+        m_alignment  = alignment;
+        expand();
     }
 
-    static inline uint div_up(uint what, uint by) {
-        return what / by + (what % by ? 1 : 0);
-    }
+    cl::Buffer CLAllocLinear::alloc(std::size_t size) {
+        std::size_t size_aligned = aligns(size, m_alignment);
 
-    static inline uint div_up_clamp(uint what, uint by, uint left, uint right) {
-        return clamp(div_up(what, by), left, right);
-    }
-
-    static inline uint align(uint what, uint alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline std::size_t aligns(std::size_t what, std::size_t alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline uint ceil_to_pow2(uint n) {
-        uint r = 1;
-        while (r < n) r *= 2u;
-        return r;
-    }
-
-    static inline uint floor_to_pow2(uint n) {
-        uint r = 1;
-        while (r <= n) {
-            r *= 2;
+        if (size_aligned > m_arena_size) {
+            // Fallback in case if too big allocation required
+            return cl::Buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, size);
         }
-        return r / 2;
+        if (size_aligned + m_offset > m_arena_size) {
+            // Allocate new page to fit this allocation
+            expand();
+        }
+
+        auto&       buffer           = m_arena.back();
+        std::size_t buffer_region[2] = {m_offset, size_aligned};
+        auto        allocated        = buffer.createSubBuffer(CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, buffer_region);
+
+        m_offset += size_aligned;
+        m_total_allocated += size_aligned;
+
+        return allocated;
+    }
+
+    void CLAllocLinear::free(cl::Buffer) {
+        // nothing to do
+    }
+
+    void CLAllocLinear::free_all() {
+        LOG_MSG(Status::Ok, "free all allocated=" << m_total_allocated << " bytes");
+        shrink();
+        m_offset          = 0;
+        m_total_allocated = 0;
+    }
+
+    void CLAllocLinear::expand() {
+        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_arena_size);
+        m_offset = 0;
+        m_capacity += m_arena_size;
+        LOG_MSG(Status::Ok, "expand to " << m_capacity);
+    }
+    void CLAllocLinear::shrink() {
+        m_capacity = m_arena_size * m_arena.size();
+        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_capacity);
     }
 
 }// namespace spla
-
-#endif//SPLA_COMMON_HPP

@@ -25,49 +25,37 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMMON_HPP
-#define SPLA_COMMON_HPP
-
-#include <spla/config.hpp>
-
-#include <cmath>
+#include "cl_alloc_general.hpp"
 
 namespace spla {
 
-    static inline uint clamp(uint x, uint left, uint right) {
-        return std::min(std::max(x, left), right);
+    cl::Buffer CLAllocGeneral::alloc(std::size_t size) {
+        return cl::Buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, size);
     }
+    void CLAllocGeneral::alloc_paired(std::size_t size1, std::size_t size2, cl::Buffer& buffer1, cl::Buffer& buffer2) {
+        auto* cl_acc = get_acc_cl();
 
-    static inline uint div_up(uint what, uint by) {
-        return what / by + (what % by ? 1 : 0);
-    }
-
-    static inline uint div_up_clamp(uint what, uint by, uint left, uint right) {
-        return clamp(div_up(what, by), left, right);
-    }
-
-    static inline uint align(uint what, uint alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline std::size_t aligns(std::size_t what, std::size_t alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline uint ceil_to_pow2(uint n) {
-        uint r = 1;
-        while (r < n) r *= 2u;
-        return r;
-    }
-
-    static inline uint floor_to_pow2(uint n) {
-        uint r = 1;
-        while (r <= n) {
-            r *= 2;
+        if (cl_acc->get_vendor_code() == VENDOR_CODE_NVIDIA) {
+            buffer1 = alloc(size1);
+            buffer2 = alloc(size2);
+            return;
         }
-        return r / 2;
+
+        const uint  alignment     = cl_acc->get_addr_align();
+        std::size_t offset        = aligns(size1, alignment);
+        std::size_t size          = offset + aligns(size2, alignment);
+        cl::Buffer  source_buffer = alloc(size);
+
+        std::size_t range1[2] = {0, size1};
+        buffer1               = source_buffer.createSubBuffer(CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, range1);
+        std::size_t range2[2] = {offset, size2};
+        buffer2               = source_buffer.createSubBuffer(CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, range2);
+    }
+    void CLAllocGeneral::free(cl::Buffer buffer) {
+        // nothing to do
+    }
+    void CLAllocGeneral::free_all() {
+        // nothing to do
     }
 
 }// namespace spla
-
-#endif//SPLA_COMMON_HPP

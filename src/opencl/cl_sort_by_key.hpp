@@ -29,6 +29,8 @@
 #define SPLA_CL_SORT_BY_KEY_HPP
 
 #include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_alloc.hpp>
+#include <opencl/cl_alloc_general.hpp>
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/generated/auto_sort_bitonic.hpp>
@@ -93,7 +95,7 @@ namespace spla {
     }
 
     template<typename T>
-    void cl_sort_by_key_radix(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, uint max_key = 0xffffffff) {
+    void cl_sort_by_key_radix(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, CLAlloc* tmp_alloc, uint max_key = 0xffffffff) {
         if (n <= 1) {
             LOG_MSG(Status::Ok, "nothing to do");
             return;
@@ -119,10 +121,12 @@ namespace spla {
         const uint n_groups       = div_up(n, block_size);
         const uint n_blocks_sizes = n_groups * BITS_VALS;
 
-        cl::Buffer cl_temp_keys(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * n);
-        cl::Buffer cl_temp_values(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * n);
-        cl::Buffer cl_offsets(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * n);
-        cl::Buffer cl_blocks_size(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * n_blocks_sizes);
+        cl::Buffer cl_temp_keys;
+        cl::Buffer cl_temp_values;
+        cl_acc->get_alloc_general()->alloc_paired(sizeof(uint) * n, sizeof(T) * n, cl_temp_keys, cl_temp_values);
+
+        cl::Buffer cl_offsets     = tmp_alloc->alloc(sizeof(uint) * n);
+        cl::Buffer cl_blocks_size = tmp_alloc->alloc(sizeof(uint) * n_blocks_sizes);
 
         auto kernel_local   = builder.make_kernel("radix_sort_local");
         auto kernel_scatter = builder.make_kernel("radix_sort_scatter");
@@ -147,7 +151,7 @@ namespace spla {
             kernel_local.setArg(4, shift);
             queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
 
-            cl_exclusive_scan<uint>(queue, cl_blocks_size, n_blocks_sizes, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>());
+            cl_exclusive_scan<uint>(queue, cl_blocks_size, n_blocks_sizes, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>(), tmp_alloc);
 
             kernel_scatter.setArg(0, in_keys);
             kernel_scatter.setArg(1, in_values);
@@ -168,7 +172,7 @@ namespace spla {
     }
 
     template<typename T>
-    void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, uint max_key = 0xffffffff) {
+    void cl_sort_by_key(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint n, CLAlloc* tmp_alloc, uint max_key = 0xffffffff) {
         if (n <= 1) {
             LOG_MSG(Status::Ok, "nothing to do");
             return;
@@ -179,7 +183,7 @@ namespace spla {
         if (n <= sort_switch) {
             cl_sort_by_key_bitonic<T>(queue, keys, values, n);
         } else {
-            cl_sort_by_key_radix<T>(queue, keys, values, n, max_key);
+            cl_sort_by_key_radix<T>(queue, keys, values, n, tmp_alloc, max_key);
         }
     }
 

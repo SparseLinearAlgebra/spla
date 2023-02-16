@@ -25,49 +25,50 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_COMMON_HPP
-#define SPLA_COMMON_HPP
+#ifndef SPLA_CL_ALLOC_LINEAR_HPP
+#define SPLA_CL_ALLOC_LINEAR_HPP
 
-#include <spla/config.hpp>
+#include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_alloc.hpp>
 
-#include <cmath>
+#include <svector.hpp>
 
 namespace spla {
 
-    static inline uint clamp(uint x, uint left, uint right) {
-        return std::min(std::max(x, left), right);
-    }
+    /**
+     * @class CLAllocLinear
+     * @brief Linear allocator for temporary device local buffer allocations
+     *
+     * Linear allocator uses linear allocation strategy. It places allocated
+     * buffers sequentially in a large pre-allocated arena buffer. If arena is full,
+     * new arena allocated. On a free all step, all allocations must be invalid.
+     * All allocated arenas cleared, and one new bigger arena allocated.
+     */
+    class CLAllocLinear : public CLAlloc {
+    public:
+        static const std::size_t DEFAULT_SIZE      = 1024 * 1024;// 1 MiB
+        static const std::size_t DEFAULT_ALIGNMENT = 128;
 
-    static inline uint div_up(uint what, uint by) {
-        return what / by + (what % by ? 1 : 0);
-    }
+        explicit CLAllocLinear(std::size_t arena_size = DEFAULT_SIZE, std::size_t alignment = DEFAULT_ALIGNMENT);
+        ~CLAllocLinear() override = default;
 
-    static inline uint div_up_clamp(uint what, uint by, uint left, uint right) {
-        return clamp(div_up(what, by), left, right);
-    }
+        cl::Buffer alloc(std::size_t size) override;
+        void       free(cl::Buffer buffer) override;
+        void       free_all() override;
 
-    static inline uint align(uint what, uint alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
+    protected:
+        void expand();
+        void shrink();
 
-    static inline std::size_t aligns(std::size_t what, std::size_t alignment) {
-        return what + (what % alignment ? alignment - (what % alignment) : 0);
-    }
-
-    static inline uint ceil_to_pow2(uint n) {
-        uint r = 1;
-        while (r < n) r *= 2u;
-        return r;
-    }
-
-    static inline uint floor_to_pow2(uint n) {
-        uint r = 1;
-        while (r <= n) {
-            r *= 2;
-        }
-        return r / 2;
-    }
+    private:
+        ankerl::svector<cl::Buffer, 4> m_arena;
+        std::size_t                    m_alignment       = 128;
+        std::size_t                    m_offset          = 0;
+        std::size_t                    m_total_allocated = 0;
+        std::size_t                    m_capacity        = 0;
+        std::size_t                    m_arena_size      = 0;
+    };
 
 }// namespace spla
 
-#endif//SPLA_COMMON_HPP
+#endif//SPLA_CL_ALLOC_LINEAR_HPP

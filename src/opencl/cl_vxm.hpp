@@ -38,6 +38,7 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <opencl/cl_alloc_linear.hpp>
 #include <opencl/cl_counter.hpp>
 #include <opencl/cl_debug.hpp>
 #include <opencl/cl_formats.hpp>
@@ -94,8 +95,9 @@ namespace spla {
             auto* p_cl_M    = M->template get<CLCsr<T>>();
             auto* p_cl_v    = v->template get<CLCooVec<T>>();
 
-            auto* p_cl_acc = get_acc_cl();
-            auto& queue    = p_cl_acc->get_queue_default();
+            auto* p_cl_acc    = get_acc_cl();
+            auto* p_tmp_alloc = p_cl_acc->get_alloc_tmp();
+            auto& queue       = p_cl_acc->get_queue_default();
 
             uint             prods_count;
             CLCounterWrapper cl_prods_count;
@@ -128,8 +130,8 @@ namespace spla {
                 return Status::Ok;
             }
 
-            cl::Buffer cl_prodi(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count * sizeof(uint));
-            cl::Buffer cl_prodx(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, prods_count * sizeof(T));
+            cl::Buffer cl_prodi = p_tmp_alloc->alloc(prods_count * sizeof(uint));
+            cl::Buffer cl_prodx = p_tmp_alloc->alloc(prods_count * sizeof(T));
 
             CLCounterWrapper cl_prods_offset;
             CL_COUNTER_SET("init-offsets-cnt", queue, cl_prods_offset, 0);
@@ -152,7 +154,7 @@ namespace spla {
             CL_PROFILE_BEGIN("sort", queue)
             const uint max_key    = r->get_n_rows() - 1;
             const uint n_elements = prods_count;
-            cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, n_elements, max_key);
+            cl_sort_by_key<T>(queue, cl_prodi, cl_prodx, n_elements, p_tmp_alloc, max_key);
             CL_PROFILE_END();
 
             uint       reduced_size;
@@ -160,12 +162,14 @@ namespace spla {
             cl::Buffer reduced_values;
 
             CL_PROFILE_BEGIN("reduce", queue)
-            cl_reduce_by_key(queue, cl_prodi, cl_prodx, prods_count, reduced_keys, reduced_values, reduced_size, op_add);
+            cl_reduce_by_key(queue, cl_prodi, cl_prodx, prods_count, reduced_keys, reduced_values, reduced_size, op_add, p_tmp_alloc);
             CL_PROFILE_END();
 
             p_cl_r->Ai     = reduced_keys;
             p_cl_r->Ax     = reduced_values;
             p_cl_r->values = reduced_size;
+
+            p_tmp_alloc->free_all();
 
             return Status::Ok;
         }

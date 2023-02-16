@@ -232,6 +232,11 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_accelerator.hpp
             src/opencl/cl_algo_registry.cpp
             src/opencl/cl_algo_registry.hpp
+            src/opencl/cl_alloc.hpp
+            src/opencl/cl_alloc_general.cpp
+            src/opencl/cl_alloc_general.hpp
+            src/opencl/cl_alloc_linear.cpp
+            src/opencl/cl_alloc_linear.hpp
             src/opencl/cl_counter.cpp
             src/opencl/cl_counter.hpp
             src/opencl/cl_program.cpp

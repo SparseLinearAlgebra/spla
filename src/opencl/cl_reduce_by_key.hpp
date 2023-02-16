@@ -29,6 +29,8 @@
 #define SPLA_CL_REDUCE_BY_KEY_HPP
 
 #include <opencl/cl_accelerator.hpp>
+#include <opencl/cl_alloc.hpp>
+#include <opencl/cl_alloc_general.hpp>
 #include <opencl/cl_counter.hpp>
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
@@ -41,10 +43,11 @@ namespace spla {
     void cl_reduce_by_key(cl::CommandQueue& queue,
                           const cl::Buffer& keys, const cl::Buffer& values, const uint size,
                           cl::Buffer& unique_keys, cl::Buffer& reduce_values, uint& reduced_size,
-                          const ref_ptr<TOpBinary<T, T, T>>& reduce_op) {
+                          const ref_ptr<TOpBinary<T, T, T>>& reduce_op, CLAlloc* tmp_alloc) {
         TIME_PROFILE_SCOPE("opencl/reduce_by_key");
 
         auto* cl_acc = get_acc_cl();
+        auto* alloc  = cl_acc->get_alloc_general();
 
         CLProgramBuilder builder;
         builder.set_name("reduce_by_key")
@@ -63,17 +66,15 @@ namespace spla {
             return;
         }
         if (size == 1) {
-            reduced_size  = 1;
-            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * reduced_size);
-            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * reduced_size);
+            reduced_size = 1;
+            alloc->alloc_paired(sizeof(uint) * reduced_size, sizeof(T) * reduced_size, unique_keys, reduce_values);
             queue.enqueueCopyBuffer(keys, unique_keys, 0, 0, sizeof(uint) * reduced_size);
             queue.enqueueCopyBuffer(values, reduce_values, 0, 0, sizeof(T) * reduced_size);
             return;
         }
         if (size <= sequential_switch) {
             CLCounterWrapper cl_reduced_count;
-            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
-            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+            alloc->alloc_paired(sizeof(uint) * size, sizeof(T) * size, unique_keys, reduce_values);
 
             auto kernel_sequential = builder.make_kernel("reduce_by_key_sequential");
             kernel_sequential.setArg(0, keys);
@@ -93,8 +94,7 @@ namespace spla {
             CLCounterWrapper cl_reduced_count;
 
             CL_PROFILE_BEGIN("alloc-buffers", queue);
-            unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
-            reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * size);
+            alloc->alloc_paired(sizeof(uint) * size, sizeof(T) * size, unique_keys, reduce_values);
             CL_PROFILE_END();
 
             cl::Kernel kernel_small;
@@ -116,7 +116,8 @@ namespace spla {
             return;
         }
 
-        cl::Buffer offsets(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * size);
+        // temporary offsets allocation
+        cl::Buffer offsets = tmp_alloc->alloc(sizeof(uint) * size);
 
         auto kernel_gen_offsets = builder.make_kernel("reduce_by_key_generate_offsets");
         kernel_gen_offsets.setArg(0, keys);
@@ -127,16 +128,14 @@ namespace spla {
         cl::NDRange gen_offsets_local(block_size);
         queue.enqueueNDRangeKernel(kernel_gen_offsets, cl::NDRange(), gen_offsets_global, gen_offsets_local);
 
-        cl_exclusive_scan(queue, offsets, size, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>());
+        cl_exclusive_scan(queue, offsets, size, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>(), tmp_alloc);
 
-        uint       scan_last;
-        cl::Buffer cl_scan_last(cl_acc->get_context(), CL_MEM_HOST_READ_ONLY, sizeof(scan_last));
-        queue.enqueueCopyBuffer(offsets, cl_scan_last, sizeof(uint) * (size - 1), 0, sizeof(scan_last));
-        queue.enqueueReadBuffer(cl_scan_last, true, 0, sizeof(scan_last), &scan_last);
+        CLCounterWrapper cl_scan_last;
+        queue.enqueueCopyBuffer(offsets, cl_scan_last.buffer(), sizeof(uint) * (size - 1), 0, sizeof(uint));
+        uint scan_last = cl_scan_last.get(queue);
 
-        reduced_size  = scan_last + 1;
-        unique_keys   = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * reduced_size);
-        reduce_values = cl::Buffer(cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(T) * reduced_size);
+        reduced_size = scan_last + 1;
+        alloc->alloc_paired(sizeof(uint) * reduced_size, sizeof(T) * reduced_size, unique_keys, reduce_values);
 
         auto kernel_reduce_scalar = builder.make_kernel("reduce_by_key_scalar");
         kernel_reduce_scalar.setArg(0, keys);

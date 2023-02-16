@@ -80,6 +80,8 @@ namespace spla {
         cl::CommandQueue&     get_queue_default() { return m_queues.front(); }
         class CLProgramCache* get_cache() { return m_cache.get(); }
         class CLCounterPool*  get_counter_pool() { return m_counter_pool.get(); }
+        class CLAllocGeneral* get_alloc_general() { return m_alloc_general.get(); }
+        class CLAlloc*        get_alloc_tmp() { return m_alloc_tmp; }
 
         [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
         [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
@@ -87,6 +89,7 @@ namespace spla {
         [[nodiscard]] uint               get_max_cu() const { return m_max_cu; }
         [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
         [[nodiscard]] uint               get_max_local_mem() const { return m_max_local_mem; }
+        [[nodiscard]] uint               get_addr_align() const { return m_addr_align; }
         [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
@@ -99,6 +102,9 @@ namespace spla {
         cl::Context                           m_context;
         std::unique_ptr<class CLProgramCache> m_cache;
         std::unique_ptr<class CLCounterPool>  m_counter_pool;
+        std::unique_ptr<class CLAllocLinear>  m_alloc_linear;
+        std::unique_ptr<class CLAllocGeneral> m_alloc_general;
+        class CLAlloc*                        m_alloc_tmp = nullptr;
 
         std::string m_name = "OpenCL";
         std::string m_description;
@@ -109,6 +115,7 @@ namespace spla {
         uint        m_max_cu           = 0;
         uint        m_max_wgs          = 0;
         uint        m_max_local_mem    = 0;
+        uint        m_addr_align       = 128;
         uint        m_default_wgs      = 64;
         uint        m_wave_size        = 32;
         uint        m_num_of_mem_banks = 32;

@@ -27,6 +27,8 @@
 
 #include "cl_accelerator.hpp"
 
+#include <opencl/cl_alloc_general.hpp>
+#include <opencl/cl_alloc_linear.hpp>
 #include <opencl/cl_counter.hpp>
 #include <opencl/cl_program_cache.hpp>
 
@@ -47,8 +49,7 @@ namespace spla {
 
         build_description();
 
-        m_cache        = std::make_unique<CLProgramCache>();
-        m_counter_pool = std::make_unique<CLCounterPool>();
+        m_cache = std::make_unique<CLProgramCache>();
 
         // Output handy info
         LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());
@@ -68,8 +69,12 @@ namespace spla {
             return Status::InvalidArgument;
         }
 
-        m_device   = cl::Device();
-        m_platform = available_platforms[index];
+        m_counter_pool.reset();
+        m_alloc_general.reset();
+        m_alloc_linear.reset();
+        m_alloc_tmp = nullptr;
+        m_device    = cl::Device();
+        m_platform  = available_platforms[index];
         LOG_MSG(Status::Ok, "select OpenCL platform " << m_platform.getInfo<CL_PLATFORM_NAME>());
 
         return Status::Ok;
@@ -98,6 +103,7 @@ namespace spla {
         m_max_cu        = m_device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>();
         m_max_wgs       = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
         m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
+        m_addr_align    = m_device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() / 8;// from bits to bytes
 
         if (m_vendor_name.find("Intel") != std::string::npos ||
             m_vendor_name.find("intel") != std::string::npos ||
@@ -154,7 +160,14 @@ namespace spla {
             m_queues.emplace_back(std::move(queue));
         }
 
-        m_counter_pool = std::make_unique<CLCounterPool>();
+        m_counter_pool  = std::make_unique<CLCounterPool>();
+        m_alloc_general = std::make_unique<CLAllocGeneral>();
+        m_alloc_tmp     = m_alloc_general.get();
+
+        if (m_vendor_code != VENDOR_CODE_NVIDIA) {
+            m_alloc_linear = std::make_unique<CLAllocLinear>(CLAllocLinear::DEFAULT_SIZE, m_addr_align);
+            m_alloc_tmp    = m_alloc_linear.get();
+        }
 
         LOG_MSG(Status::Ok, "configure " << count << " queues for computations");
         return Status::Ok;
