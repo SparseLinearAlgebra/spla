@@ -63,10 +63,10 @@ namespace spla {
     private:
         ankerl::svector<cl::Buffer, 4> m_arena;
         std::size_t                    m_alignment       = 128;
-        std::size_t                    m_offset          = 0;
+        std::size_t                    m_curr_offset     = 0;
         std::size_t                    m_total_allocated = 0;
-        std::size_t                    m_capacity        = 0;
         std::size_t                    m_arena_size      = 0;
+        std::size_t                    m_fallback_size   = 0;
     };
 
 }// namespace spla

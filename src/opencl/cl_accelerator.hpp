@@ -93,6 +93,9 @@ namespace spla {
         [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
+        [[nodiscard]] bool               is_nvidia() const { return m_is_nvidia; }
+        [[nodiscard]] bool               is_amd() const { return m_is_amd; }
+        [[nodiscard]] bool               is_intel() const { return m_is_intel; }
 
     private:
         void build_description();
@@ -119,6 +122,9 @@ namespace spla {
         uint        m_default_wgs      = 64;
         uint        m_wave_size        = 32;
         uint        m_num_of_mem_banks = 32;
+        bool        m_is_nvidia        = false;
+        bool        m_is_amd           = false;
+        bool        m_is_intel         = false;
 
         ankerl::svector<cl::CommandQueue, 2> m_queues;
     };

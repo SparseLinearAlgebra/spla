@@ -105,6 +105,10 @@ namespace spla {
         m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
         m_addr_align    = m_device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() / 8;// from bits to bytes
 
+        m_is_nvidia = false;
+        m_is_amd    = false;
+        m_is_intel  = false;
+
         if (m_vendor_name.find("Intel") != std::string::npos ||
             m_vendor_name.find("intel") != std::string::npos ||
             m_vendor_name.find("INTEL") != std::string::npos ||
@@ -112,6 +116,7 @@ namespace spla {
             m_vendor_code = VENDOR_CODE_INTEL;
             m_default_wgs = 64;
             m_wave_size   = 8;
+            m_is_intel    = true;
         }
         if (m_vendor_name.find("Nvidia") != std::string::npos ||
             m_vendor_name.find("nvidia") != std::string::npos ||
@@ -120,6 +125,7 @@ namespace spla {
             m_vendor_code = VENDOR_CODE_NVIDIA;
             m_default_wgs = 64;
             m_wave_size   = 32;
+            m_is_nvidia   = true;
         }
         if (m_vendor_name.find("Amd") != std::string::npos ||
             m_vendor_name.find("amd") != std::string::npos ||
@@ -130,6 +136,7 @@ namespace spla {
             m_vendor_code = VENDOR_CODE_AMD;
             m_default_wgs = 64;
             m_wave_size   = 64;
+            m_is_amd      = true;
 
             // Likely, it is an integrated amd device
             if (m_max_wgs <= 256 || m_max_cu == 1) m_wave_size = 16;
@@ -164,7 +171,7 @@ namespace spla {
         m_alloc_general = std::make_unique<CLAllocGeneral>();
         m_alloc_tmp     = m_alloc_general.get();
 
-        if (m_vendor_code != VENDOR_CODE_NVIDIA) {
+        if (!is_nvidia()) {
             m_alloc_linear = std::make_unique<CLAllocLinear>(CLAllocLinear::DEFAULT_SIZE, m_addr_align);
             m_alloc_tmp    = m_alloc_linear.get();
         }

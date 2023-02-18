@@ -35,7 +35,7 @@ namespace spla {
     void CLAllocGeneral::alloc_paired(std::size_t size1, std::size_t size2, cl::Buffer& buffer1, cl::Buffer& buffer2) {
         auto* cl_acc = get_acc_cl();
 
-        if (cl_acc->get_vendor_code() == VENDOR_CODE_NVIDIA) {
+        if (cl_acc->is_nvidia()) {
             buffer1 = alloc(size1);
             buffer2 = alloc(size2);
             return;
