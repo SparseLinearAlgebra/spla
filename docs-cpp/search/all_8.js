@@ -9,11 +9,14 @@ var searchData=
   ['io_2ecpp_348',['io.cpp',['../io_8cpp.html',1,'']]],
   ['io_2ehpp_349',['io.hpp',['../io_8hpp.html',1,'']]],
   ['is_350',['is',['../classspla_1_1ref__ptr.html#a614927633b8829559bcfa97ed000603f',1,'spla::ref_ptr']]],
-  ['is_5fnot_5fnull_351',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
-  ['is_5fnull_352',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
-  ['is_5fset_5fforce_5fno_5facceleration_353',['is_set_force_no_acceleration',['../classspla_1_1Library.html#a20561e28307f40f22421683058da4817',1,'spla::Library']]],
-  ['is_5funique_354',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]],
-  ['is_5fvalid_355',['is_valid',['../classspla_1_1TDecorationStorage.html#aa9638f662f5ce669746d01ed0e85810f',1,'spla::TDecorationStorage::is_valid()'],['../group__internal.html#ga6799b7087e1ae22926dfdef9fecff258',1,'spla::TVector::is_valid()']]],
-  ['is_5fvalid_5fany_356',['is_valid_any',['../classspla_1_1TDecorationStorage.html#ae96ad3783f4027a1945439c38479d3a2',1,'spla::TDecorationStorage']]],
-  ['is_5fvalid_5fi_357',['is_valid_i',['../classspla_1_1TDecorationStorage.html#afe4ab7c0da8e67f92a2dfc6bc5f505d1',1,'spla::TDecorationStorage']]]
+  ['is_5famd_351',['is_amd',['../classspla_1_1CLAccelerator.html#a4325276759a4d590529d157688aac4c3',1,'spla::CLAccelerator']]],
+  ['is_5fintel_352',['is_intel',['../classspla_1_1CLAccelerator.html#a244b088f85827d2492eb48a3618e77c0',1,'spla::CLAccelerator']]],
+  ['is_5fnot_5fnull_353',['is_not_null',['../classspla_1_1ref__ptr.html#a7bacf3562f537d29bcce796bc827db4f',1,'spla::ref_ptr']]],
+  ['is_5fnull_354',['is_null',['../classspla_1_1ref__ptr.html#a1d9d7cc1c46f14a2f3054f97bb2ff020',1,'spla::ref_ptr']]],
+  ['is_5fnvidia_355',['is_nvidia',['../classspla_1_1CLAccelerator.html#ad6256d138ad89a3487d731b18c5a25f4',1,'spla::CLAccelerator']]],
+  ['is_5fset_5fforce_5fno_5facceleration_356',['is_set_force_no_acceleration',['../classspla_1_1Library.html#a20561e28307f40f22421683058da4817',1,'spla::Library']]],
+  ['is_5funique_357',['is_unique',['../classspla_1_1RefCnt.html#abd9dc500bf023e672b8da0e7b6805b97',1,'spla::RefCnt']]],
+  ['is_5fvalid_358',['is_valid',['../classspla_1_1TDecorationStorage.html#aa9638f662f5ce669746d01ed0e85810f',1,'spla::TDecorationStorage::is_valid()'],['../group__internal.html#ga6799b7087e1ae22926dfdef9fecff258',1,'spla::TVector::is_valid()']]],
+  ['is_5fvalid_5fany_359',['is_valid_any',['../classspla_1_1TDecorationStorage.html#ae96ad3783f4027a1945439c38479d3a2',1,'spla::TDecorationStorage']]],
+  ['is_5fvalid_5fi_360',['is_valid_i',['../classspla_1_1TDecorationStorage.html#afe4ab7c0da8e67f92a2dfc6bc5f505d1',1,'spla::TDecorationStorage']]]
 ];
