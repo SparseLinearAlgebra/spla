@@ -124,8 +124,8 @@ $(function() {
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__v__assign__masked__cpu.html#ac350f902fb98bbd63f2a50510ee4f258">   55</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__v__assign__masked__cpu.html#ac350f902fb98bbd63f2a50510ee4f258">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">auto</span>                t    = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; mask = t-&gt;mask.template cast&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">auto</span>                t    = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_assign_masked&gt;();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; mask = t-&gt;mask.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">if</span> (mask-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>))</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span> execute_sp2dn(ctx);</div>
@@ -139,13 +139,13 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_sp2dn(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/vector_assign_sparse2dense&quot;</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_assign_masked&gt;();</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> mask      = t-&gt;mask.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> value     = t-&gt;value.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span> op_assign = t-&gt;op_assign.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> op_select = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> mask      = t-&gt;mask.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> value     = t-&gt;value.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span> op_assign = t-&gt;op_assign.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> op_select = t-&gt;op_select.template cast_safe&lt;TOpSelect&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">auto</span> assign_value = value-&gt;get_value();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
@@ -173,13 +173,13 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn2dn(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/vector_assign_dense2dense&quot;</span>);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">auto</span> t = ctx.task.template cast&lt;ScheduleTask_v_assign_masked&gt;();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">auto</span> t = ctx.task.template cast_safe&lt;ScheduleTask_v_assign_masked&gt;();</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">auto</span> mask      = t-&gt;mask.template cast&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">auto</span> value     = t-&gt;value.template cast&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">auto</span> op_assign = t-&gt;op_assign.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keyword">auto</span> op_select = t-&gt;op_select.template cast&lt;TOpSelect&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">auto</span> mask      = t-&gt;mask.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">auto</span> value     = t-&gt;value.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">auto</span> op_assign = t-&gt;op_assign.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keyword">auto</span> op_select = t-&gt;op_select.template cast_safe&lt;TOpSelect&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">auto</span> assign_value = value-&gt;get_value();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>

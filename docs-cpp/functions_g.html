@@ -67,6 +67,7 @@ $(function() {
 <li>get()
 : <a class="el" href="classspla_1_1CLCounter.html#ac3618fa2e6d3ec85223e287eb7454f0d">spla::CLCounter</a>
 , <a class="el" href="classspla_1_1CLCounterWrapper.html#a1ef8e9eefe8d9cd2796e5193e50883c2">spla::CLCounterWrapper</a>
+, <a class="el" href="classspla_1_1Library.html#a8503fbc50a423fc79c84932cb9568ffe">spla::Library</a>
 , <a class="el" href="classspla_1_1ref__ptr.html#a4c5e4ec850094be8a85609e76253da35">spla::ref_ptr&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1TDecorationStorage.html#ab938632da6532f5b00bc9f19f215bad3">spla::TDecorationStorage&lt; T, F, capacity &gt;</a>
 , <a class="el" href="classspla_1_1TMatrix.html#a436f087ffe8be4737613ab3f38cba401">spla::TMatrix&lt; T &gt;</a>
@@ -215,6 +216,17 @@ $(function() {
 , <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7fcee14fda0438076bc802d0e8148bf">spla::ScheduleTask_vxm_masked</a>
 , <a class="el" href="group__internal.html#gad5c0f24624252f0297fb097e2625fed0">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga014df063916a0b4a810de3de6b58ee87">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#gaf0a0f1ba4b56599bd68373574f293903">spla::TOpUnary&lt; A0, R &gt;</a>
+</li>
+<li>get_key_full()
+: <a class="el" href="classspla_1_1ScheduleTask.html#a0188497f94d5e41969b901fbbb78e81a">spla::ScheduleTask</a>
+, <a class="el" href="classspla_1_1ScheduleTask__callback.html#ae3265d972ab26a2e0fc285388c6a980c">spla::ScheduleTask_callback</a>
+, <a class="el" href="classspla_1_1ScheduleTask__mxv__masked.html#a8f9cd209e557da36eee73df1d5c31a15">spla::ScheduleTask_mxv_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__assign__masked.html#ae8684e5cafcd59267cebedafac108f5f">spla::ScheduleTask_v_assign_masked</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__count__mf.html#a9dce08b15867ddd8eb18d19296f32a7d">spla::ScheduleTask_v_count_mf</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__eadd__fdb.html#a92111c3763ccac9ebd2bcf6ffde5459b">spla::ScheduleTask_v_eadd_fdb</a>
+, <a class="el" href="classspla_1_1ScheduleTask__v__reduce.html#aaf6d430b60fdcfbb2df6b0b3a0bc12a4">spla::ScheduleTask_v_reduce</a>
+, <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#a22c87e5545c79f3828c84ecc85af1c84">spla::ScheduleTask_vxm_masked</a>
 </li>
 <li>get_label()
 : <a class="el" href="classspla_1_1Descriptor.html#a7f720fb3847fa6f397d9ce7ee32d8a1e">spla::Descriptor</a>
@@ -224,6 +236,7 @@ $(function() {
 , <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>
 , <a class="el" href="group__internal.html#gada52e4eb5734d6744268d459e5a4307b">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga3c7840ea4ae6df2552261b5a3149258f">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#ga706b266a0442a502e69a59074a6f6ba4">spla::TOpUnary&lt; A0, R &gt;</a>
 , <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>
 , <a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;</a>
 </li>
@@ -289,6 +302,7 @@ $(function() {
 , <a class="el" href="classspla_1_1ScheduleTask__vxm__masked.html#ad7b46585a1da4c7e43cddafc7b574e6c">spla::ScheduleTask_vxm_masked</a>
 , <a class="el" href="group__internal.html#ga38a425ea4c23233c5255f724a0c4732d">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga2df5876b27125a16fcf244e704828a06">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#gacd14c0f041f110e6243524790fc7223a">spla::TOpUnary&lt; A0, R &gt;</a>
 , <a class="el" href="group__internal.html#ga09fb9172fae139442bdcd8b9e0b9863d">spla::TType&lt; T &gt;</a>
 , <a class="el" href="classspla_1_1Type.html#a1c095619ccf412493ef923535b86063c">spla::Type</a>
 </li>
@@ -338,10 +352,11 @@ $(function() {
 , <a class="el" href="classspla_1_1Type.html#a7abba386d3654b5cf9e2a6aa291dcbcc">spla::Type</a>
 </li>
 <li>get_source()
-: <a class="el" href="classspla_1_1CLProgram.html#a5b6e96ab3f7c9028be6a59667056edb2">spla::CLProgram</a>
+: <a class="el" href="classspla_1_1CLProgram.html#aed3e63078ab7dca5b0626e048fb87ba8">spla::CLProgram</a>
 , <a class="el" href="classspla_1_1Op.html#a5d54ab769838fc640188b6811bdefa79">spla::Op</a>
 , <a class="el" href="group__internal.html#gac3c7ea25915cc06fdc1228726400849b">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga4f235d2154c82673182bca81a307dc96">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#gad1d786306cfc597d42187ba7f74e5a50">spla::TOpUnary&lt; A0, R &gt;</a>
 </li>
 <li>get_sources_count()
 : <a class="el" href="classspla_1_1CLProgram.html#aaccbe1f2ff9fed55a6d099615d99d0b7">spla::CLProgram</a>
@@ -374,6 +389,7 @@ $(function() {
 , <a class="el" href="classspla_1_1OpUnary.html#a0313a35e7611f70e781c382521ce5f26">spla::OpUnary</a>
 , <a class="el" href="group__internal.html#ga33d7e5ae3b0549d41b0f99c5c5bf0b03">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#gad0622322ec72a160b17df544cfc6e3f9">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#gab7e479d1ffb0849214207f5e368fe029">spla::TOpUnary&lt; A0, R &gt;</a>
 </li>
 <li>get_type_arg_1()
 : <a class="el" href="classspla_1_1OpBinary.html#a7bafd086697a63fce72f1278efc6bf82">spla::OpBinary</a>
@@ -383,6 +399,7 @@ $(function() {
 : <a class="el" href="classspla_1_1Op.html#ac682352f7c844abbcc84ba24f413b337">spla::Op</a>
 , <a class="el" href="group__internal.html#ga40d0356d5d7edd404745b8581fbf8483">spla::TOpBinary&lt; A0, A1, R &gt;</a>
 , <a class="el" href="group__internal.html#ga2b7091875fb0a58ea57e032a29e5be30">spla::TOpSelect&lt; A0 &gt;</a>
+, <a class="el" href="group__internal.html#gad4b452cf324d1dd6d64d0d164280080f">spla::TOpUnary&lt; A0, R &gt;</a>
 </li>
 <li>get_uint()
 : <a class="el" href="classspla_1_1Matrix.html#ab3205eebceb72a733ecb2d146cac7f31">spla::Matrix</a>

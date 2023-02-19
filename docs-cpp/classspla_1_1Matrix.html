@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classspla_1_1Matrix-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::Matrix Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__spla.html">Spla</a></div></div>  </div>
@@ -147,6 +148,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aeb67be8171b576ac60c3e1762e9b171b inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memItemLeft" align="right" valign="top">std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1RefCnt.html#af6db98ef69c4ee40823587075ab84101">rel_ref</a> () const</td></tr>
 <tr class="separator:af6db98ef69c4ee40823587075ab84101 inherit pub_methods_classspla_1_1RefCnt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa90695abf4b49895f6284dceb0a542e0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Matrix.html#aa90695abf4b49895f6284dceb0a542e0">make</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;type)</td></tr>
+<tr class="memdesc:aa90695abf4b49895f6284dceb0a542e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make new matrix instance with specified dim and values type.  <a href="classspla_1_1Matrix.html#aa90695abf4b49895f6284dceb0a542e0">More...</a><br /></td></tr>
+<tr class="separator:aa90695abf4b49895f6284dceb0a542e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generalized M x N dimensional matrix object. </p>
@@ -413,6 +420,59 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aa90695abf4b49895f6284dceb0a542e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa90695abf4b49895f6284dceb0a542e0">&#9670;&nbsp;</a></span>make()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; spla::Matrix::make </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make new matrix instance with specified dim and values type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n_rows</td><td>Number of matrix rows; must be &gt; 0; </td></tr>
+    <tr><td class="paramname">n_cols</td><td>Number of matrix columns; must be &gt; 0; </td></tr>
+    <tr><td class="paramname">type</td><td><a class="el" href="classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values.">Type</a> of matrix elements</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New matrix instance or null if failed to create </dd></dl>
+
+</div>
+</div>
 <a id="a31e920fcf54db0c1f632bc2d16687a61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31e920fcf54db0c1f632bc2d16687a61">&#9670;&nbsp;</a></span>set_fill_value()</h2>
 
@@ -629,8 +689,9 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/spla/<a class="el" href="matrix_8hpp_source.html">matrix.hpp</a></li>
+<li>src/<a class="el" href="matrix_8cpp.html">matrix.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -198,7 +198,7 @@ $(function() {
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="group__internal.html#gaf8bcc040bd8e596582653a7a7bdbd646">  140</a></span>&#160;    <a class="code" href="classStatus.html">Status</a> <a class="code" href="group__internal.html#gaf8bcc040bd8e596582653a7a7bdbd646">TVector&lt;T&gt;::set_reduce</a>(<a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;OpBinary&gt;</a> resolve_duplicates) {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keyword">auto</span> reduce = resolve_duplicates.template cast&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keyword">auto</span> reduce = resolve_duplicates.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">if</span> (reduce) {</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            validate_ctor(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160">FormatVector::CpuDok</a>);</div>

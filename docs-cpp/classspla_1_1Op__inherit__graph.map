@@ -1,10 +1,11 @@
 <map id="spla::Op" name="spla::Op">
-<area shape="rect" id="node1" title="An callable operation to parametrize execution of math computations." alt="" coords="204,155,273,181"/>
-<area shape="rect" id="node4" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="45,229,150,256"/>
-<area shape="rect" id="node6" href="$classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="185,229,292,256"/>
-<area shape="rect" id="node8" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="317,229,419,256"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="193,80,284,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="193,5,285,32"/>
+<area shape="rect" id="node1" title="An callable operation to parametrize execution of math computations." alt="" coords="215,155,284,181"/>
+<area shape="rect" id="node4" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="46,229,151,256"/>
+<area shape="rect" id="node6" href="$classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="196,229,303,256"/>
+<area shape="rect" id="node8" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="354,229,457,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="204,80,295,107"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="203,5,295,32"/>
 <area shape="rect" id="node5" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="5,304,149,345"/>
 <area shape="rect" id="node7" href="$classspla_1_1TOpSelect.html" title=" " alt="" coords="173,311,325,338"/>
+<area shape="rect" id="node9" href="$classspla_1_1TOpUnary.html" title=" " alt="" coords="349,311,515,338"/>
 </map>

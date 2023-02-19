@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classspla_1_1Library-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">spla::Library Class Reference<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group__spla.html">Spla</a></div></div>  </div>
@@ -130,6 +131,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3e632f513fa088821db9b09782931db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60a794d436cdfa41cf5580f6f537400d"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classspla_1_1TimeProfiler.html">TimeProfiler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a60a794d436cdfa41cf5580f6f537400d">get_time_profiler</a> ()</td></tr>
 <tr class="separator:a60a794d436cdfa41cf5580f6f537400d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8503fbc50a423fc79c84932cb9568ffe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classspla_1_1Library.html">Library</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Library.html#a8503fbc50a423fc79c84932cb9568ffe">get</a> ()</td></tr>
+<tr class="memdesc:a8503fbc50a423fc79c84932cb9568ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access global library instance.  <a href="classspla_1_1Library.html#a8503fbc50a423fc79c84932cb9568ffe">More...</a><br /></td></tr>
+<tr class="separator:a8503fbc50a423fc79c84932cb9568ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> global state automatically instantiated on lib init. </p>
@@ -249,6 +256,36 @@ Public Member Functions</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>Must be called after application execution </dd>
 <dd>
 After this call no other library function call is allowed </dd></dl>
+
+</div>
+</div>
+<a id="a8503fbc50a423fc79c84932cb9568ffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8503fbc50a423fc79c84932cb9568ffe">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1Library.html">Library</a> * spla::Library::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Access global library instance. </p>
+<p>Global library state instantiate once on first request to the library. Call this function to access library and configure it first before any computations.</p>
+<dl class="section note"><dt>Note</dt><dd>Only single global instance of the library allowed.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Global library instance </dd></dl>
 
 </div>
 </div>

@@ -9,8 +9,9 @@ var searchData=
   ['tmatrix_795',['TMatrix',['../classspla_1_1TMatrix.html',1,'spla']]],
   ['topbinary_796',['TOpBinary',['../classspla_1_1TOpBinary.html',1,'spla']]],
   ['topselect_797',['TOpSelect',['../classspla_1_1TOpSelect.html',1,'spla']]],
-  ['tscalar_798',['TScalar',['../classspla_1_1TScalar.html',1,'spla']]],
-  ['ttype_799',['TType',['../classspla_1_1TType.html',1,'spla']]],
-  ['tvector_800',['TVector',['../classspla_1_1TVector.html',1,'spla']]],
-  ['type_801',['Type',['../classspla_1_1Type.html',1,'spla']]]
+  ['topunary_798',['TOpUnary',['../classspla_1_1TOpUnary.html',1,'spla']]],
+  ['tscalar_799',['TScalar',['../classspla_1_1TScalar.html',1,'spla']]],
+  ['ttype_800',['TType',['../classspla_1_1TType.html',1,'spla']]],
+  ['tvector_801',['TVector',['../classspla_1_1TVector.html',1,'spla']]],
+  ['type_802',['Type',['../classspla_1_1Type.html',1,'spla']]]
 ];
