@@ -1,17 +1,18 @@
 <map id="src/storage/storage_manager.hpp" name="src/storage/storage_manager.hpp">
 <area shape="rect" id="node1" title=" " alt="" coords="501,5,635,47"/>
 <area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="83,95,191,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="197,244,275,271"/>
+<area shape="rect" id="node4" title=" " alt="" coords="122,244,201,271"/>
 <area shape="rect" id="node6" href="$tdecoration_8hpp.html" title=" " alt="" coords="373,95,512,121"/>
-<area shape="rect" id="node10" title=" " alt="" coords="509,244,561,271"/>
-<area shape="rect" id="node13" title=" " alt="" coords="605,95,680,121"/>
-<area shape="rect" id="node14" title=" " alt="" coords="705,95,762,121"/>
-<area shape="rect" id="node15" title=" " alt="" coords="787,95,845,121"/>
+<area shape="rect" id="node11" title=" " alt="" coords="529,244,581,271"/>
+<area shape="rect" id="node14" title=" " alt="" coords="605,95,680,121"/>
+<area shape="rect" id="node15" title=" " alt="" coords="705,95,762,121"/>
+<area shape="rect" id="node16" title=" " alt="" coords="787,95,845,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,169,80,196"/>
 <area shape="rect" id="node5" title=" " alt="" coords="155,169,210,196"/>
 <area shape="rect" id="node7" href="$ref_8hpp.html" title=" " alt="" coords="286,169,375,196"/>
-<area shape="rect" id="node11" title=" " alt="" coords="400,169,451,196"/>
-<area shape="rect" id="node12" title=" " alt="" coords="475,169,530,196"/>
-<area shape="rect" id="node8" title=" " alt="" coords="300,244,361,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="386,244,451,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="400,169,451,196"/>
+<area shape="rect" id="node13" title=" " alt="" coords="475,169,530,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="225,244,287,271"/>
+<area shape="rect" id="node9" title=" " alt="" coords="311,244,377,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="401,244,479,271"/>
 </map>
