@@ -42,7 +42,7 @@ namespace spla {
             parent->child_count += 1;
         }
 
-        get_library()->get_time_profiler()->add_label(this);
+        Library::get()->get_time_profiler()->add_label(this);
     }
 
     TimeProfilerScope::TimeProfilerScope(TimeProfilerLabel* in_label) {

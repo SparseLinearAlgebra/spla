@@ -5,7 +5,7 @@ Python wrapper for spla library
 Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
 acceleration to speed-up processing of large and complex data.
-Library core witten using C++ with optional C-compatible interface.
+Library underling core witten using C++ with optional C-compatible interface.
 
 Links:
 
@@ -46,12 +46,11 @@ Delete package if no more required:
 Summary
 -------
 
-Generalized sparse liner algebra python package with GPUs accelerated
-computations. Library provides a set of linear algebra primitives such as
-`matrix`, `vector` and `scalar` for mathematical computations parametrized using
-one of built-in `type`. It allows to define sequence of execution tasks
-using `schedule` API. Desired behavior of math operations can be customized
-using on of element operations in `op` module.
+Generalized sparse liner algebra python package with GPUs accelerated computations. Library provides a set of
+linear algebra primitives such as `matrix`, `vector` and `scalar` for mathematical computations parametrized
+using one of built-in `type`. It allows to define sequence of execution tasks using `schedule` API. Desired
+behavior of math operations can be customized using pre-defined or custom user-defined element operations in `op`
+module.
 
 Library optionally uses GPUs acceleration through OpenCL or CUDA API.
 It automatically attempts to initialize accelerator and trys to use

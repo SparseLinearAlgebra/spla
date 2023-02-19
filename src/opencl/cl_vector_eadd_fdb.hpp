@@ -60,9 +60,9 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>> r = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (r->is_valid(FormatVector::AccDense) && v->is_valid(FormatVector::AccCoo)) {
                 return execute_sp2dn(ctx);
@@ -78,13 +78,14 @@ namespace spla {
         Status execute_sp2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cl/vector_eadd_fdb_sp2dn");
 
-            auto                        t   = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>>         r   = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         v   = t->v.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
+            auto                        t   = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>>         r   = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         v   = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         fdb = t->fdb.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast_safe<TOpBinary<T, T, T>>();
 
-            if (!ensure_kernel(op)) return Status::CompilationError;
+            std::shared_ptr<CLProgram> m_program;
+            if (!ensure_kernel(op, m_program)) return Status::CompilationError;
 
             r->validate_rwd(FormatVector::AccDense);
             v->validate_rw(FormatVector::AccCoo);
@@ -129,13 +130,14 @@ namespace spla {
         Status execute_dn2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cl/vector_eadd_fdb_dn2dn");
 
-            auto                        t   = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>>         r   = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         v   = t->v.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
+            auto                        t   = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>>         r   = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         v   = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         fdb = t->fdb.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast_safe<TOpBinary<T, T, T>>();
 
-            if (!ensure_kernel(op)) return Status::CompilationError;
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op, program)) return Status::CompilationError;
 
             r->validate_rwd(FormatVector::AccDense);
             v->validate_rw(FormatVector::AccDense);
@@ -151,7 +153,7 @@ namespace spla {
 
             cl_fill_value(queue, p_cl_fdb->Ax, n, fdb->get_fill_value());
 
-            auto kernel = m_program->make_kernel("dense_to_dense");
+            auto kernel = program->make_kernel("dense_to_dense");
             kernel.setArg(0, p_cl_r->Ax);
             kernel.setArg(1, p_cl_v->Ax);
             kernel.setArg(2, p_cl_fdb->Ax);
@@ -164,9 +166,7 @@ namespace spla {
             return Status::Ok;
         }
 
-        bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op) {
-            if (m_compiled) return true;
-
+        bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op, std::shared_ptr<CLProgram>& program) {
             CLProgramBuilder program_builder;
             program_builder
                     .set_name("vector_eadd")
@@ -175,14 +175,10 @@ namespace spla {
                     .set_source(source_vector_eadd)
                     .acquire();
 
-            m_program  = program_builder.get_program();
-            m_compiled = true;
+            program = program_builder.get_program();
 
             return true;
         }
-
-        std::shared_ptr<CLProgram> m_program;
-        bool                       m_compiled = false;
     };
 
 }// namespace spla

@@ -35,7 +35,7 @@ TEST(matrix, get_set_naive) {
     const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
     const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
 
-    auto imat = spla::make_matrix(M, N, spla::INT);
+    auto imat = spla::Matrix::make(M, N, spla::INT);
 
     for (spla::uint k = 0; k < K; ++k) {
         imat->set_int(Ai[k], Aj[k], Ax[k]);
@@ -54,7 +54,7 @@ TEST(matrix, get_set_reduce_default) {
     const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
     const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
 
-    auto imat = spla::make_matrix(M, N, spla::INT);
+    auto imat = spla::Matrix::make(M, N, spla::INT);
 
     for (spla::uint k = 0; k < K; ++k) {
         imat->set_int(Ai[k], Aj[k], Ax[k]);
@@ -74,7 +74,7 @@ TEST(matrix, get_set_reduce_plus) {
     const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
     const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
 
-    auto imat = spla::make_matrix(M, N, spla::INT);
+    auto imat = spla::Matrix::make(M, N, spla::INT);
     imat->set_reduce(spla::PLUS_INT);
 
     for (spla::uint k = 0; k < K; ++k) {
@@ -95,7 +95,7 @@ TEST(matrix, get_set_reduce_mult) {
     const spla::uint Aj[K] = {0, 1, 8, 9, 7, 3, 4, 0};
     const int        Ax[K] = {-1, 2, 4, 9, -10, 11, 23, 45};
 
-    auto imat = spla::make_matrix(M, N, spla::INT);
+    auto imat = spla::Matrix::make(M, N, spla::INT);
 
     for (spla::uint k = 0; k < K; ++k) {
         imat->set_int(Ai[k], Aj[k], 4);

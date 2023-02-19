@@ -60,18 +60,18 @@ namespace spla {
         SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value) = 0;
         SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)        = 0;
         SPLA_API virtual Status        clear()                                                  = 0;
-    };
 
-    /**
-     * @brief Make new matrix instance with specified dim and values type
-     *
-     * @param n_rows Number of matrix rows; must be > 0;
-     * @param n_cols Number of matrix columns; must be > 0;
-     * @param type Type of matrix elements
-     *
-     * @return New matrix instance or null if failed to create
-     */
-    SPLA_API ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type);
+        /**
+         * @brief Make new matrix instance with specified dim and values type
+         *
+         * @param n_rows Number of matrix rows; must be > 0;
+         * @param n_cols Number of matrix columns; must be > 0;
+         * @param type Type of matrix elements
+         *
+         * @return New matrix instance or null if failed to create
+         */
+        SPLA_API static ref_ptr<Matrix> make(uint n_rows, uint n_cols, const ref_ptr<Type>& type);
+    };
 
     /**
      * @}

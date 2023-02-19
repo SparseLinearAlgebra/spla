@@ -53,8 +53,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (v->is_valid(FormatVector::CpuDok))
                 return execute_dok(ctx);
@@ -70,8 +70,8 @@ namespace spla {
         Status execute_dok(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/v_count_mf_dok");
 
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
+            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
             CpuDokVec<T>*       dec_v = v->template get<CpuDokVec<T>>();
 
             t->r->set_uint(dec_v->values);
@@ -81,8 +81,8 @@ namespace spla {
         Status execute_coo(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/v_count_mf_coo");
 
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
+            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
             CpuCooVec<T>*       dec_v = v->template get<CpuCooVec<T>>();
 
             t->r->set_uint(dec_v->values);
@@ -92,8 +92,8 @@ namespace spla {
         Status execute_dense(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/v_count_mf_dense");
 
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
+            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
             CpuDenseVec<T>*     dec_v = v->template get<CpuDenseVec<T>>();
 
             uint    values = 0;

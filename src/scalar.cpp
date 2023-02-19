@@ -30,13 +30,13 @@
 
 namespace spla {
 
-    ref_ptr<Scalar> make_scalar(const ref_ptr<Type>& type) {
+    ref_ptr<Scalar> Scalar::make(const ref_ptr<Type>& type) {
         if (!type) {
             LOG_MSG(Status::InvalidArgument, "passed null type");
             return ref_ptr<Scalar>{};
         }
 
-        get_library();
+        Library::get();
 
         if (type == INT) {
             return ref_ptr<Scalar>(new TScalar<std::int32_t>());
@@ -52,19 +52,13 @@ namespace spla {
         return ref_ptr<Scalar>();
     }
 
-    ref_ptr<Scalar> make_byte(std::int8_t value) {
-        return ref_ptr<Scalar>(new TScalar<std::int8_t>(value));
-    }
-
-    ref_ptr<Scalar> make_int(std::int32_t value) {
+    ref_ptr<Scalar> Scalar::make_int(std::int32_t value) {
         return ref_ptr<Scalar>(new TScalar<std::int32_t>(value));
     }
-
-    ref_ptr<Scalar> make_uint(std::uint32_t value) {
+    ref_ptr<Scalar> Scalar::make_uint(std::uint32_t value) {
         return ref_ptr<Scalar>(new TScalar<std::uint32_t>(value));
     }
-
-    ref_ptr<Scalar> make_float(float value) {
+    ref_ptr<Scalar> Scalar::Scalar::make_float(float value) {
         return ref_ptr<Scalar>(new TScalar<float>(value));
     }
 

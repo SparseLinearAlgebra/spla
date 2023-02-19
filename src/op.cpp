@@ -27,7 +27,9 @@
 
 #include <core/top.hpp>
 
+#include "spla/op.hpp"
 #include <algorithm>
+
 
 namespace spla {
 
@@ -163,6 +165,81 @@ namespace spla {
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
+    }
+
+    ref_ptr<OpUnary> OpUnary::make_int(std::string name, std::string code, std::function<T_INT(T_INT)> function) {
+        auto op      = make_ref<TOpUnary<T_INT, T_INT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpUnary>();
+    }
+    ref_ptr<OpUnary> OpUnary::make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT)> function) {
+        auto op      = make_ref<TOpUnary<T_UINT, T_UINT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpUnary>();
+    }
+    ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function) {
+        auto op      = make_ref<TOpUnary<T_FLOAT, T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpUnary>();
+    }
+
+    ref_ptr<OpBinary> OpBinary::make_int(std::string name, std::string code, std::function<T_INT(T_INT, T_INT)> function) {
+        auto op      = make_ref<TOpBinary<T_INT, T_INT, T_INT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpBinary>();
+    }
+    ref_ptr<OpBinary> OpBinary::make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT, T_UINT)> function) {
+        auto op      = make_ref<TOpBinary<T_UINT, T_UINT, T_UINT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpBinary>();
+    }
+    ref_ptr<OpBinary> OpBinary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function) {
+        auto op      = make_ref<TOpBinary<T_FLOAT, T_FLOAT, T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpBinary>();
+    }
+
+    ref_ptr<OpSelect> OpSelect::make_int(std::string name, std::string code, std::function<bool(T_INT)> function) {
+        auto op      = make_ref<TOpSelect<T_INT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelect>();
+    }
+    ref_ptr<OpSelect> OpSelect::make_uint(std::string name, std::string code, std::function<bool(T_UINT)> function) {
+        auto op      = make_ref<TOpSelect<T_UINT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelect>();
+    }
+    ref_ptr<OpSelect> OpSelect::make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function) {
+        auto op      = make_ref<TOpSelect<T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelect>();
     }
 
 }// namespace spla

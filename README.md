@@ -12,8 +12,8 @@
 
 **spla** is an open-source generalized sparse linear algebra framework for mathematical computations with GPUs
 acceleration. It provides linear algebra primitives, such as matrices, vectors and scalars, supports wide variety of
-operations. It gives an ability to customize underlying values types treatment and parametrise operations using rich
-pre-defined functions' set.
+operations. It gives an ability to customize underlying values types treatment and parametrise operations using built-in
+or custom user-defined functions.
 
 - **Website**:
   [https://SparseLinearAlgebra.github.io/pyspla/](https://SparseLinearAlgebra.github.io/spla/docs-python/pyspla/)

@@ -35,7 +35,7 @@
 namespace spla {
 
     static Status execute_immediate(ref_ptr<ScheduleTask> task) {
-        Dispatcher*     g_dispatcher = get_library()->get_dispatcher();
+        Dispatcher*     g_dispatcher = Library::get()->get_dispatcher();
         DispatchContext ctx{};
         ctx.thread_id = 0;
         ctx.step_id   = 0;

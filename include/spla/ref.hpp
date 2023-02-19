@@ -31,6 +31,7 @@
 #include <atomic>
 #include <cassert>
 #include <functional>
+#include <stdexcept>
 #include <utility>
 
 namespace spla {
@@ -207,6 +208,17 @@ namespace spla {
         template<class G>
         ref_ptr<G> as() const {
             return ref_ptr<G>(m_object);
+        }
+
+        template<class G>
+        ref_ptr<G> cast_safe() const {
+            auto casted = dynamic_cast<G*>(m_object);
+
+            if (!casted && m_object) {
+                throw std::runtime_error("failed to do dynamic cast");
+            }
+
+            return ref_ptr<G>(casted);
         }
 
         template<class G>

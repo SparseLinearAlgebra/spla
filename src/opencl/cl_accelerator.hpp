@@ -135,7 +135,7 @@ namespace spla {
      * @return OpenCL accelerator if present
      */
     static inline CLAccelerator* get_acc_cl() {
-        return dynamic_cast<CLAccelerator*>(get_library()->get_accelerator());
+        return dynamic_cast<CLAccelerator*>(Library::get()->get_accelerator());
     }
 
     /**

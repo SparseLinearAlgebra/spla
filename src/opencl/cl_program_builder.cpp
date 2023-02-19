@@ -107,7 +107,7 @@ namespace spla {
         m_program->m_source    = std::move(m_program_code);
         m_program->m_name      = std::move(m_name);
         m_program->m_key       = cache_key.str();
-        LOG_MSG(Status::Ok, "build program '" << m_program->m_name << "' in " << t.get_elapsed_sec() << " sec");
+        LOG_MSG(Status::Ok, "build program '" << m_program->m_name << "' in " << t.get_elapsed_sec() << " sec (full name '" << m_program->m_key << "')");
 
         cache->add_program(m_program);
     }

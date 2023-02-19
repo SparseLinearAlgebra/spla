@@ -67,6 +67,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ScheduleCallback callback;
@@ -82,6 +83,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Vector>   r;
@@ -104,6 +106,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Vector>   r;
@@ -126,6 +129,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Vector>   r;
@@ -144,6 +148,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Vector>   r;
@@ -163,6 +168,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Scalar>   r;
@@ -181,6 +187,7 @@ namespace spla {
 
         std::string                  get_name() override;
         std::string                  get_key() override;
+        std::string                  get_key_full() override;
         std::vector<ref_ptr<Object>> get_args() override;
 
         ref_ptr<Scalar> r;

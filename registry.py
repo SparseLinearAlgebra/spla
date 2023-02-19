@@ -54,6 +54,7 @@ def generate(file, algo, platform, ts, ops):
 def main():
     parser = argparse.ArgumentParser("generate all possible algorithm variation")
     parser.add_argument("--out", help="file to save generated code", default="registry.txt")
+    parser.add_argument("--full", help="gen full signature or short", default=False)
     parser.add_argument("--platform", help="target backend platform to generate", default="cpu")
     args = parser.parse_args()
 
@@ -66,29 +67,37 @@ def main():
     algos_1 = ["v_reduce", "v_eadd_fdb"]
     algos_2 = ["v_assign_masked"]
     algos_3 = ["mxv_masked", "vxm_masked"]
+    algos_all = algos_0 + algos_1 + algos_2 + algos_3
 
     p = args.platform
 
-    with open(args.out, "w") as file:
-        for algo in algos_0:
-            file.write(f"// algorthm {algo}\n")
-            generate(file, algo, p, ts, [])
-            file.write("\n\n")
-        for algo in algos_1:
-            file.write(f"// algorthm {algo}\n")
-            generate(file, algo, p, ts, [ops_bin])
-            generate(file, algo, p, ts_integral, [ops_bin_x])
-            file.write("\n\n")
-        for algo in algos_2:
-            file.write(f"// algorthm {algo}\n")
-            generate(file, algo, p, ts, [ops_bin, ops_select])
-            generate(file, algo, p, ts_integral, [ops_bin_x, ops_select])
-            file.write("\n\n")
-        for algo in algos_3:
-            file.write(f"// algorthm {algo}\n")
-            generate(file, algo, p, ts, [ops_bin, ops_bin, ops_select])
-            generate(file, algo, p, ts_integral, [ops_bin_x, ops_bin_x, ops_select])
-            file.write("\n\n")
+    if not args.full:
+        with open(args.out, "w") as file:
+            for algo in algos_all:
+                file.write(f"// algorthm {algo}\n")
+                generate(file, algo, p, ts, [])
+                file.write("\n")
+    else:
+        with open(args.out, "w") as file:
+            for algo in algos_0:
+                file.write(f"// algorthm {algo}\n")
+                generate(file, algo, p, ts, [])
+                file.write("\n\n")
+            for algo in algos_1:
+                file.write(f"// algorthm {algo}\n")
+                generate(file, algo, p, ts, [ops_bin])
+                generate(file, algo, p, ts_integral, [ops_bin_x])
+                file.write("\n\n")
+            for algo in algos_2:
+                file.write(f"// algorthm {algo}\n")
+                generate(file, algo, p, ts, [ops_bin, ops_select])
+                generate(file, algo, p, ts_integral, [ops_bin_x, ops_select])
+                file.write("\n\n")
+            for algo in algos_3:
+                file.write(f"// algorthm {algo}\n")
+                generate(file, algo, p, ts, [ops_bin, ops_bin, ops_select])
+                generate(file, algo, p, ts_integral, [ops_bin_x, ops_bin_x, ops_select])
+                file.write("\n\n")
 
 
 if __name__ == '__main__':

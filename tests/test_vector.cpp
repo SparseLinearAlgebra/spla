@@ -33,7 +33,7 @@ TEST(vector, get_set_naive) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
-    auto ivec = spla::make_vector(N, spla::INT);
+    auto ivec = spla::Vector::make(N, spla::INT);
 
     for (spla::uint i = 0; i < N; ++i) {
         ivec->set_int(i, X[i]);
@@ -50,7 +50,7 @@ TEST(vector, get_set_reduce_default) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
-    auto ivec = spla::make_vector(N, spla::INT);
+    auto ivec = spla::Vector::make(N, spla::INT);
 
     for (spla::uint i = 0; i < N; ++i) {
         ivec->set_int(i, X[i]);
@@ -68,7 +68,7 @@ TEST(vector, get_set_reduce_plus) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
-    auto ivec = spla::make_vector(N, spla::INT);
+    auto ivec = spla::Vector::make(N, spla::INT);
     ivec->set_reduce(spla::PLUS_INT);
 
     for (spla::uint i = 0; i < N; ++i) {
@@ -87,7 +87,7 @@ TEST(vector, get_set_reduce_mult) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
 
-    auto ivec = spla::make_vector(N, spla::INT);
+    auto ivec = spla::Vector::make(N, spla::INT);
 
     for (spla::uint i = 0; i < N; ++i) {
         ivec->set_int(i, 4);
@@ -112,9 +112,9 @@ TEST(vector, reduce_plus) {
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
 
-    auto ivec   = spla::make_vector(N, spla::INT);
-    auto ir     = spla::make_scalar(spla::INT);
-    auto istart = spla::make_int(0);
+    auto ivec   = spla::Vector::make(N, spla::INT);
+    auto ir     = spla::Scalar::make(spla::INT);
+    auto istart = spla::Scalar::make_int(0);
     int  isum   = 0;
 
     for (int k = 0; k < K; ++k) {
@@ -136,9 +136,9 @@ TEST(vector, reduce_mult) {
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     const int        X[K] = {1, 2, 3, 4, 5, -3, -3, 5};
 
-    auto ivec   = spla::make_vector(N, spla::INT);
-    auto ir     = spla::make_scalar(spla::INT);
-    auto istart = spla::make_int(1);
+    auto ivec   = spla::Vector::make(N, spla::INT);
+    auto ir     = spla::Scalar::make(spla::INT);
+    auto istart = spla::Scalar::make_int(1);
     int  isum   = 1;
 
     for (int k = 0; k < N; ++k) {
@@ -166,9 +166,9 @@ TEST(vector, reduce_perf) {
 
     spla::Timer timer;
 
-    auto ivec   = spla::make_vector(N, spla::INT);
-    auto ir     = spla::make_scalar(spla::INT);
-    auto istart = spla::make_int(0);
+    auto ivec   = spla::Vector::make(N, spla::INT);
+    auto ir     = spla::Scalar::make(spla::INT);
+    auto istart = spla::Scalar::make_int(0);
 
     for (int i = 0; i < N; ++i) {
         if ((i % K) == 0) {
@@ -201,9 +201,9 @@ TEST(vector, eadd_fdb_min) {
     int              R[N];
     int              F[N];
 
-    auto ir   = spla::make_vector(N, spla::INT);
-    auto iv   = spla::make_vector(N, spla::INT);
-    auto ifdb = spla::make_vector(N, spla::INT);
+    auto ir   = spla::Vector::make(N, spla::INT);
+    auto iv   = spla::Vector::make(N, spla::INT);
+    auto ifdb = spla::Vector::make(N, spla::INT);
 
     for (int k = 0; k < N; ++k) {
         ir->set_int(k, S);
@@ -232,6 +232,38 @@ TEST(vector, eadd_fdb_min) {
     }
 }
 
+TEST(vector, eadd_fdb_custom) {
+    const spla::uint N = 10000;
+    auto             v = spla::Vector::make(N, spla::FLOAT);
+    auto             u = spla::Vector::make(N, spla::FLOAT);
+    auto             f = spla::Vector::make(N, spla::FLOAT);
+
+    for (spla::uint i = 0; i < N; i++) {
+        v->set_float(i, float(i));
+        u->set_float(i, float(N) - float(i) * float(i));
+    }
+
+    v->set_format(spla::FormatVector::AccDense);
+    u->set_format(spla::FormatVector::AccDense);
+
+    auto custom_plus = spla::OpBinary::make_float(
+            "custom_plus",
+            "(float a, float b) { return 0.25f * a + 0.75f * b; }",
+            [](float a, float b) { return 0.25f * a + 0.75f * b; });
+
+    spla::exec_v_eadd_fdb(v, u, f, custom_plus);
+
+    auto ref = [](float a, float b) { return 0.25f * a + 0.75f * b; };
+
+    for (spla::uint i = 0; i < N; i++) {
+        const float error = 0.005f;
+        float       actual;
+        v->get_float(i, actual);
+        float expected = ref(float(i), float(N) - float(i) * float(i));
+        EXPECT_TRUE(std::fabs(actual - expected) <= error);
+    }
+}
+
 TEST(vector, assign_plus) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;
@@ -239,9 +271,9 @@ TEST(vector, assign_plus) {
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     int              R[N];
 
-    auto ivec  = spla::make_vector(N, spla::INT);
-    auto imask = spla::make_vector(N, spla::INT);
-    auto ival  = spla::make_int(S);
+    auto ivec  = spla::Vector::make(N, spla::INT);
+    auto imask = spla::Vector::make(N, spla::INT);
+    auto ival  = spla::Scalar::make_int(S);
 
     for (int k = 0; k < N; ++k) {
         ivec->set_int(k, 14);
@@ -270,9 +302,9 @@ TEST(vector, assign_second) {
     const int        I[K] = {0, 2, 3, 5, 10, 12, 15, 16};
     int              R[N];
 
-    auto ivec  = spla::make_vector(N, spla::INT);
-    auto imask = spla::make_vector(N, spla::INT);
-    auto ival  = spla::make_int(S);
+    auto ivec  = spla::Vector::make(N, spla::INT);
+    auto imask = spla::Vector::make(N, spla::INT);
+    auto ival  = spla::Scalar::make_int(S);
 
     for (int k = 0; k < N; ++k) {
         ivec->set_int(k, 14);
@@ -303,9 +335,9 @@ TEST(vector, assign_perf) {
 
     spla::Timer timer;
 
-    auto ivec  = spla::make_vector(N, spla::INT);
-    auto imask = spla::make_vector(N, spla::INT);
-    auto ival  = spla::make_int(V);
+    auto ivec  = spla::Vector::make(N, spla::INT);
+    auto imask = spla::Vector::make(N, spla::INT);
+    auto ival  = spla::Scalar::make_int(V);
 
     for (int i = 0; i < N; ++i) {
         ivec->set_int(i, B);
@@ -367,9 +399,9 @@ TEST(vector, fill_value) {
     const int N    = 10000;
     const int S    = 2;
 
-    auto v = spla::make_vector(N, spla::INT);
+    auto v = spla::Vector::make(N, spla::INT);
 
-    v->set_fill_value(spla::make_int(fill));
+    v->set_fill_value(spla::Scalar::make_int(fill));
 
     for (int i = 0; i < N; i++) {
         if (i % S) v->set_int(i, set);
@@ -381,7 +413,7 @@ TEST(vector, fill_value) {
         EXPECT_EQ(r, (i % S ? set : fill));
     }
 
-    v->set_fill_value(spla::make_int(set));
+    v->set_fill_value(spla::Scalar::make_int(set));
 
     for (int i = 0; i < N; i++) {
         int r;

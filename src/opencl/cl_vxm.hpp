@@ -73,22 +73,23 @@ namespace spla {
         Status execute_sparse(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("opencl/vxm/sparse");
 
-            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_vxm_masked>();
 
-            ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
-            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
-            ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
+            ref_ptr<TVector<T>>         r           = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         mask        = t->mask.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         v           = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast_safe<TMatrix<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
             r->validate_wd(FormatVector::AccCoo);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccCoo);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op_multiply, op_add, op_select, program)) return Status::CompilationError;
 
             auto* p_cl_r    = r->template get<CLCooVec<T>>();
             auto* p_cl_mask = mask->template get<CLDenseVec<T>>();
@@ -103,19 +104,20 @@ namespace spla {
             CLCounterWrapper cl_prods_count;
             CL_COUNTER_SET("init-prods-cnt", queue, cl_prods_count, 0);
 
-            m_kernel_sparse_count.setArg(0, p_cl_v->Ai);
-            m_kernel_sparse_count.setArg(1, p_cl_v->Ax);
-            m_kernel_sparse_count.setArg(2, p_cl_M->Ap);
-            m_kernel_sparse_count.setArg(3, p_cl_M->Aj);
-            m_kernel_sparse_count.setArg(4, p_cl_mask->Ax);
-            m_kernel_sparse_count.setArg(5, cl_prods_count.buffer());
-            m_kernel_sparse_count.setArg(6, p_cl_v->values);
+            auto kernel_sparse_count = program->make_kernel("vxm_sparse_count");
+            kernel_sparse_count.setArg(0, p_cl_v->Ai);
+            kernel_sparse_count.setArg(1, p_cl_v->Ax);
+            kernel_sparse_count.setArg(2, p_cl_M->Ap);
+            kernel_sparse_count.setArg(3, p_cl_M->Aj);
+            kernel_sparse_count.setArg(4, p_cl_mask->Ax);
+            kernel_sparse_count.setArg(5, cl_prods_count.buffer());
+            kernel_sparse_count.setArg(6, p_cl_v->values);
 
             uint n_groups_to_dispatch_v = div_up_clamp(p_cl_v->values, m_block_size, 1, 512);
 
             cl::NDRange count_global(m_block_size * n_groups_to_dispatch_v);
             cl::NDRange count_local(m_block_size);
-            CL_DISPATCH_PROFILED("count", queue, m_kernel_sparse_count, cl::NDRange(), count_global, count_local);
+            CL_DISPATCH_PROFILED("count", queue, kernel_sparse_count, cl::NDRange(), count_global, count_local);
 
             CL_COUNTER_GET("copy_prods_count", queue, cl_prods_count, prods_count);
             LOG_MSG(Status::Ok, "temporary vi * A[,*] count " << prods_count);
@@ -136,20 +138,21 @@ namespace spla {
             CLCounterWrapper cl_prods_offset;
             CL_COUNTER_SET("init-offsets-cnt", queue, cl_prods_offset, 0);
 
-            m_kernel_sparse_collect.setArg(0, p_cl_v->Ai);
-            m_kernel_sparse_collect.setArg(1, p_cl_v->Ax);
-            m_kernel_sparse_collect.setArg(2, p_cl_M->Ap);
-            m_kernel_sparse_collect.setArg(3, p_cl_M->Aj);
-            m_kernel_sparse_collect.setArg(4, p_cl_M->Ax);
-            m_kernel_sparse_collect.setArg(5, p_cl_mask->Ax);
-            m_kernel_sparse_collect.setArg(6, cl_prodi);
-            m_kernel_sparse_collect.setArg(7, cl_prodx);
-            m_kernel_sparse_collect.setArg(8, cl_prods_offset.buffer());
-            m_kernel_sparse_collect.setArg(9, p_cl_v->values);
+            auto kernel_sparse_collect = program->make_kernel("vxm_sparse_collect");
+            kernel_sparse_collect.setArg(0, p_cl_v->Ai);
+            kernel_sparse_collect.setArg(1, p_cl_v->Ax);
+            kernel_sparse_collect.setArg(2, p_cl_M->Ap);
+            kernel_sparse_collect.setArg(3, p_cl_M->Aj);
+            kernel_sparse_collect.setArg(4, p_cl_M->Ax);
+            kernel_sparse_collect.setArg(5, p_cl_mask->Ax);
+            kernel_sparse_collect.setArg(6, cl_prodi);
+            kernel_sparse_collect.setArg(7, cl_prodx);
+            kernel_sparse_collect.setArg(8, cl_prods_offset.buffer());
+            kernel_sparse_collect.setArg(9, p_cl_v->values);
 
             cl::NDRange collect_global(m_block_size * n_groups_to_dispatch_v);
             cl::NDRange collect_local(m_block_size);
-            CL_DISPATCH_PROFILED("collect", queue, m_kernel_sparse_collect, cl::NDRange(), collect_global, collect_local);
+            CL_DISPATCH_PROFILED("collect", queue, kernel_sparse_collect, cl::NDRange(), collect_global, collect_local);
 
             CL_PROFILE_BEGIN("sort", queue)
             const uint max_key    = r->get_n_rows() - 1;
@@ -176,9 +179,8 @@ namespace spla {
 
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_multiply,
                            const ref_ptr<TOpBinary<T, T, T>>& op_add,
-                           const ref_ptr<TOpSelect<T>>&       op_select) {
-            if (m_compiled) return true;
-
+                           const ref_ptr<TOpSelect<T>>&       op_select,
+                           std::shared_ptr<CLProgram>&        program) {
             m_block_size  = get_acc_cl()->get_wave_size();
             m_block_count = 1;
 
@@ -196,20 +198,14 @@ namespace spla {
                     .set_source(source_vxm)
                     .acquire();
 
-            m_program               = program_builder.get_program();
-            m_kernel_sparse_count   = m_program->make_kernel("vxm_sparse_count");
-            m_kernel_sparse_collect = m_program->make_kernel("vxm_sparse_collect");
-            m_compiled              = true;
+            program = program_builder.get_program();
 
             return true;
         }
 
-        std::shared_ptr<CLProgram> m_program;
-        cl::Kernel                 m_kernel_sparse_count;
-        cl::Kernel                 m_kernel_sparse_collect;
-        uint                       m_block_size  = 0;
-        uint                       m_block_count = 0;
-        bool                       m_compiled    = false;
+    private:
+        uint m_block_size  = 0;
+        uint m_block_count = 0;
     };
 
 }// namespace spla

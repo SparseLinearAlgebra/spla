@@ -30,7 +30,7 @@
 
 namespace spla {
 
-    ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type>& type) {
+    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
         if (n_rows <= 0) {
             LOG_MSG(Status::InvalidArgument, "passed 0 dim");
             return ref_ptr<Vector>{};
@@ -40,7 +40,7 @@ namespace spla {
             return ref_ptr<Vector>{};
         }
 
-        get_library();
+        Library::get();
 
         if (type == INT) {
             return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));

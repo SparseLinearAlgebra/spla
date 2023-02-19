@@ -128,7 +128,7 @@ namespace spla {
         cl::NDRange gen_offsets_local(block_size);
         queue.enqueueNDRangeKernel(kernel_gen_offsets, cl::NDRange(), gen_offsets_global, gen_offsets_local);
 
-        cl_exclusive_scan(queue, offsets, size, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>(), tmp_alloc);
+        cl_exclusive_scan(queue, offsets, size, PLUS_UINT.template cast_safe<TOpBinary<uint, uint, uint>>(), tmp_alloc);
 
         CLCounterWrapper cl_scan_last;
         queue.enqueueCopyBuffer(offsets, cl_scan_last.buffer(), sizeof(uint) * (size - 1), 0, sizeof(uint));

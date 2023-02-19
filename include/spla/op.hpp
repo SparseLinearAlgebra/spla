@@ -59,8 +59,11 @@ namespace spla {
      */
     class OpUnary : public Op {
     public:
-        SPLA_API ~OpUnary() override                    = default;
-        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
+        SPLA_API ~OpUnary() override                      = default;
+        SPLA_API virtual ref_ptr<Type>   get_type_arg_0() = 0;
+        SPLA_API static ref_ptr<OpUnary> make_int(std::string name, std::string code, std::function<T_INT(T_INT)> function);
+        SPLA_API static ref_ptr<OpUnary> make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT)> function);
+        SPLA_API static ref_ptr<OpUnary> make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function);
     };
 
     /**
@@ -69,9 +72,12 @@ namespace spla {
      */
     class OpBinary : public Op {
     public:
-        SPLA_API ~OpBinary() override                   = default;
-        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
-        SPLA_API virtual ref_ptr<Type> get_type_arg_1() = 0;
+        SPLA_API ~OpBinary() override                      = default;
+        SPLA_API virtual ref_ptr<Type>    get_type_arg_0() = 0;
+        SPLA_API virtual ref_ptr<Type>    get_type_arg_1() = 0;
+        SPLA_API static ref_ptr<OpBinary> make_int(std::string name, std::string code, std::function<T_INT(T_INT, T_INT)> function);
+        SPLA_API static ref_ptr<OpBinary> make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT, T_UINT)> function);
+        SPLA_API static ref_ptr<OpBinary> make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function);
     };
 
     /**
@@ -80,8 +86,11 @@ namespace spla {
      */
     class OpSelect : public Op {
     public:
-        SPLA_API ~OpSelect() override                   = default;
-        SPLA_API virtual ref_ptr<Type> get_type_arg_0() = 0;
+        SPLA_API ~OpSelect() override                      = default;
+        SPLA_API virtual ref_ptr<Type>    get_type_arg_0() = 0;
+        SPLA_API static ref_ptr<OpSelect> make_int(std::string name, std::string code, std::function<bool(T_INT)> function);
+        SPLA_API static ref_ptr<OpSelect> make_uint(std::string name, std::string code, std::function<bool(T_UINT)> function);
+        SPLA_API static ref_ptr<OpSelect> make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function);
     };
 
     SPLA_API extern ref_ptr<OpBinary> PLUS_INT;

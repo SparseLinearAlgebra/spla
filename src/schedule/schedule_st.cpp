@@ -44,7 +44,7 @@ namespace spla {
     }
 
     Status ScheduleSingleThread::submit() {
-        Dispatcher*     g_dispatcher = get_library()->get_dispatcher();
+        Dispatcher*     g_dispatcher = Library::get()->get_dispatcher();
         DispatchContext ctx{};
 
         ctx.schedule = ref_ptr<Schedule>(this);

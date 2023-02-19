@@ -55,14 +55,24 @@ namespace spla {
     std::string ScheduleTask_callback::get_key() {
         return "callback";
     }
+    std::string ScheduleTask_callback::get_key_full() {
+        return "callback";
+    }
     std::vector<ref_ptr<Object>> ScheduleTask_callback::get_args() {
-        return std::vector<ref_ptr<Object>>();
+        return {};
     }
 
     std::string ScheduleTask_mxv_masked::get_name() {
         return "mxv_masked";
     }
     std::string ScheduleTask_mxv_masked::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_mxv_masked::get_key_full() {
         std::stringstream key;
         key << get_name()
             << OP_KEY(op_multiply)
@@ -81,6 +91,13 @@ namespace spla {
     std::string ScheduleTask_vxm_masked::get_key() {
         std::stringstream key;
         key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_vxm_masked::get_key_full() {
+        std::stringstream key;
+        key << get_name()
             << OP_KEY(op_multiply)
             << OP_KEY(op_add)
             << OP_KEY(op_select);
@@ -97,6 +114,13 @@ namespace spla {
     std::string ScheduleTask_v_eadd_fdb::get_key() {
         std::stringstream key;
         key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_eadd_fdb::get_key_full() {
+        std::stringstream key;
+        key << get_name()
             << OP_KEY(op);
 
         return key.str();
@@ -109,6 +133,13 @@ namespace spla {
         return "v_assign_masked";
     }
     std::string ScheduleTask_v_assign_masked::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_assign_masked::get_key_full() {
         std::stringstream key;
         key << get_name()
             << OP_KEY(op_assign)
@@ -126,6 +157,13 @@ namespace spla {
     std::string ScheduleTask_v_reduce::get_key() {
         std::stringstream key;
         key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_reduce::get_key_full() {
+        std::stringstream key;
+        key << get_name()
             << OP_KEY(op_reduce);
 
         return key.str();
@@ -138,6 +176,13 @@ namespace spla {
         return "v_count_mf";
     }
     std::string ScheduleTask_v_count_mf::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(v->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_count_mf::get_key_full() {
         std::stringstream key;
         key << get_name()
             << TYPE_KEY(v->get_type());

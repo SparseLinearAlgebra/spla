@@ -63,7 +63,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t          = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t          = ctx.task.template cast_safe<ScheduleTask_mxv_masked>();
             auto early_exit = t->get_desc_or_default()->get_early_exit();
 
             if (early_exit) {
@@ -77,22 +77,24 @@ namespace spla {
         Status execute_vector(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("opencl/mxv/vector");
 
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_mxv_masked>();
 
-            ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
-            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
-            ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
-            ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
+            ref_ptr<TVector<T>>         r           = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         mask        = t->mask.template cast_safe<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>         v           = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
             r->validate_rwd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
+
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op_multiply, op_add, op_select, program)) return Status::CompilationError;
 
             auto* p_cl_r    = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask = mask->template get<CLDenseVec<T>>();
@@ -102,20 +104,21 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            m_kernel_vector.setArg(0, p_cl_M->Ap);
-            m_kernel_vector.setArg(1, p_cl_M->Aj);
-            m_kernel_vector.setArg(2, p_cl_M->Ax);
-            m_kernel_vector.setArg(3, p_cl_v->Ax);
-            m_kernel_vector.setArg(4, p_cl_mask->Ax);
-            m_kernel_vector.setArg(5, p_cl_r->Ax);
-            m_kernel_vector.setArg(6, init->get_value());
-            m_kernel_vector.setArg(7, r->get_n_rows());
+            auto kernel_vector = program->make_kernel("mxv_vector");
+            kernel_vector.setArg(0, p_cl_M->Ap);
+            kernel_vector.setArg(1, p_cl_M->Aj);
+            kernel_vector.setArg(2, p_cl_M->Ax);
+            kernel_vector.setArg(3, p_cl_v->Ax);
+            kernel_vector.setArg(4, p_cl_mask->Ax);
+            kernel_vector.setArg(5, p_cl_r->Ax);
+            kernel_vector.setArg(6, init->get_value());
+            kernel_vector.setArg(7, r->get_n_rows());
 
             uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_count, 1, 512);
 
             cl::NDRange exec_global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange exec_local(m_block_count, m_block_size);
-            CL_DISPATCH_PROFILED("exec", queue, m_kernel_vector, cl::NDRange(), exec_global, exec_local);
+            CL_DISPATCH_PROFILED("exec", queue, kernel_vector, cl::NDRange(), exec_global, exec_local);
 
             return Status::Ok;
         }
@@ -123,22 +126,24 @@ namespace spla {
         Status execute_scalar(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("opencl/mxv/scalar");
 
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_mxv_masked>();
 
-            ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
-            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
-            ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
-            ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
+            ref_ptr<TVector<T>>         r           = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         mask        = t->mask.template cast_safe<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>         v           = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
             r->validate_rwd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
+
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op_multiply, op_add, op_select, program)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
@@ -149,21 +154,22 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            m_kernel_scalar.setArg(0, p_cl_M->Ap);
-            m_kernel_scalar.setArg(1, p_cl_M->Aj);
-            m_kernel_scalar.setArg(2, p_cl_M->Ax);
-            m_kernel_scalar.setArg(3, p_cl_v->Ax);
-            m_kernel_scalar.setArg(4, p_cl_mask->Ax);
-            m_kernel_scalar.setArg(5, p_cl_r->Ax);
-            m_kernel_scalar.setArg(6, init->get_value());
-            m_kernel_scalar.setArg(7, r->get_n_rows());
-            m_kernel_scalar.setArg(8, uint(early_exit));
+            auto kernel_scalar = program->make_kernel("mxv_scalar");
+            kernel_scalar.setArg(0, p_cl_M->Ap);
+            kernel_scalar.setArg(1, p_cl_M->Aj);
+            kernel_scalar.setArg(2, p_cl_M->Ax);
+            kernel_scalar.setArg(3, p_cl_v->Ax);
+            kernel_scalar.setArg(4, p_cl_mask->Ax);
+            kernel_scalar.setArg(5, p_cl_r->Ax);
+            kernel_scalar.setArg(6, init->get_value());
+            kernel_scalar.setArg(7, r->get_n_rows());
+            kernel_scalar.setArg(8, uint(early_exit));
 
             uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 512);
 
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
-            CL_DISPATCH_PROFILED("exec", queue, m_kernel_scalar, cl::NDRange(), exec_global, exec_local);
+            CL_DISPATCH_PROFILED("exec", queue, kernel_scalar, cl::NDRange(), exec_global, exec_local);
 
             return Status::Ok;
         }
@@ -171,22 +177,24 @@ namespace spla {
         Status execute_config_scalar(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("opencl/mxv/config-scalar");
 
-            auto t = ctx.task.template cast<ScheduleTask_mxv_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_mxv_masked>();
 
-            ref_ptr<TVector<T>>         r           = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         mask        = t->mask.template cast<TVector<T>>();
-            ref_ptr<TMatrix<T>>         M           = t->M.template cast<TMatrix<T>>();
-            ref_ptr<TVector<T>>         v           = t->v.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
-            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast<TOpSelect<T>>();
-            ref_ptr<TScalar<T>>         init        = t->init.template cast<TScalar<T>>();
+            ref_ptr<TVector<T>>         r           = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         mask        = t->mask.template cast_safe<TVector<T>>();
+            ref_ptr<TMatrix<T>>         M           = t->M.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>         v           = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpBinary<T, T, T>> op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
             r->validate_rwd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);
-            if (!ensure_kernel(op_multiply, op_add, op_select)) return Status::CompilationError;
+
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op_multiply, op_add, op_select, program)) return Status::CompilationError;
 
             auto* p_cl_r     = r->template get<CLDenseVec<T>>();
             auto* p_cl_mask  = mask->template get<CLDenseVec<T>>();
@@ -201,45 +209,46 @@ namespace spla {
             cl::Buffer cl_config(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, sizeof(uint) * M->get_n_rows());
             cl::Buffer cl_config_size(p_cl_acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(uint), &config_size);
 
-            m_kernel_config.setArg(0, p_cl_mask->Ax);
-            m_kernel_config.setArg(1, p_cl_r->Ax);
-            m_kernel_config.setArg(2, cl_config);
-            m_kernel_config.setArg(3, cl_config_size);
-            m_kernel_config.setArg(4, init->get_value());
-            m_kernel_config.setArg(5, M->get_n_rows());
+            auto kernel_config = program->make_kernel("mxv_config");
+            kernel_config.setArg(0, p_cl_mask->Ax);
+            kernel_config.setArg(1, p_cl_r->Ax);
+            kernel_config.setArg(2, cl_config);
+            kernel_config.setArg(3, cl_config_size);
+            kernel_config.setArg(4, init->get_value());
+            kernel_config.setArg(5, M->get_n_rows());
 
             uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 1024);
 
             cl::NDRange config_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange config_local(m_block_size);
-            CL_DISPATCH_PROFILED("config", queue, m_kernel_config, cl::NDRange(), config_global, config_local);
+            CL_DISPATCH_PROFILED("config", queue, kernel_config, cl::NDRange(), config_global, config_local);
 
             CL_READ_PROFILED("config-size", queue, cl_config_size, true, 0, sizeof(config_size), &config_size);
 
-            m_kernel_config_scalar.setArg(0, p_cl_M->Ap);
-            m_kernel_config_scalar.setArg(1, p_cl_M->Aj);
-            m_kernel_config_scalar.setArg(2, p_cl_M->Ax);
-            m_kernel_config_scalar.setArg(3, p_cl_v->Ax);
-            m_kernel_config_scalar.setArg(4, cl_config);
-            m_kernel_config_scalar.setArg(5, p_cl_r->Ax);
-            m_kernel_config_scalar.setArg(6, init->get_value());
-            m_kernel_config_scalar.setArg(7, config_size);
-            m_kernel_config_scalar.setArg(8, uint(early_exit));
+            auto kernel_config_scalar = program->make_kernel("mxv_config_scalar");
+            kernel_config_scalar.setArg(0, p_cl_M->Ap);
+            kernel_config_scalar.setArg(1, p_cl_M->Aj);
+            kernel_config_scalar.setArg(2, p_cl_M->Ax);
+            kernel_config_scalar.setArg(3, p_cl_v->Ax);
+            kernel_config_scalar.setArg(4, cl_config);
+            kernel_config_scalar.setArg(5, p_cl_r->Ax);
+            kernel_config_scalar.setArg(6, init->get_value());
+            kernel_config_scalar.setArg(7, config_size);
+            kernel_config_scalar.setArg(8, uint(early_exit));
 
             n_groups_to_dispatch = div_up_clamp(config_size, m_block_size, 1, 1024);
 
             cl::NDRange exec_global(m_block_size * n_groups_to_dispatch);
             cl::NDRange exec_local(m_block_size);
-            CL_DISPATCH_PROFILED("exec", queue, m_kernel_config_scalar, cl::NDRange(), exec_global, exec_local);
+            CL_DISPATCH_PROFILED("exec", queue, kernel_config_scalar, cl::NDRange(), exec_global, exec_local);
 
             return Status::Ok;
         }
 
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_multiply,
                            const ref_ptr<TOpBinary<T, T, T>>& op_add,
-                           const ref_ptr<TOpSelect<T>>&       op_select) {
-            if (m_compiled) return true;
-
+                           const ref_ptr<TOpSelect<T>>&       op_select,
+                           std::shared_ptr<CLProgram>&        program) {
             m_block_size  = get_acc_cl()->get_wave_size();
             m_block_count = 1;
 
@@ -259,24 +268,14 @@ namespace spla {
                     .set_source(source_mxv)
                     .acquire();
 
-            m_program              = program_builder.get_program();
-            m_kernel_vector        = m_program->make_kernel("mxv_vector");
-            m_kernel_scalar        = m_program->make_kernel("mxv_scalar");
-            m_kernel_config        = m_program->make_kernel("mxv_config");
-            m_kernel_config_scalar = m_program->make_kernel("mxv_config_scalar");
-            m_compiled             = true;
+            program = program_builder.get_program();
 
             return true;
         }
 
-        std::shared_ptr<CLProgram> m_program;
-        cl::Kernel                 m_kernel_vector;
-        cl::Kernel                 m_kernel_scalar;
-        cl::Kernel                 m_kernel_config;
-        cl::Kernel                 m_kernel_config_scalar;
-        uint                       m_block_size  = 0;
-        uint                       m_block_count = 0;
-        bool                       m_compiled    = false;
+    private:
+        uint m_block_size  = 0;
+        uint m_block_count = 0;
     };
 
 }// namespace spla

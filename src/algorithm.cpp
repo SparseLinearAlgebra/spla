@@ -48,11 +48,11 @@ namespace spla {
 
         const auto N = v->get_n_rows();
 
-        ref_ptr<Vector> frontier_prev  = make_vector(N, INT);
-        ref_ptr<Vector> frontier_new   = make_vector(N, INT);
-        ref_ptr<Scalar> frontier_size  = make_int(1);
-        ref_ptr<Scalar> depth          = make_int(1);
-        ref_ptr<Scalar> zero           = make_int(0);
+        ref_ptr<Vector> frontier_prev  = Vector::make(N, INT);
+        ref_ptr<Vector> frontier_new   = Vector::make(N, INT);
+        ref_ptr<Scalar> frontier_size  = Scalar::make_int(1);
+        ref_ptr<Scalar> depth          = Scalar::make_int(1);
+        ref_ptr<Scalar> zero           = Scalar::make_int(0);
         int             current_level  = 1;
         int             discovered     = 1;
         bool            frontier_empty = false;
@@ -103,8 +103,8 @@ namespace spla {
             std::cout << " - iter " << current_level
                       << " front " << frontier_size->as_int() << " discovered " << discovered << " "
                       << tight.get_elapsed_ms() << " ms" << std::endl;
-            get_library()->time_profile_dump();
-            get_library()->time_profile_reset();
+            Library::get()->time_profile_dump();
+            Library::get()->time_profile_reset();
 #endif
             frontier_empty = frontier_size->as_int() == 0;
             discovered += frontier_size->as_int();
@@ -158,11 +158,11 @@ namespace spla {
         const auto N   = v->get_n_rows();
         const auto inf = std::numeric_limits<float>::max();
 
-        ref_ptr<Vector> dummy_mask     = make_vector(N, FLOAT);
-        ref_ptr<Vector> frontier       = make_vector(N, FLOAT);
-        ref_ptr<Vector> feedback       = make_vector(N, FLOAT);
-        ref_ptr<Scalar> feedback_size  = make_int(0);
-        ref_ptr<Scalar> inf_init       = make_float(inf);
+        ref_ptr<Vector> dummy_mask     = Vector::make(N, FLOAT);
+        ref_ptr<Vector> frontier       = Vector::make(N, FLOAT);
+        ref_ptr<Vector> feedback       = Vector::make(N, FLOAT);
+        ref_ptr<Scalar> feedback_size  = Scalar::make_int(0);
+        ref_ptr<Scalar> inf_init       = Scalar::make_float(inf);
         int             current_level  = 1;
         bool            feedback_empty = false;
 
@@ -211,8 +211,8 @@ namespace spla {
             std::cout << " - iter " << current_level
                       << " feed " << feedback_size->as_int()
                       << " " << tight.get_elapsed_ms() << " ms" << std::endl;
-            get_library()->time_profile_dump();
-            get_library()->time_profile_reset();
+            Library::get()->time_profile_dump();
+            Library::get()->time_profile_reset();
 #endif
             feedback_empty = feedback_size->as_int() == 0;
             current_level += 1;

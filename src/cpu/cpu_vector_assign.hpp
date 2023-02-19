@@ -53,8 +53,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t    = ctx.task.template cast<ScheduleTask_v_assign_masked>();
-            ref_ptr<TVector<T>> mask = t->mask.template cast<TVector<T>>();
+            auto                t    = ctx.task.template cast_safe<ScheduleTask_v_assign_masked>();
+            ref_ptr<TVector<T>> mask = t->mask.template cast_safe<TVector<T>>();
 
             if (mask->is_valid(FormatVector::CpuCoo))
                 return execute_sp2dn(ctx);
@@ -68,13 +68,13 @@ namespace spla {
         Status execute_sp2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_assign_sparse2dense");
 
-            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_assign_masked>();
 
-            auto r         = t->r.template cast<TVector<T>>();
-            auto mask      = t->mask.template cast<TVector<T>>();
-            auto value     = t->value.template cast<TScalar<T>>();
-            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
-            auto op_select = t->op_select.template cast<TOpSelect<T>>();
+            auto r         = t->r.template cast_safe<TVector<T>>();
+            auto mask      = t->mask.template cast_safe<TVector<T>>();
+            auto value     = t->value.template cast_safe<TScalar<T>>();
+            auto op_assign = t->op_assign.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_select = t->op_select.template cast_safe<TOpSelect<T>>();
 
             auto assign_value = value->get_value();
 
@@ -102,13 +102,13 @@ namespace spla {
         Status execute_dn2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_assign_dense2dense");
 
-            auto t = ctx.task.template cast<ScheduleTask_v_assign_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_assign_masked>();
 
-            auto r         = t->r.template cast<TVector<T>>();
-            auto mask      = t->mask.template cast<TVector<T>>();
-            auto value     = t->value.template cast<TScalar<T>>();
-            auto op_assign = t->op_assign.template cast<TOpBinary<T, T, T>>();
-            auto op_select = t->op_select.template cast<TOpSelect<T>>();
+            auto r         = t->r.template cast_safe<TVector<T>>();
+            auto mask      = t->mask.template cast_safe<TVector<T>>();
+            auto value     = t->value.template cast_safe<TScalar<T>>();
+            auto op_assign = t->op_assign.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_select = t->op_select.template cast_safe<TOpSelect<T>>();
 
             auto assign_value = value->get_value();
 

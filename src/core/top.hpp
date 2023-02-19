@@ -95,6 +95,55 @@ namespace spla {
      * @{
      */
 
+    template<typename A0, typename R>
+    class TOpUnary : public OpUnary {
+    public:
+        ~TOpUnary() override = default;
+
+        void               set_label(std::string label) override;
+        const std::string& get_label() const override;
+        std::string        get_name() override;
+        std::string        get_source() override;
+        std::string        get_key() override;
+        ref_ptr<Type>      get_type_arg_0() override;
+        ref_ptr<Type>      get_type_res() override;
+
+        std::function<R(A0)> function;
+        std::string          name;
+        std::string          source;
+        std::string          key;
+        std::string          label;
+    };
+
+    template<typename A0, typename R>
+    void TOpUnary<A0, R>::set_label(std::string new_label) {
+        label = std::move(new_label);
+    }
+    template<typename A0, typename R>
+    const std::string& TOpUnary<A0, R>::get_label() const {
+        return label;
+    }
+    template<typename A0, typename R>
+    std::string TOpUnary<A0, R>::get_name() {
+        return name;
+    }
+    template<typename A0, typename R>
+    std::string TOpUnary<A0, R>::get_source() {
+        return source;
+    }
+    template<typename A0, typename R>
+    std::string TOpUnary<A0, R>::get_key() {
+        return key;
+    }
+    template<typename A0, typename R>
+    ref_ptr<Type> TOpUnary<A0, R>::get_type_arg_0() {
+        return get_ttype<A0>().template as<Type>();
+    }
+    template<typename A0, typename R>
+    ref_ptr<Type> TOpUnary<A0, R>::get_type_res() {
+        return get_ttype<R>().template as<Type>();
+    }
+
     template<typename A0, typename A1, typename R>
     class TOpBinary : public OpBinary {
     public:

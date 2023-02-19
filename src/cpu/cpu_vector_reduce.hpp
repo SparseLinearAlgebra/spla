@@ -53,8 +53,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_reduce>();
-            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (v->is_valid(FormatVector::CpuCoo)) {
                 return execute_sp(ctx);
@@ -70,12 +70,12 @@ namespace spla {
         Status execute_sp(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_reduce_sparse");
 
-            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
 
-            auto r         = t->r.template cast<TScalar<T>>();
-            auto s         = t->s.template cast<TScalar<T>>();
-            auto v         = t->v.template cast<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+            auto r         = t->r.template cast_safe<TScalar<T>>();
+            auto s         = t->s.template cast_safe<TScalar<T>>();
+            auto v         = t->v.template cast_safe<TVector<T>>();
+            auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
 
             T sum = s->get_value();
 
@@ -95,12 +95,12 @@ namespace spla {
         Status execute_dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_reduce_dense");
 
-            auto t = ctx.task.template cast<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
 
-            auto r         = t->r.template cast<TScalar<T>>();
-            auto s         = t->s.template cast<TScalar<T>>();
-            auto v         = t->v.template cast<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast<TOpBinary<T, T, T>>();
+            auto r         = t->r.template cast_safe<TScalar<T>>();
+            auto s         = t->s.template cast_safe<TScalar<T>>();
+            auto v         = t->v.template cast_safe<TVector<T>>();
+            auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
 
             T sum = s->get_value();
 

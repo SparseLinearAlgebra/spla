@@ -138,7 +138,7 @@ namespace spla {
     }
     template<typename T>
     Status TVector<T>::set_reduce(ref_ptr<OpBinary> resolve_duplicates) {
-        auto reduce = resolve_duplicates.template cast<TOpBinary<T, T, T>>();
+        auto reduce = resolve_duplicates.template cast_safe<TOpBinary<T, T, T>>();
 
         if (reduce) {
             validate_ctor(FormatVector::CpuDok);

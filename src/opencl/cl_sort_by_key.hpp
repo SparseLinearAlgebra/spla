@@ -151,7 +151,7 @@ namespace spla {
             kernel_local.setArg(4, shift);
             queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
 
-            cl_exclusive_scan<uint>(queue, cl_blocks_size, n_blocks_sizes, PLUS_UINT.template cast<TOpBinary<uint, uint, uint>>(), tmp_alloc);
+            cl_exclusive_scan<uint>(queue, cl_blocks_size, n_blocks_sizes, PLUS_UINT.template cast_safe<TOpBinary<uint, uint, uint>>(), tmp_alloc);
 
             kernel_scatter.setArg(0, in_keys);
             kernel_scatter.setArg(1, in_values);

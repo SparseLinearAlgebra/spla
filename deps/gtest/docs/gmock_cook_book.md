@@ -928,7 +928,7 @@ To support this need, gMock gives you the `SafeMatcherCast<T>(m)` function. It
 casts a matcher `m` to type `Matcher<T>`. To ensure safety, gMock checks that
 (let `U` be the type `m` accepts :
 
-1.  Type `T` can be *implicitly* cast to type `U`;
+1.  Type `T` can be *implicitly* cast_safe to type `U`;
 2.  When both `T` and `U` are built-in arithmetic types (`bool`, integers, and
     floating-point numbers), the conversion from `T` to `U` is not lossy (in
     other words, any value representable by `T` can also be represented by `U`);
@@ -2216,7 +2216,7 @@ Note that:
 *   The action takes ownership of the callback and will delete it when the
     action itself is destructed.
 *   If the type of a callback is derived from a base callback type `C`, you need
-    to implicitly cast it to `C` to resolve the overloading, e.g.
+    to implicitly cast_safe it to `C` to resolve the overloading, e.g.
 
     ```cpp
     using ::testing::Invoke;
@@ -2225,7 +2225,7 @@ Note that:
       ... Invoke(is_ok) ...;  // This works.
 
       BlockingClosure* done = new BlockingClosure;
-      ... Invoke(implicit_cast<Closure*>(done)) ...;  // The cast is necessary.
+      ... Invoke(implicit_cast<Closure*>(done)) ...;  // The cast_safe is necessary.
     ```
 
 ### Using Functions with Extra Info as Actions
@@ -2302,7 +2302,7 @@ Note that:
 *   The action takes ownership of the callback and will delete it when the
     action itself is destructed.
 *   If the type of a callback is derived from a base callback type `C`, you need
-    to implicitly cast it to `C` to resolve the overloading, e.g.
+    to implicitly cast_safe it to `C` to resolve the overloading, e.g.
 
     ```cpp
     using ::testing::InvokeWithoutArgs;
@@ -2312,7 +2312,7 @@ Note that:
 
       BlockingClosure* done = ...;
       ... InvokeWithoutArgs(implicit_cast<Closure*>(done)) ...;
-      // The cast is necessary.
+      // The cast_safe is necessary.
     ```
 
 ### Invoking an Argument of the Mock Function

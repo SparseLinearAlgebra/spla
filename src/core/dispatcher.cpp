@@ -40,7 +40,7 @@
 namespace spla {
 
     Status Dispatcher::dispatch(const DispatchContext& ctx) {
-        Library*     g_lib        = get_library();
+        Library*     g_lib        = Library::get();
         Registry*    g_reg        = g_lib->get_registry();
         Accelerator* g_acc        = g_lib->get_accelerator();
         bool         force_no_acc = g_lib->is_set_force_no_acceleration();

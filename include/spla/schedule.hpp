@@ -51,6 +51,7 @@ namespace spla {
         SPLA_API ~ScheduleTask() override                                   = default;
         SPLA_API virtual std::string                  get_name()            = 0;
         SPLA_API virtual std::string                  get_key()             = 0;
+        SPLA_API virtual std::string                  get_key_full()        = 0;
         SPLA_API virtual std::vector<ref_ptr<Object>> get_args()            = 0;
         SPLA_API virtual ref_ptr<Descriptor>          get_desc()            = 0;
         SPLA_API virtual ref_ptr<Descriptor>          get_desc_or_default() = 0;

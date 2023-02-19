@@ -42,11 +42,11 @@ TEST(vxm_masked, naive) {
     // 0  |  4 |  1 | 0 0 3 0  0
     // 1  |  5 |  0 | 0 0 0 0 -1
 
-    auto ir    = spla::make_vector(M, spla::INT);
-    auto imask = spla::make_vector(M, spla::INT);
-    auto iv    = spla::make_vector(N, spla::INT);
-    auto iM    = spla::make_matrix(N, M, spla::INT);
-    auto iinit = spla::make_int(0);
+    auto ir    = spla::Vector::make(M, spla::INT);
+    auto imask = spla::Vector::make(M, spla::INT);
+    auto iv    = spla::Vector::make(N, spla::INT);
+    auto iM    = spla::Matrix::make(N, M, spla::INT);
+    auto iinit = spla::Scalar::make_int(0);
 
     ir->set_int(0, 2);
     ir->set_int(1, -5);
@@ -99,11 +99,11 @@ TEST(vxm_masked, perf_mult_add) {
 
     spla::Timer timer;
 
-    auto ir    = spla::make_vector(N, spla::INT);
-    auto imask = spla::make_vector(N, spla::INT);
-    auto iv    = spla::make_vector(N, spla::INT);
-    auto iM    = spla::make_matrix(N, N, spla::INT);
-    auto iinit = spla::make_int(0);
+    auto ir    = spla::Vector::make(N, spla::INT);
+    auto imask = spla::Vector::make(N, spla::INT);
+    auto iv    = spla::Vector::make(N, spla::INT);
+    auto iM    = spla::Matrix::make(N, N, spla::INT);
+    auto iinit = spla::Scalar::make_int(0);
 
     for (int i = 0; i < N; i++) {
         imask->set_int(i, (i % S ? 1 : 0));
@@ -148,11 +148,11 @@ TEST(vxm_masked, perf_and_or) {
 
     spla::Timer timer;
 
-    auto ir    = spla::make_vector(N, spla::INT);
-    auto imask = spla::make_vector(N, spla::INT);
-    auto iv    = spla::make_vector(N, spla::INT);
-    auto iM    = spla::make_matrix(N, N, spla::INT);
-    auto iinit = spla::make_int(0);
+    auto ir    = spla::Vector::make(N, spla::INT);
+    auto imask = spla::Vector::make(N, spla::INT);
+    auto iv    = spla::Vector::make(N, spla::INT);
+    auto iM    = spla::Matrix::make(N, N, spla::INT);
+    auto iinit = spla::Scalar::make_int(0);
 
     for (int i = 0; i < N; i++) {
         imask->set_int(i, (i % S ? 1 : 0));

@@ -58,16 +58,16 @@ namespace spla {
         Status execute(const DispatchContext& ctx) override {
             TIME_PROFILE_SCOPE("cpu/vxm");
 
-            auto t = ctx.task.template cast<ScheduleTask_vxm_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_vxm_masked>();
 
-            auto r           = t->r.template cast<TVector<T>>();
-            auto mask        = t->mask.template cast<TVector<T>>();
-            auto v           = t->v.template cast<TVector<T>>();
-            auto M           = t->M.template cast<TMatrix<T>>();
-            auto op_multiply = t->op_multiply.template cast<TOpBinary<T, T, T>>();
-            auto op_add      = t->op_add.template cast<TOpBinary<T, T, T>>();
-            auto op_select   = t->op_select.template cast<TOpSelect<T>>();
-            auto init        = t->init.template cast<TScalar<T>>();
+            auto r           = t->r.template cast_safe<TVector<T>>();
+            auto mask        = t->mask.template cast_safe<TVector<T>>();
+            auto v           = t->v.template cast_safe<TVector<T>>();
+            auto M           = t->M.template cast_safe<TMatrix<T>>();
+            auto op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            auto init        = t->init.template cast_safe<TScalar<T>>();
 
             const T sum_init = init->get_value();
 

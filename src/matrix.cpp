@@ -30,7 +30,7 @@
 
 namespace spla {
 
-    ref_ptr<Matrix> make_matrix(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
+    ref_ptr<Matrix> Matrix::make(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
         if (n_rows <= 0 || n_cols <= 0) {
             LOG_MSG(Status::InvalidArgument, "passed 0 dim");
             return ref_ptr<Matrix>{};
@@ -40,7 +40,7 @@ namespace spla {
             return ref_ptr<Matrix>{};
         }
 
-        get_library();
+        Library::get();
 
         if (type == INT) {
             return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));

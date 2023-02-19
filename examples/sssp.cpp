@@ -54,16 +54,16 @@ int main(int argc, const char* const* argv) {
         return 1;
     }
 
-    spla::Library* library = spla::get_library();
+    spla::Library* library = spla::Library::get();
     library->set_platform(args[OPT_PLATFORM].as<int>());
     library->set_device(args[OPT_DEVICE].as<int>());
     library->set_queues_count(1);
 
     const spla::uint                N     = loader.get_n_rows();
     const spla::uint                s     = args[OPT_SOURCE].as<int>();
-    spla::ref_ptr<spla::Vector>     v_cpu = spla::make_vector(N, spla::FLOAT);
-    spla::ref_ptr<spla::Vector>     v_acc = spla::make_vector(N, spla::FLOAT);
-    spla::ref_ptr<spla::Matrix>     A     = spla::make_matrix(N, N, spla::FLOAT);
+    spla::ref_ptr<spla::Vector>     v_cpu = spla::Vector::make(N, spla::FLOAT);
+    spla::ref_ptr<spla::Vector>     v_acc = spla::Vector::make(N, spla::FLOAT);
+    spla::ref_ptr<spla::Matrix>     A     = spla::Matrix::make(N, N, spla::FLOAT);
     spla::ref_ptr<spla::Descriptor> desc  = spla::make_desc();
 
     desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
@@ -121,7 +121,7 @@ int main(int argc, const char* const* argv) {
         if (args[OPT_RUN_GPU].as<bool>()) verify_exact(v_acc, ref_v);
     }
 
-    spla::get_library()->finalize();
+    spla::Library::get()->finalize();
 
     timer.stop();
 

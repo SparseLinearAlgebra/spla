@@ -53,9 +53,9 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>> r = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>> r = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (r->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuCoo)) {
                 return execute_sp2dn(ctx);
@@ -71,11 +71,11 @@ namespace spla {
         Status execute_sp2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_eadd_fdb_sp2dn");
 
-            auto                        t   = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>>         r   = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         v   = t->v.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
+            auto                        t   = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>>         r   = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         v   = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         fdb = t->fdb.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast_safe<TOpBinary<T, T, T>>();
 
             r->validate_rwd(FormatVector::CpuDense);
             v->validate_rw(FormatVector::CpuCoo);
@@ -106,11 +106,11 @@ namespace spla {
         Status execute_dn2dn(const DispatchContext& ctx) {
             TIME_PROFILE_SCOPE("cpu/vector_eadd_fdb_dn2dn");
 
-            auto                        t   = ctx.task.template cast<ScheduleTask_v_eadd_fdb>();
-            ref_ptr<TVector<T>>         r   = t->r.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         v   = t->v.template cast<TVector<T>>();
-            ref_ptr<TVector<T>>         fdb = t->fdb.template cast<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast<TOpBinary<T, T, T>>();
+            auto                        t   = ctx.task.template cast_safe<ScheduleTask_v_eadd_fdb>();
+            ref_ptr<TVector<T>>         r   = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         v   = t->v.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>         fdb = t->fdb.template cast_safe<TVector<T>>();
+            ref_ptr<TOpBinary<T, T, T>> op  = t->op.template cast_safe<TOpBinary<T, T, T>>();
 
             r->validate_rwd(FormatVector::CpuDense);
             v->validate_rw(FormatVector::CpuDense);

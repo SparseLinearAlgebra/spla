@@ -206,7 +206,7 @@ namespace spla {
         return m_time_profiler.get();
     }
 
-    Library* get_library() {
+    Library* Library::get() {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {
@@ -218,9 +218,11 @@ namespace spla {
             g_library->set_default_callback();
 #endif
 
-            // On init we by default attempt to setup OpenCL runtime
+#ifdef SPLA_BUILD_OPENCL
+            // On init we by default attempt to set up OpenCL runtime
             // If setup is failed error is ignored and library fallbacks to CPU computations only
             g_library->set_accelerator(AcceleratorType::OpenCL);
+#endif
         }
 
         return g_library.get();

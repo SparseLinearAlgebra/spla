@@ -55,13 +55,12 @@ namespace spla {
         SPLA_API virtual T_INT         as_int()                       = 0;
         SPLA_API virtual T_UINT        as_uint()                      = 0;
         SPLA_API virtual T_FLOAT       as_float()                     = 0;
-    };
 
-    SPLA_API ref_ptr<Scalar> make_scalar(const ref_ptr<Type>& type);
-    SPLA_API ref_ptr<Scalar> make_byte(std::int8_t value);
-    SPLA_API ref_ptr<Scalar> make_int(std::int32_t value);
-    SPLA_API ref_ptr<Scalar> make_uint(std::uint32_t value);
-    SPLA_API ref_ptr<Scalar> make_float(float value);
+        SPLA_API static ref_ptr<Scalar> make(const ref_ptr<Type>& type);
+        SPLA_API static ref_ptr<Scalar> make_int(std::int32_t value);
+        SPLA_API static ref_ptr<Scalar> make_uint(std::uint32_t value);
+        SPLA_API static ref_ptr<Scalar> make_float(float value);
+    };
 
     /**
      * @}

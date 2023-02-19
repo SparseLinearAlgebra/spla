@@ -60,8 +60,8 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v = t->v.template cast<TVector<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (v->is_valid(FormatVector::AccCoo))
                 return execute_sp(ctx);
@@ -73,8 +73,8 @@ namespace spla {
 
     private:
         Status execute_sp(const DispatchContext& ctx) {
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
+            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
             CLCooVec<T>*        dec_v = v->template get<CLCooVec<T>>();
 
             t->r->set_uint(dec_v->values);
@@ -83,11 +83,12 @@ namespace spla {
         }
 
         Status execute_dn(const DispatchContext& ctx) {
-            auto                t     = ctx.task.template cast<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast<TVector<T>>();
+            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
             CLDenseVec<T>*      dec_v = v->template get<CLDenseVec<T>>();
 
-            if (!ensure_kernel()) return Status::CompilationError;
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(program)) return Status::CompilationError;
 
             auto* cl_acc = get_acc_cl();
             auto& queue  = cl_acc->get_queue_default();
@@ -95,7 +96,7 @@ namespace spla {
             CLCounterWrapper cl_count;
             cl_count.set(queue, 0);
 
-            auto kernel = m_program->make_kernel("count_mf");
+            auto kernel = program->make_kernel("count_mf");
             kernel.setArg(0, dec_v->Ax);
             kernel.setArg(1, cl_count.buffer());
             kernel.setArg(2, v->get_n_rows());
@@ -112,8 +113,7 @@ namespace spla {
             return Status::Ok;
         }
 
-        bool ensure_kernel() {
-            if (m_compiled) return true;
+        bool ensure_kernel(std::shared_ptr<CLProgram>& program) {
 
             m_block_size = get_acc_cl()->get_default_wgz();
 
@@ -124,15 +124,13 @@ namespace spla {
                     .set_source(source_count)
                     .acquire();
 
-            m_program  = program_builder.get_program();
-            m_compiled = true;
+            program = program_builder.get_program();
 
             return true;
         }
 
-        std::shared_ptr<CLProgram> m_program;
-        uint                       m_block_size = 0;
-        bool                       m_compiled   = false;
+    private:
+        uint m_block_size = 0;
     };
 
 }// namespace spla

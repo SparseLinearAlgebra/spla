@@ -31,14 +31,14 @@
 
 #include <iostream>
 
-TEST(op_binary, getters) {
-    spla::get_library();
+static constexpr auto display_op_info = [](spla::ref_ptr<spla::OpBinary>& op) {
+    std::cout << op->get_name() << " "
+              << op->get_key() << " "
+              << op->get_source() << std::endl;
+};
 
-    auto display_op_info = [](spla::ref_ptr<spla::OpBinary>& op) {
-        std::cout << op->get_name() << " "
-                  << op->get_key() << " "
-                  << op->get_source() << std::endl;
-    };
+TEST(op_binary, info_built_in) {
+    spla::Library::get();
 
     display_op_info(spla::PLUS_INT);
     display_op_info(spla::MULT_INT);
@@ -48,6 +48,17 @@ TEST(op_binary, getters) {
 
     display_op_info(spla::MIN_FLOAT);
     display_op_info(spla::ONE_FLOAT);
+}
+
+TEST(op_binary, custom) {
+    spla::Library::get();
+
+    spla::ref_ptr<spla::OpBinary> custom_plus = spla::OpBinary::make_float(
+            "custom_plus",
+            "(float a, float b) { return 0.25f * a + 0.75f * b; }",
+            [](float a, float b) { return 0.25f * a + 0.75f * b; });
+
+    display_op_info(custom_plus);
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

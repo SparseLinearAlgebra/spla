@@ -30,20 +30,20 @@
 #include <spla.hpp>
 
 TEST(library, default_log) {
-    spla::get_library()->set_default_callback();
-    spla::get_library()->finalize();
+    spla::Library::get()->set_default_callback();
+    spla::Library::get()->finalize();
 }
 
 TEST(library, default_accelerator) {
-    spla::get_library()->set_accelerator(spla::AcceleratorType::OpenCL);
-    spla::get_library()->finalize();
+    spla::Library::get()->set_accelerator(spla::AcceleratorType::OpenCL);
+    spla::Library::get()->finalize();
 }
 
 TEST(library, default_accelerator_select_props) {
-    spla::get_library()->set_accelerator(spla::AcceleratorType::OpenCL);
-    spla::get_library()->set_platform(1);
-    spla::get_library()->set_device(0);
-    spla::get_library()->finalize();
+    spla::Library::get()->set_accelerator(spla::AcceleratorType::OpenCL);
+    spla::Library::get()->set_platform(1);
+    spla::Library::get()->set_device(0);
+    spla::Library::get()->finalize();
 }
 
 TEST(library, default_types) {

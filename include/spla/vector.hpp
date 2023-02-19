@@ -62,17 +62,17 @@ namespace spla {
         SPLA_API virtual Status        fill_uint(T_UINT value)                          = 0;
         SPLA_API virtual Status        fill_float(T_FLOAT value)                        = 0;
         SPLA_API virtual Status        clear()                                          = 0;
-    };
 
-    /**
-     * @brief Make new vector instance with specified dim and values type
-     *
-     * @param n_rows Number of vector rows; must be > 0;
-     * @param type Type of vector elements
-     *
-     * @return New vector instance or null if failed to create
-     */
-    SPLA_API ref_ptr<Vector> make_vector(uint n_rows, const ref_ptr<Type>& type);
+        /**
+         * @brief Make new vector instance with specified dim and values type
+         *
+         * @param n_rows Number of vector rows; must be > 0;
+         * @param type Type of vector elements
+         *
+         * @return New vector instance or null if failed to create
+         */
+        SPLA_API static ref_ptr<Vector> make(uint n_rows, const ref_ptr<Type>& type);
+    };
 
     /**
      * @}

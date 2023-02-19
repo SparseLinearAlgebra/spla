@@ -172,6 +172,18 @@ namespace spla {
          */
         class TimeProfiler* get_time_profiler();
 
+        /**
+         * @brief Access global library instance
+         *
+         * Global library state instantiate once on first request to the library.
+         * Call this function to access library and configure it first before any computations.
+
+         * @note Only single global instance of the library allowed.
+         *
+         * @return Global library instance
+         */
+        SPLA_API static Library* get();
+
     private:
         std::unordered_map<std::string, std::string> m_env;
         std::unique_ptr<class Accelerator>           m_accelerator;
@@ -181,18 +193,6 @@ namespace spla {
         std::unique_ptr<class TimeProfiler>          m_time_profiler;
         bool                                         m_force_no_acc = false;
     };
-
-    /**
-     * @brief Access global library instance
-     *
-     * Global library state instantiate once on first request to the library.
-     * Call this function to access library and configure it first before any computations.
-
-     * @note Only single global instance of the library allowed.
-     *
-     * @return Global library instance
-     */
-    SPLA_API Library* get_library();
 
     /**
      * @}

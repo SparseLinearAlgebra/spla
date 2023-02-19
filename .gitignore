@@ -7,5 +7,8 @@
 graph-dataset.zip
 dataset*
 
+# Auto gen registry
+registry.txt
+
 # Python cache files
 /**/__pycache__

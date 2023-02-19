@@ -115,19 +115,19 @@ namespace spla {
 
     template<>
     ref_ptr<TType<T_BOOL>> get_ttype() {
-        return BOOL.cast<TType<T_BOOL>>();
+        return BOOL.cast_safe<TType<T_BOOL>>();
     }
     template<>
     ref_ptr<TType<T_INT>> get_ttype() {
-        return INT.cast<TType<T_INT>>();
+        return INT.cast_safe<TType<T_INT>>();
     }
     template<>
     ref_ptr<TType<T_UINT>> get_ttype() {
-        return UINT.cast<TType<T_UINT>>();
+        return UINT.cast_safe<TType<T_UINT>>();
     }
     template<>
     ref_ptr<TType<T_FLOAT>> get_ttype() {
-        return FLOAT.cast<TType<T_FLOAT>>();
+        return FLOAT.cast_safe<TType<T_FLOAT>>();
     }
 
     /**
