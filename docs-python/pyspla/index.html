@@ -27,7 +27,7 @@
 <p>Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
 acceleration to speed-up processing of large and complex data.
-Library core witten using C++ with optional C-compatible interface.</p>
+Library underling core witten using C++ with optional C-compatible interface.</p>
 <p>Links:</p>
 <ul>
 <li><strong>Package page</strong>:
@@ -59,12 +59,11 @@ Library core witten using C++ with optional C-compatible interface.</p>
 <pre><code>$ pip uninstall pyspla
 </code></pre>
 <h2 id="summary">Summary</h2>
-<p>Generalized sparse liner algebra python package with GPUs accelerated
-computations. Library provides a set of linear algebra primitives such as
-<code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code>, <code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code> and <code><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code> for mathematical computations parametrized using
-one of built-in <code><a title="pyspla.type" href="type.html">pyspla.type</a></code>. It allows to define sequence of execution tasks
-using <code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code> API. Desired behavior of math operations can be customized
-using on of element operations in <code><a title="pyspla.op" href="op.html">pyspla.op</a></code> module.</p>
+<p>Generalized sparse liner algebra python package with GPUs accelerated computations. Library provides a set of
+linear algebra primitives such as <code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code>, <code><a title="pyspla.vector" href="vector.html">pyspla.vector</a></code> and <code><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code> for mathematical computations parametrized
+using one of built-in <code><a title="pyspla.type" href="type.html">pyspla.type</a></code>. It allows to define sequence of execution tasks using <code><a title="pyspla.schedule" href="schedule.html">pyspla.schedule</a></code> API. Desired
+behavior of math operations can be customized using pre-defined or custom user-defined element operations in <code><a title="pyspla.op" href="op.html">pyspla.op</a></code>
+module.</p>
 <p>Library optionally uses GPUs acceleration through OpenCL or CUDA API.
 It automatically attempts to initialize accelerator and trys to use
 it to speed-up some operations. All GPU communication, data transformations
@@ -149,7 +148,7 @@ Python wrapper for spla library
 Cross-platform generalized sparse linear algebra framework for efficient mathematical
 computations over sparse matrices and vectors with vendor-agnostic GPUs
 acceleration to speed-up processing of large and complex data.
-Library core witten using C++ with optional C-compatible interface.
+Library underling core witten using C++ with optional C-compatible interface.
 
 Links:
 
@@ -190,12 +189,11 @@ Delete package if no more required:
 Summary
 -------
 
-Generalized sparse liner algebra python package with GPUs accelerated
-computations. Library provides a set of linear algebra primitives such as
-`matrix`, `vector` and `scalar` for mathematical computations parametrized using
-one of built-in `type`. It allows to define sequence of execution tasks
-using `schedule` API. Desired behavior of math operations can be customized
-using on of element operations in `op` module.
+Generalized sparse liner algebra python package with GPUs accelerated computations. Library provides a set of
+linear algebra primitives such as `matrix`, `vector` and `scalar` for mathematical computations parametrized
+using one of built-in `type`. It allows to define sequence of execution tasks using `schedule` API. Desired
+behavior of math operations can be customized using pre-defined or custom user-defined element operations in `op`
+module.
 
 Library optionally uses GPUs acceleration through OpenCL or CUDA API.
 It automatically attempts to initialize accelerator and trys to use
