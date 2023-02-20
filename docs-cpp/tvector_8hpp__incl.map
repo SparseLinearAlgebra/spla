@@ -1,14 +1,15 @@
 <map id="src/core/tvector.hpp" name="src/core/tvector.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="698,5,835,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="768,5,906,32"/>
 <area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="488,483,596,509"/>
 <area shape="rect" id="node6" href="$vector_8hpp.html" title=" " alt="" coords="216,80,327,107"/>
-<area shape="rect" id="node19" href="$logger_8hpp.html" title=" " alt="" coords="711,80,822,107"/>
+<area shape="rect" id="node19" href="$logger_8hpp.html" title=" " alt="" coords="731,80,842,107"/>
 <area shape="rect" id="node22" href="$tdecoration_8hpp.html" title=" " alt="" coords="1376,408,1514,435"/>
 <area shape="rect" id="node25" href="$top_8hpp.html" title=" " alt="" coords="412,80,505,107"/>
 <area shape="rect" id="node26" href="$ttype_8hpp.html" title=" " alt="" coords="26,162,128,189"/>
-<area shape="rect" id="node27" href="$storage__manager_8hpp.html" title=" " alt="" coords="831,333,1024,360"/>
+<area shape="rect" id="node27" href="$storage__manager_8hpp.html" title=" " alt="" coords="830,333,1023,360"/>
 <area shape="rect" id="node28" title=" " alt="" coords="1074,408,1149,435"/>
 <area shape="rect" id="node31" href="$storage__manager__vector_8hpp.html" title=" " alt="" coords="1067,155,1236,196"/>
+<area shape="rect" id="node39" title=" " alt="" coords="1638,80,1703,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="505,557,580,584"/>
 <area shape="rect" id="node4" title=" " alt="" coords="798,557,876,584"/>
 <area shape="rect" id="node5" title=" " alt="" coords="338,557,392,584"/>

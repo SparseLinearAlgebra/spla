@@ -5,8 +5,8 @@
 <area shape="rect" id="node6" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="317,157,386,184"/>
 <area shape="rect" id="node13" href="$classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="307,208,396,235"/>
 <area shape="rect" id="node15" href="$classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="298,259,405,285"/>
-<area shape="rect" id="node17" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,319,419,345"/>
-<area shape="rect" id="node26" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,388,397,415"/>
+<area shape="rect" id="node17" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,335,419,361"/>
+<area shape="rect" id="node27" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,436,397,463"/>
 <area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,208,97,235"/>
 <area shape="rect" id="node5" href="$classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="495,5,621,32"/>
 <area shape="rect" id="node7" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="505,56,611,83"/>
@@ -17,13 +17,14 @@
 <area shape="rect" id="node12" href="$classspla_1_1TOpUnary.html" title=" " alt="" coords="697,157,863,184"/>
 <area shape="rect" id="node14" href="$classspla_1_1TScalar.html" title=" " alt="" coords="495,208,621,235"/>
 <area shape="rect" id="node16" href="$classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="467,259,649,285"/>
-<area shape="rect" id="node18" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,347,641,373"/>
+<area shape="rect" id="node18" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,399,641,425"/>
 <area shape="rect" id="node19" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="713,209,847,250"/>
 <area shape="rect" id="node20" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="713,274,847,315"/>
 <area shape="rect" id="node21" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="713,339,847,381"/>
 <area shape="rect" id="node22" href="$classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="713,405,847,446"/>
 <area shape="rect" id="node23" href="$classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="713,470,847,511"/>
-<area shape="rect" id="node24" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="713,535,847,577"/>
-<area shape="rect" id="node25" href="$classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="713,601,847,642"/>
-<area shape="rect" id="node27" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,397,622,424"/>
+<area shape="rect" id="node24" href="$classspla_1_1ScheduleTask__v__map.html" title="Vector map to vector." alt="" coords="713,535,847,577"/>
+<area shape="rect" id="node25" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="713,601,847,642"/>
+<area shape="rect" id="node26" href="$classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="713,666,847,707"/>
+<area shape="rect" id="node28" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,449,622,476"/>
 </map>

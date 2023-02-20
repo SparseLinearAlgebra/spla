@@ -138,57 +138,63 @@ $(function() {
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">FormatVector::AccDense</a>)) {</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keywordflow">return</span> execute_dn(ctx);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> execute_sp(ctx);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vector_reduce_dense&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_reduce&gt;();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>)) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keywordflow">return</span> execute_sp(ctx);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>)) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">return</span> execute_dn(ctx);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span> execute_sp(ctx);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">FormatVector::AccDense</a>);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_dense_vec = v-&gt;template get&lt;CLDenseVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc       = get_acc_cl();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">auto</span>&amp;       queue          = p_cl_acc-&gt;get_queue_default();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vector_reduce_dense&quot;</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_reduce&gt;();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            cl_reduce&lt;T&gt;(queue, p_cl_dense_vec-&gt;Ax, v-&gt;get_n_rows(), s-&gt;get_value(), op_reduce, r-&gt;get_value());</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">FormatVector::AccDense</a>);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_sp(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vector_reduce_sparse&quot;</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_dense_vec = v-&gt;template get&lt;CLDenseVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc       = get_acc_cl();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span>&amp;       queue          = p_cl_acc-&gt;get_queue_default();</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            cl_reduce&lt;T&gt;(queue, p_cl_dense_vec-&gt;Ax, v-&gt;get_n_rows(), s-&gt;get_value(), op_reduce, r-&gt;get_value());</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keyword">auto</span> t = ctx.task.template cast_safe&lt;ScheduleTask_v_reduce&gt;();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">FormatVector::AccCoo</a>);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_coo_vec = v-&gt;template get&lt;CLCooVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc     = get_acc_cl();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">auto</span>&amp;       queue        = p_cl_acc-&gt;get_queue_default();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_sp(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;opencl/vector_reduce_sparse&quot;</span>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">auto</span> t = ctx.task.template cast_safe&lt;ScheduleTask_v_reduce&gt;();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">auto</span> s         = t-&gt;s.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">auto</span> v         = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            cl_reduce&lt;T&gt;(queue, p_cl_coo_vec-&gt;Ax, p_cl_coo_vec-&gt;values, s-&gt;get_value(), op_reduce, r-&gt;get_value());</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">FormatVector::AccCoo</a>);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    };</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_cl_coo_vec = v-&gt;template get&lt;CLCooVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keyword">auto</span>*       p_cl_acc     = get_acc_cl();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keyword">auto</span>&amp;       queue        = p_cl_acc-&gt;get_queue_default();</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            cl_reduce&lt;T&gt;(queue, p_cl_coo_vec-&gt;Ax, p_cl_coo_vec-&gt;values, s-&gt;get_value(), op_reduce, r-&gt;get_value());</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_REDUCE_HPP</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    };</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_REDUCE_HPP</span></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
 <div class="ttc" id="acl__reduce_8hpp_html"><div class="ttname"><a href="cl__reduce_8hpp.html">cl_reduce.hpp</a></div></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
@@ -202,7 +208,9 @@ $(function() {
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">spla::FormatVector::AccDense</a></div><div class="ttdeci">@ AccDense</div></div>
+<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">spla::FormatVector::CpuDense</a></div><div class="ttdeci">@ CpuDense</div></div>
 <div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">spla::FormatVector::AccCoo</a></div><div class="ttdeci">@ AccCoo</div></div>
+<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">spla::FormatVector::CpuCoo</a></div><div class="ttdeci">@ CpuCoo</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
