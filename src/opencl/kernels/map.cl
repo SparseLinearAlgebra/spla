@@ -25,60 +25,16 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_PROGRAM_BUILDER_HPP
-#define SPLA_CL_PROGRAM_BUILDER_HPP
+#include "common_def.cl"
+#include "common_func.cl"
 
-#include <core/top.hpp>
-#include <core/ttype.hpp>
-#include <opencl/cl_accelerator.hpp>
-#include <opencl/cl_program.hpp>
-#include <opencl/cl_program_cache.hpp>
+__kernel void map(__global TYPE* restrict g_r,
+                  __global const TYPE* restrict g_v,
+                  const uint N) {
+    const uint gid     = get_global_id(0);
+    const uint gstride = get_global_size(0);
 
-#include <svector.hpp>
-
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
-
-namespace spla {
-
-    /**
-     * @addtogroup internal
-     * @{
-     */
-
-    /**
-     * @class CLProgramBuilder
-     * @brief Runtime opencl program builder
-     */
-    class CLProgramBuilder final {
-    public:
-        CLProgramBuilder& set_name(const char* name);
-        CLProgramBuilder& add_define(const char* define, int value);
-        CLProgramBuilder& add_type(const char* alias, const ref_ptr<Type>& type);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpUnary>& op);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
-        CLProgramBuilder& set_source(const char* source);
-        void              acquire();
-
-        const std::shared_ptr<CLProgram>& get_program() { return m_program; };
-        cl::Kernel                        make_kernel(const char* name) { return m_program->make_kernel(name); }
-
-    private:
-        ankerl::svector<std::pair<std::string, std::string>, 8> m_defines;
-        ankerl::svector<std::pair<std::string, ref_ptr<Op>>, 8> m_functions;
-        std::string                                             m_name;
-        const char*                                             m_source = nullptr;
-        std::shared_ptr<CLProgram>                              m_program;
-        std::string                                             m_program_code;
-    };
-
-    /**
-     * @}
-     */
-
-}// namespace spla
-
-#endif//SPLA_CL_PROGRAM_BUILDER_HPP
+    for (uint i = gid; i < N; i += gstride) {
+        g_r[i] = OP_UNARY(g_v[i]);
+    }
+}

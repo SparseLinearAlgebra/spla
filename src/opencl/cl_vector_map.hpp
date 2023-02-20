@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_VECTOR_REDUCE_HPP
-#define SPLA_CL_VECTOR_REDUCE_HPP
+#ifndef SPLA_CL_VECTOR_MAP_HPP
+#define SPLA_CL_VECTOR_MAP_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -38,27 +38,27 @@
 #include <core/tvector.hpp>
 
 #include <opencl/cl_formats.hpp>
-#include <opencl/cl_reduce.hpp>
+#include <opencl/cl_map.hpp>
 
 #include <sstream>
 
 namespace spla {
 
     template<typename T>
-    class Algo_v_reduce_cl final : public RegistryAlgo {
+    class Algo_v_map_cl final : public RegistryAlgo {
     public:
-        ~Algo_v_reduce_cl() override = default;
+        ~Algo_v_map_cl() override = default;
 
         std::string get_name() override {
-            return "v_reduce";
+            return "v_map";
         }
 
         std::string get_description() override {
-            return "parallel vector reduction on opencl device";
+            return "parallel vector map on opencl device";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_map>();
             ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (v->is_valid(FormatVector::AccCoo)) {
@@ -79,43 +79,50 @@ namespace spla {
 
     private:
         Status execute_dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("opencl/vector_reduce_dense");
+            TIME_PROFILE_SCOPE("opencl/vector_map_dense");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_map>();
 
-            auto r         = t->r.template cast_safe<TScalar<T>>();
-            auto s         = t->s.template cast_safe<TScalar<T>>();
-            auto v         = t->v.template cast_safe<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
+            auto r  = t->r.template cast_safe<TVector<T>>();
+            auto v  = t->v.template cast_safe<TVector<T>>();
+            auto op = t->op.template cast_safe<TOpUnary<T, T>>();
 
+            r->validate_wd(FormatVector::AccDense);
             v->validate_rw(FormatVector::AccDense);
 
-            const auto* p_cl_dense_vec = v->template get<CLDenseVec<T>>();
-            auto*       p_cl_acc       = get_acc_cl();
-            auto&       queue          = p_cl_acc->get_queue_default();
+            auto*       p_cl_dense_r = r->template get<CLDenseVec<T>>();
+            const auto* p_cl_dense_v = v->template get<CLDenseVec<T>>();
+            auto*       p_cl_acc     = get_acc_cl();
+            auto&       queue        = p_cl_acc->get_queue_default();
 
-            cl_reduce<T>(queue, p_cl_dense_vec->Ax, v->get_n_rows(), s->get_value(), op_reduce, r->get_value());
+            cl_map(queue, p_cl_dense_v->Ax, p_cl_dense_r->Ax, r->get_n_rows(), op);
 
             return Status::Ok;
         }
 
         Status execute_sp(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("opencl/vector_reduce_sparse");
+            TIME_PROFILE_SCOPE("opencl/vector_map_sparse");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_map>();
 
-            auto r         = t->r.template cast_safe<TScalar<T>>();
-            auto s         = t->s.template cast_safe<TScalar<T>>();
-            auto v         = t->v.template cast_safe<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
+            auto r  = t->r.template cast_safe<TVector<T>>();
+            auto v  = t->v.template cast_safe<TVector<T>>();
+            auto op = t->op.template cast_safe<TOpUnary<T, T>>();
 
+            r->validate_wd(FormatVector::AccCoo);
             v->validate_rw(FormatVector::AccCoo);
 
-            const auto* p_cl_coo_vec = v->template get<CLCooVec<T>>();
-            auto*       p_cl_acc     = get_acc_cl();
-            auto&       queue        = p_cl_acc->get_queue_default();
+            auto*       p_cl_coo_r = r->template get<CLCooVec<T>>();
+            const auto* p_cl_coo_v = v->template get<CLCooVec<T>>();
+            auto*       p_cl_acc   = get_acc_cl();
+            auto&       queue      = p_cl_acc->get_queue_default();
 
-            cl_reduce<T>(queue, p_cl_coo_vec->Ax, p_cl_coo_vec->values, s->get_value(), op_reduce, r->get_value());
+            const uint N = p_cl_coo_v->values;
+
+            cl_coo_vec_resize(N, *p_cl_coo_r);
+
+            queue.enqueueCopyBuffer(p_cl_coo_v->Ai, p_cl_coo_r->Ai, 0, 0, sizeof(uint) * N);
+            cl_map(queue, p_cl_coo_v->Ax, p_cl_coo_r->Ax, N, op);
 
             return Status::Ok;
         }
@@ -123,4 +130,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_VECTOR_REDUCE_HPP
+#endif//SPLA_CL_VECTOR_MAP_HPP

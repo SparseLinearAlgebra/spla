@@ -422,4 +422,29 @@ TEST(vector, fill_value) {
     }
 }
 
+TEST(vector, map) {
+    const spla::uint N = 100000;
+    auto             v = spla::Vector::make(N, spla::FLOAT);
+    auto             u = spla::Vector::make(N, spla::FLOAT);
+
+    v->fill_with(spla::Scalar::make_float(1.0f));
+
+    auto map_up = spla::OpUnary::make_float(
+            "map_up",
+            "(float x) { return x + 0.5f * x * x + 0.25f * x * x * x; }",
+            [](float x) { return x + 0.5f * x * x + 0.25f * x * x * x; });
+
+    spla::exec_v_map(u, v, map_up);
+
+    auto ref = [](float x) { return x + 0.5f * x * x + 0.25f * x * x * x; };
+
+    for (spla::uint i = 0; i < N; i++) {
+        const float error    = 0.0005f;
+        float       expected = ref(1.0f);
+        float       actual;
+        u->get_float(i, actual);
+        EXPECT_TRUE(std::fabs(expected - actual) <= error);
+    }
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

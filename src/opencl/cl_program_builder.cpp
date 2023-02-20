@@ -27,6 +27,7 @@
 
 #include "cl_program_builder.hpp"
 
+#include <opencl/generated/auto_common_api.hpp>
 #include <spla/timer.hpp>
 
 #include <stdexcept>
@@ -43,6 +44,10 @@ namespace spla {
     }
     CLProgramBuilder& CLProgramBuilder::add_type(const char* define, const ref_ptr<Type>& type) {
         m_defines.emplace_back(define, type->get_cpp());
+        return *this;
+    }
+    CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpUnary>& op) {
+        m_functions.emplace_back(name, op.as<Op>());
         return *this;
     }
     CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpBinary>& op) {
@@ -80,6 +85,8 @@ namespace spla {
         for (const auto& define : m_defines) {
             builder << "#define " << define.first << " " << define.second << "\n";
         }
+        builder << source_common_api;
+
         for (const auto& function : m_functions) {
             builder << function.second->get_type_res()->get_cpp() << " "
                     << function.first << function.second->get_source() << "\n";

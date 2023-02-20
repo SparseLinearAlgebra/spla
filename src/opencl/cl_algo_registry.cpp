@@ -34,6 +34,7 @@
 #include <opencl/cl_vector_assign.hpp>
 #include <opencl/cl_vector_count_mf.hpp>
 #include <opencl/cl_vector_eadd_fdb.hpp>
+#include <opencl/cl_vector_map.hpp>
 #include <opencl/cl_vector_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
 
@@ -44,6 +45,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", INT), std::make_shared<Algo_v_count_mf_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", UINT), std::make_shared<Algo_v_count_mf_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", FLOAT), std::make_shared<Algo_v_count_mf_cl<T_FLOAT>>());
+
+        // algorthm v_map
+        g_registry->add(MAKE_KEY_CL_0("v_map", INT), std::make_shared<Algo_v_map_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_map", UINT), std::make_shared<Algo_v_map_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_map", FLOAT), std::make_shared<Algo_v_map_cl<T_FLOAT>>());
 
         // algorthm v_reduce
         g_registry->add(MAKE_KEY_CL_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());

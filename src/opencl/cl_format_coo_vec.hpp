@@ -73,8 +73,9 @@ namespace spla {
         cl::Buffer buffer_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai);
         cl::Buffer buffer_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
 
-        storage.Ai = std::move(buffer_Ai);
-        storage.Ax = std::move(buffer_Ax);
+        storage.Ai     = std::move(buffer_Ai);
+        storage.Ax     = std::move(buffer_Ax);
+        storage.values = n_values;
     }
 
     template<typename T>

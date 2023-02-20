@@ -28,6 +28,7 @@
 #ifndef SPLA_TEST_COMMON_HPP
 #define SPLA_TEST_COMMON_HPP
 
+#include <cmath>
 #include <functional>
 #include <iostream>
 #include <string>

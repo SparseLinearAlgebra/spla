@@ -151,6 +151,27 @@ namespace spla {
         return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>(), op_select.as<Object>()};
     }
 
+    std::string ScheduleTask_v_map::get_name() {
+        return "v_map";
+    }
+    std::string ScheduleTask_v_map::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_map::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_v_map::get_args() {
+        return {r.as<Object>(), v.as<Object>(), op.as<Object>()};
+    }
+
     std::string ScheduleTask_v_reduce::get_name() {
         return "v_reduce";
     }

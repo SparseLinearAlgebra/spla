@@ -159,6 +159,24 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_v_map
+     * @brief Vector map to vector
+     */
+    class ScheduleTask_v_map final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_map() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>  r;
+        ref_ptr<Vector>  v;
+        ref_ptr<OpUnary> op;
+    };
+
+    /**
      * @class ScheduleTask_v_reduce
      * @brief Vector reduction to scalar
      */

@@ -34,7 +34,7 @@
 namespace spla {
 
     CLAllocLinear::CLAllocLinear(std::size_t arena_size, std::size_t alignment) {
-        assert(m_arena_size > 0);
+        assert(arena_size > 0);
         assert(alignment > 0);
         m_fallback_size = arena_size;
         m_arena_size    = arena_size;

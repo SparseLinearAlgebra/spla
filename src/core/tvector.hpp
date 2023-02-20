@@ -40,6 +40,7 @@
 #include <storage/storage_manager_vector.hpp>
 
 #include <algorithm>
+#include <random>
 
 namespace spla {
 
@@ -72,9 +73,8 @@ namespace spla {
         Status             get_int(uint row_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint32_t& value) override;
         Status             get_float(uint row_id, float& value) override;
-        Status             fill_int(T_INT value) override;
-        Status             fill_uint(T_UINT value) override;
-        Status             fill_float(T_FLOAT value) override;
+        Status             fill_noize(uint seed) override;
+        Status             fill_with(const ref_ptr<Scalar>& value) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -228,31 +228,34 @@ namespace spla {
     }
 
     template<typename T>
-    Status TVector<T>::fill_int(T_INT value) {
+    Status TVector<T>::fill_noize(uint seed) {
         validate_wd(FormatVector::CpuDense);
+        auto& Ax     = get<CpuDenseVec<T>>()->Ax;
+        auto  engine = std::default_random_engine(seed);
 
-        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
-        const T t  = static_cast<T>(value);
-        std::fill(Ax.begin(), Ax.end(), t);
+        if constexpr (std::is_integral_v<T>) {
+            std::uniform_int_distribution<T> dist;
+            for (auto& x : Ax) x = dist(engine);
+        }
+        if constexpr (std::is_floating_point_v<T>) {
+            std::uniform_real_distribution<T> dist;
+            for (auto& x : Ax) x = dist(engine);
+        }
 
         return Status::Ok;
     }
     template<typename T>
-    Status TVector<T>::fill_uint(T_UINT value) {
+    Status TVector<T>::fill_with(const ref_ptr<Scalar>& value) {
+        assert(value);
+
+        T t = T();
+
+        if constexpr (std::is_same<T, T_INT>::value) t = value->as_int();
+        if constexpr (std::is_same<T, T_UINT>::value) t = value->as_uint();
+        if constexpr (std::is_same<T, T_FLOAT>::value) t = value->as_float();
+
         validate_wd(FormatVector::CpuDense);
-
-        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
-        const T t  = static_cast<T>(value);
-        std::fill(Ax.begin(), Ax.end(), t);
-
-        return Status::Ok;
-    }
-    template<typename T>
-    Status TVector<T>::fill_float(T_FLOAT value) {
-        validate_wd(FormatVector::CpuDense);
-
-        auto&   Ax = get<CpuDenseVec<T>>()->Ax;
-        const T t  = static_cast<T>(value);
+        auto& Ax = get<CpuDenseVec<T>>()->Ax;
         std::fill(Ax.begin(), Ax.end(), t);
 
         return Status::Ok;

@@ -145,6 +145,20 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_map(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpUnary>       op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task  = make_ref<ScheduleTask_v_map>();
+        task->r    = std::move(r);
+        task->v    = std::move(v);
+        task->op   = std::move(op);
+        task->desc = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_reduce(
             ref_ptr<Scalar>        r,
             ref_ptr<Scalar>        s,

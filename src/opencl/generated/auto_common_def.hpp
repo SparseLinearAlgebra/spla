@@ -15,6 +15,7 @@ static const char source_common_def[] = R"(
 #define BLOCK_COUNT      1
 #define WARP_SIZE        32
 #define OP_SELECT(a)     a
+#define OP_UNARY(a)      a
 #define OP_BINARY(a, b)  a + b
 #define OP_BINARY1(a, b) a + b
 #define OP_BINARY2(a, b) a + b
@@ -24,6 +25,7 @@ static const char source_common_def[] = R"(
 #define __local
 #define __constant
 #define __private
+#define restrict
 
 #define half float
 
@@ -37,7 +39,8 @@ struct float4 {
     float x, y, z, w;
 };
 
-#define uint unsigned int
+#define uint  unsigned int
+#define ulong unsigned long int
 
 enum cl_mem_fence_flags {
     CLK_LOCAL_MEM_FENCE,
@@ -61,6 +64,9 @@ uint   get_work_dim();
 #define atomic_dec(p)               (p)[0]
 #define atomic_cmpxchg(p, cmp, val) ((p)[0] == cmp ? val : (p)[0])
 
-#define min(x, y) (x < y ? x : y)
-#define max(x, y) (x > y ? x : y)
+#define min(x, y)     (x < y ? x : y)
+#define max(x, y)     (x > y ? x : y)
+#define sin(x)        x
+#define cos(x)        x
+#define fract(x, ptr) x
 )";

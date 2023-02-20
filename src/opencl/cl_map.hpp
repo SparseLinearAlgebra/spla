@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,60 +25,39 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_PROGRAM_BUILDER_HPP
-#define SPLA_CL_PROGRAM_BUILDER_HPP
+#ifndef SPLA_CL_MAP_HPP
+#define SPLA_CL_MAP_HPP
 
-#include <core/top.hpp>
-#include <core/ttype.hpp>
 #include <opencl/cl_accelerator.hpp>
-#include <opencl/cl_program.hpp>
-#include <opencl/cl_program_cache.hpp>
-
-#include <svector.hpp>
-
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
+#include <opencl/generated/auto_map.hpp>
+#include <spla/op.hpp>
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+    template<typename T>
+    void cl_map(cl::CommandQueue& queue, const cl::Buffer& source, cl::Buffer& dest, uint n, const ref_ptr<TOpUnary<T, T>>& op) {
+        if (n == 0) return;
 
-    /**
-     * @class CLProgramBuilder
-     * @brief Runtime opencl program builder
-     */
-    class CLProgramBuilder final {
-    public:
-        CLProgramBuilder& set_name(const char* name);
-        CLProgramBuilder& add_define(const char* define, int value);
-        CLProgramBuilder& add_type(const char* alias, const ref_ptr<Type>& type);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpUnary>& op);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
-        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
-        CLProgramBuilder& set_source(const char* source);
-        void              acquire();
+        auto* acc = get_acc_cl();
 
-        const std::shared_ptr<CLProgram>& get_program() { return m_program; };
-        cl::Kernel                        make_kernel(const char* name) { return m_program->make_kernel(name); }
+        CLProgramBuilder builder;
+        builder
+                .set_name("map")
+                .set_source(source_map)
+                .add_type("TYPE", get_ttype<T>().template as<Type>())
+                .add_op("OP_UNARY", op.template as<OpUnary>())
+                .acquire();
 
-    private:
-        ankerl::svector<std::pair<std::string, std::string>, 8> m_defines;
-        ankerl::svector<std::pair<std::string, ref_ptr<Op>>, 8> m_functions;
-        std::string                                             m_name;
-        const char*                                             m_source = nullptr;
-        std::shared_ptr<CLProgram>                              m_program;
-        std::string                                             m_program_code;
-    };
+        auto kernel = builder.make_kernel("map");
+        kernel.setArg(0, dest);
+        kernel.setArg(1, source);
+        kernel.setArg(2, n);
 
-    /**
-     * @}
-     */
+        cl::NDRange global(align(n, acc->get_default_wgz()));
+        cl::NDRange local(acc->get_default_wgz());
+        queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
+    }
 
 }// namespace spla
 
-#endif//SPLA_CL_PROGRAM_BUILDER_HPP
+#endif//SPLA_CL_MAP_HPP
