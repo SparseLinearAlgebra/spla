@@ -106,6 +106,10 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> DIV_UINT;
     SPLA_API extern ref_ptr<OpBinary> DIV_FLOAT;
 
+    SPLA_API extern ref_ptr<OpBinary> MINUS_POW2_INT;
+    SPLA_API extern ref_ptr<OpBinary> MINUS_POW2_UINT;
+    SPLA_API extern ref_ptr<OpBinary> MINUS_POW2_FLOAT;
+
     SPLA_API extern ref_ptr<OpBinary> FIRST_INT;
     SPLA_API extern ref_ptr<OpBinary> FIRST_UINT;
     SPLA_API extern ref_ptr<OpBinary> FIRST_FLOAT;

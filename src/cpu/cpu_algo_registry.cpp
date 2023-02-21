@@ -34,6 +34,7 @@
 #include <cpu/cpu_mxv.hpp>
 #include <cpu/cpu_vector_assign.hpp>
 #include <cpu/cpu_vector_count_mf.hpp>
+#include <cpu/cpu_vector_eadd.hpp>
 #include <cpu/cpu_vector_eadd_fdb.hpp>
 #include <cpu/cpu_vector_map.hpp>
 #include <cpu/cpu_vector_reduce.hpp>
@@ -59,6 +60,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", FLOAT), std::make_shared<Algo_v_reduce_cpu<T_FLOAT>>());
+
+        // algorthm v_eadd
+        g_registry->add(MAKE_KEY_CPU_0("v_eadd", INT), std::make_shared<Algo_v_eadd_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_eadd", UINT), std::make_shared<Algo_v_eadd_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_eadd", FLOAT), std::make_shared<Algo_v_eadd_cpu<T_FLOAT>>());
 
         // algorthm v_eadd_fdb
         g_registry->add(MAKE_KEY_CPU_0("v_eadd_fdb", INT), std::make_shared<Algo_v_eadd_fdb_cpu<T_INT>>());

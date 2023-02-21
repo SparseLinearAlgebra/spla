@@ -118,6 +118,26 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) r = op(u,v)
+     *
+     * @param r Vector to store result of operation
+     * @param u Vector input to sum
+     * @param v Vector input to sum
+     * @param op Element-wise binary operator sum elements of vectors
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_eadd(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        u,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) r = add(r, v, op)
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.

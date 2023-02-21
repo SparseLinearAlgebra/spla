@@ -192,6 +192,28 @@ TEST(vector, reduce_perf) {
     std::cout << std::endl;
 }
 
+TEST(vector, eadd_sub_pow2) {
+    const spla::uint N = 1000000;
+    auto             r = spla::Vector::make(N, spla::FLOAT);
+    auto             u = spla::Vector::make(N, spla::FLOAT);
+    auto             v = spla::Vector::make(N, spla::FLOAT);
+
+    for (spla::uint i = 0; i < N; i += 1) {
+        if (i % 2) u->set_float(i, 2.0f);
+        if (!(i % 2)) v->set_float(i, 2.0f);
+    }
+
+    spla::exec_v_eadd(r, u, v, spla::MINUS_POW2_FLOAT);
+
+    for (spla::uint i = 0; i < N; i += 1) {
+        const float error    = 0.00001f;
+        float       expected = 4.0f;
+        float       actual;
+        r->get_float(i, actual);
+        EXPECT_TRUE(std::abs(expected - actual) <= error);
+    }
+}
+
 TEST(vector, eadd_fdb_min) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;

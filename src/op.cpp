@@ -46,6 +46,10 @@ namespace spla {
     ref_ptr<OpBinary> DIV_UINT;
     ref_ptr<OpBinary> DIV_FLOAT;
 
+    ref_ptr<OpBinary> MINUS_POW2_INT;
+    ref_ptr<OpBinary> MINUS_POW2_UINT;
+    ref_ptr<OpBinary> MINUS_POW2_FLOAT;
+
     ref_ptr<OpBinary> FIRST_INT;
     ref_ptr<OpBinary> FIRST_UINT;
     ref_ptr<OpBinary> FIRST_FLOAT;
@@ -115,6 +119,10 @@ namespace spla {
         DECL_OP_BIN_S(DIV_INT, DIV, T_INT, { return a / b; });
         DECL_OP_BIN_S(DIV_UINT, DIV, T_UINT, { return a / b; });
         DECL_OP_BIN_S(DIV_FLOAT, DIV, T_FLOAT, { return a / b; });
+
+        DECL_OP_BIN_S(MINUS_POW2_INT, MINUS_POW2, T_INT, { return (a - b) * (a - b); });
+        DECL_OP_BIN_S(MINUS_POW2_UINT, MINUS_POW2, T_UINT, { return (a - b) * (a - b); });
+        DECL_OP_BIN_S(MINUS_POW2_FLOAT, MINUS_POW2, T_FLOAT, { return (a - b) * (a - b); });
 
         DECL_OP_BIN_S(FIRST_INT, FIRST, T_INT, { return a; });
         DECL_OP_BIN_S(FIRST_UINT, FIRST, T_UINT, { return a; });

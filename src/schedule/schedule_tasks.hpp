@@ -120,6 +120,25 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_v_eadd
+     * @brief Vector ewise
+     */
+    class ScheduleTask_v_eadd final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_eadd() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>   r;
+        ref_ptr<Vector>   u;
+        ref_ptr<Vector>   v;
+        ref_ptr<OpBinary> op;
+    };
+
+    /**
      * @class ScheduleTask_v_eadd_fdb
      * @brief Vector ewise with feedback
      */
