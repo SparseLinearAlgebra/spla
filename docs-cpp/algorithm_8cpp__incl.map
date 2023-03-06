@@ -1,5 +1,5 @@
 <map id="src/algorithm.cpp" name="src/algorithm.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="762,5,883,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="838,5,959,32"/>
 <area shape="rect" id="node2" href="$algorithm_8hpp.html" title=" " alt="" coords="531,80,658,107"/>
 <area shape="rect" id="node14" title=" " alt="" coords="145,528,210,555"/>
 <area shape="rect" id="node18" href="$op_8hpp.html" title=" " alt="" coords="59,229,119,256"/>
@@ -8,8 +8,9 @@
 <area shape="rect" id="node25" href="$timer_8hpp.html" title=" " alt="" coords="847,80,950,107"/>
 <area shape="rect" id="node27" title=" " alt="" coords="1165,155,1237,181"/>
 <area shape="rect" id="node29" title=" " alt="" coords="1025,80,1100,107"/>
-<area shape="rect" id="node30" title=" " alt="" coords="1124,80,1177,107"/>
-<area shape="rect" id="node31" title=" " alt="" coords="1202,80,1259,107"/>
+<area shape="rect" id="node30" title=" " alt="" coords="1124,80,1183,107"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1207,80,1260,107"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1285,80,1342,107"/>
 <area shape="rect" id="node3" href="$config_8hpp.html" title=" " alt="" coords="931,528,1011,555"/>
 <area shape="rect" id="node7" href="$descriptor_8hpp.html" title=" " alt="" coords="505,229,607,256"/>
 <area shape="rect" id="node17" href="$matrix_8hpp.html" title=" " alt="" coords="217,155,298,181"/>

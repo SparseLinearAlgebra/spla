@@ -111,7 +111,7 @@ $(function() {
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__counter_8hpp.html">opencl/cl_counter.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__fill_8hpp.html">opencl/cl_fill.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="cl__formats_8hpp.html">opencl/cl_formats.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__vector__eadd_8hpp.html">opencl/generated/auto_vector_eadd.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="auto__vector__eadd__fdb_8hpp.html">opencl/generated/auto_vector_eadd_fdb.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
@@ -187,7 +187,7 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            kernel.setArg(5, cl_fdb_size.<a class="code" href="classspla_1_1CLCounterWrapper.html#adb509c8da82496bcaea87c490b83b851">buffer</a>());</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            kernel.setArg(6, n);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            cl::NDRange global(align(n, p_cl_acc-&gt;get_default_wgz()));</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgz() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgz(), 1u, 1024u));</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgz());</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
@@ -230,7 +230,7 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            kernel.setArg(2, p_cl_fdb-&gt;Ax);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            kernel.setArg(3, n);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            cl::NDRange global(align(n, p_cl_acc-&gt;get_default_wgz()));</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgz() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgz(), 1u, 1024u));</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgz());</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
@@ -240,10 +240,10 @@ $(function() {
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> ref_ptr&lt;TOpBinary&lt;T, T, T&gt;&gt;&amp; op, std::shared_ptr&lt;CLProgram&gt;&amp; program) {</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            CLProgramBuilder program_builder;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            program_builder</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    .set_name(<span class="stringliteral">&quot;vector_eadd&quot;</span>)</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    .set_name(<span class="stringliteral">&quot;vector_eadd_fdb&quot;</span>)</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                    .add_type(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY&quot;</span>, op.template as&lt;OpBinary&gt;())</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    .set_source(source_vector_eadd)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    .set_source(source_vector_eadd_fdb)</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                    .acquire();</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            program = program_builder.get_program();</div>
@@ -255,7 +255,7 @@ $(function() {
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;}<span class="comment">// namespace spla</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_VECTOR_EADD_HPP</span></div>
-<div class="ttc" id="aauto__vector__eadd_8hpp_html"><div class="ttname"><a href="auto__vector__eadd_8hpp.html">auto_vector_eadd.hpp</a></div></div>
+<div class="ttc" id="aauto__vector__eadd__fdb_8hpp_html"><div class="ttname"><a href="auto__vector__eadd__fdb_8hpp.html">auto_vector_eadd_fdb.hpp</a></div></div>
 <div class="ttc" id="acl__counter_8hpp_html"><div class="ttname"><a href="cl__counter_8hpp.html">cl_counter.hpp</a></div></div>
 <div class="ttc" id="acl__fill_8hpp_html"><div class="ttname"><a href="cl__fill_8hpp.html">cl_fill.hpp</a></div></div>
 <div class="ttc" id="acl__formats_8hpp_html"><div class="ttname"><a href="cl__formats_8hpp.html">cl_formats.hpp</a></div></div>
