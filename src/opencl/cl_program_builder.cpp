@@ -89,7 +89,7 @@ namespace spla {
 
         for (const auto& function : m_functions) {
             builder << function.second->get_type_res()->get_cpp() << " "
-                    << function.first << function.second->get_source() << "\n";
+                    << function.first << function.second->get_source_cl() << "\n";
         }
         builder << m_source;
 

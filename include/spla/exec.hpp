@@ -56,10 +56,9 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r<select(mask)> = Mxv
+     * @brief Execute (schedule) dense-masked sparse matrix by dense vector product
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic `r[i] = select(mask)? M[i,*] * v: init`
      *
      * @param r Vector to store operation result
      * @param mask Vector to select for which values to compute product
@@ -87,10 +86,9 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r<select(mask)> = vxM
+     * @brief Execute (schedule) dense-masked sparse vector by sparse matrix product
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic `r[i] = select(mask)? v * M[*,i]: init`
      *
      * @param r Vector to store operation result
      * @param mask Vector to select for which values to compute product
@@ -118,7 +116,29 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = op(u,v)
+     * @brief Execute (schedule) matrix by row reduction to single vector column
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Vector to store reduction of row
+     * @param M Matrix to reduce rows
+     * @param op_reduce Binary op to sum elements of single row
+     * @param init Scalar identity element for reduction
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_reduce_by_row(
+            ref_ptr<Vector>        r,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpBinary>      op_reduce,
+            ref_ptr<Scalar>        init,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) element-wise addition by structure of two vectors
      *
      * @param r Vector to store result of operation
      * @param u Vector input to sum
@@ -138,10 +158,9 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = add(r, v, op)
+     * @brief Execute (schedule) element-wise addition by structure of two vectors with feedback
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic r = {op(r[i],v[i]): for i in union}
      *
      * @param r Vector to store operation result
      * @param v Vector add to r element-wise
@@ -161,7 +180,7 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r<select(mask)> = value
+     * @brief Execute (schedule) masked scalar assignment to a vector
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
@@ -185,12 +204,9 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = map(v, op)
-     *
-     * Map one vector container to another using unary map operation to transform values.
+     * @brief Execute (schedule) by structure map of one vector to another using unary operation
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic r = {map(v[i])}
      *
      * @param r Vector result to store mapped values
      * @param v Vector source to map
@@ -208,7 +224,7 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = reduce(s, v)
+     * @brief Execute (schedule) vector by structure reduction to a single scalar value
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
@@ -230,7 +246,7 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) r = v.size
+     * @brief Execute (schedule) count number of meaningful values by vector structure
      *
      * Count number of entries in the provided vector container not equal to fill value.
      * Use this function to obtain actual number of meaningful values in a container.
@@ -239,7 +255,6 @@ namespace spla {
      * algorithms which employ sparsity of input.
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
-     * @note Semantic r = Card({v[i]: v[i] != v.fill_value})
      *
      * @param r Scalar (int) to store count of meaningful entries
      * @param v Vector to count number of meaningful entries

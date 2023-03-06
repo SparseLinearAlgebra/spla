@@ -103,7 +103,7 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
         std::string        get_name() override;
-        std::string        get_source() override;
+        std::string        get_source_cl() override;
         std::string        get_key() override;
         ref_ptr<Type>      get_type_arg_0() override;
         ref_ptr<Type>      get_type_res() override;
@@ -128,7 +128,7 @@ namespace spla {
         return name;
     }
     template<typename A0, typename R>
-    std::string TOpUnary<A0, R>::get_source() {
+    std::string TOpUnary<A0, R>::get_source_cl() {
         return source;
     }
     template<typename A0, typename R>
@@ -152,7 +152,7 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
         std::string        get_name() override;
-        std::string        get_source() override;
+        std::string        get_source_cl() override;
         std::string        get_key() override;
         ref_ptr<Type>      get_type_arg_0() override;
         ref_ptr<Type>      get_type_arg_1() override;
@@ -178,7 +178,7 @@ namespace spla {
         return name;
     }
     template<typename A0, typename A1, typename R>
-    std::string TOpBinary<A0, A1, R>::get_source() {
+    std::string TOpBinary<A0, A1, R>::get_source_cl() {
         return source;
     }
     template<typename A0, typename A1, typename R>
@@ -206,7 +206,7 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
         std::string        get_name() override;
-        std::string        get_source() override;
+        std::string        get_source_cl() override;
         std::string        get_key() override;
         ref_ptr<Type>      get_type_arg_0() override;
         ref_ptr<Type>      get_type_res() override;
@@ -231,7 +231,7 @@ namespace spla {
         return name;
     }
     template<typename A0>
-    std::string TOpSelect<A0>::get_source() {
+    std::string TOpSelect<A0>::get_source_cl() {
         return source;
     }
     template<typename A0>

@@ -34,7 +34,7 @@
 static constexpr auto display_op_info = [](spla::ref_ptr<spla::OpBinary>& op) {
     std::cout << op->get_name() << " "
               << op->get_key() << " "
-              << op->get_source() << std::endl;
+              << op->get_source_cl() << std::endl;
 };
 
 TEST(op_binary, info_built_in) {

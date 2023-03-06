@@ -33,11 +33,14 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 #include <limits>
 #include <queue>
 
 namespace spla {
+
+#pragma region Bfs
 
     Status bfs(const ref_ptr<Vector>&     v,
                const ref_ptr<Matrix>&     A,
@@ -148,6 +151,10 @@ namespace spla {
         return Status::Ok;
     }
 
+#pragma endregion Bfs
+
+#pragma region Sssp
+
     Status sssp(const ref_ptr<Vector>&     v,
                 const ref_ptr<Matrix>&     A,
                 uint                       s,
@@ -186,7 +193,7 @@ namespace spla {
         if (pull) mode = "(pull)";
         if (push) mode = "(push)";
 
-        std::cout << "start bfs from " << s << " " << mode << std::endl;
+        std::cout << "start sssp from " << s << " " << mode << std::endl;
 
         Timer tight;
 #endif
@@ -263,5 +270,109 @@ namespace spla {
 
         return Status::Ok;
     }
+
+#pragma endregion Sssp
+
+#pragma region Pr
+
+    Status pr(ref_ptr<Vector>&           p,
+              const ref_ptr<Matrix>&     A,
+              float                      alpha,
+              float                      eps,
+              const ref_ptr<Descriptor>& descriptor) {
+        assert(v);
+        assert(A);
+
+        const auto N = p->get_n_rows();
+
+        ref_ptr<Vector> dummy_mask = Vector::make(N, FLOAT);
+        ref_ptr<Vector> p_prev     = Vector::make(N, FLOAT);
+        ref_ptr<Vector> p_tmp      = Vector::make(N, FLOAT);
+        ref_ptr<Vector> addition   = Vector::make(N, FLOAT);
+        ref_ptr<Vector> errors     = Vector::make(N, FLOAT);
+        ref_ptr<Scalar> error2     = Scalar::make(FLOAT);
+        ref_ptr<Scalar> zero       = Scalar::make_float(0.0f);
+
+        addition->fill_with(Scalar::make_float((1.0f - alpha) / float(N)));
+        p_prev->fill_with(Scalar::make_float(1.0f / float(N)));
+
+        float error = eps + 0.1f;
+#ifndef SPLA_RELEASE
+        int iter = 0;
+
+        std::cout << "start pr alpha=" << alpha << " eps " << eps << std::endl;
+
+        Timer tight;
+#endif
+        while (error > eps) {
+#ifndef SPLA_RELEASE
+            tight.start();
+#endif
+            // p = A*p + (1-alpha)/N
+            exec_mxv_masked(p_tmp, dummy_mask, A, p_prev, MULT_FLOAT, PLUS_FLOAT, ALWAYS_FLOAT, zero);
+            exec_v_eadd(p, p_tmp, addition, PLUS_FLOAT);
+
+            // error = sqrt((p[01]-prev[0])^2 + ... + p[N-1]-prev[N-1])^2)
+            exec_v_eadd(errors, p, p_prev, MINUS_POW2_FLOAT);
+            exec_v_reduce(error2, zero, errors, PLUS_FLOAT);
+
+            error = std::sqrt(error2->as_float());
+
+            std::swap(p, p_prev);
+
+#ifndef SPLA_RELEASE
+            tight.stop();
+            std::cout << " - iter " << iter++
+                      << " error " << error
+                      << " " << tight.get_elapsed_ms() << " ms" << std::endl;
+            Library::get()->time_profile_dump();
+            Library::get()->time_profile_reset();
+#endif
+        }
+
+        std::swap(p, p_prev);
+        return Status::Ok;
+    }
+
+    Status pr_naive(std::vector<float>&              p,
+                    std::vector<std::vector<uint>>&  Ai,
+                    std::vector<std::vector<float>>& Ax,
+                    float                            alpha,
+                    float                            eps,
+                    const ref_ptr<Descriptor>&       descriptor) {
+
+        const auto N = p.size();
+
+        std::vector<float> p_prev(N, 1.0f / float(N));
+
+        float error = eps + 0.1f;
+
+        while (error > eps) {
+            for (std::size_t i = 0; i < N; i++) {
+                p[i] = 0;
+
+                for (std::size_t k = 0; k < Ai[i].size(); k++) {
+                    p[i] += Ax[i][k] * p_prev[Ai[i][k]];
+                }
+
+                p[i] += (1.0f - alpha) / float(N);
+            }
+
+            error = 0.0f;
+
+            for (std::size_t i = 0; i < N; i++) {
+                error += (p[i] - p_prev[i]) * (p[i] - p_prev[i]);
+            }
+
+            error = std::sqrt(error);
+
+            std::swap(p, p_prev);
+        }
+
+        std::swap(p, p_prev);
+        return Status::Ok;
+    }
+
+#pragma endregion Pr
 
 }// namespace spla

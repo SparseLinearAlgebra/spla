@@ -253,6 +253,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_vxm.hpp
             src/opencl/cl_vector_assign.hpp
             src/opencl/cl_vector_count_mf.hpp
+            src/opencl/cl_vector_eadd.hpp
             src/opencl/cl_vector_eadd_fdb.hpp
             src/opencl/cl_vector_map.hpp
             src/opencl/cl_vector_reduce.hpp
@@ -319,6 +320,7 @@ add_library(spla SHARED
         src/cpu/cpu_vxm.hpp
         src/cpu/cpu_vector_assign.hpp
         src/cpu/cpu_vector_count_mf.hpp
+        src/cpu/cpu_vector_eadd.hpp
         src/cpu/cpu_vector_eadd_fdb.hpp
         src/cpu/cpu_vector_map.hpp
         src/cpu/cpu_vector_reduce.hpp
@@ -379,6 +381,7 @@ if (SPLA_BUILD_EXAMPLES)
 
     spla_example_application(bfs)
     spla_example_application(sssp)
+    spla_example_application(pr)
     spla_example_application(pi)
 endif ()
 

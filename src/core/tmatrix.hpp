@@ -80,6 +80,7 @@ namespace spla {
         void validate_rwd(FormatMatrix format);
         void validate_wd(FormatMatrix format);
         void validate_ctor(FormatMatrix format);
+        bool is_valid(FormatMatrix format) const;
 
         static StorageManagerMatrix<T>* get_storage_manager();
 
@@ -238,6 +239,11 @@ namespace spla {
     void TMatrix<T>::validate_ctor(FormatMatrix format) {
         StorageManagerMatrix<T>* manager = get_storage_manager();
         manager->validate_ctor(format, m_storage);
+    }
+
+    template<typename T>
+    bool TMatrix<T>::is_valid(FormatMatrix format) const {
+        return m_storage.is_valid(format);
     }
 
     template<typename T>

@@ -25,7 +25,6 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "common.hpp"
 #include "options.hpp"
 
 #include <spla.hpp>

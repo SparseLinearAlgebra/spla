@@ -103,6 +103,19 @@ namespace spla {
                                uint                             s,
                                const ref_ptr<Descriptor>&       descriptor);
 
+    SPLA_API Status pr(ref_ptr<Vector>&           p,
+                       const ref_ptr<Matrix>&     A,
+                       float                      alpha,
+                       float                      eps,
+                       const ref_ptr<Descriptor>& descriptor);
+
+    SPLA_API Status pr_naive(std::vector<float>&              p,
+                             std::vector<std::vector<uint>>&  Ai,
+                             std::vector<std::vector<float>>& Ax,
+                             float                            alpha,
+                             float                            eps,
+                             const ref_ptr<Descriptor>&       descriptor);
+
     /**
      * @}
      */
