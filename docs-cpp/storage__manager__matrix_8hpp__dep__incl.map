@@ -1,12 +1,12 @@
 <map id="src/storage/storage_manager_matrix.hpp" name="src/storage/storage_manager_matrix.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="412,5,557,47"/>
-<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="417,95,553,121"/>
-<area shape="rect" id="node3" href="$cpu__matrix__reduce__by__row_8hpp.html" title=" " alt="" coords="5,169,145,211"/>
-<area shape="rect" id="node5" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="169,177,315,203"/>
-<area shape="rect" id="node6" href="$cpu__vxm_8hpp.html" title=" " alt="" coords="339,177,484,203"/>
-<area shape="rect" id="node7" href="$matrix_8cpp.html" title=" " alt="" coords="508,177,611,203"/>
-<area shape="rect" id="node8" href="$cl__mxv_8hpp.html" title=" " alt="" coords="635,177,785,203"/>
-<area shape="rect" id="node10" href="$cl__vxm_8hpp.html" title=" " alt="" coords="809,177,960,203"/>
-<area shape="rect" id="node4" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="145,266,339,293"/>
-<area shape="rect" id="node9" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="733,259,860,300"/>
+<area shape="rect" id="node1" title=" " alt="" coords="427,5,573,47"/>
+<area shape="rect" id="node2" href="$tmatrix_8hpp.html" title=" " alt="" coords="432,95,568,121"/>
+<area shape="rect" id="node3" href="$cpu__m__reduce__by__row_8hpp.html" title=" " alt="" coords="5,169,160,211"/>
+<area shape="rect" id="node4" href="$cpu__mxv_8hpp.html" title=" " alt="" coords="185,177,330,203"/>
+<area shape="rect" id="node6" href="$cpu__vxm_8hpp.html" title=" " alt="" coords="354,177,499,203"/>
+<area shape="rect" id="node7" href="$matrix_8cpp.html" title=" " alt="" coords="523,177,626,203"/>
+<area shape="rect" id="node8" href="$cl__mxv_8hpp.html" title=" " alt="" coords="650,177,801,203"/>
+<area shape="rect" id="node10" href="$cl__vxm_8hpp.html" title=" " alt="" coords="825,177,975,203"/>
+<area shape="rect" id="node5" href="$cpu__algo__registry_8cpp.html" title=" " alt="" coords="245,266,440,293"/>
+<area shape="rect" id="node9" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="749,259,875,300"/>
 </map>

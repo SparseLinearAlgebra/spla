@@ -487,6 +487,10 @@ Functions</h2></td></tr>
 <tr class="separator:gaff92dc845e91171abdf7cc38e6570c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadf3839c13bdebe924f40ee4c73e592af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadf3839c13bdebe924f40ee4c73e592af">spla::StorageManager&lt; T, F, capacity &gt;::register_validator</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
 <tr class="separator:gadf3839c13bdebe924f40ee4c73e592af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43b20dd69a76e9db36a0899d9890414c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga43b20dd69a76e9db36a0899d9890414c">spla::StorageManager&lt; T, F, capacity &gt;::register_discard</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:ga43b20dd69a76e9db36a0899d9890414c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaefb686365331808e9145c2a339911c9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaefb686365331808e9145c2a339911c9f">spla::StorageManager&lt; T, F, capacity &gt;::register_validator_discard</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
+<tr class="separator:gaefb686365331808e9145c2a339911c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga296e0cd6965b99fa46bc58d664541215"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga296e0cd6965b99fa46bc58d664541215">spla::StorageManager&lt; T, F, capacity &gt;::register_converter</a> (F from, F to, <a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a> function)</td></tr>
 <tr class="separator:ga296e0cd6965b99fa46bc58d664541215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac9341c980f3831e21ee1ba6c1ea68105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gac9341c980f3831e21ee1ba6c1ea68105">spla::StorageManager&lt; T, F, capacity &gt;::validate_ctor</a> (F format, <a class="el" href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">Storage</a> &amp;storage)</td></tr>
@@ -3227,6 +3231,36 @@ template&lt;typename T , typename F , int capacity&gt; </div>
 
 </div>
 </div>
+<a id="ga43b20dd69a76e9db36a0899d9890414c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43b20dd69a76e9db36a0899d9890414c">&#9670;&nbsp;</a></span>register_discard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename F , int capacity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_discard </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a>&#160;</td>
+          <td class="paramname"><em>function</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="gac69f6ed40e17126d4fae50e61b00fad0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac69f6ed40e17126d4fae50e61b00fad0">&#9670;&nbsp;</a></span>register_ops()</h2>
 
@@ -3256,6 +3290,36 @@ template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_validator </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1StorageManager.html">StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">Function</a>&#160;</td>
+          <td class="paramname"><em>function</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaefb686365331808e9145c2a339911c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaefb686365331808e9145c2a339911c9f">&#9670;&nbsp;</a></span>register_validator_discard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename F , int capacity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::register_validator_discard </td>
           <td>(</td>
           <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>format</em>, </td>
