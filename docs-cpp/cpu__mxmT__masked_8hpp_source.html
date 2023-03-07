@@ -99,7 +99,82 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SPLA_CPU_MXMT_MASKED_HPP</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CPU_MXMT_MASKED_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//SPLA_CPU_MXMT_MASKED_HPP</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="schedule__tasks_8hpp.html">schedule/schedule_tasks.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="dispatcher_8hpp.html">core/dispatcher.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="registry_8hpp.html">core/registry.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="tmatrix_8hpp.html">core/tmatrix.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="top_8hpp.html">core/top.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="tscalar_8hpp.html">core/tscalar.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ttype_8hpp.html">core/ttype.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="tvector_8hpp.html">core/tvector.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxmT__masked__cpu.html">   44</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classspla_1_1Algo__mxmT__masked__cpu.html">Algo_mxmT_masked_cpu</a> final : <span class="keyword">public</span> <a class="code" href="classspla_1_1RegistryAlgo.html">RegistryAlgo</a> {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxmT__masked__cpu.html#a02b05918292e77b9f999feb54df8ceaa">   46</a></span>&#160;        <a class="code" href="classspla_1_1Algo__mxmT__masked__cpu.html#a02b05918292e77b9f999feb54df8ceaa">~Algo_mxmT_masked_cpu</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxmT__masked__cpu.html#a5ff25ff3bfe14f748a3e6a4fc6889418">   48</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxmT__masked__cpu.html#a5ff25ff3bfe14f748a3e6a4fc6889418">get_name</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;mxmT_masked&quot;</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxmT__masked__cpu.html#a74f6cdec3feaeae13d9d82621e2ddb09">   52</a></span>&#160;        std::string <a class="code" href="classspla_1_1Algo__mxmT__masked__cpu.html#a74f6cdec3feaeae13d9d82621e2ddb09">get_description</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;sequential masked matrix matrix-transposed product on cpu&quot;</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classspla_1_1Algo__mxmT__masked__cpu.html#af2fb6622aa79bc0278536e29db305fa2">   56</a></span>&#160;        <a class="code" href="classStatus.html">Status</a> <a class="code" href="classspla_1_1Algo__mxmT__masked__cpu.html#af2fb6622aa79bc0278536e29db305fa2">execute</a>(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx)<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a>(<span class="stringliteral">&quot;cpu/mxmT_masked&quot;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_mxmT_masked&gt;();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keyword">auto</span> R           = t-&gt;R.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">auto</span> mask        = t-&gt;mask.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">auto</span> A           = t-&gt;A.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">auto</span> B           = t-&gt;B.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> op_multiply = t-&gt;op_multiply.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">auto</span> op_add      = t-&gt;op_add.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">auto</span> op_select   = t-&gt;op_select.template cast_safe&lt;TOpSelect&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">auto</span> init        = t-&gt;init.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            R-&gt;validate_wd(<a class="code" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">FormatMatrix::CpuCsc</a>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            A-&gt;validate_rw(<a class="code" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">FormatMatrix::CpuCsc</a>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            B-&gt;validate_rw(<a class="code" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">FormatMatrix::CpuCsc</a>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mask-&gt;validate_rw(<a class="code" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">FormatMatrix::CpuCsc</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span>&amp; func_multiply = op_multiply-&gt;function;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span>&amp; func_add      = op_add-&gt;function;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span>&amp; func_select   = op_select-&gt;function;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    };</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXMT_MASKED_HPP</span></div>
+<div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html">spla::Algo_mxmT_masked_cpu</a></div><div class="ttdef"><b>Definition:</b> cpu_mxmT_masked.hpp:44</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html_a02b05918292e77b9f999feb54df8ceaa"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html#a02b05918292e77b9f999feb54df8ceaa">spla::Algo_mxmT_masked_cpu::~Algo_mxmT_masked_cpu</a></div><div class="ttdeci">~Algo_mxmT_masked_cpu() override=default</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html_a5ff25ff3bfe14f748a3e6a4fc6889418"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html#a5ff25ff3bfe14f748a3e6a4fc6889418">spla::Algo_mxmT_masked_cpu::get_name</a></div><div class="ttdeci">std::string get_name() override</div><div class="ttdef"><b>Definition:</b> cpu_mxmT_masked.hpp:48</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html_a74f6cdec3feaeae13d9d82621e2ddb09"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html#a74f6cdec3feaeae13d9d82621e2ddb09">spla::Algo_mxmT_masked_cpu::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cpu_mxmT_masked.hpp:52</div></div>
+<div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html_af2fb6622aa79bc0278536e29db305fa2"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html#af2fb6622aa79bc0278536e29db305fa2">spla::Algo_mxmT_masked_cpu::execute</a></div><div class="ttdeci">Status execute(const DispatchContext &amp;ctx) override</div><div class="ttdef"><b>Definition:</b> cpu_mxmT_masked.hpp:56</div></div>
+<div class="ttc" id="aclassspla_1_1RegistryAlgo_html"><div class="ttname"><a href="classspla_1_1RegistryAlgo.html">spla::RegistryAlgo</a></div><div class="ttdoc">Algorithm suitable to process schedule task based on task string key.</div><div class="ttdef"><b>Definition:</b> registry.hpp:66</div></div>
+<div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
+<div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
+<div class="ttc" id="agroup__spla_html_ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1"><div class="ttname"><a href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">spla::FormatMatrix::CpuCsc</a></div><div class="ttdeci">@ CpuCsc</div></div>
+<div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
+<div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
+<div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
+<div class="ttc" id="astructspla_1_1DispatchContext_html"><div class="ttname"><a href="structspla_1_1DispatchContext.html">spla::DispatchContext</a></div><div class="ttdoc">Execution context of a single task.</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:46</div></div>
+<div class="ttc" id="astructspla_1_1DispatchContext_html_a98e2290d311615d7d9ccdcff5e5fff25"><div class="ttname"><a href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">spla::DispatchContext::task</a></div><div class="ttdeci">ref_ptr&lt; ScheduleTask &gt; task</div><div class="ttdef"><b>Definition:</b> dispatcher.hpp:48</div></div>
+<div class="ttc" id="atime__profiler_8hpp_html_aa9f47295bb25f79153ff2a3af8e3d198"><div class="ttname"><a href="time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198">TIME_PROFILE_SCOPE</a></div><div class="ttdeci">#define TIME_PROFILE_SCOPE(name)</div><div class="ttdef"><b>Definition:</b> time_profiler.hpp:92</div></div>
+<div class="ttc" id="atmatrix_8hpp_html"><div class="ttname"><a href="tmatrix_8hpp.html">tmatrix.hpp</a></div></div>
+<div class="ttc" id="atop_8hpp_html"><div class="ttname"><a href="top_8hpp.html">top.hpp</a></div></div>
+<div class="ttc" id="atscalar_8hpp_html"><div class="ttname"><a href="tscalar_8hpp.html">tscalar.hpp</a></div></div>
+<div class="ttc" id="attype_8hpp_html"><div class="ttname"><a href="ttype_8hpp.html">ttype.hpp</a></div></div>
+<div class="ttc" id="atvector_8hpp_html"><div class="ttname"><a href="tvector_8hpp.html">tvector.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
