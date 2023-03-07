@@ -64,6 +64,15 @@ namespace spla {
                            bool                  make_undirected = true,
                            bool                  remove_loops    = true);
 
+        /**
+         * @brief Saves loaded data at file
+         *
+         * @param file_path File to create where to save data
+         *
+         * @return True if successfully saved
+         */
+        SPLA_API bool save(std::filesystem::path file_path);
+
         SPLA_API void calc_stats();
         SPLA_API void output_stats();
 

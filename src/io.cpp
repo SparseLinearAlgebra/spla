@@ -50,7 +50,7 @@ namespace spla {
     bool MtxLoader::load(std::filesystem::path file_path, bool offset_indices, bool make_undirected, bool remove_loops) {
         m_file_path = std::move(file_path);
 
-        std::ifstream file(m_file_path, std::ios::in);
+        std::fstream file(m_file_path, std::ios::in);
 
         if (!file.is_open()) {
             LOG_MSG(Status::Error, "failed to open file " << m_file_path);
@@ -144,6 +144,41 @@ namespace spla {
         return true;
     }
 
+    bool MtxLoader::save(std::filesystem::path file_path) {
+        std::fstream file(file_path, std::ios::out);
+
+        if (!file.is_open()) {
+            LOG_MSG(Status::Error, "failed to open file " << file_path);
+            return false;
+        }
+
+        file << "%%MatrixMarket matrix coordinate pattern general\n";
+        file << "%-------------------------------------------------------------------------------\n";
+        file << "%-------------------------------------------------------------------------------\n";
+
+        file << "% meta-info:\n";
+        file << "% name: " << m_name << "\n";
+        file << "% source-file: " << m_file_path << "\n";
+        file << "% deg-avg: " << m_deg_avg << "\n";
+        file << "% deg-sd: " << m_deg_sd << "\n";
+        file << "% deg-min: " << m_deg_min << "\n";
+        file << "% deg-max: " << m_deg_max << "\n";
+        file << "% deg-distribution: \n";
+
+        for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
+            file << "%  " << m_deg_ranges[i] << " " << m_deg_ranges[i + 1] << " " << m_deg_distribution[i] << "\n";
+        }
+
+        file << "%-------------------------------------------------------------------------------\n";
+        file << m_n_rows << " " << m_n_cols << " " << m_n_values << "\n";
+
+        for (std::size_t k = 0; k < m_n_values; k++) {
+            file << m_Ai[k] << " " << m_Aj[k] << "\n";
+        }
+
+        return true;
+    }
+
     void MtxLoader::calc_stats() {
         std::vector<uint> deg_pre_vertex(m_n_rows, 0.0f);
 
@@ -213,8 +248,7 @@ namespace spla {
 
         std::cout << " distribution:" << std::endl;
 
-        const auto groups_count = m_deg_distribution.size();
-        const auto n            = static_cast<double>(m_n_rows);
+        const auto n = static_cast<double>(m_n_rows);
         const auto default_precision{std::cout.precision()};
         const auto n_digits = static_cast<uint>(std::log10(n) + 1.0);
 

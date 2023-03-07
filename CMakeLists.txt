@@ -384,6 +384,7 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(sssp)
     spla_example_application(pr)
     spla_example_application(pi)
+    spla_example_application(convert)
 endif ()
 
 ######################################################################
