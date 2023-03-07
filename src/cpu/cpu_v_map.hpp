@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_COUNT_MF_HPP
-#define SPLA_CPU_VECTOR_COUNT_MF_HPP
+#ifndef SPLA_CPU_V_MAP_HPP
+#define SPLA_CPU_V_MAP_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -37,75 +37,87 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <cstring>
+
 namespace spla {
 
     template<typename T>
-    class Algo_v_count_mf_cpu final : public RegistryAlgo {
+    class Algo_v_map_cpu final : public RegistryAlgo {
     public:
-        ~Algo_v_count_mf_cpu() override = default;
+        ~Algo_v_map_cpu() override = default;
 
         std::string get_name() override {
-            return "v_count_mf";
+            return "v_map";
         }
 
         std::string get_description() override {
-            return "sequential count mf";
+            return "sequential vector map on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_map>();
             ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
-            if (v->is_valid(FormatVector::CpuDok))
-                return execute_dok(ctx);
-            if (v->is_valid(FormatVector::CpuCoo))
-                return execute_coo(ctx);
-            if (v->is_valid(FormatVector::CpuDense))
-                return execute_dense(ctx);
+            if (v->is_valid(FormatVector::CpuCoo)) {
+                return execute_sp(ctx);
+            }
+            if (v->is_valid(FormatVector::CpuDense)) {
+                return execute_dn(ctx);
+            }
 
-            return execute_coo(ctx);
+            return execute_sp(ctx);
         }
 
     private:
-        Status execute_dok(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_mf_dok");
+        Status execute_sp(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/vector_map_sparse");
 
-            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
-            CpuDokVec<T>*       dec_v = v->template get<CpuDokVec<T>>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_map>();
 
-            t->r->set_uint(dec_v->values);
+            auto r  = t->r.template cast_safe<TVector<T>>();
+            auto v  = t->v.template cast_safe<TVector<T>>();
+            auto op = t->op.template cast_safe<TOpUnary<T, T>>();
 
-            return Status::Ok;
-        }
-        Status execute_coo(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_mf_coo");
+            r->validate_wd(FormatVector::CpuCoo);
+            v->validate_rw(FormatVector::CpuCoo);
+            auto*       p_sparse_r = r->template get<CpuCooVec<T>>();
+            const auto* p_sparse_v = v->template get<CpuCooVec<T>>();
+            const auto& function   = op->function;
 
-            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
-            CpuCooVec<T>*       dec_v = v->template get<CpuCooVec<T>>();
+            const uint N = p_sparse_v->values;
+            cpu_coo_vec_resize(N, *p_sparse_r);
 
-            t->r->set_uint(dec_v->values);
+            if (N > 0) {
+                std::memcpy(p_sparse_r->Ai.data(), p_sparse_v->Ai.data(), sizeof(uint) * N);
 
-            return Status::Ok;
-        }
-        Status execute_dense(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/v_count_mf_dense");
-
-            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
-            CpuDenseVec<T>*     dec_v = v->template get<CpuDenseVec<T>>();
-
-            uint    values = 0;
-            const T ref    = v->get_fill_value();
-
-            for (uint i = 0; i < v->get_n_rows(); i++) {
-                if (dec_v->Ax[i] != ref) {
-                    values += 1;
+                for (uint i = 0; i < N; i += 1) {
+                    p_sparse_r->Ax[i] = function(p_sparse_v->Ax[i]);
                 }
             }
 
-            t->r->set_uint(values);
+            return Status::Ok;
+        }
+
+        Status execute_dn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/vector_map_dense");
+
+            auto t = ctx.task.template cast_safe<ScheduleTask_v_map>();
+
+            auto r  = t->r.template cast_safe<TVector<T>>();
+            auto v  = t->v.template cast_safe<TVector<T>>();
+            auto op = t->op.template cast_safe<TOpUnary<T, T>>();
+
+            r->validate_wd(FormatVector::CpuDense);
+            v->validate_rw(FormatVector::CpuDense);
+            auto*       p_dense_r = r->template get<CpuDenseVec<T>>();
+            const auto* p_dense_v = v->template get<CpuDenseVec<T>>();
+            const auto& function  = op->function;
+
+            const uint N = r->get_n_rows();
+
+            for (uint i = 0; i < N; i += 1) {
+                p_dense_r->Ax[i] = function(p_dense_v->Ax[i]);
+            }
 
             return Status::Ok;
         }
@@ -113,5 +125,4 @@ namespace spla {
 
 }// namespace spla
 
-
-#endif//SPLA_CPU_VECTOR_COUNT_MF_HPP
+#endif//SPLA_CPU_V_MAP_HPP

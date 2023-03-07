@@ -251,12 +251,12 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_formats.hpp
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
-            src/opencl/cl_vector_assign.hpp
-            src/opencl/cl_vector_count_mf.hpp
-            src/opencl/cl_vector_eadd.hpp
-            src/opencl/cl_vector_eadd_fdb.hpp
-            src/opencl/cl_vector_map.hpp
-            src/opencl/cl_vector_reduce.hpp
+            src/opencl/cl_v_assign.hpp
+            src/opencl/cl_v_count_mf.hpp
+            src/opencl/cl_v_eadd.hpp
+            src/opencl/cl_v_eadd_fdb.hpp
+            src/opencl/cl_v_map.hpp
+            src/opencl/cl_v_reduce.hpp
             src/opencl/cl_map.hpp
             src/opencl/cl_fill.hpp
             src/opencl/cl_prefix_sum.hpp
@@ -316,14 +316,15 @@ add_library(spla SHARED
         src/cpu/cpu_format_dok_vec.hpp
         src/cpu/cpu_format_lil.hpp
         src/cpu/cpu_formats.hpp
+        src/cpu/cpu_mxmT_masked.hpp
         src/cpu/cpu_mxv.hpp
         src/cpu/cpu_vxm.hpp
-        src/cpu/cpu_vector_assign.hpp
-        src/cpu/cpu_vector_count_mf.hpp
-        src/cpu/cpu_vector_eadd.hpp
-        src/cpu/cpu_vector_eadd_fdb.hpp
-        src/cpu/cpu_vector_map.hpp
-        src/cpu/cpu_vector_reduce.hpp
+        src/cpu/cpu_v_assign.hpp
+        src/cpu/cpu_v_count_mf.hpp
+        src/cpu/cpu_v_eadd.hpp
+        src/cpu/cpu_v_eadd_fdb.hpp
+        src/cpu/cpu_v_map.hpp
+        src/cpu/cpu_v_reduce.hpp
         src/util/pair_hash.hpp
         src/profiling/time_profiler.cpp
         src/profiling/time_profiler.hpp

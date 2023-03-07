@@ -280,7 +280,7 @@ namespace spla {
               float                      alpha,
               float                      eps,
               const ref_ptr<Descriptor>& descriptor) {
-        assert(v);
+        assert(p);
         assert(A);
 
         const auto N = p->get_n_rows();

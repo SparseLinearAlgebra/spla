@@ -111,11 +111,11 @@ __kernel void mxv_config(__global const TYPE* g_mask,
     const uint gstride = get_global_size(0);
 
     for (uint i = gid; i < n; i += gstride) {
+        g_rx[i] = init;
+
         if (OP_SELECT(g_mask[i])) {
             const uint id = atomic_inc(g_config_size);
             g_config[id]  = i;
-        } else {
-            g_rx[i] = init;
         }
     }
 }

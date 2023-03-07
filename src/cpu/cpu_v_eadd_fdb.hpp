@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_EADD_FDB_HPP
-#define SPLA_CPU_VECTOR_EADD_FDB_HPP
+#ifndef SPLA_CPU_V_EADD_FDB_HPP
+#define SPLA_CPU_V_EADD_FDB_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -141,4 +141,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_EADD_FDB_HPP
+#endif//SPLA_CPU_V_EADD_FDB_HPP

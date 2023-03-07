@@ -63,6 +63,8 @@ namespace spla {
 
         void register_constructor(F format, Function function);
         void register_validator(F format, Function function);
+        void register_discard(F format, Function function);
+        void register_validator_discard(F format, Function function);
         void register_converter(F from, F to, Function function);
 
         void validate_ctor(F format, Storage& storage);
@@ -74,6 +76,7 @@ namespace spla {
         std::vector<std::vector<std::pair<int, int>>> m_convert_rules;
         std::vector<Function>                         m_constructors;
         std::vector<Function>                         m_validators;
+        std::vector<Function>                         m_discards;
         std::vector<Function>                         m_converters;
     };
 
@@ -82,6 +85,7 @@ namespace spla {
         m_convert_rules.resize(capacity);
         m_constructors.resize(capacity);
         m_validators.resize(capacity);
+        m_discards.resize(capacity);
     }
 
     template<typename T, typename F, int capacity>
@@ -93,6 +97,16 @@ namespace spla {
     void StorageManager<T, F, capacity>::register_validator(F format, StorageManager::Function function) {
         const int i     = static_cast<int>(format);
         m_validators[i] = std::move(function);
+    }
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::register_discard(F format, StorageManager::Function function) {
+        const int i   = static_cast<int>(format);
+        m_discards[i] = std::move(function);
+    }
+    template<typename T, typename F, int capacity>
+    void StorageManager<T, F, capacity>::register_validator_discard(F format, StorageManager::Function function) {
+        const int i   = static_cast<int>(format);
+        m_discards[i] = m_validators[i] = std::move(function);
     }
     template<typename T, typename F, int capacity>
     void StorageManager<T, F, capacity>::register_converter(F from, F to, StorageManager::Function function) {
@@ -116,7 +130,14 @@ namespace spla {
             return;
         }
         if (!storage.is_valid_any()) {
-            validate_wd(format, storage);
+            const int i = static_cast<int>(format);
+            if (!storage.get_ptr_i(i)) {
+                m_constructors[i](storage);
+            }
+            if (m_validators[i]) {
+                m_validators[i](storage);
+            }
+            storage.validate(format);
             return;
         }
 
@@ -180,8 +201,8 @@ namespace spla {
         if (!storage.get_ptr_i(i)) {
             m_constructors[i](storage);
         }
-        if (m_validators[i]) {
-            m_validators[i](storage);
+        if (m_discards[i]) {
+            m_discards[i](storage);
         }
         storage.invalidate();
         storage.validate(format);

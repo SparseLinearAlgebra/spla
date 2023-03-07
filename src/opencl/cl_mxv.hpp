@@ -88,7 +88,7 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
-            r->validate_rwd(FormatVector::AccDense);
+            r->validate_wd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);
@@ -137,7 +137,7 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
-            r->validate_rwd(FormatVector::AccDense);
+            r->validate_wd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);
@@ -188,7 +188,7 @@ namespace spla {
             ref_ptr<TOpSelect<T>>       op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
             ref_ptr<TScalar<T>>         init        = t->init.template cast_safe<TScalar<T>>();
 
-            r->validate_rwd(FormatVector::AccDense);
+            r->validate_wd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccDense);
             M->validate_rw(FormatMatrix::AccCsr);
             v->validate_rw(FormatVector::AccDense);

@@ -1,10 +1,10 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2021 JetBrains-Research                                          */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,94 +25,71 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_REDUCE_HPP
-#define SPLA_CPU_VECTOR_REDUCE_HPP
+#ifndef SPLA_CPU_M_REDUCE_BY_ROW_HPP
+#define SPLA_CPU_M_REDUCE_BY_ROW_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
 #include <core/dispatcher.hpp>
 #include <core/registry.hpp>
+#include <core/tmatrix.hpp>
 #include <core/top.hpp>
 #include <core/tscalar.hpp>
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <algorithm>
+
 namespace spla {
 
     template<typename T>
-    class Algo_v_reduce_cpu final : public RegistryAlgo {
+    class Algo_m_reduce_by_row final : public RegistryAlgo {
     public:
-        ~Algo_v_reduce_cpu() override = default;
+        ~Algo_m_reduce_by_row() override = default;
 
         std::string get_name() override {
-            return "v_reduce";
+            return "m_reduce_by_row";
         }
 
         std::string get_description() override {
-            return "sequential vector reduction on cpu";
+            return "reduce matrix by row on cpu sequentially";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
-            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
+            auto M = t->M.template cast_safe<TMatrix<T>>();
 
-            if (v->is_valid(FormatVector::CpuCoo)) {
-                return execute_sp(ctx);
-            }
-            if (v->is_valid(FormatVector::CpuDense)) {
-                return execute_dn(ctx);
+            if (M->is_valid(FormatMatrix::CpuDok)) {
+                return execute_dok(ctx);
             }
 
-            return execute_sp(ctx);
+            return execute_dok(ctx);
         }
 
     private:
-        Status execute_sp(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/vector_reduce_sparse");
-
-            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
-
-            auto r         = t->r.template cast_safe<TScalar<T>>();
-            auto s         = t->s.template cast_safe<TScalar<T>>();
-            auto v         = t->v.template cast_safe<TVector<T>>();
+        Status execute_dok(const DispatchContext& ctx) {
+            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
+            auto r         = t->r.template cast_safe<TVector<T>>();
+            auto M         = t->M.template cast_safe<TMatrix<T>>();
             auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
+            auto init      = t->init.template cast_safe<TScalar<T>>();
 
-            T sum = s->get_value();
+            r->validate_wd(FormatVector::CpuDense);
+            M->validate_rw(FormatMatrix::CpuDok);
 
-            v->validate_rw(FormatVector::CpuCoo);
-            const auto* p_sparse = v->template get<CpuCooVec<T>>();
-            const auto& function = op_reduce->function;
+            CpuDenseVec<T>*  p_dense_r = r->template get<CpuDenseVec<T>>();
+            const CpuDok<T>* p_dok_M   = M->template get<CpuDok<T>>();
 
-            for (const auto& value : p_sparse->Ax) {
-                sum = function(sum, value);
+            std::fill(p_dense_r->Ax.begin(), p_dense_r->Ax.end(), init->get_value());
+
+            auto& func_reduce = op_reduce->function;
+
+            for (const auto& entry : p_dok_M->Ax) {
+                const uint i = entry.first.first;
+                const T    x = entry.second;
+
+                p_dense_r->Ax[i] = func_reduce(p_dense_r->Ax[i], x);
             }
-
-            r->get_value() = sum;
-
-            return Status::Ok;
-        }
-
-        Status execute_dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/vector_reduce_dense");
-
-            auto t = ctx.task.template cast_safe<ScheduleTask_v_reduce>();
-
-            auto r         = t->r.template cast_safe<TScalar<T>>();
-            auto s         = t->s.template cast_safe<TScalar<T>>();
-            auto v         = t->v.template cast_safe<TVector<T>>();
-            auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
-
-            T sum = s->get_value();
-
-            v->validate_rw(FormatVector::CpuDense);
-            const auto* p_dense  = v->template get<CpuDenseVec<T>>();
-            const auto& function = op_reduce->function;
-
-            for (const auto& value : p_dense->Ax) {
-                sum = function(sum, value);
-            }
-
-            r->get_value() = sum;
 
             return Status::Ok;
         }
@@ -120,4 +97,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_REDUCE_HPP
+#endif//SPLA_CPU_M_REDUCE_BY_ROW_HPP

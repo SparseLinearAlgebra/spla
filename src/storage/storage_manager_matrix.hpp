@@ -60,12 +60,12 @@ namespace spla {
             s.get_ref(FormatMatrix::CpuCsr) = make_ref<CpuCsr<T>>();
         });
 
-        manager.register_validator(FormatMatrix::CpuLil, [](Storage& s) {
+        manager.register_validator_discard(FormatMatrix::CpuLil, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
             cpu_lil_resize(s.get_n_rows(), *lil);
             cpu_lil_clear(*lil);
         });
-        manager.register_validator(FormatMatrix::CpuDok, [](Storage& s) {
+        manager.register_validator_discard(FormatMatrix::CpuDok, [](Storage& s) {
             auto* dok = s.template get<CpuDok<T>>();
             cpu_dok_clear(*dok);
         });

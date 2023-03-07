@@ -25,13 +25,14 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_EADD_HPP
-#define SPLA_CPU_VECTOR_EADD_HPP
+#ifndef SPLA_CPU_MXMT_MASKED_HPP
+#define SPLA_CPU_MXMT_MASKED_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
 #include <core/dispatcher.hpp>
 #include <core/registry.hpp>
+#include <core/tmatrix.hpp>
 #include <core/top.hpp>
 #include <core/tscalar.hpp>
 #include <core/ttype.hpp>
@@ -40,54 +41,40 @@
 namespace spla {
 
     template<typename T>
-    class Algo_v_eadd_cpu final : public RegistryAlgo {
+    class Algo_mxmT_masked_cpu final : public RegistryAlgo {
     public:
-        ~Algo_v_eadd_cpu() override = default;
+        ~Algo_mxmT_masked_cpu() override = default;
 
         std::string get_name() override {
-            return "v_eadd";
+            return "mxmT_masked";
         }
 
         std::string get_description() override {
-            return "sequential element-wise add vector operation";
+            return "sequential masked matrix matrix-transposed product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto                t = ctx.task.template cast_safe<ScheduleTask_v_eadd>();
-            ref_ptr<TVector<T>> u = t->r.template cast_safe<TVector<T>>();
-            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
+            TIME_PROFILE_SCOPE("cpu/mxmT_masked");
 
-            if (u->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuDense)) {
-                return execute_dn2dn(ctx);
-            }
+            auto t = ctx.task.template cast_safe<ScheduleTask_mxmT_masked>();
 
-            return execute_dn2dn(ctx);
-        }
+            auto R           = t->R.template cast_safe<TMatrix<T>>();
+            auto mask        = t->mask.template cast_safe<TMatrix<T>>();
+            auto A           = t->A.template cast_safe<TMatrix<T>>();
+            auto B           = t->B.template cast_safe<TMatrix<T>>();
+            auto op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
+            auto op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
+            auto init        = t->init.template cast_safe<TScalar<T>>();
 
-    private:
-        Status execute_dn2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/vector_eadd_dn2dn");
+            R->validate_wd(FormatMatrix::CpuCsc);
+            A->validate_rw(FormatMatrix::CpuCsc);
+            B->validate_rw(FormatMatrix::CpuCsc);
+            mask->validate_rw(FormatMatrix::CpuCsc);
 
-            auto                        t  = ctx.task.template cast_safe<ScheduleTask_v_eadd>();
-            ref_ptr<TVector<T>>         r  = t->r.template cast_safe<TVector<T>>();
-            ref_ptr<TVector<T>>         u  = t->u.template cast_safe<TVector<T>>();
-            ref_ptr<TVector<T>>         v  = t->v.template cast_safe<TVector<T>>();
-            ref_ptr<TOpBinary<T, T, T>> op = t->op.template cast_safe<TOpBinary<T, T, T>>();
-
-            r->validate_wd(FormatVector::CpuDense);
-            u->validate_rw(FormatVector::CpuDense);
-            v->validate_rw(FormatVector::CpuDense);
-
-            auto*       p_r      = r->template get<CpuDenseVec<T>>();
-            const auto* p_u      = u->template get<CpuDenseVec<T>>();
-            const auto* p_v      = v->template get<CpuDenseVec<T>>();
-            const auto& function = op->function;
-
-            const uint N = r->get_n_rows();
-
-            for (uint i = 0; i < N; i++) {
-                p_r->Ax[i] = function(p_u->Ax[i], p_v->Ax[i]);
-            }
+            auto& func_multiply = op_multiply->function;
+            auto& func_add      = op_add->function;
+            auto& func_select   = op_select->function;
 
             return Status::Ok;
         }
@@ -95,4 +82,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_EADD_HPP
+#endif//SPLA_CPU_MXMT_MASKED_HPP

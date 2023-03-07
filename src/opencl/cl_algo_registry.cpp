@@ -31,12 +31,12 @@
 #include <core/top.hpp>
 
 #include <opencl/cl_mxv.hpp>
-#include <opencl/cl_vector_assign.hpp>
-#include <opencl/cl_vector_count_mf.hpp>
-#include <opencl/cl_vector_eadd.hpp>
-#include <opencl/cl_vector_eadd_fdb.hpp>
-#include <opencl/cl_vector_map.hpp>
-#include <opencl/cl_vector_reduce.hpp>
+#include <opencl/cl_v_assign.hpp>
+#include <opencl/cl_v_count_mf.hpp>
+#include <opencl/cl_v_eadd.hpp>
+#include <opencl/cl_v_eadd_fdb.hpp>
+#include <opencl/cl_v_map.hpp>
+#include <opencl/cl_v_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
 
 namespace spla {

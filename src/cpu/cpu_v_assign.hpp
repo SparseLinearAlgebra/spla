@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_VECTOR_ASSIGN_HPP
-#define SPLA_CPU_VECTOR_ASSIGN_HPP
+#ifndef SPLA_CPU_V_ASSIGN_HPP
+#define SPLA_CPU_V_ASSIGN_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -134,4 +134,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_VECTOR_ASSIGN_HPP
+#endif//SPLA_CPU_V_ASSIGN_HPP

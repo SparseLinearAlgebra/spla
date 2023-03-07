@@ -51,13 +51,14 @@ namespace spla {
      *
      * @return ok on success
      */
-    SPLA_API Status bfs(const ref_ptr<Vector>&     v,
-                        const ref_ptr<Matrix>&     A,
-                        uint                       s,
-                        const ref_ptr<Descriptor>& descriptor);
+    SPLA_API Status bfs(
+            const ref_ptr<Vector>&     v,
+            const ref_ptr<Matrix>&     A,
+            uint                       s,
+            const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
 
     /**
-     * @brief Naive breadth-first search algorithm
+     * @brief Naive breadth-first search algorithm (reference cpu implementation)
      *
      * @param v int vector to store reached distances
      * @param A int graph adjacency lists filled with 1 where exist edge from i to j
@@ -66,10 +67,11 @@ namespace spla {
      *
      * @return ok on success
      */
-    SPLA_API Status bfs_naive(std::vector<int>&                     v,
-                              std::vector<std::vector<spla::uint>>& A,
-                              uint                                  s,
-                              const ref_ptr<Descriptor>&            descriptor);
+    SPLA_API Status bfs_naive(
+            std::vector<int>&                     v,
+            std::vector<std::vector<spla::uint>>& A,
+            uint                                  s,
+            const ref_ptr<Descriptor>&            descriptor = ref_ptr<Descriptor>());
 
     /**
      * @brief Single-source shortest path algorithm
@@ -81,13 +83,14 @@ namespace spla {
      *
      * @return ok on success
      */
-    SPLA_API Status sssp(const ref_ptr<Vector>&     v,
-                         const ref_ptr<Matrix>&     A,
-                         uint                       s,
-                         const ref_ptr<Descriptor>& descriptor);
+    SPLA_API Status sssp(
+            const ref_ptr<Vector>&     v,
+            const ref_ptr<Matrix>&     A,
+            uint                       s,
+            const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
 
     /**
-     * @brief Naive single-source shortest path algorithm
+     * @brief Naive single-source shortest path algorithm (reference cpu implementation)
      *
      * @param v float vector to store reached distances
      * @param Ai uint matrix column indices
@@ -101,20 +104,45 @@ namespace spla {
                                std::vector<std::vector<uint>>&  Ai,
                                std::vector<std::vector<float>>& Ax,
                                uint                             s,
-                               const ref_ptr<Descriptor>&       descriptor);
+                               const ref_ptr<Descriptor>&       descriptor = ref_ptr<Descriptor>());
 
-    SPLA_API Status pr(ref_ptr<Vector>&           p,
-                       const ref_ptr<Matrix>&     A,
-                       float                      alpha,
-                       float                      eps,
-                       const ref_ptr<Descriptor>& descriptor);
+    /**
+     * @brief PageRank algorithm
+     *
+     * @param p float vector to store result vertices weights
+     * @param A float graph matrix with weights A[i][j] = alpha / outdegree(i)
+     * @param alpha float alpha to control PageRank (default is 0.85)
+     * @param eps float tolerance to control precision of PageRank (default is 1e-6)
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status pr(
+            ref_ptr<Vector>&           p,
+            const ref_ptr<Matrix>&     A,
+            float                      alpha      = 0.85,
+            float                      eps        = 1e-6,
+            const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
 
-    SPLA_API Status pr_naive(std::vector<float>&              p,
-                             std::vector<std::vector<uint>>&  Ai,
-                             std::vector<std::vector<float>>& Ax,
-                             float                            alpha,
-                             float                            eps,
-                             const ref_ptr<Descriptor>&       descriptor);
+    /**
+     * @brief Naive PageRank algorithm (reference cpu implementation)
+     *
+     * @param p float vector to store result vertices weights
+     * @param Ai float graph matrix column indices
+     * @param Ax float graph matrix weights A[i][j] = alpha / outdegree(i)
+     * @param alpha float alpha to control PageRank (default is 0.85)
+     * @param eps float tolerance to control precision of PageRank (default is 1e-6)
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status pr_naive(
+            std::vector<float>&              p,
+            std::vector<std::vector<uint>>&  Ai,
+            std::vector<std::vector<float>>& Ax,
+            float                            alpha      = 0.85,
+            float                            eps        = 1e-6,
+            const ref_ptr<Descriptor>&       descriptor = ref_ptr<Descriptor>());
 
     /**
      * @}

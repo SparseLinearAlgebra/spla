@@ -59,17 +59,17 @@ namespace spla {
         });
         manager.register_constructor(FormatVector::CpuDense, [](Storage& s) {
             s.get_ref(FormatVector::CpuDense) = make_ref<CpuDenseVec<T>>();
+            cpu_dense_vec_resize(s.get_n_rows(), *s.template get<CpuDenseVec<T>>());
         });
 
-        manager.register_validator(FormatVector::CpuDok, [](Storage& s) {
+        manager.register_validator_discard(FormatVector::CpuDok, [](Storage& s) {
             cpu_dok_vec_clear(*s.template get<CpuDokVec<T>>());
         });
-        manager.register_validator(FormatVector::CpuCoo, [](Storage& s) {
+        manager.register_validator_discard(FormatVector::CpuCoo, [](Storage& s) {
             cpu_coo_vec_clear(*s.template get<CpuCooVec<T>>());
         });
         manager.register_validator(FormatVector::CpuDense, [](Storage& s) {
-            cpu_dense_vec_resize(s.get_n_rows(), *s.template get<CpuDenseVec<T>>());
-            cpu_dense_vec_fill(T(), *s.template get<CpuDenseVec<T>>());
+            cpu_dense_vec_fill(s.get_fill_value(), *s.template get<CpuDenseVec<T>>());
         });
 
         manager.register_converter(FormatVector::CpuDok, FormatVector::CpuCoo, [](Storage& s) {
@@ -81,7 +81,6 @@ namespace spla {
         manager.register_converter(FormatVector::CpuDok, FormatVector::CpuDense, [](Storage& s) {
             auto* dok   = s.template get<CpuDokVec<T>>();
             auto* dense = s.template get<CpuDenseVec<T>>();
-            cpu_dense_vec_resize(s.get_n_rows(), *dense);
             cpu_dense_vec_fill(s.get_fill_value(), *dense);
             cpu_dok_vec_to_dense(s.get_n_rows(), *dok, *dense);
         });
@@ -105,6 +104,8 @@ namespace spla {
         });
         manager.register_constructor(FormatVector::AccDense, [](Storage& s) {
             s.get_ref(FormatVector::AccDense) = make_ref<CLDenseVec<T>>();
+            auto* cl_dense                    = s.template get<CLDenseVec<T>>();
+            cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
         });
 
         manager.register_validator(FormatVector::AccCoo, [](Storage& s) {
@@ -113,7 +114,6 @@ namespace spla {
         });
         manager.register_validator(FormatVector::AccDense, [](Storage& s) {
             auto* cl_dense = s.template get<CLDenseVec<T>>();
-            cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
             cl_dense_vec_fill_value(s.get_n_rows(), s.get_fill_value(), *cl_dense);
         });
 
@@ -126,7 +126,6 @@ namespace spla {
             auto* cl_acc    = get_acc_cl();
             auto* cl_dense  = s.template get<CLDenseVec<T>>();
             auto* cpu_dense = s.template get<CpuDenseVec<T>>();
-            cpu_dense_vec_resize(s.get_n_rows(), *cpu_dense);
             cl_dense_vec_read(s.get_n_rows(), cpu_dense->Ax.data(), *cl_dense, cl_acc->get_queue_default());
         });
         manager.register_converter(FormatVector::CpuCoo, FormatVector::AccCoo, [](Storage& s) {
@@ -145,7 +144,6 @@ namespace spla {
             auto* cl_acc   = get_acc_cl();
             auto* cl_coo   = s.template get<CLCooVec<T>>();
             auto* cl_dense = s.template get<CLDenseVec<T>>();
-            cl_dense_vec_resize(s.get_n_rows(), *cl_dense);
             cl_coo_vec_to_dense(s.get_n_rows(), s.get_fill_value(), *cl_coo, *cl_dense, cl_acc->get_queue_default());
         });
         manager.register_converter(FormatVector::AccDense, FormatVector::AccCoo, [](Storage& s) {

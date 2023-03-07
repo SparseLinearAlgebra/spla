@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CL_VECTOR_MAP_HPP
-#define SPLA_CL_VECTOR_MAP_HPP
+#ifndef SPLA_CL_V_MAP_HPP
+#define SPLA_CL_V_MAP_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -130,4 +130,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CL_VECTOR_MAP_HPP
+#endif//SPLA_CL_V_MAP_HPP

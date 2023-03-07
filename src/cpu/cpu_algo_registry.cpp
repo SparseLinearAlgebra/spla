@@ -31,14 +31,15 @@
 #include <core/top.hpp>
 
 #include <cpu/cpu_algo_callback.hpp>
-#include <cpu/cpu_matrix_reduce_by_row.hpp>
+#include <cpu/cpu_m_reduce_by_row.hpp>
+#include <cpu/cpu_mxmT_masked.hpp>
 #include <cpu/cpu_mxv.hpp>
-#include <cpu/cpu_vector_assign.hpp>
-#include <cpu/cpu_vector_count_mf.hpp>
-#include <cpu/cpu_vector_eadd.hpp>
-#include <cpu/cpu_vector_eadd_fdb.hpp>
-#include <cpu/cpu_vector_map.hpp>
-#include <cpu/cpu_vector_reduce.hpp>
+#include <cpu/cpu_v_assign.hpp>
+#include <cpu/cpu_v_count_mf.hpp>
+#include <cpu/cpu_v_eadd.hpp>
+#include <cpu/cpu_v_eadd_fdb.hpp>
+#include <cpu/cpu_v_map.hpp>
+#include <cpu/cpu_v_reduce.hpp>
 #include <cpu/cpu_vxm.hpp>
 
 namespace spla {
@@ -91,6 +92,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", UINT), std::make_shared<Algo_vxm_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", FLOAT), std::make_shared<Algo_vxm_masked_cpu<T_FLOAT>>());
+
+        // algorthm mxmT_masked
+        g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cpu<T_FLOAT>>());
     }
 
 }// namespace spla
