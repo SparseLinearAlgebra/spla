@@ -83,6 +83,13 @@ namespace spla {
             cpu_lil_to_csr(s.get_n_rows(), *lil, *csr);
         });
 
+        manager.register_converter(FormatMatrix::CpuCsr, FormatMatrix::CpuDok, [](Storage& s) {
+            auto* csr = s.template get<CpuCsr<T>>();
+            auto* dok = s.template get<CpuDok<T>>();
+            cpu_dok_clear(*dok);
+            cpu_csr_to_dok(s.get_n_rows(), *csr, *dok);
+        });
+
 #if defined(SPLA_BUILD_OPENCL)
         manager.register_constructor(FormatMatrix::AccCsr, [](Storage& s) {
             s.get_ref(FormatMatrix::AccCsr) = make_ref<CLCsr<T>>();
@@ -92,6 +99,14 @@ namespace spla {
             auto* cpu_csr = s.template get<CpuCsr<T>>();
             auto* cl_csr  = s.template get<CLCsr<T>>();
             cl_csr_init(s.get_n_rows(), cpu_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr);
+        });
+
+        manager.register_converter(FormatMatrix::AccCsr, FormatMatrix::CpuCsr, [](Storage& s) {
+            auto* cl_acc  = get_acc_cl();
+            auto* cl_csr  = s.template get<CLCsr<T>>();
+            auto* cpu_csr = s.template get<CpuCsr<T>>();
+            cpu_csr_resize(s.get_n_rows(), cl_csr->values, *cpu_csr);
+            cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default());
         });
 #endif
     }

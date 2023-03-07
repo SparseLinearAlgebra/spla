@@ -82,7 +82,6 @@ namespace spla {
             auto& func_select   = op_select->function;
 
             auto DM = R->get_n_rows();
-            auto DN = R->get_n_rows();
             auto I  = init->get_value();
 
             for (uint row_R = 0; row_R < DM; row_R++) {
@@ -96,6 +95,8 @@ namespace spla {
                     const uint mask_i = entry_mask.first;
                     const T    mask_x = entry_mask.second;
 
+                    T r = I;
+
                     if (func_select(mask_x)) {
                         const auto& B_lst = p_lil_B->Ar[mask_i];
 
@@ -103,8 +104,6 @@ namespace spla {
                         auto       B_it  = B_lst.begin();
                         const auto A_end = A_lst.end();
                         const auto B_end = B_lst.end();
-
-                        T r = I;
 
                         while (A_it != A_end && B_it != B_end) {
                             if (A_it->first == B_it->first) {
@@ -117,9 +116,9 @@ namespace spla {
                                 ++B_it;
                             }
                         }
-
-                        R_lst.emplace_back(mask_i, r);
                     }
+
+                    R_lst.emplace_back(mask_i, r);
                 }
             }
 

@@ -102,4 +102,42 @@ TEST(mxmT_masked, naive) {
     EXPECT_EQ(v, 0);
 }
 
+TEST(mxmT_masked, perf_zero) {
+    spla::uint M = 100, N = 1000, K = 200;
+
+    auto R    = spla::Matrix::make(M, K, spla::FLOAT);
+    auto mask = spla::Matrix::make(M, K, spla::FLOAT);
+    auto A    = spla::Matrix::make(M, N, spla::FLOAT);
+    auto B    = spla::Matrix::make(K, N, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            A->set_float(i, j, j % 2 ? 1.0f : -2.0f);
+        }
+    }
+    for (spla::uint i = 0; i < K; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            B->set_float(i, j, j % 2 ? 2.0f : 1.0f);
+        }
+    }
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < K; j++) {
+            mask->set_float(i, j, 1.0f);
+        }
+    }
+
+    spla::exec_mxmT_masked(R, mask, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, spla::GTZERO_FLOAT, init);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < K; j++) {
+            float tol = 0.0001;
+            float v;
+            R->get_float(i, j, v);
+            EXPECT_TRUE(std::fabs(v) <= tol);
+        }
+    }
+}
+
+
 SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)

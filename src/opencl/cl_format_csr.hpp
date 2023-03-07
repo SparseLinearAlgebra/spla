@@ -54,6 +54,54 @@ namespace spla {
         storage.Ap = std::move(cl_Ap);
         storage.Aj = std::move(cl_Aj);
         storage.Ax = std::move(cl_Ax);
+
+        storage.values = n_values;
+    }
+
+    template<typename T>
+    void cl_csr_resize(std::size_t n_rows,
+                       std::size_t n_values,
+                       CLCsr<T>&   storage) {
+        auto&      ctx   = get_acc_cl()->get_context();
+        const auto flags = CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS;
+
+        cl::Buffer cl_Ap(ctx, flags, (n_rows + 1) * sizeof(uint));
+        cl::Buffer cl_Aj(ctx, flags, n_values * sizeof(uint));
+        cl::Buffer cl_Ax(ctx, flags, n_values * sizeof(T));
+
+        storage.Ap = std::move(cl_Ap);
+        storage.Aj = std::move(cl_Aj);
+        storage.Ax = std::move(cl_Ax);
+
+        storage.values = n_values;
+    }
+
+    template<typename T>
+    void cl_csr_read(std::size_t       n_rows,
+                     std::size_t       n_values,
+                     uint*             Ap,
+                     uint*             Aj,
+                     T*                Ax,
+                     CLCsr<T>&         storage,
+                     cl::CommandQueue& queue,
+                     bool              blocking = true) {
+        const std::size_t buffer_size_Ap = (n_rows + 1) * sizeof(uint);
+        const std::size_t buffer_size_Aj = n_values * sizeof(uint);
+        const std::size_t buffer_size_Ax = n_values * sizeof(T);
+
+        const auto flags = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;
+
+        cl::Buffer staging_Ap(get_acc_cl()->get_context(), flags, buffer_size_Ap);
+        cl::Buffer staging_Aj(get_acc_cl()->get_context(), flags, buffer_size_Aj);
+        cl::Buffer staging_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
+
+        queue.enqueueCopyBuffer(storage.Ap, staging_Ap, 0, 0, buffer_size_Ap);
+        queue.enqueueCopyBuffer(storage.Aj, staging_Aj, 0, 0, buffer_size_Aj);
+        queue.enqueueCopyBuffer(storage.Ax, staging_Ax, 0, 0, buffer_size_Ax);
+
+        queue.enqueueReadBuffer(staging_Ap, false, 0, buffer_size_Ap, Ap);
+        queue.enqueueReadBuffer(staging_Aj, false, 0, buffer_size_Aj, Aj);
+        queue.enqueueReadBuffer(staging_Ax, blocking, 0, buffer_size_Ax, Ax);
     }
 
     /**

@@ -48,6 +48,23 @@ namespace spla {
     }
 
     template<typename T>
+    void cpu_csr_to_dok(uint             n_rows,
+                        const CpuCsr<T>& in,
+                        CpuDok<T>&       out) {
+        auto& Ap = in.Ap;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
+
+        assert(out.Ax.empty());
+
+        for (uint i = 0; i < n_rows; i++) {
+            for (uint j = Ap[i]; j < Ap[i + 1]; j++) {
+                out.Ax.insert(robin_hood::pair<std::pair<uint, uint>, T>(std::pair<uint, uint>(i, Aj[j]), Ax[j]));
+            }
+        }
+    }
+
+    template<typename T>
     void cpu_csr_to_coo(uint             n_rows,
                         const CpuCsr<T>& in,
                         CpuCoo<T>&       out) {
