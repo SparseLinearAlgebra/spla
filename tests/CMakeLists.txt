@@ -8,6 +8,7 @@ endfunction()
 
 spla_test_target(test_library)
 spla_test_target(test_matrix)
+spla_test_target(test_mxmT)
 spla_test_target(test_mxv)
 spla_test_target(test_vxm)
 spla_test_target(test_op)

@@ -67,14 +67,61 @@ namespace spla {
             auto op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
             auto init        = t->init.template cast_safe<TScalar<T>>();
 
-            R->validate_wd(FormatMatrix::CpuCsc);
-            A->validate_rw(FormatMatrix::CpuCsc);
-            B->validate_rw(FormatMatrix::CpuCsc);
-            mask->validate_rw(FormatMatrix::CpuCsc);
+            R->validate_wd(FormatMatrix::CpuLil);
+            A->validate_rw(FormatMatrix::CpuLil);
+            B->validate_rw(FormatMatrix::CpuLil);
+            mask->validate_rw(FormatMatrix::CpuLil);
+
+            CpuLil<T>*       p_lil_R    = R->template get<CpuLil<T>>();
+            const CpuLil<T>* p_lil_A    = A->template get<CpuLil<T>>();
+            const CpuLil<T>* p_lil_B    = B->template get<CpuLil<T>>();
+            const CpuLil<T>* p_lil_mask = mask->template get<CpuLil<T>>();
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
             auto& func_select   = op_select->function;
+
+            auto DM = R->get_n_rows();
+            auto DN = R->get_n_rows();
+            auto I  = init->get_value();
+
+            for (uint row_R = 0; row_R < DM; row_R++) {
+                const auto& mask_lst = p_lil_mask->Ar[row_R];
+                const auto& A_lst    = p_lil_A->Ar[row_R];
+                auto&       R_lst    = p_lil_R->Ar[row_R];
+
+                assert(R_lst.empty());
+
+                for (const typename CpuLil<T>::Entry& entry_mask : mask_lst) {
+                    const uint mask_i = entry_mask.first;
+                    const T    mask_x = entry_mask.second;
+
+                    if (func_select(mask_x)) {
+                        const auto& B_lst = p_lil_B->Ar[mask_i];
+
+                        auto       A_it  = A_lst.begin();
+                        auto       B_it  = B_lst.begin();
+                        const auto A_end = A_lst.end();
+                        const auto B_end = B_lst.end();
+
+                        T r = I;
+
+                        while (A_it != A_end && B_it != B_end) {
+                            if (A_it->first == B_it->first) {
+                                r = func_add(r, func_multiply(A_it->second, B_it->second));
+                                ++A_it;
+                                ++B_it;
+                            } else if (A_it->first < B_it->first) {
+                                ++A_it;
+                            } else {
+                                ++B_it;
+                            }
+                        }
+
+                        R_lst.emplace_back(mask_i, r);
+                    }
+                }
+            }
 
             return Status::Ok;
         }
