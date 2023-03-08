@@ -33,7 +33,7 @@ var searchData=
   ['spla_5flibrary_5fset_5fplatform_1271',['spla_Library_set_platform',['../c__library_8cpp.html#af4dd6e55a9f56a71a0d2fa18e84c2a83',1,'c_library.cpp']]],
   ['spla_5flibrary_5fset_5fqueues_5fcount_1272',['spla_Library_set_queues_count',['../c__library_8cpp.html#a54253e4220dcd34e1257199eed9946ea',1,'c_library.cpp']]],
   ['sssp_1273',['sssp',['../group__spla.html#ga3a38bf7955f9809583c2aaff2b587c3d',1,'spla']]],
-  ['sssp_5fnaive_1274',['sssp_naive',['../group__spla.html#gaddfc1eff1f9fd558e6924e62b876bebe',1,'spla']]],
+  ['sssp_5fnaive_1274',['sssp_naive',['../group__spla.html#ga0309b0d0bf54364fb75b7a97d55e5ecf',1,'spla']]],
   ['start_1275',['start',['../classspla_1_1Timer.html#a2e230da07909ec1579ca62e5f7d16a90',1,'spla::Timer']]],
   ['step_5ftask_1276',['step_task',['../classspla_1_1ScheduleSingleThread.html#af95c704af9497bb22368c91c78321580',1,'spla::ScheduleSingleThread::step_task()'],['../classspla_1_1Schedule.html#a29ff45d953885f13813bc99d2ad5c7fd',1,'spla::Schedule::step_task()']]],
   ['step_5ftasks_1277',['step_tasks',['../classspla_1_1ScheduleSingleThread.html#a0df77ef9727741ca6d368e5b6f0d7e84',1,'spla::ScheduleSingleThread::step_tasks()'],['../classspla_1_1Schedule.html#af1935516ed9133ebb6dd51b73167feee',1,'spla::Schedule::step_tasks()']]],
