@@ -30,6 +30,8 @@
 
 #include <spla.hpp>
 
+#include <algorithm>
+#include <unordered_set>
 
 int main(int argc, const char* const* argv) {
     std::shared_ptr<cxxopts::Options> options = make_options("tc", "tc (triangles counting) algorithm with spla library");
@@ -106,13 +108,24 @@ int main(int argc, const char* const* argv) {
     }
 
     if (args[OPT_RUN_REF].as<bool>()) {
-        std::vector<int>                     ref_v(N);
-        std::vector<std::vector<spla::uint>> ref_A(N, std::vector<spla::uint>());
+        std::vector<int>                            ref_v(N);
+        std::vector<std::vector<spla::uint>>        ref_A(N, std::vector<spla::uint>());
+        std::vector<std::unordered_set<spla::uint>> ref_A_set(N, std::unordered_set<spla::uint>());
 
+        // for tc it is important to have no duplicates
         for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
             if (Ai[k] > Aj[k]) {
-                ref_A[Ai[k]].push_back(Aj[k]);
+                ref_A_set[Ai[k]].insert(Aj[k]);
             }
+        }
+
+        // for tc it is important to have array sorted
+        for (spla::uint i = 0; i < N; i++) {
+            auto& in  = ref_A_set[i];
+            auto& out = ref_A[i];
+            out.resize(in.size());
+            std::copy(in.begin(), in.end(), out.begin());
+            std::sort(out.begin(), out.end());
         }
 
         int ntrins_ref = -1;
@@ -121,8 +134,8 @@ int main(int argc, const char* const* argv) {
         spla::tc_naive(ntrins_ref, ref_A, desc);
         timer_ref.lap_end();
 
-        if (args[OPT_RUN_CPU].as<bool>()) verify_exact(ntrins_ref, ntrins_cpu);
-        if (args[OPT_RUN_GPU].as<bool>()) verify_exact(ntrins_ref, ntrins_acc);
+        if (args[OPT_RUN_CPU].as<bool>()) verify_exact("cpu", ntrins_ref, ntrins_cpu);
+        if (args[OPT_RUN_GPU].as<bool>()) verify_exact("acc", ntrins_ref, ntrins_acc);
     }
 
     spla::Library::get()->finalize();

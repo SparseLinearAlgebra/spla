@@ -34,7 +34,9 @@
 #include <iostream>
 #include <vector>
 
-void verify_exact(int a, int b) {
+void verify_exact(const char* where, int a, int b) {
+    std::cout << "CHECK " << where << "\n";
+
     assert(a == b);
 
     if (a != b) {
@@ -42,7 +44,9 @@ void verify_exact(int a, int b) {
     }
 }
 
-void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& b) {
+void verify_exact(const char* where, const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& b) {
+    std::cout << "CHECK " << where << "\n";
+
     const auto N = a->get_n_rows();
     for (spla::uint i = 0; i < N; i++) {
         int expected = b[i];
@@ -57,7 +61,9 @@ void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& 
     }
 }
 
-void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<float>& b, const float error = 0.005f) {
+void verify_exact(const char* where, const spla::ref_ptr<spla::Vector>& a, const std::vector<float>& b, const float error = 0.005f) {
+    std::cout << "CHECK " << where << "\n";
+
     const auto N = a->get_n_rows();
     for (spla::uint i = 0; i < N; i++) {
         float expected = b[i];

@@ -117,8 +117,8 @@ int main(int argc, const char* const* argv) {
         spla::sssp_naive(ref_v, ref_Ai, ref_Ax, s, spla::ref_ptr<spla::Descriptor>());
         timer_ref.lap_end();
 
-        if (args[OPT_RUN_CPU].as<bool>()) verify_exact(v_cpu, ref_v);
-        if (args[OPT_RUN_GPU].as<bool>()) verify_exact(v_acc, ref_v);
+        if (args[OPT_RUN_CPU].as<bool>()) verify_exact("cpu", v_cpu, ref_v);
+        if (args[OPT_RUN_GPU].as<bool>()) verify_exact("acc", v_acc, ref_v);
     }
 
     spla::Library::get()->finalize();
