@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_m_reduce.hpp>
 #include <opencl/cl_mxmT_masked.hpp>
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_v_assign.hpp>
@@ -72,6 +73,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+
+        // algorthm m_reduce
+        g_registry->add(MAKE_KEY_CL_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_reduce", UINT), std::make_shared<Algo_m_reduce_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_reduce", FLOAT), std::make_shared<Algo_m_reduce_cl<T_FLOAT>>());
 
         // algorthm mxv_masked
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());

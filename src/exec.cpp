@@ -151,6 +151,22 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_m_reduce(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Scalar>        s,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpBinary>      op_reduce,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task       = make_ref<ScheduleTask_m_reduce>();
+        task->r         = std::move(r);
+        task->s         = std::move(s);
+        task->M         = std::move(M);
+        task->op_reduce = std::move(op_reduce);
+        task->desc      = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_eadd(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        u,

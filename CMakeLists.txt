@@ -249,6 +249,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_format_coo_vec.hpp
             src/opencl/cl_format_csr.hpp
             src/opencl/cl_formats.hpp
+            src/opencl/cl_m_reduce.hpp
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
             src/opencl/cl_v_assign.hpp
@@ -316,6 +317,8 @@ add_library(spla SHARED
         src/cpu/cpu_format_dok_vec.hpp
         src/cpu/cpu_format_lil.hpp
         src/cpu/cpu_formats.hpp
+        src/cpu/cpu_m_reduce.hpp
+        src/cpu/cpu_m_reduce_by_row.hpp
         src/cpu/cpu_mxmT_masked.hpp
         src/cpu/cpu_mxv.hpp
         src/cpu/cpu_vxm.hpp

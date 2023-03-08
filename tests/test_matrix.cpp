@@ -141,4 +141,23 @@ TEST(matrix, reduce_by_row) {
     }
 }
 
+TEST(matrix, reduce) {
+    const spla::uint M = 10000, N = 20000, K = 8;
+
+    auto ir    = spla::Scalar::make(spla::INT);
+    auto iinit = spla::Scalar::make_int(0);
+    auto imat  = spla::Matrix::make(M, N, spla::INT);
+
+    for (spla::uint i = 0; i < M; i += 1) {
+        for (spla::uint k = 0; k < K; k++) {
+            spla::uint j = (i * K + k) % N;
+            imat->set_int(i, j, 2);
+        }
+    }
+
+    spla::exec_m_reduce(ir, iinit, imat, spla::PLUS_INT);
+
+    EXPECT_EQ(ir->as_int(), M * K * 2);
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE

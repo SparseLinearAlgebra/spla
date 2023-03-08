@@ -152,6 +152,27 @@ namespace spla {
         return {r.as<Object>(), M.as<Object>(), op_reduce.as<Object>(), init.as<Object>()};
     }
 
+    std::string ScheduleTask_m_reduce::get_name() {
+        return "m_reduce";
+    }
+    std::string ScheduleTask_m_reduce::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_reduce::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_reduce);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_reduce::get_args() {
+        return {r.as<Object>(), s.as<Object>(), M.as<Object>(), op_reduce.as<Object>()};
+    }
+
     std::string ScheduleTask_v_eadd::get_name() {
         return "v_eadd";
     }

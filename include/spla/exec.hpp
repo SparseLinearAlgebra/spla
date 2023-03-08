@@ -169,6 +169,28 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) matrix by structure reduction to a single scalar value
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Scalar to store reduction result
+     * @param s Scalar neutral init value for reduction
+     * @param M Matrix to reduce
+     * @param op_reduce Binary op to reduce to values
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_reduce(
+            ref_ptr<Scalar>        r,
+            ref_ptr<Scalar>        s,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpBinary>      op_reduce,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) element-wise addition by structure of two vectors
      *
      * @param r Vector to store result of operation

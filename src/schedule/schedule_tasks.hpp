@@ -162,6 +162,25 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_m_reduce
+     * @brief Matrix reduction to scalar
+     */
+    class ScheduleTask_m_reduce final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_reduce() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Scalar>   r;
+        ref_ptr<Scalar>   s;
+        ref_ptr<Matrix>   M;
+        ref_ptr<OpBinary> op_reduce;
+    };
+
+    /**
      * @class ScheduleTask_v_eadd
      * @brief Vector ewise
      */

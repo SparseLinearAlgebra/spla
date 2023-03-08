@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_M_REDUCE_BY_ROW_HPP
-#define SPLA_CPU_M_REDUCE_BY_ROW_HPP
+#ifndef SPLA_CL_M_REDUCE_HPP
+#define SPLA_CL_M_REDUCE_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -36,60 +36,59 @@
 #include <core/top.hpp>
 #include <core/tscalar.hpp>
 #include <core/ttype.hpp>
-#include <core/tvector.hpp>
 
-#include <algorithm>
+#include <opencl/cl_formats.hpp>
+#include <opencl/cl_reduce.hpp>
+
+#include <sstream>
 
 namespace spla {
 
     template<typename T>
-    class Algo_m_reduce_by_row_cpu final : public RegistryAlgo {
+    class Algo_m_reduce_cl final : public RegistryAlgo {
     public:
-        ~Algo_m_reduce_by_row_cpu() override = default;
+        ~Algo_m_reduce_cl() override = default;
 
         std::string get_name() override {
-            return "m_reduce_by_row";
+            return "m_reduce";
         }
 
         std::string get_description() override {
-            return "reduce matrix by row on cpu sequentially";
+            return "parallel matrix reduction on opencl device";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
-            auto M = t->M.template cast_safe<TMatrix<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_m_reduce>();
+            ref_ptr<TMatrix<T>> M = t->M.template cast_safe<TMatrix<T>>();
 
-            if (M->is_valid(FormatMatrix::CpuDok)) {
-                return execute_dok(ctx);
+            if (M->is_valid(FormatMatrix::AccCsr)) {
+                return execute_csr(ctx);
+            }
+            if (M->is_valid(FormatMatrix::CpuCsr)) {
+                return execute_csr(ctx);
             }
 
-            return execute_dok(ctx);
+            return execute_csr(ctx);
         }
 
     private:
-        Status execute_dok(const DispatchContext& ctx) {
-            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
-            auto r         = t->r.template cast_safe<TVector<T>>();
+        Status execute_csr(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("opencl/m_reduce_csr");
+
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce>();
+
+            auto r         = t->r.template cast_safe<TScalar<T>>();
+            auto s         = t->s.template cast_safe<TScalar<T>>();
             auto M         = t->M.template cast_safe<TMatrix<T>>();
             auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
-            auto init      = t->init.template cast_safe<TScalar<T>>();
 
-            r->validate_wd(FormatVector::CpuDense);
-            M->validate_rw(FormatMatrix::CpuDok);
+            M->validate_rw(FormatMatrix::AccCsr);
 
-            CpuDenseVec<T>*  p_dense_r = r->template get<CpuDenseVec<T>>();
-            const CpuDok<T>* p_dok_M   = M->template get<CpuDok<T>>();
+            const auto* p_cl_csr = M->template get<CLCsr<T>>();
+            auto*       p_cl_acc = get_acc_cl();
+            auto&       queue    = p_cl_acc->get_queue_default();
 
-            std::fill(p_dense_r->Ax.begin(), p_dense_r->Ax.end(), init->get_value());
-
-            auto& func_reduce = op_reduce->function;
-
-            for (const auto& entry : p_dok_M->Ax) {
-                const uint i = entry.first.first;
-                const T    x = entry.second;
-
-                p_dense_r->Ax[i] = func_reduce(p_dense_r->Ax[i], x);
-            }
+            cl_reduce<T>(queue, p_cl_csr->Ax, p_cl_csr->values, s->get_value(), op_reduce, r->get_value());
 
             return Status::Ok;
         }
@@ -97,4 +96,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_M_REDUCE_BY_ROW_HPP
+#endif//SPLA_CL_M_REDUCE_HPP
