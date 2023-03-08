@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['dispatch_1060',['dispatch',['../classspla_1_1Dispatcher.html#adecdf84b9fea86c491dea4e280cfe8d3',1,'spla::Dispatcher']]],
-  ['dump_1061',['dump',['../classspla_1_1TimeProfiler.html#ac8acac32b5b3649996cffc672a21e91a',1,'spla::TimeProfiler']]]
+  ['dispatch_1088',['dispatch',['../classspla_1_1Dispatcher.html#adecdf84b9fea86c491dea4e280cfe8d3',1,'spla::Dispatcher']]],
+  ['dump_1089',['dump',['../classspla_1_1TimeProfiler.html#ac8acac32b5b3649996cffc672a21e91a',1,'spla::TimeProfiler']]]
 ];

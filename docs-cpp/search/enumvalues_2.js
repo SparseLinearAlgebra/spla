@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['devicenotfound_1485',['DeviceNotFound',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35',1,'spla']]]
+  ['devicenotfound_1519',['DeviceNotFound',['../group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35',1,'spla']]]
 ];

@@ -1,22 +1,25 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classspla_1_1RegistryAlgo.html" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,580,131,607"/>
+<area shape="rect" id="node1" href="$classspla_1_1RegistryAlgo.html" title="Algorithm suitable to process schedule task based on task string key." alt="" coords="5,671,131,697"/>
 <area shape="rect" id="node2" href="$classspla_1_1Algo__callback__cpu.html" title=" " alt="" coords="191,5,352,32"/>
-<area shape="rect" id="node3" href="$classspla_1_1Algo__m__reduce__by__row.html" title=" " alt="" coords="200,57,343,98"/>
-<area shape="rect" id="node4" href="$classspla_1_1Algo__mxmT__masked__cpu.html" title=" " alt="" coords="184,122,359,163"/>
-<area shape="rect" id="node5" href="$classspla_1_1Algo__mxv__masked__cl.html" title=" " alt="" coords="190,187,353,229"/>
-<area shape="rect" id="node6" href="$classspla_1_1Algo__mxv__masked__cpu.html" title=" " alt="" coords="190,253,353,294"/>
-<area shape="rect" id="node7" href="$classspla_1_1Algo__v__assign__masked__cl.html" title=" " alt="" coords="203,318,340,359"/>
-<area shape="rect" id="node8" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="203,383,340,425"/>
-<area shape="rect" id="node9" href="$classspla_1_1Algo__v__count__mf__cl.html" title=" " alt="" coords="206,449,337,490"/>
-<area shape="rect" id="node10" href="$classspla_1_1Algo__v__count__mf__cpu.html" title=" " alt="" coords="206,514,337,555"/>
-<area shape="rect" id="node11" href="$classspla_1_1Algo__v__eadd__cl.html" title=" " alt="" coords="184,580,359,607"/>
-<area shape="rect" id="node12" href="$classspla_1_1Algo__v__eadd__cpu.html" title=" " alt="" coords="179,631,364,657"/>
-<area shape="rect" id="node13" href="$classspla_1_1Algo__v__eadd__fdb__cl.html" title=" " alt="" coords="195,682,347,723"/>
-<area shape="rect" id="node14" href="$classspla_1_1Algo__v__eadd__fdb__cpu.html" title=" " alt="" coords="195,747,347,789"/>
-<area shape="rect" id="node15" href="$classspla_1_1Algo__v__map__cl.html" title=" " alt="" coords="186,813,357,840"/>
-<area shape="rect" id="node16" href="$classspla_1_1Algo__v__map__cpu.html" title=" " alt="" coords="180,864,363,891"/>
-<area shape="rect" id="node17" href="$classspla_1_1Algo__v__reduce__cl.html" title=" " alt="" coords="202,915,341,957"/>
-<area shape="rect" id="node18" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="202,981,341,1022"/>
-<area shape="rect" id="node19" href="$classspla_1_1Algo__vxm__masked__cl.html" title=" " alt="" coords="190,1046,353,1087"/>
-<area shape="rect" id="node20" href="$classspla_1_1Algo__vxm__masked__cpu.html" title=" " alt="" coords="190,1111,353,1153"/>
+<area shape="rect" id="node3" href="$classspla_1_1Algo__m__reduce.html" title=" " alt="" coords="185,56,357,83"/>
+<area shape="rect" id="node4" href="$classspla_1_1Algo__m__reduce__by__row.html" title=" " alt="" coords="200,107,343,149"/>
+<area shape="rect" id="node5" href="$classspla_1_1Algo__m__reduce__cl.html" title=" " alt="" coords="200,173,343,214"/>
+<area shape="rect" id="node6" href="$classspla_1_1Algo__mxmT__masked__cl.html" title=" " alt="" coords="184,238,359,279"/>
+<area shape="rect" id="node7" href="$classspla_1_1Algo__mxmT__masked__cpu.html" title=" " alt="" coords="184,303,359,345"/>
+<area shape="rect" id="node8" href="$classspla_1_1Algo__mxv__masked__cl.html" title=" " alt="" coords="190,369,353,410"/>
+<area shape="rect" id="node9" href="$classspla_1_1Algo__mxv__masked__cpu.html" title=" " alt="" coords="190,434,353,475"/>
+<area shape="rect" id="node10" href="$classspla_1_1Algo__v__assign__masked__cl.html" title=" " alt="" coords="203,499,340,541"/>
+<area shape="rect" id="node11" href="$classspla_1_1Algo__v__assign__masked__cpu.html" title=" " alt="" coords="203,565,340,606"/>
+<area shape="rect" id="node12" href="$classspla_1_1Algo__v__count__mf__cl.html" title=" " alt="" coords="206,630,337,671"/>
+<area shape="rect" id="node13" href="$classspla_1_1Algo__v__count__mf__cpu.html" title=" " alt="" coords="206,695,337,737"/>
+<area shape="rect" id="node14" href="$classspla_1_1Algo__v__eadd__cl.html" title=" " alt="" coords="184,761,359,788"/>
+<area shape="rect" id="node15" href="$classspla_1_1Algo__v__eadd__cpu.html" title=" " alt="" coords="179,812,364,839"/>
+<area shape="rect" id="node16" href="$classspla_1_1Algo__v__eadd__fdb__cl.html" title=" " alt="" coords="195,863,347,905"/>
+<area shape="rect" id="node17" href="$classspla_1_1Algo__v__eadd__fdb__cpu.html" title=" " alt="" coords="195,929,347,970"/>
+<area shape="rect" id="node18" href="$classspla_1_1Algo__v__map__cl.html" title=" " alt="" coords="186,995,357,1021"/>
+<area shape="rect" id="node19" href="$classspla_1_1Algo__v__map__cpu.html" title=" " alt="" coords="180,1045,363,1072"/>
+<area shape="rect" id="node20" href="$classspla_1_1Algo__v__reduce__cl.html" title=" " alt="" coords="202,1097,341,1138"/>
+<area shape="rect" id="node21" href="$classspla_1_1Algo__v__reduce__cpu.html" title=" " alt="" coords="202,1162,341,1203"/>
+<area shape="rect" id="node22" href="$classspla_1_1Algo__vxm__masked__cl.html" title=" " alt="" coords="190,1227,353,1269"/>
+<area shape="rect" id="node23" href="$classspla_1_1Algo__vxm__masked__cpu.html" title=" " alt="" coords="190,1293,353,1334"/>
 </map>

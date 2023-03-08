@@ -1,8 +1,9 @@
 <map id="src/opencl/cl_debug.hpp" name="src/opencl/cl_debug.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="242,5,405,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="322,5,485,32"/>
 <area shape="rect" id="node2" href="$cl__format__coo__vec_8hpp.html" title=" " alt="" coords="5,80,145,121"/>
 <area shape="rect" id="node3" href="$cl__format__dense__vec_8hpp.html" title=" " alt="" coords="169,80,309,121"/>
-<area shape="rect" id="node4" href="$cl__mxv_8hpp.html" title=" " alt="" coords="333,87,484,114"/>
-<area shape="rect" id="node6" href="$cl__vxm_8hpp.html" title=" " alt="" coords="508,87,659,114"/>
-<area shape="rect" id="node5" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="432,169,559,211"/>
+<area shape="rect" id="node4" href="$cl__mxmT__masked_8hpp.html" title=" " alt="" coords="334,80,473,121"/>
+<area shape="rect" id="node6" href="$cl__mxv_8hpp.html" title=" " alt="" coords="497,87,648,114"/>
+<area shape="rect" id="node7" href="$cl__vxm_8hpp.html" title=" " alt="" coords="672,87,823,114"/>
+<area shape="rect" id="node5" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="509,169,636,211"/>
 </map>
