@@ -60,7 +60,7 @@ namespace spla {
         int             discovered     = 1;
         bool            frontier_empty = false;
 
-        ref_ptr<Descriptor> desc = make_desc();
+        ref_ptr<Descriptor> desc = Descriptor::make();
         desc->set_early_exit(true);
         desc->set_struct_only(true);
 
@@ -370,6 +370,80 @@ namespace spla {
         }
 
         std::swap(p, p_prev);
+        return Status::Ok;
+    }
+
+#pragma endregion Pr
+
+#pragma region Tc
+
+    Status tc(
+            int&                       ntrins,
+            const ref_ptr<Matrix>&     A,
+            const ref_ptr<Matrix>&     B,
+            const ref_ptr<Descriptor>& descriptor) {
+        assert(A);
+        assert(B);
+
+        ref_ptr<Scalar> zero   = Scalar::make_int(0);
+        ref_ptr<Scalar> result = Scalar::make(INT);
+
+#ifndef SPLA_RELEASE
+        std::cout << "start tc" << std::endl;
+
+        Timer tight;
+        tight.start();
+#endif
+
+        spla::exec_mxmT_masked(B, A, A, A, MULT_INT, PLUS_INT, GTZERO_INT, zero);
+        spla::exec_m_reduce(result, zero, B, PLUS_INT);
+
+        ntrins = result->as_int();
+
+#ifndef SPLA_RELEASE
+        tight.stop();
+
+        std::cout << " - ntrins " << ntrins
+                  << " " << tight.get_elapsed_ms() << " ms" << std::endl;
+
+        Library::get()->time_profile_dump();
+        Library::get()->time_profile_reset();
+#endif
+
+        return Status::Ok;
+    }
+
+    Status tc_naive(
+            int&                                  ntrins,
+            std::vector<std::vector<spla::uint>>& Ai,
+            const ref_ptr<Descriptor>&            descriptor) {
+
+        ntrins = 0;
+
+        for (const auto& row_Ai : Ai) {
+            for (const auto neighbor : row_Ai) {
+                const auto& row_neighbor = Ai[neighbor];
+
+                auto it1 = row_Ai.begin();
+                auto it2 = row_neighbor.begin();
+
+                auto end1 = row_Ai.end();
+                auto end2 = row_neighbor.end();
+
+                while (it1 != end1 && it2 != end2) {
+                    if (*it1 == *it2) {
+                        ++ntrins;
+                        ++it1;
+                        ++it2;
+                    } else if (*it1 < *it2) {
+                        ++it1;
+                    } else {
+                        ++it2;
+                    }
+                }
+            }
+        }
+
         return Status::Ok;
     }
 

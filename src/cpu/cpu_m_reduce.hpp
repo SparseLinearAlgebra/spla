@@ -62,10 +62,10 @@ namespace spla {
             if (M->is_valid(FormatMatrix::CpuDok)) {
                 return execute_dok(ctx);
             }
-            if (M->is_valid(FormatMatrix::CpuDok)) {
+            if (M->is_valid(FormatMatrix::CpuLil)) {
                 return execute_lil(ctx);
             }
-            if (M->is_valid(FormatMatrix::CpuDok)) {
+            if (M->is_valid(FormatMatrix::CpuCsr)) {
                 return execute_csr(ctx);
             }
 

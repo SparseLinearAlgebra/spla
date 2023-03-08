@@ -66,7 +66,7 @@ int main(int argc, const char* const* argv) {
     spla::ref_ptr<spla::Vector>     v_cpu = spla::Vector::make(N, spla::FLOAT);
     spla::ref_ptr<spla::Vector>     v_acc = spla::Vector::make(N, spla::FLOAT);
     spla::ref_ptr<spla::Matrix>     A     = spla::Matrix::make(N, N, spla::FLOAT);
-    spla::ref_ptr<spla::Descriptor> desc  = spla::make_desc();
+    spla::ref_ptr<spla::Descriptor> desc  = spla::Descriptor::make();
 
     desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
     desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());

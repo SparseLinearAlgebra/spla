@@ -32,7 +32,7 @@
 
 
 int main(int argc, const char* const* argv) {
-    std::shared_ptr<cxxopts::Options> options = make_options("bfs", "bfs (breadth first search) algorithm with spla library");
+    std::shared_ptr<cxxopts::Options> options = make_options("tc", "tc (triangles counting) algorithm with spla library");
     cxxopts::ParseResult              args;
     int                               ret;
 
@@ -59,12 +59,13 @@ int main(int argc, const char* const* argv) {
     library->set_device(args[OPT_DEVICE].as<int>());
     library->set_queues_count(1);
 
-    const spla::uint                N     = loader.get_n_rows();
-    const spla::uint                s     = args[OPT_SOURCE].as<int>();
-    spla::ref_ptr<spla::Vector>     v_cpu = spla::Vector::make(N, spla::INT);
-    spla::ref_ptr<spla::Vector>     v_acc = spla::Vector::make(N, spla::INT);
-    spla::ref_ptr<spla::Matrix>     A     = spla::Matrix::make(N, N, spla::INT);
-    spla::ref_ptr<spla::Descriptor> desc  = spla::Descriptor::make();
+    const spla::uint                N          = loader.get_n_rows();
+    int                             ntrins_cpu = -1;
+    int                             ntrins_acc = -1;
+    spla::ref_ptr<spla::Matrix>     B_cpu      = spla::Matrix::make(N, N, spla::INT);
+    spla::ref_ptr<spla::Matrix>     B_acc      = spla::Matrix::make(N, N, spla::INT);
+    spla::ref_ptr<spla::Matrix>     A          = spla::Matrix::make(N, N, spla::INT);
+    spla::ref_ptr<spla::Descriptor> desc       = spla::Descriptor::make();
 
     desc->set_traversal_mode(static_cast<spla::Descriptor::TraversalMode>(args[OPT_PUSH_PULL].as<int>() - 1));
     desc->set_front_factor(args[OPT_FRONT_FACTOR].as<float>());
@@ -73,7 +74,9 @@ int main(int argc, const char* const* argv) {
     const auto& Aj = loader.get_Aj();
 
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        A->set_int(Ai[k], Aj[k], 1);
+        if (Ai[k] > Aj[k]) {
+            A->set_int(Ai[k], Aj[k], 1);
+        }
     }
 
     const int n_iters = args[OPT_NITERS].as<int>();
@@ -82,10 +85,10 @@ int main(int argc, const char* const* argv) {
         library->set_force_no_acceleration(true);
 
         for (int i = 0; i < n_iters; ++i) {
-            v_cpu->clear();
+            B_cpu->clear();
 
             timer_cpu.lap_begin();
-            spla::bfs(v_cpu, A, s, desc);
+            spla::tc(ntrins_cpu, A, B_cpu, desc);
             timer_cpu.lap_end();
         }
     }
@@ -94,10 +97,10 @@ int main(int argc, const char* const* argv) {
         library->set_force_no_acceleration(false);
 
         for (int i = 0; i < n_iters; ++i) {
-            v_acc->clear();
+            B_acc->clear();
 
             timer_gpu.lap_begin();
-            spla::bfs(v_acc, A, s, desc);
+            spla::tc(ntrins_acc, A, B_acc, desc);
             timer_gpu.lap_end();
         }
     }
@@ -107,15 +110,19 @@ int main(int argc, const char* const* argv) {
         std::vector<std::vector<spla::uint>> ref_A(N, std::vector<spla::uint>());
 
         for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-            ref_A[Ai[k]].push_back(Aj[k]);
+            if (Ai[k] > Aj[k]) {
+                ref_A[Ai[k]].push_back(Aj[k]);
+            }
         }
 
+        int ntrins_ref = -1;
+
         timer_ref.lap_begin();
-        spla::bfs_naive(ref_v, ref_A, s, spla::ref_ptr<spla::Descriptor>());
+        spla::tc_naive(ntrins_ref, ref_A, desc);
         timer_ref.lap_end();
 
-        if (args[OPT_RUN_CPU].as<bool>()) verify_exact(v_cpu, ref_v);
-        if (args[OPT_RUN_GPU].as<bool>()) verify_exact(v_acc, ref_v);
+        if (args[OPT_RUN_CPU].as<bool>()) verify_exact(ntrins_ref, ntrins_cpu);
+        if (args[OPT_RUN_GPU].as<bool>()) verify_exact(ntrins_ref, ntrins_acc);
     }
 
     spla::Library::get()->finalize();

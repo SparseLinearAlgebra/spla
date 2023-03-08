@@ -34,6 +34,14 @@
 #include <iostream>
 #include <vector>
 
+void verify_exact(int a, int b) {
+    assert(a == b);
+
+    if (a != b) {
+        std::cerr << " VERIFY: expected " << a << " actual " << b << std::endl;
+    }
+}
+
 void verify_exact(const spla::ref_ptr<spla::Vector>& a, const std::vector<int>& b) {
     const auto N = a->get_n_rows();
     for (spla::uint i = 0; i < N; i++) {

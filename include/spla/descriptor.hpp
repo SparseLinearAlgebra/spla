@@ -66,6 +66,13 @@ namespace spla {
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
 
+        /**
+         * @brief Makes new empty descriptor object
+         *
+         * @return New descriptor
+         */
+        SPLA_API static ref_ptr<Descriptor> make();
+
     private:
         std::string m_label;
 
@@ -74,13 +81,6 @@ namespace spla {
         bool          early_exit   = false;
         bool          struct_only  = false;
     };
-
-    /**
-     * @brief Makes new empty descriptor object
-     *
-     * @return New descriptor
-     */
-    SPLA_API ref_ptr<Descriptor> make_desc();
 
     /**
      * @}

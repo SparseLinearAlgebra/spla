@@ -55,7 +55,7 @@ namespace spla {
             const ref_ptr<Vector>&     v,
             const ref_ptr<Matrix>&     A,
             uint                       s,
-            const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
     /**
      * @brief Naive breadth-first search algorithm (reference cpu implementation)
@@ -71,7 +71,7 @@ namespace spla {
             std::vector<int>&                     v,
             std::vector<std::vector<spla::uint>>& A,
             uint                                  s,
-            const ref_ptr<Descriptor>&            descriptor = ref_ptr<Descriptor>());
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
 
     /**
      * @brief Single-source shortest path algorithm
@@ -104,7 +104,7 @@ namespace spla {
                                std::vector<std::vector<uint>>&  Ai,
                                std::vector<std::vector<float>>& Ax,
                                uint                             s,
-                               const ref_ptr<Descriptor>&       descriptor = ref_ptr<Descriptor>());
+                               const ref_ptr<Descriptor>&       descriptor = spla::Descriptor::make());
 
     /**
      * @brief PageRank algorithm
@@ -122,7 +122,7 @@ namespace spla {
             const ref_ptr<Matrix>&     A,
             float                      alpha      = 0.85,
             float                      eps        = 1e-6,
-            const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
     /**
      * @brief Naive PageRank algorithm (reference cpu implementation)
@@ -142,7 +142,37 @@ namespace spla {
             std::vector<std::vector<float>>& Ax,
             float                            alpha      = 0.85,
             float                            eps        = 1e-6,
-            const ref_ptr<Descriptor>&       descriptor = ref_ptr<Descriptor>());
+            const ref_ptr<Descriptor>&       descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Triangles counting algorithm
+     *
+     * @param ntrins Number of triangles counted
+     * @param A Lower trilingual int matrix with 1 where has edge in a graph
+     * @param B Buffer int matrix to store result
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status tc(
+            int&                       ntrins,
+            const ref_ptr<Matrix>&     A,
+            const ref_ptr<Matrix>&     B,
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Naive triangles counting algorithm (reference cpu implementation)
+     *
+     * @param ntrins Number of triangles counted
+     * @param A Lower trilingual int matrix structure
+     * @param descriptor optional descriptor for algorithm
+     *
+     * @return ok on success
+     */
+    SPLA_API Status tc_naive(
+            int&                                  ntrins,
+            std::vector<std::vector<spla::uint>>& Ai,
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
 
     /**
      * @}

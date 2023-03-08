@@ -36,8 +36,7 @@ namespace spla {
     const std::string& Descriptor::get_label() const {
         return m_label;
     }
-
-    ref_ptr<Descriptor> make_desc() {
+    ref_ptr<Descriptor> Descriptor::make() {
         return ref_ptr<Descriptor>(new Descriptor);
     }
 
