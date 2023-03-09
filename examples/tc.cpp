@@ -56,10 +56,14 @@ int main(int argc, const char* const* argv) {
         return 1;
     }
 
+    std::string acc_info;
+
     spla::Library* library = spla::Library::get();
     library->set_platform(args[OPT_PLATFORM].as<int>());
     library->set_device(args[OPT_DEVICE].as<int>());
     library->set_queues_count(1);
+    library->get_accelerator_info(acc_info);
+    std::cout << "env: " << acc_info << std::endl;
 
     const spla::uint                N          = loader.get_n_rows();
     int                             ntrins_cpu = -1;

@@ -54,10 +54,14 @@ int main(int argc, const char* const* argv) {
         return 1;
     }
 
+    std::string acc_info;
+
     spla::Library* library = spla::Library::get();
     library->set_platform(args[OPT_PLATFORM].as<int>());
     library->set_device(args[OPT_DEVICE].as<int>());
     library->set_queues_count(1);
+    library->get_accelerator_info(acc_info);
+    std::cout << "env: " << acc_info << std::endl;
 
     float alpha = args[OPT_ALPHA].as<float>();
     float eps   = args[OPT_EPS].as<float>();

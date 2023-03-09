@@ -32,12 +32,16 @@
 #include <opencl/cl_counter.hpp>
 #include <opencl/cl_program_cache.hpp>
 
+#include <sstream>
+
 namespace spla {
 
     CLAccelerator::CLAccelerator()  = default;
     CLAccelerator::~CLAccelerator() = default;
 
     Status CLAccelerator::init() {
+        m_description = "no platform or device";
+
         if (set_platform(0) != Status::Ok)
             return Status::PlatformNotFound;
 
@@ -46,8 +50,6 @@ namespace spla {
 
         if (set_queues_count(1) != Status::Ok)
             return Status::Error;
-
-        build_description();
 
         m_cache = std::make_unique<CLProgramCache>();
 
@@ -92,10 +94,8 @@ namespace spla {
             return Status::DeviceNotFound;
         }
 
-        m_device = available_devices[0];
+        m_device = available_devices[index];
         LOG_MSG(Status::Ok, "select OpenCL device " << m_device.getInfo<CL_DEVICE_NAME>());
-
-        build_description();
 
         m_vendor_code.clear();
         m_vendor_name   = m_device.getInfo<CL_DEVICE_VENDOR>();
@@ -148,8 +148,18 @@ namespace spla {
             m_wave_size   = 8;
         }
 
-        LOG_MSG(Status::Ok, "vendor:" << m_vendor_code << " mcu:" << m_max_cu
-                                      << " wave:" << m_wave_size << " mwgs:" << m_max_wgs);
+
+        std::stringstream desc;
+        desc << "OpenCL Acc " << m_platform.getInfo<CL_PLATFORM_NAME>()
+             << " device: " << m_device.getInfo<CL_DEVICE_NAME>()
+             << " vendor:" << m_vendor_code
+             << " mcu:" << m_max_cu
+             << " wave:" << m_wave_size
+             << " mwgs:" << m_max_wgs;
+
+        m_description = desc.str();
+
+        LOG_MSG(Status::Ok, m_description);
 
         return Status::Ok;
     }
@@ -187,9 +197,6 @@ namespace spla {
     }
     const std::string& CLAccelerator::get_suffix() {
         return m_suffix;
-    }
-    void CLAccelerator::build_description() {
-        m_description = m_platform() && m_device() ? "OpenCL Acc " + m_platform.getInfo<CL_PLATFORM_NAME>() + "  " + m_device.getInfo<CL_DEVICE_NAME>() : "no platform or device";
     }
 
 }// namespace spla

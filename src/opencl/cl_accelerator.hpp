@@ -98,8 +98,6 @@ namespace spla {
         [[nodiscard]] bool               is_intel() const { return m_is_intel; }
 
     private:
-        void build_description();
-
         cl::Platform                          m_platform;
         cl::Device                            m_device;
         cl::Context                           m_context;

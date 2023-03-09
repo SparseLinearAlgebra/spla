@@ -172,6 +172,14 @@ namespace spla {
         return m_force_no_acc;
     }
 
+    Status Library::get_accelerator_info(std::string& info) {
+        if (!m_accelerator) {
+            return Status::NoAcceleration;
+        }
+        info = m_accelerator->get_description();
+        return Status::Ok;
+    }
+
     Status Library::time_profile_dump() {
 #ifndef SPLA_RELEASE
         m_time_profiler->dump(std::cout);

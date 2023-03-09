@@ -132,6 +132,13 @@ namespace spla {
         SPLA_API bool   is_set_force_no_acceleration();
 
         /**
+         * @brief Get acc info in a form of a string
+         * @param[out] info String to store info
+         * @return Function call status
+         */
+        SPLA_API Status get_accelerator_info(std::string& info);
+
+        /**
          * @brief Dumps to default output current time profile
          * @return Function call status
          */
