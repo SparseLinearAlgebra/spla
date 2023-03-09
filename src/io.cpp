@@ -236,15 +236,15 @@ namespace spla {
 
         const uint GROUPS_COUNT_MAX = std::max(uint(10), uint(std::log2(double(m_n_rows) * 0.77)));
 
-        std::vector<uint> count_per_deg(static_cast<uint>(m_deg_max) + 1, 0);
+        std::vector<uint> count_per_deg(static_cast<uint>(m_deg_max) + 2, 0);
         std::vector<uint> count_per_deg_offsets(static_cast<uint>(m_deg_max) + 2, 0);
 
         for (uint i = 0; i < m_n_rows; i++) {
-            count_per_deg[std::min(deg_pre_vertex[i], m_n_rows)] += 1;
+            count_per_deg[std::min(deg_pre_vertex[i], uint(m_deg_max))] += 1;
         }
 
         std::exclusive_scan(count_per_deg.begin(), count_per_deg.end(), count_per_deg_offsets.begin(), 0);
-        count_per_deg_offsets.back() = m_n_rows + 1;
+        count_per_deg_offsets.back() += 1;
 
         std::vector<double> distributions;
         std::vector<uint>   ranges;
@@ -253,15 +253,18 @@ namespace spla {
         auto groups_count = std::max(std::min(GROUPS_COUNT_MAX, static_cast<uint>(range)), 1u);
         auto g            = static_cast<double>(groups_count);
 
-        auto total = static_cast<double>(m_n_rows);
+        auto total = static_cast<double>(count_per_deg_offsets.back());
         auto from  = count_per_deg_offsets.begin();
 
         ranges.push_back(static_cast<uint>(m_deg_min));
         for (uint i = 0; i < groups_count; ++i) {
-            auto to        = std::upper_bound(from + 1, count_per_deg_offsets.end(), static_cast<uint>(total / g * static_cast<double>(i + 1)));
+            auto next      = (from + 1 == count_per_deg_offsets.end()) ? from : from + 1;
+            auto to        = std::lower_bound(next, count_per_deg_offsets.end(), static_cast<uint>(total / g * static_cast<double>(i + 1)));
             auto to_offset = std::distance(count_per_deg_offsets.begin(), to);
 
-            distributions.push_back(static_cast<double>(*to - *from) / n);
+            assert(to != count_per_deg_offsets.end());
+
+            distributions.push_back(static_cast<double>(*to - *from) / total);
             ranges.push_back(static_cast<uint>(to_offset));
             from = to;
         }
