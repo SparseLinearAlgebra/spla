@@ -76,44 +76,45 @@ $(function() {
 <code>#include &lt;<a class="el" href="cl__alloc__linear_8hpp_source.html">opencl/cl_alloc_linear.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="cl__counter_8hpp_source.html">opencl/cl_counter.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="cl__program__cache_8hpp_source.html">opencl/cl_program_cache.hpp</a>&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cl_accelerator.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="cl__accelerator_8cpp__incl.png" border="0" usemap="#asrc_2opencl_2cl__accelerator_8cpp" alt=""/></div>
 <map name="asrc_2opencl_2cl__accelerator_8cpp" id="asrc_2opencl_2cl__accelerator_8cpp">
-<area shape="rect" title=" " alt="" coords="323,5,514,32"/>
-<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="389,229,515,256"/>
-<area shape="rect" href="cl__alloc__general_8hpp.html" title=" " alt="" coords="5,80,187,107"/>
-<area shape="rect" href="cl__alloc__linear_8hpp.html" title=" " alt="" coords="211,80,381,107"/>
-<area shape="rect" href="cl__counter_8hpp.html" title=" " alt="" coords="507,155,655,181"/>
-<area shape="rect" href="cl__program__cache_8hpp.html" title=" " alt="" coords="659,80,853,107"/>
-<area shape="rect" href="accelerator_8hpp.html" title=" " alt="" coords="345,453,484,480"/>
-<area shape="rect" title=" " alt="" coords="821,603,875,629"/>
-<area shape="rect" href="common_8hpp.html" title=" " alt="" coords="308,304,433,331"/>
-<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="106,453,217,480"/>
-<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="615,453,723,480"/>
-<area shape="rect" title=" " alt="" coords="660,304,719,331"/>
-<area shape="rect" title=" " alt="" coords="13,304,102,331"/>
-<area shape="rect" title=" " alt="" coords="178,304,283,331"/>
-<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="271,528,379,555"/>
-<area shape="rect" title=" " alt="" coords="237,603,312,629"/>
-<area shape="rect" title=" " alt="" coords="337,603,415,629"/>
-<area shape="rect" title=" " alt="" coords="177,379,236,405"/>
-<area shape="rect" title=" " alt="" coords="45,528,102,555"/>
-<area shape="rect" title=" " alt="" coords="127,528,196,555"/>
-<area shape="rect" title=" " alt="" coords="506,528,574,555"/>
-<area shape="rect" title=" " alt="" coords="598,528,709,555"/>
-<area shape="rect" href="cl__alloc_8hpp.html" title=" " alt="" coords="130,155,262,181"/>
-<area shape="rect" href="cl__program_8hpp.html" title=" " alt="" coords="680,155,832,181"/>
-<area shape="rect" title=" " alt="" coords="856,155,965,181"/>
-<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="841,229,929,256"/>
-<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="937,379,1018,405"/>
-<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="886,304,957,331"/>
-<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="1025,453,1087,480"/>
-<area shape="rect" title=" " alt="" coords="1064,528,1125,555"/>
-<area shape="rect" title=" " alt="" coords="1150,528,1215,555"/>
-<area shape="rect" title=" " alt="" coords="1239,528,1318,555"/>
-<area shape="rect" title=" " alt="" coords="987,528,1039,555"/>
+<area shape="rect" title=" " alt="" coords="417,5,607,32"/>
+<area shape="rect" href="cl__accelerator_8hpp.html" title=" " alt="" coords="409,229,535,256"/>
+<area shape="rect" title=" " alt="" coords="5,379,75,405"/>
+<area shape="rect" href="cl__alloc__general_8hpp.html" title=" " alt="" coords="160,80,341,107"/>
+<area shape="rect" href="cl__alloc__linear_8hpp.html" title=" " alt="" coords="365,80,536,107"/>
+<area shape="rect" href="cl__counter_8hpp.html" title=" " alt="" coords="655,155,803,181"/>
+<area shape="rect" href="cl__program__cache_8hpp.html" title=" " alt="" coords="785,80,980,107"/>
+<area shape="rect" href="accelerator_8hpp.html" title=" " alt="" coords="584,453,723,480"/>
+<area shape="rect" title=" " alt="" coords="943,603,998,629"/>
+<area shape="rect" href="common_8hpp.html" title=" " alt="" coords="203,304,328,331"/>
+<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="67,304,178,331"/>
+<area shape="rect" href="library_8hpp.html" title=" " alt="" coords="798,453,906,480"/>
+<area shape="rect" title=" " alt="" coords="800,304,859,331"/>
+<area shape="rect" title=" " alt="" coords="635,304,725,331"/>
+<area shape="rect" title=" " alt="" coords="353,304,458,331"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="350,528,458,555"/>
+<area shape="rect" title=" " alt="" coords="316,603,391,629"/>
+<area shape="rect" title=" " alt="" coords="415,603,494,629"/>
+<area shape="rect" title=" " alt="" coords="288,379,347,405"/>
+<area shape="rect" title=" " alt="" coords="155,379,213,405"/>
+<area shape="rect" title=" " alt="" coords="679,528,747,555"/>
+<area shape="rect" title=" " alt="" coords="771,528,882,555"/>
+<area shape="rect" href="cl__alloc_8hpp.html" title=" " alt="" coords="295,155,427,181"/>
+<area shape="rect" href="cl__program_8hpp.html" title=" " alt="" coords="961,155,1113,181"/>
+<area shape="rect" title=" " alt="" coords="828,155,937,181"/>
+<area shape="rect" href="op_8hpp.html" title=" " alt="" coords="1088,229,1176,256"/>
+<area shape="rect" href="object_8hpp.html" title=" " alt="" coords="1054,379,1135,405"/>
+<area shape="rect" href="type_8hpp.html" title=" " alt="" coords="1133,304,1203,331"/>
+<area shape="rect" href="ref_8hpp.html" title=" " alt="" coords="1153,453,1215,480"/>
+<area shape="rect" title=" " alt="" coords="1109,528,1171,555"/>
+<area shape="rect" title=" " alt="" coords="1195,528,1261,555"/>
+<area shape="rect" title=" " alt="" coords="1285,528,1363,555"/>
+<area shape="rect" title=" " alt="" coords="1387,528,1439,555"/>
 </map>
 </div>
 </div><table class="memberdecls">
