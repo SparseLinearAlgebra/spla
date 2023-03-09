@@ -42,6 +42,8 @@
 #include <string>
 #include <utility>
 
+#include <robin_hood.hpp>
+
 namespace spla {
 
     MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {
@@ -123,8 +125,37 @@ namespace spla {
             Aj.push_back(j);
         }
 
-        m_Ai       = std::move(Ai);
-        m_Aj       = std::move(Aj);
+        std::vector<std::uint64_t> sorted;
+        sorted.reserve(Ai.size());
+
+        for (std::size_t k = 0; k < Ai.size(); k++) {
+            std::uint64_t entry = 0;
+            entry |= std::uint64_t(Ai[k]) << 32u;
+            entry |= std::uint64_t(Aj[k]) << 0u;
+            sorted.push_back(entry);
+        }
+
+        Ai.clear();
+        Aj.clear();
+
+        std::sort(sorted.begin(), sorted.end());
+
+        m_Ai.clear();
+        m_Aj.clear();
+        m_Ai.reserve(sorted.size());
+        m_Aj.reserve(sorted.size());
+
+        std::uint64_t entry_prev = 0xffffffffffffffff;
+        for (std::uint64_t entry : sorted) {
+            if (entry_prev != entry) {
+                uint i = uint((entry >> 32u) & 0xffffffff);
+                uint j = uint((entry >> 0u) & 0xffffffff);
+                m_Ai.push_back(i);
+                m_Aj.push_back(j);
+            }
+            entry_prev = entry;
+        }
+
         m_n_values = m_Ai.size();
 
         t.lap_end();// parsing
