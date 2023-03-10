@@ -113,7 +113,7 @@ namespace spla {
             kernel_sparse_count.setArg(5, cl_prods_count.buffer());
             kernel_sparse_count.setArg(6, p_cl_v->values);
 
-            uint n_groups_to_dispatch_v = div_up_clamp(p_cl_v->values, m_block_size, 1, 512);
+            uint n_groups_to_dispatch_v = div_up_clamp(p_cl_v->values, m_block_size, 1, 1024);
 
             cl::NDRange count_global(m_block_size * n_groups_to_dispatch_v);
             cl::NDRange count_local(m_block_size);
@@ -181,7 +181,7 @@ namespace spla {
                            const ref_ptr<TOpBinary<T, T, T>>& op_add,
                            const ref_ptr<TOpSelect<T>>&       op_select,
                            std::shared_ptr<CLProgram>&        program) {
-            m_block_size  = get_acc_cl()->get_wave_size();
+            m_block_size  = get_acc_cl()->get_default_wgs();
             m_block_count = 1;
 
             assert(m_block_count >= 1);

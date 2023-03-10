@@ -106,7 +106,7 @@ namespace spla {
         const uint BITS_MASK  = BITS_VALS - 1;
 
         auto*      cl_acc     = get_acc_cl();
-        const uint block_size = cl_acc->get_default_wgz();
+        const uint block_size = cl_acc->get_default_wgs();
 
         CLProgramBuilder builder;
         builder.set_name("radix_sort")

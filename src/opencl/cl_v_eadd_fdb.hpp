@@ -116,8 +116,8 @@ namespace spla {
             kernel.setArg(5, cl_fdb_size.buffer());
             kernel.setArg(6, n);
 
-            cl::NDRange global(p_cl_acc->get_default_wgz() * div_up_clamp(n, p_cl_acc->get_default_wgz(), 1u, 1024u));
-            cl::NDRange local(p_cl_acc->get_default_wgz());
+            cl::NDRange global(p_cl_acc->get_default_wgs() * div_up_clamp(n, p_cl_acc->get_default_wgs(), 1u, 1024u));
+            cl::NDRange local(p_cl_acc->get_default_wgs());
             queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
 
             p_cl_fdb->values = cl_fdb_size.get(queue);
@@ -159,8 +159,8 @@ namespace spla {
             kernel.setArg(2, p_cl_fdb->Ax);
             kernel.setArg(3, n);
 
-            cl::NDRange global(p_cl_acc->get_default_wgz() * div_up_clamp(n, p_cl_acc->get_default_wgz(), 1u, 1024u));
-            cl::NDRange local(p_cl_acc->get_default_wgz());
+            cl::NDRange global(p_cl_acc->get_default_wgs() * div_up_clamp(n, p_cl_acc->get_default_wgs(), 1u, 1024u));
+            cl::NDRange local(p_cl_acc->get_default_wgs());
             queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
 
             return Status::Ok;

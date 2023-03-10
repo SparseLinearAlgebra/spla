@@ -133,7 +133,7 @@ namespace spla {
                            const ref_ptr<TOpBinary<T, T, T>>& op_add,
                            const ref_ptr<TOpSelect<T>>&       op_select,
                            std::shared_ptr<CLProgram>&        program) {
-            m_block_size  = get_acc_cl()->get_wave_size();
+            m_block_size  = get_acc_cl()->get_default_wgs();
             m_block_count = 1;
 
             assert(m_block_count >= 1);

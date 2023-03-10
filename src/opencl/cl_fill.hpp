@@ -45,8 +45,8 @@ namespace spla {
         auto  fill_zero = builder.make_kernel("fill_zero");
         auto* acc       = get_acc_cl();
 
-        uint block_size           = acc->get_wave_size();
-        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(512)), uint(1));
+        uint block_size           = acc->get_default_wgs();
+        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(1024)), uint(1));
 
         cl::NDRange global(block_size * n_groups_to_dispatch);
         cl::NDRange local(block_size);
@@ -67,8 +67,8 @@ namespace spla {
         auto  fill_value = builder.make_kernel("fill_value");
         auto* acc        = get_acc_cl();
 
-        uint block_size           = acc->get_wave_size();
-        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(512)), uint(1));
+        uint block_size           = acc->get_default_wgs();
+        uint n_groups_to_dispatch = std::max(std::min(n / block_size, uint(1024)), uint(1));
 
         cl::NDRange global(block_size * n_groups_to_dispatch);
         cl::NDRange local(block_size);

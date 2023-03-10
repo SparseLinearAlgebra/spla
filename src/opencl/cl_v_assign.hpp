@@ -147,7 +147,7 @@ namespace spla {
         }
 
         bool ensure_kernel(const ref_ptr<TOpBinary<T, T, T>>& op_assign, const ref_ptr<TOpSelect<T>>& op_select, std::shared_ptr<CLProgram>& program) {
-            m_block_size = get_acc_cl()->get_wave_size();
+            m_block_size = get_acc_cl()->get_default_wgs();
 
             CLProgramBuilder program_builder;
             program_builder

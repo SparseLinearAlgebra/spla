@@ -115,7 +115,7 @@ namespace spla {
 
         bool ensure_kernel(std::shared_ptr<CLProgram>& program) {
 
-            m_block_size = get_acc_cl()->get_default_wgz();
+            m_block_size = get_acc_cl()->get_default_wgs();
 
             CLProgramBuilder program_builder;
             program_builder

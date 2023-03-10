@@ -126,8 +126,8 @@ namespace spla {
 
         auto* acc = get_acc_cl();
 
-        uint block_size           = acc->get_wave_size();
-        uint n_groups_to_dispatch = std::max(std::min(in.values / block_size, uint(512)), uint(1));
+        uint block_size           = acc->get_default_wgs();
+        uint n_groups_to_dispatch = std::max(std::min(in.values / block_size, uint(1024)), uint(1));
 
         auto kernel = builder.make_kernel("sparse_to_dense");
         kernel.setArg(0, in.Ai);

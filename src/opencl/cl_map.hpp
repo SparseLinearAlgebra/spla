@@ -53,8 +53,8 @@ namespace spla {
         kernel.setArg(1, source);
         kernel.setArg(2, n);
 
-        cl::NDRange global(align(n, acc->get_default_wgz()));
-        cl::NDRange local(acc->get_default_wgz());
+        cl::NDRange global(align(n, acc->get_default_wgs()));
+        cl::NDRange local(acc->get_default_wgs());
         queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
     }
 

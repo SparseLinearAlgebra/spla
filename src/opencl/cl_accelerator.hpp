@@ -90,7 +90,7 @@ namespace spla {
         [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
         [[nodiscard]] uint               get_max_local_mem() const { return m_max_local_mem; }
         [[nodiscard]] uint               get_addr_align() const { return m_addr_align; }
-        [[nodiscard]] uint               get_default_wgz() const { return m_default_wgs; }
+        [[nodiscard]] uint               get_default_wgs() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
         [[nodiscard]] bool               is_nvidia() const { return m_is_nvidia; }

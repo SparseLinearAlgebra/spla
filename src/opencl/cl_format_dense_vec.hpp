@@ -106,8 +106,8 @@ namespace spla {
 
         cl_count.set(queue, 0);
 
-        uint block_size           = acc->get_wave_size();
-        uint n_groups_to_dispatch = std::max(std::min(uint(n_rows) / block_size, uint(512)), uint(1));
+        uint block_size           = acc->get_default_wgs();
+        uint n_groups_to_dispatch = std::max(std::min(uint(n_rows) / block_size, uint(1024)), uint(1));
 
         cl::NDRange global(block_size * n_groups_to_dispatch);
         cl::NDRange local(block_size);

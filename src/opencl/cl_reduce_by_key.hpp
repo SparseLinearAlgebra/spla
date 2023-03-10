@@ -57,7 +57,7 @@ namespace spla {
                 .set_source(source_reduce_by_key)
                 .acquire();
 
-        const uint block_size        = cl_acc->get_default_wgz();
+        const uint block_size        = cl_acc->get_default_wgs();
         const uint sequential_switch = 32;
         const uint small_switch      = cl_acc->get_max_wgs();
 
