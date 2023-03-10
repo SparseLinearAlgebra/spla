@@ -14,7 +14,7 @@ var searchData=
   ['get_5fcontext_1124',['get_context',['../classspla_1_1CLAccelerator.html#ad5fbf9983c5ff86aa8ee1b7653b90530',1,'spla::CLAccelerator']]],
   ['get_5fcounter_5fpool_1125',['get_counter_pool',['../classspla_1_1CLAccelerator.html#ad9881ed13e1c0e1f5a0fb3b0b4f0143c',1,'spla::CLAccelerator']]],
   ['get_5fcpp_1126',['get_cpp',['../classspla_1_1Type.html#a6e696f8a2351a21e26d7c6ac6e675b7d',1,'spla::Type::get_cpp()'],['../group__internal.html#gaf0a850cd8f69cc98a325194846a59ada',1,'spla::TType::get_cpp()']]],
-  ['get_5fdefault_5fwgz_1127',['get_default_wgz',['../classspla_1_1CLAccelerator.html#aa2ba8adb30afdb4610354156182293c6',1,'spla::CLAccelerator']]],
+  ['get_5fdefault_5fwgs_1127',['get_default_wgs',['../classspla_1_1CLAccelerator.html#a4e26512a035ac0bf0e276cd75b3f23a1',1,'spla::CLAccelerator']]],
   ['get_5fdefine_1128',['get_define',['../classspla_1_1CLProgram.html#a7ff461ff039ebac7b52b943c5a9ae26a',1,'spla::CLProgram']]],
   ['get_5fdefines_5fcount_1129',['get_defines_count',['../classspla_1_1CLProgram.html#a44fb14b2a580fe75fc5a3d4464a9dd67',1,'spla::CLProgram']]],
   ['get_5fdesc_1130',['get_desc',['../classspla_1_1ScheduleTaskBase.html#a727e9f9a85e605eca6e5d6f3c15c280a',1,'spla::ScheduleTaskBase::get_desc()'],['../classspla_1_1ScheduleTask.html#a24ce243743cb2bf0118bed6f4b2ac1ed',1,'spla::ScheduleTask::get_desc()=0']]],

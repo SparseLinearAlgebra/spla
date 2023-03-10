@@ -187,8 +187,8 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            kernel.setArg(5, cl_fdb_size.<a class="code" href="classspla_1_1CLCounterWrapper.html#adb509c8da82496bcaea87c490b83b851">buffer</a>());</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            kernel.setArg(6, n);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgz() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgz(), 1u, 1024u));</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgz());</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgs() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgs(), 1u, 1024u));</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgs());</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            p_cl_fdb-&gt;values = cl_fdb_size.<a class="code" href="classspla_1_1CLCounterWrapper.html#a1ef8e9eefe8d9cd2796e5193e50883c2">get</a>(queue);</div>
@@ -230,8 +230,8 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            kernel.setArg(2, p_cl_fdb-&gt;Ax);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            kernel.setArg(3, n);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgz() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgz(), 1u, 1024u));</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgz());</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgs() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgs(), 1u, 1024u));</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgs());</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>

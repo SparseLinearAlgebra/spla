@@ -218,7 +218,7 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(<span class="keyword">const</span> ref_ptr&lt;TOpBinary&lt;T, T, T&gt;&gt;&amp; op_assign, <span class="keyword">const</span> ref_ptr&lt;TOpSelect&lt;T&gt;&gt;&amp; op_select, std::shared_ptr&lt;CLProgram&gt;&amp; program) {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            m_block_size = get_acc_cl()-&gt;get_wave_size();</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            m_block_size = get_acc_cl()-&gt;get_default_wgs();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            CLProgramBuilder program_builder;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            program_builder</div>

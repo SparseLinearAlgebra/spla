@@ -173,8 +173,8 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            kernel.setArg(2, p_cl_v-&gt;Ax);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            kernel.setArg(3, n);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgz() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgz(), 1u, 1024u));</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgz());</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            cl::NDRange global(p_cl_acc-&gt;get_default_wgs() * div_up_clamp(n, p_cl_acc-&gt;get_default_wgs(), 1u, 1024u));</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            cl::NDRange local(p_cl_acc-&gt;get_default_wgs());</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
