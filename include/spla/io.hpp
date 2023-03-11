@@ -68,10 +68,12 @@ namespace spla {
          * @brief Saves loaded data at file
          *
          * @param file_path File to create where to save data
+         * @param stats_only Save only stats without actual graph data
          *
          * @return True if successfully saved
          */
-        SPLA_API bool save(std::filesystem::path file_path);
+        SPLA_API bool save(const std::filesystem::path& file_path,
+                           bool                         stats_only = false);
 
         SPLA_API void calc_stats();
         SPLA_API void output_stats();
@@ -87,16 +89,16 @@ namespace spla {
         std::filesystem::path m_file_path;
         std::vector<uint>     m_Ai;
         std::vector<uint>     m_Aj;
-        uint                  m_n_rows   = 0;
-        uint                  m_n_cols   = 0;
-        std::size_t           m_n_values = 0;
-
-        double              m_deg_avg = -1.0;
-        double              m_deg_sd  = -1.0;
-        double              m_deg_min = -1.0;
-        double              m_deg_max = -1.0;
-        std::vector<double> m_deg_distribution;
-        std::vector<uint>   m_deg_ranges;
+        bool                  m_base_is_zero = false;
+        uint                  m_n_rows       = 0;
+        uint                  m_n_cols       = 0;
+        std::size_t           m_n_values     = 0;
+        double                m_deg_avg      = -1.0;
+        double                m_deg_sd       = -1.0;
+        double                m_deg_min      = -1.0;
+        double                m_deg_max      = -1.0;
+        std::vector<double>   m_deg_distribution;
+        std::vector<uint>     m_deg_ranges;
     };
 
     /**

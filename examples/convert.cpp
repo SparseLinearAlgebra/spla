@@ -37,6 +37,7 @@ int main(int argc, const char* const* argv) {
     options->add_option("", cxxopts::Option("offset_indices", "offset indices to start from 0", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option("make_undirected", "make graph undirected adding backward edges", cxxopts::value<bool>()->default_value("true")));
     options->add_option("", cxxopts::Option("remove_loops", "remove self-loops", cxxopts::value<bool>()->default_value("true")));
+    options->add_option("", cxxopts::Option("stats_only", "collect only graphs stats", cxxopts::value<bool>()->default_value("false")));
     cxxopts::ParseResult args;
     int                  ret;
 
@@ -53,13 +54,14 @@ int main(int argc, const char* const* argv) {
     bool offset_indices  = args["offset_indices"].as<bool>();
     bool make_undirected = args["make_undirected"].as<bool>();
     bool remove_loops    = args["remove_loops"].as<bool>();
+    bool stats_only      = args["stats_only"].as<bool>();
 
     if (!loader.load(args["in"].as<std::string>(), offset_indices, make_undirected, remove_loops)) {
         std::cerr << "failed to load graph";
         return 1;
     }
 
-    if (!loader.save(args["out"].as<std::string>())) {
+    if (!loader.save(args["out"].as<std::string>(), stats_only)) {
         std::cerr << "failed to save graph";
         return 1;
     }

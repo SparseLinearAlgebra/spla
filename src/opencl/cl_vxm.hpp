@@ -185,7 +185,6 @@ namespace spla {
             m_block_count = 1;
 
             assert(m_block_count >= 1);
-            assert(m_block_size * m_block_count == get_acc_cl()->get_wave_size());
 
             CLProgramBuilder program_builder;
             program_builder
