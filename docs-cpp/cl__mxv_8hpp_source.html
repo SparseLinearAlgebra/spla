@@ -324,34 +324,33 @@ $(function() {
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            m_block_count = 1;</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            assert(m_block_count &gt;= 1);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            assert(m_block_size * m_block_count == get_acc_cl()-&gt;get_wave_size());</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            CLProgramBuilder program_builder;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            program_builder</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    .set_name(<span class="stringliteral">&quot;mxv&quot;</span>)</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    .add_define(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, get_acc_cl()-&gt;get_wave_size())</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                    .add_define(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, m_block_size)</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    .add_define(<span class="stringliteral">&quot;BLOCK_COUNT&quot;</span>, m_block_count)</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    .add_type(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY1&quot;</span>, op_multiply.template as&lt;OpBinary&gt;())</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY2&quot;</span>, op_add.template as&lt;OpBinary&gt;())</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_SELECT&quot;</span>, op_select.template as&lt;OpSelect&gt;())</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                    .set_source(source_mxv)</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                    .acquire();</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            program = program_builder.get_program();</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> m_block_size  = 0;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> m_block_count = 0;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    };</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_MXV_HPP</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            CLProgramBuilder program_builder;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            program_builder</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    .set_name(<span class="stringliteral">&quot;mxv&quot;</span>)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    .add_define(<span class="stringliteral">&quot;WARP_SIZE&quot;</span>, get_acc_cl()-&gt;get_wave_size())</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    .add_define(<span class="stringliteral">&quot;BLOCK_SIZE&quot;</span>, m_block_size)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                    .add_define(<span class="stringliteral">&quot;BLOCK_COUNT&quot;</span>, m_block_count)</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    .add_type(<span class="stringliteral">&quot;TYPE&quot;</span>, get_ttype&lt;T&gt;().<span class="keyword">template</span> as&lt;Type&gt;())</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY1&quot;</span>, op_multiply.template as&lt;OpBinary&gt;())</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_BINARY2&quot;</span>, op_add.template as&lt;OpBinary&gt;())</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                    .add_op(<span class="stringliteral">&quot;OP_SELECT&quot;</span>, op_select.template as&lt;OpSelect&gt;())</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                    .set_source(source_mxv)</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                    .acquire();</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            program = program_builder.get_program();</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> m_block_size  = 0;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> m_block_count = 0;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    };</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CL_MXV_HPP</span></div>
 <div class="ttc" id="aauto__mxv_8hpp_html"><div class="ttname"><a href="auto__mxv_8hpp.html">auto_mxv.hpp</a></div></div>
 <div class="ttc" id="acl__counter_8hpp_html"><div class="ttname"><a href="cl__counter_8hpp.html">cl_counter.hpp</a></div></div>
 <div class="ttc" id="acl__debug_8hpp_html"><div class="ttname"><a href="cl__debug_8hpp.html">cl_debug.hpp</a></div></div>
