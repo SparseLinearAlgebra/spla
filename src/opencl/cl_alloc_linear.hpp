@@ -46,8 +46,8 @@ namespace spla {
      */
     class CLAllocLinear : public CLAlloc {
     public:
-        static const std::size_t DEFAULT_SIZE      = 1024 * 1024;// 1 MiB
-        static const std::size_t DEFAULT_ALIGNMENT = 128;
+        static constexpr const uint DEFAULT_SIZE      = 1024 * 1024;// 1 MiB
+        static constexpr const uint DEFAULT_ALIGNMENT = 128;
 
         explicit CLAllocLinear(std::size_t arena_size = DEFAULT_SIZE, std::size_t alignment = DEFAULT_ALIGNMENT);
         ~CLAllocLinear() override = default;
