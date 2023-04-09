@@ -723,15 +723,6 @@ TEST(opencl, merge_path) {
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
     cl::Device device = devices[1];
 
-    cl::Platform::get(&platforms);
-
-    for (auto& _platform : platforms) {
-        std::string version;
-        _platform.getInfo(CL_PLATFORM_VERSION, &version);
-
-        std::cout << "OpenCL version for platform " << platform.getInfo<CL_PLATFORM_NAME>() << ": " << version << std::endl;
-    }
-
     cout << "////////// LIST DEVICE: " << endl;
     for (auto& it : devices) {
         cout << "- " << it.getInfo<CL_DEVICE_NAME>() << endl;
@@ -791,6 +782,7 @@ TEST(opencl, merge_path) {
         //// PARALLEL MERGE SORT
         start_time = std::chrono::steady_clock::now();
         cl_merge(queue, buf_arr_a, buf_arr_b, buf_arr_res, program_gl, program_loc_v1, program_loc_v2, size_arr_a, size_arr_b, TILE_SIZE, GROUP_SIZE);
+        queue.finish();
         end_time = std::chrono::steady_clock::now();
         cl::copy(queue, buf_arr_res, arr_c.begin(), arr_c.end());
         result_time_gpu += (end_time - start_time);
