@@ -33,16 +33,13 @@
 #include <CL/opencl.hpp>
 
 #include <iostream>
+#include <random>
 #include <thread>
 #include <vector>
-#include <random>
 
-using std::vector;
 using std::cout;
 using std::endl;
-
-#define TILE_SIZE 256
-#define GROUP_SIZE 64
+using std::vector;
 
 TEST(opencl, basic_gpu) {
     std::vector<cl::Platform> platforms;
@@ -433,9 +430,7 @@ std::string kernel_local_v2 =
         "                                 __global const TYPE* arr_b,   "
         "                                 __global TYPE* arr_res,       "
         "                                 __global uint* tile_a,        "
-        "                                 __global uint* tile_b,        "
-        "                                 uint size_arr_a,              "
-        "                                 uint size_arr_b) {            "
+        "                                 __global uint* tile_b) {      "
         "   __local TYPE local_arr_a[TILE_SIZE];                    "
         "   __local TYPE local_arr_b[TILE_SIZE];                    "
         "   __local TYPE result[TILE_SIZE];                         "
@@ -518,19 +513,15 @@ std::string kernel_local_v2 =
         "   }                                                                                           "
         "}                                                                                              ";
 
-static cl::Program program_gl;
-static cl::Program program_loc_v1;
-static cl::Program program_loc_v2;
-
 
 /////// Naive realization merge (search coordinate)
 
 template<typename T>
-void merge_search_coord_tile(vector<T> &a,
-                             vector<T> &b,
-                             uint size_tile,
-                             vector<uint> &tile_a,
-                             vector<uint> &tile_b) {
+void merge_search_coord_tile(vector<T>&    a,
+                             vector<T>&    b,
+                             uint          size_tile,
+                             vector<uint>& tile_a,
+                             vector<uint>& tile_b) {
     tile_a[tile_a.size() - 1] = a.size();
     tile_b[tile_b.size() - 1] = b.size();
 
@@ -554,8 +545,8 @@ void merge_search_coord_tile(vector<T> &a,
 /////// Naive realization merge
 
 template<typename T>
-vector<T> merge(vector<T> &a,
-                vector<T> &b) {
+vector<T> merge(vector<T>& a,
+                vector<T>& b) {
 
     vector<T> res(a.size() + b.size());
 
@@ -575,10 +566,10 @@ vector<T> merge(vector<T> &a,
 ///////
 
 
-bool equal_tile(const vector<uint> &tile_a,
-                const vector<uint> &tile_b,
-                const vector<uint> &_tile_a,
-                const vector<uint> &_tile_b) {
+bool equal_tile(const vector<uint>& tile_a,
+                const vector<uint>& tile_b,
+                const vector<uint>& _tile_a,
+                const vector<uint>& _tile_b) {
     for (uint i = 1; i + 1 < tile_a.size(); i++) {
         if ((tile_a[i] != _tile_a[i]) && (tile_b[i] != _tile_b[i])) {
             return false;
@@ -588,26 +579,11 @@ bool equal_tile(const vector<uint> &tile_a,
     return true;
 }
 
-template<typename T>
-bool equal_arr(const vector<T>& a, const vector<T>& b) {
-    if (a.size() != b.size()) {
-        return false;
-    }
-
-    for (uint i = 0; i < a.size(); i++) {
-        if (a[i] != b[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-void output_tile_size(const vector<uint> &tile_x, const vector<uint> &tile_y) {
+void output_tile_size(const vector<uint>& tile_x, const vector<uint>& tile_y) {
     for (uint i = 1; i < tile_x.size(); i++) {
         cout << (tile_x[i] - tile_x[i - 1] + tile_y[i] - tile_y[i - 1]) << '\t';
-    } cout << endl;
+    }
+    cout << endl;
 }
 
 // A function to return a seeded random number generator.
@@ -624,21 +600,14 @@ T my_rand(T min, T max) {
     return dist(generator());
 }
 
-// A function to generate floats in the range [min, max)
-template<typename T, std::enable_if_t<std::is_floating_point_v<T>>* = nullptr>
-T my_rand(T min, T max) {
-    std::uniform_real_distribution<T> dist(min, max);
-    return dist(generator());
-}
-
-template <typename T>
-void rand_value(vector<T> &arr) {
-    for (auto &v : arr) {
+template<typename T>
+void rand_value(vector<T>& arr) {
+    for (auto& v : arr) {
         v = my_rand(0, 1000);
     }
 }
 
-bool check_sort(const vector<int> &v) {
+bool check_sort(const vector<int>& v) {
     for (uint i = 1; i + 1 < v.size(); i++) {
         if (v[i] < v[i - 1]) {
             cout << i << " " << endl;
@@ -649,13 +618,74 @@ bool check_sort(const vector<int> &v) {
 }
 
 
-void cl_merge(const cl::Context& context,
-              const cl::CommandQueue& queue,
-              const cl::Buffer& buf_arr_a,
-              const cl::Buffer& buf_arr_b,
-              const cl::Buffer& buf_arr_result,
-              uint size_buf_arr_a,
-              uint size_buf_arr_b) {
+inline cl::Kernel cl_merge_thread_per_tile(const cl::Buffer&  buf_arr_a,
+                                           const cl::Buffer&  buf_arr_b,
+                                           const cl::Buffer&  buf_tile_a,
+                                           const cl::Buffer&  buf_tile_b,
+                                           const cl::Buffer&  buf_arr_result,
+                                           const cl::Program& program,
+                                           const uint         count_tile) {
+    cl::Kernel kernel = cl::Kernel(program, "merge");
+
+    kernel.setArg(0, buf_arr_a);
+    kernel.setArg(1, buf_arr_b);
+    kernel.setArg(2, buf_tile_a);
+    kernel.setArg(3, buf_tile_b);
+    kernel.setArg(4, count_tile);
+    kernel.setArg(5, buf_arr_result);
+
+    return kernel;
+}
+
+inline cl::Kernel cl_merge_thread_per_group(const cl::Buffer&  buf_arr_a,
+                                            const cl::Buffer&  buf_arr_b,
+                                            const cl::Buffer&  buf_tile_a,
+                                            const cl::Buffer&  buf_tile_b,
+                                            const cl::Buffer&  buf_arr_result,
+                                            const cl::Program& program) {
+    cl::Kernel kernel = cl::Kernel(program, "merge");
+
+    kernel.setArg(0, buf_arr_a);
+    kernel.setArg(1, buf_arr_b);
+    kernel.setArg(2, buf_arr_result);
+    kernel.setArg(3, buf_tile_a);
+    kernel.setArg(4, buf_tile_b);
+
+    return kernel;
+}
+
+inline cl::Kernel cl_search_cord_tile(const cl::Buffer&  buf_arr_a,
+                                      const cl::Buffer&  buf_arr_b,
+                                      const cl::Buffer&  buf_tile_a,
+                                      const cl::Buffer&  buf_tile_b,
+                                      const uint         size_buf_arr_a,
+                                      const uint         size_buf_arr_b,
+                                      const uint         count_tile,
+                                      const cl::Program& program) {
+    cl::Kernel kernel(program, "search_coord_tile");
+
+    kernel.setArg(0, buf_arr_a);
+    kernel.setArg(1, buf_arr_b);
+    kernel.setArg(2, buf_tile_a);
+    kernel.setArg(3, buf_tile_b);
+    kernel.setArg(4, size_buf_arr_a);
+    kernel.setArg(5, size_buf_arr_b);
+    kernel.setArg(6, count_tile);
+
+    return kernel;
+}
+
+void cl_merge(const cl::CommandQueue& queue,
+              const cl::Buffer&       buf_arr_a,
+              const cl::Buffer&       buf_arr_b,
+              const cl::Buffer&       buf_arr_result,
+              const cl::Program&      program_gl,
+              const cl::Program&      program_loc_v1,
+              const cl::Program&      program_loc_v2,
+              const uint              size_buf_arr_a,
+              const uint              size_buf_arr_b,
+              const uint              TILE_SIZE,
+              const uint              GROUP_SIZE) {
 
     uint count_tile = (size_buf_arr_a + size_buf_arr_b) / TILE_SIZE;
 
@@ -665,8 +695,8 @@ void cl_merge(const cl::Context& context,
 
     int null = 0;
 
-    cl::Buffer buf_tile_a(context, CL_MEM_READ_WRITE, sizeof(uint) * (count_tile + 1));
-    cl::Buffer buf_tile_b(context, CL_MEM_READ_WRITE, sizeof(uint) * (count_tile + 1));
+    cl::Buffer buf_tile_a(queue.getInfo<CL_QUEUE_CONTEXT>(), CL_MEM_READ_WRITE, sizeof(uint) * (count_tile + 1));
+    cl::Buffer buf_tile_b(queue.getInfo<CL_QUEUE_CONTEXT>(), CL_MEM_READ_WRITE, sizeof(uint) * (count_tile + 1));
 
     queue.enqueueWriteBuffer(buf_tile_a, CL_MEM_READ_WRITE, 0, sizeof(uint), &null);
     queue.enqueueWriteBuffer(buf_tile_b, CL_MEM_READ_WRITE, 0, sizeof(uint), &null);
@@ -674,43 +704,17 @@ void cl_merge(const cl::Context& context,
     queue.enqueueWriteBuffer(buf_tile_a, CL_MEM_READ_WRITE, sizeof(uint) * (count_tile), sizeof(uint), &size_buf_arr_a);
     queue.enqueueWriteBuffer(buf_tile_b, CL_MEM_READ_WRITE, sizeof(uint) * (count_tile), sizeof(uint), &size_buf_arr_b);
 
-    cl::Kernel kernel_gl(program_gl, "search_coord_tile");
+    cl::Kernel kernel_gl = cl_search_cord_tile(buf_arr_a, buf_arr_b, buf_tile_a, buf_tile_b, size_buf_arr_a, size_buf_arr_b, count_tile, program_gl);
 
-    kernel_gl.setArg(0, buf_arr_a);
-    kernel_gl.setArg(1, buf_arr_b);
-    kernel_gl.setArg(2, buf_tile_a);
-    kernel_gl.setArg(3, buf_tile_b);
-    kernel_gl.setArg(4, size_buf_arr_a);
-    kernel_gl.setArg(5, size_buf_arr_b);
-    kernel_gl.setArg(6, count_tile);
-
-    cl::Kernel kernel_loc_v1 = cl::Kernel(program_loc_v1, "merge");
-
-    kernel_loc_v1.setArg(0, buf_arr_a);
-    kernel_loc_v1.setArg(1, buf_arr_b);
-    kernel_loc_v1.setArg(2, buf_tile_a);
-    kernel_loc_v1.setArg(3, buf_tile_b);
-    kernel_loc_v1.setArg(4, count_tile);
-    kernel_loc_v1.setArg(5, buf_arr_result);
-
-    cl::Kernel kernel_loc_v2 = cl::Kernel(program_loc_v2, "merge");
-
-    kernel_loc_v2.setArg(0, buf_arr_a);
-    kernel_loc_v2.setArg(1, buf_arr_b);
-    kernel_loc_v2.setArg(2, buf_arr_result);
-    kernel_loc_v2.setArg(3, buf_tile_a);
-    kernel_loc_v2.setArg(4, buf_tile_b);
-    kernel_loc_v2.setArg(5, size_buf_arr_a);
-    kernel_loc_v2.setArg(6, size_buf_arr_b);
+    cl::Kernel kernel_loc = cl_merge_thread_per_group(buf_arr_a, buf_arr_b, buf_tile_a, buf_tile_b, buf_arr_result, program_loc_v2);
 
     queue.enqueueNDRangeKernel(kernel_gl, cl::NDRange(), std::max(count_tile, uint(64)));
 
-    queue.enqueueNDRangeKernel(kernel_loc_v2, cl::NDRange(),
+    queue.enqueueNDRangeKernel(kernel_loc, cl::NDRange(),
                                std::max(size_buf_arr_b + size_buf_arr_a, uint(64)), GROUP_SIZE);
-
 }
 
-TEST (opencl, merge_path) {
+TEST(opencl, merge_path) {
     vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
     cl::Platform platform = platforms.front();
@@ -719,8 +723,17 @@ TEST (opencl, merge_path) {
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
     cl::Device device = devices[1];
 
+    cl::Platform::get(&platforms);
+
+    for (auto& _platform : platforms) {
+        std::string version;
+        _platform.getInfo(CL_PLATFORM_VERSION, &version);
+
+        std::cout << "OpenCL version for platform " << platform.getInfo<CL_PLATFORM_NAME>() << ": " << version << std::endl;
+    }
+
     cout << "////////// LIST DEVICE: " << endl;
-    for (auto& it: devices) {
+    for (auto& it : devices) {
         cout << "- " << it.getInfo<CL_DEVICE_NAME>() << endl;
     }
 
@@ -731,6 +744,10 @@ TEST (opencl, merge_path) {
     cl::Context      context(device);
     cl::CommandQueue queue(context);
 
+    cl::Program program_gl;
+    cl::Program program_loc_v1;
+    cl::Program program_loc_v2;
+
     program_gl = cl::Program(context, kernel_global);
     program_gl.build(device, "-cl-std=CL1.2 -DTILE_SIZE=256 -DTYPE=int");
 
@@ -740,12 +757,15 @@ TEST (opencl, merge_path) {
     program_loc_v2 = cl::Program(context, kernel_local_v2);
     program_loc_v2.build(device, "-cl-std=CL1.2 -DTILE_SIZE=256 -DGROUP_SIZE=64 -DMICRO_TILE_SIZE=TILE_SIZE/GROUP_SIZE -DTYPE=int");
 
-    std::chrono::time_point start_time = std::chrono::steady_clock::now();
-    std::chrono::time_point end_time = std::chrono::steady_clock::now();
+    std::chrono::time_point                   start_time      = std::chrono::steady_clock::now();
+    std::chrono::time_point                   end_time        = std::chrono::steady_clock::now();
     std::chrono::duration<double, std::milli> result_time_cpu = end_time - start_time;
     std::chrono::duration<double, std::milli> result_time_gpu = end_time - start_time;
 
-    for (uint t = 0; t < 10 ; t++) {
+    const uint TILE_SIZE  = 256;
+    const uint GROUP_SIZE = 64;
+
+    for (uint t = 0; t < 10; t++) {
         cout << "//////////" << endl;
         cout << "TEST #" << t + 1 << endl;
 
@@ -766,33 +786,23 @@ TEST (opencl, merge_path) {
         cl::Buffer buf_arr_a(queue, arr_a.begin(), arr_a.end(), true, false);
         cl::Buffer buf_arr_b(queue, arr_b.begin(), arr_b.end(), true, false);
         cl::Buffer buf_arr_res(context, CL_MEM_READ_WRITE, sizeof(T) * (size_arr_a + size_arr_b));
-        ////
 
 
         //// PARALLEL MERGE SORT
         start_time = std::chrono::steady_clock::now();
-        cl_merge(context, queue, buf_arr_a, buf_arr_b, buf_arr_res, size_arr_a, size_arr_b);
+        cl_merge(queue, buf_arr_a, buf_arr_b, buf_arr_res, program_gl, program_loc_v1, program_loc_v2, size_arr_a, size_arr_b, TILE_SIZE, GROUP_SIZE);
         end_time = std::chrono::steady_clock::now();
         cl::copy(queue, buf_arr_res, arr_c.begin(), arr_c.end());
         result_time_gpu += (end_time - start_time);
-        //fprintf(stderr, "Time taken for PARALLEL: %-8.3lfms\n", result_time.count());
-        ////
 
         //// NAIVE MERGE SORT
-        start_time = std::chrono::steady_clock::now();
+        start_time  = std::chrono::steady_clock::now();
         vector<T> c = merge(arr_a, arr_b);
-        end_time = std::chrono::steady_clock::now();
+        end_time    = std::chrono::steady_clock::now();
         result_time_cpu += (end_time - start_time);
-        //fprintf(stderr, "Time taken for STANDART: %-8.3lfms\n", result_time.count());
-        ////
 
-        // CHECKED SORT
-        if (check_sort(arr_c) && equal_arr(arr_c, c)) {
-            cout << "CORRECT" << endl;
-        } else {
-            cout << "NO CORRECT" << endl;
-        }
-        //
+        EXPECT_TRUE(check_sort(arr_c) && check_sort(c));
+        EXPECT_EQ(arr_c, c);
     }
     cout << "//////////" << endl;
     fprintf(stderr, "Time taken for PARALLEL: %-8.3lfms\n", (result_time_gpu / 10).count());
