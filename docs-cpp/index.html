@@ -88,7 +88,69 @@ $(function() {
 <div class="fragment"><div class="line">$ pip install -i https://test.pypi.org/simple/ pyspla</div>
 </div><!-- fragment --><p>Delete package if no more required:</p>
 <div class="fragment"><div class="line">$ pip uninstall pyspla</div>
-</div><!-- fragment --><h2>Building from sources</h2>
+</div><!-- fragment --><h2>Performance</h2>
+<h3>Comparison on a Nvidia GPU</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><img src="./docs/stats/rq1_rel.png" alt="stats" class="inline"/>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Description: Relative speedup of GraphBLAST, Gunrock and Spla compared to a LaGraph (SuiteSparse) used a baseline. Logarithmic scale is used.   </td></tr>
+</table>
+<blockquote class="doxtable">
+<p><b>Configuration</b>: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Nvidia GeForce GTX 1070 dedicated GPU with 8Gb on-board VRAM. </p>
+</blockquote>
+<h3>Scalability on Intel, Amd and Nvidia GPUs</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><img src="./docs/stats/rq2_cores.png" alt="stats" class="inline"/>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Description: Throughput of Spla library shown as a number of processed edges/s per single GPU core. Logarithmic scale is used.   </td></tr>
+</table>
+<blockquote class="doxtable">
+<p><b>Configuration</b>: Nvidia GeForce GTX 1070 dedicated GPU with 8Gb on-board VRAM, Intel Arc A770 flux dedicated GPU with 8GB on-board VRAM and or AMD Radeon Vega Frontier Edition dedicated GPU with 16GB on-board VRAM. </p>
+</blockquote>
+<h3>Comparison running on integrated Intel and Amd GPUs</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><img src="./docs/stats/rq3_int.png" alt="stats" class="inline"/>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a baseline running on a single CPU device with integrated GPU. Logarithmic scale is used.   </td></tr>
+</table>
+<blockquote class="doxtable">
+<p><b>Configuration</b>: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Intel HD Graphics 530 integrated GPU and Ubuntu 22.04, 4.70Hz AMD Ryzen 9 7900x 12-core CPU, DDR4 128 GB RAM, AMD GFX1036 integrated GPU. </p>
+</blockquote>
+<h3>Dataset</h3>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Name   </th><th class="markdownTableHeadRight">Vertices   </th><th class="markdownTableHeadRight">Edges   </th><th class="markdownTableHeadRight">Avg Deg   </th><th class="markdownTableHeadRight">Sd Deg   </th><th class="markdownTableHeadRight">Max Deg   </th><th class="markdownTableHeadRight">Link    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">coAuthorsCiteseer   </td><td class="markdownTableBodyRight">227.3K   </td><td class="markdownTableBodyRight">1.6M   </td><td class="markdownTableBodyRight">7.2   </td><td class="markdownTableBodyRight">10.6   </td><td class="markdownTableBodyRight">1372.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coAuthorsCiteseer.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">coPapersDBLP   </td><td class="markdownTableBodyRight">540.5K   </td><td class="markdownTableBodyRight">30.5M   </td><td class="markdownTableBodyRight">56.4   </td><td class="markdownTableBodyRight">66.2   </td><td class="markdownTableBodyRight">3299.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coPapersDBLP.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">amazon-2008   </td><td class="markdownTableBodyRight">735.3K   </td><td class="markdownTableBodyRight">7.0M   </td><td class="markdownTableBodyRight">9.6   </td><td class="markdownTableBodyRight">7.6   </td><td class="markdownTableBodyRight">1077.0   </td><td class="markdownTableBodyRight"><a href="http://sparse.tamu.edu/LAW/amazon-2008">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">hollywood-2009   </td><td class="markdownTableBodyRight">1.1M   </td><td class="markdownTableBodyRight">112.8M   </td><td class="markdownTableBodyRight">98.9   </td><td class="markdownTableBodyRight">271.9   </td><td class="markdownTableBodyRight">11467.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/LAW/hollywood-2009.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">belgium_osm   </td><td class="markdownTableBodyRight">1.4M   </td><td class="markdownTableBodyRight">3.1M   </td><td class="markdownTableBodyRight">2.2   </td><td class="markdownTableBodyRight">0.5   </td><td class="markdownTableBodyRight">10.0   </td><td class="markdownTableBodyRight"><a href="http://sparse.tamu.edu/DIMACS10/belgium_osm">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">roadNet-CA   </td><td class="markdownTableBodyRight">2.0M   </td><td class="markdownTableBodyRight">5.5M   </td><td class="markdownTableBodyRight">2.8   </td><td class="markdownTableBodyRight">1.0   </td><td class="markdownTableBodyRight">12.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/SNAP/roadNet-CA.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">com-Orkut   </td><td class="markdownTableBodyRight">3.1M   </td><td class="markdownTableBodyRight">234.4M   </td><td class="markdownTableBodyRight">76.3   </td><td class="markdownTableBodyRight">154.8   </td><td class="markdownTableBodyRight">33313.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/SNAP/com-Orkut.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">cit-Patents   </td><td class="markdownTableBodyRight">3.8M   </td><td class="markdownTableBodyRight">33.0M   </td><td class="markdownTableBodyRight">8.8   </td><td class="markdownTableBodyRight">10.5   </td><td class="markdownTableBodyRight">793.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/SNAP/cit-Patents.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">rgg_n_2_22_s0   </td><td class="markdownTableBodyRight">4.2M   </td><td class="markdownTableBodyRight">60.7M   </td><td class="markdownTableBodyRight">14.5   </td><td class="markdownTableBodyRight">3.8   </td><td class="markdownTableBodyRight">36.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_22_s0.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">soc-LiveJournal   </td><td class="markdownTableBodyRight">4.8M   </td><td class="markdownTableBodyRight">85.7M   </td><td class="markdownTableBodyRight">17.7   </td><td class="markdownTableBodyRight">52.0   </td><td class="markdownTableBodyRight">20333.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/SNAP/soc-LiveJournal1.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">indochina-2004   </td><td class="markdownTableBodyRight">7.4M   </td><td class="markdownTableBodyRight">302.0M   </td><td class="markdownTableBodyRight">40.7   </td><td class="markdownTableBodyRight">329.6   </td><td class="markdownTableBodyRight">256425.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/LAW/indochina-2004.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">rgg_n_2_23_s0   </td><td class="markdownTableBodyRight">8.4M   </td><td class="markdownTableBodyRight">127.0M   </td><td class="markdownTableBodyRight">15.1   </td><td class="markdownTableBodyRight">3.9   </td><td class="markdownTableBodyRight">40.0   </td><td class="markdownTableBodyRight"><a href="https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_23_s0.tar.gz">link</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">road_central   </td><td class="markdownTableBodyRight">14.1M   </td><td class="markdownTableBodyRight">33.9M   </td><td class="markdownTableBodyRight">2.4   </td><td class="markdownTableBodyRight">0.9   </td><td class="markdownTableBodyRight">8.0   </td><td class="markdownTableBodyRight"><a href="http://sparse.tamu.edu/DIMACS10/road_central">link</a>   </td></tr>
+</table>
+<h2>Building from sources</h2>
 <h3>Prerequisites</h3>
 <ul>
 <li><b>Common</b>:<ul>
