@@ -89,6 +89,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Registry.html">spla::Registry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Registry.html" title="Registry with key-algo mapping of stored algo implementations.">Registry</a> with key-algo mapping of stored algo implementations.  <a href="classspla_1_1Registry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TArray.html">spla::TArray&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Array.html" title="One-dimensional dense tightly packed array of typed values.">Array</a> interface implementation with type information bound.  <a href="classspla_1_1TArray.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1TDecoration.html">spla::TDecoration&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for typed decoration for storage object.  <a href="classspla_1_1TDecoration.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -324,6 +327,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga274cd3c51e824f27c8583aa556d74454">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0d6585b7c910f70d714ef826129dba4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab0d6585b7c910f70d714ef826129dba4">spla::TArray&lt; T &gt;::TArray</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values)</td></tr>
+<tr class="separator:gab0d6585b7c910f70d714ef826129dba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace59720b6c46ed11e58527698661f53c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gace59720b6c46ed11e58527698661f53c">spla::TArray&lt; T &gt;::get_n_values</a> () override</td></tr>
+<tr class="separator:gace59720b6c46ed11e58527698661f53c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga097d2ee650d17577cb8e66358ba58952"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga097d2ee650d17577cb8e66358ba58952">spla::TArray&lt; T &gt;::get_type</a> () override</td></tr>
+<tr class="separator:ga097d2ee650d17577cb8e66358ba58952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8dac5202fbf48c6ab11964478ffd8702"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8dac5202fbf48c6ab11964478ffd8702">spla::TArray&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga08c8487fc2e68b8e8e7b30a0c8bd709f">T_INT</a> value) override</td></tr>
+<tr class="separator:ga8dac5202fbf48c6ab11964478ffd8702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacda7b587c34c991a6e1d5da920ab5c32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacda7b587c34c991a6e1d5da920ab5c32">spla::TArray&lt; T &gt;::set_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga819c5ae81ad560a425045601e81138d8">T_UINT</a> value) override</td></tr>
+<tr class="separator:gacda7b587c34c991a6e1d5da920ab5c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeddc175710a3343157d8896a83cbfdd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaeddc175710a3343157d8896a83cbfdd0">spla::TArray&lt; T &gt;::set_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga8369c99646344d400498af942a4b5fe3">T_FLOAT</a> value) override</td></tr>
+<tr class="separator:gaeddc175710a3343157d8896a83cbfdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga99abb4a956b02f508d12ab356020c67b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga99abb4a956b02f508d12ab356020c67b">spla::TArray&lt; T &gt;::get_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga08c8487fc2e68b8e8e7b30a0c8bd709f">T_INT</a> &amp;value) override</td></tr>
+<tr class="separator:ga99abb4a956b02f508d12ab356020c67b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83109b3bc8d8170d7edecaf968116b4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga83109b3bc8d8170d7edecaf968116b4d">spla::TArray&lt; T &gt;::get_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga819c5ae81ad560a425045601e81138d8">T_UINT</a> &amp;value) override</td></tr>
+<tr class="separator:ga83109b3bc8d8170d7edecaf968116b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabf7e9ebda0e0ed00b141ba61dbe456d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabf7e9ebda0e0ed00b141ba61dbe456d4">spla::TArray&lt; T &gt;::get_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i, <a class="el" href="group__spla.html#ga8369c99646344d400498af942a4b5fe3">T_FLOAT</a> &amp;value) override</td></tr>
+<tr class="separator:gabf7e9ebda0e0ed00b141ba61dbe456d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55e4c92170ee0e31d7f7f2be93a79651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga55e4c92170ee0e31d7f7f2be93a79651">spla::TArray&lt; T &gt;::resize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values) override</td></tr>
+<tr class="separator:ga55e4c92170ee0e31d7f7f2be93a79651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga809f5c736e2a5cac41837bbaab3947d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga809f5c736e2a5cac41837bbaab3947d7">spla::TArray&lt; T &gt;::set_label</a> (std::string label) override</td></tr>
+<tr class="separator:ga809f5c736e2a5cac41837bbaab3947d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga396e3b31dc2b978a60026ea86e3f4a90"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga396e3b31dc2b978a60026ea86e3f4a90">spla::TArray&lt; T &gt;::get_label</a> () const override</td></tr>
+<tr class="separator:ga396e3b31dc2b978a60026ea86e3f4a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c">spla::TMatrix&lt; T &gt;::TMatrix</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_cols)</td></tr>
 <tr class="separator:ga2f6b9a1070e583e79d2272d0ca502e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad86ffe7ca4ad6ec30c11fbad6c14ef33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad86ffe7ca4ad6ec30c11fbad6c14ef33">spla::TMatrix&lt; T &gt;::get_n_rows</a> () override</td></tr>
@@ -336,35 +363,39 @@ Functions</h2></td></tr>
 <tr class="separator:gab64ccb60bbb75231ef8ff0d32e5d3a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga675a106c14ae2d45dd55d6ff937f613c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;::get_label</a> () const override</td></tr>
 <tr class="separator:ga675a106c14ae2d45dd55d6ff937f613c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad0e524477cbfddcca264d586d0076e07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad0e524477cbfddcca264d586d0076e07">spla::TMatrix&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format) override</td></tr>
+<tr class="memitem:gad0e524477cbfddcca264d586d0076e07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad0e524477cbfddcca264d586d0076e07">spla::TMatrix&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format) override</td></tr>
 <tr class="separator:gad0e524477cbfddcca264d586d0076e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6bb2423388fcb829bfdcbe099c256329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6bb2423388fcb829bfdcbe099c256329">spla::TMatrix&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
+<tr class="memitem:ga6bb2423388fcb829bfdcbe099c256329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6bb2423388fcb829bfdcbe099c256329">spla::TMatrix&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
 <tr class="separator:ga6bb2423388fcb829bfdcbe099c256329"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafe44d7e8c42b14c8a8ae75b5e875fc0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafe44d7e8c42b14c8a8ae75b5e875fc0c">spla::TMatrix&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
+<tr class="memitem:gafe44d7e8c42b14c8a8ae75b5e875fc0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gafe44d7e8c42b14c8a8ae75b5e875fc0c">spla::TMatrix&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
 <tr class="separator:gafe44d7e8c42b14c8a8ae75b5e875fc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga855824f38344446f38e410fa53c3a05d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga855824f38344446f38e410fa53c3a05d">spla::TMatrix&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::int32_t value) override</td></tr>
+<tr class="memitem:ga855824f38344446f38e410fa53c3a05d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga855824f38344446f38e410fa53c3a05d">spla::TMatrix&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::int32_t value) override</td></tr>
 <tr class="separator:ga855824f38344446f38e410fa53c3a05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga890b0d2a73b9c53a30be05961aa7ff52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga890b0d2a73b9c53a30be05961aa7ff52">spla::TMatrix&lt; T &gt;::set_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::uint32_t value) override</td></tr>
+<tr class="memitem:ga890b0d2a73b9c53a30be05961aa7ff52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga890b0d2a73b9c53a30be05961aa7ff52">spla::TMatrix&lt; T &gt;::set_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, std::uint32_t value) override</td></tr>
 <tr class="separator:ga890b0d2a73b9c53a30be05961aa7ff52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacfc28c11ac83a9d21ccef29ff1bf4d17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacfc28c11ac83a9d21ccef29ff1bf4d17">spla::TMatrix&lt; T &gt;::set_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, float value) override</td></tr>
+<tr class="memitem:gacfc28c11ac83a9d21ccef29ff1bf4d17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gacfc28c11ac83a9d21ccef29ff1bf4d17">spla::TMatrix&lt; T &gt;::set_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, float value) override</td></tr>
 <tr class="separator:gacfc28c11ac83a9d21ccef29ff1bf4d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga662e20f72e12a55bcbf43dfeec6b006e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga662e20f72e12a55bcbf43dfeec6b006e">spla::TMatrix&lt; T &gt;::get_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, int32_t &amp;value) override</td></tr>
+<tr class="memitem:ga662e20f72e12a55bcbf43dfeec6b006e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga662e20f72e12a55bcbf43dfeec6b006e">spla::TMatrix&lt; T &gt;::get_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, int32_t &amp;value) override</td></tr>
 <tr class="separator:ga662e20f72e12a55bcbf43dfeec6b006e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76b9cb516d2fa89d0f7d574620a96973"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga76b9cb516d2fa89d0f7d574620a96973">spla::TMatrix&lt; T &gt;::get_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, uint32_t &amp;value) override</td></tr>
+<tr class="memitem:ga76b9cb516d2fa89d0f7d574620a96973"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga76b9cb516d2fa89d0f7d574620a96973">spla::TMatrix&lt; T &gt;::get_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, uint32_t &amp;value) override</td></tr>
 <tr class="separator:ga76b9cb516d2fa89d0f7d574620a96973"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga93a4a55724e8617e4f38bf06212ffc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga93a4a55724e8617e4f38bf06212ffc22">spla::TMatrix&lt; T &gt;::get_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, float &amp;value) override</td></tr>
+<tr class="memitem:ga93a4a55724e8617e4f38bf06212ffc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga93a4a55724e8617e4f38bf06212ffc22">spla::TMatrix&lt; T &gt;::get_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> col_id, float &amp;value) override</td></tr>
 <tr class="separator:ga93a4a55724e8617e4f38bf06212ffc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7da1865b613a0987a69404e6ce0a31f7">spla::TMatrix&lt; T &gt;::clear</a> () override</td></tr>
+<tr class="memitem:gaf39c0b9d959f89f02aded608ec015295"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf39c0b9d959f89f02aded608ec015295">spla::TMatrix&lt; T &gt;::build</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys1, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys2, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;values) override</td></tr>
+<tr class="separator:gaf39c0b9d959f89f02aded608ec015295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0af04a56900de623cd47f755c14e956e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0af04a56900de623cd47f755c14e956e">spla::TMatrix&lt; T &gt;::read</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys1, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys2, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;values) override</td></tr>
+<tr class="separator:ga0af04a56900de623cd47f755c14e956e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7da1865b613a0987a69404e6ce0a31f7">spla::TMatrix&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:ga7da1865b613a0987a69404e6ce0a31f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69667baa2ffe3f46cf26efebadeb0fc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga69667baa2ffe3f46cf26efebadeb0fc1">spla::TMatrix&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="memitem:ga69667baa2ffe3f46cf26efebadeb0fc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga69667baa2ffe3f46cf26efebadeb0fc1">spla::TMatrix&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format)</td></tr>
 <tr class="separator:ga69667baa2ffe3f46cf26efebadeb0fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3c8ee7585a2b9f77da83ef3e739b1ba9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3c8ee7585a2b9f77da83ef3e739b1ba9">spla::TMatrix&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="memitem:ga3c8ee7585a2b9f77da83ef3e739b1ba9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3c8ee7585a2b9f77da83ef3e739b1ba9">spla::TMatrix&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format)</td></tr>
 <tr class="separator:ga3c8ee7585a2b9f77da83ef3e739b1ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3b5268d9fd8ae17521a6b149378a0a78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3b5268d9fd8ae17521a6b149378a0a78">spla::TMatrix&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="memitem:ga3b5268d9fd8ae17521a6b149378a0a78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3b5268d9fd8ae17521a6b149378a0a78">spla::TMatrix&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format)</td></tr>
 <tr class="separator:ga3b5268d9fd8ae17521a6b149378a0a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae12694d56335e4e7fbb6b5c222e064e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae12694d56335e4e7fbb6b5c222e064e9">spla::TMatrix&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format)</td></tr>
+<tr class="memitem:gae12694d56335e4e7fbb6b5c222e064e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae12694d56335e4e7fbb6b5c222e064e9">spla::TMatrix&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format)</td></tr>
 <tr class="separator:gae12694d56335e4e7fbb6b5c222e064e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga43ec25f80103f125ffe4704928516f11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga43ec25f80103f125ffe4704928516f11">spla::TMatrix&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a> format) const</td></tr>
+<tr class="memitem:ga43ec25f80103f125ffe4704928516f11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga43ec25f80103f125ffe4704928516f11">spla::TMatrix&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a> format) const</td></tr>
 <tr class="separator:ga43ec25f80103f125ffe4704928516f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4fbec25650532b2426b6a39f33bfa3c0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#aede37fa7427e4e3745aeb2e6a593dbda">StorageManagerMatrix</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4fbec25650532b2426b6a39f33bfa3c0">spla::TMatrix&lt; T &gt;::get_storage_manager</a> ()</td></tr>
 <tr class="separator:ga4fbec25650532b2426b6a39f33bfa3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -416,17 +447,17 @@ Functions</h2></td></tr>
 <tr class="separator:ga35755e9689106c89c5992419a0e552ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabf269c4d8cfb9468262de8ed7a43da4d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabf269c4d8cfb9468262de8ed7a43da4d">spla::TScalar&lt; T &gt;::get_type</a> () override</td></tr>
 <tr class="separator:gabf269c4d8cfb9468262de8ed7a43da4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf1ce6af1f534ab8b90768924b051aacc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf1ce6af1f534ab8b90768924b051aacc">spla::TScalar&lt; T &gt;::set_int</a> (std::int32_t value) override</td></tr>
+<tr class="memitem:gaf1ce6af1f534ab8b90768924b051aacc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf1ce6af1f534ab8b90768924b051aacc">spla::TScalar&lt; T &gt;::set_int</a> (std::int32_t value) override</td></tr>
 <tr class="separator:gaf1ce6af1f534ab8b90768924b051aacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3f4eaa374061ce9cc8c8ec7acd0407ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3f4eaa374061ce9cc8c8ec7acd0407ad">spla::TScalar&lt; T &gt;::set_uint</a> (std::uint32_t value) override</td></tr>
+<tr class="memitem:ga3f4eaa374061ce9cc8c8ec7acd0407ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3f4eaa374061ce9cc8c8ec7acd0407ad">spla::TScalar&lt; T &gt;::set_uint</a> (std::uint32_t value) override</td></tr>
 <tr class="separator:ga3f4eaa374061ce9cc8c8ec7acd0407ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa36a40a1ee3a0db4f85214c4cd41b721"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa36a40a1ee3a0db4f85214c4cd41b721">spla::TScalar&lt; T &gt;::set_float</a> (float value) override</td></tr>
+<tr class="memitem:gaa36a40a1ee3a0db4f85214c4cd41b721"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa36a40a1ee3a0db4f85214c4cd41b721">spla::TScalar&lt; T &gt;::set_float</a> (float value) override</td></tr>
 <tr class="separator:gaa36a40a1ee3a0db4f85214c4cd41b721"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabe07f959aa8bf25679c4592c25e2f31f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabe07f959aa8bf25679c4592c25e2f31f">spla::TScalar&lt; T &gt;::get_int</a> (std::int32_t &amp;value) override</td></tr>
+<tr class="memitem:gabe07f959aa8bf25679c4592c25e2f31f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabe07f959aa8bf25679c4592c25e2f31f">spla::TScalar&lt; T &gt;::get_int</a> (std::int32_t &amp;value) override</td></tr>
 <tr class="separator:gabe07f959aa8bf25679c4592c25e2f31f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4ce944a7eb6584f0981abc4345ff062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa4ce944a7eb6584f0981abc4345ff062">spla::TScalar&lt; T &gt;::get_uint</a> (std::uint32_t &amp;value) override</td></tr>
+<tr class="memitem:gaa4ce944a7eb6584f0981abc4345ff062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa4ce944a7eb6584f0981abc4345ff062">spla::TScalar&lt; T &gt;::get_uint</a> (std::uint32_t &amp;value) override</td></tr>
 <tr class="separator:gaa4ce944a7eb6584f0981abc4345ff062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4dcfd46fb36de2847977b06dab2543b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4dcfd46fb36de2847977b06dab2543b1">spla::TScalar&lt; T &gt;::get_float</a> (float &amp;value) override</td></tr>
+<tr class="memitem:ga4dcfd46fb36de2847977b06dab2543b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4dcfd46fb36de2847977b06dab2543b1">spla::TScalar&lt; T &gt;::get_float</a> (float &amp;value) override</td></tr>
 <tr class="separator:ga4dcfd46fb36de2847977b06dab2543b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga31668c71819c462ec0acc094b1b188ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;::set_label</a> (std::string label) override</td></tr>
 <tr class="separator:ga31668c71819c462ec0acc094b1b188ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,39 +491,43 @@ Functions</h2></td></tr>
 <tr class="separator:ga43aad595aecb6adf7683258b3c632223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabe33fea2ef6c4d3207b1fa422e621c35"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;::get_label</a> () const override</td></tr>
 <tr class="separator:gabe33fea2ef6c4d3207b1fa422e621c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab72a073e117df0263129d9f8eb58bd87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab72a073e117df0263129d9f8eb58bd87">spla::TVector&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format) override</td></tr>
+<tr class="memitem:gab72a073e117df0263129d9f8eb58bd87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab72a073e117df0263129d9f8eb58bd87">spla::TVector&lt; T &gt;::set_format</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format) override</td></tr>
 <tr class="separator:gab72a073e117df0263129d9f8eb58bd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf20b9a41d1264ad2aa2d6ef4b77c4c7d">spla::TVector&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
+<tr class="memitem:gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf20b9a41d1264ad2aa2d6ef4b77c4c7d">spla::TVector&lt; T &gt;::set_fill_value</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
 <tr class="separator:gaf20b9a41d1264ad2aa2d6ef4b77c4c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8bcc040bd8e596582653a7a7bdbd646"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf8bcc040bd8e596582653a7a7bdbd646">spla::TVector&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
+<tr class="memitem:gaf8bcc040bd8e596582653a7a7bdbd646"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf8bcc040bd8e596582653a7a7bdbd646">spla::TVector&lt; T &gt;::set_reduce</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; resolve_duplicates) override</td></tr>
 <tr class="separator:gaf8bcc040bd8e596582653a7a7bdbd646"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a08ee46c989711d6e8246930e783dc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3a08ee46c989711d6e8246930e783dc5">spla::TVector&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, std::int32_t value) override</td></tr>
+<tr class="memitem:ga3a08ee46c989711d6e8246930e783dc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3a08ee46c989711d6e8246930e783dc5">spla::TVector&lt; T &gt;::set_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, std::int32_t value) override</td></tr>
 <tr class="separator:ga3a08ee46c989711d6e8246930e783dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf135fef805cf89dedfb9eed5f7aa4262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf135fef805cf89dedfb9eed5f7aa4262">spla::TVector&lt; T &gt;::set_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, std::uint32_t value) override</td></tr>
+<tr class="memitem:gaf135fef805cf89dedfb9eed5f7aa4262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaf135fef805cf89dedfb9eed5f7aa4262">spla::TVector&lt; T &gt;::set_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, std::uint32_t value) override</td></tr>
 <tr class="separator:gaf135fef805cf89dedfb9eed5f7aa4262"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4a8acdabad7636b3276946c217fad91a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4a8acdabad7636b3276946c217fad91a">spla::TVector&lt; T &gt;::set_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, float value) override</td></tr>
+<tr class="memitem:ga4a8acdabad7636b3276946c217fad91a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4a8acdabad7636b3276946c217fad91a">spla::TVector&lt; T &gt;::set_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, float value) override</td></tr>
 <tr class="separator:ga4a8acdabad7636b3276946c217fad91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga61fb7b2192ea09e381252e0b7c3b45f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga61fb7b2192ea09e381252e0b7c3b45f8">spla::TVector&lt; T &gt;::get_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, int32_t &amp;value) override</td></tr>
+<tr class="memitem:ga61fb7b2192ea09e381252e0b7c3b45f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga61fb7b2192ea09e381252e0b7c3b45f8">spla::TVector&lt; T &gt;::get_int</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, int32_t &amp;value) override</td></tr>
 <tr class="separator:ga61fb7b2192ea09e381252e0b7c3b45f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad738cd87a2a3e322e42d29bf7d10d79c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad738cd87a2a3e322e42d29bf7d10d79c">spla::TVector&lt; T &gt;::get_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, uint32_t &amp;value) override</td></tr>
+<tr class="memitem:gad738cd87a2a3e322e42d29bf7d10d79c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad738cd87a2a3e322e42d29bf7d10d79c">spla::TVector&lt; T &gt;::get_uint</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, uint32_t &amp;value) override</td></tr>
 <tr class="separator:gad738cd87a2a3e322e42d29bf7d10d79c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f3725ea5166a6019660c47d0b8d4dbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4f3725ea5166a6019660c47d0b8d4dbe">spla::TVector&lt; T &gt;::get_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, float &amp;value) override</td></tr>
+<tr class="memitem:ga4f3725ea5166a6019660c47d0b8d4dbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4f3725ea5166a6019660c47d0b8d4dbe">spla::TVector&lt; T &gt;::get_float</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> row_id, float &amp;value) override</td></tr>
 <tr class="separator:ga4f3725ea5166a6019660c47d0b8d4dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga04f71fa1c09296f1087399f69c3d6a5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga04f71fa1c09296f1087399f69c3d6a5a">spla::TVector&lt; T &gt;::fill_noize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> seed) override</td></tr>
+<tr class="memitem:ga04f71fa1c09296f1087399f69c3d6a5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga04f71fa1c09296f1087399f69c3d6a5a">spla::TVector&lt; T &gt;::fill_noize</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> seed) override</td></tr>
 <tr class="separator:ga04f71fa1c09296f1087399f69c3d6a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae0768eb3404f0f2e4291470fc022b932"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae0768eb3404f0f2e4291470fc022b932">spla::TVector&lt; T &gt;::fill_with</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
+<tr class="memitem:gae0768eb3404f0f2e4291470fc022b932"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae0768eb3404f0f2e4291470fc022b932">spla::TVector&lt; T &gt;::fill_with</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;value) override</td></tr>
 <tr class="separator:gae0768eb3404f0f2e4291470fc022b932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadebaf3fc07d3814e3abd3442a12f6ec6">spla::TVector&lt; T &gt;::clear</a> () override</td></tr>
+<tr class="memitem:ga1ed3a1b3750e956dbb304245096c3d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga1ed3a1b3750e956dbb304245096c3d3a">spla::TVector&lt; T &gt;::build</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;values) override</td></tr>
+<tr class="separator:ga1ed3a1b3750e956dbb304245096c3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06c8018de9de0825fd23e20dad6f9420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga06c8018de9de0825fd23e20dad6f9420">spla::TVector&lt; T &gt;::read</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;keys, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;values) override</td></tr>
+<tr class="separator:ga06c8018de9de0825fd23e20dad6f9420"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gadebaf3fc07d3814e3abd3442a12f6ec6">spla::TVector&lt; T &gt;::clear</a> () override</td></tr>
 <tr class="separator:gadebaf3fc07d3814e3abd3442a12f6ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad2b50d4ac195e188c2c21c38e34c4467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad2b50d4ac195e188c2c21c38e34c4467">spla::TVector&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="memitem:gad2b50d4ac195e188c2c21c38e34c4467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gad2b50d4ac195e188c2c21c38e34c4467">spla::TVector&lt; T &gt;::validate_rw</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format)</td></tr>
 <tr class="separator:gad2b50d4ac195e188c2c21c38e34c4467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3115b63ba560c5f4cd113d86ca51d62f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3115b63ba560c5f4cd113d86ca51d62f">spla::TVector&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="memitem:ga3115b63ba560c5f4cd113d86ca51d62f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3115b63ba560c5f4cd113d86ca51d62f">spla::TVector&lt; T &gt;::validate_rwd</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format)</td></tr>
 <tr class="separator:ga3115b63ba560c5f4cd113d86ca51d62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b355facf49c588795bc0d9d03b6d598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7b355facf49c588795bc0d9d03b6d598">spla::TVector&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="memitem:ga7b355facf49c588795bc0d9d03b6d598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga7b355facf49c588795bc0d9d03b6d598">spla::TVector&lt; T &gt;::validate_wd</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format)</td></tr>
 <tr class="separator:ga7b355facf49c588795bc0d9d03b6d598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae03341af4762a2d4a847cdd72e995592"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae03341af4762a2d4a847cdd72e995592">spla::TVector&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format)</td></tr>
+<tr class="memitem:gae03341af4762a2d4a847cdd72e995592"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae03341af4762a2d4a847cdd72e995592">spla::TVector&lt; T &gt;::validate_ctor</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format)</td></tr>
 <tr class="separator:gae03341af4762a2d4a847cdd72e995592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6799b7087e1ae22926dfdef9fecff258"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6799b7087e1ae22926dfdef9fecff258">spla::TVector&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a> format) const</td></tr>
+<tr class="memitem:ga6799b7087e1ae22926dfdef9fecff258"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6799b7087e1ae22926dfdef9fecff258">spla::TVector&lt; T &gt;::is_valid</a> (<a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a> format) const</td></tr>
 <tr class="separator:ga6799b7087e1ae22926dfdef9fecff258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaea40f16bc6c972ed2a1f6056ed7d22f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacespla.html#a1b0ff75c5ab472c45906f5d0bbca11e0">StorageManagerVector</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gaea40f16bc6c972ed2a1f6056ed7d22f4">spla::TVector&lt; T &gt;::get_storage_manager</a> ()</td></tr>
 <tr class="separator:gaea40f16bc6c972ed2a1f6056ed7d22f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,6 +554,92 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga1ed3a1b3750e956dbb304245096c3d3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1ed3a1b3750e956dbb304245096c3d3a">&#9670;&nbsp;</a></span>build() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::build </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Vector.html#a35724c57364da43d4130bab5756e84ae">spla::Vector</a>.</p>
+
+</div>
+</div>
+<a id="gaf39c0b9d959f89f02aded608ec015295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf39c0b9d959f89f02aded608ec015295">&#9670;&nbsp;</a></span>build() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::build </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Matrix.html#a9d266e450be599913dddfcedfa929bb4">spla::Matrix</a>.</p>
+
+</div>
+</div>
 <a id="ga3ff18779de67829a0bd5183dc46b10c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3ff18779de67829a0bd5183dc46b10c7">&#9670;&nbsp;</a></span>cl_coo_vec_clear()</h2>
 
@@ -1079,7 +1200,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::clear</td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::clear</td>
         </tr>
       </table>
   </td>
@@ -1105,7 +1226,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::clear</td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::clear</td>
         </tr>
       </table>
   </td>
@@ -1799,7 +1920,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::fill_noize </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::fill_noize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>seed</em></td><td>)</td>
@@ -1829,7 +1950,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::fill_with </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::fill_with </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1926,7 +2047,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga4dcfd46fb36de2847977b06dab2543b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4dcfd46fb36de2847977b06dab2543b1">&#9670;&nbsp;</a></span>get_float() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4dcfd46fb36de2847977b06dab2543b1">&#9670;&nbsp;</a></span>get_float() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1937,7 +2058,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_float </td>
           <td>(</td>
           <td class="paramtype">float &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1955,8 +2076,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga4f3725ea5166a6019660c47d0b8d4dbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4f3725ea5166a6019660c47d0b8d4dbe">&#9670;&nbsp;</a></span>get_float() <span class="overload">[2/3]</span></h2>
+<a id="gabf7e9ebda0e0ed00b141ba61dbe456d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf7e9ebda0e0ed00b141ba61dbe456d4">&#9670;&nbsp;</a></span>get_float() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1967,7 +2088,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_float </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga8369c99646344d400498af942a4b5fe3">T_FLOAT</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#aa6544334c52c90d17322c8df9f24946c">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="ga4f3725ea5166a6019660c47d0b8d4dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f3725ea5166a6019660c47d0b8d4dbe">&#9670;&nbsp;</a></span>get_float() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_float </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -1996,7 +2157,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga93a4a55724e8617e4f38bf06212ffc22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga93a4a55724e8617e4f38bf06212ffc22">&#9670;&nbsp;</a></span>get_float() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga93a4a55724e8617e4f38bf06212ffc22">&#9670;&nbsp;</a></span>get_float() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2007,7 +2168,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_float </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -2068,7 +2229,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gabe07f959aa8bf25679c4592c25e2f31f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabe07f959aa8bf25679c4592c25e2f31f">&#9670;&nbsp;</a></span>get_int() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gabe07f959aa8bf25679c4592c25e2f31f">&#9670;&nbsp;</a></span>get_int() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2079,7 +2240,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_int </td>
           <td>(</td>
           <td class="paramtype">std::int32_t &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -2097,8 +2258,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga61fb7b2192ea09e381252e0b7c3b45f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga61fb7b2192ea09e381252e0b7c3b45f8">&#9670;&nbsp;</a></span>get_int() <span class="overload">[2/3]</span></h2>
+<a id="ga99abb4a956b02f508d12ab356020c67b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga99abb4a956b02f508d12ab356020c67b">&#9670;&nbsp;</a></span>get_int() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2109,7 +2270,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_int </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga08c8487fc2e68b8e8e7b30a0c8bd709f">T_INT</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#a1a4e5e62801339e6bfa1a7b56b1b40d0">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="ga61fb7b2192ea09e381252e0b7c3b45f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61fb7b2192ea09e381252e0b7c3b45f8">&#9670;&nbsp;</a></span>get_int() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_int </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -2136,7 +2337,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga662e20f72e12a55bcbf43dfeec6b006e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga662e20f72e12a55bcbf43dfeec6b006e">&#9670;&nbsp;</a></span>get_int() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga662e20f72e12a55bcbf43dfeec6b006e">&#9670;&nbsp;</a></span>get_int() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2147,7 +2348,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_int </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -2257,8 +2458,34 @@ template&lt;typename A0 &gt; </div>
 
 </div>
 </div>
+<a id="ga396e3b31dc2b978a60026ea86e3f4a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga396e3b31dc2b978a60026ea86e3f4a90">&#9670;&nbsp;</a></span>get_label() <span class="overload">[1/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_label</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Object.html#aba6e4944eab42a3afb0d6adea38cc268">spla::Object</a>.</p>
+
+</div>
+</div>
 <a id="ga675a106c14ae2d45dd55d6ff937f613c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga675a106c14ae2d45dd55d6ff937f613c">&#9670;&nbsp;</a></span>get_label() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga675a106c14ae2d45dd55d6ff937f613c">&#9670;&nbsp;</a></span>get_label() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2284,7 +2511,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga706b266a0442a502e69a59074a6f6ba4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga706b266a0442a502e69a59074a6f6ba4">&#9670;&nbsp;</a></span>get_label() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga706b266a0442a502e69a59074a6f6ba4">&#9670;&nbsp;</a></span>get_label() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2310,7 +2537,7 @@ template&lt;typename A0 , typename R &gt; </div>
 </div>
 </div>
 <a id="gada52e4eb5734d6744268d459e5a4307b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gada52e4eb5734d6744268d459e5a4307b">&#9670;&nbsp;</a></span>get_label() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gada52e4eb5734d6744268d459e5a4307b">&#9670;&nbsp;</a></span>get_label() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2336,7 +2563,7 @@ template&lt;typename A0 , typename A1 , typename R &gt; </div>
 </div>
 </div>
 <a id="ga3c7840ea4ae6df2552261b5a3149258f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3c7840ea4ae6df2552261b5a3149258f">&#9670;&nbsp;</a></span>get_label() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c7840ea4ae6df2552261b5a3149258f">&#9670;&nbsp;</a></span>get_label() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2362,7 +2589,7 @@ template&lt;typename A0 &gt; </div>
 </div>
 </div>
 <a id="ga2f414490ba31196f126c7519844921f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2f414490ba31196f126c7519844921f5">&#9670;&nbsp;</a></span>get_label() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2f414490ba31196f126c7519844921f5">&#9670;&nbsp;</a></span>get_label() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2388,7 +2615,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gabe33fea2ef6c4d3207b1fa422e621c35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabe33fea2ef6c4d3207b1fa422e621c35">&#9670;&nbsp;</a></span>get_label() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gabe33fea2ef6c4d3207b1fa422e621c35">&#9670;&nbsp;</a></span>get_label() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2488,6 +2715,32 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classspla_1_1Vector.html#a4a715fa86ea65cab68b0f7d0d6f37ffe">spla::Vector</a>.</p>
+
+</div>
+</div>
+<a id="gace59720b6c46ed11e58527698661f53c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace59720b6c46ed11e58527698661f53c">&#9670;&nbsp;</a></span>get_n_values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_n_values</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#ad60d3b5f85a4f84f46fe97f78369c418">spla::Array</a>.</p>
 
 </div>
 </div>
@@ -2766,8 +3019,34 @@ template&lt;&gt; </div>
 
 </div>
 </div>
+<a id="ga097d2ee650d17577cb8e66358ba58952"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga097d2ee650d17577cb8e66358ba58952">&#9670;&nbsp;</a></span>get_type() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Type.html">Type</a> &gt; <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#aaeb27e5c1c103d384742091c467c5544">spla::Array</a>.</p>
+
+</div>
+</div>
 <a id="ga017fea1b6b109484cdc5f18c8b829087"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga017fea1b6b109484cdc5f18c8b829087">&#9670;&nbsp;</a></span>get_type() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga017fea1b6b109484cdc5f18c8b829087">&#9670;&nbsp;</a></span>get_type() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2793,7 +3072,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gabf269c4d8cfb9468262de8ed7a43da4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabf269c4d8cfb9468262de8ed7a43da4d">&#9670;&nbsp;</a></span>get_type() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf269c4d8cfb9468262de8ed7a43da4d">&#9670;&nbsp;</a></span>get_type() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2819,7 +3098,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga664b93ce0fae6d5eddee4571873610f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga664b93ce0fae6d5eddee4571873610f1">&#9670;&nbsp;</a></span>get_type() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga664b93ce0fae6d5eddee4571873610f1">&#9670;&nbsp;</a></span>get_type() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3027,7 +3306,7 @@ template&lt;typename A0 &gt; </div>
 </div>
 </div>
 <a id="gaa4ce944a7eb6584f0981abc4345ff062"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa4ce944a7eb6584f0981abc4345ff062">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4ce944a7eb6584f0981abc4345ff062">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3038,7 +3317,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_uint </td>
           <td>(</td>
           <td class="paramtype">std::uint32_t &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -3056,8 +3335,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga76b9cb516d2fa89d0f7d574620a96973"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga76b9cb516d2fa89d0f7d574620a96973">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[2/3]</span></h2>
+<a id="ga83109b3bc8d8170d7edecaf968116b4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83109b3bc8d8170d7edecaf968116b4d">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3068,7 +3347,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::get_uint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga819c5ae81ad560a425045601e81138d8">T_UINT</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#a88c04b54c50a875694ac9044aa23c665">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="ga76b9cb516d2fa89d0f7d574620a96973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76b9cb516d2fa89d0f7d574620a96973">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::get_uint </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3101,7 +3420,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gad738cd87a2a3e322e42d29bf7d10d79c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad738cd87a2a3e322e42d29bf7d10d79c">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gad738cd87a2a3e322e42d29bf7d10d79c">&#9670;&nbsp;</a></span>get_uint() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3112,7 +3431,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::get_uint </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3181,7 +3500,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::is_valid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -3201,7 +3520,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::is_valid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -3263,6 +3582,92 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga06c8018de9de0825fd23e20dad6f9420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06c8018de9de0825fd23e20dad6f9420">&#9670;&nbsp;</a></span>read() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Vector.html#ab85ed6982bd91d2a9d39ca5954d87670">spla::Vector</a>.</p>
+
+</div>
+</div>
+<a id="ga0af04a56900de623cd47f755c14e956e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0af04a56900de623cd47f755c14e956e">&#9670;&nbsp;</a></span>read() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>keys2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Array.html">Array</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Matrix.html#a7fb6cc9b030a812cae398ac3ec5b00bf">spla::Matrix</a>.</p>
 
 </div>
 </div>
@@ -3493,6 +3898,36 @@ template&lt;typename T , typename F , int capacity&gt; </div>
 
 </div>
 </div>
+<a id="ga55e4c92170ee0e31d7f7f2be93a79651"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55e4c92170ee0e31d7f7f2be93a79651">&#9670;&nbsp;</a></span>resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_values</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#a5871f9d36f6b94c32435ded66b6b8dc6">spla::Array</a>.</p>
+
+</div>
+</div>
 <a id="ga6bb2423388fcb829bfdcbe099c256329"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6bb2423388fcb829bfdcbe099c256329">&#9670;&nbsp;</a></span>set_fill_value() <span class="overload">[1/2]</span></h2>
 
@@ -3505,7 +3940,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_fill_value </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_fill_value </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -3535,7 +3970,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_fill_value </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_fill_value </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -3554,7 +3989,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gaa36a40a1ee3a0db4f85214c4cd41b721"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa36a40a1ee3a0db4f85214c4cd41b721">&#9670;&nbsp;</a></span>set_float() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa36a40a1ee3a0db4f85214c4cd41b721">&#9670;&nbsp;</a></span>set_float() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3565,7 +4000,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_float </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -3583,8 +4018,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga4a8acdabad7636b3276946c217fad91a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4a8acdabad7636b3276946c217fad91a">&#9670;&nbsp;</a></span>set_float() <span class="overload">[2/3]</span></h2>
+<a id="gaeddc175710a3343157d8896a83cbfdd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeddc175710a3343157d8896a83cbfdd0">&#9670;&nbsp;</a></span>set_float() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3595,7 +4030,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::set_float </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga8369c99646344d400498af942a4b5fe3">T_FLOAT</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#a3d0f73f85186c5de4f8dcbe19e4645bc">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="ga4a8acdabad7636b3276946c217fad91a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a8acdabad7636b3276946c217fad91a">&#9670;&nbsp;</a></span>set_float() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_float </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3624,7 +4099,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gacfc28c11ac83a9d21ccef29ff1bf4d17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacfc28c11ac83a9d21ccef29ff1bf4d17">&#9670;&nbsp;</a></span>set_float() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfc28c11ac83a9d21ccef29ff1bf4d17">&#9670;&nbsp;</a></span>set_float() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3635,7 +4110,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_float </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_float </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3681,9 +4156,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_format </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_format </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3711,9 +4186,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_format </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_format </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3730,7 +4205,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="gaf1ce6af1f534ab8b90768924b051aacc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf1ce6af1f534ab8b90768924b051aacc">&#9670;&nbsp;</a></span>set_int() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf1ce6af1f534ab8b90768924b051aacc">&#9670;&nbsp;</a></span>set_int() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3741,7 +4216,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_int </td>
           <td>(</td>
           <td class="paramtype">std::int32_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -3759,8 +4234,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga3a08ee46c989711d6e8246930e783dc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3a08ee46c989711d6e8246930e783dc5">&#9670;&nbsp;</a></span>set_int() <span class="overload">[2/3]</span></h2>
+<a id="ga8dac5202fbf48c6ab11964478ffd8702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8dac5202fbf48c6ab11964478ffd8702">&#9670;&nbsp;</a></span>set_int() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3771,7 +4246,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::set_int </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga08c8487fc2e68b8e8e7b30a0c8bd709f">T_INT</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#aa34af231dad3e6d7fffab4cb558db449">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="ga3a08ee46c989711d6e8246930e783dc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3a08ee46c989711d6e8246930e783dc5">&#9670;&nbsp;</a></span>set_int() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_int </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3800,7 +4315,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga855824f38344446f38e410fa53c3a05d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga855824f38344446f38e410fa53c3a05d">&#9670;&nbsp;</a></span>set_int() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga855824f38344446f38e410fa53c3a05d">&#9670;&nbsp;</a></span>set_int() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3811,7 +4326,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_int </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_int </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -3845,8 +4360,38 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ga809f5c736e2a5cac41837bbaab3947d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga809f5c736e2a5cac41837bbaab3947d7">&#9670;&nbsp;</a></span>set_label() <span class="overload">[1/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::set_label </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>label</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Object.html#a552a85e7493f80bee3daea3805a74b94">spla::Object</a>.</p>
+
+</div>
+</div>
 <a id="gab64ccb60bbb75231ef8ff0d32e5d3a5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab64ccb60bbb75231ef8ff0d32e5d3a5a">&#9670;&nbsp;</a></span>set_label() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gab64ccb60bbb75231ef8ff0d32e5d3a5a">&#9670;&nbsp;</a></span>set_label() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3876,7 +4421,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga69eccfcd8648fdea0e474f4c5139557e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga69eccfcd8648fdea0e474f4c5139557e">&#9670;&nbsp;</a></span>set_label() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga69eccfcd8648fdea0e474f4c5139557e">&#9670;&nbsp;</a></span>set_label() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3906,7 +4451,7 @@ template&lt;typename A0 , typename R &gt; </div>
 </div>
 </div>
 <a id="gaeea8b2d2d47195a42fa72323011336d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeea8b2d2d47195a42fa72323011336d4">&#9670;&nbsp;</a></span>set_label() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeea8b2d2d47195a42fa72323011336d4">&#9670;&nbsp;</a></span>set_label() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3936,7 +4481,7 @@ template&lt;typename A0 , typename A1 , typename R &gt; </div>
 </div>
 </div>
 <a id="gafc4dc696477153effdd0b05151473c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafc4dc696477153effdd0b05151473c0f">&#9670;&nbsp;</a></span>set_label() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gafc4dc696477153effdd0b05151473c0f">&#9670;&nbsp;</a></span>set_label() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3966,7 +4511,7 @@ template&lt;typename A0 &gt; </div>
 </div>
 </div>
 <a id="ga31668c71819c462ec0acc094b1b188ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga31668c71819c462ec0acc094b1b188ca">&#9670;&nbsp;</a></span>set_label() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga31668c71819c462ec0acc094b1b188ca">&#9670;&nbsp;</a></span>set_label() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3996,7 +4541,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga43aad595aecb6adf7683258b3c632223"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga43aad595aecb6adf7683258b3c632223">&#9670;&nbsp;</a></span>set_label() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43aad595aecb6adf7683258b3c632223">&#9670;&nbsp;</a></span>set_label() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4037,7 +4582,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_reduce </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_reduce </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
           <td class="paramname"><em>resolve_duplicates</em></td><td>)</td>
@@ -4067,7 +4612,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_reduce </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_reduce </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
           <td class="paramname"><em>resolve_duplicates</em></td><td>)</td>
@@ -4086,7 +4631,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga3f4eaa374061ce9cc8c8ec7acd0407ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3f4eaa374061ce9cc8c8ec7acd0407ad">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3f4eaa374061ce9cc8c8ec7acd0407ad">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4097,7 +4642,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::set_uint </td>
           <td>(</td>
           <td class="paramtype">std::uint32_t&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -4115,8 +4660,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gaf135fef805cf89dedfb9eed5f7aa4262"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf135fef805cf89dedfb9eed5f7aa4262">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[2/3]</span></h2>
+<a id="gacda7b587c34c991a6e1d5da920ab5c32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacda7b587c34c991a6e1d5da920ab5c32">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4127,7 +4672,47 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::set_uint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga819c5ae81ad560a425045601e81138d8">T_UINT</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classspla_1_1Array.html#a705987b12d80bae624655247aad00c80">spla::Array</a>.</p>
+
+</div>
+</div>
+<a id="gaf135fef805cf89dedfb9eed5f7aa4262"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf135fef805cf89dedfb9eed5f7aa4262">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::set_uint </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -4156,7 +4741,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ga890b0d2a73b9c53a30be05961aa7ff52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga890b0d2a73b9c53a30be05961aa7ff52">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga890b0d2a73b9c53a30be05961aa7ff52">&#9670;&nbsp;</a></span>set_uint() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4167,7 +4752,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_uint </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::set_uint </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
           <td class="paramname"><em>row_id</em>, </td>
@@ -4214,6 +4799,34 @@ template&lt;typename T , typename F , int capacity&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classspla_1_1StorageManager.html">spla::StorageManager</a>&lt; T, F, capacity &gt;::<a class="el" href="classspla_1_1StorageManager.html">StorageManager</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab0d6585b7c910f70d714ef826129dba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab0d6585b7c910f70d714ef826129dba4">&#9670;&nbsp;</a></span>TArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classspla_1_1TArray.html">spla::TArray</a>&lt; T &gt;::<a class="el" href="classspla_1_1TArray.html">TArray</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_values</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -4352,7 +4965,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_ctor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4372,7 +4985,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_ctor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4422,7 +5035,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_rw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4442,7 +5055,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_rw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4492,7 +5105,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_rwd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4512,7 +5125,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_rwd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4562,7 +5175,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TMatrix.html">spla::TMatrix</a>&lt; T &gt;::validate_wd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">FormatMatrix</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">FormatMatrix</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4582,7 +5195,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classspla_1_1TVector.html">spla::TVector</a>&lt; T &gt;::validate_wd </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">FormatVector</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a>&#160;</td>
           <td class="paramname"><em>format</em></td><td>)</td>
           <td></td>
         </tr>

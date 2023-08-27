@@ -1,0 +1,6 @@
+<map id="spla::Array" name="spla::Array">
+<area shape="rect" id="node1" title="One&#45;dimensional dense tightly packed array of typed values." alt="" coords="24,155,107,181"/>
+<area shape="rect" id="node4" href="$classspla_1_1TArray.html" title="Array interface implementation with type information bound." alt="" coords="5,229,125,256"/>
+<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="20,80,111,107"/>
+<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="19,5,111,32"/>
+</map>

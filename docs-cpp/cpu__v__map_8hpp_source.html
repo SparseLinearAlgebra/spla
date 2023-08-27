@@ -75,7 +75,7 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">/* MIT License                                                                    */</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">/*                                                                                */</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">/* Copyright (c) 2021 JetBrains-Research                                          */</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">/* Copyright (c) 2023 SparseLinearAlgebra                                         */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">/*                                                                                */</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">/* Permission is hereby granted, free of charge, to any person obtaining a copy   */</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">/* of this software and associated documentation files (the &quot;Software&quot;), to deal  */</span></div>
@@ -129,10 +129,10 @@ $(function() {
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keyword">auto</span>                t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_map&gt;();</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; v = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>)) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>)) {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">return</span> execute_sp(ctx);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>)) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>)) {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">return</span> execute_dn(ctx);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
@@ -149,8 +149,8 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> v  = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">auto</span> op = t-&gt;op.template cast_safe&lt;TOpUnary&lt;T, T&gt;&gt;();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550">FormatVector::CpuCoo</a>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span>*       p_sparse_r = r-&gt;template get&lt;CpuCooVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_sparse_v = v-&gt;template get&lt;CpuCooVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <span class="keyword">function</span>   = op-&gt;function;</div>
@@ -166,7 +166,7 @@ $(function() {
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
@@ -178,8 +178,8 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">auto</span> v  = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keyword">auto</span> op = t-&gt;op.template cast_safe&lt;TOpUnary&lt;T, T&gt;&gt;();</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            v-&gt;validate_rw(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">auto</span>*       p_dense_r = r-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>* p_dense_v = v-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <span class="keyword">function</span>  = op-&gt;function;</div>
@@ -190,7 +190,7 @@ $(function() {
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                p_dense_r-&gt;Ax[i] = <span class="keyword">function</span>(p_dense_v-&gt;Ax[i]);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            }</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    };</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
@@ -208,9 +208,9 @@ $(function() {
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__internal_html_ga5809b7bca1a7f597b423c2ca881c3040"><div class="ttname"><a href="group__internal.html#ga5809b7bca1a7f597b423c2ca881c3040">spla::cpu_coo_vec_resize</a></div><div class="ttdeci">void cpu_coo_vec_resize(const uint n_values, CpuCooVec&lt; T &gt; &amp;vec)</div><div class="ttdef"><b>Definition:</b> cpu_format_coo_vec.hpp:41</div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:55</div></div>
-<div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
-<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">spla::FormatVector::CpuDense</a></div><div class="ttdeci">@ CpuDense</div></div>
-<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">spla::FormatVector::CpuCoo</a></div><div class="ttdeci">@ CpuCoo</div></div>
+<div class="ttc" id="agroup__spla_html_gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43"><div class="ttname"><a href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">spla::FormatVector::CpuDense</a></div><div class="ttdeci">@ CpuDense</div></div>
+<div class="ttc" id="agroup__spla_html_gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550"><div class="ttname"><a href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550">spla::FormatVector::CpuCoo</a></div><div class="ttdeci">@ CpuCoo</div></div>
+<div class="ttc" id="agroup__spla_html_ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>

@@ -137,6 +137,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatVector.html">FormatVector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage format for library vector data objects.  <a href="classFormatVector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFormatArray.html">FormatArray</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Named storage formats of array.  <a href="classFormatArray.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMessageCallback.html">MessageCallback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function called on library message event.  <a href="classMessageCallback.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +152,7 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga669156f74132dd261f21223177f0b458"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> = std::uint32_t</td></tr>
 <tr class="memdesc:ga669156f74132dd261f21223177f0b458"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> index and size type.  <a href="group__spla.html#ga669156f74132dd261f21223177f0b458">More...</a><br /></td></tr>
 <tr class="separator:ga669156f74132dd261f21223177f0b458"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4769e8739b9e6291a694ea1457be9196"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">spla::MessageCallback</a> = std::function&lt; void(<a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
+<tr class="memitem:ga4769e8739b9e6291a694ea1457be9196"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">spla::MessageCallback</a> = std::function&lt; void(<a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> status, const std::string &amp;msg, const std::string &amp;file, const std::string &amp;function, int line)&gt;</td></tr>
 <tr class="separator:ga4769e8739b9e6291a694ea1457be9196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad09a33345c60faa341702747b8e1022d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">spla::ScheduleCallback</a> = std::function&lt; void()&gt;</td></tr>
 <tr class="separator:gad09a33345c60faa341702747b8e1022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,77 +167,82 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga032378652a4bec8117bd24ee2c7f3eec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">spla::Status</a> : int { <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Ok</a> = 0
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd">spla::Error</a> = 1
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902">spla::NoAcceleration</a> = 2
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca8e6c62263614574c738707778e9793e5">spla::PlatformNotFound</a> = 3
+<tr class="memitem:gad00e3dd620150c8d6435a879a68d4743"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">spla::Status</a> : uint { <br />
+&#160;&#160;<a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">spla::Ok</a> = 0
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a902b0d55fddef6f8d651fe1035b7d4bd">spla::Error</a> = 1
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a6a12a8c84194edaad74ae8e218329902">spla::NoAcceleration</a> = 2
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a8e6c62263614574c738707778e9793e5">spla::PlatformNotFound</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35">spla::DeviceNotFound</a> = 4
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120">spla::InvalidState</a> = 5
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b">spla::InvalidArgument</a> = 6
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecad50dfcd4fe8be490a6759f4396f6a4c5">spla::NoValue</a> = 7
+&#160;&#160;<a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aca4cc682495b7b98382718ed77afac35">spla::DeviceNotFound</a> = 4
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aedf260198e4d75d1cb3c7588f7380120">spla::InvalidState</a> = 5
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a253ca7dd096ee0956cccee4d376cab8b">spla::InvalidArgument</a> = 6
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743ad50dfcd4fe8be490a6759f4396f6a4c5">spla::NoValue</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e">spla::CompilationError</a> = 8
-, <a class="el" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e">spla::NotImplemented</a> = 1024
+&#160;&#160;<a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e">spla::CompilationError</a> = 8
+, <a class="el" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">spla::NotImplemented</a> = 1024
 <br />
  }</td></tr>
-<tr class="separator:ga032378652a4bec8117bd24ee2c7f3eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae53f1b66beabcefa387bdcfce49f251a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae53f1b66beabcefa387bdcfce49f251a">spla::AcceleratorType</a> { <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa6adf97f83acf6453d4a6a4b1070f3754">spla::None</a> = 0
-, <a class="el" href="group__spla.html#ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47">spla::OpenCL</a> = 1
+<tr class="separator:gad00e3dd620150c8d6435a879a68d4743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae5ad5fa3d2797567d7f87d1c6bf523d8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae5ad5fa3d2797567d7f87d1c6bf523d8">spla::AcceleratorType</a> : uint { <a class="el" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a6adf97f83acf6453d4a6a4b1070f3754">spla::None</a> = 0
+, <a class="el" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a7982b09a852b37f2afb1227eaf552e47">spla::OpenCL</a> = 1
  }</td></tr>
-<tr class="separator:gae53f1b66beabcefa387bdcfce49f251a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab5469439090c0103e6b2f57d655afde5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">spla::FormatMatrix</a> { <br />
-&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 1
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
+<tr class="separator:gae5ad5fa3d2797567d7f87d1c6bf523d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06cb3985a4f58f453d247aa66ea91f97"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">spla::FormatMatrix</a> : uint { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409">spla::CpuLil</a> = 0
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 1
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97aa0c0552e8397082033dfed7fdddf09d4">spla::CpuCsr</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 5
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 6
-, <a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 7
+&#160;&#160;<a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1">spla::CpuCsc</a> = 4
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 5
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47">spla::AccCsr</a> = 6
+, <a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d">spla::AccCsc</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#ggab5469439090c0103e6b2f57d655afde5ae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 8
+&#160;&#160;<a class="el" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 8
 <br />
  }</td></tr>
-<tr class="separator:gab5469439090c0103e6b2f57d655afde5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga18f36606767531338114557ba1962933"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">spla::FormatVector</a> { <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 0
-, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43">spla::CpuDense</a> = 1
-, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
-, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">spla::AccDense</a> = 3
+<tr class="separator:ga06cb3985a4f58f453d247aa66ea91f97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga556579e7c92bd09dcf035bd88d76fbea"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">spla::FormatVector</a> : uint { <br />
+&#160;&#160;<a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa1dc4506f3792165c9fa807e02e744160">spla::CpuDok</a> = 0
+, <a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">spla::CpuDense</a> = 1
+, <a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550">spla::CpuCoo</a> = 2
+, <a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f">spla::AccDense</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 4
-, <a class="el" href="group__spla.html#gga18f36606767531338114557ba1962933ae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 5
+&#160;&#160;<a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738">spla::AccCoo</a> = 4
+, <a class="el" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 5
 <br />
  }</td></tr>
-<tr class="separator:ga18f36606767531338114557ba1962933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga556579e7c92bd09dcf035bd88d76fbea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga28f203e2c48f35b140beaf012792d2ab"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga28f203e2c48f35b140beaf012792d2ab">spla::FormatArray</a> : uint { <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba54c82ef76ecbbd4c2293e09bae01b54e">spla::Cpu</a> = 0
+, <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba2e02ea7283618d93898c1342e8361dfa">spla::Acc</a> = 1
+, <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2abae93f994f01c537c4e2f7d8528c3eb5e9">spla::Count</a> = 2
+ }</td></tr>
+<tr class="separator:ga28f203e2c48f35b140beaf012792d2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga47ddbd437d40cecbd1069f9dbecc07f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga47ddbd437d40cecbd1069f9dbecc07f0">spla::bfs</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:ga47ddbd437d40cecbd1069f9dbecc07f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga47ddbd437d40cecbd1069f9dbecc07f0">spla::bfs</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:ga47ddbd437d40cecbd1069f9dbecc07f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Breadth-first search algorithm.  <a href="group__spla.html#ga47ddbd437d40cecbd1069f9dbecc07f0">More...</a><br /></td></tr>
 <tr class="separator:ga47ddbd437d40cecbd1069f9dbecc07f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae54f49350a2d33d1208608a601b0d6c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae54f49350a2d33d1208608a601b0d6c8">spla::bfs_naive</a> (std::vector&lt; int &gt; &amp;v, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> &gt;&gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:gae54f49350a2d33d1208608a601b0d6c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gae54f49350a2d33d1208608a601b0d6c8">spla::bfs_naive</a> (std::vector&lt; int &gt; &amp;v, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> &gt;&gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:gae54f49350a2d33d1208608a601b0d6c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive breadth-first search algorithm (reference cpu implementation)  <a href="group__spla.html#gae54f49350a2d33d1208608a601b0d6c8">More...</a><br /></td></tr>
 <tr class="separator:gae54f49350a2d33d1208608a601b0d6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a38bf7955f9809583c2aaff2b587c3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga3a38bf7955f9809583c2aaff2b587c3d">spla::sssp</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
+<tr class="memitem:ga3a38bf7955f9809583c2aaff2b587c3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga3a38bf7955f9809583c2aaff2b587c3d">spla::sssp</a> (const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;v, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;())</td></tr>
 <tr class="memdesc:ga3a38bf7955f9809583c2aaff2b587c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single-source shortest path algorithm.  <a href="group__spla.html#ga3a38bf7955f9809583c2aaff2b587c3d">More...</a><br /></td></tr>
 <tr class="separator:ga3a38bf7955f9809583c2aaff2b587c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0309b0d0bf54364fb75b7a97d55e5ecf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga0309b0d0bf54364fb75b7a97d55e5ecf">spla::sssp_naive</a> (std::vector&lt; float &gt; &amp;v, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt;&gt; &amp;Ai, std::vector&lt; std::vector&lt; float &gt;&gt; &amp;Ax, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:ga0309b0d0bf54364fb75b7a97d55e5ecf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga0309b0d0bf54364fb75b7a97d55e5ecf">spla::sssp_naive</a> (std::vector&lt; float &gt; &amp;v, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt;&gt; &amp;Ai, std::vector&lt; std::vector&lt; float &gt;&gt; &amp;Ax, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> s, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:ga0309b0d0bf54364fb75b7a97d55e5ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive single-source shortest path algorithm (reference cpu implementation)  <a href="group__spla.html#ga0309b0d0bf54364fb75b7a97d55e5ecf">More...</a><br /></td></tr>
 <tr class="separator:ga0309b0d0bf54364fb75b7a97d55e5ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8b34cdf3c50f43d82f5d7e5dfa652510"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8b34cdf3c50f43d82f5d7e5dfa652510">spla::pr</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;p, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, float alpha=0.85, float eps=1e-6, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:ga8b34cdf3c50f43d82f5d7e5dfa652510"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga8b34cdf3c50f43d82f5d7e5dfa652510">spla::pr</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;p, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, float alpha=0.85, float eps=1e-6, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:ga8b34cdf3c50f43d82f5d7e5dfa652510"><td class="mdescLeft">&#160;</td><td class="mdescRight">PageRank algorithm.  <a href="group__spla.html#ga8b34cdf3c50f43d82f5d7e5dfa652510">More...</a><br /></td></tr>
 <tr class="separator:ga8b34cdf3c50f43d82f5d7e5dfa652510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga37e5b932f07ce443c2fa98d48c861b78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga37e5b932f07ce443c2fa98d48c861b78">spla::pr_naive</a> (std::vector&lt; float &gt; &amp;p, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt;&gt; &amp;Ai, std::vector&lt; std::vector&lt; float &gt;&gt; &amp;Ax, float alpha=0.85, float eps=1e-6, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:ga37e5b932f07ce443c2fa98d48c861b78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga37e5b932f07ce443c2fa98d48c861b78">spla::pr_naive</a> (std::vector&lt; float &gt; &amp;p, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> &gt;&gt; &amp;Ai, std::vector&lt; std::vector&lt; float &gt;&gt; &amp;Ax, float alpha=0.85, float eps=1e-6, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:ga37e5b932f07ce443c2fa98d48c861b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive PageRank algorithm (reference cpu implementation)  <a href="group__spla.html#ga37e5b932f07ce443c2fa98d48c861b78">More...</a><br /></td></tr>
 <tr class="separator:ga37e5b932f07ce443c2fa98d48c861b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafc8d8135c82e7917d456f035886ac585"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gafc8d8135c82e7917d456f035886ac585">spla::tc</a> (int &amp;ntrins, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;B, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:gafc8d8135c82e7917d456f035886ac585"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#gafc8d8135c82e7917d456f035886ac585">spla::tc</a> (int &amp;ntrins, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;A, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; &amp;B, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:gafc8d8135c82e7917d456f035886ac585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangles counting algorithm.  <a href="group__spla.html#gafc8d8135c82e7917d456f035886ac585">More...</a><br /></td></tr>
 <tr class="separator:gafc8d8135c82e7917d456f035886ac585"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga103b2aac5b9eb14bfa2c2444e73d7cb1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga103b2aac5b9eb14bfa2c2444e73d7cb1">spla::tc_naive</a> (int &amp;ntrins, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> &gt;&gt; &amp;Ai, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
+<tr class="memitem:ga103b2aac5b9eb14bfa2c2444e73d7cb1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga103b2aac5b9eb14bfa2c2444e73d7cb1">spla::tc_naive</a> (int &amp;ntrins, std::vector&lt; std::vector&lt; <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a> &gt;&gt; &amp;Ai, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; &amp;descriptor=<a class="el" href="classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2">spla::Descriptor::make</a>())</td></tr>
 <tr class="memdesc:ga103b2aac5b9eb14bfa2c2444e73d7cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive triangles counting algorithm (reference cpu implementation)  <a href="group__spla.html#ga103b2aac5b9eb14bfa2c2444e73d7cb1">More...</a><br /></td></tr>
 <tr class="separator:ga103b2aac5b9eb14bfa2c2444e73d7cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga679860c05617406206984f3372197ef0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TArgs&gt; </td></tr>
@@ -384,7 +392,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">spla::MessageCallback</a> = typedef std::function&lt;void(<a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> status, const std::string&amp; msg, const std::string&amp; file, const std::string&amp; function, int line)&gt;</td>
+          <td class="memname">using <a class="el" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">spla::MessageCallback</a> = typedef std::function&lt;void(<a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> status, const std::string&amp; msg, const std::string&amp; file, const std::string&amp; function, int line)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -478,8 +486,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="gae53f1b66beabcefa387bdcfce49f251a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae53f1b66beabcefa387bdcfce49f251a">&#9670;&nbsp;</a></span>AcceleratorType</h2>
+<a id="gae5ad5fa3d2797567d7f87d1c6bf523d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae5ad5fa3d2797567d7f87d1c6bf523d8">&#9670;&nbsp;</a></span>AcceleratorType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -488,7 +496,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#gae53f1b66beabcefa387bdcfce49f251a">spla::AcceleratorType</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#gae5ad5fa3d2797567d7f87d1c6bf523d8">spla::AcceleratorType</a> : <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a></td>
         </tr>
       </table>
   </td>
@@ -498,16 +506,16 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggae53f1b66beabcefa387bdcfce49f251aa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>No acceleration to be used </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggae5ad5fa3d2797567d7f87d1c6bf523d8a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>No acceleration to be used </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggae53f1b66beabcefa387bdcfce49f251aa7982b09a852b37f2afb1227eaf552e47"></a>OpenCL&#160;</td><td class="fielddoc"><p>OpenCL-based single device acceleration </p>
+<tr><td class="fieldname"><a id="ggae5ad5fa3d2797567d7f87d1c6bf523d8a7982b09a852b37f2afb1227eaf552e47"></a>OpenCL&#160;</td><td class="fielddoc"><p>OpenCL-based single device acceleration </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="gab5469439090c0103e6b2f57d655afde5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab5469439090c0103e6b2f57d655afde5">&#9670;&nbsp;</a></span>FormatMatrix</h2>
+<a id="ga28f203e2c48f35b140beaf012792d2ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga28f203e2c48f35b140beaf012792d2ab">&#9670;&nbsp;</a></span>FormatArray</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,7 +524,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#gab5469439090c0103e6b2f57d655afde5">spla::FormatMatrix</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga28f203e2c48f35b140beaf012792d2ab">spla::FormatArray</a> : <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a></td>
         </tr>
       </table>
   </td>
@@ -526,30 +534,18 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> list of lists format for fast increment build </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga28f203e2c48f35b140beaf012792d2aba54c82ef76ecbbd4c2293e09bae01b54e"></a>Cpu&#160;</td><td class="fielddoc"><p>CPU side data allocation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> dictionary of keys for fast look-up of values </p>
+<tr><td class="fieldname"><a id="gga28f203e2c48f35b140beaf012792d2aba2e02ea7283618d93898c1342e8361dfa"></a>Acc&#160;</td><td class="fielddoc"><p>Acc side allocation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> coordinates list format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse rows format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse columns format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured coo format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csr format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csc format </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggab5469439090c0103e6b2f57d655afde5ae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported matrix formats </p>
+<tr><td class="fieldname"><a id="gga28f203e2c48f35b140beaf012792d2abae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total formats count </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="ga18f36606767531338114557ba1962933"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga18f36606767531338114557ba1962933">&#9670;&nbsp;</a></span>FormatVector</h2>
+<a id="ga06cb3985a4f58f453d247aa66ea91f97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06cb3985a4f58f453d247aa66ea91f97">&#9670;&nbsp;</a></span>FormatMatrix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -558,7 +554,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#ga18f36606767531338114557ba1962933">spla::FormatVector</a></td>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">spla::FormatMatrix</a> : <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a></td>
         </tr>
       </table>
   </td>
@@ -568,24 +564,30 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dictionary of keys representation </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409"></a>CpuLil&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> list of lists format for fast increment build </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a81a2555e58709e058df3ac504d32ab43"></a>CpuDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dense array of values representation </p>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> dictionary of keys for fast look-up of values </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> list of values for sparse data </p>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97aef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> coordinates list format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f"></a>AccDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured dense format </p>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97aa0c0552e8397082033dfed7fdddf09d4"></a>CpuCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse rows format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured coo format </p>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1"></a>CpuCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> compressed sparse columns format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga18f36606767531338114557ba1962933ae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported vector formats </p>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97ae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured coo format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47"></a>AccCsr&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csr format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d"></a>AccCsc&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> acceleration structured csc format </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga06cb3985a4f58f453d247aa66ea91f97ae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported matrix formats </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="ga032378652a4bec8117bd24ee2c7f3eec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga032378652a4bec8117bd24ee2c7f3eec">&#9670;&nbsp;</a></span>Status</h2>
+<a id="ga556579e7c92bd09dcf035bd88d76fbea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga556579e7c92bd09dcf035bd88d76fbea">&#9670;&nbsp;</a></span>FormatVector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -594,7 +596,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">spla::Status</a> : int</td>
+          <td class="memname">enum <a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">spla::FormatVector</a> : <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a></td>
         </tr>
       </table>
   </td>
@@ -604,25 +606,61 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"></a>Ok&#160;</td><td class="fielddoc"><p>No error </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaa1dc4506f3792165c9fa807e02e744160"></a>CpuDok&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dictionary of keys representation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Some error occurred </p>
+<tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43"></a>CpuDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> dense array of values representation </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca6a12a8c84194edaad74ae8e218329902"></a>NoAcceleration&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> has no configured accelerator for computations </p>
+<tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaaef57428d77b9c784bcb0c28ca1fd4550"></a>CpuCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> list of values for sparse data </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca8e6c62263614574c738707778e9793e5"></a>PlatformNotFound&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Accelerator.html" title="Interface for an computations acceleration backend.">Accelerator</a> platform not found </p>
+<tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f"></a>AccDense&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured dense format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eecaca4cc682495b7b98382718ed77afac35"></a>DeviceNotFound&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Accelerator.html" title="Interface for an computations acceleration backend.">Accelerator</a> device not found </p>
+<tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738"></a>AccCoo&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> acceleration structured coo format </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eecaedf260198e4d75d1cb3c7588f7380120"></a>InvalidState&#160;</td><td class="fielddoc"><p>Call of the function is not possible for some context </p>
+<tr><td class="fieldname"><a id="gga556579e7c92bd09dcf035bd88d76fbeaae93f994f01c537c4e2f7d8528c3eb5e9"></a>Count&#160;</td><td class="fielddoc"><p>Total number of supported vector formats </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca253ca7dd096ee0956cccee4d376cab8b"></a>InvalidArgument&#160;</td><td class="fielddoc"><p>Passed invalid argument for some function </p>
+</table>
+
+</div>
+</div>
+<a id="gad00e3dd620150c8d6435a879a68d4743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad00e3dd620150c8d6435a879a68d4743">&#9670;&nbsp;</a></span>Status</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">spla::Status</a> : <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115"></a>Ok&#160;</td><td class="fielddoc"><p>No error </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eecad50dfcd4fe8be490a6759f4396f6a4c5"></a>NoValue&#160;</td><td class="fielddoc"><p>No such requested value in matrix, vector or scalar storage </p>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Some error occurred </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e"></a>CompilationError&#160;</td><td class="fielddoc"><p>Failed to compile GPU/ACC kernel </p>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a6a12a8c84194edaad74ae8e218329902"></a>NoAcceleration&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Library.html" title="Library global state automatically instantiated on lib init.">Library</a> has no configured accelerator for computations </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga032378652a4bec8117bd24ee2c7f3eeca997ca4ce119685f40f03a9a8a6c5346e"></a>NotImplemented&#160;</td><td class="fielddoc"><p>Some library feature is not implemented </p>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a8e6c62263614574c738707778e9793e5"></a>PlatformNotFound&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Accelerator.html" title="Interface for an computations acceleration backend.">Accelerator</a> platform not found </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743aca4cc682495b7b98382718ed77afac35"></a>DeviceNotFound&#160;</td><td class="fielddoc"><p><a class="el" href="classspla_1_1Accelerator.html" title="Interface for an computations acceleration backend.">Accelerator</a> device not found </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743aedf260198e4d75d1cb3c7588f7380120"></a>InvalidState&#160;</td><td class="fielddoc"><p>Call of the function is not possible for some context </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a253ca7dd096ee0956cccee4d376cab8b"></a>InvalidArgument&#160;</td><td class="fielddoc"><p>Passed invalid argument for some function </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743ad50dfcd4fe8be490a6759f4396f6a4c5"></a>NoValue&#160;</td><td class="fielddoc"><p>No such requested value in matrix, vector or scalar storage </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e"></a>CompilationError&#160;</td><td class="fielddoc"><p>Failed to compile GPU/ACC kernel </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e"></a>NotImplemented&#160;</td><td class="fielddoc"><p>Some library feature is not implemented </p>
 </td></tr>
 </table>
 
@@ -636,7 +674,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::bfs </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::bfs </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>v</em>, </td>
@@ -688,7 +726,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::bfs_naive </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::bfs_naive </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
           <td class="paramname"><em>v</em>, </td>
@@ -780,7 +818,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::pr </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::pr </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -839,7 +877,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::pr_naive </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::pr_naive </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -905,7 +943,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::sssp </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::sssp </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>v</em>, </td>
@@ -957,7 +995,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::sssp_naive </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::sssp_naive </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>v</em>, </td>
@@ -1016,7 +1054,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::tc </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::tc </td>
           <td>(</td>
           <td class="paramtype">int &amp;&#160;</td>
           <td class="paramname"><em>ntrins</em>, </td>
@@ -1068,7 +1106,7 @@ template&lt;typename T , typename... TArgs&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__spla.html#ga032378652a4bec8117bd24ee2c7f3eec">Status</a> spla::tc_naive </td>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::tc_naive </td>
           <td>(</td>
           <td class="paramtype">int &amp;&#160;</td>
           <td class="paramname"><em>ntrins</em>, </td>

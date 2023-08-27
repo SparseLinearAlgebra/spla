@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['formatmatrix_1508',['FormatMatrix',['../group__spla.html#gab5469439090c0103e6b2f57d655afde5',1,'spla']]],
-  ['formatvector_1509',['FormatVector',['../group__spla.html#ga18f36606767531338114557ba1962933',1,'spla']]]
+  ['formatarray_1536',['FormatArray',['../group__spla.html#ga28f203e2c48f35b140beaf012792d2ab',1,'spla']]],
+  ['formatmatrix_1537',['FormatMatrix',['../group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97',1,'spla']]],
+  ['formatvector_1538',['FormatVector',['../group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea',1,'spla']]]
 ];

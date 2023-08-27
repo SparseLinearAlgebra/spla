@@ -82,38 +82,40 @@ Inheritance diagram for spla::Object:</div>
 <div class="dyncontent">
 <div class="center"><img src="classspla_1_1Object__inherit__graph.png" border="0" usemap="#aspla_1_1Object_inherit__map" alt="Inheritance graph"/></div>
 <map name="aspla_1_1Object_inherit__map" id="aspla_1_1Object_inherit__map">
-<area shape="rect" title="Base class for any library primitive." alt="" coords="145,208,236,235"/>
-<area shape="rect" href="classspla_1_1Descriptor.html" title="Descriptor object used to parametrize execution of particular scheduled tasks." alt="" coords="296,56,407,83"/>
-<area shape="rect" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object." alt="" coords="308,107,395,133"/>
-<area shape="rect" href="classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="317,157,386,184"/>
-<area shape="rect" href="classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="307,208,396,235"/>
-<area shape="rect" href="classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="298,259,405,285"/>
-<area shape="rect" href="classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,368,419,395"/>
-<area shape="rect" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,535,397,561"/>
-<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,208,97,235"/>
-<area shape="rect" href="classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="495,5,621,32"/>
-<area shape="rect" href="classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="505,56,611,83"/>
-<area shape="rect" href="classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="505,107,611,133"/>
-<area shape="rect" href="classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="507,157,609,184"/>
-<area shape="rect" href="classspla_1_1TOpBinary.html" title=" " alt="" coords="708,41,852,82"/>
-<area shape="rect" href="classspla_1_1TOpSelect.html" title=" " alt="" coords="704,107,856,133"/>
-<area shape="rect" href="classspla_1_1TOpUnary.html" title=" " alt="" coords="697,157,863,184"/>
-<area shape="rect" href="classspla_1_1TScalar.html" title=" " alt="" coords="495,208,621,235"/>
-<area shape="rect" href="classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="467,259,649,285"/>
-<area shape="rect" href="classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,513,641,540"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="713,209,847,250"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="713,274,847,315"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="713,339,847,381"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="713,405,847,446"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="713,470,847,511"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="713,535,847,577"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="713,601,847,642"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__eadd.html" title="Vector ewise." alt="" coords="713,666,847,707"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="713,731,847,773"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__map.html" title="Vector map to vector." alt="" coords="713,797,847,838"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="713,862,847,903"/>
-<area shape="rect" href="classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="713,927,847,969"/>
-<area shape="rect" href="classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,564,622,591"/>
+<area shape="rect" title="Base class for any library primitive." alt="" coords="145,233,236,260"/>
+<area shape="rect" href="classspla_1_1Array.html" title="One&#45;dimensional dense tightly packed array of typed values." alt="" coords="310,31,393,57"/>
+<area shape="rect" href="classspla_1_1Descriptor.html" title="Descriptor object used to parametrize execution of particular scheduled tasks." alt="" coords="296,107,407,133"/>
+<area shape="rect" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object." alt="" coords="308,157,395,184"/>
+<area shape="rect" href="classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="317,208,386,235"/>
+<area shape="rect" href="classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="307,259,396,285"/>
+<area shape="rect" href="classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="298,309,405,336"/>
+<area shape="rect" href="classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="284,419,419,445"/>
+<area shape="rect" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="306,585,397,612"/>
+<area shape="rect" href="classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,233,97,260"/>
+<area shape="rect" href="classspla_1_1TArray.html" title="Array interface implementation with type information bound." alt="" coords="498,5,618,32"/>
+<area shape="rect" href="classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="495,56,621,83"/>
+<area shape="rect" href="classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="505,107,611,133"/>
+<area shape="rect" href="classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="505,157,611,184"/>
+<area shape="rect" href="classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="507,208,609,235"/>
+<area shape="rect" href="classspla_1_1TOpBinary.html" title=" " alt="" coords="708,91,852,133"/>
+<area shape="rect" href="classspla_1_1TOpSelect.html" title=" " alt="" coords="704,157,856,184"/>
+<area shape="rect" href="classspla_1_1TOpUnary.html" title=" " alt="" coords="697,208,863,235"/>
+<area shape="rect" href="classspla_1_1TScalar.html" title=" " alt="" coords="495,259,621,285"/>
+<area shape="rect" href="classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="467,309,649,336"/>
+<area shape="rect" href="classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="475,564,641,591"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="713,259,847,301"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="713,325,847,366"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="713,390,847,431"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="713,455,847,497"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="713,521,847,562"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="713,586,847,627"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="713,651,847,693"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__eadd.html" title="Vector ewise." alt="" coords="713,717,847,758"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="713,782,847,823"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__map.html" title="Vector map to vector." alt="" coords="713,847,847,889"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="713,913,847,954"/>
+<area shape="rect" href="classspla_1_1ScheduleTask__vxm__masked.html" title="Masked vector&#45;matrix product." alt="" coords="713,978,847,1019"/>
+<area shape="rect" href="classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="494,615,622,641"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -198,7 +200,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a1a2c042964d622fa0b04c0f315078aa5">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af034373489b9f27bf1faa719addec599">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga3c7840ea4ae6df2552261b5a3149258f">spla::TOpSelect&lt; A0 &gt;</a>, <a class="el" href="group__internal.html#gada52e4eb5734d6744268d459e5a4307b">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#ga706b266a0442a502e69a59074a6f6ba4">spla::TOpUnary&lt; A0, R &gt;</a>, <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#a7f720fb3847fa6f397d9ce7ee32d8a1e">spla::Descriptor</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a1a2c042964d622fa0b04c0f315078aa5">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#af034373489b9f27bf1faa719addec599">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#gabe33fea2ef6c4d3207b1fa422e621c35">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga2f414490ba31196f126c7519844921f5">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga3c7840ea4ae6df2552261b5a3149258f">spla::TOpSelect&lt; A0 &gt;</a>, <a class="el" href="group__internal.html#gada52e4eb5734d6744268d459e5a4307b">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#ga706b266a0442a502e69a59074a6f6ba4">spla::TOpUnary&lt; A0, R &gt;</a>, <a class="el" href="group__internal.html#ga675a106c14ae2d45dd55d6ff937f613c">spla::TMatrix&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga396e3b31dc2b978a60026ea86e3f4a90">spla::TArray&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#a7f720fb3847fa6f397d9ce7ee32d8a1e">spla::Descriptor</a>.</p>
 
 </div>
 </div>
@@ -226,7 +228,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a3cb411427c5cdb1b614261d450574266">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a1dba1ad9906def2ff58eb6adb8864744">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#ga43aad595aecb6adf7683258b3c632223">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#gafc4dc696477153effdd0b05151473c0f">spla::TOpSelect&lt; A0 &gt;</a>, <a class="el" href="group__internal.html#gaeea8b2d2d47195a42fa72323011336d4">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#ga69eccfcd8648fdea0e474f4c5139557e">spla::TOpUnary&lt; A0, R &gt;</a>, <a class="el" href="group__internal.html#gab64ccb60bbb75231ef8ff0d32e5d3a5a">spla::TMatrix&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#ace62a853097c4636dcb978091b19f089">spla::Descriptor</a>.</p>
+<p>Implemented in <a class="el" href="classspla_1_1ScheduleTaskBase.html#a3cb411427c5cdb1b614261d450574266">spla::ScheduleTaskBase</a>, <a class="el" href="classspla_1_1ScheduleSingleThread.html#a1dba1ad9906def2ff58eb6adb8864744">spla::ScheduleSingleThread</a>, <a class="el" href="group__internal.html#ga43aad595aecb6adf7683258b3c632223">spla::TVector&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga31668c71819c462ec0acc094b1b188ca">spla::TScalar&lt; T &gt;</a>, <a class="el" href="group__internal.html#gafc4dc696477153effdd0b05151473c0f">spla::TOpSelect&lt; A0 &gt;</a>, <a class="el" href="group__internal.html#gaeea8b2d2d47195a42fa72323011336d4">spla::TOpBinary&lt; A0, A1, R &gt;</a>, <a class="el" href="group__internal.html#ga69eccfcd8648fdea0e474f4c5139557e">spla::TOpUnary&lt; A0, R &gt;</a>, <a class="el" href="group__internal.html#gab64ccb60bbb75231ef8ff0d32e5d3a5a">spla::TMatrix&lt; T &gt;</a>, <a class="el" href="group__internal.html#ga809f5c736e2a5cac41837bbaab3947d7">spla::TArray&lt; T &gt;</a>, and <a class="el" href="classspla_1_1Descriptor.html#ace62a853097c4636dcb978091b19f089">spla::Descriptor</a>.</p>
 
 </div>
 </div>

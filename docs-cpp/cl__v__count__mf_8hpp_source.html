@@ -75,7 +75,7 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">/**********************************************************************************/</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">/* MIT License                                                                    */</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">/*                                                                                */</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">/* Copyright (c) 2021 JetBrains-Research                                          */</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">/* Copyright (c) 2023 SparseLinearAlgebra                                         */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">/*                                                                                */</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">/* Permission is hereby granted, free of charge, to any person obtaining a copy   */</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">/* of this software and associated documentation files (the &quot;Software&quot;), to deal  */</span></div>
@@ -134,9 +134,9 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">auto</span>                t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_v_count_mf&gt;();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <a class="code" href="classspla_1_1ref__ptr.html">ref_ptr&lt;TVector&lt;T&gt;</a>&gt; v = t-&gt;v.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">FormatVector::AccCoo</a>))</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738">FormatVector::AccCoo</a>))</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keywordflow">return</span> execute_sp(ctx);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">FormatVector::AccDense</a>))</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (v-&gt;is_valid(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f">FormatVector::AccDense</a>))</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keywordflow">return</span> execute_dn(ctx);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> execute_sp(ctx);</div>
@@ -150,7 +150,7 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            t-&gt;r-&gt;set_uint(dec_v-&gt;values);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dn(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
@@ -159,7 +159,7 @@ $(function() {
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            CLDenseVec&lt;T&gt;*      dec_v = v-&gt;template get&lt;CLDenseVec&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            std::shared_ptr&lt;CLProgram&gt; program;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(program)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e">Status::CompilationError</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">if</span> (!ensure_kernel(program)) <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e">Status::CompilationError</a>;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keyword">auto</span>* cl_acc = get_acc_cl();</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">auto</span>&amp; queue  = cl_acc-&gt;get_queue_default();</div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            t-&gt;r-&gt;set_uint(cl_count.get(queue));</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">bool</span> ensure_kernel(std::shared_ptr&lt;CLProgram&gt;&amp; program) {</div>
@@ -222,10 +222,10 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1ref__ptr_html"><div class="ttname"><a href="classspla_1_1ref__ptr.html">spla::ref_ptr</a></div><div class="ttdoc">Automates reference counting and behaves as shared smart pointer.</div><div class="ttdef"><b>Definition:</b> ref.hpp:117</div></div>
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:55</div></div>
-<div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eeca3a5a5dcf393afe6606d10bc4bc77b26e">spla::Status::CompilationError</a></div><div class="ttdeci">@ CompilationError</div></div>
-<div class="ttc" id="agroup__spla_html_gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#gga032378652a4bec8117bd24ee2c7f3eecaa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
-<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933a2a674ad5e27026967254a80445593b9f">spla::FormatVector::AccDense</a></div><div class="ttdeci">@ AccDense</div></div>
-<div class="ttc" id="agroup__spla_html_gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738"><div class="ttname"><a href="group__spla.html#gga18f36606767531338114557ba1962933ae73ac1dd7cbda086860054e2e067f738">spla::FormatVector::AccCoo</a></div><div class="ttdeci">@ AccCoo</div></div>
+<div class="ttc" id="agroup__spla_html_gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f"><div class="ttname"><a href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f">spla::FormatVector::AccDense</a></div><div class="ttdeci">@ AccDense</div></div>
+<div class="ttc" id="agroup__spla_html_gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738"><div class="ttname"><a href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738">spla::FormatVector::AccCoo</a></div><div class="ttdeci">@ AccCoo</div></div>
+<div class="ttc" id="agroup__spla_html_ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e"><div class="ttname"><a href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e">spla::Status::CompilationError</a></div><div class="ttdeci">@ CompilationError</div></div>
+<div class="ttc" id="agroup__spla_html_ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="aregistry_8hpp_html"><div class="ttname"><a href="registry_8hpp.html">registry.hpp</a></div></div>
 <div class="ttc" id="aschedule__tasks_8hpp_html"><div class="ttname"><a href="schedule__tasks_8hpp.html">schedule_tasks.hpp</a></div></div>
