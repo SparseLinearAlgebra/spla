@@ -348,8 +348,16 @@ add_library(spla SHARED
         src/vector.cpp
         # C bindings
         include/spla.h
+        src/binding/c_algorithm.cpp
+        src/binding/c_array.cpp
         src/binding/c_config.hpp
         src/binding/c_library.cpp
+        src/binding/c_matrix.cpp
+        src/binding/c_object.cpp
+        src/binding/c_op.cpp
+        src/binding/c_scalar.cpp
+        src/binding/c_type.cpp
+        src/binding/c_vector.cpp
         # C++ optional part
         ${SRC_OPENCL})
 

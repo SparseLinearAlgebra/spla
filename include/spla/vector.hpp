@@ -62,7 +62,7 @@ namespace spla {
         SPLA_API virtual Status        fill_noize(uint seed)                                           = 0;
         SPLA_API virtual Status        fill_with(const ref_ptr<Scalar>& value)                         = 0;
         SPLA_API virtual Status        build(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) = 0;
-        SPLA_API virtual Status        read(ref_ptr<Array>& keys, ref_ptr<Array>& values)              = 0;
+        SPLA_API virtual Status        read(const ref_ptr<Array>& keys, const ref_ptr<Array>& values)  = 0;
         SPLA_API virtual Status        clear()                                                         = 0;
 
         /**

@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -25,31 +25,27 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_C_CONFIG_HPP
-#define SPLA_C_CONFIG_HPP
+#include "c_config.hpp"
 
-#include <spla.h>
-#include <spla.hpp>
-
-#include <cmath>
-#include <cstring>
-
-template<typename T, typename S>
-static T* as_ptr(S* s) {
-    return (T*) s;
+spla_Status spla_Algorithm_bfs(spla_Vector v, spla_Matrix A, spla_uint s, spla_Descriptor descriptor) {
+    return to_c_status(spla::bfs(as_ref<spla::Vector>(v), as_ref<spla::Matrix>(A), s, as_ref<spla::Descriptor>(descriptor)));
 }
-
-template<typename T, typename S>
-static spla::ref_ptr<T> as_ref(S* s) {
-    return spla::ref_ptr<T>((T*) s);
+spla_Status spla_Algorithm_sssp(spla_Vector v, spla_Matrix A, spla_uint s, spla_Descriptor descriptor) {
+    return to_c_status(spla::sssp(as_ref<spla::Vector>(v), as_ref<spla::Matrix>(A), s, as_ref<spla::Descriptor>(descriptor)));
 }
+spla_Status spla_Algorithm_pr(spla_Vector* p, spla_Matrix A, float alpha, float eps, spla_Descriptor descriptor) {
+    spla::ref_ptr<spla::Vector> p_inout;
+    p_inout.reset(as_ptr<spla::Vector>(*p));
 
-static spla_Status to_c_status(spla::Status status) {
-    return static_cast<spla_Status>(status);
+    spla::Status status = spla::pr(p_inout, as_ref<spla::Matrix>(A), alpha, eps, as_ref<spla::Descriptor>(descriptor));
+
+    if (status == spla::Status::Ok) {
+        *p = as_ptr<spla_Vector_t>(p_inout.release());
+        return SPLA_STATUS_OK;
+    }
+
+    return to_c_status(status);
 }
-
-static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
-    return static_cast<spla::AcceleratorType>(accelerator);
+spla_Status spla_Algorithm_tc(int* ntrins, spla_Matrix A, spla_Matrix B, spla_Descriptor descriptor) {
+    return to_c_status(spla::tc(*ntrins, as_ref<spla::Matrix>(A), as_ref<spla::Matrix>(B), as_ref<spla::Descriptor>(descriptor)));
 }
-
-#endif//SPLA_C_CONFIG_HPP

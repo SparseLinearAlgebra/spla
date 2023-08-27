@@ -66,6 +66,7 @@ namespace spla {
         Status             get_uint(uint i, T_UINT& value) override;
         Status             get_float(uint i, T_FLOAT& value) override;
         Status             resize(uint n_values) override;
+        Status             clear() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
 
@@ -132,6 +133,11 @@ namespace spla {
     template<typename T>
     Status TArray<T>::resize(uint n_values) {
         m_data.resize(n_values);
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TArray<T>::clear() {
+        m_data.clear();
         return Status::Ok;
     }
 

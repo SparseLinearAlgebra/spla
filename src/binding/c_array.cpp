@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -25,31 +25,31 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_C_CONFIG_HPP
-#define SPLA_C_CONFIG_HPP
+#include "c_config.hpp"
 
-#include <spla.h>
-#include <spla.hpp>
-
-#include <cmath>
-#include <cstring>
-
-template<typename T, typename S>
-static T* as_ptr(S* s) {
-    return (T*) s;
+spla_Status spla_Array_make(spla_Array* v, spla_uint n_values, spla_Type type) {
+    auto array = spla::Array::make(n_values, as_ref<spla::Type>(type));
+    *v         = as_ptr<spla_Array_t>(array.release());
+    return SPLA_STATUS_OK;
 }
-
-template<typename T, typename S>
-static spla::ref_ptr<T> as_ref(S* s) {
-    return spla::ref_ptr<T>((T*) s);
+spla_Status spla_Array_set_int(spla_Array a, spla_uint i, int value) {
+    return to_c_status(as_ptr<spla::Array>(a)->set_int(i, value));
 }
-
-static spla_Status to_c_status(spla::Status status) {
-    return static_cast<spla_Status>(status);
+spla_Status spla_Array_set_uint(spla_Array a, spla_uint i, unsigned int value) {
+    return to_c_status(as_ptr<spla::Array>(a)->set_uint(i, value));
 }
-
-static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
-    return static_cast<spla::AcceleratorType>(accelerator);
+spla_Status spla_Array_set_float(spla_Array a, spla_uint i, float value) {
+    return to_c_status(as_ptr<spla::Array>(a)->set_float(i, value));
 }
-
-#endif//SPLA_C_CONFIG_HPP
+spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value) {
+    return to_c_status(as_ptr<spla::Array>(a)->get_int(i, *value));
+}
+spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value) {
+    return to_c_status(as_ptr<spla::Array>(a)->get_uint(i, *value));
+}
+spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value) {
+    return to_c_status(as_ptr<spla::Array>(a)->get_float(i, *value));
+}
+spla_Status spla_Array_clear(spla_Array a) {
+    return to_c_status(as_ptr<spla::Array>(a)->clear());
+}

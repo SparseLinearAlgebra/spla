@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -27,55 +27,41 @@
 
 #include "c_config.hpp"
 
-void spla_Library_finalize() {
-    spla::Library::get()->finalize();
+spla_Status spla_Vector_make(spla_Vector* v, spla_uint n_rows, spla_Type type) {
+    auto vector = spla::Vector::make(n_rows, as_ref<spla::Type>(type));
+    *v          = as_ptr<spla_Vector_t>(vector.release());
+    return SPLA_STATUS_OK;
 }
-
-spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator) {
-    return to_c_status(spla::Library::get()->set_accelerator(from_c_accelerator_type(accelerator)));
+spla_Status spla_Vector_set_fill_value(spla_Vector v, spla_Scalar value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_fill_value(as_ref<spla::Scalar>(value)));
 }
-
-spla_Status spla_Library_set_platform(int index) {
-    return to_c_status(spla::Library::get()->set_platform(index));
+spla_Status spla_Vector_set_reduce(spla_Vector v, spla_OpBinary reduce) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_reduce(as_ref<spla::OpBinary>(reduce)));
 }
-
-spla_Status spla_Library_set_device(int index) {
-    return to_c_status(spla::Library::get()->set_device(index));
+spla_Status spla_Vector_set_int(spla_Vector v, spla_uint row_id, int value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_int(row_id, value));
 }
-
-spla_Status spla_Library_set_queues_count(int count) {
-    return to_c_status(spla::Library::get()->set_queues_count(count));
+spla_Status spla_Vector_set_uint(spla_Vector v, spla_uint row_id, unsigned int value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_uint(row_id, value));
 }
-
-spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void* p_user_data) {
-    auto wrapped_callback = [=](spla::Status       status,
-                                const std::string& msg,
-                                const std::string& file,
-                                const std::string& function,
-                                int                line) {
-        callback(to_c_status(status),
-                 msg.c_str(),
-                 file.c_str(),
-                 function.c_str(),
-                 line,
-                 p_user_data);
-    };
-    return to_c_status(spla::Library::get()->set_message_callback(wrapped_callback));
+spla_Status spla_Vector_set_float(spla_Vector v, spla_uint row_id, float value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_float(row_id, value));
 }
-
-spla_Status spla_Library_set_default_callback() {
-    return to_c_status(spla::Library::get()->set_default_callback());
+spla_Status spla_Vector_get_int(spla_Vector v, spla_uint row_id, int* value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->get_int(row_id, *value));
 }
-
-spla_Status spla_Library_get_accelerator_info(char* buffer, int length) {
-    std::string info;
-
-    auto status = spla::Library::get()->get_accelerator_info(info);
-
-    if (length > 0) {
-        std::memcpy(buffer, info.c_str(), std::min(length, int(info.length())));
-        buffer[length - 1] = '\0';
-    }
-
-    return to_c_status(status);
+spla_Status spla_Vector_get_uint(spla_Vector v, spla_uint row_id, unsigned int* value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->get_uint(row_id, *value));
+}
+spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, float* value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->get_float(row_id, *value));
+}
+spla_Status spla_Vector_build(spla_Vector v, spla_Array keys, spla_Array values) {
+    return to_c_status(as_ptr<spla::Vector>(v)->build(as_ref<spla::Array>(keys), as_ref<spla::Array>(values)));
+}
+spla_Status spla_Vector_read(spla_Vector v, spla_Array keys, spla_Array values) {
+    return to_c_status(as_ptr<spla::Vector>(v)->read(as_ref<spla::Array>(keys), as_ref<spla::Array>(values)));
+}
+spla_Status spla_Vector_clear(spla_Vector v) {
+    return to_c_status(as_ptr<spla::Vector>(v)->clear());
 }

@@ -27,7 +27,7 @@ SOFTWARE.
 """
 
 __all__ = [
-    "_spla_lib",
+    "_spla",
     "_callback_t"
 ]
 
@@ -42,8 +42,8 @@ SYSTEM = {'Darwin': 'macos', 'Linux': 'linux', 'Windows': 'windows'}[platform.sy
 TARGET_SUFFIX = {'macos': '.dylib', 'linux': '.so', 'windows': '.dll'}[SYSTEM]
 TARGET = {'macos': 'libspla', 'linux': 'libspla', 'windows': 'spla'}[SYSTEM] + "_" + ARCH + TARGET_SUFFIX
 
-_spla_lib_path = None
-_spla_lib = None
+_spla_path = None
+_spla = None
 _int = None
 _enum_t = None
 _status_t = None
@@ -66,7 +66,7 @@ _status_mapping = {
 
 
 def load_library(lib_path):
-    global _spla_lib
+    global _spla
     global _int
     global _enum_t
     global _status_t
@@ -74,7 +74,7 @@ def load_library(lib_path):
     global _p_object_t
     global _callback_t
 
-    _spla_lib = ctypes.cdll.LoadLibrary(str(lib_path))
+    _spla = ctypes.cdll.LoadLibrary(str(lib_path))
     _int = ctypes.c_int
     _enum_t = ctypes.c_uint
     _status_t = ctypes.c_uint
@@ -88,26 +88,26 @@ def load_library(lib_path):
                                    ctypes.c_int,
                                    ctypes.c_void_p)
 
-    _spla_lib.spla_Library_finalize.restype = _status_t
-    _spla_lib.spla_Library_finalize.argtypes = []
+    _spla.spla_Library_finalize.restype = _status_t
+    _spla.spla_Library_finalize.argtypes = []
 
-    _spla_lib.spla_Library_set_accelerator.restype = _status_t
-    _spla_lib.spla_Library_set_accelerator.argtypes = [_enum_t]
+    _spla.spla_Library_set_accelerator.restype = _status_t
+    _spla.spla_Library_set_accelerator.argtypes = [_enum_t]
 
-    _spla_lib.spla_Library_set_platform.restype = _status_t
-    _spla_lib.spla_Library_set_platform.argtypes = [_int]
+    _spla.spla_Library_set_platform.restype = _status_t
+    _spla.spla_Library_set_platform.argtypes = [_int]
 
-    _spla_lib.spla_Library_set_device.restype = _status_t
-    _spla_lib.spla_Library_set_device.argtypes = [_int]
+    _spla.spla_Library_set_device.restype = _status_t
+    _spla.spla_Library_set_device.argtypes = [_int]
 
-    _spla_lib.spla_Library_set_queues_count.restype = _status_t
-    _spla_lib.spla_Library_set_queues_count.argtypes = [_int]
+    _spla.spla_Library_set_queues_count.restype = _status_t
+    _spla.spla_Library_set_queues_count.argtypes = [_int]
 
-    _spla_lib.spla_Library_set_message_callback.restype = _status_t
-    _spla_lib.spla_Library_set_message_callback.argtypes = [_callback_t, ctypes.c_void_p]
+    _spla.spla_Library_set_message_callback.restype = _status_t
+    _spla.spla_Library_set_message_callback.argtypes = [_callback_t, ctypes.c_void_p]
 
-    _spla_lib.spla_Library_set_default_callback.restype = _status_t
-    _spla_lib.spla_Library_set_default_callback.argtypes = []
+    _spla.spla_Library_set_default_callback.restype = _status_t
+    _spla.spla_Library_set_default_callback.argtypes = []
 
 
 def default_callback(status, msg, file, function, line, user_data):
@@ -117,13 +117,13 @@ def default_callback(status, msg, file, function, line, user_data):
 
 
 def finalize():
-    if _spla_lib:
-        _spla_lib.spla_Library_finalize()
+    if _spla:
+        _spla.spla_Library_finalize()
 
 
 def initialize():
-    global _spla_lib
-    global _spla_lib_path
+    global _spla
+    global _spla_path
     global _callback_t
     global _default_callback
 
@@ -134,26 +134,26 @@ def initialize():
     except KeyError:
         pass
 
-    _spla_lib_path = pathlib.Path(__file__).resolve().parent / TARGET
+    _spla_path = pathlib.Path(__file__).resolve().parent / TARGET
 
     try:
         # Override library path from ENV variable (for debug & custom build)
         if os.environ["SPLA_PATH"]:
-            _spla_lib_path = pathlib.Path(os.environ["SPLA_PATH"])
+            _spla_path = pathlib.Path(os.environ["SPLA_PATH"])
     except KeyError:
         pass
 
-    if not _spla_lib_path.is_file():
+    if not _spla_path.is_file():
         # Validate file before loading
         raise Exception(f"no compiled spla file {TARGET} to load")
 
-    load_library(_spla_lib_path)
+    load_library(_spla_path)
     _default_callback = _callback_t(default_callback)
 
     try:
         # If debug enable in ENV, setup default callback for messages on init
         if int(os.environ["SPLA_DEBUG"]):
-            _spla_lib.spla_Library_set_message_callback(
+            _spla.spla_Library_set_message_callback(
                 _default_callback, ctypes.c_void_p(0))
     except KeyError:
         pass

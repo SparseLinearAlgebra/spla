@@ -78,7 +78,7 @@ namespace spla {
         Status             fill_noize(uint seed) override;
         Status             fill_with(const ref_ptr<Scalar>& value) override;
         Status             build(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) override;
-        Status             read(ref_ptr<Array>& keys, ref_ptr<Array>& values) override;
+        Status             read(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -295,7 +295,7 @@ namespace spla {
         return Status::Ok;
     }
     template<typename T>
-    Status TVector<T>::read(ref_ptr<Array>& keys, ref_ptr<Array>& values) {
+    Status TVector<T>::read(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) {
         if (!keys && !values) {
             return Status::InvalidArgument;
         }

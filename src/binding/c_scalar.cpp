@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -25,31 +25,28 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_C_CONFIG_HPP
-#define SPLA_C_CONFIG_HPP
+#include "c_config.hpp"
 
-#include <spla.h>
-#include <spla.hpp>
-
-#include <cmath>
-#include <cstring>
-
-template<typename T, typename S>
-static T* as_ptr(S* s) {
-    return (T*) s;
+spla_Status spla_Scalar_make(spla_Scalar* s, spla_Type type) {
+    auto scalar = spla::Scalar::make(as_ref<spla::Type>(type));
+    *s          = as_ptr<spla_Scalar_t>(scalar.release());
+    return SPLA_STATUS_OK;
 }
-
-template<typename T, typename S>
-static spla::ref_ptr<T> as_ref(S* s) {
-    return spla::ref_ptr<T>((T*) s);
+spla_Status spla_Scalar_set_int(spla_Scalar s, int value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->set_int(value));
 }
-
-static spla_Status to_c_status(spla::Status status) {
-    return static_cast<spla_Status>(status);
+spla_Status spla_Scalar_set_uint(spla_Scalar s, unsigned int value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->set_uint(value));
 }
-
-static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
-    return static_cast<spla::AcceleratorType>(accelerator);
+spla_Status spla_Scalar_set_float(spla_Scalar s, float value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->set_float(value));
 }
-
-#endif//SPLA_C_CONFIG_HPP
+spla_Status spla_Scalar_get_int(spla_Scalar s, int* value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->get_int(*value));
+}
+spla_Status spla_Scalar_get_uint(spla_Scalar s, unsigned int* value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->get_uint(*value));
+}
+spla_Status spla_Scalar_get_float(spla_Scalar s, float* value) {
+    return to_c_status(as_ptr<spla::Scalar>(s)->get_float(*value));
+}

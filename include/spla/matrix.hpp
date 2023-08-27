@@ -61,7 +61,7 @@ namespace spla {
         SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value)                                      = 0;
         SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)                                             = 0;
         SPLA_API virtual Status        build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) = 0;
-        SPLA_API virtual Status        read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values)                    = 0;
+        SPLA_API virtual Status        read(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values)  = 0;
         SPLA_API virtual Status        clear()                                                                                       = 0;
 
         /**

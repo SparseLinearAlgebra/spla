@@ -74,7 +74,7 @@ namespace spla {
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
         Status             build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) override;
-        Status             read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values) override;
+        Status             read(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -253,7 +253,7 @@ namespace spla {
         return Status::Ok;
     }
     template<typename T>
-    Status TMatrix<T>::read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values) {
+    Status TMatrix<T>::read(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) {
         if (!keys1 && !keys2 && !values) {
             return Status::InvalidArgument;
         }

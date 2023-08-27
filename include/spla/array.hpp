@@ -58,6 +58,7 @@ namespace spla {
         SPLA_API virtual Status        get_uint(uint i, T_UINT& value)   = 0;
         SPLA_API virtual Status        get_float(uint i, T_FLOAT& value) = 0;
         SPLA_API virtual Status        resize(uint n_values)             = 0;
+        SPLA_API virtual Status        clear()                           = 0;
 
         SPLA_API static ref_ptr<Array> make(uint n_values, const ref_ptr<Type>& type);
     };

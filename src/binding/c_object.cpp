@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -25,31 +25,14 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_C_CONFIG_HPP
-#define SPLA_C_CONFIG_HPP
+#include "c_config.hpp"
 
-#include <spla.h>
-#include <spla.hpp>
-
-#include <cmath>
-#include <cstring>
-
-template<typename T, typename S>
-static T* as_ptr(S* s) {
-    return (T*) s;
+spla_Status spla_Object_ref(spla_Object object) {
+    spla::safe_ref(as_ptr<spla::Object>(object));
+    return SPLA_STATUS_OK;
 }
 
-template<typename T, typename S>
-static spla::ref_ptr<T> as_ref(S* s) {
-    return spla::ref_ptr<T>((T*) s);
+spla_Status spla_Object_unref(spla_Object object) {
+    spla::unref(as_ptr<spla::Object>(object));
+    return SPLA_STATUS_OK;
 }
-
-static spla_Status to_c_status(spla::Status status) {
-    return static_cast<spla_Status>(status);
-}
-
-static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
-    return static_cast<spla::AcceleratorType>(accelerator);
-}
-
-#endif//SPLA_C_CONFIG_HPP
