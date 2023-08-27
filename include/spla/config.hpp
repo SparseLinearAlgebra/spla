@@ -58,7 +58,7 @@ namespace spla {
      * @class Status
      * @brief Status of library operation execution
      */
-    enum class Status : int {
+    enum class Status : uint {
         /** No error */
         Ok = 0,
         /** Some error occurred */
@@ -85,7 +85,7 @@ namespace spla {
      * @class AcceleratorType
      * @brief Types of supported accelerators for computations
      */
-    enum class AcceleratorType {
+    enum class AcceleratorType : uint {
         /** No acceleration to be used */
         None = 0,
         /** OpenCL-based single device acceleration */
@@ -98,7 +98,7 @@ namespace spla {
      *
      * @warning Do not change order and values
      */
-    enum class FormatMatrix {
+    enum class FormatMatrix : uint {
         /** Matrix list of lists format for fast increment build */
         CpuLil = 0,
         /** Matrix dictionary of keys for fast look-up of values */
@@ -125,7 +125,7 @@ namespace spla {
      *
      * @warning Do not change order and values
      */
-    enum class FormatVector {
+    enum class FormatVector : uint {
         /** Vector dictionary of keys representation */
         CpuDok = 0,
         /** Vector dense array of values representation */
@@ -138,6 +138,21 @@ namespace spla {
         AccCoo = 4,
         /** Total number of supported vector formats */
         Count = 5
+    };
+
+    /**
+     * @class FormatArray
+     * @brief Named storage formats of array
+     *
+     * @warning Do not change order of values
+     */
+    enum class FormatArray : uint {
+        /** CPU side data allocation */
+        Cpu = 0,
+        /** Acc side allocation */
+        Acc = 1,
+        /** Total formats count */
+        Count = 2
     };
 
     /**

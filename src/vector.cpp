@@ -53,7 +53,7 @@ namespace spla {
         }
 
         LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>();
+        return ref_ptr<Vector>{};
     }
 
 }// namespace spla

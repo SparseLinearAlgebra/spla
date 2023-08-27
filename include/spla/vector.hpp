@@ -28,6 +28,7 @@
 #ifndef SPLA_VECTOR_HPP
 #define SPLA_VECTOR_HPP
 
+#include "array.hpp"
 #include "object.hpp"
 #include "op.hpp"
 #include "scalar.hpp"
@@ -46,21 +47,23 @@ namespace spla {
      */
     class Vector : public Object {
     public:
-        SPLA_API ~Vector() override                                                     = default;
-        SPLA_API virtual uint          get_n_rows()                                     = 0;
-        SPLA_API virtual ref_ptr<Type> get_type()                                       = 0;
-        SPLA_API virtual Status        set_format(FormatVector format)                  = 0;
-        SPLA_API virtual Status        set_fill_value(const ref_ptr<Scalar>& value)     = 0;
-        SPLA_API virtual Status        set_reduce(ref_ptr<OpBinary> resolve_duplicates) = 0;
-        SPLA_API virtual Status        set_int(uint row_id, T_INT value)                = 0;
-        SPLA_API virtual Status        set_uint(uint row_id, T_UINT value)              = 0;
-        SPLA_API virtual Status        set_float(uint row_id, T_FLOAT value)            = 0;
-        SPLA_API virtual Status        get_int(uint row_id, T_INT& value)               = 0;
-        SPLA_API virtual Status        get_uint(uint row_id, T_UINT& value)             = 0;
-        SPLA_API virtual Status        get_float(uint row_id, float& value)             = 0;
-        SPLA_API virtual Status        fill_noize(uint seed)                            = 0;
-        SPLA_API virtual Status        fill_with(const ref_ptr<Scalar>& value)          = 0;
-        SPLA_API virtual Status        clear()                                          = 0;
+        SPLA_API ~Vector() override                                                                    = default;
+        SPLA_API virtual uint          get_n_rows()                                                    = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                                                      = 0;
+        SPLA_API virtual Status        set_format(FormatVector format)                                 = 0;
+        SPLA_API virtual Status        set_fill_value(const ref_ptr<Scalar>& value)                    = 0;
+        SPLA_API virtual Status        set_reduce(ref_ptr<OpBinary> resolve_duplicates)                = 0;
+        SPLA_API virtual Status        set_int(uint row_id, T_INT value)                               = 0;
+        SPLA_API virtual Status        set_uint(uint row_id, T_UINT value)                             = 0;
+        SPLA_API virtual Status        set_float(uint row_id, T_FLOAT value)                           = 0;
+        SPLA_API virtual Status        get_int(uint row_id, T_INT& value)                              = 0;
+        SPLA_API virtual Status        get_uint(uint row_id, T_UINT& value)                            = 0;
+        SPLA_API virtual Status        get_float(uint row_id, float& value)                            = 0;
+        SPLA_API virtual Status        fill_noize(uint seed)                                           = 0;
+        SPLA_API virtual Status        fill_with(const ref_ptr<Scalar>& value)                         = 0;
+        SPLA_API virtual Status        build(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) = 0;
+        SPLA_API virtual Status        read(ref_ptr<Array>& keys, ref_ptr<Array>& values)              = 0;
+        SPLA_API virtual Status        clear()                                                         = 0;
 
         /**
          * @brief Make new vector instance with specified dim and values type

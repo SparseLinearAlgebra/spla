@@ -32,6 +32,7 @@
 #include <spla/vector.hpp>
 
 #include <core/logger.hpp>
+#include <core/tarray.hpp>
 #include <core/tdecoration.hpp>
 #include <core/top.hpp>
 #include <core/ttype.hpp>
@@ -60,6 +61,7 @@ namespace spla {
     public:
         explicit TVector(uint n_rows);
         ~TVector() override = default;
+
         uint               get_n_rows() override;
         ref_ptr<Type>      get_type() override;
         void               set_label(std::string label) override;
@@ -75,6 +77,8 @@ namespace spla {
         Status             get_float(uint row_id, float& value) override;
         Status             fill_noize(uint seed) override;
         Status             fill_with(const ref_ptr<Scalar>& value) override;
+        Status             build(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) override;
+        Status             read(ref_ptr<Array>& keys, ref_ptr<Array>& values) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -111,6 +115,7 @@ namespace spla {
     template<typename T>
     void TVector<T>::set_label(std::string label) {
         m_label = std::move(label);
+        LOG_MSG(Status::Ok, "set label '" << m_label << "' to " << (void*) this);
     }
     template<typename T>
     const std::string& TVector<T>::get_label() const {
@@ -257,6 +262,74 @@ namespace spla {
         validate_wd(FormatVector::CpuDense);
         auto& Ax = get<CpuDenseVec<T>>()->Ax;
         std::fill(Ax.begin(), Ax.end(), t);
+
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TVector<T>::build(const ref_ptr<Array>& keys, const ref_ptr<Array>& values) {
+        assert(keys);
+        assert(values);
+
+        if (keys->get_n_values() != values->get_n_values()) {
+            return Status::InvalidArgument;
+        }
+        if (keys->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (values->get_type() != get_type()) {
+            return Status::InvalidArgument;
+        }
+
+        const auto& t_keys   = keys.template cast<TArray<T_UINT>>()->data();
+        const auto& t_values = values.template cast<TArray<T>>()->data();
+        const auto  N        = t_keys.size();
+
+        validate_rwd(FormatVector::CpuDok);
+        CpuDokVec<T>& dok = *get<CpuDokVec<T>>();
+
+        for (std::size_t i = 0; i < N; i++) {
+            cpu_dok_vec_add_element(t_keys[i], t_values[i], dok);
+        }
+
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TVector<T>::read(ref_ptr<Array>& keys, ref_ptr<Array>& values) {
+        if (!keys && !values) {
+            return Status::InvalidArgument;
+        }
+        if (keys && keys->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (values && values->get_type() != get_type()) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rw(FormatVector::CpuDok);
+        CpuDokVec<T>& dok = *get<CpuDokVec<T>>();
+
+        const auto N = dok.Ax.size();
+
+        uint* t_keys   = nullptr;
+        T*    t_values = nullptr;
+
+        if (keys) {
+            keys->resize(uint(N));
+            t_keys = keys.template cast<TArray<T_UINT>>()->data().data();
+        }
+        if (values) {
+            values->resize(uint(N));
+            t_values = values.template cast<TArray<T>>()->data().data();
+        }
+
+        std::size_t i = 0;
+
+        for (const auto& entry : dok.Ax) {
+            if (t_keys) t_keys[i] = entry.first;
+            if (t_values) t_values[i] = entry.second;
+            i += 1;
+        }
 
         return Status::Ok;
     }

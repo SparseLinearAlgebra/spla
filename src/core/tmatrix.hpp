@@ -32,6 +32,7 @@
 #include <spla/matrix.hpp>
 
 #include <core/logger.hpp>
+#include <core/tarray.hpp>
 #include <core/tdecoration.hpp>
 #include <core/top.hpp>
 #include <core/ttype.hpp>
@@ -57,6 +58,7 @@ namespace spla {
     public:
         TMatrix(uint n_rows, uint n_cols);
         ~TMatrix() override = default;
+
         uint               get_n_rows() override;
         uint               get_n_cols() override;
         ref_ptr<Type>      get_type() override;
@@ -71,6 +73,8 @@ namespace spla {
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
+        Status             build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) override;
+        Status             read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -110,6 +114,7 @@ namespace spla {
     template<typename T>
     void TMatrix<T>::set_label(std::string label) {
         m_label = std::move(label);
+        LOG_MSG(Status::Ok, "set label '" << m_label << "' to " << (void*) this);
     }
     template<typename T>
     const std::string& TMatrix<T>::get_label() const {
@@ -206,6 +211,91 @@ namespace spla {
 
         if (entry != Ax.end()) {
             value = static_cast<float>(entry->second);
+        }
+
+        return Status::Ok;
+    }
+
+    template<typename T>
+    Status TMatrix<T>::build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) {
+        assert(keys1);
+        assert(keys2);
+        assert(values);
+
+        if (keys1->get_n_values() != values->get_n_values()) {
+            return Status::InvalidArgument;
+        }
+        if (keys2->get_n_values() != values->get_n_values()) {
+            return Status::InvalidArgument;
+        }
+        if (keys1->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (keys2->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (values->get_type() != get_type()) {
+            return Status::InvalidArgument;
+        }
+
+        const auto& t_keys1  = keys1.template cast<TArray<T_UINT>>()->data();
+        const auto& t_keys2  = keys2.template cast<TArray<T_UINT>>()->data();
+        const auto& t_values = values.template cast<TArray<T>>()->data();
+        const auto  N        = t_keys1.size();
+
+        validate_rwd(FormatMatrix::CpuLil);
+        CpuLil<T>& lil = *get<CpuLil<T>>();
+
+        for (std::size_t i = 0; i < N; i++) {
+            cpu_lil_add_element(t_keys1[i], t_keys2[i], t_values[i], lil);
+        }
+
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TMatrix<T>::read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values) {
+        if (!keys1 && !keys2 && !values) {
+            return Status::InvalidArgument;
+        }
+        if (keys1 && keys1->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (keys2 && keys2->get_type() != UINT) {
+            return Status::InvalidArgument;
+        }
+        if (values && values->get_type() != get_type()) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rw(FormatMatrix::CpuDok);
+        CpuDok<T>& dok = *get<CpuDok<T>>();
+
+        const auto N = dok.Ax.size();
+
+        uint* t_keys1  = nullptr;
+        uint* t_keys2  = nullptr;
+        T*    t_values = nullptr;
+
+        if (keys1) {
+            keys1->resize(uint(N));
+            t_keys1 = keys1.template cast<TArray<T_UINT>>()->data().data();
+        }
+        if (keys2) {
+            keys2->resize(uint(N));
+            t_keys2 = keys2.template cast<TArray<T_UINT>>()->data().data();
+        }
+        if (values) {
+            values->resize(uint(N));
+            t_values = values.template cast<TArray<T>>()->data().data();
+        }
+
+        std::size_t i = 0;
+
+        for (const auto& entry : dok.Ax) {
+            if (t_keys1) t_keys1[i] = entry.first.first;
+            if (t_keys2) t_keys2[i] = entry.first.second;
+            if (t_values) t_values[i] = entry.second;
+            i += 1;
         }
 
         return Status::Ok;

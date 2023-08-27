@@ -157,6 +157,9 @@ namespace spla {
         bool operator==(const ref_ptr& other) const {
             return m_object == other.m_object;
         }
+        bool operator!=(const ref_ptr& other) const {
+            return m_object != other.m_object;
+        }
 
         [[nodiscard]] bool is_null() const {
             return m_object == nullptr;

@@ -29,6 +29,7 @@
 #define SPLA_SPLA_HPP
 
 #include "spla/algorithm.hpp"
+#include "spla/array.hpp"
 #include "spla/config.hpp"
 #include "spla/descriptor.hpp"
 #include "spla/exec.hpp"

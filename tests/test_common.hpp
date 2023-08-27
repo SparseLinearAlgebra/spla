@@ -36,6 +36,14 @@
 
 #include <gtest/gtest.h>
 
+struct pair_hash {
+public:
+    template<typename T, typename U>
+    std::size_t operator()(const std::pair<T, U>& x) const {
+        return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+    }
+};
+
 // Put in the end of the unit test file
 #define SPLA_GTEST_MAIN                                  \
     int main(int argc, char* argv[]) {                   \

@@ -174,6 +174,7 @@ namespace spla {
 
     Status Library::get_accelerator_info(std::string& info) {
         if (!m_accelerator) {
+            info = "none";
             return Status::NoAcceleration;
         }
         info = m_accelerator->get_description();

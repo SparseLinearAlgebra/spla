@@ -28,6 +28,7 @@
 #ifndef SPLA_MATRIX_HPP
 #define SPLA_MATRIX_HPP
 
+#include "array.hpp"
 #include "object.hpp"
 #include "op.hpp"
 #include "scalar.hpp"
@@ -46,20 +47,22 @@ namespace spla {
      */
     class Matrix : public Object {
     public:
-        SPLA_API ~Matrix() override                                                             = default;
-        SPLA_API virtual uint          get_n_rows()                                             = 0;
-        SPLA_API virtual uint          get_n_cols()                                             = 0;
-        SPLA_API virtual ref_ptr<Type> get_type()                                               = 0;
-        SPLA_API virtual Status        set_format(FormatMatrix format)                          = 0;
-        SPLA_API virtual Status        set_fill_value(const ref_ptr<Scalar>& value)             = 0;
-        SPLA_API virtual Status        set_reduce(ref_ptr<OpBinary> resolve_duplicates)         = 0;
-        SPLA_API virtual Status        set_int(uint row_id, uint col_id, std::int32_t value)    = 0;
-        SPLA_API virtual Status        set_uint(uint row_id, uint col_id, std::uint32_t value)  = 0;
-        SPLA_API virtual Status        set_float(uint row_id, uint col_id, float value)         = 0;
-        SPLA_API virtual Status        get_int(uint row_id, uint col_id, std::int32_t& value)   = 0;
-        SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value) = 0;
-        SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)        = 0;
-        SPLA_API virtual Status        clear()                                                  = 0;
+        SPLA_API ~Matrix() override                                                                                                  = default;
+        SPLA_API virtual uint          get_n_rows()                                                                                  = 0;
+        SPLA_API virtual uint          get_n_cols()                                                                                  = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                                                                                    = 0;
+        SPLA_API virtual Status        set_format(FormatMatrix format)                                                               = 0;
+        SPLA_API virtual Status        set_fill_value(const ref_ptr<Scalar>& value)                                                  = 0;
+        SPLA_API virtual Status        set_reduce(ref_ptr<OpBinary> resolve_duplicates)                                              = 0;
+        SPLA_API virtual Status        set_int(uint row_id, uint col_id, std::int32_t value)                                         = 0;
+        SPLA_API virtual Status        set_uint(uint row_id, uint col_id, std::uint32_t value)                                       = 0;
+        SPLA_API virtual Status        set_float(uint row_id, uint col_id, float value)                                              = 0;
+        SPLA_API virtual Status        get_int(uint row_id, uint col_id, std::int32_t& value)                                        = 0;
+        SPLA_API virtual Status        get_uint(uint row_id, uint col_id, std::uint32_t& value)                                      = 0;
+        SPLA_API virtual Status        get_float(uint row_id, uint col_id, float& value)                                             = 0;
+        SPLA_API virtual Status        build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) = 0;
+        SPLA_API virtual Status        read(ref_ptr<Array>& keys1, ref_ptr<Array>& keys2, ref_ptr<Array>& values)                    = 0;
+        SPLA_API virtual Status        clear()                                                                                       = 0;
 
         /**
          * @brief Make new matrix instance with specified dim and values type

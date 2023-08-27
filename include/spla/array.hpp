@@ -25,70 +25,44 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "cl_alloc_linear.hpp"
+#ifndef SPLA_ARRAY_HPP
+#define SPLA_ARRAY_HPP
 
-#include <core/logger.hpp>
-
-#include <cassert>
+#include "config.hpp"
+#include "object.hpp"
+#include "type.hpp"
 
 namespace spla {
 
-    CLAllocLinear::CLAllocLinear(std::size_t arena_size, std::size_t alignment) {
-        assert(arena_size > 0);
-        assert(alignment > 0);
-        m_fallback_size = arena_size;
-        m_arena_size    = arena_size;
-        m_alignment     = alignment;
-        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_arena_size);
-        LOG_MSG(Status::Ok, "preallocate " << m_arena_size);
-    }
+    /**
+     * @class Array
+     * @brief One-dimensional dense tightly packed array of typed values
+     *
+     * Represents typed array of elements, which can be queried and modified.
+     * An array may be used to construct some collection from user data,
+     * store it, pass around, and use for Vector or Matrix construction.
+     *
+     * Also an array may be used to inspect internal storage of a particular
+     * Vector or Matrix, allowing to extract arrays of COO, CSR, etc. formats.,
+     * including their Acc (OpenCL) representation.
+     */
+    class Array : public Object {
+    public:
+        SPLA_API ~Array() override                                       = default;
+        SPLA_API virtual uint          get_n_values()                    = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                        = 0;
+        SPLA_API virtual Status        set_int(uint i, T_INT value)      = 0;
+        SPLA_API virtual Status        set_uint(uint i, T_UINT value)    = 0;
+        SPLA_API virtual Status        set_float(uint i, T_FLOAT value)  = 0;
+        SPLA_API virtual Status        get_int(uint i, T_INT& value)     = 0;
+        SPLA_API virtual Status        get_uint(uint i, T_UINT& value)   = 0;
+        SPLA_API virtual Status        get_float(uint i, T_FLOAT& value) = 0;
+        SPLA_API virtual Status        resize(uint n_values)             = 0;
 
-    cl::Buffer CLAllocLinear::alloc(std::size_t size) {
-        std::size_t size_aligned = aligns(size, m_alignment);
+        SPLA_API static ref_ptr<Array> make(uint n_values, const ref_ptr<Type>& type);
+    };
 
-        if (size_aligned >= m_fallback_size) {
-            // Fallback in case if too big allocation required
-            return cl::Buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, size);
-        }
-        if (size_aligned + m_curr_offset > m_arena_size) {
-            // Allocate new page to fit this allocation
-            expand();
-        }
-
-        auto&       buffer           = m_arena.back();
-        std::size_t buffer_region[2] = {m_curr_offset, size_aligned};
-        auto        allocated        = buffer.createSubBuffer(CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, buffer_region);
-
-        m_curr_offset += size_aligned;
-        m_total_allocated += size_aligned;
-
-        return allocated;
-    }
-
-    void CLAllocLinear::free(cl::Buffer) {
-        // nothing to do
-    }
-
-    void CLAllocLinear::free_all() {
-        LOG_MSG(Status::Ok, "free all allocated=" << m_total_allocated << " bytes");
-        shrink();
-        m_curr_offset     = 0;
-        m_total_allocated = 0;
-    }
-
-    void CLAllocLinear::expand() {
-        m_curr_offset = 0;
-        m_arena_size *= 2;
-        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_arena_size);
-        LOG_MSG(Status::Ok, "expand to " << m_arena_size);
-    }
-    void CLAllocLinear::shrink() {
-        if (m_arena.size() > 1) {
-            cl::Buffer main_arena = m_arena.back();
-            m_arena.clear();
-            m_arena.push_back(std::move(main_arena));
-            LOG_MSG(Status::Ok, "shrink to " << m_arena_size);
-        }
-    }
 
 }// namespace spla
+
+#endif//SPLA_ARRAY_HPP

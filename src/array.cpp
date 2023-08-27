@@ -25,70 +25,31 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "cl_alloc_linear.hpp"
-
 #include <core/logger.hpp>
-
-#include <cassert>
+#include <core/tarray.hpp>
 
 namespace spla {
 
-    CLAllocLinear::CLAllocLinear(std::size_t arena_size, std::size_t alignment) {
-        assert(arena_size > 0);
-        assert(alignment > 0);
-        m_fallback_size = arena_size;
-        m_arena_size    = arena_size;
-        m_alignment     = alignment;
-        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_arena_size);
-        LOG_MSG(Status::Ok, "preallocate " << m_arena_size);
-    }
-
-    cl::Buffer CLAllocLinear::alloc(std::size_t size) {
-        std::size_t size_aligned = aligns(size, m_alignment);
-
-        if (size_aligned >= m_fallback_size) {
-            // Fallback in case if too big allocation required
-            return cl::Buffer(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, size);
-        }
-        if (size_aligned + m_curr_offset > m_arena_size) {
-            // Allocate new page to fit this allocation
-            expand();
+    ref_ptr<Array> Array::make(uint n_values, const ref_ptr<Type>& type) {
+        if (!type) {
+            LOG_MSG(Status::InvalidArgument, "passed null type");
+            return ref_ptr<Array>{};
         }
 
-        auto&       buffer           = m_arena.back();
-        std::size_t buffer_region[2] = {m_curr_offset, size_aligned};
-        auto        allocated        = buffer.createSubBuffer(CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, buffer_region);
+        Library::get();
 
-        m_curr_offset += size_aligned;
-        m_total_allocated += size_aligned;
-
-        return allocated;
-    }
-
-    void CLAllocLinear::free(cl::Buffer) {
-        // nothing to do
-    }
-
-    void CLAllocLinear::free_all() {
-        LOG_MSG(Status::Ok, "free all allocated=" << m_total_allocated << " bytes");
-        shrink();
-        m_curr_offset     = 0;
-        m_total_allocated = 0;
-    }
-
-    void CLAllocLinear::expand() {
-        m_curr_offset = 0;
-        m_arena_size *= 2;
-        m_arena.emplace_back(get_acc_cl()->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, m_arena_size);
-        LOG_MSG(Status::Ok, "expand to " << m_arena_size);
-    }
-    void CLAllocLinear::shrink() {
-        if (m_arena.size() > 1) {
-            cl::Buffer main_arena = m_arena.back();
-            m_arena.clear();
-            m_arena.push_back(std::move(main_arena));
-            LOG_MSG(Status::Ok, "shrink to " << m_arena_size);
+        if (type == INT) {
+            return ref_ptr<Array>(new TArray<std::int32_t>(n_values));
         }
+        if (type == UINT) {
+            return ref_ptr<Array>(new TArray<std::uint32_t>(n_values));
+        }
+        if (type == FLOAT) {
+            return ref_ptr<Array>(new TArray<float>(n_values));
+        }
+
+        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
+        return ref_ptr<Array>{};
     }
 
 }// namespace spla

@@ -7,6 +7,7 @@ function(spla_test_target target)
 endfunction()
 
 spla_test_target(test_library)
+spla_test_target(test_array)
 spla_test_target(test_matrix)
 spla_test_target(test_mxmT)
 spla_test_target(test_mxv)

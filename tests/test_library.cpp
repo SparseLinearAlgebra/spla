@@ -56,4 +56,14 @@ TEST(library, default_types) {
     std::cout << "Type " << spla::FLOAT->get_description() << " id=" << spla::FLOAT->get_id() << std::endl;
 }
 
+TEST(library, default_accelerator_info) {
+    std::string acc_info;
+
+    spla::Library::get()->set_accelerator(spla::AcceleratorType::OpenCL);
+    spla::Library::get()->get_accelerator_info(acc_info);
+    spla::Library::get()->finalize();
+
+    std::cout << "Info: " << acc_info << std::endl;
+}
+
 SPLA_GTEST_MAIN

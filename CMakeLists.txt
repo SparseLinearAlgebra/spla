@@ -271,6 +271,7 @@ add_library(spla SHARED
         # C++ core
         include/spla.hpp
         include/spla/algorithm.hpp
+        include/spla/array.hpp
         include/spla/config.hpp
         include/spla/descriptor.hpp
         include/spla/exec.hpp
@@ -293,6 +294,7 @@ add_library(spla SHARED
         src/core/logger.hpp
         src/core/registry.cpp
         src/core/registry.hpp
+        src/core/tarray.hpp
         src/core/tdecoration.hpp
         src/core/tmatrix.hpp
         src/core/top.hpp
@@ -331,12 +333,13 @@ add_library(spla SHARED
         src/util/pair_hash.hpp
         src/profiling/time_profiler.cpp
         src/profiling/time_profiler.hpp
+        src/algorithm.cpp
+        src/array.cpp
         src/descriptor.cpp
         src/io.cpp
         src/exec.cpp
         src/library.cpp
         src/matrix.cpp
-        src/algorithm.cpp
         src/op.cpp
         src/scalar.cpp
         src/schedule.cpp

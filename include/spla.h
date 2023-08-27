@@ -30,19 +30,8 @@
 
 /**
  * @file spla.h
- * @author Egor Orachev
  *
  * @brief Spla library C++ API bindings for C language
- *
- * This file contains:
- *
- *  - Status and error codes
- *  - Optional functions hint flags
- *  - Library initialization/finalization API
- *  - Accelerator API
- *  - Matrix manipulation API
- *  - Vector manipulation API
- *  - Schedule operations API
  *
  * @see Source code: https://github.com/SparseLinearAlgebra/spla
  * @see Python Reference API: https://SparseLinearAlgebra.github.io/spla/docs-python/spla
@@ -69,147 +58,95 @@
 extern "C" {
 #endif
 
-/**
- * @brief Status of library operation execution
- */
 typedef enum spla_Status {
-    /** No error */
-    SPLA_STATUS_OK = 0,
-    /** Some error occurred */
-    SPLA_STATUS_ERROR = 1,
-    /** Library has no configured accelerator for computations */
-    SPLA_STATUS_NO_ACCELERATION = 2,
-    /** Accelerator platform not found */
+    SPLA_STATUS_OK                 = 0,
+    SPLA_STATUS_ERROR              = 1,
+    SPLA_STATUS_NO_ACCELERATION    = 2,
     SPLA_STATUS_PLATFORM_NOT_FOUND = 3,
-    /** Accelerator device not found */
-    SPLA_STATUS_DEVICE_NOT_FOUND = 4,
-    /** Call of the function is not possible for some context */
-    SPLA_STATUS_INVALID_STATE = 5,
-    /** Passed invalid argument for some function */
-    SPLA_STATUS_INVALID_ARGUMENT = 6,
-    /** No such requested value in matrix, vector or scalar storage */
-    SPLA_STATUS_NO_VALUE = 7,
-    /** Some library feature is not implemented */
-    SPLA_STATUS_NOT_IMPLEMENTED = 1024
+    SPLA_STATUS_DEVICE_NOT_FOUND   = 4,
+    SPLA_STATUS_INVALID_STATE      = 5,
+    SPLA_STATUS_INVALID_ARGUMENT   = 6,
+    SPLA_STATUS_NO_VALUE           = 7,
+    SPLA_STATUS_NOT_IMPLEMENTED    = 1024
 } spla_Status;
 
-/**
- * @brief Types of supported accelerators for computations
- */
 typedef enum spla_AcceleratorType {
-    /** No acceleration to be used */
-    SPLA_ACCELERATOR_TYPE_NONE = 0,
-    /** OpenCL-based single device acceleration */
+    SPLA_ACCELERATOR_TYPE_NONE   = 0,
     SPLA_ACCELERATOR_TYPE_OPENCL = 1
 } spla_AcceleratorType;
 
-/**
- * @brief Null handle, used to mark empty spla object
- */
 #define SPLA_NULL_HND NULL
 
-/**
- * @brief Handle to any spla object
- */
-typedef struct spla_Object_t* spla_Object;
+typedef uint32_t spla_uint;
 
-/**
- * @brief Handle to spla descriptor object
- */
-typedef struct spla_Descriptor_t* spla_Descriptor;
-
-/**
- * @brief Handle to spla matrix primitive
- */
-typedef struct spla_Matrix_t* spla_Matrix;
-
-/**
- * @brief Handle to spla vector primitive
- */
-typedef struct spla_Vector_t* spla_Vector;
-
-/**
- * @brief Handle to spla schedule object
- */
-typedef struct spla_Schedule_t* spla_Schedule;
-
-/**
- * @brief Handle to spla schedule node object
- */
+typedef struct spla_Object_t*       spla_Object;
+typedef struct spla_Type_t*         spla_Type;
+typedef struct spla_Descriptor_t*   spla_Descriptor;
+typedef struct spla_Matrix_t*       spla_Matrix;
+typedef struct spla_Vector_t*       spla_Vector;
+typedef struct spla_Array_t*        spla_Array;
+typedef struct spla_Scalar_t*       spla_Scalar;
+typedef struct spla_Schedule_t*     spla_Schedule;
 typedef struct spla_ScheduleTask_t* spla_ScheduleTask;
+typedef struct spla_OpUnary_t*      spla_OpUnary;
+typedef struct spla_OpBinary_t*     spla_OpBinary;
+typedef struct spla_OpSelect_t*     spla_OpSelect;
 
-/**
- * @brief Callback function called on library message event
- */
 typedef void(spla_MessageCallback)(spla_Status, const char* message, const char* file, const char* function, int line, void* p_user_data);
 
-/**
- * @brief Finalize library execution
- *
- * Finalize method must be called at the end after application
- * to correctly shutdown global library state, release any
- * enabled acceleration device and release any pending device resources.
- *
- * @warning Must be called after application execution
- * @warning After this call no other library function call is allowed
- */
-SPLA_API void spla_Library_finalize();
-
-/**
- * @brief Set accelerator to be used in library computations
- *
- * Sets type of the accelerator to be used in library computations.
- * By default library attempts automatically init OpenCL accelerator
- * if OpenCL runtime present in the system. Set `None` to disable acceleration.
- *
- * @param accelerator Accelerate type
- *
- * @return Function call status
- */
+SPLA_API void        spla_Library_finalize();
 SPLA_API spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator);
-
-/**
- * @brief Selects platform for computations for current accelerator
- *
- * @param index Platform index to select in current PC supported list.
- *
- * @return Function call status
- */
 SPLA_API spla_Status spla_Library_set_platform(int index);
-
-/**
- * @brief Selects device for computations for current accelerator
- *
- * @param index Device index in current platform devices
- *
- * @return Function call status
- */
 SPLA_API spla_Status spla_Library_set_device(int index);
-
-/**
- * @brief Set number of GPU queues for parallel ops execution
- *
- * @param count Number of queues to set
- *
- * @return Function call status
- */
 SPLA_API spla_Status spla_Library_set_queues_count(int count);
-
-/**
- * @brief Set callback function called on library message event
- *
- * @param callback Function to be called
- *
- * @return Function call status
- */
 SPLA_API spla_Status spla_Library_set_message_callback(spla_MessageCallback callback, void* p_user_data);
-
-/**
- * @brief Sets default library callback to log messages to console
- *
- * @return Function call status
- */
 SPLA_API spla_Status spla_Library_set_default_callback();
+
+SPLA_API spla_Type spla_Type_int();
+SPLA_API spla_Type spla_Type_uint();
+SPLA_API spla_Type spla_Type_float();
+
+SPLA_API spla_Status spla_Object_ref(spla_Object object);
+SPLA_API spla_Status spla_Object_unref(spla_Object object);
+
+SPLA_API spla_Status spla_Scalar_make(spla_Scalar* scalar, spla_Type type);
+SPLA_API spla_Status spla_Scalar_set_int(spla_Scalar s, int value);
+SPLA_API spla_Status spla_Scalar_set_uint(spla_Scalar s, unsigned int value);
+SPLA_API spla_Status spla_Scalar_set_float(spla_Scalar s, float value);
+SPLA_API spla_Status spla_Scalar_get_int(spla_Scalar s, int* value);
+SPLA_API spla_Status spla_Scalar_get_uint(spla_Scalar s, unsigned int* value);
+SPLA_API spla_Status spla_Scalar_get_float(spla_Scalar s, float* value);
+
+SPLA_API spla_Status spla_Array_make(spla_Array* v, spla_uint n_values, spla_Type type);
+SPLA_API spla_Status spla_Array_set_int(spla_Array a, spla_uint i, int value);
+SPLA_API spla_Status spla_Array_set_uint(spla_Array a, spla_uint i, unsigned int value);
+SPLA_API spla_Status spla_Array_set_float(spla_Array a, spla_uint i, float value);
+SPLA_API spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value);
+SPLA_API spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value);
+SPLA_API spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value);
+SPLA_API spla_Status spla_Array_clear(spla_Array a);
+
+SPLA_API spla_Status spla_Vector_make(spla_Vector* v, spla_uint n_rows, spla_Type type);
+SPLA_API spla_Status spla_Vector_set_fill_value(spla_Vector v, spla_Scalar value);
+SPLA_API spla_Status spla_Vector_set_reduce(spla_Vector v, spla_OpBinary reduce);
+SPLA_API spla_Status spla_Vector_set_int(spla_Vector v, spla_uint row_id, int value);
+SPLA_API spla_Status spla_Vector_set_uint(spla_Vector v, spla_uint row_id, unsigned int value);
+SPLA_API spla_Status spla_Vector_set_float(spla_Vector v, spla_uint row_id, float value);
+SPLA_API spla_Status spla_Vector_get_int(spla_Vector v, spla_uint row_id, int* value);
+SPLA_API spla_Status spla_Vector_get_uint(spla_Vector v, spla_uint row_id, unsigned int* value);
+SPLA_API spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, float* value);
+SPLA_API spla_Status spla_Vector_clear(spla_Vector v);
+
+SPLA_API spla_Status spla_Matrix_make(spla_Matrix* M, spla_uint n_rows, spla_Type type);
+SPLA_API spla_Status spla_Matrix_set_fill_value(spla_Matrix M, spla_Scalar value);
+SPLA_API spla_Status spla_Matrix_set_reduce(spla_Matrix M, spla_OpBinary reduce);
+SPLA_API spla_Status spla_Matrix_set_int(spla_Matrix M, spla_uint row_id, spla_uint col_id, int value);
+SPLA_API spla_Status spla_Matrix_set_uint(spla_Matrix M, spla_uint row_id, spla_uint col_id, unsigned int value);
+SPLA_API spla_Status spla_Matrix_set_float(spla_Matrix M, spla_uint row_id, spla_uint col_id, float value);
+SPLA_API spla_Status spla_Matrix_get_int(spla_Matrix M, spla_uint row_id, spla_uint col_id, int* value);
+SPLA_API spla_Status spla_Matrix_get_uint(spla_Matrix M, spla_uint row_id, spla_uint col_id, unsigned int* value);
+SPLA_API spla_Status spla_Matrix_get_float(spla_Matrix M, spla_uint row_id, spla_uint col_id, float* value);
+SPLA_API spla_Status spla_Matrix_clear(spla_Matrix M);
 
 #if defined(__cplusplus)
 }
