@@ -106,10 +106,20 @@ class Array(Object):
         &#34;&#34;&#34;
         Creates new array of specified type and shape.
 
-        :param dtype: Type parametrization of a storage
-        :param shape: Size of the array
-        :param hnd: Optional native handle to retain
-        :param label: Optional label to assign
+        Parameters
+        ----------
+
+        dtype: Type.
+            Type parametrization of a storage
+
+        shape: optional: int. default: 0.
+            Size of the array
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Optional native handle to retain
+
+        label: optional: str. default: None.
+            Optional label to assign
         &#34;&#34;&#34;
 
         super().__init__(None, None)
@@ -132,7 +142,10 @@ class Array(Object):
         &#34;&#34;&#34;
         Type used for storage parametrization of this container.
 
-        :return: Type of stored values
+        Returns
+        -------
+
+        Type of stored values.
         &#34;&#34;&#34;
         return self._dtype
 
@@ -141,7 +154,10 @@ class Array(Object):
         &#34;&#34;&#34;
         2-Tuple with shape of array where second value is always 1.
 
-        :return: Size of array as a tuple
+        Returns
+        -------
+
+        Size of array as a tuple.
         &#34;&#34;&#34;
 
         n_values = ctypes.c_uint(0)
@@ -153,7 +169,10 @@ class Array(Object):
         &#34;&#34;&#34;
         Checks if array is empty (has 0-size) and returns true.
 
-        :return: True if array is empty
+        Returns
+        -------
+
+        True if array is empty.
         &#34;&#34;&#34;
 
         return self.shape[0] == 0
@@ -162,9 +181,14 @@ class Array(Object):
         &#34;&#34;&#34;
         Set value at specified index.
 
-        :param index: Index at which value to set
-        :param value: Value to set, must be convertible to destination type
-        :return:
+        Parameters
+        ----------
+
+        index: int.
+            Index at which value to set
+
+        value: any.
+            Value to set, must be convertible to destination type
         &#34;&#34;&#34;
 
         check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))
@@ -173,20 +197,31 @@ class Array(Object):
         &#34;&#34;&#34;
         Get value at specified index.
 
-        :param index: Index at which to get value
-        :return: Value at specified index
+        Parameters
+        ----------
+
+        index: int.
+            Index at which to get value
+
+        Returns
+        -------
+
+        Value at specified index.
         &#34;&#34;&#34;
 
         value = self._dtype._c_type(0)
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-        return self._dtype._to_python(value)
+        return self._dtype.to_py(value)
 
     def resize(self, shape=0):
         &#34;&#34;&#34;
         Resizes array to new size with desired num of values specified as shape.
 
-        :param shape: New array capacity
-        :return:
+        Parameters
+        ----------
+
+        shape: optional: int. default: 0.
+            New array capacity
         &#34;&#34;&#34;
 
         check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))
@@ -194,8 +229,6 @@ class Array(Object):
     def clear(self):
         &#34;&#34;&#34;
         Clears array removing all elements, so it has 0 values.
-
-        :return:
         &#34;&#34;&#34;
 
         check(backend().spla_Array_clear(self._hnd))
@@ -204,7 +237,10 @@ class Array(Object):
         &#34;&#34;&#34;
         Read array data as a python list of values.
 
-        :return: List with values stored in the array
+        Returns
+        -------
+
+        List with values stored in the array
         &#34;&#34;&#34;
 
         values = list()
@@ -212,19 +248,32 @@ class Array(Object):
 
         for i in range(self.shape[0]):
             check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-            values.append(self._dtype._to_python(value))
+            values.append(self._dtype.to_py(value))
 
         return values
 
     @classmethod
     def from_list(cls, values, dtype=INT, shape=None):
         &#34;&#34;&#34;
-        Creates new array of desired type and shape and fills its content with `values` data.
+        Creates new array of desired type and shape and fills
+        its content with `values` data.
 
-        :param values: List with values to fill array
-        :param dtype: Type of the array stored value
-        :param shape: Optional size of array, by default inferred from `values`
-        :return: Created array filled with values
+        Parameters
+        ----------
+
+        values: List.
+            List with values to fill array
+
+        dtype: Type.
+            Type of the array stored value
+
+        shape: optional: int. default: None.
+            Optional size of array, by default inferred from `values`
+
+        Returns
+        -------
+
+        Created array filled with values.
         &#34;&#34;&#34;
 
         if shape is None:
@@ -241,11 +290,25 @@ class Array(Object):
         Creates new array of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        :param dtype: Type of values array will have
-        :param shape: Size of the array (number of values)
-        :param seed: Optional seed to randomize generator
-        :param dist: Optional distribution for uniform generation of values
-        :return: Created array filled with values
+        Parameters
+        ----------
+
+        dtype: Type.
+            Type of values array will have
+
+        shape: optional: int. default: 0.
+            Size of the array (number of values)
+
+        seed: optional: int. default: None.
+            Optional seed to randomize generator
+
+        dist: optional: tuple. default: [0,1].
+            Optional distribution for uniform generation of values
+
+        Returns
+        -------
+
+        Created array filled with values.
         &#34;&#34;&#34;
 
         array = Array(dtype=dtype, shape=shape)
@@ -321,10 +384,15 @@ It provides bind functionality as well as new functions/methods for better pytho
 <p>Array internally manages native optimized storage for values.
 Reading and writing values into array is fast and has nearly no overhead.</p>
 <p>Creates new array of specified type and shape.</p>
-<p>:param dtype: Type parametrization of a storage
-:param shape: Size of the array
-:param hnd: Optional native handle to retain
-:param label: Optional label to assign</p></div>
+<h2 id="parameters">Parameters</h2>
+<p>dtype: Type.
+Type parametrization of a storage</p>
+<p>shape: optional: int. default: 0.
+Size of the array</p>
+<p>hnd: optional: ctypes.c_void_p. default: None.
+Optional native handle to retain</p>
+<p>label: optional: str. default: None.
+Optional label to assign</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -372,10 +440,20 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Creates new array of specified type and shape.
 
-        :param dtype: Type parametrization of a storage
-        :param shape: Size of the array
-        :param hnd: Optional native handle to retain
-        :param label: Optional label to assign
+        Parameters
+        ----------
+
+        dtype: Type.
+            Type parametrization of a storage
+
+        shape: optional: int. default: 0.
+            Size of the array
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Optional native handle to retain
+
+        label: optional: str. default: None.
+            Optional label to assign
         &#34;&#34;&#34;
 
         super().__init__(None, None)
@@ -398,7 +476,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Type used for storage parametrization of this container.
 
-        :return: Type of stored values
+        Returns
+        -------
+
+        Type of stored values.
         &#34;&#34;&#34;
         return self._dtype
 
@@ -407,7 +488,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         2-Tuple with shape of array where second value is always 1.
 
-        :return: Size of array as a tuple
+        Returns
+        -------
+
+        Size of array as a tuple.
         &#34;&#34;&#34;
 
         n_values = ctypes.c_uint(0)
@@ -419,7 +503,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Checks if array is empty (has 0-size) and returns true.
 
-        :return: True if array is empty
+        Returns
+        -------
+
+        True if array is empty.
         &#34;&#34;&#34;
 
         return self.shape[0] == 0
@@ -428,9 +515,14 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Set value at specified index.
 
-        :param index: Index at which value to set
-        :param value: Value to set, must be convertible to destination type
-        :return:
+        Parameters
+        ----------
+
+        index: int.
+            Index at which value to set
+
+        value: any.
+            Value to set, must be convertible to destination type
         &#34;&#34;&#34;
 
         check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))
@@ -439,20 +531,31 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Get value at specified index.
 
-        :param index: Index at which to get value
-        :return: Value at specified index
+        Parameters
+        ----------
+
+        index: int.
+            Index at which to get value
+
+        Returns
+        -------
+
+        Value at specified index.
         &#34;&#34;&#34;
 
         value = self._dtype._c_type(0)
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-        return self._dtype._to_python(value)
+        return self._dtype.to_py(value)
 
     def resize(self, shape=0):
         &#34;&#34;&#34;
         Resizes array to new size with desired num of values specified as shape.
 
-        :param shape: New array capacity
-        :return:
+        Parameters
+        ----------
+
+        shape: optional: int. default: 0.
+            New array capacity
         &#34;&#34;&#34;
 
         check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))
@@ -460,8 +563,6 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
     def clear(self):
         &#34;&#34;&#34;
         Clears array removing all elements, so it has 0 values.
-
-        :return:
         &#34;&#34;&#34;
 
         check(backend().spla_Array_clear(self._hnd))
@@ -470,7 +571,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         &#34;&#34;&#34;
         Read array data as a python list of values.
 
-        :return: List with values stored in the array
+        Returns
+        -------
+
+        List with values stored in the array
         &#34;&#34;&#34;
 
         values = list()
@@ -478,19 +582,32 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
         for i in range(self.shape[0]):
             check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-            values.append(self._dtype._to_python(value))
+            values.append(self._dtype.to_py(value))
 
         return values
 
     @classmethod
     def from_list(cls, values, dtype=INT, shape=None):
         &#34;&#34;&#34;
-        Creates new array of desired type and shape and fills its content with `values` data.
+        Creates new array of desired type and shape and fills
+        its content with `values` data.
 
-        :param values: List with values to fill array
-        :param dtype: Type of the array stored value
-        :param shape: Optional size of array, by default inferred from `values`
-        :return: Created array filled with values
+        Parameters
+        ----------
+
+        values: List.
+            List with values to fill array
+
+        dtype: Type.
+            Type of the array stored value
+
+        shape: optional: int. default: None.
+            Optional size of array, by default inferred from `values`
+
+        Returns
+        -------
+
+        Created array filled with values.
         &#34;&#34;&#34;
 
         if shape is None:
@@ -507,11 +624,25 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
         Creates new array of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        :param dtype: Type of values array will have
-        :param shape: Size of the array (number of values)
-        :param seed: Optional seed to randomize generator
-        :param dist: Optional distribution for uniform generation of values
-        :return: Created array filled with values
+        Parameters
+        ----------
+
+        dtype: Type.
+            Type of values array will have
+
+        shape: optional: int. default: 0.
+            Size of the array (number of values)
+
+        seed: optional: int. default: None.
+            Optional seed to randomize generator
+
+        dist: optional: tuple. default: [0,1].
+            Optional distribution for uniform generation of values
+
+        Returns
+        -------
+
+        Created array filled with values.
         &#34;&#34;&#34;
 
         array = Array(dtype=dtype, shape=shape)
@@ -555,11 +686,17 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 <span>def <span class="ident">from_list</span></span>(<span>values, dtype=pyspla.type.INT, shape=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Creates new array of desired type and shape and fills its content with <code>values</code> data.</p>
-<p>:param values: List with values to fill array
-:param dtype: Type of the array stored value
-:param shape: Optional size of array, by default inferred from <code>values</code>
-:return: Created array filled with values</p></div>
+<div class="desc"><p>Creates new array of desired type and shape and fills
+its content with <code>values</code> data.</p>
+<h2 id="parameters">Parameters</h2>
+<p>values: List.
+List with values to fill array</p>
+<p>dtype: Type.
+Type of the array stored value</p>
+<p>shape: optional: int. default: None.
+Optional size of array, by default inferred from <code>values</code></p>
+<h2 id="returns">Returns</h2>
+<p>Created array filled with values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -567,12 +704,25 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 <pre><code class="python">@classmethod
 def from_list(cls, values, dtype=INT, shape=None):
     &#34;&#34;&#34;
-    Creates new array of desired type and shape and fills its content with `values` data.
+    Creates new array of desired type and shape and fills
+    its content with `values` data.
 
-    :param values: List with values to fill array
-    :param dtype: Type of the array stored value
-    :param shape: Optional size of array, by default inferred from `values`
-    :return: Created array filled with values
+    Parameters
+    ----------
+
+    values: List.
+        List with values to fill array
+
+    dtype: Type.
+        Type of the array stored value
+
+    shape: optional: int. default: None.
+        Optional size of array, by default inferred from `values`
+
+    Returns
+    -------
+
+    Created array filled with values.
     &#34;&#34;&#34;
 
     if shape is None:
@@ -590,11 +740,17 @@ def from_list(cls, values, dtype=INT, shape=None):
 <dd>
 <div class="desc"><p>Creates new array of desired type and shape and fills its content
 with random values, generated using specified distribution.</p>
-<p>:param dtype: Type of values array will have
-:param shape: Size of the array (number of values)
-:param seed: Optional seed to randomize generator
-:param dist: Optional distribution for uniform generation of values
-:return: Created array filled with values</p></div>
+<h2 id="parameters">Parameters</h2>
+<p>dtype: Type.
+Type of values array will have</p>
+<p>shape: optional: int. default: 0.
+Size of the array (number of values)</p>
+<p>seed: optional: int. default: None.
+Optional seed to randomize generator</p>
+<p>dist: optional: tuple. default: [0,1].
+Optional distribution for uniform generation of values</p>
+<h2 id="returns">Returns</h2>
+<p>Created array filled with values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -605,11 +761,25 @@ def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
     Creates new array of desired type and shape and fills its content
     with random values, generated using specified distribution.
 
-    :param dtype: Type of values array will have
-    :param shape: Size of the array (number of values)
-    :param seed: Optional seed to randomize generator
-    :param dist: Optional distribution for uniform generation of values
-    :return: Created array filled with values
+    Parameters
+    ----------
+
+    dtype: Type.
+        Type of values array will have
+
+    shape: optional: int. default: 0.
+        Size of the array (number of values)
+
+    seed: optional: int. default: None.
+        Optional seed to randomize generator
+
+    dist: optional: tuple. default: [0,1].
+        Optional distribution for uniform generation of values
+
+    Returns
+    -------
+
+    Created array filled with values.
     &#34;&#34;&#34;
 
     array = Array(dtype=dtype, shape=shape)
@@ -636,7 +806,8 @@ def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
 <dt id="pyspla.array.Array.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
 <div class="desc"><p>Type used for storage parametrization of this container.</p>
-<p>:return: Type of stored values</p></div>
+<h2 id="returns">Returns</h2>
+<p>Type of stored values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -646,7 +817,10 @@ def dtype(self):
     &#34;&#34;&#34;
     Type used for storage parametrization of this container.
 
-    :return: Type of stored values
+    Returns
+    -------
+
+    Type of stored values.
     &#34;&#34;&#34;
     return self._dtype</code></pre>
 </details>
@@ -654,7 +828,8 @@ def dtype(self):
 <dt id="pyspla.array.Array.empty"><code class="name">var <span class="ident">empty</span></code></dt>
 <dd>
 <div class="desc"><p>Checks if array is empty (has 0-size) and returns true.</p>
-<p>:return: True if array is empty</p></div>
+<h2 id="returns">Returns</h2>
+<p>True if array is empty.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -664,7 +839,10 @@ def empty(self):
     &#34;&#34;&#34;
     Checks if array is empty (has 0-size) and returns true.
 
-    :return: True if array is empty
+    Returns
+    -------
+
+    True if array is empty.
     &#34;&#34;&#34;
 
     return self.shape[0] == 0</code></pre>
@@ -673,7 +851,8 @@ def empty(self):
 <dt id="pyspla.array.Array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
 <dd>
 <div class="desc"><p>2-Tuple with shape of array where second value is always 1.</p>
-<p>:return: Size of array as a tuple</p></div>
+<h2 id="returns">Returns</h2>
+<p>Size of array as a tuple.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -683,7 +862,10 @@ def shape(self):
     &#34;&#34;&#34;
     2-Tuple with shape of array where second value is always 1.
 
-    :return: Size of array as a tuple
+    Returns
+    -------
+
+    Size of array as a tuple.
     &#34;&#34;&#34;
 
     n_values = ctypes.c_uint(0)
@@ -698,8 +880,7 @@ def shape(self):
 <span>def <span class="ident">clear</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Clears array removing all elements, so it has 0 values.</p>
-<p>:return:</p></div>
+<div class="desc"><p>Clears array removing all elements, so it has 0 values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -707,8 +888,6 @@ def shape(self):
 <pre><code class="python">def clear(self):
     &#34;&#34;&#34;
     Clears array removing all elements, so it has 0 values.
-
-    :return:
     &#34;&#34;&#34;
 
     check(backend().spla_Array_clear(self._hnd))</code></pre>
@@ -719,8 +898,11 @@ def shape(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Get value at specified index.</p>
-<p>:param index: Index at which to get value
-:return: Value at specified index</p></div>
+<h2 id="parameters">Parameters</h2>
+<p>index: int.
+Index at which to get value</p>
+<h2 id="returns">Returns</h2>
+<p>Value at specified index.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -729,13 +911,21 @@ def shape(self):
     &#34;&#34;&#34;
     Get value at specified index.
 
-    :param index: Index at which to get value
-    :return: Value at specified index
+    Parameters
+    ----------
+
+    index: int.
+        Index at which to get value
+
+    Returns
+    -------
+
+    Value at specified index.
     &#34;&#34;&#34;
 
     value = self._dtype._c_type(0)
     check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-    return self._dtype._to_python(value)</code></pre>
+    return self._dtype.to_py(value)</code></pre>
 </details>
 </dd>
 <dt id="pyspla.array.Array.resize"><code class="name flex">
@@ -743,8 +933,9 @@ def shape(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Resizes array to new size with desired num of values specified as shape.</p>
-<p>:param shape: New array capacity
-:return:</p></div>
+<h2 id="parameters">Parameters</h2>
+<p>shape: optional: int. default: 0.
+New array capacity</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -753,8 +944,11 @@ def shape(self):
     &#34;&#34;&#34;
     Resizes array to new size with desired num of values specified as shape.
 
-    :param shape: New array capacity
-    :return:
+    Parameters
+    ----------
+
+    shape: optional: int. default: 0.
+        New array capacity
     &#34;&#34;&#34;
 
     check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))</code></pre>
@@ -765,9 +959,11 @@ def shape(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Set value at specified index.</p>
-<p>:param index: Index at which value to set
-:param value: Value to set, must be convertible to destination type
-:return:</p></div>
+<h2 id="parameters">Parameters</h2>
+<p>index: int.
+Index at which value to set</p>
+<p>value: any.
+Value to set, must be convertible to destination type</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -776,9 +972,14 @@ def shape(self):
     &#34;&#34;&#34;
     Set value at specified index.
 
-    :param index: Index at which value to set
-    :param value: Value to set, must be convertible to destination type
-    :return:
+    Parameters
+    ----------
+
+    index: int.
+        Index at which value to set
+
+    value: any.
+        Value to set, must be convertible to destination type
     &#34;&#34;&#34;
 
     check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))</code></pre>
@@ -789,7 +990,11 @@ def shape(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Read array data as a python list of values.</p>
-<p>:return: List with values stored in the array</p></div>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List with values stored in the array</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -798,7 +1003,10 @@ def shape(self):
     &#34;&#34;&#34;
     Read array data as a python list of values.
 
-    :return: List with values stored in the array
+    Returns
+    -------
+
+    List with values stored in the array
     &#34;&#34;&#34;
 
     values = list()
@@ -806,7 +1014,7 @@ def shape(self):
 
     for i in range(self.shape[0]):
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-        values.append(self._dtype._to_python(value))
+        values.append(self._dtype.to_py(value))
 
     return values</code></pre>
 </details>

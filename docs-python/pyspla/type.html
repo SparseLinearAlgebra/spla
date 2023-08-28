@@ -84,6 +84,14 @@ class Type:
     _matrix_set = None
     _hnd = None
 
+    @classmethod
+    def get_code(cls):
+        return cls._code
+
+    @classmethod
+    def to_py(cls, value):
+        pass
+
 
 class INT(Type):
     &#34;&#34;&#34;Spla integral INT-32 type.&#34;&#34;&#34;
@@ -105,7 +113,7 @@ class INT(Type):
         cls._hnd = backend().spla_Type_int()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)
 
 
@@ -129,7 +137,7 @@ class UINT(Type):
         cls._hnd = backend().spla_Type_uint()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)
 
 
@@ -153,7 +161,7 @@ class FLOAT(Type):
         cls._hnd = backend().spla_Type_float()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return float(value.value)
 
 
@@ -198,13 +206,30 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
         cls._hnd = backend().spla_Type_float()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return float(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.type.FLOAT.to_py"><code class="name flex">
+<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def to_py(cls, value):
+    return float(value.value)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="pyspla.type.INT"><code class="flex name class">
 <span>class <span class="ident">INT</span></span>
@@ -235,13 +260,30 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
         cls._hnd = backend().spla_Type_int()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.type.INT.to_py"><code class="name flex">
+<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def to_py(cls, value):
+    return int(value.value)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="pyspla.type.Type"><code class="flex name class">
 <span>class <span class="ident">Type</span></span>
@@ -266,7 +308,15 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
     _vector_set = None
     _matrix_get = None
     _matrix_set = None
-    _hnd = None</code></pre>
+    _hnd = None
+
+    @classmethod
+    def get_code(cls):
+        return cls._code
+
+    @classmethod
+    def to_py(cls, value):
+        pass</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -274,6 +324,37 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 <li><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></li>
 <li><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.type.Type.get_code"><code class="name flex">
+<span>def <span class="ident">get_code</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_code(cls):
+    return cls._code</code></pre>
+</details>
+</dd>
+<dt id="pyspla.type.Type.to_py"><code class="name flex">
+<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def to_py(cls, value):
+    pass</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="pyspla.type.UINT"><code class="flex name class">
 <span>class <span class="ident">UINT</span></span>
@@ -304,13 +385,30 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
         cls._hnd = backend().spla_Type_uint()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.type.UINT.to_py"><code class="name flex">
+<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def to_py(cls, value):
+    return int(value.value)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -330,15 +428,28 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 <ul>
 <li>
 <h4><code><a title="pyspla.type.FLOAT" href="#pyspla.type.FLOAT">FLOAT</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.type.FLOAT.to_py" href="#pyspla.type.FLOAT.to_py">to_py</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.type.INT.to_py" href="#pyspla.type.INT.to_py">to_py</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.type.Type.get_code" href="#pyspla.type.Type.get_code">get_code</a></code></li>
+<li><code><a title="pyspla.type.Type.to_py" href="#pyspla.type.Type.to_py">to_py</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.type.UINT.to_py" href="#pyspla.type.UINT.to_py">to_py</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

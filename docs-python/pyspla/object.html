@@ -83,6 +83,19 @@ class Object:
     __slots__ = [&#34;_hnd&#34;, &#34;_label&#34;]
 
     def __init__(self, label, hnd):
+        &#34;&#34;&#34;
+        Creates a base spla object class instance with common attributes.
+
+        Parameters
+        ----------
+
+        label: optional: str. default: None.
+            Object name for debugging.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Object native void* handle to a C counterpart.
+        &#34;&#34;&#34;
+
         self._hnd = hnd
         self._label = label
 
@@ -121,7 +134,13 @@ class Object:
 <p>Object class support all spla C API matrix functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
 <p>Object class used for runtime-introspection of spla primitives, as well as for safe ref-count
-of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.</p></div>
+of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.</p>
+<p>Creates a base spla object class instance with common attributes.</p>
+<h2 id="parameters">Parameters</h2>
+<p>label: optional: str. default: None.
+Object name for debugging.</p>
+<p>hnd: optional: ctypes.c_void_p. default: None.
+Object native void* handle to a C counterpart.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -149,6 +168,19 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
     __slots__ = [&#34;_hnd&#34;, &#34;_label&#34;]
 
     def __init__(self, label, hnd):
+        &#34;&#34;&#34;
+        Creates a base spla object class instance with common attributes.
+
+        Parameters
+        ----------
+
+        label: optional: str. default: None.
+            Object name for debugging.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Object native void* handle to a C counterpart.
+        &#34;&#34;&#34;
+
         self._hnd = hnd
         self._label = label
 
