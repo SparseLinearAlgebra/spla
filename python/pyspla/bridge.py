@@ -2,7 +2,7 @@
 Wrapped native (spla C API) raw functions access.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
+__copyright__ = "Copyright (c) 2021-2023 SparseLinearAlgebra"
 
 __license__ = """
 MIT License
@@ -27,8 +27,9 @@ SOFTWARE.
 """
 
 __all__ = [
-    "_spla",
-    "_callback_t"
+    "backend",
+    "check",
+    "is_docs"
 ]
 
 import os
@@ -51,6 +52,7 @@ _object_t = None
 _p_object_t = None
 _callback_t = None
 _default_callback = None
+_is_docs = False
 
 
 class SplaError(Exception):
@@ -300,21 +302,25 @@ def load_library(lib_path):
     _spla.spla_Scalar_get_float.argtypes = [_object_t, _p_float]
 
     _spla.spla_Array_make.restype = _status_t
+    _spla.spla_Array_get_n_values.restype = _status_t
     _spla.spla_Array_set_int.restype = _status_t
     _spla.spla_Array_set_uint.restype = _status_t
     _spla.spla_Array_set_float.restype = _status_t
     _spla.spla_Array_get_int.restype = _status_t
     _spla.spla_Array_get_uint.restype = _status_t
     _spla.spla_Array_get_float.restype = _status_t
+    _spla.spla_Array_resize.restype = _status_t
     _spla.spla_Array_clear.restype = _status_t
 
     _spla.spla_Array_make.argtypes = [_p_object_t, _uint, _object_t]
+    _spla.spla_Array_get_n_values.argtypes = [_object_t, _p_uint]
     _spla.spla_Array_set_int.argtypes = [_object_t, _uint, _int]
     _spla.spla_Array_set_uint.argtypes = [_object_t, _uint, _uint]
     _spla.spla_Array_set_float.argtypes = [_object_t, _uint, _float]
     _spla.spla_Array_get_int.argtypes = [_object_t, _uint, _p_int]
     _spla.spla_Array_get_uint.argtypes = [_object_t, _uint, _p_uint]
     _spla.spla_Array_get_float.argtypes = [_object_t, _uint, _p_float]
+    _spla.spla_Array_resize.argtypes = [_object_t, _uint]
     _spla.spla_Array_clear.argtypes = [_object_t]
 
     _spla.spla_Vector_make.restype = _status_t
@@ -383,7 +389,7 @@ def load_library(lib_path):
 def default_callback(status, msg, file, function, line, user_data):
     decoded_msg = msg.decode("utf-8")
     decoded_file = file.decode("utf-8")
-    print(f"PySpla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
+    print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
 
 def finalize():
@@ -392,6 +398,7 @@ def finalize():
 
 
 def initialize():
+    global _is_docs
     global _spla
     global _spla_path
     global _callback_t
@@ -400,6 +407,7 @@ def initialize():
     try:
         # If generating docs, no lib init required
         if os.environ["SPLA_DOCS"]:
+            _is_docs = True
             return
     except KeyError:
         pass
@@ -423,8 +431,7 @@ def initialize():
     try:
         # If debug enable in ENV, setup default callback for messages on init
         if int(os.environ["SPLA_DEBUG"]):
-            _spla.spla_Library_set_message_callback(
-                _default_callback, ctypes.c_void_p(0))
+            _spla.spla_Library_set_message_callback(_default_callback, ctypes.c_void_p(0))
     except KeyError:
         pass
 
@@ -436,5 +443,11 @@ def check(status):
         raise _status_mapping[status]
 
 
-# Initialize bridge on import
-initialize()
+def is_docs():
+    global _is_docs
+    return _is_docs
+
+
+def backend():
+    global _spla
+    return _spla

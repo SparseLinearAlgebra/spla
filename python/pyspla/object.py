@@ -2,7 +2,7 @@
 Wrapped native (spla C API) object primitive implementation.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
+__copyright__ = "Copyright (c) 2021-2023 SparseLinearAlgebra"
 
 __license__ = """
 MIT License
@@ -28,6 +28,8 @@ SOFTWARE.
 
 import ctypes
 
+from .bridge import backend, check
+
 
 class Object:
     """
@@ -37,7 +39,7 @@ class Object:
     ----------
 
     - label : `str` user provided text label for object for debugging
-    - hnd : `ctypes.p_void` hnd to native object in spla C API
+    - hnd : `ctypes.c_void_p` hnd to native object in spla C API
 
     Details
     -------
@@ -49,5 +51,18 @@ class Object:
     of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     """
 
-    def __init__(self):
-        pass
+    __slots__ = ["_hnd", "_label"]
+
+    def __init__(self, label, hnd):
+        self._hnd = hnd
+        self._label = label
+
+    def __del__(self):
+        if self._hnd:
+            check(backend().spla_Object_unref(self._hnd))
+
+    def set_label(self, label):
+        self._label = label
+
+    def get_label(self):
+        return self._label

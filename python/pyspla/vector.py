@@ -2,7 +2,7 @@
 Wrapped native (spla C API) vector primitive implementation.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
+__copyright__ = "Copyright (c) 2021-2023 SparseLinearAlgebra"
 
 __license__ = """
 MIT License

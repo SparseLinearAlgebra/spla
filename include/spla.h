@@ -217,12 +217,14 @@ SPLA_API spla_Status spla_Scalar_get_float(spla_Scalar s, float* value);
 /* Array container creation and manipulation */
 
 SPLA_API spla_Status spla_Array_make(spla_Array* v, spla_uint n_values, spla_Type type);
+SPLA_API spla_Status spla_Array_get_n_values(spla_Array a, spla_uint* values);
 SPLA_API spla_Status spla_Array_set_int(spla_Array a, spla_uint i, int value);
 SPLA_API spla_Status spla_Array_set_uint(spla_Array a, spla_uint i, unsigned int value);
 SPLA_API spla_Status spla_Array_set_float(spla_Array a, spla_uint i, float value);
 SPLA_API spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value);
 SPLA_API spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value);
 SPLA_API spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value);
+SPLA_API spla_Status spla_Array_resize(spla_Array a, spla_uint n);
 SPLA_API spla_Status spla_Array_clear(spla_Array a);
 
 //////////////////////////////////////////////////////////////////////////////////////

@@ -128,7 +128,7 @@ State of the library managed by internal `bridge` module. All resources are unlo
 on package exit. Library state finalized automatically.
 """
 
-__copyright__ = "Copyright (c) 2021-2022 SparseLinearAlgebra"
+__copyright__ = "Copyright (c) 2021-2023 SparseLinearAlgebra"
 
 __license__ = """
 MIT License
@@ -152,21 +152,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from .bridge import *
+
+bridge.initialize()
+
 from .library import *
 from .op import *
 from .object import *
 from .schedule import *
 from .type import *
+from .array import *
 from .matrix import *
 from .vector import *
 from .scalar import *
 from .version import *
-from .bridge import *
+
+if not bridge.is_docs():
+    for t in BUILT_IN:
+        t._setup()
 
 __version__ = VERSIONS[-1]
 
 __all__ = [
+    "Type",
+    "INT",
+    "UINT",
+    "FLOAT",
     "Object",
+    "Array",
     "Matrix",
     "Vector",
     "Scalar",
