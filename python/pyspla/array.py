@@ -115,11 +115,6 @@ class Array(Object):
     def dtype(self):
         """
         Type used for storage parametrization of this container.
-
-        Returns
-        -------
-
-        Type of stored values.
         """
         return self._dtype
 
@@ -127,11 +122,6 @@ class Array(Object):
     def n_vals(self):
         """
         Number of values in the array.
-
-        Returns
-        -------
-
-        Size of the array.
         """
 
         n_values = ctypes.c_uint(0)
@@ -142,11 +132,6 @@ class Array(Object):
     def shape(self):
         """
         2-Tuple with shape of array where second value is always 1.
-
-        Returns
-        -------
-
-        Size of array as a tuple.
         """
 
         return self.n_vals, 1
@@ -154,12 +139,7 @@ class Array(Object):
     @property
     def empty(self):
         """
-        Checks if array is empty (has 0-size) and returns true.
-
-        Returns
-        -------
-
-        True if array is empty.
+        Checks if array is empty (has 0-size) and returns true. True if array is empty.
         """
 
         return self.shape[0] == 0

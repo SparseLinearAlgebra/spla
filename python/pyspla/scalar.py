@@ -28,15 +28,19 @@ SOFTWARE.
 
 import ctypes
 
+from .bridge import backend, check
+from .type import INT
+from .object import Object
 
-class Scalar:
+
+class Scalar(Object):
     """
     Generalized statically-typed scalar primitive.
 
     Attributes
     ----------
 
-    - type : `type` type of stored matrix elements
+    - dtype : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the scalar in form of two integers tuple (always 1x1)
 
     Notes
@@ -69,5 +73,92 @@ class Scalar:
     Meta-data additionally stored with each scalar value.
     """
 
-    def __init__(self):
-        pass
+    __slots__ = ["_dtype"]
+
+    def __init__(self, dtype=INT, value=None, hnd=None, label=None):
+        """
+        Creates new scalar of desired type or retains existing C object.
+
+        Parameters
+        ----------
+
+        dtype: optional: Type. default: INT.
+            Type of the scalar value.
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar on creation.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Optional handle to C object to retain in this scalar instance.
+
+        label: optional: str. default: None.
+            Optional debug label of the scalar.
+        """
+
+        super().__init__(None, None)
+
+        self._dtype = dtype
+
+        if hnd is None:
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_Scalar_make(ctypes.byref(hnd), dtype._hnd))
+
+        super().__init__(label, hnd)
+        self.set(value)
+
+    @property
+    def dtype(self):
+        """
+        Returns the type of stored value in the scalar.
+        """
+
+        return self._dtype
+
+    @property
+    def shape(self):
+        """
+        2-tuple shape of the storage. For scalar object it is always 1 by 1.
+        """
+
+        return 1, 1
+
+    @property
+    def n_vals(self):
+        """
+        Number of stored values in the scalar. Always 1.
+        """
+
+        return 1
+
+    def set(self, value=None):
+        """
+        Set the value stored in the scalar. If no value passed the default value is set.
+
+        Parameters
+        ----------
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar.
+        """
+
+        check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value)))
+
+    def get(self):
+        """
+        Read the value stored in the scalar.
+
+        Returns
+        -------
+
+        Value from scalar.
+        """
+
+        value = self._dtype._c_type(0)
+        check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
+        return self._dtype.to_py(value)
+
+    def __str__(self):
+        return str(self.get())
+
+    def __iter__(self):
+        return iter([self.get()])
