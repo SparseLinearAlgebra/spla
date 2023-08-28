@@ -100,79 +100,80 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SPLA_CONFIG_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;cinttypes&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#ifdef SPLA_MSVC</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">    #ifdef SPLA_EXPORTS</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">        #define SPLA_API __declspec(dllexport)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">        #define SPLA_API __declspec(dllimport)</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">   42</a></span>&#160;<span class="preprocessor">    #define SPLA_API</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="group__spla.html#ga669156f74132dd261f21223177f0b458">   55</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> = std::uint32_t;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">   61</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classStatus.html">Status</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Ok</a> = 0,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a902b0d55fddef6f8d651fe1035b7d4bd">Error</a> = 1,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a6a12a8c84194edaad74ae8e218329902">NoAcceleration</a> = 2,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a8e6c62263614574c738707778e9793e5">PlatformNotFound</a> = 3,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aca4cc682495b7b98382718ed77afac35">DeviceNotFound</a> = 4,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aedf260198e4d75d1cb3c7588f7380120">InvalidState</a> = 5,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a253ca7dd096ee0956cccee4d376cab8b">InvalidArgument</a> = 6,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743ad50dfcd4fe8be490a6759f4396f6a4c5">NoValue</a> = 7,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e">CompilationError</a> = 8,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">NotImplemented</a> = 1024</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    };</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="group__spla.html#gae5ad5fa3d2797567d7f87d1c6bf523d8">   88</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classAcceleratorType.html">AcceleratorType</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a7982b09a852b37f2afb1227eaf552e47">OpenCL</a> = 1</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    };</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">  101</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatMatrix.html">FormatMatrix</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="classspla_1_1CpuLil.html">CpuLil</a> = 0,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="classspla_1_1CpuDok.html">CpuDok</a> = 1,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classspla_1_1CpuCoo.html">CpuCoo</a> = 2,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classspla_1_1CpuCsr.html">CpuCsr</a> = 3,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1">CpuCsc</a> = 4,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae73ac1dd7cbda086860054e2e067f738">AccCoo</a> = 5,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47">AccCsr</a> = 6,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d">AccCsc</a> = 7,</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 8</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    };</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">  128</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatVector.html">FormatVector</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <a class="code" href="classspla_1_1CpuDok.html">CpuDok</a> = 0,</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">CpuDense</a> = 1,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <a class="code" href="classspla_1_1CpuCoo.html">CpuCoo</a> = 2,</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f">AccDense</a> = 3,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738">AccCoo</a> = 4,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 5</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    };</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__spla.html#ga28f203e2c48f35b140beaf012792d2ab">  149</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatArray.html">FormatArray</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba54c82ef76ecbbd4c2293e09bae01b54e">Cpu</a> = 0,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba2e02ea7283618d93898c1342e8361dfa">Acc</a> = 1,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2abae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 2</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    };</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">  168</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classMessageCallback.html">MessageCallback</a> = std::function&lt;void(<a class="code" href="classStatus.html">Status</a>             status,</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                                               <span class="keyword">const</span> std::string&amp; msg,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                                               <span class="keyword">const</span> std::string&amp; file,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                                               <span class="keyword">const</span> std::string&amp; <span class="keyword">function</span>,</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                                               <span class="keywordtype">int</span>                line)&gt;;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">  182</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classScheduleCallback.html">ScheduleCallback</a> = std::function&lt;void()&gt;;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CONFIG_HPP</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef SPLA_MSVC</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #ifdef SPLA_EXPORTS</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">        #define SPLA_API __declspec(dllexport)</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">        #define SPLA_API __declspec(dllimport)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc">   43</a></span>&#160;<span class="preprocessor">    #define SPLA_API</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="group__spla.html#ga669156f74132dd261f21223177f0b458">   56</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> = std::uint32_t;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">   62</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classStatus.html">Status</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Ok</a> = 0,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a902b0d55fddef6f8d651fe1035b7d4bd">Error</a> = 1,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a6a12a8c84194edaad74ae8e218329902">NoAcceleration</a> = 2,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a8e6c62263614574c738707778e9793e5">PlatformNotFound</a> = 3,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aca4cc682495b7b98382718ed77afac35">DeviceNotFound</a> = 4,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aedf260198e4d75d1cb3c7588f7380120">InvalidState</a> = 5,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a253ca7dd096ee0956cccee4d376cab8b">InvalidArgument</a> = 6,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743ad50dfcd4fe8be490a6759f4396f6a4c5">NoValue</a> = 7,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a3a5a5dcf393afe6606d10bc4bc77b26e">CompilationError</a> = 8,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">NotImplemented</a> = 1024</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    };</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="group__spla.html#gae5ad5fa3d2797567d7f87d1c6bf523d8">   89</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classAcceleratorType.html">AcceleratorType</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="group__spla.html#ggae5ad5fa3d2797567d7f87d1c6bf523d8a7982b09a852b37f2afb1227eaf552e47">OpenCL</a> = 1</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    };</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="group__spla.html#ga06cb3985a4f58f453d247aa66ea91f97">  102</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatMatrix.html">FormatMatrix</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="classspla_1_1CpuLil.html">CpuLil</a> = 0,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="classspla_1_1CpuDok.html">CpuDok</a> = 1,</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <a class="code" href="classspla_1_1CpuCoo.html">CpuCoo</a> = 2,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="classspla_1_1CpuCsr.html">CpuCsr</a> = 3,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1">CpuCsc</a> = 4,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae73ac1dd7cbda086860054e2e067f738">AccCoo</a> = 5,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47">AccCsr</a> = 6,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d">AccCsc</a> = 7,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97ae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 8</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    };</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">  129</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatVector.html">FormatVector</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <a class="code" href="classspla_1_1CpuDok.html">CpuDok</a> = 0,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">CpuDense</a> = 1,</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <a class="code" href="classspla_1_1CpuCoo.html">CpuCoo</a> = 2,</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa2a674ad5e27026967254a80445593b9f">AccDense</a> = 3,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae73ac1dd7cbda086860054e2e067f738">AccCoo</a> = 4,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 5</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    };</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="group__spla.html#ga28f203e2c48f35b140beaf012792d2ab">  150</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classFormatArray.html">FormatArray</a> : <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba54c82ef76ecbbd4c2293e09bae01b54e">Cpu</a> = 0,</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba2e02ea7283618d93898c1342e8361dfa">Acc</a> = 1,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2abae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 2</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    };</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="group__spla.html#ga4769e8739b9e6291a694ea1457be9196">  169</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classMessageCallback.html">MessageCallback</a> = std::function&lt;void(<a class="code" href="classStatus.html">Status</a>             status,</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                                               <span class="keyword">const</span> std::string&amp; msg,</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                                               <span class="keyword">const</span> std::string&amp; file,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                                               <span class="keyword">const</span> std::string&amp; <span class="keyword">function</span>,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                                               <span class="keywordtype">int</span>                line)&gt;;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">  183</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classScheduleCallback.html">ScheduleCallback</a> = std::function&lt;void()&gt;;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CONFIG_HPP</span></div>
 <div class="ttc" id="aclassAcceleratorType_html"><div class="ttname"><a href="classAcceleratorType.html">AcceleratorType</a></div><div class="ttdoc">Types of supported accelerators for computations.</div></div>
 <div class="ttc" id="aclassFormatArray_html"><div class="ttname"><a href="classFormatArray.html">FormatArray</a></div><div class="ttdoc">Named storage formats of array.</div></div>
 <div class="ttc" id="aclassFormatMatrix_html"><div class="ttname"><a href="classFormatMatrix.html">FormatMatrix</a></div><div class="ttdoc">Named storage format for library matrix data objects.</div></div>
@@ -184,7 +185,7 @@ $(function() {
 <div class="ttc" id="aclassspla_1_1CpuCsr_html"><div class="ttname"><a href="classspla_1_1CpuCsr.html">spla::CpuCsr</a></div><div class="ttdoc">CPU compressed sparse row matrix format.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:166</div></div>
 <div class="ttc" id="aclassspla_1_1CpuDok_html"><div class="ttname"><a href="classspla_1_1CpuDok.html">spla::CpuDok</a></div><div class="ttdoc">Dictionary of keys sparse matrix format.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:128</div></div>
 <div class="ttc" id="aclassspla_1_1CpuLil_html"><div class="ttname"><a href="classspla_1_1CpuLil.html">spla::CpuLil</a></div><div class="ttdoc">CPU list-of-list matrix format for fast incremental build.</div><div class="ttdef"><b>Definition:</b> cpu_formats.hpp:107</div></div>
-<div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:55</div></div>
+<div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:56</div></div>
 <div class="ttc" id="agroup__spla_html_gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d"><div class="ttname"><a href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a345fa59b35398a972b8d8bf8c2d0153d">spla::FormatMatrix::AccCsc</a></div><div class="ttdeci">@ AccCsc</div></div>
 <div class="ttc" id="agroup__spla_html_gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47"><div class="ttname"><a href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6179c79446d2290847ee707d69f47d47">spla::FormatMatrix::AccCsr</a></div><div class="ttdeci">@ AccCsr</div></div>
 <div class="ttc" id="agroup__spla_html_gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1"><div class="ttname"><a href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6ffdb6c6bb6010d67294198a7d193ea1">spla::FormatMatrix::CpuCsc</a></div><div class="ttdeci">@ CpuCsc</div></div>

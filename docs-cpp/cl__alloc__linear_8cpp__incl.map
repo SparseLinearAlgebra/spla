@@ -1,23 +1,24 @@
 <map id="src/opencl/cl_alloc_linear.cpp" name="src/opencl/cl_alloc_linear.cpp">
 <area shape="rect" id="node1" title=" " alt="" coords="723,5,854,47"/>
 <area shape="rect" id="node2" href="$cl__alloc__linear_8hpp.html" title=" " alt="" coords="607,95,735,121"/>
-<area shape="rect" id="node11" href="$logger_8hpp.html" title=" " alt="" coords="812,319,922,345"/>
-<area shape="rect" id="node21" title=" " alt="" coords="826,95,892,121"/>
+<area shape="rect" id="node12" href="$logger_8hpp.html" title=" " alt="" coords="812,319,922,345"/>
+<area shape="rect" id="node22" title=" " alt="" coords="826,95,892,121"/>
 <area shape="rect" id="node3" href="$cl__accelerator_8hpp.html" title=" " alt="" coords="377,244,546,271"/>
-<area shape="rect" id="node18" title=" " alt="" coords="698,319,788,345"/>
-<area shape="rect" id="node20" href="$cl__alloc_8hpp.html" title=" " alt="" coords="461,169,593,196"/>
+<area shape="rect" id="node19" title=" " alt="" coords="698,319,788,345"/>
+<area shape="rect" id="node21" href="$cl__alloc_8hpp.html" title=" " alt="" coords="461,169,593,196"/>
 <area shape="rect" id="node4" href="$accelerator_8hpp.html" title=" " alt="" coords="535,319,674,345"/>
-<area shape="rect" id="node8" title=" " alt="" coords="345,468,400,495"/>
-<area shape="rect" id="node9" href="$common_8hpp.html" title=" " alt="" coords="174,319,299,345"/>
-<area shape="rect" id="node14" href="$library_8hpp.html" title=" " alt="" coords="41,319,149,345"/>
-<area shape="rect" id="node17" title=" " alt="" coords="323,319,382,345"/>
-<area shape="rect" id="node19" title=" " alt="" coords="405,319,510,345"/>
+<area shape="rect" id="node9" title=" " alt="" coords="360,468,414,495"/>
+<area shape="rect" id="node10" href="$common_8hpp.html" title=" " alt="" coords="174,319,299,345"/>
+<area shape="rect" id="node15" href="$library_8hpp.html" title=" " alt="" coords="41,319,149,345"/>
+<area shape="rect" id="node18" title=" " alt="" coords="323,319,382,345"/>
+<area shape="rect" id="node20" title=" " alt="" coords="405,319,510,345"/>
 <area shape="rect" id="node5" href="$config_8hpp.html" title=" " alt="" coords="536,393,644,420"/>
-<area shape="rect" id="node6" title=" " alt="" coords="552,468,627,495"/>
-<area shape="rect" id="node7" title=" " alt="" coords="734,468,813,495"/>
-<area shape="rect" id="node10" title=" " alt="" coords="318,393,376,420"/>
-<area shape="rect" id="node12" title=" " alt="" coords="692,393,749,420"/>
-<area shape="rect" id="node13" title=" " alt="" coords="774,393,843,420"/>
-<area shape="rect" id="node15" title=" " alt="" coords="174,393,242,420"/>
-<area shape="rect" id="node16" title=" " alt="" coords="40,393,150,420"/>
+<area shape="rect" id="node6" title=" " alt="" coords="599,468,674,495"/>
+<area shape="rect" id="node7" title=" " alt="" coords="509,468,574,495"/>
+<area shape="rect" id="node8" title=" " alt="" coords="781,468,860,495"/>
+<area shape="rect" id="node11" title=" " alt="" coords="318,393,376,420"/>
+<area shape="rect" id="node13" title=" " alt="" coords="692,393,749,420"/>
+<area shape="rect" id="node14" title=" " alt="" coords="774,393,843,420"/>
+<area shape="rect" id="node16" title=" " alt="" coords="174,393,242,420"/>
+<area shape="rect" id="node17" title=" " alt="" coords="40,393,150,420"/>
 </map>

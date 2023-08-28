@@ -1,9 +1,10 @@
 <map id="include/spla/io.hpp" name="include/spla/io.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="183,5,313,32"/>
-<area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="104,80,184,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="208,80,288,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="312,80,371,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="225,5,354,32"/>
+<area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="145,80,225,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="249,80,329,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="353,80,412,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,155,80,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="105,155,183,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="207,155,262,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="105,155,170,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="194,155,273,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="297,155,351,181"/>
 </map>
