@@ -144,11 +144,6 @@ class Array(Object):
     def dtype(self):
         &#34;&#34;&#34;
         Type used for storage parametrization of this container.
-
-        Returns
-        -------
-
-        Type of stored values.
         &#34;&#34;&#34;
         return self._dtype
 
@@ -156,11 +151,6 @@ class Array(Object):
     def n_vals(self):
         &#34;&#34;&#34;
         Number of values in the array.
-
-        Returns
-        -------
-
-        Size of the array.
         &#34;&#34;&#34;
 
         n_values = ctypes.c_uint(0)
@@ -171,11 +161,6 @@ class Array(Object):
     def shape(self):
         &#34;&#34;&#34;
         2-Tuple with shape of array where second value is always 1.
-
-        Returns
-        -------
-
-        Size of array as a tuple.
         &#34;&#34;&#34;
 
         return self.n_vals, 1
@@ -183,12 +168,7 @@ class Array(Object):
     @property
     def empty(self):
         &#34;&#34;&#34;
-        Checks if array is empty (has 0-size) and returns true.
-
-        Returns
-        -------
-
-        True if array is empty.
+        Checks if array is empty (has 0-size) and returns true. True if array is empty.
         &#34;&#34;&#34;
 
         return self.shape[0] == 0
@@ -514,11 +494,6 @@ Optional label to assign.</p></div>
     def dtype(self):
         &#34;&#34;&#34;
         Type used for storage parametrization of this container.
-
-        Returns
-        -------
-
-        Type of stored values.
         &#34;&#34;&#34;
         return self._dtype
 
@@ -526,11 +501,6 @@ Optional label to assign.</p></div>
     def n_vals(self):
         &#34;&#34;&#34;
         Number of values in the array.
-
-        Returns
-        -------
-
-        Size of the array.
         &#34;&#34;&#34;
 
         n_values = ctypes.c_uint(0)
@@ -541,11 +511,6 @@ Optional label to assign.</p></div>
     def shape(self):
         &#34;&#34;&#34;
         2-Tuple with shape of array where second value is always 1.
-
-        Returns
-        -------
-
-        Size of array as a tuple.
         &#34;&#34;&#34;
 
         return self.n_vals, 1
@@ -553,12 +518,7 @@ Optional label to assign.</p></div>
     @property
     def empty(self):
         &#34;&#34;&#34;
-        Checks if array is empty (has 0-size) and returns true.
-
-        Returns
-        -------
-
-        True if array is empty.
+        Checks if array is empty (has 0-size) and returns true. True if array is empty.
         &#34;&#34;&#34;
 
         return self.shape[0] == 0
@@ -866,9 +826,7 @@ def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
 <dl>
 <dt id="pyspla.array.Array.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"><p>Type used for storage parametrization of this container.</p>
-<h2 id="returns">Returns</h2>
-<p>Type of stored values.</p></div>
+<div class="desc"><p>Type used for storage parametrization of this container.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -877,20 +835,13 @@ def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
 def dtype(self):
     &#34;&#34;&#34;
     Type used for storage parametrization of this container.
-
-    Returns
-    -------
-
-    Type of stored values.
     &#34;&#34;&#34;
     return self._dtype</code></pre>
 </details>
 </dd>
 <dt id="pyspla.array.Array.empty"><code class="name">var <span class="ident">empty</span></code></dt>
 <dd>
-<div class="desc"><p>Checks if array is empty (has 0-size) and returns true.</p>
-<h2 id="returns">Returns</h2>
-<p>True if array is empty.</p></div>
+<div class="desc"><p>Checks if array is empty (has 0-size) and returns true. True if array is empty.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -898,12 +849,7 @@ def dtype(self):
 <pre><code class="python">@property
 def empty(self):
     &#34;&#34;&#34;
-    Checks if array is empty (has 0-size) and returns true.
-
-    Returns
-    -------
-
-    True if array is empty.
+    Checks if array is empty (has 0-size) and returns true. True if array is empty.
     &#34;&#34;&#34;
 
     return self.shape[0] == 0</code></pre>
@@ -911,9 +857,7 @@ def empty(self):
 </dd>
 <dt id="pyspla.array.Array.n_vals"><code class="name">var <span class="ident">n_vals</span></code></dt>
 <dd>
-<div class="desc"><p>Number of values in the array.</p>
-<h2 id="returns">Returns</h2>
-<p>Size of the array.</p></div>
+<div class="desc"><p>Number of values in the array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -922,11 +866,6 @@ def empty(self):
 def n_vals(self):
     &#34;&#34;&#34;
     Number of values in the array.
-
-    Returns
-    -------
-
-    Size of the array.
     &#34;&#34;&#34;
 
     n_values = ctypes.c_uint(0)
@@ -936,9 +875,7 @@ def n_vals(self):
 </dd>
 <dt id="pyspla.array.Array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
 <dd>
-<div class="desc"><p>2-Tuple with shape of array where second value is always 1.</p>
-<h2 id="returns">Returns</h2>
-<p>Size of array as a tuple.</p></div>
+<div class="desc"><p>2-Tuple with shape of array where second value is always 1.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -947,11 +884,6 @@ def n_vals(self):
 def shape(self):
     &#34;&#34;&#34;
     2-Tuple with shape of array where second value is always 1.
-
-    Returns
-    -------
-
-    Size of array as a tuple.
     &#34;&#34;&#34;
 
     return self.n_vals, 1</code></pre>

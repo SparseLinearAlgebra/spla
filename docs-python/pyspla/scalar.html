@@ -57,15 +57,19 @@ SOFTWARE.
 
 import ctypes
 
+from .bridge import backend, check
+from .type import INT
+from .object import Object
 
-class Scalar:
+
+class Scalar(Object):
     &#34;&#34;&#34;
     Generalized statically-typed scalar primitive.
 
     Attributes
     ----------
 
-    - type : `type` type of stored matrix elements
+    - dtype : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the scalar in form of two integers tuple (always 1x1)
 
     Notes
@@ -98,8 +102,95 @@ class Scalar:
     Meta-data additionally stored with each scalar value.
     &#34;&#34;&#34;
 
-    def __init__(self):
-        pass</code></pre>
+    __slots__ = [&#34;_dtype&#34;]
+
+    def __init__(self, dtype=INT, value=None, hnd=None, label=None):
+        &#34;&#34;&#34;
+        Creates new scalar of desired type or retains existing C object.
+
+        Parameters
+        ----------
+
+        dtype: optional: Type. default: INT.
+            Type of the scalar value.
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar on creation.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Optional handle to C object to retain in this scalar instance.
+
+        label: optional: str. default: None.
+            Optional debug label of the scalar.
+        &#34;&#34;&#34;
+
+        super().__init__(None, None)
+
+        self._dtype = dtype
+
+        if hnd is None:
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_Scalar_make(ctypes.byref(hnd), dtype._hnd))
+
+        super().__init__(label, hnd)
+        self.set(value)
+
+    @property
+    def dtype(self):
+        &#34;&#34;&#34;
+        Returns the type of stored value in the scalar.
+        &#34;&#34;&#34;
+
+        return self._dtype
+
+    @property
+    def shape(self):
+        &#34;&#34;&#34;
+        2-tuple shape of the storage. For scalar object it is always 1 by 1.
+        &#34;&#34;&#34;
+
+        return 1, 1
+
+    @property
+    def n_vals(self):
+        &#34;&#34;&#34;
+        Number of stored values in the scalar. Always 1.
+        &#34;&#34;&#34;
+
+        return 1
+
+    def set(self, value=None):
+        &#34;&#34;&#34;
+        Set the value stored in the scalar. If no value passed the default value is set.
+
+        Parameters
+        ----------
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar.
+        &#34;&#34;&#34;
+
+        check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value)))
+
+    def get(self):
+        &#34;&#34;&#34;
+        Read the value stored in the scalar.
+
+        Returns
+        -------
+
+        Value from scalar.
+        &#34;&#34;&#34;
+
+        value = self._dtype._c_type(0)
+        check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
+        return self._dtype.to_py(value)
+
+    def __str__(self):
+        return str(self.get())
+
+    def __iter__(self):
+        return iter([self.get()])</code></pre>
 </details>
 </section>
 <section>
@@ -113,12 +204,13 @@ class Scalar:
 <dl>
 <dt id="pyspla.scalar.Scalar"><code class="flex name class">
 <span>class <span class="ident">Scalar</span></span>
+<span>(</span><span>dtype=pyspla.type.INT, value=None, hnd=None, label=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generalized statically-typed scalar primitive.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
-<li>type : <code>type</code> type of stored matrix elements</li>
+<li>dtype : <code>type</code> type of stored matrix elements</li>
 <li>shape : <code>2-tuple</code> shape of the scalar in form of two integers tuple (always 1x1)</li>
 </ul>
 <h2 id="notes">Notes</h2>
@@ -142,19 +234,29 @@ Use scalars only if you want to parametrise matrix/vector operations.</p>
 <p>Scalar class support all spla C API scalar functions.
 It provides bind functionality as well as new functions/methods for better python user experience.</p>
 <p>Scalar internally stored in the native format of the type it has.
-Meta-data additionally stored with each scalar value.</p></div>
+Meta-data additionally stored with each scalar value.</p>
+<p>Creates new scalar of desired type or retains existing C object.</p>
+<h2 id="parameters">Parameters</h2>
+<p>dtype: optional: Type. default: INT.
+Type of the scalar value.</p>
+<p>value: optional: Any. default: None.
+Optional value to store in scalar on creation.</p>
+<p>hnd: optional: ctypes.c_void_p. default: None.
+Optional handle to C object to retain in this scalar instance.</p>
+<p>label: optional: str. default: None.
+Optional debug label of the scalar.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Scalar:
+<pre><code class="python">class Scalar(Object):
     &#34;&#34;&#34;
     Generalized statically-typed scalar primitive.
 
     Attributes
     ----------
 
-    - type : `type` type of stored matrix elements
+    - dtype : `type` type of stored matrix elements
     - shape : `2-tuple` shape of the scalar in form of two integers tuple (always 1x1)
 
     Notes
@@ -187,9 +289,206 @@ Meta-data additionally stored with each scalar value.</p></div>
     Meta-data additionally stored with each scalar value.
     &#34;&#34;&#34;
 
-    def __init__(self):
-        pass</code></pre>
+    __slots__ = [&#34;_dtype&#34;]
+
+    def __init__(self, dtype=INT, value=None, hnd=None, label=None):
+        &#34;&#34;&#34;
+        Creates new scalar of desired type or retains existing C object.
+
+        Parameters
+        ----------
+
+        dtype: optional: Type. default: INT.
+            Type of the scalar value.
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar on creation.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Optional handle to C object to retain in this scalar instance.
+
+        label: optional: str. default: None.
+            Optional debug label of the scalar.
+        &#34;&#34;&#34;
+
+        super().__init__(None, None)
+
+        self._dtype = dtype
+
+        if hnd is None:
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_Scalar_make(ctypes.byref(hnd), dtype._hnd))
+
+        super().__init__(label, hnd)
+        self.set(value)
+
+    @property
+    def dtype(self):
+        &#34;&#34;&#34;
+        Returns the type of stored value in the scalar.
+        &#34;&#34;&#34;
+
+        return self._dtype
+
+    @property
+    def shape(self):
+        &#34;&#34;&#34;
+        2-tuple shape of the storage. For scalar object it is always 1 by 1.
+        &#34;&#34;&#34;
+
+        return 1, 1
+
+    @property
+    def n_vals(self):
+        &#34;&#34;&#34;
+        Number of stored values in the scalar. Always 1.
+        &#34;&#34;&#34;
+
+        return 1
+
+    def set(self, value=None):
+        &#34;&#34;&#34;
+        Set the value stored in the scalar. If no value passed the default value is set.
+
+        Parameters
+        ----------
+
+        value: optional: Any. default: None.
+            Optional value to store in scalar.
+        &#34;&#34;&#34;
+
+        check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value)))
+
+    def get(self):
+        &#34;&#34;&#34;
+        Read the value stored in the scalar.
+
+        Returns
+        -------
+
+        Value from scalar.
+        &#34;&#34;&#34;
+
+        value = self._dtype._c_type(0)
+        check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
+        return self._dtype.to_py(value)
+
+    def __str__(self):
+        return str(self.get())
+
+    def __iter__(self):
+        return iter([self.get()])</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.scalar.Scalar.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
+<dd>
+<div class="desc"><p>Returns the type of stored value in the scalar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype(self):
+    &#34;&#34;&#34;
+    Returns the type of stored value in the scalar.
+    &#34;&#34;&#34;
+
+    return self._dtype</code></pre>
+</details>
+</dd>
+<dt id="pyspla.scalar.Scalar.n_vals"><code class="name">var <span class="ident">n_vals</span></code></dt>
+<dd>
+<div class="desc"><p>Number of stored values in the scalar. Always 1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n_vals(self):
+    &#34;&#34;&#34;
+    Number of stored values in the scalar. Always 1.
+    &#34;&#34;&#34;
+
+    return 1</code></pre>
+</details>
+</dd>
+<dt id="pyspla.scalar.Scalar.shape"><code class="name">var <span class="ident">shape</span></code></dt>
+<dd>
+<div class="desc"><p>2-tuple shape of the storage. For scalar object it is always 1 by 1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def shape(self):
+    &#34;&#34;&#34;
+    2-tuple shape of the storage. For scalar object it is always 1 by 1.
+    &#34;&#34;&#34;
+
+    return 1, 1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspla.scalar.Scalar.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read the value stored in the scalar.</p>
+<h2 id="returns">Returns</h2>
+<p>Value from scalar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self):
+    &#34;&#34;&#34;
+    Read the value stored in the scalar.
+
+    Returns
+    -------
+
+    Value from scalar.
+    &#34;&#34;&#34;
+
+    value = self._dtype._c_type(0)
+    check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
+    return self._dtype.to_py(value)</code></pre>
+</details>
+</dd>
+<dt id="pyspla.scalar.Scalar.set"><code class="name flex">
+<span>def <span class="ident">set</span></span>(<span>self, value=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the value stored in the scalar. If no value passed the default value is set.</p>
+<h2 id="parameters">Parameters</h2>
+<p>value: optional: Any. default: None.
+Optional value to store in scalar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set(self, value=None):
+    &#34;&#34;&#34;
+    Set the value stored in the scalar. If no value passed the default value is set.
+
+    Parameters
+    ----------
+
+    value: optional: Any. default: None.
+        Optional value to store in scalar.
+    &#34;&#34;&#34;
+
+    check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value)))</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -209,6 +508,13 @@ Meta-data additionally stored with each scalar value.</p></div>
 <ul>
 <li>
 <h4><code><a title="pyspla.scalar.Scalar" href="#pyspla.scalar.Scalar">Scalar</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.scalar.Scalar.dtype" href="#pyspla.scalar.Scalar.dtype">dtype</a></code></li>
+<li><code><a title="pyspla.scalar.Scalar.get" href="#pyspla.scalar.Scalar.get">get</a></code></li>
+<li><code><a title="pyspla.scalar.Scalar.n_vals" href="#pyspla.scalar.Scalar.n_vals">n_vals</a></code></li>
+<li><code><a title="pyspla.scalar.Scalar.set" href="#pyspla.scalar.Scalar.set">set</a></code></li>
+<li><code><a title="pyspla.scalar.Scalar.shape" href="#pyspla.scalar.Scalar.shape">shape</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
