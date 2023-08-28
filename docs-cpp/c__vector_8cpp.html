@@ -106,16 +106,16 @@ Functions</h2></td></tr>
 <tr class="separator:a0f684c8ba03fab3902b88a00c941913f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72dbf899a2dcfaf1a59cef29c6de0e5c"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#a72dbf899a2dcfaf1a59cef29c6de0e5c">spla_Vector_get_float</a> (spla_Vector v, spla_uint row_id, float *value)</td></tr>
 <tr class="separator:a72dbf899a2dcfaf1a59cef29c6de0e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2e8637021b00a43d0dc0ebd3ca010d4"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#ad2e8637021b00a43d0dc0ebd3ca010d4">spla_Vector_build</a> (spla_Vector v, spla_Array keys, spla_Array values)</td></tr>
-<tr class="separator:ad2e8637021b00a43d0dc0ebd3ca010d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17cc43cafca778bb3d2e38583f54e62e"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#a17cc43cafca778bb3d2e38583f54e62e">spla_Vector_read</a> (spla_Vector v, spla_Array keys, spla_Array values)</td></tr>
-<tr class="separator:a17cc43cafca778bb3d2e38583f54e62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6445e182713d8bd4b0c12d930d53576"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#ad6445e182713d8bd4b0c12d930d53576">spla_Vector_build</a> (spla_Vector v, spla_MemView keys, spla_MemView values)</td></tr>
+<tr class="separator:ad6445e182713d8bd4b0c12d930d53576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a655cbb04e23fe1c0aef2eff5d0817fd6"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#a655cbb04e23fe1c0aef2eff5d0817fd6">spla_Vector_read</a> (spla_Vector v, spla_MemView *keys, spla_MemView *values)</td></tr>
+<tr class="separator:a655cbb04e23fe1c0aef2eff5d0817fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dc0f2a940191efec0bbc83602869927"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__vector_8cpp.html#a2dc0f2a940191efec0bbc83602869927">spla_Vector_clear</a> (spla_Vector v)</td></tr>
 <tr class="separator:a2dc0f2a940191efec0bbc83602869927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ad2e8637021b00a43d0dc0ebd3ca010d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2e8637021b00a43d0dc0ebd3ca010d4">&#9670;&nbsp;</a></span>spla_Vector_build()</h2>
+<a id="ad6445e182713d8bd4b0c12d930d53576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6445e182713d8bd4b0c12d930d53576">&#9670;&nbsp;</a></span>spla_Vector_build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,13 +129,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView&#160;</td>
           <td class="paramname"><em>keys</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView&#160;</td>
           <td class="paramname"><em>values</em>&#160;</td>
         </tr>
         <tr>
@@ -302,8 +302,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a17cc43cafca778bb3d2e38583f54e62e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17cc43cafca778bb3d2e38583f54e62e">&#9670;&nbsp;</a></span>spla_Vector_read()</h2>
+<a id="a655cbb04e23fe1c0aef2eff5d0817fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655cbb04e23fe1c0aef2eff5d0817fd6">&#9670;&nbsp;</a></span>spla_Vector_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,13 +317,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView *&#160;</td>
           <td class="paramname"><em>keys</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView *&#160;</td>
           <td class="paramname"><em>values</em>&#160;</td>
         </tr>
         <tr>

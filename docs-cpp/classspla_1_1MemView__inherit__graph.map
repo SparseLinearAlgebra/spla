@@ -1,0 +1,4 @@
+<map id="spla::MemView" name="spla::MemView">
+<area shape="rect" id="node1" title="View to some memory resource without life&#45;time control." alt="" coords="5,80,116,107"/>
+<area shape="rect" id="node2" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="15,5,107,32"/>
+</map>

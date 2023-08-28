@@ -106,16 +106,16 @@ Functions</h2></td></tr>
 <tr class="separator:a5edf819d8bf6405ea388119fed0c420a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace87da354c4885957b2adbc473077c49"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#ace87da354c4885957b2adbc473077c49">spla_Matrix_get_float</a> (spla_Matrix M, spla_uint row_id, spla_uint col_id, float *value)</td></tr>
 <tr class="separator:ace87da354c4885957b2adbc473077c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a268cc5ecf5a1940de9717749af7323d1"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#a268cc5ecf5a1940de9717749af7323d1">spla_Matrix_build</a> (spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values)</td></tr>
-<tr class="separator:a268cc5ecf5a1940de9717749af7323d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76fd6a234a0262081b69043ff5771d34"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#a76fd6a234a0262081b69043ff5771d34">spla_Matrix_read</a> (spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values)</td></tr>
-<tr class="separator:a76fd6a234a0262081b69043ff5771d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97baadce09f0933169aa3136c6621a71"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#a97baadce09f0933169aa3136c6621a71">spla_Matrix_build</a> (spla_Matrix M, spla_MemView keys1, spla_MemView keys2, spla_MemView values)</td></tr>
+<tr class="separator:a97baadce09f0933169aa3136c6621a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1db4529c4e0087c69a55af9000056e29"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#a1db4529c4e0087c69a55af9000056e29">spla_Matrix_read</a> (spla_Matrix M, spla_MemView *keys1, spla_MemView *keys2, spla_MemView *values)</td></tr>
+<tr class="separator:a1db4529c4e0087c69a55af9000056e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12c149db82228c31b45b8344976af5f0"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__matrix_8cpp.html#a12c149db82228c31b45b8344976af5f0">spla_Matrix_clear</a> (spla_Matrix M)</td></tr>
 <tr class="separator:a12c149db82228c31b45b8344976af5f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a268cc5ecf5a1940de9717749af7323d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a268cc5ecf5a1940de9717749af7323d1">&#9670;&nbsp;</a></span>spla_Matrix_build()</h2>
+<a id="a97baadce09f0933169aa3136c6621a71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97baadce09f0933169aa3136c6621a71">&#9670;&nbsp;</a></span>spla_Matrix_build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,19 +129,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView&#160;</td>
           <td class="paramname"><em>keys1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView&#160;</td>
           <td class="paramname"><em>keys2</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView&#160;</td>
           <td class="paramname"><em>values</em>&#160;</td>
         </tr>
         <tr>
@@ -332,8 +332,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a76fd6a234a0262081b69043ff5771d34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76fd6a234a0262081b69043ff5771d34">&#9670;&nbsp;</a></span>spla_Matrix_read()</h2>
+<a id="a1db4529c4e0087c69a55af9000056e29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1db4529c4e0087c69a55af9000056e29">&#9670;&nbsp;</a></span>spla_Matrix_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,19 +347,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView *&#160;</td>
           <td class="paramname"><em>keys1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView *&#160;</td>
           <td class="paramname"><em>keys2</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramtype">spla_MemView *&#160;</td>
           <td class="paramname"><em>values</em>&#160;</td>
         </tr>
         <tr>
