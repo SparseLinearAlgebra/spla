@@ -349,6 +349,10 @@ __all__ = [
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) matrix primitive implementation.</p></div>
 </dd>
+<dt><code class="name"><a title="pyspla.memview" href="memview.html">pyspla.memview</a></code></dt>
+<dd>
+<div class="desc"><p>Wrapped native (spla C API) memory view primitive implementation.</p></div>
+</dd>
 <dt><code class="name"><a title="pyspla.object" href="object.html">pyspla.object</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) object primitive implementation.</p></div>
@@ -388,14 +392,17 @@ __all__ = [
 <dl>
 <dt id="pyspla.Array"><code class="flex name class">
 <span>class <span class="ident">Array</span></span>
-<span>(</span><span>dtype=pyspla.type.INT, shape=0, hnd=None, label=None)</span>
+<span>(</span><span>dtype=pyspla.type.INT, shape=None, hnd=None, label=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generalized statically-typed dense linear array primitive.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
-<li>dtype : <code><a title="pyspla.Type" href="#pyspla.Type">Type</a></code> type of stored array elements</li>
-<li>shape : <code>2-tuple</code> shape of the array in form of two integers tuple (second dim is 1)</li>
+<li>dtype
+: <code><a title="pyspla.Type" href="#pyspla.Type">Type</a></code> type of stored array elements</li>
+<li>n_vals : <code>int</code> number of values in the array</li>
+<li>shape
+: <code>2-tuple</code> shape of the array in form of two integers tuple (second dim is 1)</li>
 </ul>
 <h2 id="notes">Notes</h2>
 <p>Array provides features for:</p>
@@ -420,13 +427,13 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 <p>Creates new array of specified type and shape.</p>
 <h2 id="parameters">Parameters</h2>
 <p>dtype: Type.
-Type parametrization of a storage</p>
-<p>shape: optional: int. default: 0.
-Size of the array</p>
+Type parametrization of a storage.</p>
+<p>shape: optional: int. default: None.
+Size of the array.</p>
 <p>hnd: optional: ctypes.c_void_p. default: None.
-Optional native handle to retain</p>
+Optional native handle to retain.</p>
 <p>label: optional: str. default: None.
-Optional label to assign</p></div>
+Optional label to assign.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -438,8 +445,9 @@ Optional label to assign</p></div>
     Attributes
     ----------
 
-    - dtype : `Type` type of stored array elements
-    - shape : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
+    - dtype  : `Type` type of stored array elements
+    - n_vals : `int` number of values in the array
+    - shape  : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
 
     Notes
     -----
@@ -470,7 +478,7 @@ Optional label to assign</p></div>
 
     __slots__ = [&#34;_dtype&#34;]
 
-    def __init__(self, dtype=INT, shape=0, hnd=None, label=None):
+    def __init__(self, dtype=INT, shape=None, hnd=None, label=None):
         &#34;&#34;&#34;
         Creates new array of specified type and shape.
 
@@ -478,26 +486,27 @@ Optional label to assign</p></div>
         ----------
 
         dtype: Type.
-            Type parametrization of a storage
+            Type parametrization of a storage.
 
-        shape: optional: int. default: 0.
-            Size of the array
+        shape: optional: int. default: None.
+            Size of the array.
 
         hnd: optional: ctypes.c_void_p. default: None.
-            Optional native handle to retain
+            Optional native handle to retain.
 
         label: optional: str. default: None.
-            Optional label to assign
+            Optional label to assign.
         &#34;&#34;&#34;
 
         super().__init__(None, None)
 
         assert dtype
-        assert shape
-        assert shape &gt;= 0
         assert issubclass(dtype, Type)
 
         self._dtype = dtype
+
+        if not shape:
+            shape = 0
 
         if not hnd:
             hnd = ctypes.c_void_p(0)
@@ -518,6 +527,21 @@ Optional label to assign</p></div>
         return self._dtype
 
     @property
+    def n_vals(self):
+        &#34;&#34;&#34;
+        Number of values in the array.
+
+        Returns
+        -------
+
+        Size of the array.
+        &#34;&#34;&#34;
+
+        n_values = ctypes.c_uint(0)
+        check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
+        return int(n_values.value)
+
+    @property
     def shape(self):
         &#34;&#34;&#34;
         2-Tuple with shape of array where second value is always 1.
@@ -528,9 +552,7 @@ Optional label to assign</p></div>
         Size of array as a tuple.
         &#34;&#34;&#34;
 
-        n_values = ctypes.c_uint(0)
-        check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
-        return int(n_values.value), 1
+        return self.n_vals, 1
 
     @property
     def empty(self):
@@ -553,10 +575,10 @@ Optional label to assign</p></div>
         ----------
 
         index: int.
-            Index at which value to set
+            Index at which value to set.
 
         value: any.
-            Value to set, must be convertible to destination type
+            Value to set, must be convertible to destination type.
         &#34;&#34;&#34;
 
         check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))
@@ -569,7 +591,7 @@ Optional label to assign</p></div>
         ----------
 
         index: int.
-            Index at which to get value
+            Index at which to get value.
 
         Returns
         -------
@@ -581,6 +603,33 @@ Optional label to assign</p></div>
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
         return self._dtype.to_py(value)
 
+    def build(self, view: MemView):
+        &#34;&#34;&#34;
+        Builds array from a raw memory view resource.
+
+        Parameters
+        ----------
+
+        view: MemView.
+            View to a memory to build the array content from.
+        &#34;&#34;&#34;
+
+        check(backend().spla_Array_build(self._hnd, view._hnd))
+
+    def read(self):
+        &#34;&#34;&#34;
+        Read the content of the array as a MemView.
+
+        Returns
+        -------
+
+        MemView object with view to the array content.
+        &#34;&#34;&#34;
+
+        view_hnd = ctypes.c_void_p(0)
+        check(backend().spla_Array_read(self._hnd, ctypes.byref(view_hnd)))
+        return MemView(hnd=view_hnd, owner=self)
+
     def resize(self, shape=0):
         &#34;&#34;&#34;
         Resizes array to new size with desired num of values specified as shape.
@@ -589,7 +638,7 @@ Optional label to assign</p></div>
         ----------
 
         shape: optional: int. default: 0.
-            New array capacity
+            New array capacity.
         &#34;&#34;&#34;
 
         check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))
@@ -608,35 +657,28 @@ Optional label to assign</p></div>
         Returns
         -------
 
-        List with values stored in the array
+        List with values stored in the array.
         &#34;&#34;&#34;
 
-        values = list()
-        value = self._dtype._c_type(0)
-
-        for i in range(self.shape[0]):
-            check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-            values.append(self._dtype.to_py(value))
-
-        return values
+        buffer = (self.dtype._c_type * self.n_vals)()
+        size = ctypes.c_size_t(ctypes.sizeof(buffer))
+        view = self.read()
+        check(backend().spla_MemView_read(view._hnd, ctypes.c_size_t(0), size, buffer))
+        return list(buffer)
 
     @classmethod
-    def from_list(cls, values, dtype=INT, shape=None):
+    def from_list(cls, values, dtype=INT):
         &#34;&#34;&#34;
-        Creates new array of desired type and shape and fills
-        its content with `values` data.
+        Creates new array of desired type from list of `values`.
 
         Parameters
         ----------
 
         values: List.
-            List with values to fill array
+            List with values to fill array.
 
         dtype: Type.
-            Type of the array stored value
-
-        shape: optional: int. default: None.
-            Optional size of array, by default inferred from `values`
+            Type of the array stored value.
 
         Returns
         -------
@@ -644,12 +686,10 @@ Optional label to assign</p></div>
         Created array filled with values.
         &#34;&#34;&#34;
 
-        if shape is None:
-            shape = len(values)
-        assert shape &gt;= len(values)
-        array = Array(dtype=dtype, shape=shape)
-        for i, v in enumerate(values):
-            array.set(i, v)
+        buffer = (dtype._c_type * len(values))(*values)
+        view = MemView(buffer=buffer, size=ctypes.sizeof(buffer), mutable=False)
+        array = Array(dtype=dtype)
+        array.build(view)
         return array
 
     @classmethod
@@ -662,16 +702,16 @@ Optional label to assign</p></div>
         ----------
 
         dtype: Type.
-            Type of values array will have
+            Type of values array will have.
 
         shape: optional: int. default: 0.
-            Size of the array (number of values)
+            Size of the array (number of values).
 
         seed: optional: int. default: None.
-            Optional seed to randomize generator
+            Optional seed to randomize generator.
 
         dist: optional: tuple. default: [0,1].
-            Optional distribution for uniform generation of values
+            Optional distribution for uniform generation of values.
 
         Returns
         -------
@@ -717,18 +757,15 @@ Optional label to assign</p></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="pyspla.Array.from_list"><code class="name flex">
-<span>def <span class="ident">from_list</span></span>(<span>values, dtype=pyspla.type.INT, shape=None)</span>
+<span>def <span class="ident">from_list</span></span>(<span>values, dtype=pyspla.type.INT)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Creates new array of desired type and shape and fills
-its content with <code>values</code> data.</p>
+<div class="desc"><p>Creates new array of desired type from list of <code>values</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <p>values: List.
-List with values to fill array</p>
+List with values to fill array.</p>
 <p>dtype: Type.
-Type of the array stored value</p>
-<p>shape: optional: int. default: None.
-Optional size of array, by default inferred from <code>values</code></p>
+Type of the array stored value.</p>
 <h2 id="returns">Returns</h2>
 <p>Created array filled with values.</p></div>
 <details class="source">
@@ -736,22 +773,18 @@ Optional size of array, by default inferred from <code>values</code></p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_list(cls, values, dtype=INT, shape=None):
+def from_list(cls, values, dtype=INT):
     &#34;&#34;&#34;
-    Creates new array of desired type and shape and fills
-    its content with `values` data.
+    Creates new array of desired type from list of `values`.
 
     Parameters
     ----------
 
     values: List.
-        List with values to fill array
+        List with values to fill array.
 
     dtype: Type.
-        Type of the array stored value
-
-    shape: optional: int. default: None.
-        Optional size of array, by default inferred from `values`
+        Type of the array stored value.
 
     Returns
     -------
@@ -759,12 +792,10 @@ def from_list(cls, values, dtype=INT, shape=None):
     Created array filled with values.
     &#34;&#34;&#34;
 
-    if shape is None:
-        shape = len(values)
-    assert shape &gt;= len(values)
-    array = Array(dtype=dtype, shape=shape)
-    for i, v in enumerate(values):
-        array.set(i, v)
+    buffer = (dtype._c_type * len(values))(*values)
+    view = MemView(buffer=buffer, size=ctypes.sizeof(buffer), mutable=False)
+    array = Array(dtype=dtype)
+    array.build(view)
     return array</code></pre>
 </details>
 </dd>
@@ -776,13 +807,13 @@ def from_list(cls, values, dtype=INT, shape=None):
 with random values, generated using specified distribution.</p>
 <h2 id="parameters">Parameters</h2>
 <p>dtype: Type.
-Type of values array will have</p>
+Type of values array will have.</p>
 <p>shape: optional: int. default: 0.
-Size of the array (number of values)</p>
+Size of the array (number of values).</p>
 <p>seed: optional: int. default: None.
-Optional seed to randomize generator</p>
+Optional seed to randomize generator.</p>
 <p>dist: optional: tuple. default: [0,1].
-Optional distribution for uniform generation of values</p>
+Optional distribution for uniform generation of values.</p>
 <h2 id="returns">Returns</h2>
 <p>Created array filled with values.</p></div>
 <details class="source">
@@ -799,16 +830,16 @@ def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
     ----------
 
     dtype: Type.
-        Type of values array will have
+        Type of values array will have.
 
     shape: optional: int. default: 0.
-        Size of the array (number of values)
+        Size of the array (number of values).
 
     seed: optional: int. default: None.
-        Optional seed to randomize generator
+        Optional seed to randomize generator.
 
     dist: optional: tuple. default: [0,1].
-        Optional distribution for uniform generation of values
+        Optional distribution for uniform generation of values.
 
     Returns
     -------
@@ -882,6 +913,31 @@ def empty(self):
     return self.shape[0] == 0</code></pre>
 </details>
 </dd>
+<dt id="pyspla.Array.n_vals"><code class="name">var <span class="ident">n_vals</span></code></dt>
+<dd>
+<div class="desc"><p>Number of values in the array.</p>
+<h2 id="returns">Returns</h2>
+<p>Size of the array.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n_vals(self):
+    &#34;&#34;&#34;
+    Number of values in the array.
+
+    Returns
+    -------
+
+    Size of the array.
+    &#34;&#34;&#34;
+
+    n_values = ctypes.c_uint(0)
+    check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
+    return int(n_values.value)</code></pre>
+</details>
+</dd>
 <dt id="pyspla.Array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
 <dd>
 <div class="desc"><p>2-Tuple with shape of array where second value is always 1.</p>
@@ -902,14 +958,38 @@ def shape(self):
     Size of array as a tuple.
     &#34;&#34;&#34;
 
-    n_values = ctypes.c_uint(0)
-    check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
-    return int(n_values.value), 1</code></pre>
+    return self.n_vals, 1</code></pre>
 </details>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="pyspla.Array.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>self, view: <a title="pyspla.memview.MemView" href="memview.html#pyspla.memview.MemView">MemView</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds array from a raw memory view resource.</p>
+<h2 id="parameters">Parameters</h2>
+<p>view: MemView.
+View to a memory to build the array content from.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build(self, view: MemView):
+    &#34;&#34;&#34;
+    Builds array from a raw memory view resource.
+
+    Parameters
+    ----------
+
+    view: MemView.
+        View to a memory to build the array content from.
+    &#34;&#34;&#34;
+
+    check(backend().spla_Array_build(self._hnd, view._hnd))</code></pre>
+</details>
+</dd>
 <dt id="pyspla.Array.clear"><code class="name flex">
 <span>def <span class="ident">clear</span></span>(<span>self)</span>
 </code></dt>
@@ -934,7 +1014,7 @@ def shape(self):
 <div class="desc"><p>Get value at specified index.</p>
 <h2 id="parameters">Parameters</h2>
 <p>index: int.
-Index at which to get value</p>
+Index at which to get value.</p>
 <h2 id="returns">Returns</h2>
 <p>Value at specified index.</p></div>
 <details class="source">
@@ -949,7 +1029,7 @@ Index at which to get value</p>
     ----------
 
     index: int.
-        Index at which to get value
+        Index at which to get value.
 
     Returns
     -------
@@ -962,6 +1042,32 @@ Index at which to get value</p>
     return self._dtype.to_py(value)</code></pre>
 </details>
 </dd>
+<dt id="pyspla.Array.read"><code class="name flex">
+<span>def <span class="ident">read</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read the content of the array as a MemView.</p>
+<h2 id="returns">Returns</h2>
+<p>MemView object with view to the array content.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read(self):
+    &#34;&#34;&#34;
+    Read the content of the array as a MemView.
+
+    Returns
+    -------
+
+    MemView object with view to the array content.
+    &#34;&#34;&#34;
+
+    view_hnd = ctypes.c_void_p(0)
+    check(backend().spla_Array_read(self._hnd, ctypes.byref(view_hnd)))
+    return MemView(hnd=view_hnd, owner=self)</code></pre>
+</details>
+</dd>
 <dt id="pyspla.Array.resize"><code class="name flex">
 <span>def <span class="ident">resize</span></span>(<span>self, shape=0)</span>
 </code></dt>
@@ -969,7 +1075,7 @@ Index at which to get value</p>
 <div class="desc"><p>Resizes array to new size with desired num of values specified as shape.</p>
 <h2 id="parameters">Parameters</h2>
 <p>shape: optional: int. default: 0.
-New array capacity</p></div>
+New array capacity.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -982,7 +1088,7 @@ New array capacity</p></div>
     ----------
 
     shape: optional: int. default: 0.
-        New array capacity
+        New array capacity.
     &#34;&#34;&#34;
 
     check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))</code></pre>
@@ -995,9 +1101,9 @@ New array capacity</p></div>
 <div class="desc"><p>Set value at specified index.</p>
 <h2 id="parameters">Parameters</h2>
 <p>index: int.
-Index at which value to set</p>
+Index at which value to set.</p>
 <p>value: any.
-Value to set, must be convertible to destination type</p></div>
+Value to set, must be convertible to destination type.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1010,10 +1116,10 @@ Value to set, must be convertible to destination type</p></div>
     ----------
 
     index: int.
-        Index at which value to set
+        Index at which value to set.
 
     value: any.
-        Value to set, must be convertible to destination type
+        Value to set, must be convertible to destination type.
     &#34;&#34;&#34;
 
     check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))</code></pre>
@@ -1025,10 +1131,7 @@ Value to set, must be convertible to destination type</p></div>
 <dd>
 <div class="desc"><p>Read array data as a python list of values.</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code>List with values stored in the <a title="pyspla.array" href="array.html">pyspla.array</a></code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
+<p>List with values stored in the array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1040,17 +1143,14 @@ Value to set, must be convertible to destination type</p></div>
     Returns
     -------
 
-    List with values stored in the array
+    List with values stored in the array.
     &#34;&#34;&#34;
 
-    values = list()
-    value = self._dtype._c_type(0)
-
-    for i in range(self.shape[0]):
-        check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-        values.append(self._dtype.to_py(value))
-
-    return values</code></pre>
+    buffer = (self.dtype._c_type * self.n_vals)()
+    size = ctypes.c_size_t(ctypes.sizeof(buffer))
+    view = self.read()
+    check(backend().spla_MemView_read(view._hnd, ctypes.c_size_t(0), size, buffer))
+    return list(buffer)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1355,7 +1455,7 @@ Object native void* handle to a C counterpart.</p></div>
 
     def __del__(self):
         if self._hnd:
-            check(backend().spla_Object_unref(self._hnd))
+            check(backend().spla_RefCnt_unref(self._hnd))
 
     def set_label(self, label):
         self._label = label
@@ -1366,6 +1466,7 @@ Object native void* handle to a C counterpart.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="pyspla.array.Array" href="array.html#pyspla.array.Array">Array</a></li>
+<li><a title="pyspla.memview.MemView" href="memview.html#pyspla.memview.MemView">MemView</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1734,6 +1835,7 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li><code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></li>
 <li><code><a title="pyspla.library" href="library.html">pyspla.library</a></code></li>
 <li><code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code></li>
+<li><code><a title="pyspla.memview" href="memview.html">pyspla.memview</a></code></li>
 <li><code><a title="pyspla.object" href="object.html">pyspla.object</a></code></li>
 <li><code><a title="pyspla.op" href="op.html">pyspla.op</a></code></li>
 <li><code><a title="pyspla.scalar" href="scalar.html">pyspla.scalar</a></code></li>
@@ -1748,12 +1850,15 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li>
 <h4><code><a title="pyspla.Array" href="#pyspla.Array">Array</a></code></h4>
 <ul class="two-column">
+<li><code><a title="pyspla.Array.build" href="#pyspla.Array.build">build</a></code></li>
 <li><code><a title="pyspla.Array.clear" href="#pyspla.Array.clear">clear</a></code></li>
 <li><code><a title="pyspla.Array.dtype" href="#pyspla.Array.dtype">dtype</a></code></li>
 <li><code><a title="pyspla.Array.empty" href="#pyspla.Array.empty">empty</a></code></li>
 <li><code><a title="pyspla.Array.from_list" href="#pyspla.Array.from_list">from_list</a></code></li>
 <li><code><a title="pyspla.Array.generate" href="#pyspla.Array.generate">generate</a></code></li>
 <li><code><a title="pyspla.Array.get" href="#pyspla.Array.get">get</a></code></li>
+<li><code><a title="pyspla.Array.n_vals" href="#pyspla.Array.n_vals">n_vals</a></code></li>
+<li><code><a title="pyspla.Array.read" href="#pyspla.Array.read">read</a></code></li>
 <li><code><a title="pyspla.Array.resize" href="#pyspla.Array.resize">resize</a></code></li>
 <li><code><a title="pyspla.Array.set" href="#pyspla.Array.set">set</a></code></li>
 <li><code><a title="pyspla.Array.shape" href="#pyspla.Array.shape">shape</a></code></li>

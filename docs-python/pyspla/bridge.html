@@ -308,11 +308,25 @@ def load_library(lib_path):
     _spla.spla_OpSelect_NEVER_UINT.argtypes = []
     _spla.spla_OpSelect_NEVER_FLOAT.argtypes = []
 
-    _spla.spla_Object_ref.restype = _status_t
-    _spla.spla_Object_unref.restype = _status_t
+    _spla.spla_RefCnt_ref.restype = _status_t
+    _spla.spla_RefCnt_unref.restype = _status_t
 
-    _spla.spla_Object_ref.argtypes = [_object_t]
-    _spla.spla_Object_unref.argtypes = [_object_t]
+    _spla.spla_RefCnt_ref.argtypes = [_object_t]
+    _spla.spla_RefCnt_unref.argtypes = [_object_t]
+
+    _spla.spla_MemView_make.restype = _status_t
+    _spla.spla_MemView_read.restype = _status_t
+    _spla.spla_MemView_write.restype = _status_t
+    _spla.spla_MemView_get_buffer = _status_t
+    _spla.spla_MemView_get_size = _status_t
+    _spla.spla_MemView_is_mutable = _status_t
+
+    _spla.spla_MemView_make.argtypes = [_p_object_t, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]
+    _spla.spla_MemView_read.argtypes = [_object_t, ctypes.c_size_t, ctypes.c_size_t, ctypes.c_void_p]
+    _spla.spla_MemView_write.argtypes = [_object_t, ctypes.c_size_t, ctypes.c_size_t, ctypes.c_void_p]
+    _spla.spla_MemView_get_buffer.argtypes = [_object_t, ctypes.POINTER(ctypes.c_void_p)]
+    _spla.spla_MemView_get_size.argtypes = [_object_t, ctypes.POINTER(ctypes.c_size_t)]
+    _spla.spla_MemView_is_mutable.argtypes = [_object_t, ctypes.POINTER(ctypes.c_int)]
 
     _spla.spla_Scalar_make.restype = _status_t
     _spla.spla_Scalar_set_int.restype = _status_t
@@ -339,6 +353,8 @@ def load_library(lib_path):
     _spla.spla_Array_get_uint.restype = _status_t
     _spla.spla_Array_get_float.restype = _status_t
     _spla.spla_Array_resize.restype = _status_t
+    _spla.spla_Array_build.restype = _status_t
+    _spla.spla_Array_read.restype = _status_t
     _spla.spla_Array_clear.restype = _status_t
 
     _spla.spla_Array_make.argtypes = [_p_object_t, _uint, _object_t]
@@ -350,6 +366,8 @@ def load_library(lib_path):
     _spla.spla_Array_get_uint.argtypes = [_object_t, _uint, _p_uint]
     _spla.spla_Array_get_float.argtypes = [_object_t, _uint, _p_float]
     _spla.spla_Array_resize.argtypes = [_object_t, _uint]
+    _spla.spla_Array_build.argtypes = [_object_t, _object_t]
+    _spla.spla_Array_read.argtypes = [_object_t, _p_object_t]
     _spla.spla_Array_clear.argtypes = [_object_t]
 
     _spla.spla_Vector_make.restype = _status_t
@@ -375,7 +393,7 @@ def load_library(lib_path):
     _spla.spla_Vector_get_uint.argtypes = [_object_t, _uint, _p_uint]
     _spla.spla_Vector_get_float.argtypes = [_object_t, _uint, _p_float]
     _spla.spla_Vector_build.argtypes = [_object_t, _object_t, _object_t]
-    _spla.spla_Vector_read.argtypes = [_object_t, _object_t, _object_t]
+    _spla.spla_Vector_read.argtypes = [_object_t, _p_object_t, _p_object_t]
     _spla.spla_Vector_clear.argtypes = [_object_t]
 
     _spla.spla_Matrix_make.restype = _status_t
@@ -401,7 +419,7 @@ def load_library(lib_path):
     _spla.spla_Matrix_get_uint.argtypes = [_object_t, _uint, _uint, _p_uint]
     _spla.spla_Matrix_get_float.argtypes = [_object_t, _uint, _uint, _p_float]
     _spla.spla_Matrix_build.argtypes = [_object_t, _object_t, _object_t, _object_t]
-    _spla.spla_Matrix_read.argtypes = [_object_t, _object_t, _object_t, _object_t]
+    _spla.spla_Matrix_read.argtypes = [_object_t, _p_object_t, _p_object_t, _p_object_t]
     _spla.spla_Matrix_clear.argtypes = [_object_t]
 
     _spla.spla_Algorithm_bfs.restype = _status_t

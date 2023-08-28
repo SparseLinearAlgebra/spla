@@ -101,7 +101,7 @@ class Object:
 
     def __del__(self):
         if self._hnd:
-            check(backend().spla_Object_unref(self._hnd))
+            check(backend().spla_RefCnt_unref(self._hnd))
 
     def set_label(self, label):
         self._label = label
@@ -186,7 +186,7 @@ Object native void* handle to a C counterpart.</p></div>
 
     def __del__(self):
         if self._hnd:
-            check(backend().spla_Object_unref(self._hnd))
+            check(backend().spla_RefCnt_unref(self._hnd))
 
     def set_label(self, label):
         self._label = label
@@ -197,6 +197,7 @@ Object native void* handle to a C counterpart.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="pyspla.array.Array" href="array.html#pyspla.array.Array">Array</a></li>
+<li><a title="pyspla.memview.MemView" href="memview.html#pyspla.memview.MemView">MemView</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
