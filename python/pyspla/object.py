@@ -54,6 +54,19 @@ class Object:
     __slots__ = ["_hnd", "_label"]
 
     def __init__(self, label, hnd):
+        """
+        Creates a base spla object class instance with common attributes.
+
+        Parameters
+        ----------
+
+        label: optional: str. default: None.
+            Object name for debugging.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            Object native void* handle to a C counterpart.
+        """
+
         self._hnd = hnd
         self._label = label
 

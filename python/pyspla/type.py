@@ -55,6 +55,14 @@ class Type:
     _matrix_set = None
     _hnd = None
 
+    @classmethod
+    def get_code(cls):
+        return cls._code
+
+    @classmethod
+    def to_py(cls, value):
+        pass
+
 
 class INT(Type):
     """Spla integral INT-32 type."""
@@ -76,7 +84,7 @@ class INT(Type):
         cls._hnd = backend().spla_Type_int()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)
 
 
@@ -100,7 +108,7 @@ class UINT(Type):
         cls._hnd = backend().spla_Type_uint()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return int(value.value)
 
 
@@ -124,7 +132,7 @@ class FLOAT(Type):
         cls._hnd = backend().spla_Type_float()
 
     @classmethod
-    def _to_python(cls, value):
+    def to_py(cls, value):
         return float(value.value)
 
 
