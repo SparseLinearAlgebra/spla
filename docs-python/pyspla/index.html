@@ -97,11 +97,11 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</p>
 <ul>
-<li><code>INT</code>
+<li><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code>
 - 4-byte-sized signed integral value</li>
-<li><code>UINT</code>
+<li><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code>
 - 4-byte-sized unsigned integral value</li>
-<li><code>FLOAT</code> - 4-byte-sized single-precision floating point value</li>
+<li><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code> - 4-byte-sized single-precision floating point value</li>
 </ul>
 <h2 id="op">Op</h2>
 <p>Library provides a set of unary, binary and select ops for values data manipulation inside
@@ -271,7 +271,7 @@ State of the library managed by internal `bridge` module. All resources are unlo
 on package exit. Library state finalized automatically.
 &#34;&#34;&#34;
 
-__copyright__ = &#34;Copyright (c) 2021-2022 SparseLinearAlgebra&#34;
+__copyright__ = &#34;Copyright (c) 2021-2023 SparseLinearAlgebra&#34;
 
 __license__ = &#34;&#34;&#34;
 MIT License
@@ -295,21 +295,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 &#34;&#34;&#34;
 
+from .bridge import *
+
+bridge.initialize()
+
 from .library import *
 from .op import *
 from .object import *
 from .schedule import *
 from .type import *
+from .array import *
 from .matrix import *
 from .vector import *
 from .scalar import *
 from .version import *
-from .bridge import *
+
+if not bridge.is_docs():
+    for t in BUILT_IN:
+        t._setup()
 
 __version__ = VERSIONS[-1]
 
 __all__ = [
+    &#34;Type&#34;,
+    &#34;INT&#34;,
+    &#34;UINT&#34;,
+    &#34;FLOAT&#34;,
     &#34;Object&#34;,
+    &#34;Array&#34;,
     &#34;Matrix&#34;,
     &#34;Vector&#34;,
     &#34;Scalar&#34;,
@@ -320,6 +333,10 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
+<dt><code class="name"><a title="pyspla.array" href="array.html">pyspla.array</a></code></dt>
+<dd>
+<div class="desc"><p>Wrapped native (spla C API) array primitive implementation.</p></div>
+</dd>
 <dt><code class="name"><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></dt>
 <dd>
 <div class="desc"><p>Wrapped native (spla C API) raw functions access.</p></div>
@@ -369,6 +386,604 @@ __all__ = [
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="pyspla.Array"><code class="flex name class">
+<span>class <span class="ident">Array</span></span>
+<span>(</span><span>dtype=pyspla.type.INT, shape=0, hnd=None, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generalized statically-typed dense linear array primitive.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>dtype : <code><a title="pyspla.Type" href="#pyspla.Type">Type</a></code> type of stored array elements</li>
+<li>shape : <code>2-tuple</code> shape of the array in form of two integers tuple (second dim is 1)</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Array provides features for:</p>
+<ul>
+<li>fill with values</li>
+<li>read-back by value</li>
+<li>source for vector construction</li>
+<li>source for matrix construction</li>
+</ul>
+<p>Array typical usage:</p>
+<ul>
+<li>(1) Instantiate array primitive</li>
+<li>(2) Fill with values from your data</li>
+<li>(3) Use array to build entire vector or matrix</li>
+<li>(4) Read-back results of computations from vector or matrix</li>
+</ul>
+<h2 id="details">Details</h2>
+<p>Array class support all spla C API vector functions.
+It provides bind functionality as well as new functions/methods for better python user experience.</p>
+<p>Array internally manages native optimized storage for values.
+Reading and writing values into array is fast and has nearly no overhead.</p>
+<p>Creates new array of specified type and shape.</p>
+<p>:param dtype: Type parametrization of a storage
+:param shape: Size of the array
+:param hnd: Optional native handle to retain
+:param label: Optional label to assign</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Array(Object):
+    &#34;&#34;&#34;
+    Generalized statically-typed dense linear array primitive.
+
+    Attributes
+    ----------
+
+    - dtype : `Type` type of stored array elements
+    - shape : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
+
+    Notes
+    -----
+
+    Array provides features for:
+
+    - fill with values
+    - read-back by value
+    - source for vector construction
+    - source for matrix construction
+
+    Array typical usage:
+
+    - (1) Instantiate array primitive
+    - (2) Fill with values from your data
+    - (3) Use array to build entire vector or matrix
+    - (4) Read-back results of computations from vector or matrix
+
+    Details
+    -------
+
+    Array class support all spla C API vector functions.
+    It provides bind functionality as well as new functions/methods for better python user experience.
+
+    Array internally manages native optimized storage for values.
+    Reading and writing values into array is fast and has nearly no overhead.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype&#34;]
+
+    def __init__(self, dtype=INT, shape=0, hnd=None, label=None):
+        &#34;&#34;&#34;
+        Creates new array of specified type and shape.
+
+        :param dtype: Type parametrization of a storage
+        :param shape: Size of the array
+        :param hnd: Optional native handle to retain
+        :param label: Optional label to assign
+        &#34;&#34;&#34;
+
+        super().__init__(None, None)
+
+        assert dtype
+        assert shape
+        assert shape &gt;= 0
+        assert issubclass(dtype, Type)
+
+        self._dtype = dtype
+
+        if not hnd:
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_Array_make(ctypes.byref(hnd), ctypes.c_uint(shape), dtype._hnd))
+
+        super().__init__(label, hnd)
+
+    @property
+    def dtype(self):
+        &#34;&#34;&#34;
+        Type used for storage parametrization of this container.
+
+        :return: Type of stored values
+        &#34;&#34;&#34;
+        return self._dtype
+
+    @property
+    def shape(self):
+        &#34;&#34;&#34;
+        2-Tuple with shape of array where second value is always 1.
+
+        :return: Size of array as a tuple
+        &#34;&#34;&#34;
+
+        n_values = ctypes.c_uint(0)
+        check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
+        return int(n_values.value), 1
+
+    @property
+    def empty(self):
+        &#34;&#34;&#34;
+        Checks if array is empty (has 0-size) and returns true.
+
+        :return: True if array is empty
+        &#34;&#34;&#34;
+
+        return self.shape[0] == 0
+
+    def set(self, index, value):
+        &#34;&#34;&#34;
+        Set value at specified index.
+
+        :param index: Index at which value to set
+        :param value: Value to set, must be convertible to destination type
+        :return:
+        &#34;&#34;&#34;
+
+        check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))
+
+    def get(self, index):
+        &#34;&#34;&#34;
+        Get value at specified index.
+
+        :param index: Index at which to get value
+        :return: Value at specified index
+        &#34;&#34;&#34;
+
+        value = self._dtype._c_type(0)
+        check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
+        return self._dtype._to_python(value)
+
+    def resize(self, shape=0):
+        &#34;&#34;&#34;
+        Resizes array to new size with desired num of values specified as shape.
+
+        :param shape: New array capacity
+        :return:
+        &#34;&#34;&#34;
+
+        check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))
+
+    def clear(self):
+        &#34;&#34;&#34;
+        Clears array removing all elements, so it has 0 values.
+
+        :return:
+        &#34;&#34;&#34;
+
+        check(backend().spla_Array_clear(self._hnd))
+
+    def to_list(self):
+        &#34;&#34;&#34;
+        Read array data as a python list of values.
+
+        :return: List with values stored in the array
+        &#34;&#34;&#34;
+
+        values = list()
+        value = self._dtype._c_type(0)
+
+        for i in range(self.shape[0]):
+            check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
+            values.append(self._dtype._to_python(value))
+
+        return values
+
+    @classmethod
+    def from_list(cls, values, dtype=INT, shape=None):
+        &#34;&#34;&#34;
+        Creates new array of desired type and shape and fills its content with `values` data.
+
+        :param values: List with values to fill array
+        :param dtype: Type of the array stored value
+        :param shape: Optional size of array, by default inferred from `values`
+        :return: Created array filled with values
+        &#34;&#34;&#34;
+
+        if shape is None:
+            shape = len(values)
+        assert shape &gt;= len(values)
+        array = Array(dtype=dtype, shape=shape)
+        for i, v in enumerate(values):
+            array.set(i, v)
+        return array
+
+    @classmethod
+    def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
+        &#34;&#34;&#34;
+        Creates new array of desired type and shape and fills its content
+        with random values, generated using specified distribution.
+
+        :param dtype: Type of values array will have
+        :param shape: Size of the array (number of values)
+        :param seed: Optional seed to randomize generator
+        :param dist: Optional distribution for uniform generation of values
+        :return: Created array filled with values
+        &#34;&#34;&#34;
+
+        array = Array(dtype=dtype, shape=shape)
+
+        if seed is not None:
+            rnd.seed(seed)
+
+        if dtype is INT:
+            for i in range(shape):
+                array.set(i, rnd.randint(dist[0], dist[1]))
+        elif dtype is UINT:
+            for i in range(shape):
+                array.set(i, rnd.randint(dist[0], dist[1]))
+        elif dtype is FLOAT:
+            for i in range(shape):
+                array.set(i, rnd.uniform(dist[0], dist[1]))
+
+        return array
+
+    def __str__(self):
+        return str(self.to_list())
+
+    def __iter__(self):
+        return iter(self.to_list())
+
+    def __setitem__(self, key, value):
+        assert isinstance(key, int)
+        self.set(key, value)
+
+    def __getitem__(self, item):
+        assert isinstance(item, int)
+        return self.get(item)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.Array.from_list"><code class="name flex">
+<span>def <span class="ident">from_list</span></span>(<span>values, dtype=pyspla.type.INT, shape=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates new array of desired type and shape and fills its content with <code>values</code> data.</p>
+<p>:param values: List with values to fill array
+:param dtype: Type of the array stored value
+:param shape: Optional size of array, by default inferred from <code>values</code>
+:return: Created array filled with values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_list(cls, values, dtype=INT, shape=None):
+    &#34;&#34;&#34;
+    Creates new array of desired type and shape and fills its content with `values` data.
+
+    :param values: List with values to fill array
+    :param dtype: Type of the array stored value
+    :param shape: Optional size of array, by default inferred from `values`
+    :return: Created array filled with values
+    &#34;&#34;&#34;
+
+    if shape is None:
+        shape = len(values)
+    assert shape &gt;= len(values)
+    array = Array(dtype=dtype, shape=shape)
+    for i, v in enumerate(values):
+        array.set(i, v)
+    return array</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>dtype=pyspla.type.INT, shape=0, seed=None, dist=(0, 1))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates new array of desired type and shape and fills its content
+with random values, generated using specified distribution.</p>
+<p>:param dtype: Type of values array will have
+:param shape: Size of the array (number of values)
+:param seed: Optional seed to randomize generator
+:param dist: Optional distribution for uniform generation of values
+:return: Created array filled with values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
+    &#34;&#34;&#34;
+    Creates new array of desired type and shape and fills its content
+    with random values, generated using specified distribution.
+
+    :param dtype: Type of values array will have
+    :param shape: Size of the array (number of values)
+    :param seed: Optional seed to randomize generator
+    :param dist: Optional distribution for uniform generation of values
+    :return: Created array filled with values
+    &#34;&#34;&#34;
+
+    array = Array(dtype=dtype, shape=shape)
+
+    if seed is not None:
+        rnd.seed(seed)
+
+    if dtype is INT:
+        for i in range(shape):
+            array.set(i, rnd.randint(dist[0], dist[1]))
+    elif dtype is UINT:
+        for i in range(shape):
+            array.set(i, rnd.randint(dist[0], dist[1]))
+    elif dtype is FLOAT:
+        for i in range(shape):
+            array.set(i, rnd.uniform(dist[0], dist[1]))
+
+    return array</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.Array.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
+<dd>
+<div class="desc"><p>Type used for storage parametrization of this container.</p>
+<p>:return: Type of stored values</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype(self):
+    &#34;&#34;&#34;
+    Type used for storage parametrization of this container.
+
+    :return: Type of stored values
+    &#34;&#34;&#34;
+    return self._dtype</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.empty"><code class="name">var <span class="ident">empty</span></code></dt>
+<dd>
+<div class="desc"><p>Checks if array is empty (has 0-size) and returns true.</p>
+<p>:return: True if array is empty</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def empty(self):
+    &#34;&#34;&#34;
+    Checks if array is empty (has 0-size) and returns true.
+
+    :return: True if array is empty
+    &#34;&#34;&#34;
+
+    return self.shape[0] == 0</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.shape"><code class="name">var <span class="ident">shape</span></code></dt>
+<dd>
+<div class="desc"><p>2-Tuple with shape of array where second value is always 1.</p>
+<p>:return: Size of array as a tuple</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def shape(self):
+    &#34;&#34;&#34;
+    2-Tuple with shape of array where second value is always 1.
+
+    :return: Size of array as a tuple
+    &#34;&#34;&#34;
+
+    n_values = ctypes.c_uint(0)
+    check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
+    return int(n_values.value), 1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspla.Array.clear"><code class="name flex">
+<span>def <span class="ident">clear</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clears array removing all elements, so it has 0 values.</p>
+<p>:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear(self):
+    &#34;&#34;&#34;
+    Clears array removing all elements, so it has 0 values.
+
+    :return:
+    &#34;&#34;&#34;
+
+    check(backend().spla_Array_clear(self._hnd))</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get value at specified index.</p>
+<p>:param index: Index at which to get value
+:return: Value at specified index</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self, index):
+    &#34;&#34;&#34;
+    Get value at specified index.
+
+    :param index: Index at which to get value
+    :return: Value at specified index
+    &#34;&#34;&#34;
+
+    value = self._dtype._c_type(0)
+    check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
+    return self._dtype._to_python(value)</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.resize"><code class="name flex">
+<span>def <span class="ident">resize</span></span>(<span>self, shape=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resizes array to new size with desired num of values specified as shape.</p>
+<p>:param shape: New array capacity
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resize(self, shape=0):
+    &#34;&#34;&#34;
+    Resizes array to new size with desired num of values specified as shape.
+
+    :param shape: New array capacity
+    :return:
+    &#34;&#34;&#34;
+
+    check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.set"><code class="name flex">
+<span>def <span class="ident">set</span></span>(<span>self, index, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set value at specified index.</p>
+<p>:param index: Index at which value to set
+:param value: Value to set, must be convertible to destination type
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set(self, index, value):
+    &#34;&#34;&#34;
+    Set value at specified index.
+
+    :param index: Index at which value to set
+    :param value: Value to set, must be convertible to destination type
+    :return:
+    &#34;&#34;&#34;
+
+    check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Array.to_list"><code class="name flex">
+<span>def <span class="ident">to_list</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read array data as a python list of values.</p>
+<p>:return: List with values stored in the array</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_list(self):
+    &#34;&#34;&#34;
+    Read array data as a python list of values.
+
+    :return: List with values stored in the array
+    &#34;&#34;&#34;
+
+    values = list()
+    value = self._dtype._c_type(0)
+
+    for i in range(self.shape[0]):
+        check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
+        values.append(self._dtype._to_python(value))
+
+    return values</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyspla.FLOAT"><code class="flex name class">
+<span>class <span class="ident">FLOAT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla floating-point FLOAT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FLOAT(Type):
+    &#34;&#34;&#34;Spla floating-point FLOAT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_float
+    _c_type_p = ctypes.POINTER(ctypes.c_float)
+    _code = &#39;F&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_float
+        cls._scalar_set = backend().spla_Scalar_set_float
+        cls._array_get = backend().spla_Array_get_float
+        cls._array_set = backend().spla_Array_set_float
+        cls._vector_get = backend().spla_Vector_get_float
+        cls._vector_set = backend().spla_Vector_set_float
+        cls._matrix_get = backend().spla_Matrix_get_float
+        cls._matrix_set = backend().spla_Matrix_set_float
+        cls._hnd = backend().spla_Type_float()
+
+    @classmethod
+    def _to_python(cls, value):
+        return float(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
+</ul>
+</dd>
+<dt id="pyspla.INT"><code class="flex name class">
+<span>class <span class="ident">INT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla integral INT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class INT(Type):
+    &#34;&#34;&#34;Spla integral INT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_int
+    _c_type_p = ctypes.POINTER(ctypes.c_int)
+    _code = &#39;I&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_int
+        cls._scalar_set = backend().spla_Scalar_set_int
+        cls._array_get = backend().spla_Array_get_int
+        cls._array_set = backend().spla_Array_set_int
+        cls._vector_get = backend().spla_Vector_get_int
+        cls._vector_set = backend().spla_Vector_set_int
+        cls._matrix_get = backend().spla_Matrix_get_int
+        cls._matrix_set = backend().spla_Matrix_set_int
+        cls._hnd = backend().spla_Type_int()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
+</ul>
+</dd>
 <dt id="pyspla.Matrix"><code class="flex name class">
 <span>class <span class="ident">Matrix</span></span>
 </code></dt>
@@ -496,13 +1111,14 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </dd>
 <dt id="pyspla.Object"><code class="flex name class">
 <span>class <span class="ident">Object</span></span>
+<span>(</span><span>label, hnd)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for any spla library object.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
 <li>label : <code>str</code> user provided text label for object for debugging</li>
-<li>hnd : <code>ctypes.p_void</code> hnd to native object in spla C API</li>
+<li>hnd : <code>ctypes.c_void_p</code> hnd to native object in spla C API</li>
 </ul>
 <h2 id="details">Details</h2>
 <p>Object class support all spla C API matrix functions.
@@ -521,7 +1137,7 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
     ----------
 
     - label : `str` user provided text label for object for debugging
-    - hnd : `ctypes.p_void` hnd to native object in spla C API
+    - hnd : `ctypes.c_void_p` hnd to native object in spla C API
 
     Details
     -------
@@ -533,9 +1149,55 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
     of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     &#34;&#34;&#34;
 
-    def __init__(self):
-        pass</code></pre>
+    __slots__ = [&#34;_hnd&#34;, &#34;_label&#34;]
+
+    def __init__(self, label, hnd):
+        self._hnd = hnd
+        self._label = label
+
+    def __del__(self):
+        if self._hnd:
+            check(backend().spla_Object_unref(self._hnd))
+
+    def set_label(self, label):
+        self._label = label
+
+    def get_label(self):
+        return self._label</code></pre>
 </details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.array.Array" href="array.html#pyspla.array.Array">Array</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspla.Object.get_label"><code class="name flex">
+<span>def <span class="ident">get_label</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_label(self):
+    return self._label</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Object.set_label"><code class="name flex">
+<span>def <span class="ident">set_label</span></span>(<span>self, label)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_label(self, label):
+    self._label = label</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="pyspla.Scalar"><code class="flex name class">
 <span>class <span class="ident">Scalar</span></span>
@@ -616,6 +1278,75 @@ Meta-data additionally stored with each scalar value.</p></div>
     def __init__(self):
         pass</code></pre>
 </details>
+</dd>
+<dt id="pyspla.Type"><code class="flex name class">
+<span>class <span class="ident">Type</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla base Type for storage parametrization.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Type:
+    &#34;&#34;&#34;Spla base Type for storage parametrization.&#34;&#34;&#34;
+
+    _c_type = None
+    _c_type_p = None
+    _code = &#39;&#39;
+    _scalar_get = None
+    _scalar_set = None
+    _array_get = None
+    _array_set = None
+    _vector_get = None
+    _vector_set = None
+    _matrix_get = None
+    _matrix_set = None
+    _hnd = None</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.FLOAT" href="type.html#pyspla.type.FLOAT">FLOAT</a></li>
+<li><a title="pyspla.type.INT" href="type.html#pyspla.type.INT">INT</a></li>
+<li><a title="pyspla.type.UINT" href="type.html#pyspla.type.UINT">UINT</a></li>
+</ul>
+</dd>
+<dt id="pyspla.UINT"><code class="flex name class">
+<span>class <span class="ident">UINT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla integral UINT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UINT(Type):
+    &#34;&#34;&#34;Spla integral UINT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_uint
+    _c_type_p = ctypes.POINTER(ctypes.c_uint)
+    _code = &#39;U&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_uint
+        cls._scalar_set = backend().spla_Scalar_set_uint
+        cls._array_get = backend().spla_Array_get_uint
+        cls._array_set = backend().spla_Array_set_uint
+        cls._vector_get = backend().spla_Vector_get_uint
+        cls._vector_set = backend().spla_Vector_set_uint
+        cls._matrix_get = backend().spla_Matrix_get_uint
+        cls._matrix_set = backend().spla_Matrix_set_uint
+        cls._hnd = backend().spla_Type_uint()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
+</ul>
 </dd>
 <dt id="pyspla.Vector"><code class="flex name class">
 <span>class <span class="ident">Vector</span></span>
@@ -745,6 +1476,7 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
+<li><code><a title="pyspla.array" href="array.html">pyspla.array</a></code></li>
 <li><code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code></li>
 <li><code><a title="pyspla.library" href="library.html">pyspla.library</a></code></li>
 <li><code><a title="pyspla.matrix" href="matrix.html">pyspla.matrix</a></code></li>
@@ -760,13 +1492,44 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="pyspla.Array" href="#pyspla.Array">Array</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyspla.Array.clear" href="#pyspla.Array.clear">clear</a></code></li>
+<li><code><a title="pyspla.Array.dtype" href="#pyspla.Array.dtype">dtype</a></code></li>
+<li><code><a title="pyspla.Array.empty" href="#pyspla.Array.empty">empty</a></code></li>
+<li><code><a title="pyspla.Array.from_list" href="#pyspla.Array.from_list">from_list</a></code></li>
+<li><code><a title="pyspla.Array.generate" href="#pyspla.Array.generate">generate</a></code></li>
+<li><code><a title="pyspla.Array.get" href="#pyspla.Array.get">get</a></code></li>
+<li><code><a title="pyspla.Array.resize" href="#pyspla.Array.resize">resize</a></code></li>
+<li><code><a title="pyspla.Array.set" href="#pyspla.Array.set">set</a></code></li>
+<li><code><a title="pyspla.Array.shape" href="#pyspla.Array.shape">shape</a></code></li>
+<li><code><a title="pyspla.Array.to_list" href="#pyspla.Array.to_list">to_list</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code></h4>
+</li>
+<li>
 <h4><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code></h4>
 </li>
 <li>
 <h4><code><a title="pyspla.Object" href="#pyspla.Object">Object</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.Object.get_label" href="#pyspla.Object.get_label">get_label</a></code></li>
+<li><code><a title="pyspla.Object.set_label" href="#pyspla.Object.set_label">set_label</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.Scalar" href="#pyspla.Scalar">Scalar</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.Type" href="#pyspla.Type">Type</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code></h4>
 </li>
 <li>
 <h4><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code></h4>

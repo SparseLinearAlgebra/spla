@@ -31,7 +31,7 @@
 Wrapped native (spla C API) object primitive implementation.
 &#34;&#34;&#34;
 
-__copyright__ = &#34;Copyright (c) 2021-2022 SparseLinearAlgebra&#34;
+__copyright__ = &#34;Copyright (c) 2021-2023 SparseLinearAlgebra&#34;
 
 __license__ = &#34;&#34;&#34;
 MIT License
@@ -57,6 +57,8 @@ SOFTWARE.
 
 import ctypes
 
+from .bridge import backend, check
+
 
 class Object:
     &#34;&#34;&#34;
@@ -66,7 +68,7 @@ class Object:
     ----------
 
     - label : `str` user provided text label for object for debugging
-    - hnd : `ctypes.p_void` hnd to native object in spla C API
+    - hnd : `ctypes.c_void_p` hnd to native object in spla C API
 
     Details
     -------
@@ -78,8 +80,21 @@ class Object:
     of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     &#34;&#34;&#34;
 
-    def __init__(self):
-        pass</code></pre>
+    __slots__ = [&#34;_hnd&#34;, &#34;_label&#34;]
+
+    def __init__(self, label, hnd):
+        self._hnd = hnd
+        self._label = label
+
+    def __del__(self):
+        if self._hnd:
+            check(backend().spla_Object_unref(self._hnd))
+
+    def set_label(self, label):
+        self._label = label
+
+    def get_label(self):
+        return self._label</code></pre>
 </details>
 </section>
 <section>
@@ -93,13 +108,14 @@ class Object:
 <dl>
 <dt id="pyspla.object.Object"><code class="flex name class">
 <span>class <span class="ident">Object</span></span>
+<span>(</span><span>label, hnd)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for any spla library object.</p>
 <h2 id="attributes">Attributes</h2>
 <ul>
 <li>label : <code>str</code> user provided text label for object for debugging</li>
-<li>hnd : <code>ctypes.p_void</code> hnd to native object in spla C API</li>
+<li>hnd : <code>ctypes.c_void_p</code> hnd to native object in spla C API</li>
 </ul>
 <h2 id="details">Details</h2>
 <p>Object class support all spla C API matrix functions.
@@ -118,7 +134,7 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
     ----------
 
     - label : `str` user provided text label for object for debugging
-    - hnd : `ctypes.p_void` hnd to native object in spla C API
+    - hnd : `ctypes.c_void_p` hnd to native object in spla C API
 
     Details
     -------
@@ -130,9 +146,55 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
     of native spla C/C++ instances, created inside imported native shared spla (.dll/.so/.dylib) library.
     &#34;&#34;&#34;
 
-    def __init__(self):
-        pass</code></pre>
+    __slots__ = [&#34;_hnd&#34;, &#34;_label&#34;]
+
+    def __init__(self, label, hnd):
+        self._hnd = hnd
+        self._label = label
+
+    def __del__(self):
+        if self._hnd:
+            check(backend().spla_Object_unref(self._hnd))
+
+    def set_label(self, label):
+        self._label = label
+
+    def get_label(self):
+        return self._label</code></pre>
 </details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.array.Array" href="array.html#pyspla.array.Array">Array</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyspla.object.Object.get_label"><code class="name flex">
+<span>def <span class="ident">get_label</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_label(self):
+    return self._label</code></pre>
+</details>
+</dd>
+<dt id="pyspla.object.Object.set_label"><code class="name flex">
+<span>def <span class="ident">set_label</span></span>(<span>self, label)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_label(self, label):
+    self._label = label</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -152,6 +214,10 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 <ul>
 <li>
 <h4><code><a title="pyspla.object.Object" href="#pyspla.object.Object">Object</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.object.Object.get_label" href="#pyspla.object.Object.get_label">get_label</a></code></li>
+<li><code><a title="pyspla.object.Object.set_label" href="#pyspla.object.Object.set_label">set_label</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

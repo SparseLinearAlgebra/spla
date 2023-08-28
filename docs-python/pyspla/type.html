@@ -31,7 +31,7 @@
 Wrapped native (spla C API) type support implementation.
 &#34;&#34;&#34;
 
-__copyright__ = &#34;Copyright (c) 2021-2022 SparseLinearAlgebra&#34;
+__copyright__ = &#34;Copyright (c) 2021-2023 SparseLinearAlgebra&#34;
 
 __license__ = &#34;&#34;&#34;
 MIT License
@@ -53,7 +53,111 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-&#34;&#34;&#34;</code></pre>
+&#34;&#34;&#34;
+
+import ctypes
+
+from .bridge import backend
+
+__all__ = [
+    &#39;Type&#39;,
+    &#39;INT&#39;,
+    &#39;UINT&#39;,
+    &#39;FLOAT&#39;,
+    &#39;BUILT_IN&#39;
+]
+
+
+class Type:
+    &#34;&#34;&#34;Spla base Type for storage parametrization.&#34;&#34;&#34;
+
+    _c_type = None
+    _c_type_p = None
+    _code = &#39;&#39;
+    _scalar_get = None
+    _scalar_set = None
+    _array_get = None
+    _array_set = None
+    _vector_get = None
+    _vector_set = None
+    _matrix_get = None
+    _matrix_set = None
+    _hnd = None
+
+
+class INT(Type):
+    &#34;&#34;&#34;Spla integral INT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_int
+    _c_type_p = ctypes.POINTER(ctypes.c_int)
+    _code = &#39;I&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_int
+        cls._scalar_set = backend().spla_Scalar_set_int
+        cls._array_get = backend().spla_Array_get_int
+        cls._array_set = backend().spla_Array_set_int
+        cls._vector_get = backend().spla_Vector_get_int
+        cls._vector_set = backend().spla_Vector_set_int
+        cls._matrix_get = backend().spla_Matrix_get_int
+        cls._matrix_set = backend().spla_Matrix_set_int
+        cls._hnd = backend().spla_Type_int()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)
+
+
+class UINT(Type):
+    &#34;&#34;&#34;Spla integral UINT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_uint
+    _c_type_p = ctypes.POINTER(ctypes.c_uint)
+    _code = &#39;U&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_uint
+        cls._scalar_set = backend().spla_Scalar_set_uint
+        cls._array_get = backend().spla_Array_get_uint
+        cls._array_set = backend().spla_Array_set_uint
+        cls._vector_get = backend().spla_Vector_get_uint
+        cls._vector_set = backend().spla_Vector_set_uint
+        cls._matrix_get = backend().spla_Matrix_get_uint
+        cls._matrix_set = backend().spla_Matrix_set_uint
+        cls._hnd = backend().spla_Type_uint()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)
+
+
+class FLOAT(Type):
+    &#34;&#34;&#34;Spla floating-point FLOAT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_float
+    _c_type_p = ctypes.POINTER(ctypes.c_float)
+    _code = &#39;F&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_float
+        cls._scalar_set = backend().spla_Scalar_set_float
+        cls._array_get = backend().spla_Array_get_float
+        cls._array_set = backend().spla_Array_set_float
+        cls._vector_get = backend().spla_Vector_get_float
+        cls._vector_set = backend().spla_Vector_set_float
+        cls._matrix_get = backend().spla_Matrix_get_float
+        cls._matrix_set = backend().spla_Matrix_set_float
+        cls._hnd = backend().spla_Type_float()
+
+    @classmethod
+    def _to_python(cls, value):
+        return float(value.value)
+
+
+BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 </details>
 </section>
 <section>
@@ -63,6 +167,152 @@ SOFTWARE.
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyspla.type.FLOAT"><code class="flex name class">
+<span>class <span class="ident">FLOAT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla floating-point FLOAT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FLOAT(Type):
+    &#34;&#34;&#34;Spla floating-point FLOAT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_float
+    _c_type_p = ctypes.POINTER(ctypes.c_float)
+    _code = &#39;F&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_float
+        cls._scalar_set = backend().spla_Scalar_set_float
+        cls._array_get = backend().spla_Array_get_float
+        cls._array_set = backend().spla_Array_set_float
+        cls._vector_get = backend().spla_Vector_get_float
+        cls._vector_set = backend().spla_Vector_set_float
+        cls._matrix_get = backend().spla_Matrix_get_float
+        cls._matrix_set = backend().spla_Matrix_set_float
+        cls._hnd = backend().spla_Type_float()
+
+    @classmethod
+    def _to_python(cls, value):
+        return float(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
+</ul>
+</dd>
+<dt id="pyspla.type.INT"><code class="flex name class">
+<span>class <span class="ident">INT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla integral INT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class INT(Type):
+    &#34;&#34;&#34;Spla integral INT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_int
+    _c_type_p = ctypes.POINTER(ctypes.c_int)
+    _code = &#39;I&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_int
+        cls._scalar_set = backend().spla_Scalar_set_int
+        cls._array_get = backend().spla_Array_get_int
+        cls._array_set = backend().spla_Array_set_int
+        cls._vector_get = backend().spla_Vector_get_int
+        cls._vector_set = backend().spla_Vector_set_int
+        cls._matrix_get = backend().spla_Matrix_get_int
+        cls._matrix_set = backend().spla_Matrix_set_int
+        cls._hnd = backend().spla_Type_int()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
+</ul>
+</dd>
+<dt id="pyspla.type.Type"><code class="flex name class">
+<span>class <span class="ident">Type</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla base Type for storage parametrization.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Type:
+    &#34;&#34;&#34;Spla base Type for storage parametrization.&#34;&#34;&#34;
+
+    _c_type = None
+    _c_type_p = None
+    _code = &#39;&#39;
+    _scalar_get = None
+    _scalar_set = None
+    _array_get = None
+    _array_set = None
+    _vector_get = None
+    _vector_set = None
+    _matrix_get = None
+    _matrix_set = None
+    _hnd = None</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.FLOAT" href="#pyspla.type.FLOAT">FLOAT</a></li>
+<li><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></li>
+<li><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></li>
+</ul>
+</dd>
+<dt id="pyspla.type.UINT"><code class="flex name class">
+<span>class <span class="ident">UINT</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla integral UINT-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UINT(Type):
+    &#34;&#34;&#34;Spla integral UINT-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_uint
+    _c_type_p = ctypes.POINTER(ctypes.c_uint)
+    _code = &#39;U&#39;
+
+    @classmethod
+    def _setup(cls):
+        cls._scalar_get = backend().spla_Scalar_get_uint
+        cls._scalar_set = backend().spla_Scalar_set_uint
+        cls._array_get = backend().spla_Array_get_uint
+        cls._array_set = backend().spla_Array_set_uint
+        cls._vector_get = backend().spla_Vector_get_uint
+        cls._vector_set = backend().spla_Vector_set_uint
+        cls._matrix_get = backend().spla_Matrix_get_uint
+        cls._matrix_set = backend().spla_Matrix_set_uint
+        cls._hnd = backend().spla_Type_uint()
+
+    @classmethod
+    def _to_python(cls, value):
+        return int(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -74,6 +324,22 @@ SOFTWARE.
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="pyspla" href="index.html">pyspla</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyspla.type.FLOAT" href="#pyspla.type.FLOAT">FLOAT</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
