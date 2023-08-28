@@ -90,6 +90,8 @@ Include dependency graph for c_array.cpp:</div>
 Functions</h2></td></tr>
 <tr class="memitem:a9c95021d5f4d4504b52e3c5617d796e5"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#a9c95021d5f4d4504b52e3c5617d796e5">spla_Array_make</a> (spla_Array *v, spla_uint n_values, spla_Type type)</td></tr>
 <tr class="separator:a9c95021d5f4d4504b52e3c5617d796e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d7b665f65ebf0518001525659c3c312"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#a8d7b665f65ebf0518001525659c3c312">spla_Array_get_n_values</a> (spla_Array a, spla_uint *values)</td></tr>
+<tr class="separator:a8d7b665f65ebf0518001525659c3c312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf44328758c7d42fb59a8df3dca2c2eb"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#abf44328758c7d42fb59a8df3dca2c2eb">spla_Array_set_int</a> (spla_Array a, spla_uint i, int value)</td></tr>
 <tr class="separator:abf44328758c7d42fb59a8df3dca2c2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39fe6cd4e2b6630f65bbdd539a3327e3"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#a39fe6cd4e2b6630f65bbdd539a3327e3">spla_Array_set_uint</a> (spla_Array a, spla_uint i, unsigned int value)</td></tr>
@@ -102,6 +104,8 @@ Functions</h2></td></tr>
 <tr class="separator:a2fa3839f9e756e106a65767d4484a05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1219cc750cf308eb164dc26b3b739548"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#a1219cc750cf308eb164dc26b3b739548">spla_Array_get_float</a> (spla_Array a, spla_uint i, float *value)</td></tr>
 <tr class="separator:a1219cc750cf308eb164dc26b3b739548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0b2e74103e370d974845fdf198a7cf"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#a3d0b2e74103e370d974845fdf198a7cf">spla_Array_resize</a> (spla_Array a, spla_uint n)</td></tr>
+<tr class="separator:a3d0b2e74103e370d974845fdf198a7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af09b24cdd3b92b77825e334b9abaafda"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__array_8cpp.html#af09b24cdd3b92b77825e334b9abaafda">spla_Array_clear</a> (spla_Array a)</td></tr>
 <tr class="separator:af09b24cdd3b92b77825e334b9abaafda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -192,6 +196,34 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d7b665f65ebf0518001525659c3c312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d7b665f65ebf0518001525659c3c312">&#9670;&nbsp;</a></span>spla_Array_get_n_values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Array_get_n_values </td>
+          <td>(</td>
+          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_uint *&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2fa3839f9e756e106a65767d4484a05b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fa3839f9e756e106a65767d4484a05b">&#9670;&nbsp;</a></span>spla_Array_get_uint()</h2>
 
@@ -249,6 +281,34 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">spla_Type&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d0b2e74103e370d974845fdf198a7cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d0b2e74103e370d974845fdf198a7cf">&#9670;&nbsp;</a></span>spla_Array_resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Array_resize </td>
+          <td>(</td>
+          <td class="paramtype">spla_Array&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_uint&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
