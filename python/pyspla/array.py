@@ -31,6 +31,7 @@ import ctypes
 from .bridge import backend, check
 from .type import Type, INT, UINT, FLOAT
 from .object import Object
+from .memview import MemView
 import random as rnd
 
 
@@ -41,8 +42,9 @@ class Array(Object):
     Attributes
     ----------
 
-    - dtype : `Type` type of stored array elements
-    - shape : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
+    - dtype  : `Type` type of stored array elements
+    - n_vals : `int` number of values in the array
+    - shape  : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
 
     Notes
     -----
@@ -73,7 +75,7 @@ class Array(Object):
 
     __slots__ = ["_dtype"]
 
-    def __init__(self, dtype=INT, shape=0, hnd=None, label=None):
+    def __init__(self, dtype=INT, shape=None, hnd=None, label=None):
         """
         Creates new array of specified type and shape.
 
@@ -81,26 +83,27 @@ class Array(Object):
         ----------
 
         dtype: Type.
-            Type parametrization of a storage
+            Type parametrization of a storage.
 
-        shape: optional: int. default: 0.
-            Size of the array
+        shape: optional: int. default: None.
+            Size of the array.
 
         hnd: optional: ctypes.c_void_p. default: None.
-            Optional native handle to retain
+            Optional native handle to retain.
 
         label: optional: str. default: None.
-            Optional label to assign
+            Optional label to assign.
         """
 
         super().__init__(None, None)
 
         assert dtype
-        assert shape
-        assert shape >= 0
         assert issubclass(dtype, Type)
 
         self._dtype = dtype
+
+        if not shape:
+            shape = 0
 
         if not hnd:
             hnd = ctypes.c_void_p(0)
@@ -121,6 +124,21 @@ class Array(Object):
         return self._dtype
 
     @property
+    def n_vals(self):
+        """
+        Number of values in the array.
+
+        Returns
+        -------
+
+        Size of the array.
+        """
+
+        n_values = ctypes.c_uint(0)
+        check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
+        return int(n_values.value)
+
+    @property
     def shape(self):
         """
         2-Tuple with shape of array where second value is always 1.
@@ -131,9 +149,7 @@ class Array(Object):
         Size of array as a tuple.
         """
 
-        n_values = ctypes.c_uint(0)
-        check(backend().spla_Array_get_n_values(self._hnd, ctypes.byref(n_values)))
-        return int(n_values.value), 1
+        return self.n_vals, 1
 
     @property
     def empty(self):
@@ -156,10 +172,10 @@ class Array(Object):
         ----------
 
         index: int.
-            Index at which value to set
+            Index at which value to set.
 
         value: any.
-            Value to set, must be convertible to destination type
+            Value to set, must be convertible to destination type.
         """
 
         check(self._dtype._array_set(self._hnd, ctypes.c_uint(index), self._dtype._c_type(value)))
@@ -172,7 +188,7 @@ class Array(Object):
         ----------
 
         index: int.
-            Index at which to get value
+            Index at which to get value.
 
         Returns
         -------
@@ -184,6 +200,33 @@ class Array(Object):
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
         return self._dtype.to_py(value)
 
+    def build(self, view: MemView):
+        """
+        Builds array from a raw memory view resource.
+
+        Parameters
+        ----------
+
+        view: MemView.
+            View to a memory to build the array content from.
+        """
+
+        check(backend().spla_Array_build(self._hnd, view._hnd))
+
+    def read(self):
+        """
+        Read the content of the array as a MemView.
+
+        Returns
+        -------
+
+        MemView object with view to the array content.
+        """
+
+        view_hnd = ctypes.c_void_p(0)
+        check(backend().spla_Array_read(self._hnd, ctypes.byref(view_hnd)))
+        return MemView(hnd=view_hnd, owner=self)
+
     def resize(self, shape=0):
         """
         Resizes array to new size with desired num of values specified as shape.
@@ -192,7 +235,7 @@ class Array(Object):
         ----------
 
         shape: optional: int. default: 0.
-            New array capacity
+            New array capacity.
         """
 
         check(backend().spla_Array_resize(self._hnd, ctypes.c_uint(shape)))
@@ -211,35 +254,28 @@ class Array(Object):
         Returns
         -------
 
-        List with values stored in the array
+        List with values stored in the array.
         """
 
-        values = list()
-        value = self._dtype._c_type(0)
-
-        for i in range(self.shape[0]):
-            check(self._dtype._array_get(self._hnd, ctypes.c_uint(i), ctypes.byref(value)))
-            values.append(self._dtype.to_py(value))
-
-        return values
+        buffer = (self.dtype._c_type * self.n_vals)()
+        size = ctypes.c_size_t(ctypes.sizeof(buffer))
+        view = self.read()
+        check(backend().spla_MemView_read(view._hnd, ctypes.c_size_t(0), size, buffer))
+        return list(buffer)
 
     @classmethod
-    def from_list(cls, values, dtype=INT, shape=None):
+    def from_list(cls, values, dtype=INT):
         """
-        Creates new array of desired type and shape and fills
-        its content with `values` data.
+        Creates new array of desired type from list of `values`.
 
         Parameters
         ----------
 
         values: List.
-            List with values to fill array
+            List with values to fill array.
 
         dtype: Type.
-            Type of the array stored value
-
-        shape: optional: int. default: None.
-            Optional size of array, by default inferred from `values`
+            Type of the array stored value.
 
         Returns
         -------
@@ -247,12 +283,10 @@ class Array(Object):
         Created array filled with values.
         """
 
-        if shape is None:
-            shape = len(values)
-        assert shape >= len(values)
-        array = Array(dtype=dtype, shape=shape)
-        for i, v in enumerate(values):
-            array.set(i, v)
+        buffer = (dtype._c_type * len(values))(*values)
+        view = MemView(buffer=buffer, size=ctypes.sizeof(buffer), mutable=False)
+        array = Array(dtype=dtype)
+        array.build(view)
         return array
 
     @classmethod
@@ -265,16 +299,16 @@ class Array(Object):
         ----------
 
         dtype: Type.
-            Type of values array will have
+            Type of values array will have.
 
         shape: optional: int. default: 0.
-            Size of the array (number of values)
+            Size of the array (number of values).
 
         seed: optional: int. default: None.
-            Optional seed to randomize generator
+            Optional seed to randomize generator.
 
         dist: optional: tuple. default: [0,1].
-            Optional distribution for uniform generation of values
+            Optional distribution for uniform generation of values.
 
         Returns
         -------

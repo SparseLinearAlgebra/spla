@@ -1,3 +1,7 @@
 import pyspla
 
-print(pyspla.Array.generate(dtype=pyspla.FLOAT, shape=3, dist=[100, 300]).to_list())
+a = pyspla.Array.from_list(dtype=pyspla.INT, values=[-1, 0, 1])
+b = pyspla.Array.generate(dtype=pyspla.INT, shape=10, dist=(-10, 10))
+
+print(a)
+print(b)

@@ -277,6 +277,7 @@ add_library(spla SHARED
         include/spla/exec.hpp
         include/spla/io.hpp
         include/spla/library.hpp
+        include/spla/memview.hpp
         include/spla/matrix.hpp
         include/spla/object.hpp
         include/spla/op.hpp
@@ -340,6 +341,7 @@ add_library(spla SHARED
         src/exec.cpp
         src/library.cpp
         src/matrix.cpp
+        src/memview.cpp
         src/op.cpp
         src/scalar.cpp
         src/schedule.cpp
@@ -353,8 +355,10 @@ add_library(spla SHARED
         src/binding/c_config.hpp
         src/binding/c_library.cpp
         src/binding/c_matrix.cpp
+        src/binding/c_memview.cpp
         src/binding/c_object.cpp
         src/binding/c_op.cpp
+        src/binding/c_ref.cpp
         src/binding/c_scalar.cpp
         src/binding/c_type.cpp
         src/binding/c_vector.cpp

@@ -56,11 +56,19 @@ spla_Status spla_Vector_get_uint(spla_Vector v, spla_uint row_id, unsigned int* 
 spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, float* value) {
     return to_c_status(as_ptr<spla::Vector>(v)->get_float(row_id, *value));
 }
-spla_Status spla_Vector_build(spla_Vector v, spla_Array keys, spla_Array values) {
-    return to_c_status(as_ptr<spla::Vector>(v)->build(as_ref<spla::Array>(keys), as_ref<spla::Array>(values)));
+spla_Status spla_Vector_build(spla_Vector v, spla_MemView keys, spla_MemView values) {
+    return to_c_status(as_ptr<spla::Vector>(v)->build(as_ref<spla::MemView>(keys), as_ref<spla::MemView>(values)));
 }
-spla_Status spla_Vector_read(spla_Vector v, spla_Array keys, spla_Array values) {
-    return to_c_status(as_ptr<spla::Vector>(v)->read(as_ref<spla::Array>(keys), as_ref<spla::Array>(values)));
+spla_Status spla_Vector_read(spla_Vector v, spla_MemView* keys, spla_MemView* values) {
+    spla::ref_ptr<spla::MemView> out_keys;
+    spla::ref_ptr<spla::MemView> out_values;
+    const auto                   status = as_ptr<spla::Vector>(v)->read(out_keys, out_values);
+    if (status == spla::Status::Ok) {
+        *keys   = as_ptr<spla_MemView_t>(out_keys.release());
+        *values = as_ptr<spla_MemView_t>(out_values.release());
+        return SPLA_STATUS_OK;
+    }
+    return to_c_status(status);
 }
 spla_Status spla_Vector_clear(spla_Vector v) {
     return to_c_status(as_ptr<spla::Vector>(v)->clear());

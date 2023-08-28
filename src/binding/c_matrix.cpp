@@ -56,11 +56,21 @@ spla_Status spla_Matrix_get_uint(spla_Matrix M, spla_uint row_id, spla_uint col_
 spla_Status spla_Matrix_get_float(spla_Matrix M, spla_uint row_id, spla_uint col_id, float* value) {
     return to_c_status(as_ptr<spla::Matrix>(M)->get_float(row_id, col_id, *value));
 }
-spla_Status spla_Matrix_build(spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values) {
-    return to_c_status(as_ptr<spla::Matrix>(M)->build(as_ref<spla::Array>(keys1), as_ref<spla::Array>(keys2), as_ref<spla::Array>(values)));
+spla_Status spla_Matrix_build(spla_Matrix M, spla_MemView keys1, spla_MemView keys2, spla_MemView values) {
+    return to_c_status(as_ptr<spla::Matrix>(M)->build(as_ref<spla::MemView>(keys1), as_ref<spla::MemView>(keys2), as_ref<spla::MemView>(values)));
 }
-spla_Status spla_Matrix_read(spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values) {
-    return to_c_status(as_ptr<spla::Matrix>(M)->read(as_ref<spla::Array>(keys1), as_ref<spla::Array>(keys2), as_ref<spla::Array>(values)));
+spla_Status spla_Matrix_read(spla_Matrix M, spla_MemView* keys1, spla_MemView* keys2, spla_MemView* values) {
+    spla::ref_ptr<spla::MemView> out_keys1;
+    spla::ref_ptr<spla::MemView> out_keys2;
+    spla::ref_ptr<spla::MemView> out_values;
+    const auto                   status = as_ptr<spla::Matrix>(M)->read(out_keys1, out_keys2, out_values);
+    if (status == spla::Status::Ok) {
+        *keys1  = as_ptr<spla_MemView_t>(out_keys1.release());
+        *keys2  = as_ptr<spla_MemView_t>(out_keys2.release());
+        *values = as_ptr<spla_MemView_t>(out_values.release());
+        return SPLA_STATUS_OK;
+    }
+    return to_c_status(status);
 }
 spla_Status spla_Matrix_clear(spla_Matrix M) {
     return to_c_status(as_ptr<spla::Matrix>(M)->clear());

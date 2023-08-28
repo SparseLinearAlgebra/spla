@@ -29,6 +29,7 @@
 #define SPLA_ARRAY_HPP
 
 #include "config.hpp"
+#include "memview.hpp"
 #include "object.hpp"
 #include "type.hpp"
 
@@ -48,17 +49,19 @@ namespace spla {
      */
     class Array : public Object {
     public:
-        SPLA_API ~Array() override                                       = default;
-        SPLA_API virtual uint          get_n_values()                    = 0;
-        SPLA_API virtual ref_ptr<Type> get_type()                        = 0;
-        SPLA_API virtual Status        set_int(uint i, T_INT value)      = 0;
-        SPLA_API virtual Status        set_uint(uint i, T_UINT value)    = 0;
-        SPLA_API virtual Status        set_float(uint i, T_FLOAT value)  = 0;
-        SPLA_API virtual Status        get_int(uint i, T_INT& value)     = 0;
-        SPLA_API virtual Status        get_uint(uint i, T_UINT& value)   = 0;
-        SPLA_API virtual Status        get_float(uint i, T_FLOAT& value) = 0;
-        SPLA_API virtual Status        resize(uint n_values)             = 0;
-        SPLA_API virtual Status        clear()                           = 0;
+        SPLA_API ~Array() override                                         = default;
+        SPLA_API virtual uint          get_n_values()                      = 0;
+        SPLA_API virtual ref_ptr<Type> get_type()                          = 0;
+        SPLA_API virtual Status        set_int(uint i, T_INT value)        = 0;
+        SPLA_API virtual Status        set_uint(uint i, T_UINT value)      = 0;
+        SPLA_API virtual Status        set_float(uint i, T_FLOAT value)    = 0;
+        SPLA_API virtual Status        get_int(uint i, T_INT& value)       = 0;
+        SPLA_API virtual Status        get_uint(uint i, T_UINT& value)     = 0;
+        SPLA_API virtual Status        get_float(uint i, T_FLOAT& value)   = 0;
+        SPLA_API virtual Status        resize(uint n_values)               = 0;
+        SPLA_API virtual Status        build(const ref_ptr<MemView>& view) = 0;
+        SPLA_API virtual Status        read(ref_ptr<MemView>& view)        = 0;
+        SPLA_API virtual Status        clear()                             = 0;
 
         SPLA_API static ref_ptr<Array> make(uint n_values, const ref_ptr<Type>& type);
     };

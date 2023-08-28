@@ -72,7 +72,7 @@ class Object:
 
     def __del__(self):
         if self._hnd:
-            check(backend().spla_Object_unref(self._hnd))
+            check(backend().spla_RefCnt_unref(self._hnd))
 
     def set_label(self, label):
         self._label = label

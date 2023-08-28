@@ -26,13 +26,3 @@
 /**********************************************************************************/
 
 #include "c_config.hpp"
-
-spla_Status spla_Object_ref(spla_Object object) {
-    spla::safe_ref(as_ptr<spla::Object>(object));
-    return SPLA_STATUS_OK;
-}
-
-spla_Status spla_Object_unref(spla_Object object) {
-    spla::unref(as_ptr<spla::Object>(object));
-    return SPLA_STATUS_OK;
-}

@@ -44,8 +44,10 @@
 
 #if defined(__cplusplus)
     #include <cinttypes>
+    #include <cstddef>
 #else
     #include <inttypes.h>
+    #include <stddef.h>
 #endif
 
 #ifdef SPLA_MSVC
@@ -85,8 +87,12 @@ typedef enum spla_AcceleratorType {
 
 #define SPLA_NULL NULL
 
+typedef int32_t  spla_bool;
 typedef uint32_t spla_uint;
+typedef size_t   spla_size_t;
 
+typedef struct spla_RefCnt_t*       spla_RefCnt;
+typedef struct spla_MemView_t*      spla_MemView;
 typedef struct spla_Object_t*       spla_Object;
 typedef struct spla_Type_t*         spla_Type;
 typedef struct spla_Descriptor_t*   spla_Descriptor;
@@ -195,10 +201,25 @@ SPLA_API spla_OpSelect spla_OpSelect_NEVER_FLOAT();
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+/* General base RefCnt type methods */
+
+SPLA_API spla_Status spla_RefCnt_ref(spla_RefCnt object);
+SPLA_API spla_Status spla_RefCnt_unref(spla_RefCnt object);
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 /* General base Object type methods */
 
-SPLA_API spla_Status spla_Object_ref(spla_Object object);
-SPLA_API spla_Status spla_Object_unref(spla_Object object);
+//////////////////////////////////////////////////////////////////////////////////////
+
+/* Memory view resource methods */
+
+SPLA_API spla_Status spla_MemView_make(spla_MemView* view, void* buffer, spla_size_t size, spla_bool is_mutable);
+SPLA_API spla_Status spla_MemView_read(spla_MemView view, spla_size_t offset, spla_size_t size, void* dst);
+SPLA_API spla_Status spla_MemView_write(spla_MemView view, spla_size_t offset, spla_size_t size, const void* src);
+SPLA_API spla_Status spla_MemView_get_buffer(spla_MemView view, void** buffer);
+SPLA_API spla_Status spla_MemView_get_size(spla_MemView view, spla_size_t* size);
+SPLA_API spla_Status spla_MemView_is_mutable(spla_MemView view, spla_bool* is_mutable);
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -225,6 +246,8 @@ SPLA_API spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value);
 SPLA_API spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value);
 SPLA_API spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value);
 SPLA_API spla_Status spla_Array_resize(spla_Array a, spla_uint n);
+SPLA_API spla_Status spla_Array_build(spla_Array a, spla_MemView view);
+SPLA_API spla_Status spla_Array_read(spla_Array a, spla_MemView* view);
 SPLA_API spla_Status spla_Array_clear(spla_Array a);
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -240,8 +263,8 @@ SPLA_API spla_Status spla_Vector_set_float(spla_Vector v, spla_uint row_id, floa
 SPLA_API spla_Status spla_Vector_get_int(spla_Vector v, spla_uint row_id, int* value);
 SPLA_API spla_Status spla_Vector_get_uint(spla_Vector v, spla_uint row_id, unsigned int* value);
 SPLA_API spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, float* value);
-SPLA_API spla_Status spla_Vector_build(spla_Vector v, spla_Array keys, spla_Array values);
-SPLA_API spla_Status spla_Vector_read(spla_Vector v, spla_Array keys, spla_Array values);
+SPLA_API spla_Status spla_Vector_build(spla_Vector v, spla_MemView keys, spla_MemView values);
+SPLA_API spla_Status spla_Vector_read(spla_Vector v, spla_MemView* keys, spla_MemView* values);
 SPLA_API spla_Status spla_Vector_clear(spla_Vector v);
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -257,8 +280,8 @@ SPLA_API spla_Status spla_Matrix_set_float(spla_Matrix M, spla_uint row_id, spla
 SPLA_API spla_Status spla_Matrix_get_int(spla_Matrix M, spla_uint row_id, spla_uint col_id, int* value);
 SPLA_API spla_Status spla_Matrix_get_uint(spla_Matrix M, spla_uint row_id, spla_uint col_id, unsigned int* value);
 SPLA_API spla_Status spla_Matrix_get_float(spla_Matrix M, spla_uint row_id, spla_uint col_id, float* value);
-SPLA_API spla_Status spla_Matrix_build(spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values);
-SPLA_API spla_Status spla_Matrix_read(spla_Matrix M, spla_Array keys1, spla_Array keys2, spla_Array values);
+SPLA_API spla_Status spla_Matrix_build(spla_Matrix M, spla_MemView keys1, spla_MemView keys2, spla_MemView values);
+SPLA_API spla_Status spla_Matrix_read(spla_Matrix M, spla_MemView* keys1, spla_MemView* keys2, spla_MemView* values);
 SPLA_API spla_Status spla_Matrix_clear(spla_Matrix M);
 
 //////////////////////////////////////////////////////////////////////////////////////

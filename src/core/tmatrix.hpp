@@ -73,8 +73,8 @@ namespace spla {
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
-        Status             build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) override;
-        Status             read(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) override;
+        Status             build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) override;
+        Status             read(ref_ptr<MemView>& keys1, ref_ptr<MemView>& keys2, ref_ptr<MemView>& values) override;
         Status             clear() override;
 
         template<typename Decorator>
@@ -217,86 +217,51 @@ namespace spla {
     }
 
     template<typename T>
-    Status TMatrix<T>::build(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) {
+    Status TMatrix<T>::build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) {
         assert(keys1);
         assert(keys2);
         assert(values);
 
-        if (keys1->get_n_values() != values->get_n_values()) {
+        const auto key_size       = sizeof(uint);
+        const auto value_size     = sizeof(T);
+        const auto elements_count = keys1->get_size() / key_size;
+
+        if (elements_count != values->get_size() / value_size) {
             return Status::InvalidArgument;
         }
-        if (keys2->get_n_values() != values->get_n_values()) {
+        if (elements_count * key_size != keys1->get_size()) {
             return Status::InvalidArgument;
         }
-        if (keys1->get_type() != UINT) {
-            return Status::InvalidArgument;
-        }
-        if (keys2->get_type() != UINT) {
-            return Status::InvalidArgument;
-        }
-        if (values->get_type() != get_type()) {
+        if (elements_count * key_size != keys2->get_size()) {
             return Status::InvalidArgument;
         }
 
-        const auto& t_keys1  = keys1.template cast<TArray<T_UINT>>()->data();
-        const auto& t_keys2  = keys2.template cast<TArray<T_UINT>>()->data();
-        const auto& t_values = values.template cast<TArray<T>>()->data();
-        const auto  N        = t_keys1.size();
+        validate_rwd(FormatMatrix::CpuCoo);
+        CpuCoo<T>& coo = *get<CpuCoo<T>>();
 
-        validate_rwd(FormatMatrix::CpuLil);
-        CpuLil<T>& lil = *get<CpuLil<T>>();
+        coo.Ai.resize(elements_count);
+        coo.Aj.resize(elements_count);
+        coo.Ax.resize(elements_count);
 
-        for (std::size_t i = 0; i < N; i++) {
-            cpu_lil_add_element(t_keys1[i], t_keys2[i], t_values[i], lil);
-        }
+        keys1->read(0, key_size * elements_count, coo.Ai.data());
+        keys2->read(0, key_size * elements_count, coo.Aj.data());
+        values->read(0, value_size * elements_count, coo.Ax.data());
 
         return Status::Ok;
     }
     template<typename T>
-    Status TMatrix<T>::read(const ref_ptr<Array>& keys1, const ref_ptr<Array>& keys2, const ref_ptr<Array>& values) {
-        if (!keys1 && !keys2 && !values) {
-            return Status::InvalidArgument;
-        }
-        if (keys1 && keys1->get_type() != UINT) {
-            return Status::InvalidArgument;
-        }
-        if (keys2 && keys2->get_type() != UINT) {
-            return Status::InvalidArgument;
-        }
-        if (values && values->get_type() != get_type()) {
-            return Status::InvalidArgument;
-        }
+    Status TMatrix<T>::read(ref_ptr<MemView>& keys1, ref_ptr<MemView>& keys2, ref_ptr<MemView>& values) {
+        const auto key_size   = sizeof(uint);
+        const auto value_size = sizeof(T);
 
-        validate_rw(FormatMatrix::CpuDok);
-        CpuDok<T>& dok = *get<CpuDok<T>>();
+        validate_rwd(FormatMatrix::CpuCoo);
+        CpuCoo<T>& coo = *get<CpuCoo<T>>();
 
-        const auto N = dok.Ax.size();
+        const auto elements_count = coo.Ai.size();
 
-        uint* t_keys1  = nullptr;
-        uint* t_keys2  = nullptr;
-        T*    t_values = nullptr;
-
-        if (keys1) {
-            keys1->resize(uint(N));
-            t_keys1 = keys1.template cast<TArray<T_UINT>>()->data().data();
-        }
-        if (keys2) {
-            keys2->resize(uint(N));
-            t_keys2 = keys2.template cast<TArray<T_UINT>>()->data().data();
-        }
-        if (values) {
-            values->resize(uint(N));
-            t_values = values.template cast<TArray<T>>()->data().data();
-        }
-
-        std::size_t i = 0;
-
-        for (const auto& entry : dok.Ax) {
-            if (t_keys1) t_keys1[i] = entry.first.first;
-            if (t_keys2) t_keys2[i] = entry.first.second;
-            if (t_values) t_values[i] = entry.second;
-            i += 1;
-        }
+        keys1  = MemView::make(coo.Ai.data(), key_size * elements_count, false);
+        keys2  = MemView::make(coo.Aj.data(), key_size * elements_count, false);
+        values = MemView::make(coo.Ax.data(), value_size * elements_count, false);
 
         return Status::Ok;
     }

@@ -66,6 +66,8 @@ namespace spla {
         Status             get_uint(uint i, T_UINT& value) override;
         Status             get_float(uint i, T_FLOAT& value) override;
         Status             resize(uint n_values) override;
+        Status             build(const ref_ptr<MemView>& view) override;
+        Status             read(ref_ptr<MemView>& view) override;
         Status             clear() override;
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -149,6 +151,30 @@ namespace spla {
     template<typename T>
     const std::string& TArray<T>::get_label() const {
         return m_label;
+    }
+    template<typename T>
+    Status TArray<T>::build(const ref_ptr<MemView>& view) {
+        const auto element_size  = sizeof(T);
+        const auto element_count = view->get_size() / element_size;
+
+        if (element_size * element_count != view->get_size()) {
+            return Status::InvalidArgument;
+        }
+
+        const T* elements = (T*) view->get_buffer();
+
+        m_data.resize(element_count);
+
+        for (std::size_t i = 0; i < element_count; i++) {
+            m_data[i] = elements[i];
+        }
+
+        return Status::Ok;
+    }
+    template<typename T>
+    Status TArray<T>::read(ref_ptr<MemView>& view) {
+        view = MemView::make(m_data.data(), m_data.size() * sizeof(T), false);
+        return Status::Ok;
     }
 
 

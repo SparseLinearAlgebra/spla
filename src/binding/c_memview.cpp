@@ -27,48 +27,26 @@
 
 #include "c_config.hpp"
 
-spla_Status spla_Array_make(spla_Array* v, spla_uint n_values, spla_Type type) {
-    auto array = spla::Array::make(n_values, as_ref<spla::Type>(type));
-    *v         = as_ptr<spla_Array_t>(array.release());
+spla_Status spla_MemView_make(spla_MemView* view, void* buffer, spla_size_t size, spla_bool is_mutable) {
+    auto memory_view = spla::MemView::make(buffer, size, bool(is_mutable));
+    *view            = as_ptr<spla_MemView_t>(memory_view.release());
     return SPLA_STATUS_OK;
 }
-spla_Status spla_Array_get_n_values(spla_Array a, spla_uint* values) {
-    *values = as_ptr<spla::Array>(a)->get_n_values();
+spla_Status spla_MemView_read(spla_MemView view, spla_size_t offset, spla_size_t size, void* dst) {
+    return to_c_status(as_ptr<spla::MemView>(view)->read(offset, size, dst));
+}
+spla_Status spla_MemView_write(spla_MemView view, spla_size_t offset, spla_size_t size, const void* src) {
+    return to_c_status(as_ptr<spla::MemView>(view)->write(offset, size, src));
+}
+spla_Status spla_MemView_get_buffer(spla_MemView view, void** buffer) {
+    *buffer = as_ptr<spla::MemView>(view)->get_buffer();
     return SPLA_STATUS_OK;
 }
-spla_Status spla_Array_set_int(spla_Array a, spla_uint i, int value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_int(i, value));
+spla_Status spla_MemView_get_size(spla_MemView view, spla_size_t* size) {
+    *size = as_ptr<spla::MemView>(view)->get_size();
+    return SPLA_STATUS_OK;
 }
-spla_Status spla_Array_set_uint(spla_Array a, spla_uint i, unsigned int value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_uint(i, value));
-}
-spla_Status spla_Array_set_float(spla_Array a, spla_uint i, float value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_float(i, value));
-}
-spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_int(i, *value));
-}
-spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_uint(i, *value));
-}
-spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_float(i, *value));
-}
-spla_Status spla_Array_resize(spla_Array a, spla_uint n) {
-    return to_c_status(as_ptr<spla::Array>(a)->resize(n));
-}
-spla_Status spla_Array_build(spla_Array a, spla_MemView view) {
-    return to_c_status(as_ptr<spla::Array>(a)->build(as_ref<spla::MemView>(view)));
-}
-spla_Status spla_Array_read(spla_Array a, spla_MemView* view) {
-    spla::ref_ptr<spla::MemView> out_view;
-    const auto                   status = as_ptr<spla::Array>(a)->read(out_view);
-    if (status == spla::Status::Ok) {
-        *view = as_ptr<spla_MemView_t>(out_view.release());
-        return SPLA_STATUS_OK;
-    }
-    return to_c_status(status);
-}
-spla_Status spla_Array_clear(spla_Array a) {
-    return to_c_status(as_ptr<spla::Array>(a)->clear());
+spla_Status spla_MemView_is_mutable(spla_MemView view, spla_bool* is_mutable) {
+    *is_mutable = as_ptr<spla::MemView>(view)->is_mutable();
+    return SPLA_STATUS_OK;
 }

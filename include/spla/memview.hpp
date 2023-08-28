@@ -25,50 +25,44 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include "c_config.hpp"
+#ifndef SPLA_MEMVIEW_HPP
+#define SPLA_MEMVIEW_HPP
 
-spla_Status spla_Array_make(spla_Array* v, spla_uint n_values, spla_Type type) {
-    auto array = spla::Array::make(n_values, as_ref<spla::Type>(type));
-    *v         = as_ptr<spla_Array_t>(array.release());
-    return SPLA_STATUS_OK;
-}
-spla_Status spla_Array_get_n_values(spla_Array a, spla_uint* values) {
-    *values = as_ptr<spla::Array>(a)->get_n_values();
-    return SPLA_STATUS_OK;
-}
-spla_Status spla_Array_set_int(spla_Array a, spla_uint i, int value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_int(i, value));
-}
-spla_Status spla_Array_set_uint(spla_Array a, spla_uint i, unsigned int value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_uint(i, value));
-}
-spla_Status spla_Array_set_float(spla_Array a, spla_uint i, float value) {
-    return to_c_status(as_ptr<spla::Array>(a)->set_float(i, value));
-}
-spla_Status spla_Array_get_int(spla_Array a, spla_uint i, int* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_int(i, *value));
-}
-spla_Status spla_Array_get_uint(spla_Array a, spla_uint i, unsigned int* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_uint(i, *value));
-}
-spla_Status spla_Array_get_float(spla_Array a, spla_uint i, float* value) {
-    return to_c_status(as_ptr<spla::Array>(a)->get_float(i, *value));
-}
-spla_Status spla_Array_resize(spla_Array a, spla_uint n) {
-    return to_c_status(as_ptr<spla::Array>(a)->resize(n));
-}
-spla_Status spla_Array_build(spla_Array a, spla_MemView view) {
-    return to_c_status(as_ptr<spla::Array>(a)->build(as_ref<spla::MemView>(view)));
-}
-spla_Status spla_Array_read(spla_Array a, spla_MemView* view) {
-    spla::ref_ptr<spla::MemView> out_view;
-    const auto                   status = as_ptr<spla::Array>(a)->read(out_view);
-    if (status == spla::Status::Ok) {
-        *view = as_ptr<spla_MemView_t>(out_view.release());
-        return SPLA_STATUS_OK;
-    }
-    return to_c_status(status);
-}
-spla_Status spla_Array_clear(spla_Array a) {
-    return to_c_status(as_ptr<spla::Array>(a)->clear());
-}
+#include "config.hpp"
+#include "ref.hpp"
+
+namespace spla {
+
+    /**
+     * @class MemView
+     * @brief View to some memory resource without life-time control
+     *
+     * Memory view allows to inspect raw structure of a particular buffer without
+     * explicit control over life time of without costly copy operation to
+     * move data from one place into another. Use views to access data and then to
+     * copy values or fill values from your own data source.
+     *
+     * @note Memory view does not control type and layout of data. Thus, be
+     *       cautions when modifying data through the view.
+     */
+    class MemView final : public RefCnt {
+    public:
+        SPLA_API ~MemView() override = default;
+        SPLA_API Status read(std::size_t offset, std::size_t size, void* dst);
+        SPLA_API Status write(std::size_t offset, std::size_t size, const void* src);
+        SPLA_API void*  get_buffer() const;
+        SPLA_API std::size_t get_size() const;
+        SPLA_API bool        is_mutable() const;
+
+        SPLA_API static ref_ptr<MemView> make(void* buffer, std::size_t size, bool is_mutable = false);
+        SPLA_API static ref_ptr<MemView> make();
+
+    private:
+        void*       m_buffer     = nullptr;
+        std::size_t m_size       = 0;
+        bool        m_is_mutable = false;
+    };
+
+}// namespace spla
+
+#endif//SPLA_MEMVIEW_HPP

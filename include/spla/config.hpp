@@ -29,6 +29,7 @@
 #define SPLA_CONFIG_HPP
 
 #include <cinttypes>
+#include <cstddef>
 #include <functional>
 #include <string>
 

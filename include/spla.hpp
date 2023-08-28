@@ -36,6 +36,7 @@
 #include "spla/io.hpp"
 #include "spla/library.hpp"
 #include "spla/matrix.hpp"
+#include "spla/memview.hpp"
 #include "spla/object.hpp"
 #include "spla/op.hpp"
 #include "spla/ref.hpp"
