@@ -122,13 +122,18 @@ namespace spla {
             r->validate_rwd(FormatVector::AccDense);
             mask->validate_rw(FormatVector::AccCoo);
 
-            std::shared_ptr<CLProgram> program;
-            if (!ensure_kernel(op_assign, op_select, program)) return Status::CompilationError;
-
             auto*       p_cl_r_dense  = r->template get<CLDenseVec<T>>();
             const auto* p_cl_mask_coo = mask->template get<CLCooVec<T>>();
             auto*       p_cl_acc      = get_acc_cl();
             auto&       queue         = p_cl_acc->get_queue_default();
+
+            if (p_cl_mask_coo->values == 0) {
+                LOG_MSG(Status::Ok, "nothing to do");
+                return Status::Ok;
+            }
+
+            std::shared_ptr<CLProgram> program;
+            if (!ensure_kernel(op_assign, op_select, program)) return Status::CompilationError;
 
             auto kernel_sparse_to_dense = program->make_kernel("assign_sparse_to_dense");
             kernel_sparse_to_dense.setArg(0, p_cl_r_dense->Ax);

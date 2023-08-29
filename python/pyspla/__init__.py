@@ -97,8 +97,8 @@ of GPUs accelerations, where arbitrary layout of data causes significant perform
 - `UINT`. 4-byte-sized unsigned integral value.
 - `FLOAT`. 4-byte-sized single-precision floating point value.
 
-Operations
-----------
+Ops
+---
 
 Library provides a set of unary, binary and select ops for values data manipulation inside
 matrix and vector containers. Unary operations commonly used for apply and transformation

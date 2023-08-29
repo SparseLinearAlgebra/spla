@@ -231,7 +231,7 @@ class Array(Object):
         Creates new array of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        :param dtype: Type.
+        :param dtype: optional: Type. default: INT.
             Type of values array will have.
 
         :param shape: optional: int. default: 0.
@@ -260,6 +260,8 @@ class Array(Object):
         elif dtype is FLOAT:
             for i in range(shape):
                 array.set(i, rnd.uniform(dist[0], dist[1]))
+        else:
+            raise Exception("unknown type")
 
         return array
 

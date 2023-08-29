@@ -29,13 +29,14 @@ SOFTWARE.
 import ctypes
 
 from .bridge import backend, check
-from .type import Type, INT, UINT
+from .type import Type, INT, UINT, FLOAT
 from .object import Object
 from .memview import MemView
 from .scalar import Scalar
 from .matrix import Matrix
 from .descriptor import Descriptor
 from .op import OpUnary, OpBinary, OpSelect
+import random as rnd
 
 
 class Vector(Object):
@@ -70,6 +71,8 @@ class Vector(Object):
     using one of built-in OpenCL or CUDA accelerators.
     """
 
+    __slots__ = ["_dtype", "_shape"]
+
     def __init__(self, shape, dtype=INT, hnd=None, label=None):
         """
         Creates new vector of specified type and shape.
@@ -95,6 +98,7 @@ class Vector(Object):
         assert issubclass(dtype, Type)
 
         self._dtype = dtype
+        self._shape = (shape, 1)
 
         if not hnd:
             hnd = ctypes.c_void_p(0)
@@ -114,9 +118,7 @@ class Vector(Object):
         """
         Number of rows in the vector.
         """
-        count = ctypes.c_uint(0)
-        check(backend().spla_Vector_get_n_rows(self._hnd, ctypes.byref(count)))
-        return int(count.value)
+        return self._shape[0]
 
     @property
     def shape(self):
@@ -124,23 +126,23 @@ class Vector(Object):
         2-Tuple with shape of vector where second value is always 1.
         """
 
-        return self.n_rows, 1
+        return self._shape
 
-    def build(self, ii_view: MemView, vv_view: MemView):
+    def build(self, keys_view: MemView, values_view: MemView):
         """
         Builds vector content from a raw memory view resources.
 
-        :param ii_view: MemView.
+        :param keys_view: MemView.
             View to keys of vector to assign.
 
-        :param vv_view: MemView.
+        :param values_view: MemView.
             View to actual values to store.
         """
 
-        assert ii_view
-        assert vv_view
+        assert keys_view
+        assert values_view
 
-        check(backend().spla_Vector_build(self._hnd, ii_view._hnd, vv_view._hnd))
+        check(backend().spla_Vector_build(self._hnd, keys_view._hnd, values_view._hnd))
 
     def read(self):
         """
@@ -149,10 +151,10 @@ class Vector(Object):
         :return: tuple (MemView, MemView) objects with view to the vector keys and vector values.
         """
 
-        ii_view_hnd = ctypes.c_void_p(0)
-        vv_view_hnd = ctypes.c_void_p(0)
-        check(backend().spla_Vector_read(self._hnd, ctypes.byref(ii_view_hnd), ctypes.byref(vv_view_hnd)))
-        return MemView(hnd=ii_view_hnd, owner=self), MemView(hnd=vv_view_hnd, owner=self)
+        keys_view_hnd = ctypes.c_void_p(0)
+        values_view_hnd = ctypes.c_void_p(0)
+        check(backend().spla_Vector_read(self._hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)))
+        return MemView(hnd=keys_view_hnd, owner=self), MemView(hnd=values_view_hnd, owner=self)
 
     def to_lists(self):
         """
@@ -172,16 +174,26 @@ class Vector(Object):
 
         return list(buffer_keys), list(buffer_values)
 
+    def to_list(self):
+        """
+        Read vector data as a python lists of tuples where key and value stored together.
+
+        :return: List of vector entries.
+        """
+
+        keys, values = self.to_lists()
+        return list(zip(keys, values))
+
     @classmethod
-    def from_lists(cls, ii: list, vv: list, shape, dtype=INT):
+    def from_lists(cls, keys: list, values: list, shape, dtype=INT):
         """
         Build vector from a list of sorted keys and associated values to store in vector.
-        List with keys `ii` must index entries from range [0, shape-1] and all keys must be sorted.
+        List with keys `keys` must index entries from range [0, shape-1] and all keys must be sorted.
 
-        :param ii: list[UINT].
+        :param keys: list[UINT].
              List with integral keys of entries.
 
-        :param vv: list[Type].
+        :param values: list[Type].
              List with values to store in the vector.
 
         :param shape: int.
@@ -193,32 +205,141 @@ class Vector(Object):
         :return: Created vector filled with values.
         """
 
-        assert ii
-        assert vv
-        assert len(ii) == len(vv)
+        assert len(keys) == len(values)
         assert shape > 0
 
-        count = len(ii)
+        if not keys:
+            return Vector(shape, dtype)
 
-        c_ii = (UINT._c_type * count)(*ii)
-        c_vv = (dtype._c_type * count)(*vv)
+        count = len(keys)
 
-        view_ii = MemView(buffer=c_ii, size=ctypes.sizeof(c_ii), mutable=False)
-        view_vv = MemView(buffer=c_vv, size=ctypes.sizeof(c_vv), mutable=False)
+        c_keys = (UINT._c_type * count)(*keys)
+        c_values = (dtype._c_type * count)(*values)
+
+        view_keys = MemView(buffer=c_keys, size=ctypes.sizeof(c_keys), mutable=False)
+        view_values = MemView(buffer=c_values, size=ctypes.sizeof(c_values), mutable=False)
 
         v = Vector(shape=shape, dtype=dtype)
-        v.build(view_ii, view_vv)
+        v.build(view_keys, view_values)
 
         return v
 
-    def reduce(self, op_reduce, r=None, init=None, desc=None):
+    @classmethod
+    def generate(cls, shape, dtype=INT, density=0.1, seed=None, dist=(0, 1)):
+        """
+        Creates new vector of desired type and shape and fills its content
+        with random values, generated using specified distribution.
+
+        :param shape: int.
+            Size of the array (number of values).
+
+        :param dtype: optional: Type. default: INT.
+            Type of values vector will have.
+
+        :param density: optional: float. default: 0.1.
+            Density of vector or how many entries to generate.
+
+        :param seed: optional: int. default: None.
+            Optional seed to randomize generator.
+
+        :param dist: optional: tuple. default: [0,1].
+            Optional distribution for uniform generation of values.
+
+        :return: Created array filled with values.
+        """
+
+        if seed is not None:
+            rnd.seed(seed)
+
+        keys = [i for i in range(0, shape) if rnd.uniform(0, 1) < density]
+        count = len(keys)
+
+        if dtype is INT:
+            values = [rnd.randint(dist[0], dist[1]) for i in range(count)]
+        elif dtype is UINT:
+            values = [rnd.randint(dist[0], dist[1]) for i in range(count)]
+        elif dtype is FLOAT:
+            values = [rnd.uniform(dist[0], dist[1]) for i in range(count)]
+        else:
+            raise Exception("unknown type")
+
+        return cls.from_lists(keys, values, shape=shape, dtype=dtype)
+
+    def eadd(self, op_add, v, out=None, desc=None):
+        """
+        Element-wise add one vector to another and return result.
+
+        :param op_add: OpBinary.
+            Binary operation to sum values.
+
+        :param v: Vector.
+            Other right vector to sum with this.
+
+        :param out: optional: Vector. default: None.
+            Optional vector to store result.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        if out is None:
+            out = Vector(shape=self.n_rows, dtype=self.dtype)
+
+        assert v
+        assert v.n_rows == self.n_rows
+        assert out.n_rows == self.n_rows
+        assert v.dtype == self.dtype
+        assert out.dtype == out.dtype
+        assert op_add
+
+        check(backend().spla_Exec_v_eadd(out.hnd, self.hnd, v.hnd, op_add.hnd,
+                                         self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def assign(self, mask, value, op_assign, op_select, desc=None):
+        """
+        Assign scalar value to a vector by mask.
+
+        :param mask: Vector.
+            Mask vector which structure will be used to select entries for assignment.
+
+        :param value: Scalar.
+            Value to assign.
+
+        :param op_assign: OpBinary.
+            Binary operation used to combine existing value in vector and scalar.
+
+        :param op_select: OpSelect.
+            Predicate to select entries in the mask to assign.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: This vector.
+        """
+
+        assert mask
+        assert value
+        assert mask.n_rows == self.n_rows
+        assert op_assign
+        assert op_select
+
+        check(backend().spla_Exec_v_assign_masked(self.hnd, mask.hnd, value.hnd, op_assign.hnd, op_select.hnd,
+                                                  self._get_desc(desc), self._get_task(None)))
+
+        return self
+
+    def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce vector elements.
 
         :param op_reduce: OpBinary.
             Binary operation to apply for reduction of vector elements.
 
-        :param r: optional: Scalar: default: 0.
+        :param out: optional: Scalar: default: 0.
             Optional scalar to store result of reduction.
 
         :param init: optional: Scalar: default: 0.
@@ -230,15 +351,18 @@ class Vector(Object):
         :return: Scalar value with result.
         """
 
-        if r is None:
-            r = Scalar(dtype=self.dtype)
+        if out is None:
+            out = Scalar(dtype=self.dtype)
         if init is None:
             init = Scalar(dtype=self.dtype, value=0)
 
-        check(backend().spla_Exec_v_reduce(r.hnd, init.hnd, self.hnd, op_reduce.hnd,
+        assert out.dtype == self.dtype
+        assert init.dtype == self.dtype
+
+        check(backend().spla_Exec_v_reduce(out.hnd, init.hnd, self.hnd, op_reduce.hnd,
                                            self._get_desc(desc), self._get_task(None)))
 
-        return r
+        return out
 
     def __iter__(self):
         keys, values = self.to_lists()

@@ -46,7 +46,14 @@ namespace spla {
                          const uint*       Ai,
                          const T*          Ax,
                          CLCooVec<T>&      storage) {
-        assert(n_values > 0);
+        if (n_values == 0) {
+            LOG_MSG(Status::Ok, "nothing to do");
+
+            storage.values = 0;
+            storage.Ai     = cl::Buffer();
+            storage.Ax     = cl::Buffer();
+            return;
+        }
 
         const std::size_t buffer_size_Ai = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
@@ -64,7 +71,14 @@ namespace spla {
     template<typename T>
     void cl_coo_vec_resize(const std::size_t n_values,
                            CLCooVec<T>&      storage) {
-        assert(n_values > 0);
+        if (n_values == 0) {
+            LOG_MSG(Status::Ok, "nothing to do");
+
+            storage.values = 0;
+            storage.Ai     = cl::Buffer();
+            storage.Ax     = cl::Buffer();
+            return;
+        }
 
         const std::size_t buffer_size_Ai = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
@@ -123,6 +137,11 @@ namespace spla {
                 .acquire();
 
         cl_fill_value<T>(queue, out.Ax, n_rows, fill_value);
+
+        if (in.values == 0) {
+            LOG_MSG(Status::Ok, "nothing to do");
+            return;
+        }
 
         auto* acc = get_acc_cl();
 

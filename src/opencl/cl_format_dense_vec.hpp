@@ -123,6 +123,15 @@ namespace spla {
         queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
         uint count = cl_count.get(queue);
 
+        if (count == 0) {
+            LOG_MSG(Status::Ok, "nothing to do");
+
+            out.values = 0;
+            out.Ai     = cl::Buffer();
+            out.Ax     = cl::Buffer();
+            return;
+        }
+
         out.values = count;
         out.Ai     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(uint));
         out.Ax     = cl::Buffer(acc->get_context(), CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, count * sizeof(T));
