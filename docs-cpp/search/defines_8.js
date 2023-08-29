@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['time_5fprofile_5flabel_1881',['TIME_PROFILE_LABEL',['../time__profiler_8hpp.html#ae64c4b90e59c1599d93a0e812d4c8302',1,'time_profiler.hpp']]],
-  ['time_5fprofile_5fscope_1882',['TIME_PROFILE_SCOPE',['../time__profiler_8hpp.html#aa9f47295bb25f79153ff2a3af8e3d198',1,'time_profiler.hpp']]],
-  ['time_5fprofile_5fsublabel_1883',['TIME_PROFILE_SUBLABEL',['../time__profiler_8hpp.html#a12129d1069eb2eefba1f1bd22e33850f',1,'time_profiler.hpp']]],
-  ['time_5fprofile_5fsubscope_1884',['TIME_PROFILE_SUBSCOPE',['../time__profiler_8hpp.html#a3e0692da014ade0b0162cd943a348a84',1,'time_profiler.hpp']]],
-  ['type_5fkey_1885',['TYPE_KEY',['../registry_8hpp.html#a00e2458d2ae4a9269f0499057ecd3368',1,'registry.hpp']]]
+  ['spla_5fapi_1916',['SPLA_API',['../config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc',1,'config.hpp']]],
+  ['spla_5fwrap_5fexec_1917',['SPLA_WRAP_EXEC',['../c__exec_8cpp.html#ae0c24354715ce191fd7a55a6722f063e',1,'c_exec.cpp']]],
+  ['status_5fmap_1918',['STATUS_MAP',['../library_8cpp.html#a3e58c6b3224dad4c847702cbf061bb75',1,'library.cpp']]]
 ];

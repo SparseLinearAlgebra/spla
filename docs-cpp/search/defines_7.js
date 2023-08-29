@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['spla_5fapi_1879',['SPLA_API',['../config_8hpp.html#ae3bb5ff276a0f55f0b3606a36b4e94fc',1,'config.hpp']]],
-  ['status_5fmap_1880',['STATUS_MAP',['../library_8cpp.html#a3e58c6b3224dad4c847702cbf061bb75',1,'library.cpp']]]
+  ['op_5fkey_1915',['OP_KEY',['../registry_8hpp.html#a3e42c218f956f7433c75908c6854a314',1,'registry.hpp']]]
 ];

@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "afst",
   8: "acdeinop",
   9: "c",
-  10: "cdeglmostv",
+  10: "acdeglmostv",
   11: "is"
 };
 
