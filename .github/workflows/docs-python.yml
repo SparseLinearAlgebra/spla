@@ -24,10 +24,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install packages
-        run: python -m pip install pdoc3
+        run: python -m pip install pdoc
 
       - name: Build docs
-        run: pdoc -o pydocs --html python/pyspla
+        run: pdoc -o pydocs python/pyspla
         env:
           SPLA_DOCS: true
 

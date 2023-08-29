@@ -36,13 +36,6 @@ class MemView(Object):
     """
     Wrapper for a memory view object from a library.
 
-    Attributes
-    ----------
-
-    - buffer : `ctypes.c_void_p` hnd to native raw memory buffer
-    - size : `int` size of the buffer in bytes
-    - is_mutable : `bool` whenever buffer content can be modified
-
     Details
     -------
 

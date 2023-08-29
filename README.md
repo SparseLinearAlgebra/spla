@@ -6,7 +6,7 @@
 [![Python Package](https://github.com/SparseLinearAlgebra/spla/actions/workflows/deploy.yml/badge.svg)](https://pypi.org/project/pyspla/)
 [![Python Package (Test)](https://github.com/SparseLinearAlgebra/spla/actions/workflows/deploy-test.yml/badge.svg)](https://test.pypi.org/project/pyspla/)
 [![Docs C/C++](https://github.com/SparseLinearAlgebra/spla/actions/workflows/docs-cpp.yml/badge.svg?branch=main)](https://SparseLinearAlgebra.github.io/spla/docs-cpp/)
-[![Docs Python](https://github.com/SparseLinearAlgebra/spla/actions/workflows/docs-python.yml/badge.svg?branch=main)](https://SparseLinearAlgebra.github.io/spla/docs-python/pyspla/)
+[![Docs Python](https://github.com/SparseLinearAlgebra/spla/actions/workflows/docs-python.yml/badge.svg?branch=main)](https://SparseLinearAlgebra.github.io/spla/docs-python/pyspla.html)
 [![Clang Format](https://github.com/SparseLinearAlgebra/spla/actions/workflows/clang-format.yml/badge.svg?branch=main)](https://github.com/SparseLinearAlgebra/spla/actions/workflows/clang-format.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/SparseLinearAlgebra/spla/blob/master/LICENSE.md)
 
@@ -16,23 +16,23 @@ operations. It gives an ability to customize underlying values types treatment a
 or custom user-defined functions.
 
 - **Website**:
-  [https://SparseLinearAlgebra.github.io/pyspla/](https://SparseLinearAlgebra.github.io/spla/docs-python/pyspla/)
+  [SparseLinearAlgebra.github.io/pyspla](https://SparseLinearAlgebra.github.io/spla/docs-python/pyspla.html)
 - **Package page**:
-  [https://pypi.org/project/pyspla](https://pypi.org/project/pyspla/)
+  [pypi.org/project/pyspla](https://pypi.org/project/pyspla/)
 - **Package page (test)**:
-  [https://test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
+  [test.pypi.org/project/pyspla](https://test.pypi.org/project/pyspla/)
 - **Source code**:
-  [https://github.com/SparseLinearAlgebra/spla](https://github.com/SparseLinearAlgebra/spla)
+  [github.com/SparseLinearAlgebra/spla](https://github.com/SparseLinearAlgebra/spla)
 - **Contributing**:
-  [https://github.com/SparseLinearAlgebra/spla/CONTRIBUTING.md](https://github.com/SparseLinearAlgebra/spla/blob/main/CONTRIBUTING.md)
+  [github.com/SparseLinearAlgebra/spla/CONTRIBUTING.md](https://github.com/SparseLinearAlgebra/spla/blob/main/CONTRIBUTING.md)
 - **Development**:
-  [https://github.com/SparseLinearAlgebra/spla/DEVELOPMENT.md](https://github.com/SparseLinearAlgebra/spla/blob/main/DEVELOPMENT.md)
+  [github.com/SparseLinearAlgebra/spla/DEVELOPMENT.md](https://github.com/SparseLinearAlgebra/spla/blob/main/DEVELOPMENT.md)
 - **Examples**:
-  [https://github.com/SparseLinearAlgebra/spla/EXAMPLES.md](https://github.com/SparseLinearAlgebra/spla/blob/main/EXAMPLES.md)
+  [github.com/SparseLinearAlgebra/spla/EXAMPLES.md](https://github.com/SparseLinearAlgebra/spla/blob/main/EXAMPLES.md)
 - **C/C++ API reference**:
-  [https://SparseLinearAlgebra.github.io/spla/docs-cpp](https://SparseLinearAlgebra.github.io/spla/docs-cpp/)
+  [SparseLinearAlgebra.github.io/spla/docs-cpp](https://SparseLinearAlgebra.github.io/spla/docs-cpp/)
 - **Bug report**:
-  [https://github.com/SparseLinearAlgebra/spla/issues](https://github.com/SparseLinearAlgebra/spla/issues)
+  [github.com/SparseLinearAlgebra/spla/issues](https://github.com/SparseLinearAlgebra/spla/issues)
 
 > Note: project under heavy development! Not ready for usage.
 

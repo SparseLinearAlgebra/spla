@@ -118,9 +118,9 @@ Name | Type | Meaning
 `ONE`    | binary(x,y) | r = 1
 `MIN`    | binary(x,y) | r = min(x, y)
 `MAX`    | binary(x,y) | r = max(x, y)
-`BOR`    | binary(x,y) | r = x | y, for integral only
-`BAND`   | binary(x,y) | r = x & y, for integral only
-`BXOR`   | binary(x,y) | r = x ^ y, for integral only
+`BOR`    | binary(x,y) | r = x or y
+`BAND`   | binary(x,y) | r = x & y
+`BXOR`   | binary(x,y) | r = x ^ y
 
 List of built-in select operations:
 

@@ -37,12 +37,6 @@ class Scalar(Object):
     """
     Generalized statically-typed scalar primitive.
 
-    Attributes
-    ----------
-
-    - dtype : `type` type of stored matrix elements
-    - shape : `2-tuple` shape of the scalar in form of two integers tuple (always 1x1)
-
     Notes
     -----
 

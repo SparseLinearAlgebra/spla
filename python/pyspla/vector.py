@@ -33,12 +33,6 @@ class Vector:
     """
     Generalized statically-typed sparse storage-invariant vector primitive.
 
-    Attributes
-    ----------
-
-    - type : `type` type of stored vector elements
-    - shape : `2-tuple` shape of the vector in form of two integers tuple (second dim is 1)
-
     Notes
     -----
 

@@ -35,12 +35,6 @@ class Object:
     """
     Base class for any spla library object.
 
-    Attributes
-    ----------
-
-    - label : `str` user provided text label for object for debugging
-    - hnd : `ctypes.c_void_p` hnd to native object in spla C API
-
     Details
     -------
 

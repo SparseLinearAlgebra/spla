@@ -45,8 +45,8 @@ class Type:
     """
     Spla base Type for storage parametrization.
 
-    Attributes
-    ----------
+    Binary operations
+    -----------------
 
     PLUS: OpBinary.
         Built-in binary operation associated with a Type.
@@ -86,6 +86,9 @@ class Type:
 
     BXOR: OpBinary.
         Built-in binary operation associated with a Type. Supported only for integral types.
+
+    Select operations
+    -----------------
 
     EQZERO: OpSelect.
         Built-in selection operation associated with a Type.
@@ -151,7 +154,7 @@ class Type:
     @classmethod
     def get_code(cls):
         """
-
+        Literal code of the type in numpy style.
         """
         return cls._code
 

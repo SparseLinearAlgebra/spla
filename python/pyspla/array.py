@@ -39,13 +39,6 @@ class Array(Object):
     """
     Generalized statically-typed dense linear array primitive.
 
-    Attributes
-    ----------
-
-    - dtype  : `Type` type of stored array elements
-    - n_vals : `int` number of values in the array
-    - shape  : `2-tuple` shape of the array in form of two integers tuple (second dim is 1)
-
     Notes
     -----
 
@@ -82,16 +75,16 @@ class Array(Object):
         Parameters
         ----------
 
-        dtype: Type.
+        :param dtype: Type.
             Type parametrization of a storage.
 
-        shape: optional: int. default: None.
+        :param shape: optional: int. default: None.
             Size of the array.
 
-        hnd: optional: ctypes.c_void_p. default: None.
+        :param hnd: optional: ctypes.c_void_p. default: None.
             Optional native handle to retain.
 
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Optional label to assign.
         """
 
@@ -151,10 +144,10 @@ class Array(Object):
         Parameters
         ----------
 
-        index: int.
+        :param index: int.
             Index at which value to set.
 
-        value: any.
+        :param value: any.
             Value to set, must be convertible to destination type.
         """
 
@@ -167,7 +160,7 @@ class Array(Object):
         Parameters
         ----------
 
-        index: int.
+        :param index: int.
             Index at which to get value.
 
         Returns
@@ -187,7 +180,7 @@ class Array(Object):
         Parameters
         ----------
 
-        view: MemView.
+        :param view: MemView.
             View to a memory to build the array content from.
         """
 
@@ -214,7 +207,7 @@ class Array(Object):
         Parameters
         ----------
 
-        shape: optional: int. default: 0.
+        :param shape: optional: int. default: 0.
             New array capacity.
         """
 
@@ -251,10 +244,10 @@ class Array(Object):
         Parameters
         ----------
 
-        values: List.
+        :param values: List.
             List with values to fill array.
 
-        dtype: Type.
+        :param dtype: Type.
             Type of the array stored value.
 
         Returns
@@ -278,16 +271,16 @@ class Array(Object):
         Parameters
         ----------
 
-        dtype: Type.
+        :param dtype: Type.
             Type of values array will have.
 
-        shape: optional: int. default: 0.
+        :param shape: optional: int. default: 0.
             Size of the array (number of values).
 
-        seed: optional: int. default: None.
+        :param seed: optional: int. default: None.
             Optional seed to randomize generator.
 
-        dist: optional: tuple. default: [0,1].
+        :param dist: optional: tuple. default: [0,1].
             Optional distribution for uniform generation of values.
 
         Returns
