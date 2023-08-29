@@ -513,18 +513,17 @@ filtration and mask application.</p>
 <tr>
   <td><code>BOR</code></td>
   <td>binary(x,y)</td>
-  <td>r = x</td>
-  <td>y, for integral only</td>
+  <td>r = x or y</td>
 </tr>
 <tr>
   <td><code>BAND</code></td>
   <td>binary(x,y)</td>
-  <td>r = x &amp; y, for integral only</td>
+  <td>r = x &amp; y</td>
 </tr>
 <tr>
   <td><code>BXOR</code></td>
   <td>binary(x,y)</td>
-  <td>r = x ^ y, for integral only</td>
+  <td>r = x ^ y</td>
 </tr>
 </tbody>
 </table>
@@ -714,9 +713,9 @@ on package exit. Library state finalized automatically.</p>
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">`ONE`    | binary(x,y) | r = 1</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">`MIN`    | binary(x,y) | r = min(x, y)</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">`MAX`    | binary(x,y) | r = max(x, y)</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">`BOR`    | binary(x,y) | r = x | y, for integral only</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">`BAND`   | binary(x,y) | r = x &amp; y, for integral only</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">`BXOR`   | binary(x,y) | r = x ^ y, for integral only</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">`BOR`    | binary(x,y) | r = x or y</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">`BAND`   | binary(x,y) | r = x &amp; y</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">`BXOR`   | binary(x,y) | r = x ^ y</span>
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">List of built-in select operations:</span>
 </span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>
@@ -3023,16 +3022,16 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-76"><a href="#Array-76"><span class="linenos"> 76</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-77"><a href="#Array-77"><span class="linenos"> 77</span></a><span class="sd">        ----------</span>
 </span><span id="Array-78"><a href="#Array-78"><span class="linenos"> 78</span></a>
-</span><span id="Array-79"><a href="#Array-79"><span class="linenos"> 79</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array-79"><a href="#Array-79"><span class="linenos"> 79</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array-80"><a href="#Array-80"><span class="linenos"> 80</span></a><span class="sd">            Type parametrization of a storage.</span>
 </span><span id="Array-81"><a href="#Array-81"><span class="linenos"> 81</span></a>
-</span><span id="Array-82"><a href="#Array-82"><span class="linenos"> 82</span></a><span class="sd">        shape: optional: int. default: None.</span>
+</span><span id="Array-82"><a href="#Array-82"><span class="linenos"> 82</span></a><span class="sd">        :param shape: optional: int. default: None.</span>
 </span><span id="Array-83"><a href="#Array-83"><span class="linenos"> 83</span></a><span class="sd">            Size of the array.</span>
 </span><span id="Array-84"><a href="#Array-84"><span class="linenos"> 84</span></a>
-</span><span id="Array-85"><a href="#Array-85"><span class="linenos"> 85</span></a><span class="sd">        hnd: optional: ctypes.c_void_p. default: None.</span>
+</span><span id="Array-85"><a href="#Array-85"><span class="linenos"> 85</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
 </span><span id="Array-86"><a href="#Array-86"><span class="linenos"> 86</span></a><span class="sd">            Optional native handle to retain.</span>
 </span><span id="Array-87"><a href="#Array-87"><span class="linenos"> 87</span></a>
-</span><span id="Array-88"><a href="#Array-88"><span class="linenos"> 88</span></a><span class="sd">        label: optional: str. default: None.</span>
+</span><span id="Array-88"><a href="#Array-88"><span class="linenos"> 88</span></a><span class="sd">        :param label: optional: str. default: None.</span>
 </span><span id="Array-89"><a href="#Array-89"><span class="linenos"> 89</span></a><span class="sd">            Optional label to assign.</span>
 </span><span id="Array-90"><a href="#Array-90"><span class="linenos"> 90</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array-91"><a href="#Array-91"><span class="linenos"> 91</span></a>
@@ -3092,10 +3091,10 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-145"><a href="#Array-145"><span class="linenos">145</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-146"><a href="#Array-146"><span class="linenos">146</span></a><span class="sd">        ----------</span>
 </span><span id="Array-147"><a href="#Array-147"><span class="linenos">147</span></a>
-</span><span id="Array-148"><a href="#Array-148"><span class="linenos">148</span></a><span class="sd">        index: int.</span>
+</span><span id="Array-148"><a href="#Array-148"><span class="linenos">148</span></a><span class="sd">        :param index: int.</span>
 </span><span id="Array-149"><a href="#Array-149"><span class="linenos">149</span></a><span class="sd">            Index at which value to set.</span>
 </span><span id="Array-150"><a href="#Array-150"><span class="linenos">150</span></a>
-</span><span id="Array-151"><a href="#Array-151"><span class="linenos">151</span></a><span class="sd">        value: any.</span>
+</span><span id="Array-151"><a href="#Array-151"><span class="linenos">151</span></a><span class="sd">        :param value: any.</span>
 </span><span id="Array-152"><a href="#Array-152"><span class="linenos">152</span></a><span class="sd">            Value to set, must be convertible to destination type.</span>
 </span><span id="Array-153"><a href="#Array-153"><span class="linenos">153</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array-154"><a href="#Array-154"><span class="linenos">154</span></a>
@@ -3108,7 +3107,7 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-161"><a href="#Array-161"><span class="linenos">161</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-162"><a href="#Array-162"><span class="linenos">162</span></a><span class="sd">        ----------</span>
 </span><span id="Array-163"><a href="#Array-163"><span class="linenos">163</span></a>
-</span><span id="Array-164"><a href="#Array-164"><span class="linenos">164</span></a><span class="sd">        index: int.</span>
+</span><span id="Array-164"><a href="#Array-164"><span class="linenos">164</span></a><span class="sd">        :param index: int.</span>
 </span><span id="Array-165"><a href="#Array-165"><span class="linenos">165</span></a><span class="sd">            Index at which to get value.</span>
 </span><span id="Array-166"><a href="#Array-166"><span class="linenos">166</span></a>
 </span><span id="Array-167"><a href="#Array-167"><span class="linenos">167</span></a><span class="sd">        Returns</span>
@@ -3128,7 +3127,7 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-181"><a href="#Array-181"><span class="linenos">181</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-182"><a href="#Array-182"><span class="linenos">182</span></a><span class="sd">        ----------</span>
 </span><span id="Array-183"><a href="#Array-183"><span class="linenos">183</span></a>
-</span><span id="Array-184"><a href="#Array-184"><span class="linenos">184</span></a><span class="sd">        view: MemView.</span>
+</span><span id="Array-184"><a href="#Array-184"><span class="linenos">184</span></a><span class="sd">        :param view: MemView.</span>
 </span><span id="Array-185"><a href="#Array-185"><span class="linenos">185</span></a><span class="sd">            View to a memory to build the array content from.</span>
 </span><span id="Array-186"><a href="#Array-186"><span class="linenos">186</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array-187"><a href="#Array-187"><span class="linenos">187</span></a>
@@ -3155,7 +3154,7 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-208"><a href="#Array-208"><span class="linenos">208</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-209"><a href="#Array-209"><span class="linenos">209</span></a><span class="sd">        ----------</span>
 </span><span id="Array-210"><a href="#Array-210"><span class="linenos">210</span></a>
-</span><span id="Array-211"><a href="#Array-211"><span class="linenos">211</span></a><span class="sd">        shape: optional: int. default: 0.</span>
+</span><span id="Array-211"><a href="#Array-211"><span class="linenos">211</span></a><span class="sd">        :param shape: optional: int. default: 0.</span>
 </span><span id="Array-212"><a href="#Array-212"><span class="linenos">212</span></a><span class="sd">            New array capacity.</span>
 </span><span id="Array-213"><a href="#Array-213"><span class="linenos">213</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array-214"><a href="#Array-214"><span class="linenos">214</span></a>
@@ -3192,10 +3191,10 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-245"><a href="#Array-245"><span class="linenos">245</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-246"><a href="#Array-246"><span class="linenos">246</span></a><span class="sd">        ----------</span>
 </span><span id="Array-247"><a href="#Array-247"><span class="linenos">247</span></a>
-</span><span id="Array-248"><a href="#Array-248"><span class="linenos">248</span></a><span class="sd">        values: List.</span>
+</span><span id="Array-248"><a href="#Array-248"><span class="linenos">248</span></a><span class="sd">        :param values: List.</span>
 </span><span id="Array-249"><a href="#Array-249"><span class="linenos">249</span></a><span class="sd">            List with values to fill array.</span>
 </span><span id="Array-250"><a href="#Array-250"><span class="linenos">250</span></a>
-</span><span id="Array-251"><a href="#Array-251"><span class="linenos">251</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array-251"><a href="#Array-251"><span class="linenos">251</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array-252"><a href="#Array-252"><span class="linenos">252</span></a><span class="sd">            Type of the array stored value.</span>
 </span><span id="Array-253"><a href="#Array-253"><span class="linenos">253</span></a>
 </span><span id="Array-254"><a href="#Array-254"><span class="linenos">254</span></a><span class="sd">        Returns</span>
@@ -3219,16 +3218,16 @@ of native spla C/C++ instances, created inside imported native shared spla (.dll
 </span><span id="Array-272"><a href="#Array-272"><span class="linenos">272</span></a><span class="sd">        Parameters</span>
 </span><span id="Array-273"><a href="#Array-273"><span class="linenos">273</span></a><span class="sd">        ----------</span>
 </span><span id="Array-274"><a href="#Array-274"><span class="linenos">274</span></a>
-</span><span id="Array-275"><a href="#Array-275"><span class="linenos">275</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array-275"><a href="#Array-275"><span class="linenos">275</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array-276"><a href="#Array-276"><span class="linenos">276</span></a><span class="sd">            Type of values array will have.</span>
 </span><span id="Array-277"><a href="#Array-277"><span class="linenos">277</span></a>
-</span><span id="Array-278"><a href="#Array-278"><span class="linenos">278</span></a><span class="sd">        shape: optional: int. default: 0.</span>
+</span><span id="Array-278"><a href="#Array-278"><span class="linenos">278</span></a><span class="sd">        :param shape: optional: int. default: 0.</span>
 </span><span id="Array-279"><a href="#Array-279"><span class="linenos">279</span></a><span class="sd">            Size of the array (number of values).</span>
 </span><span id="Array-280"><a href="#Array-280"><span class="linenos">280</span></a>
-</span><span id="Array-281"><a href="#Array-281"><span class="linenos">281</span></a><span class="sd">        seed: optional: int. default: None.</span>
+</span><span id="Array-281"><a href="#Array-281"><span class="linenos">281</span></a><span class="sd">        :param seed: optional: int. default: None.</span>
 </span><span id="Array-282"><a href="#Array-282"><span class="linenos">282</span></a><span class="sd">            Optional seed to randomize generator.</span>
 </span><span id="Array-283"><a href="#Array-283"><span class="linenos">283</span></a>
-</span><span id="Array-284"><a href="#Array-284"><span class="linenos">284</span></a><span class="sd">        dist: optional: tuple. default: [0,1].</span>
+</span><span id="Array-284"><a href="#Array-284"><span class="linenos">284</span></a><span class="sd">        :param dist: optional: tuple. default: [0,1].</span>
 </span><span id="Array-285"><a href="#Array-285"><span class="linenos">285</span></a><span class="sd">            Optional distribution for uniform generation of values.</span>
 </span><span id="Array-286"><a href="#Array-286"><span class="linenos">286</span></a>
 </span><span id="Array-287"><a href="#Array-287"><span class="linenos">287</span></a><span class="sd">        Returns</span>
@@ -3319,16 +3318,16 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.__init__-76"><a href="#Array.__init__-76"><span class="linenos"> 76</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.__init__-77"><a href="#Array.__init__-77"><span class="linenos"> 77</span></a><span class="sd">        ----------</span>
 </span><span id="Array.__init__-78"><a href="#Array.__init__-78"><span class="linenos"> 78</span></a>
-</span><span id="Array.__init__-79"><a href="#Array.__init__-79"><span class="linenos"> 79</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array.__init__-79"><a href="#Array.__init__-79"><span class="linenos"> 79</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array.__init__-80"><a href="#Array.__init__-80"><span class="linenos"> 80</span></a><span class="sd">            Type parametrization of a storage.</span>
 </span><span id="Array.__init__-81"><a href="#Array.__init__-81"><span class="linenos"> 81</span></a>
-</span><span id="Array.__init__-82"><a href="#Array.__init__-82"><span class="linenos"> 82</span></a><span class="sd">        shape: optional: int. default: None.</span>
+</span><span id="Array.__init__-82"><a href="#Array.__init__-82"><span class="linenos"> 82</span></a><span class="sd">        :param shape: optional: int. default: None.</span>
 </span><span id="Array.__init__-83"><a href="#Array.__init__-83"><span class="linenos"> 83</span></a><span class="sd">            Size of the array.</span>
 </span><span id="Array.__init__-84"><a href="#Array.__init__-84"><span class="linenos"> 84</span></a>
-</span><span id="Array.__init__-85"><a href="#Array.__init__-85"><span class="linenos"> 85</span></a><span class="sd">        hnd: optional: ctypes.c_void_p. default: None.</span>
+</span><span id="Array.__init__-85"><a href="#Array.__init__-85"><span class="linenos"> 85</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
 </span><span id="Array.__init__-86"><a href="#Array.__init__-86"><span class="linenos"> 86</span></a><span class="sd">            Optional native handle to retain.</span>
 </span><span id="Array.__init__-87"><a href="#Array.__init__-87"><span class="linenos"> 87</span></a>
-</span><span id="Array.__init__-88"><a href="#Array.__init__-88"><span class="linenos"> 88</span></a><span class="sd">        label: optional: str. default: None.</span>
+</span><span id="Array.__init__-88"><a href="#Array.__init__-88"><span class="linenos"> 88</span></a><span class="sd">        :param label: optional: str. default: None.</span>
 </span><span id="Array.__init__-89"><a href="#Array.__init__-89"><span class="linenos"> 89</span></a><span class="sd">            Optional label to assign.</span>
 </span><span id="Array.__init__-90"><a href="#Array.__init__-90"><span class="linenos"> 90</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array.__init__-91"><a href="#Array.__init__-91"><span class="linenos"> 91</span></a>
@@ -3354,17 +3353,18 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>dtype: Type.
-    Type parametrization of a storage.</p>
+<h6 id="parameters-2">Parameters</h6>
 
-<p>shape: optional: int. default: None.
-    Size of the array.</p>
-
-<p>hnd: optional: ctypes.c_void_p. default: None.
-    Optional native handle to retain.</p>
-
-<p>label: optional: str. default: None.
-    Optional label to assign.</p>
+<ul>
+<li><p><strong>dtype</strong>:  Type.
+Type parametrization of a storage.</p></li>
+<li><p><strong>shape: optional: int. default</strong>:  None.
+Size of the array.</p></li>
+<li><p><strong>hnd: optional: ctypes.c_void_p. default</strong>:  None.
+Optional native handle to retain.</p></li>
+<li><p><strong>label: optional: str. default</strong>:  None.
+Optional label to assign.</p></li>
+</ul>
 </div>
 
 
@@ -3439,10 +3439,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.set-145"><a href="#Array.set-145"><span class="linenos">145</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.set-146"><a href="#Array.set-146"><span class="linenos">146</span></a><span class="sd">        ----------</span>
 </span><span id="Array.set-147"><a href="#Array.set-147"><span class="linenos">147</span></a>
-</span><span id="Array.set-148"><a href="#Array.set-148"><span class="linenos">148</span></a><span class="sd">        index: int.</span>
+</span><span id="Array.set-148"><a href="#Array.set-148"><span class="linenos">148</span></a><span class="sd">        :param index: int.</span>
 </span><span id="Array.set-149"><a href="#Array.set-149"><span class="linenos">149</span></a><span class="sd">            Index at which value to set.</span>
 </span><span id="Array.set-150"><a href="#Array.set-150"><span class="linenos">150</span></a>
-</span><span id="Array.set-151"><a href="#Array.set-151"><span class="linenos">151</span></a><span class="sd">        value: any.</span>
+</span><span id="Array.set-151"><a href="#Array.set-151"><span class="linenos">151</span></a><span class="sd">        :param value: any.</span>
 </span><span id="Array.set-152"><a href="#Array.set-152"><span class="linenos">152</span></a><span class="sd">            Value to set, must be convertible to destination type.</span>
 </span><span id="Array.set-153"><a href="#Array.set-153"><span class="linenos">153</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array.set-154"><a href="#Array.set-154"><span class="linenos">154</span></a>
@@ -3454,11 +3454,14 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>index: int.
-    Index at which value to set.</p>
+<h6 id="parameters-2">Parameters</h6>
 
-<p>value: any.
-    Value to set, must be convertible to destination type.</p>
+<ul>
+<li><p><strong>index</strong>:  int.
+Index at which value to set.</p></li>
+<li><p><strong>value</strong>:  any.
+Value to set, must be convertible to destination type.</p></li>
+</ul>
 </div>
 
 
@@ -3481,7 +3484,7 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.get-161"><a href="#Array.get-161"><span class="linenos">161</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.get-162"><a href="#Array.get-162"><span class="linenos">162</span></a><span class="sd">        ----------</span>
 </span><span id="Array.get-163"><a href="#Array.get-163"><span class="linenos">163</span></a>
-</span><span id="Array.get-164"><a href="#Array.get-164"><span class="linenos">164</span></a><span class="sd">        index: int.</span>
+</span><span id="Array.get-164"><a href="#Array.get-164"><span class="linenos">164</span></a><span class="sd">        :param index: int.</span>
 </span><span id="Array.get-165"><a href="#Array.get-165"><span class="linenos">165</span></a><span class="sd">            Index at which to get value.</span>
 </span><span id="Array.get-166"><a href="#Array.get-166"><span class="linenos">166</span></a>
 </span><span id="Array.get-167"><a href="#Array.get-167"><span class="linenos">167</span></a><span class="sd">        Returns</span>
@@ -3500,8 +3503,12 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>index: int.
-    Index at which to get value.</p>
+<h6 id="parameters-2">Parameters</h6>
+
+<ul>
+<li><strong>index</strong>:  int.
+Index at which to get value.</li>
+</ul>
 
 <h2 id="returns">Returns</h2>
 
@@ -3528,7 +3535,7 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.build-181"><a href="#Array.build-181"><span class="linenos">181</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.build-182"><a href="#Array.build-182"><span class="linenos">182</span></a><span class="sd">        ----------</span>
 </span><span id="Array.build-183"><a href="#Array.build-183"><span class="linenos">183</span></a>
-</span><span id="Array.build-184"><a href="#Array.build-184"><span class="linenos">184</span></a><span class="sd">        view: MemView.</span>
+</span><span id="Array.build-184"><a href="#Array.build-184"><span class="linenos">184</span></a><span class="sd">        :param view: MemView.</span>
 </span><span id="Array.build-185"><a href="#Array.build-185"><span class="linenos">185</span></a><span class="sd">            View to a memory to build the array content from.</span>
 </span><span id="Array.build-186"><a href="#Array.build-186"><span class="linenos">186</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array.build-187"><a href="#Array.build-187"><span class="linenos">187</span></a>
@@ -3540,8 +3547,12 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>view: MemView.
-    View to a memory to build the array content from.</p>
+<h6 id="parameters-2">Parameters</h6>
+
+<ul>
+<li><strong>view</strong>:  MemView.
+View to a memory to build the array content from.</li>
+</ul>
 </div>
 
 
@@ -3600,7 +3611,7 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.resize-208"><a href="#Array.resize-208"><span class="linenos">208</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.resize-209"><a href="#Array.resize-209"><span class="linenos">209</span></a><span class="sd">        ----------</span>
 </span><span id="Array.resize-210"><a href="#Array.resize-210"><span class="linenos">210</span></a>
-</span><span id="Array.resize-211"><a href="#Array.resize-211"><span class="linenos">211</span></a><span class="sd">        shape: optional: int. default: 0.</span>
+</span><span id="Array.resize-211"><a href="#Array.resize-211"><span class="linenos">211</span></a><span class="sd">        :param shape: optional: int. default: 0.</span>
 </span><span id="Array.resize-212"><a href="#Array.resize-212"><span class="linenos">212</span></a><span class="sd">            New array capacity.</span>
 </span><span id="Array.resize-213"><a href="#Array.resize-213"><span class="linenos">213</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Array.resize-214"><a href="#Array.resize-214"><span class="linenos">214</span></a>
@@ -3612,8 +3623,12 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>shape: optional: int. default: 0.
-    New array capacity.</p>
+<h6 id="parameters-2">Parameters</h6>
+
+<ul>
+<li><strong>shape: optional: int. default</strong>:  0.
+New array capacity.</li>
+</ul>
 </div>
 
 
@@ -3701,10 +3716,10 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.from_list-245"><a href="#Array.from_list-245"><span class="linenos">245</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.from_list-246"><a href="#Array.from_list-246"><span class="linenos">246</span></a><span class="sd">        ----------</span>
 </span><span id="Array.from_list-247"><a href="#Array.from_list-247"><span class="linenos">247</span></a>
-</span><span id="Array.from_list-248"><a href="#Array.from_list-248"><span class="linenos">248</span></a><span class="sd">        values: List.</span>
+</span><span id="Array.from_list-248"><a href="#Array.from_list-248"><span class="linenos">248</span></a><span class="sd">        :param values: List.</span>
 </span><span id="Array.from_list-249"><a href="#Array.from_list-249"><span class="linenos">249</span></a><span class="sd">            List with values to fill array.</span>
 </span><span id="Array.from_list-250"><a href="#Array.from_list-250"><span class="linenos">250</span></a>
-</span><span id="Array.from_list-251"><a href="#Array.from_list-251"><span class="linenos">251</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array.from_list-251"><a href="#Array.from_list-251"><span class="linenos">251</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array.from_list-252"><a href="#Array.from_list-252"><span class="linenos">252</span></a><span class="sd">            Type of the array stored value.</span>
 </span><span id="Array.from_list-253"><a href="#Array.from_list-253"><span class="linenos">253</span></a>
 </span><span id="Array.from_list-254"><a href="#Array.from_list-254"><span class="linenos">254</span></a><span class="sd">        Returns</span>
@@ -3725,11 +3740,14 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>values: List.
-    List with values to fill array.</p>
+<h6 id="parameters-2">Parameters</h6>
 
-<p>dtype: Type.
-    Type of the array stored value.</p>
+<ul>
+<li><p><strong>values</strong>:  List.
+List with values to fill array.</p></li>
+<li><p><strong>dtype</strong>:  Type.
+Type of the array stored value.</p></li>
+</ul>
 
 <h2 id="returns">Returns</h2>
 
@@ -3759,16 +3777,16 @@ Reading and writing values into array is fast and has nearly no overhead.</p>
 </span><span id="Array.generate-272"><a href="#Array.generate-272"><span class="linenos">272</span></a><span class="sd">        Parameters</span>
 </span><span id="Array.generate-273"><a href="#Array.generate-273"><span class="linenos">273</span></a><span class="sd">        ----------</span>
 </span><span id="Array.generate-274"><a href="#Array.generate-274"><span class="linenos">274</span></a>
-</span><span id="Array.generate-275"><a href="#Array.generate-275"><span class="linenos">275</span></a><span class="sd">        dtype: Type.</span>
+</span><span id="Array.generate-275"><a href="#Array.generate-275"><span class="linenos">275</span></a><span class="sd">        :param dtype: Type.</span>
 </span><span id="Array.generate-276"><a href="#Array.generate-276"><span class="linenos">276</span></a><span class="sd">            Type of values array will have.</span>
 </span><span id="Array.generate-277"><a href="#Array.generate-277"><span class="linenos">277</span></a>
-</span><span id="Array.generate-278"><a href="#Array.generate-278"><span class="linenos">278</span></a><span class="sd">        shape: optional: int. default: 0.</span>
+</span><span id="Array.generate-278"><a href="#Array.generate-278"><span class="linenos">278</span></a><span class="sd">        :param shape: optional: int. default: 0.</span>
 </span><span id="Array.generate-279"><a href="#Array.generate-279"><span class="linenos">279</span></a><span class="sd">            Size of the array (number of values).</span>
 </span><span id="Array.generate-280"><a href="#Array.generate-280"><span class="linenos">280</span></a>
-</span><span id="Array.generate-281"><a href="#Array.generate-281"><span class="linenos">281</span></a><span class="sd">        seed: optional: int. default: None.</span>
+</span><span id="Array.generate-281"><a href="#Array.generate-281"><span class="linenos">281</span></a><span class="sd">        :param seed: optional: int. default: None.</span>
 </span><span id="Array.generate-282"><a href="#Array.generate-282"><span class="linenos">282</span></a><span class="sd">            Optional seed to randomize generator.</span>
 </span><span id="Array.generate-283"><a href="#Array.generate-283"><span class="linenos">283</span></a>
-</span><span id="Array.generate-284"><a href="#Array.generate-284"><span class="linenos">284</span></a><span class="sd">        dist: optional: tuple. default: [0,1].</span>
+</span><span id="Array.generate-284"><a href="#Array.generate-284"><span class="linenos">284</span></a><span class="sd">        :param dist: optional: tuple. default: [0,1].</span>
 </span><span id="Array.generate-285"><a href="#Array.generate-285"><span class="linenos">285</span></a><span class="sd">            Optional distribution for uniform generation of values.</span>
 </span><span id="Array.generate-286"><a href="#Array.generate-286"><span class="linenos">286</span></a>
 </span><span id="Array.generate-287"><a href="#Array.generate-287"><span class="linenos">287</span></a><span class="sd">        Returns</span>
@@ -3801,17 +3819,18 @@ with random values, generated using specified distribution.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>dtype: Type.
-    Type of values array will have.</p>
+<h6 id="parameters-2">Parameters</h6>
 
-<p>shape: optional: int. default: 0.
-    Size of the array (number of values).</p>
-
-<p>seed: optional: int. default: None.
-    Optional seed to randomize generator.</p>
-
-<p>dist: optional: tuple. default: [0,1].
-    Optional distribution for uniform generation of values.</p>
+<ul>
+<li><p><strong>dtype</strong>:  Type.
+Type of values array will have.</p></li>
+<li><p><strong>shape: optional: int. default</strong>:  0.
+Size of the array (number of values).</p></li>
+<li><p><strong>seed: optional: int. default</strong>:  None.
+Optional seed to randomize generator.</p></li>
+<li><p><strong>dist: optional: tuple. default</strong>:  [0,1].
+Optional distribution for uniform generation of values.</p></li>
+</ul>
 
 <h2 id="returns">Returns</h2>
 
