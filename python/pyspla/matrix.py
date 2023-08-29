@@ -36,37 +36,12 @@ class Matrix:
     Notes
     -----
 
-    Matrix provides features for:
-
-    - incremental creation
-    - build from values
-    - read-back by value
-    - (tbd) transposition
-    - (tbd) triangular lower
-    - (tbd) triangular upper
-    - (tbd) element-wise addition
-    - (tbd) element-wise subtraction
-    - matrix-vector product
-    - (tbd) matrix-matrix product
-    - (tbd) matrix-matrix kronecker product
-
-    Matrix supports storage schemas:
-
-    - cpu lil (list of lists, for incremental build)
-    - cpu dok (dictionary of keys, for incremental build and per-value reed back)
-    - cpu coo (coordinate matrix format)
-    - cpu csr (compressed sparse rows)
-    - cpu csc (compressed sparse columns)
-    - acc coo (opencl)
-    - acc csr (opencl)
-    - acc csc (opencl)
-
     Matrix typical usage:
 
-    - (1) Instantiate matrix primitive
-    - (2) Build incrementally from yours data source
-    - (3) Matrix usage in a sequence of math operations
-    - (4) Read-back matrix data to python to analyse results
+    - Instantiate matrix primitive
+    - Build incrementally from yours data source
+    - Matrix usage in a sequence of math operations
+    - Read-back matrix data to python to analyse results
 
     Steps (2) and (4) requires internal format transformations and possible transfer of data
     from acc (GPU) side if acceleration was employed in computations. These steps may be very

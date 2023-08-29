@@ -40,19 +40,12 @@ class Scalar(Object):
     Notes
     -----
 
-    Scalar provides features for:
-
-    - pack native value
-    - unpack native value
-    - pass value as a param to some operation
-    - get scalar as an operation result
-
     Scalar typical usage:
 
-    - (1) Create scalar from python value
-    - (2) Pass scalar as argument to matrix/vector operation
-    - (3) Get scalar as a return value of some operation
-    - (4) Unpack value on python side
+    - Create scalar from python value
+    - Pass scalar as argument to matrix/vector operation
+    - Get scalar as a return value of some operation
+    - Unpack value on python side
 
     Avoid intensive creation of scalar values. Prefer python native types.
     Use scalars only if you want to parametrise matrix/vector operations.
@@ -129,7 +122,7 @@ class Scalar(Object):
             Optional value to store in scalar.
         """
 
-        check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value)))
+        check(self._dtype._scalar_set(self._hnd, self._dtype._c_type(value if value else 0)))
 
     def get(self):
         """

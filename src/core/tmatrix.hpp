@@ -242,6 +242,7 @@ namespace spla {
         coo.Ai.resize(elements_count);
         coo.Aj.resize(elements_count);
         coo.Ax.resize(elements_count);
+        coo.values = uint(elements_count);
 
         keys1->read(0, key_size * elements_count, coo.Ai.data());
         keys2->read(0, key_size * elements_count, coo.Aj.data());

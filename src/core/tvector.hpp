@@ -287,6 +287,7 @@ namespace spla {
 
         coo.Ai.resize(elements_count);
         coo.Ax.resize(elements_count);
+        coo.values = uint(elements_count);
 
         keys->read(0, key_size * elements_count, coo.Ai.data());
         values->read(0, value_size * elements_count, coo.Ax.data());

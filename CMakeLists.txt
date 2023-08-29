@@ -353,6 +353,7 @@ add_library(spla SHARED
         src/binding/c_algorithm.cpp
         src/binding/c_array.cpp
         src/binding/c_config.hpp
+        src/binding/c_exec.cpp
         src/binding/c_library.cpp
         src/binding/c_matrix.cpp
         src/binding/c_memview.cpp

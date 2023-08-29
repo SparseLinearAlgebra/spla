@@ -8,3 +8,6 @@ print(b)
 
 s = pyspla.Scalar(value=10, dtype=pyspla.INT)
 print(s)
+
+v = pyspla.Vector.from_lists([1, 2, 3], [-10, 100, 20], shape=10, dtype=pyspla.INT)
+print(v.reduce(pyspla.INT.PLUS))

@@ -71,7 +71,7 @@ class Op(Object):
         assert name
         assert dtype_res
 
-        super().__init__(hnd, label)
+        super().__init__(label, hnd)
 
         self._name = name
         self._dtype_res = dtype_res
@@ -124,7 +124,7 @@ class OpUnary(Op):
             Optional debug label to set for the object.
         """
 
-        super().__init__(hnd, name, dtype_res, label)
+        super().__init__(hnd=hnd, name=name, dtype_res=dtype_res, label=label)
 
         self._dtype_arg0 = dtype_arg0
 
@@ -172,7 +172,7 @@ class OpBinary(Op):
             Optional debug label to set for the object.
         """
 
-        super().__init__(hnd, name, dtype_res, label)
+        super().__init__(hnd=hnd, name=name, dtype_res=dtype_res, label=label)
 
         self._dtype_arg0 = dtype_arg0
         self._dtype_arg1 = dtype_arg1
@@ -224,7 +224,7 @@ class OpSelect(Op):
 
         from .type import BOOL
 
-        super().__init__(hnd, name, BOOL, label)
+        super().__init__(hnd=hnd, name=name, dtype_res=BOOL, label=label)
 
         self._dtype_arg0 = dtype_arg0
 

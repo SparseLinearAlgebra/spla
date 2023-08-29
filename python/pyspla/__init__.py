@@ -172,6 +172,7 @@ from .bridge import *
 bridge.initialize()
 
 from .library import *
+from .descriptor import *
 from .op import *
 from .object import *
 from .schedule import *
@@ -190,6 +191,7 @@ __all__ = [
     "INT",
     "UINT",
     "FLOAT",
+    "Descriptor",
     "Op",
     "OpUnary",
     "OpBinary",

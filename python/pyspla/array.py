@@ -42,19 +42,12 @@ class Array(Object):
     Notes
     -----
 
-    Array provides features for:
-
-    - fill with values
-    - read-back by value
-    - source for vector construction
-    - source for matrix construction
-
     Array typical usage:
 
-    - (1) Instantiate array primitive
-    - (2) Fill with values from your data
-    - (3) Use array to build entire vector or matrix
-    - (4) Read-back results of computations from vector or matrix
+    - Instantiate array primitive
+    - Fill with values from your data
+    - Use array to build entire vector or matrix
+    - Read-back results of computations from vector or matrix
 
     Details
     -------

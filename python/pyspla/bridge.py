@@ -296,9 +296,9 @@ def load_library(lib_path):
     _spla.spla_MemView_make.restype = _status_t
     _spla.spla_MemView_read.restype = _status_t
     _spla.spla_MemView_write.restype = _status_t
-    _spla.spla_MemView_get_buffer = _status_t
-    _spla.spla_MemView_get_size = _status_t
-    _spla.spla_MemView_is_mutable = _status_t
+    _spla.spla_MemView_get_buffer.restype = _status_t
+    _spla.spla_MemView_get_size.restype = _status_t
+    _spla.spla_MemView_is_mutable.restype = _status_t
 
     _spla.spla_MemView_make.argtypes = [_p_object_t, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]
     _spla.spla_MemView_read.argtypes = [_object_t, ctypes.c_size_t, ctypes.c_size_t, ctypes.c_void_p]
@@ -410,6 +410,41 @@ def load_library(lib_path):
     _spla.spla_Algorithm_sssp.argtypes = [_object_t, _object_t, _uint, _object_t]
     _spla.spla_Algorithm_pr.argtypes = [_p_object_t, _object_t, _float, _float, _object_t]
     _spla.spla_Algorithm_tc.argtypes = [_p_int, _object_t, _object_t, _object_t]
+
+    _spla.spla_Exec_mxmT_masked.restype = _status_t
+    _spla.spla_Exec_mxv_masked.restype = _status_t
+    _spla.spla_Exec_vxm_masked.restype = _status_t
+    _spla.spla_Exec_m_reduce_by_row.restype = _status_t
+    _spla.spla_Exec_m_reduce.restype = _status_t
+    _spla.spla_Exec_v_eadd.restype = _status_t
+    _spla.spla_Exec_v_eadd_fdb.restype = _status_t
+    _spla.spla_Exec_v_assign_masked.restype = _status_t
+    _spla.spla_Exec_v_map.restype = _status_t
+    _spla.spla_Exec_v_reduce.restype = _status_t
+    _spla.spla_Exec_v_count_mf.restype = _status_t
+
+    _spla.spla_Exec_mxmT_masked.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_mxv_masked.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_vxm_masked.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_m_reduce_by_row.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_m_reduce.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_eadd.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_eadd_fdb.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_assign_masked.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_map.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_reduce.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_v_count_mf.argtypes = \
+        [_object_t, _object_t, _object_t, _p_object_t]
 
 
 def default_callback(status, msg, file, function, line, user_data):
