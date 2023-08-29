@@ -77,34 +77,31 @@ possible to create large-dimension but low data containers. Containers
 are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
-<pre><code>&lt;code&gt;&lt;a title="pyspla.Matrix" href="#pyspla.Matrix"&gt;Matrix&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed sparse storage-invariant matrix primitive.
-
-&lt;code&gt;&lt;a title="pyspla.Vector" href="#pyspla.Vector"&gt;Vector&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed sparse storage-invariant vector primitive.
-
-&lt;code&gt;&lt;a title="pyspla.Scalar" href="#pyspla.Scalar"&gt;Scalar&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed scalar primitive.
-</code></pre>
+<ul>
+<li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code>. Generalized statically-typed sparse storage-invariant matrix primitive.</li>
+<li><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code>. Generalized statically-typed sparse storage-invariant vector primitive.</li>
+<li><code><a title="pyspla.Scalar" href="#pyspla.Scalar">Scalar</a></code>. Generalized statically-typed scalar primitive.</li>
+</ul>
 <h2 id="schedule">Schedule</h2>
 <p>Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks' execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.</p>
-<pre><code>&lt;code&gt;Schedule&lt;/code&gt;. Schedule object which may be executed by library.
-
-&lt;code&gt;Task&lt;/code&gt;. A particular wort to be done inside a step of schedule.
-</code></pre>
+<ul>
+<li><code>Schedule</code>. Schedule object which may be executed by library.</li>
+<li><code>Task</code>. A particular wort to be done inside a step of schedule.</li>
+</ul>
 <h2 id="types">Types</h2>
 <p>Library provides a set of standard and common built-in data types. Library value types
 differ a bit from a classic type definition. In spla library type is essentially is a
 storage characteristic, which defines count and layout of bytes per element. User
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</p>
-<pre><code>&lt;code&gt;&lt;a title="pyspla.BOOL" href="#pyspla.BOOL"&gt;BOOL&lt;/a&gt;&lt;/code&gt;. 4-byte-sized signed logical value (auxiliary type).
-
-&lt;code&gt;&lt;a title="pyspla.INT" href="#pyspla.INT"&gt;INT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized signed integral value.
-
-&lt;code&gt;&lt;a title="pyspla.UINT" href="#pyspla.UINT"&gt;UINT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized unsigned integral value.
-
-&lt;code&gt;&lt;a title="pyspla.FLOAT" href="#pyspla.FLOAT"&gt;FLOAT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized single-precision floating point value.
-</code></pre>
+<ul>
+<li><code><a title="pyspla.BOOL" href="#pyspla.BOOL">BOOL</a></code>. 4-byte-sized signed logical value (auxiliary type).</li>
+<li><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code>. 4-byte-sized signed integral value.</li>
+<li><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code>. 4-byte-sized unsigned integral value.</li>
+<li><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code>. 4-byte-sized single-precision floating point value.</li>
+</ul>
 <h2 id="operations">Operations</h2>
 <p>Library provides a set of unary, binary and select ops for values data manipulation inside
 matrix and vector containers. Unary operations commonly used for apply and transformation
@@ -313,11 +310,9 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-    `Matrix`. Generalized statically-typed sparse storage-invariant matrix primitive.
-
-    `Vector`. Generalized statically-typed sparse storage-invariant vector primitive.
-
-    `Scalar`. Generalized statically-typed scalar primitive.
+- `Matrix`. Generalized statically-typed sparse storage-invariant matrix primitive.
+- `Vector`. Generalized statically-typed sparse storage-invariant vector primitive.
+- `Scalar`. Generalized statically-typed scalar primitive.
 
 Schedule
 --------
@@ -326,9 +321,8 @@ Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks&#39; execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.
 
-    `Schedule`. Schedule object which may be executed by library.
-
-    `Task`. A particular wort to be done inside a step of schedule.
+- `Schedule`. Schedule object which may be executed by library.
+- `Task`. A particular wort to be done inside a step of schedule.
 
 Types
 -----
@@ -339,13 +333,10 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
 
-    `BOOL`. 4-byte-sized signed logical value (auxiliary type).
-
-    `INT`. 4-byte-sized signed integral value.
-
-    `UINT`. 4-byte-sized unsigned integral value.
-
-    `FLOAT`. 4-byte-sized single-precision floating point value.
+- `BOOL`. 4-byte-sized signed logical value (auxiliary type).
+- `INT`. 4-byte-sized signed integral value.
+- `UINT`. 4-byte-sized unsigned integral value.
+- `FLOAT`. 4-byte-sized single-precision floating point value.
 
 Operations
 ----------
@@ -1264,23 +1255,15 @@ Value to set, must be convertible to destination type.</p></div>
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
 </ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="pyspla.BOOL.cast_value"><code class="name flex">
-<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def cast_value(cls, value):
-    return bool(value.value)</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.type.Type.cast_value" href="type.html#pyspla.type.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.Type.format_value" href="type.html#pyspla.type.Type.format_value">format_value</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.FLOAT"><code class="flex name class">
 <span>class <span class="ident">FLOAT</span></span>
@@ -1310,37 +1293,15 @@ def cast_value(cls, value):
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
 </ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="pyspla.FLOAT.cast_value"><code class="name flex">
-<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def cast_value(cls, value):
-    return float(value.value)</code></pre>
-</details>
-</dd>
-<dt id="pyspla.FLOAT.format_value"><code class="name flex">
-<span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def format_value(cls, value, width=2, precision=2):
-    return f&#34;{value:&gt;{width}.{precision}}&#34;</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.type.Type.cast_value" href="type.html#pyspla.type.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.Type.format_value" href="type.html#pyspla.type.Type.format_value">format_value</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.INT"><code class="flex name class">
 <span>class <span class="ident">INT</span></span>
@@ -1366,23 +1327,15 @@ def format_value(cls, value, width=2, precision=2):
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
 </ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="pyspla.INT.cast_value"><code class="name flex">
-<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def cast_value(cls, value):
-    return int(value.value)</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.type.Type.cast_value" href="type.html#pyspla.type.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.Type.format_value" href="type.html#pyspla.type.Type.format_value">format_value</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.Matrix"><code class="flex name class">
 <span>class <span class="ident">Matrix</span></span>
@@ -2611,13 +2564,124 @@ Optional value to store in scalar.</p></div>
 <span>class <span class="ident">Type</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Spla base Type for storage parametrization.</p></div>
+<div class="desc"><p>Spla base Type for storage parametrization.</p>
+<h2 id="attributes">Attributes</h2>
+<p>PLUS: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>MINUS: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>MULT: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>DIV: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>MINUS_POW2: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>FIRST: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>SECOND: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>ONE: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>MIN: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>MAX: OpBinary.
+Built-in binary operation associated with a Type.</p>
+<p>BOR: OpBinary.
+Built-in binary operation associated with a Type. Supported only for integral types.</p>
+<p>BAND: OpBinary.
+Built-in binary operation associated with a Type. Supported only for integral types.</p>
+<p>BXOR: OpBinary.
+Built-in binary operation associated with a Type. Supported only for integral types.</p>
+<p>EQZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>NQZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>GTZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>GEZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>LTZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>LEZERO: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>ALWAYS: OpSelect.
+Built-in selection operation associated with a Type.</p>
+<p>NEVER: OpSelect.
+Built-in selection operation associated with a Type.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Type:
-    &#34;&#34;&#34;Spla base Type for storage parametrization.&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Spla base Type for storage parametrization.
+
+    Attributes
+    ----------
+
+    PLUS: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    MINUS: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    MULT: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    DIV: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    MINUS_POW2: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    FIRST: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    SECOND: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    ONE: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    MIN: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    MAX: OpBinary.
+        Built-in binary operation associated with a Type.
+
+    BOR: OpBinary.
+        Built-in binary operation associated with a Type. Supported only for integral types.
+
+    BAND: OpBinary.
+        Built-in binary operation associated with a Type. Supported only for integral types.
+
+    BXOR: OpBinary.
+        Built-in binary operation associated with a Type. Supported only for integral types.
+
+    EQZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    NQZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    GTZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    GEZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    LTZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    LEZERO: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    ALWAYS: OpSelect.
+        Built-in selection operation associated with a Type.
+
+    NEVER: OpSelect.
+        Built-in selection operation associated with a Type.
+    &#34;&#34;&#34;
 
     _c_type = None
     _c_type_p = None
@@ -2657,14 +2721,51 @@ Optional value to store in scalar.</p></div>
 
     @classmethod
     def get_code(cls):
+        &#34;&#34;&#34;
+
+        &#34;&#34;&#34;
         return cls._code
 
     @classmethod
     def cast_value(cls, value):
+        &#34;&#34;&#34;
+        Transforms native C value into python value.
+
+        Parameters
+        ----------
+
+        value: any.
+            Ctypes value to unpack to python value.
+
+        Returns
+        -------
+
+        Transformed value.
+        &#34;&#34;&#34;
         pass
 
     @classmethod
     def format_value(cls, value, width=2, precision=2):
+        &#34;&#34;&#34;
+        Format value of this type for a pretty printing.
+
+        Parameters
+        ----------
+
+        value: any.
+            Value to format by this type.
+
+        width: optional: int. default: 2.
+            Formatted string integral part width.
+
+        precision:
+            Formatted string fractional part width.
+
+        Returns
+        -------
+
+        Formatted value.
+        &#34;&#34;&#34;
         f = &#34;{:&gt;%s}&#34; % width
         if not isinstance(value, bool):
             return f.format(value)
@@ -2835,13 +2936,32 @@ Optional value to store in scalar.</p></div>
 <span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Transforms native C value into python value.</p>
+<h2 id="parameters">Parameters</h2>
+<p>value: any.
+Ctypes value to unpack to python value.</p>
+<h2 id="returns">Returns</h2>
+<p>Transformed value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def cast_value(cls, value):
+    &#34;&#34;&#34;
+    Transforms native C value into python value.
+
+    Parameters
+    ----------
+
+    value: any.
+        Ctypes value to unpack to python value.
+
+    Returns
+    -------
+
+    Transformed value.
+    &#34;&#34;&#34;
     pass</code></pre>
 </details>
 </dd>
@@ -2849,13 +2969,42 @@ def cast_value(cls, value):
 <span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Format value of this type for a pretty printing.</p>
+<h2 id="parameters">Parameters</h2>
+<p>value: any.
+Value to format by this type.</p>
+<p>width: optional: int. default: 2.
+Formatted string integral part width.</p>
+<p>precision:
+Formatted string fractional part width.</p>
+<h2 id="returns">Returns</h2>
+<p>Formatted value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def format_value(cls, value, width=2, precision=2):
+    &#34;&#34;&#34;
+    Format value of this type for a pretty printing.
+
+    Parameters
+    ----------
+
+    value: any.
+        Value to format by this type.
+
+    width: optional: int. default: 2.
+        Formatted string integral part width.
+
+    precision:
+        Formatted string fractional part width.
+
+    Returns
+    -------
+
+    Formatted value.
+    &#34;&#34;&#34;
     f = &#34;{:&gt;%s}&#34; % width
     if not isinstance(value, bool):
         return f.format(value)
@@ -2873,6 +3022,9 @@ def format_value(cls, value, width=2, precision=2):
 </summary>
 <pre><code class="python">@classmethod
 def get_code(cls):
+    &#34;&#34;&#34;
+
+    &#34;&#34;&#34;
     return cls._code</code></pre>
 </details>
 </dd>
@@ -2902,23 +3054,15 @@ def get_code(cls):
 <ul class="hlist">
 <li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
 </ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="pyspla.UINT.cast_value"><code class="name flex">
-<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def cast_value(cls, value):
-    return int(value.value)</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.type.Type.cast_value" href="type.html#pyspla.type.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.Type.format_value" href="type.html#pyspla.type.Type.format_value">format_value</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.Vector"><code class="flex name class">
 <span>class <span class="ident">Vector</span></span>
@@ -3083,22 +3227,12 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </li>
 <li>
 <h4><code><a title="pyspla.BOOL" href="#pyspla.BOOL">BOOL</a></code></h4>
-<ul class="">
-<li><code><a title="pyspla.BOOL.cast_value" href="#pyspla.BOOL.cast_value">cast_value</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code></h4>
-<ul class="">
-<li><code><a title="pyspla.FLOAT.cast_value" href="#pyspla.FLOAT.cast_value">cast_value</a></code></li>
-<li><code><a title="pyspla.FLOAT.format_value" href="#pyspla.FLOAT.format_value">format_value</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code></h4>
-<ul class="">
-<li><code><a title="pyspla.INT.cast_value" href="#pyspla.INT.cast_value">cast_value</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code></h4>
@@ -3185,9 +3319,6 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </li>
 <li>
 <h4><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code></h4>
-<ul class="">
-<li><code><a title="pyspla.UINT.cast_value" href="#pyspla.UINT.cast_value">cast_value</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code></h4>
