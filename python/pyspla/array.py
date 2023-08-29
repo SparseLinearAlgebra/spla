@@ -72,9 +72,6 @@ class Array(Object):
         """
         Creates new array of specified type and shape.
 
-        Parameters
-        ----------
-
         :param dtype: Type.
             Type parametrization of a storage.
 
@@ -141,9 +138,6 @@ class Array(Object):
         """
         Set value at specified index.
 
-        Parameters
-        ----------
-
         :param index: int.
             Index at which value to set.
 
@@ -157,16 +151,10 @@ class Array(Object):
         """
         Get value at specified index.
 
-        Parameters
-        ----------
-
         :param index: int.
             Index at which to get value.
 
-        Returns
-        -------
-
-        Value at specified index.
+        :return: Value at specified index.
         """
 
         value = self._dtype._c_type(0)
@@ -176,9 +164,6 @@ class Array(Object):
     def build(self, view: MemView):
         """
         Builds array from a raw memory view resource.
-
-        Parameters
-        ----------
 
         :param view: MemView.
             View to a memory to build the array content from.
@@ -190,10 +175,7 @@ class Array(Object):
         """
         Read the content of the array as a MemView.
 
-        Returns
-        -------
-
-        MemView object with view to the array content.
+        :return: MemView object with view to the array content.
         """
 
         view_hnd = ctypes.c_void_p(0)
@@ -203,9 +185,6 @@ class Array(Object):
     def resize(self, shape=0):
         """
         Resizes array to new size with desired num of values specified as shape.
-
-        Parameters
-        ----------
 
         :param shape: optional: int. default: 0.
             New array capacity.
@@ -224,10 +203,7 @@ class Array(Object):
         """
         Read array data as a python list of values.
 
-        Returns
-        -------
-
-        List with values stored in the array.
+        :return: List with values stored in the array.
         """
 
         buffer = (self.dtype._c_type * self.n_vals)()
@@ -241,19 +217,13 @@ class Array(Object):
         """
         Creates new array of desired type from list of `values`.
 
-        Parameters
-        ----------
-
         :param values: List.
             List with values to fill array.
 
         :param dtype: Type.
             Type of the array stored value.
 
-        Returns
-        -------
-
-        Created array filled with values.
+        :return: Created array filled with values.
         """
 
         buffer = (dtype._c_type * len(values))(*values)
@@ -268,9 +238,6 @@ class Array(Object):
         Creates new array of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        Parameters
-        ----------
-
         :param dtype: Type.
             Type of values array will have.
 
@@ -283,10 +250,7 @@ class Array(Object):
         :param dist: optional: tuple. default: [0,1].
             Optional distribution for uniform generation of values.
 
-        Returns
-        -------
-
-        Created array filled with values.
+        :return: Created array filled with values.
         """
 
         array = Array(dtype=dtype, shape=shape)

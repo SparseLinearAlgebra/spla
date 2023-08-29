@@ -54,19 +54,16 @@ class Op(Object):
         """
         Creates new operation from a native C api object handle.
 
-        Parameters
-        ----------
-
-        hnd: ctypes.c_void_p.
+        :param  hnd: ctypes.c_void_p.
             Mandatory handle to native C object.
 
-        name: str.
+        :param name: str.
             Mandatory name of the operation.
 
-        dtype_res:
+        :param dtype_res: Type.
             Type of the return value of the operation.
 
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Optional debug label to set for the object.
         """
 
@@ -111,22 +108,19 @@ class OpUnary(Op):
         """
         Creates new unary operation from a native C api object handle.
 
-        Parameters
-        ----------
-
-        hnd: ctypes.c_void_p.
+        :param hnd: ctypes.c_void_p.
             Mandatory handle to native C object.
 
-        name: str.
+        :param name: str.
             Mandatory name of the operation.
 
-        dtype_res:
+        :param dtype_res: Type.
             Type of the return value of the operation.
 
-        dtype_arg0:
+        :param dtype_arg0: Type.
             Type of the first operation argument.
 
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Optional debug label to set for the object.
         """
 
@@ -159,25 +153,22 @@ class OpBinary(Op):
         """
         Creates new binary operation from a native C api object handle.
 
-        Parameters
-        ----------
-
-        hnd: ctypes.c_void_p.
+        :param hnd: ctypes.c_void_p.
             Mandatory handle to native C object.
 
-        name: str.
+        :param name: str.
             Mandatory name of the operation.
 
-        dtype_res:
+        :param dtype_res: Type.
             Type of the return value of the operation.
 
-        dtype_arg0:
+        :param dtype_arg0: Type.
             Type of the first operation argument.
 
-        dtype_arg1:
+        :param dtype_arg1: Type.
             Type of the second operation argument.
 
-        label: optional: str. default: None.
+        :param  label: optional: str. default: None.
             Optional debug label to set for the object.
         """
 
@@ -218,19 +209,16 @@ class OpSelect(Op):
         """
         Creates new select operation from a native C api object handle.
 
-        Parameters
-        ----------
-
-        hnd: ctypes.c_void_p.
+        :param hnd: ctypes.c_void_p.
             Mandatory handle to native C object.
 
-        name: str.
+        :param name: str.
             Mandatory name of the operation.
 
-        dtype_arg0:
+        :param dtype_arg0: Type.
             Type of the first operation argument.
 
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Optional debug label to set for the object.
         """
 

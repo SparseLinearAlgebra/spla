@@ -33,12 +33,6 @@ class Matrix:
     """
     Generalized statically-typed sparse storage-invariant matrix primitive.
 
-    Attributes
-    ----------
-
-    - type : `type` type of stored matrix elements
-    - shape : `2-tuple` shape of the matrix in form of two integers tuple
-
     Notes
     -----
 

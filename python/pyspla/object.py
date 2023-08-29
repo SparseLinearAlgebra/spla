@@ -51,13 +51,10 @@ class Object:
         """
         Creates a base spla object class instance with common attributes.
 
-        Parameters
-        ----------
-
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Object name for debugging.
 
-        hnd: optional: ctypes.c_void_p. default: None.
+        :param hnd: optional: ctypes.c_void_p. default: None.
             Object native void* handle to a C counterpart.
         """
 

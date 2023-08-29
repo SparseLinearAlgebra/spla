@@ -73,19 +73,16 @@ class Scalar(Object):
         """
         Creates new scalar of desired type or retains existing C object.
 
-        Parameters
-        ----------
-
-        dtype: optional: Type. default: INT.
+        :param dtype: optional: Type. default: INT.
             Type of the scalar value.
 
-        value: optional: Any. default: None.
+        :param value: optional: Any. default: None.
             Optional value to store in scalar on creation.
 
-        hnd: optional: ctypes.c_void_p. default: None.
+        :param hnd: optional: ctypes.c_void_p. default: None.
             Optional handle to C object to retain in this scalar instance.
 
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             Optional debug label of the scalar.
         """
 
@@ -128,10 +125,7 @@ class Scalar(Object):
         """
         Set the value stored in the scalar. If no value passed the default value is set.
 
-        Parameters
-        ----------
-
-        value: optional: Any. default: None.
+        :param value: optional: Any. default: None.
             Optional value to store in scalar.
         """
 
@@ -141,10 +135,7 @@ class Scalar(Object):
         """
         Read the value stored in the scalar.
 
-        Returns
-        -------
-
-        Value from scalar.
+        :return: Value from scalar.
         """
 
         value = self._dtype._c_type(0)

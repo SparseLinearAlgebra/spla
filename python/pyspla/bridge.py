@@ -473,15 +473,33 @@ def initialize():
 
 
 def check(status):
+    """
+    Checks status and converts it into an exception in case of error.
+
+    :param status:
+        Status to check.
+    """
     if status != 0:
         raise _status_mapping[status]
 
 
 def is_docs():
+    """
+    Check if package in mode for docs generation.
+
+    :return: True if generating docs.
+    """
+
     global _is_docs
     return _is_docs
 
 
 def backend():
+    """
+    Access to a loaded compiled C library instance.
+
+    :return: Library with C functions to call or None.
+    """
+
     global _spla
     return _spla

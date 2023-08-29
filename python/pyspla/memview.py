@@ -50,25 +50,22 @@ class MemView(Object):
         """
         Creates a new memory view from existing hnd or making new for a buffer resource.
 
-        Parameters
-        ----------
-
-        label: optional: str. default: None.
+        :param label: optional: str. default: None.
             MemView name for debugging.
 
-        hnd: optional: ctypes.c_void_p. default: None.
+        :param hnd: optional: ctypes.c_void_p. default: None.
             MemView native void* handle to a C counterpart.
 
-        buffer: optional: ctypes.c_void_p. default: None.
+        :param buffer: optional: ctypes.c_void_p. default: None.
             Optional buffer in case making new view.
 
-        size: optional: int. default: None.
+        :param size: optional: int. default: None.
             Optional size, must be provided if buffer provided.
 
-        mutable: optional: bool. default: None.
+        :param mutable: optional: bool. default: None.
             Optional flag if buffer content is mutable.
 
-        owner: optional: Object. default: None.
+        :param owner: optional: Object. default: None.
             Optional owner of a given memory view.
         """
 

@@ -44,75 +44,6 @@ __all__ = [
 class Type:
     """
     Spla base Type for storage parametrization.
-
-    Binary operations
-    -----------------
-
-    PLUS: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    MINUS: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    MULT: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    DIV: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    MINUS_POW2: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    FIRST: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    SECOND: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    ONE: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    MIN: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    MAX: OpBinary.
-        Built-in binary operation associated with a Type.
-
-    BOR: OpBinary.
-        Built-in binary operation associated with a Type. Supported only for integral types.
-
-    BAND: OpBinary.
-        Built-in binary operation associated with a Type. Supported only for integral types.
-
-    BXOR: OpBinary.
-        Built-in binary operation associated with a Type. Supported only for integral types.
-
-    Select operations
-    -----------------
-
-    EQZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    NQZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    GTZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    GEZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    LTZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    LEZERO: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    ALWAYS: OpSelect.
-        Built-in selection operation associated with a Type.
-
-    NEVER: OpSelect.
-        Built-in selection operation associated with a Type.
     """
 
     _c_type = None
@@ -163,16 +94,10 @@ class Type:
         """
         Transforms native C value into python value.
 
-        Parameters
-        ----------
-
-        value: any.
+        :param value: any.
             Ctypes value to unpack to python value.
 
-        Returns
-        -------
-
-        Transformed value.
+        :return: Transformed value.
         """
         pass
 
@@ -181,22 +106,16 @@ class Type:
         """
         Format value of this type for a pretty printing.
 
-        Parameters
-        ----------
-
-        value: any.
+        :param value: any.
             Value to format by this type.
 
-        width: optional: int. default: 2.
+        :param width: optional: int. default: 2.
             Formatted string integral part width.
 
-        precision:
+        :param precision:
             Formatted string fractional part width.
 
-        Returns
-        -------
-
-        Formatted value.
+        :return: Formatted value.
         """
         f = "{:>%s}" % width
         if not isinstance(value, bool):
