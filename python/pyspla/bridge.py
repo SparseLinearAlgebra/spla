@@ -59,6 +59,10 @@ class SplaError(Exception):
     pass
 
 
+class SplaFailedInitialize(SplaError):
+    pass
+
+
 class SplaNoAcceleration(SplaError):
     pass
 
@@ -133,6 +137,8 @@ def load_library(lib_path):
 
     _spla.spla_Library_finalize.restype = None
     _spla.spla_Library_finalize.argtypes = []
+    _spla.spla_Library_initialize.restype = _status_t
+    _spla.spla_Library_initialize.argtypes = []
     _spla.spla_Library_set_accelerator.restype = _status_t
     _spla.spla_Library_set_accelerator.argtypes = [_enum_t]
     _spla.spla_Library_set_platform.restype = _status_t
@@ -148,12 +154,14 @@ def load_library(lib_path):
     _spla.spla_Library_get_accelerator_info.restype = _status_t
     _spla.spla_Library_get_accelerator_info.argtypes = [ctypes.c_char_p, _int]
 
-    _spla.spla_Type_int.restype = _object_t
-    _spla.spla_Type_int.argtypes = []
-    _spla.spla_Type_uint.restype = _object_t
-    _spla.spla_Type_uint.argtypes = []
-    _spla.spla_Type_float.restype = _object_t
-    _spla.spla_Type_float.argtypes = []
+    _spla.spla_Type_BOOL.restype = _object_t
+    _spla.spla_Type_BOOL.argtypes = []
+    _spla.spla_Type_INT.restype = _object_t
+    _spla.spla_Type_INT.argtypes = []
+    _spla.spla_Type_UINT.restype = _object_t
+    _spla.spla_Type_UINT.argtypes = []
+    _spla.spla_Type_FLOAT.restype = _object_t
+    _spla.spla_Type_FLOAT.argtypes = []
 
     _spla.spla_OpBinary_PLUS_INT.restype = _object_t
     _spla.spla_OpBinary_PLUS_UINT.restype = _object_t
@@ -410,6 +418,12 @@ def default_callback(status, msg, file, function, line, user_data):
     print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
 
+def init_library():
+    if _spla:
+        if _spla.spla_Library_initialize() != 0:
+            raise SplaFailedInitialize
+
+
 def finalize():
     if _spla:
         _spla.spla_Library_finalize()
@@ -444,6 +458,8 @@ def initialize():
         raise Exception(f"no compiled spla file {TARGET} to load")
 
     load_library(_spla_path)
+    init_library()
+
     _default_callback = _callback_t(default_callback)
 
     try:

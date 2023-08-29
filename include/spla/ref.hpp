@@ -203,6 +203,10 @@ namespace spla {
             return m_object;
         }
 
+        T* ref_and_get() {
+            return safe_ref(m_object);
+        }
+
         template<typename G>
         [[nodiscard]] bool is() const {
             return !m_object || dynamic_cast<G*>(m_object);

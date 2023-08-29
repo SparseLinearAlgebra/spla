@@ -113,6 +113,7 @@ typedef void(spla_MessageCallback)(spla_Status, const char* message, const char*
 /* Library configuration and accessors */
 
 SPLA_API void        spla_Library_finalize();
+SPLA_API spla_Status spla_Library_initialize();
 SPLA_API spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator);
 SPLA_API spla_Status spla_Library_set_platform(int index);
 SPLA_API spla_Status spla_Library_set_device(int index);
@@ -125,9 +126,10 @@ SPLA_API spla_Status spla_Library_get_accelerator_info(char* buffer, int length)
 
 /* Built-in predefined scalar values types for storage parametrization  */
 
-SPLA_API spla_Type spla_Type_int();
-SPLA_API spla_Type spla_Type_uint();
-SPLA_API spla_Type spla_Type_float();
+SPLA_API spla_Type spla_Type_BOOL();
+SPLA_API spla_Type spla_Type_INT();
+SPLA_API spla_Type spla_Type_UINT();
+SPLA_API spla_Type spla_Type_FLOAT();
 
 //////////////////////////////////////////////////////////////////////////////////////
 

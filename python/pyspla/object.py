@@ -74,8 +74,16 @@ class Object:
         if self._hnd:
             check(backend().spla_RefCnt_unref(self._hnd))
 
-    def set_label(self, label):
-        self._label = label
+    @property
+    def hnd(self):
+        """
+        Return handle (ctypes.c_void_p) to a wrapped native C object.
+        """
+        return self._hnd
 
-    def get_label(self):
+    @property
+    def label(self):
+        """
+        Returns optional debug string label for the object.
+        """
         return self._label

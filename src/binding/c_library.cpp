@@ -30,7 +30,9 @@
 void spla_Library_finalize() {
     spla::Library::get()->finalize();
 }
-
+spla_Status spla_Library_initialize() {
+    return spla::Library::get() ? SPLA_STATUS_OK : SPLA_STATUS_ERROR;
+}
 spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator) {
     return to_c_status(spla::Library::get()->set_accelerator(from_c_accelerator_type(accelerator)));
 }

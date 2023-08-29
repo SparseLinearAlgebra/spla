@@ -178,7 +178,7 @@ class Array(Object):
 
         value = self._dtype._c_type(0)
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def build(self, view: MemView):
         """

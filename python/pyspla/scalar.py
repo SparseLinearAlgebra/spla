@@ -155,7 +155,7 @@ class Scalar(Object):
 
         value = self._dtype._c_type(0)
         check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def __str__(self):
         return str(self.get())

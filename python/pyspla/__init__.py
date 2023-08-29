@@ -69,9 +69,9 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-- `Matrix` - Generalized statically-typed sparse storage-invariant matrix primitive.
-- `Vector` - Generalized statically-typed sparse storage-invariant vector primitive.
-- `Scalar` - Generalized statically-typed scalar primitive.
+- `Matrix`. Generalized statically-typed sparse storage-invariant matrix primitive.
+- `Vector`. Generalized statically-typed sparse storage-invariant vector primitive.
+- `Scalar`. Generalized statically-typed scalar primitive.
 
 Schedule
 --------
@@ -80,8 +80,8 @@ Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks' execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.
 
-- `Schedule` - Schedule object which may be executed by library.
-- `Task` - A particular wort to be done inside a step of schedule.
+- `Schedule`. Schedule object which may be executed by library.
+- `Task`. A particular wort to be done inside a step of schedule.
 
 Types
 -----
@@ -92,33 +92,48 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
 
-- `INT`   - 4-byte-sized signed integral value
-- `UINT`  - 4-byte-sized unsigned integral value
-- `FLOAT` - 4-byte-sized single-precision floating point value
+- `BOOL`. 4-byte-sized signed logical value (auxiliary type).
+- `INT`. 4-byte-sized signed integral value.
+- `UINT`. 4-byte-sized unsigned integral value.
+- `FLOAT`. 4-byte-sized single-precision floating point value.
 
-Op
---
+Operations
+----------
 
 Library provides a set of unary, binary and select ops for values data manipulation inside
-matrix and vector containers.
+matrix and vector containers. Unary operations commonly used for apply and transformation
+operations, binary operations used for reductions and products, select operations used for
+filtration and mask application.
 
-- `PLUS`   - binary(x,y): r = x + y
-- `MINUS`  - binary(x,y): r = x - y
-- `MULT`   - binary(x,y): r = x * y
-- `DIV`    - binary(x,y): r = x / y
-- `FIRST`  - binary(x,y): r = x
-- `SECOND` - binary(x,y): r = y
-- `ONE`    - binary(x,y): r = 1
-- `MIN`    - binary(x,y): r = min(x, y)
-- `MAX`    - binary(x,y): r = max(x, y)
-- `BOR`    - binary(x,y): r = x | y, for integral only
-- `BAND`   - binary(x,y): r = x & y, for integral only
-- `BXOR`   - binary(x,y): r = x ^ y, for integral only
+List of built-in binary operations:
 
-Usage information
------------------
+Name | Type | Meaning
+---  | ---  | ---
+`PLUS`   | binary(x,y) | r = x + y
+`MINUS`  | binary(x,y) | r = x - y
+`MULT`   | binary(x,y) | r = x * y
+`DIV`    | binary(x,y) | r = x / y
+`FIRST`  | binary(x,y) | r = x
+`SECOND` | binary(x,y) | r = y
+`ONE`    | binary(x,y) | r = 1
+`MIN`    | binary(x,y) | r = min(x, y)
+`MAX`    | binary(x,y) | r = max(x, y)
+`BOR`    | binary(x,y) | r = x | y, for integral only
+`BAND`   | binary(x,y) | r = x & y, for integral only
+`BXOR`   | binary(x,y) | r = x ^ y, for integral only
 
-TBD.
+List of built-in select operations:
+
+Name | Type | Meaning
+---  | ---  | ---
+`EQZERO` | select(x) | x == 0
+`NQZERO` | select(x) | x != 0
+`GTZERO` | select(x) | x > 0
+`GEZERO` | select(x) | x >= 0
+`LTZERO` | select(x) | x < 0
+`LEZERO` | select(x) | x <= 0
+`ALWAYS` | select(x) | true
+`NEVER`  | select(x) | false
 
 Details
 -------
@@ -167,17 +182,19 @@ from .vector import *
 from .scalar import *
 from .version import *
 
-if not bridge.is_docs():
-    for t in BUILT_IN:
-        t._setup()
-
 __version__ = VERSIONS[-1]
 
 __all__ = [
     "Type",
+    "BOOL",
     "INT",
     "UINT",
     "FLOAT",
+    "Op",
+    "OpUnary",
+    "OpBinary",
+    "OpSelect",
+    "MemView",
     "Object",
     "Array",
     "Matrix",

@@ -27,12 +27,15 @@
 
 #include "c_config.hpp"
 
-spla_Type spla_Type_int() {
+spla_Type spla_Type_BOOL() {
+    return as_ptr<spla_Type_t>(spla::BOOL.get());
+}
+spla_Type spla_Type_INT() {
     return as_ptr<spla_Type_t>(spla::INT.get());
 }
-spla_Type spla_Type_uint() {
+spla_Type spla_Type_UINT() {
     return as_ptr<spla_Type_t>(spla::UINT.get());
 }
-spla_Type spla_Type_float() {
+spla_Type spla_Type_FLOAT() {
     return as_ptr<spla_Type_t>(spla::FLOAT.get());
 }
