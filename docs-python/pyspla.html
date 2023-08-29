@@ -4033,17 +4033,17 @@ using one of built-in OpenCL or CUDA accelerators.</p>
 </span><span id="Vector-266"><a href="#Vector-266"><span class="linenos">266</span></a>
 </span><span id="Vector-267"><a href="#Vector-267"><span class="linenos">267</span></a>        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_lists</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 </span><span id="Vector-268"><a href="#Vector-268"><span class="linenos">268</span></a>
-</span><span id="Vector-269"><a href="#Vector-269"><span class="linenos">269</span></a>    <span class="k">def</span> <span class="nf">eadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Vector-269"><a href="#Vector-269"><span class="linenos">269</span></a>    <span class="k">def</span> <span class="nf">eadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_add</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </span><span id="Vector-270"><a href="#Vector-270"><span class="linenos">270</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Vector-271"><a href="#Vector-271"><span class="linenos">271</span></a><span class="sd">        Element-wise add one vector to another and return result.</span>
 </span><span id="Vector-272"><a href="#Vector-272"><span class="linenos">272</span></a>
-</span><span id="Vector-273"><a href="#Vector-273"><span class="linenos">273</span></a><span class="sd">        :param op: OpBinary.</span>
+</span><span id="Vector-273"><a href="#Vector-273"><span class="linenos">273</span></a><span class="sd">        :param op_add: OpBinary.</span>
 </span><span id="Vector-274"><a href="#Vector-274"><span class="linenos">274</span></a><span class="sd">            Binary operation to sum values.</span>
 </span><span id="Vector-275"><a href="#Vector-275"><span class="linenos">275</span></a>
 </span><span id="Vector-276"><a href="#Vector-276"><span class="linenos">276</span></a><span class="sd">        :param v: Vector.</span>
 </span><span id="Vector-277"><a href="#Vector-277"><span class="linenos">277</span></a><span class="sd">            Other right vector to sum with this.</span>
 </span><span id="Vector-278"><a href="#Vector-278"><span class="linenos">278</span></a>
-</span><span id="Vector-279"><a href="#Vector-279"><span class="linenos">279</span></a><span class="sd">        :param r: optional: Vector. default: None.</span>
+</span><span id="Vector-279"><a href="#Vector-279"><span class="linenos">279</span></a><span class="sd">        :param out: optional: Vector. default: None.</span>
 </span><span id="Vector-280"><a href="#Vector-280"><span class="linenos">280</span></a><span class="sd">            Optional vector to store result.</span>
 </span><span id="Vector-281"><a href="#Vector-281"><span class="linenos">281</span></a>
 </span><span id="Vector-282"><a href="#Vector-282"><span class="linenos">282</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
@@ -4052,93 +4052,95 @@ using one of built-in OpenCL or CUDA accelerators.</p>
 </span><span id="Vector-285"><a href="#Vector-285"><span class="linenos">285</span></a><span class="sd">        :return: Vector with result.</span>
 </span><span id="Vector-286"><a href="#Vector-286"><span class="linenos">286</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Vector-287"><a href="#Vector-287"><span class="linenos">287</span></a>
-</span><span id="Vector-288"><a href="#Vector-288"><span class="linenos">288</span></a>        <span class="k">assert</span> <span class="n">v</span>
-</span><span id="Vector-289"><a href="#Vector-289"><span class="linenos">289</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
-</span><span id="Vector-290"><a href="#Vector-290"><span class="linenos">290</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector-291"><a href="#Vector-291"><span class="linenos">291</span></a>        <span class="k">assert</span> <span class="n">op</span>
-</span><span id="Vector-292"><a href="#Vector-292"><span class="linenos">292</span></a>
-</span><span id="Vector-293"><a href="#Vector-293"><span class="linenos">293</span></a>        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector-294"><a href="#Vector-294"><span class="linenos">294</span></a>            <span class="n">r</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Vector-295"><a href="#Vector-295"><span class="linenos">295</span></a>
-</span><span id="Vector-296"><a href="#Vector-296"><span class="linenos">296</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_eadd</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector-297"><a href="#Vector-297"><span class="linenos">297</span></a>                                         <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector-298"><a href="#Vector-298"><span class="linenos">298</span></a>
-</span><span id="Vector-299"><a href="#Vector-299"><span class="linenos">299</span></a>        <span class="k">return</span> <span class="n">r</span>
+</span><span id="Vector-288"><a href="#Vector-288"><span class="linenos">288</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector-289"><a href="#Vector-289"><span class="linenos">289</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Vector-290"><a href="#Vector-290"><span class="linenos">290</span></a>
+</span><span id="Vector-291"><a href="#Vector-291"><span class="linenos">291</span></a>        <span class="k">assert</span> <span class="n">v</span>
+</span><span id="Vector-292"><a href="#Vector-292"><span class="linenos">292</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector-293"><a href="#Vector-293"><span class="linenos">293</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector-294"><a href="#Vector-294"><span class="linenos">294</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector-295"><a href="#Vector-295"><span class="linenos">295</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector-296"><a href="#Vector-296"><span class="linenos">296</span></a>        <span class="k">assert</span> <span class="n">op_add</span>
+</span><span id="Vector-297"><a href="#Vector-297"><span class="linenos">297</span></a>
+</span><span id="Vector-298"><a href="#Vector-298"><span class="linenos">298</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_eadd</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_add</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector-299"><a href="#Vector-299"><span class="linenos">299</span></a>                                         <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
 </span><span id="Vector-300"><a href="#Vector-300"><span class="linenos">300</span></a>
-</span><span id="Vector-301"><a href="#Vector-301"><span class="linenos">301</span></a>    <span class="k">def</span> <span class="nf">assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op_assign</span><span class="p">,</span> <span class="n">op_select</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Vector-302"><a href="#Vector-302"><span class="linenos">302</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Vector-303"><a href="#Vector-303"><span class="linenos">303</span></a><span class="sd">        Assign scalar value to a vector by mask.</span>
-</span><span id="Vector-304"><a href="#Vector-304"><span class="linenos">304</span></a>
-</span><span id="Vector-305"><a href="#Vector-305"><span class="linenos">305</span></a><span class="sd">        :param mask: Vector.</span>
-</span><span id="Vector-306"><a href="#Vector-306"><span class="linenos">306</span></a><span class="sd">            Mask vector which structure will be used to select entries for assignment.</span>
-</span><span id="Vector-307"><a href="#Vector-307"><span class="linenos">307</span></a>
-</span><span id="Vector-308"><a href="#Vector-308"><span class="linenos">308</span></a><span class="sd">        :param value: Scalar.</span>
-</span><span id="Vector-309"><a href="#Vector-309"><span class="linenos">309</span></a><span class="sd">            Value to assign.</span>
-</span><span id="Vector-310"><a href="#Vector-310"><span class="linenos">310</span></a>
-</span><span id="Vector-311"><a href="#Vector-311"><span class="linenos">311</span></a><span class="sd">        :param op_assign: OpBinary.</span>
-</span><span id="Vector-312"><a href="#Vector-312"><span class="linenos">312</span></a><span class="sd">            Binary operation used to combine existing value in vector and scalar.</span>
-</span><span id="Vector-313"><a href="#Vector-313"><span class="linenos">313</span></a>
-</span><span id="Vector-314"><a href="#Vector-314"><span class="linenos">314</span></a><span class="sd">        :param op_select: OpSelect.</span>
-</span><span id="Vector-315"><a href="#Vector-315"><span class="linenos">315</span></a><span class="sd">            Predicate to select entries in the mask to assign.</span>
-</span><span id="Vector-316"><a href="#Vector-316"><span class="linenos">316</span></a>
-</span><span id="Vector-317"><a href="#Vector-317"><span class="linenos">317</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Vector-318"><a href="#Vector-318"><span class="linenos">318</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
-</span><span id="Vector-319"><a href="#Vector-319"><span class="linenos">319</span></a>
-</span><span id="Vector-320"><a href="#Vector-320"><span class="linenos">320</span></a><span class="sd">        :return: This vector.</span>
-</span><span id="Vector-321"><a href="#Vector-321"><span class="linenos">321</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Vector-322"><a href="#Vector-322"><span class="linenos">322</span></a>
-</span><span id="Vector-323"><a href="#Vector-323"><span class="linenos">323</span></a>        <span class="k">assert</span> <span class="n">mask</span>
-</span><span id="Vector-324"><a href="#Vector-324"><span class="linenos">324</span></a>        <span class="k">assert</span> <span class="n">value</span>
-</span><span id="Vector-325"><a href="#Vector-325"><span class="linenos">325</span></a>        <span class="k">assert</span> <span class="n">mask</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
-</span><span id="Vector-326"><a href="#Vector-326"><span class="linenos">326</span></a>        <span class="k">assert</span> <span class="n">op_assign</span>
-</span><span id="Vector-327"><a href="#Vector-327"><span class="linenos">327</span></a>        <span class="k">assert</span> <span class="n">op_select</span>
-</span><span id="Vector-328"><a href="#Vector-328"><span class="linenos">328</span></a>
-</span><span id="Vector-329"><a href="#Vector-329"><span class="linenos">329</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_assign_masked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_select</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector-330"><a href="#Vector-330"><span class="linenos">330</span></a>                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector-331"><a href="#Vector-331"><span class="linenos">331</span></a>
-</span><span id="Vector-332"><a href="#Vector-332"><span class="linenos">332</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Vector-301"><a href="#Vector-301"><span class="linenos">301</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Vector-302"><a href="#Vector-302"><span class="linenos">302</span></a>
+</span><span id="Vector-303"><a href="#Vector-303"><span class="linenos">303</span></a>    <span class="k">def</span> <span class="nf">assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op_assign</span><span class="p">,</span> <span class="n">op_select</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Vector-304"><a href="#Vector-304"><span class="linenos">304</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Vector-305"><a href="#Vector-305"><span class="linenos">305</span></a><span class="sd">        Assign scalar value to a vector by mask.</span>
+</span><span id="Vector-306"><a href="#Vector-306"><span class="linenos">306</span></a>
+</span><span id="Vector-307"><a href="#Vector-307"><span class="linenos">307</span></a><span class="sd">        :param mask: Vector.</span>
+</span><span id="Vector-308"><a href="#Vector-308"><span class="linenos">308</span></a><span class="sd">            Mask vector which structure will be used to select entries for assignment.</span>
+</span><span id="Vector-309"><a href="#Vector-309"><span class="linenos">309</span></a>
+</span><span id="Vector-310"><a href="#Vector-310"><span class="linenos">310</span></a><span class="sd">        :param value: Scalar.</span>
+</span><span id="Vector-311"><a href="#Vector-311"><span class="linenos">311</span></a><span class="sd">            Value to assign.</span>
+</span><span id="Vector-312"><a href="#Vector-312"><span class="linenos">312</span></a>
+</span><span id="Vector-313"><a href="#Vector-313"><span class="linenos">313</span></a><span class="sd">        :param op_assign: OpBinary.</span>
+</span><span id="Vector-314"><a href="#Vector-314"><span class="linenos">314</span></a><span class="sd">            Binary operation used to combine existing value in vector and scalar.</span>
+</span><span id="Vector-315"><a href="#Vector-315"><span class="linenos">315</span></a>
+</span><span id="Vector-316"><a href="#Vector-316"><span class="linenos">316</span></a><span class="sd">        :param op_select: OpSelect.</span>
+</span><span id="Vector-317"><a href="#Vector-317"><span class="linenos">317</span></a><span class="sd">            Predicate to select entries in the mask to assign.</span>
+</span><span id="Vector-318"><a href="#Vector-318"><span class="linenos">318</span></a>
+</span><span id="Vector-319"><a href="#Vector-319"><span class="linenos">319</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Vector-320"><a href="#Vector-320"><span class="linenos">320</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Vector-321"><a href="#Vector-321"><span class="linenos">321</span></a>
+</span><span id="Vector-322"><a href="#Vector-322"><span class="linenos">322</span></a><span class="sd">        :return: This vector.</span>
+</span><span id="Vector-323"><a href="#Vector-323"><span class="linenos">323</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Vector-324"><a href="#Vector-324"><span class="linenos">324</span></a>
+</span><span id="Vector-325"><a href="#Vector-325"><span class="linenos">325</span></a>        <span class="k">assert</span> <span class="n">mask</span>
+</span><span id="Vector-326"><a href="#Vector-326"><span class="linenos">326</span></a>        <span class="k">assert</span> <span class="n">value</span>
+</span><span id="Vector-327"><a href="#Vector-327"><span class="linenos">327</span></a>        <span class="k">assert</span> <span class="n">mask</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector-328"><a href="#Vector-328"><span class="linenos">328</span></a>        <span class="k">assert</span> <span class="n">op_assign</span>
+</span><span id="Vector-329"><a href="#Vector-329"><span class="linenos">329</span></a>        <span class="k">assert</span> <span class="n">op_select</span>
+</span><span id="Vector-330"><a href="#Vector-330"><span class="linenos">330</span></a>
+</span><span id="Vector-331"><a href="#Vector-331"><span class="linenos">331</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_assign_masked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_select</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector-332"><a href="#Vector-332"><span class="linenos">332</span></a>                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
 </span><span id="Vector-333"><a href="#Vector-333"><span class="linenos">333</span></a>
-</span><span id="Vector-334"><a href="#Vector-334"><span class="linenos">334</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Vector-335"><a href="#Vector-335"><span class="linenos">335</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Vector-336"><a href="#Vector-336"><span class="linenos">336</span></a><span class="sd">        Reduce vector elements.</span>
-</span><span id="Vector-337"><a href="#Vector-337"><span class="linenos">337</span></a>
-</span><span id="Vector-338"><a href="#Vector-338"><span class="linenos">338</span></a><span class="sd">        :param op: OpBinary.</span>
-</span><span id="Vector-339"><a href="#Vector-339"><span class="linenos">339</span></a><span class="sd">            Binary operation to apply for reduction of vector elements.</span>
-</span><span id="Vector-340"><a href="#Vector-340"><span class="linenos">340</span></a>
-</span><span id="Vector-341"><a href="#Vector-341"><span class="linenos">341</span></a><span class="sd">        :param r: optional: Scalar: default: 0.</span>
-</span><span id="Vector-342"><a href="#Vector-342"><span class="linenos">342</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
-</span><span id="Vector-343"><a href="#Vector-343"><span class="linenos">343</span></a>
-</span><span id="Vector-344"><a href="#Vector-344"><span class="linenos">344</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
-</span><span id="Vector-345"><a href="#Vector-345"><span class="linenos">345</span></a><span class="sd">            Optional neutral init value for reduction.</span>
-</span><span id="Vector-346"><a href="#Vector-346"><span class="linenos">346</span></a>
-</span><span id="Vector-347"><a href="#Vector-347"><span class="linenos">347</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Vector-348"><a href="#Vector-348"><span class="linenos">348</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
-</span><span id="Vector-349"><a href="#Vector-349"><span class="linenos">349</span></a>
-</span><span id="Vector-350"><a href="#Vector-350"><span class="linenos">350</span></a><span class="sd">        :return: Scalar value with result.</span>
-</span><span id="Vector-351"><a href="#Vector-351"><span class="linenos">351</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Vector-352"><a href="#Vector-352"><span class="linenos">352</span></a>
-</span><span id="Vector-353"><a href="#Vector-353"><span class="linenos">353</span></a>        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector-354"><a href="#Vector-354"><span class="linenos">354</span></a>            <span class="n">r</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Vector-355"><a href="#Vector-355"><span class="linenos">355</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector-356"><a href="#Vector-356"><span class="linenos">356</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Vector-357"><a href="#Vector-357"><span class="linenos">357</span></a>
-</span><span id="Vector-358"><a href="#Vector-358"><span class="linenos">358</span></a>        <span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector-359"><a href="#Vector-359"><span class="linenos">359</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector-360"><a href="#Vector-360"><span class="linenos">360</span></a>
-</span><span id="Vector-361"><a href="#Vector-361"><span class="linenos">361</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_reduce</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector-362"><a href="#Vector-362"><span class="linenos">362</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector-363"><a href="#Vector-363"><span class="linenos">363</span></a>
-</span><span id="Vector-364"><a href="#Vector-364"><span class="linenos">364</span></a>        <span class="k">return</span> <span class="n">r</span>
+</span><span id="Vector-334"><a href="#Vector-334"><span class="linenos">334</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Vector-335"><a href="#Vector-335"><span class="linenos">335</span></a>
+</span><span id="Vector-336"><a href="#Vector-336"><span class="linenos">336</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Vector-337"><a href="#Vector-337"><span class="linenos">337</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Vector-338"><a href="#Vector-338"><span class="linenos">338</span></a><span class="sd">        Reduce vector elements.</span>
+</span><span id="Vector-339"><a href="#Vector-339"><span class="linenos">339</span></a>
+</span><span id="Vector-340"><a href="#Vector-340"><span class="linenos">340</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Vector-341"><a href="#Vector-341"><span class="linenos">341</span></a><span class="sd">            Binary operation to apply for reduction of vector elements.</span>
+</span><span id="Vector-342"><a href="#Vector-342"><span class="linenos">342</span></a>
+</span><span id="Vector-343"><a href="#Vector-343"><span class="linenos">343</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
+</span><span id="Vector-344"><a href="#Vector-344"><span class="linenos">344</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
+</span><span id="Vector-345"><a href="#Vector-345"><span class="linenos">345</span></a>
+</span><span id="Vector-346"><a href="#Vector-346"><span class="linenos">346</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Vector-347"><a href="#Vector-347"><span class="linenos">347</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Vector-348"><a href="#Vector-348"><span class="linenos">348</span></a>
+</span><span id="Vector-349"><a href="#Vector-349"><span class="linenos">349</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Vector-350"><a href="#Vector-350"><span class="linenos">350</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Vector-351"><a href="#Vector-351"><span class="linenos">351</span></a>
+</span><span id="Vector-352"><a href="#Vector-352"><span class="linenos">352</span></a><span class="sd">        :return: Scalar value with result.</span>
+</span><span id="Vector-353"><a href="#Vector-353"><span class="linenos">353</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Vector-354"><a href="#Vector-354"><span class="linenos">354</span></a>
+</span><span id="Vector-355"><a href="#Vector-355"><span class="linenos">355</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector-356"><a href="#Vector-356"><span class="linenos">356</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Vector-357"><a href="#Vector-357"><span class="linenos">357</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector-358"><a href="#Vector-358"><span class="linenos">358</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Vector-359"><a href="#Vector-359"><span class="linenos">359</span></a>
+</span><span id="Vector-360"><a href="#Vector-360"><span class="linenos">360</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector-361"><a href="#Vector-361"><span class="linenos">361</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector-362"><a href="#Vector-362"><span class="linenos">362</span></a>
+</span><span id="Vector-363"><a href="#Vector-363"><span class="linenos">363</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector-364"><a href="#Vector-364"><span class="linenos">364</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
 </span><span id="Vector-365"><a href="#Vector-365"><span class="linenos">365</span></a>
-</span><span id="Vector-366"><a href="#Vector-366"><span class="linenos">366</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Vector-367"><a href="#Vector-367"><span class="linenos">367</span></a>        <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
-</span><span id="Vector-368"><a href="#Vector-368"><span class="linenos">368</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-</span><span id="Vector-369"><a href="#Vector-369"><span class="linenos">369</span></a>
-</span><span id="Vector-370"><a href="#Vector-370"><span class="linenos">370</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
-</span><span id="Vector-371"><a href="#Vector-371"><span class="linenos">371</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Vector-372"><a href="#Vector-372"><span class="linenos">372</span></a>
-</span><span id="Vector-373"><a href="#Vector-373"><span class="linenos">373</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
-</span><span id="Vector-374"><a href="#Vector-374"><span class="linenos">374</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
+</span><span id="Vector-366"><a href="#Vector-366"><span class="linenos">366</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Vector-367"><a href="#Vector-367"><span class="linenos">367</span></a>
+</span><span id="Vector-368"><a href="#Vector-368"><span class="linenos">368</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Vector-369"><a href="#Vector-369"><span class="linenos">369</span></a>        <span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
+</span><span id="Vector-370"><a href="#Vector-370"><span class="linenos">370</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+</span><span id="Vector-371"><a href="#Vector-371"><span class="linenos">371</span></a>
+</span><span id="Vector-372"><a href="#Vector-372"><span class="linenos">372</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
+</span><span id="Vector-373"><a href="#Vector-373"><span class="linenos">373</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Vector-374"><a href="#Vector-374"><span class="linenos">374</span></a>
+</span><span id="Vector-375"><a href="#Vector-375"><span class="linenos">375</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+</span><span id="Vector-376"><a href="#Vector-376"><span class="linenos">376</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
 </span></pre></div>
 
 
@@ -4596,23 +4598,23 @@ Optional distribution for uniform generation of values.</p></li>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">eadd</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">op</span>, </span><span class="param"><span class="n">v</span>, </span><span class="param"><span class="n">r</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
+        <span class="name">eadd</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">op_add</span>, </span><span class="param"><span class="n">v</span>, </span><span class="param"><span class="n">out</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="Vector.eadd-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#Vector.eadd"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.eadd-269"><a href="#Vector.eadd-269"><span class="linenos">269</span></a>    <span class="k">def</span> <span class="nf">eadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.eadd-269"><a href="#Vector.eadd-269"><span class="linenos">269</span></a>    <span class="k">def</span> <span class="nf">eadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_add</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </span><span id="Vector.eadd-270"><a href="#Vector.eadd-270"><span class="linenos">270</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Vector.eadd-271"><a href="#Vector.eadd-271"><span class="linenos">271</span></a><span class="sd">        Element-wise add one vector to another and return result.</span>
 </span><span id="Vector.eadd-272"><a href="#Vector.eadd-272"><span class="linenos">272</span></a>
-</span><span id="Vector.eadd-273"><a href="#Vector.eadd-273"><span class="linenos">273</span></a><span class="sd">        :param op: OpBinary.</span>
+</span><span id="Vector.eadd-273"><a href="#Vector.eadd-273"><span class="linenos">273</span></a><span class="sd">        :param op_add: OpBinary.</span>
 </span><span id="Vector.eadd-274"><a href="#Vector.eadd-274"><span class="linenos">274</span></a><span class="sd">            Binary operation to sum values.</span>
 </span><span id="Vector.eadd-275"><a href="#Vector.eadd-275"><span class="linenos">275</span></a>
 </span><span id="Vector.eadd-276"><a href="#Vector.eadd-276"><span class="linenos">276</span></a><span class="sd">        :param v: Vector.</span>
 </span><span id="Vector.eadd-277"><a href="#Vector.eadd-277"><span class="linenos">277</span></a><span class="sd">            Other right vector to sum with this.</span>
 </span><span id="Vector.eadd-278"><a href="#Vector.eadd-278"><span class="linenos">278</span></a>
-</span><span id="Vector.eadd-279"><a href="#Vector.eadd-279"><span class="linenos">279</span></a><span class="sd">        :param r: optional: Vector. default: None.</span>
+</span><span id="Vector.eadd-279"><a href="#Vector.eadd-279"><span class="linenos">279</span></a><span class="sd">        :param out: optional: Vector. default: None.</span>
 </span><span id="Vector.eadd-280"><a href="#Vector.eadd-280"><span class="linenos">280</span></a><span class="sd">            Optional vector to store result.</span>
 </span><span id="Vector.eadd-281"><a href="#Vector.eadd-281"><span class="linenos">281</span></a>
 </span><span id="Vector.eadd-282"><a href="#Vector.eadd-282"><span class="linenos">282</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
@@ -4621,18 +4623,20 @@ Optional distribution for uniform generation of values.</p></li>
 </span><span id="Vector.eadd-285"><a href="#Vector.eadd-285"><span class="linenos">285</span></a><span class="sd">        :return: Vector with result.</span>
 </span><span id="Vector.eadd-286"><a href="#Vector.eadd-286"><span class="linenos">286</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Vector.eadd-287"><a href="#Vector.eadd-287"><span class="linenos">287</span></a>
-</span><span id="Vector.eadd-288"><a href="#Vector.eadd-288"><span class="linenos">288</span></a>        <span class="k">assert</span> <span class="n">v</span>
-</span><span id="Vector.eadd-289"><a href="#Vector.eadd-289"><span class="linenos">289</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
-</span><span id="Vector.eadd-290"><a href="#Vector.eadd-290"><span class="linenos">290</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector.eadd-291"><a href="#Vector.eadd-291"><span class="linenos">291</span></a>        <span class="k">assert</span> <span class="n">op</span>
-</span><span id="Vector.eadd-292"><a href="#Vector.eadd-292"><span class="linenos">292</span></a>
-</span><span id="Vector.eadd-293"><a href="#Vector.eadd-293"><span class="linenos">293</span></a>        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector.eadd-294"><a href="#Vector.eadd-294"><span class="linenos">294</span></a>            <span class="n">r</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Vector.eadd-295"><a href="#Vector.eadd-295"><span class="linenos">295</span></a>
-</span><span id="Vector.eadd-296"><a href="#Vector.eadd-296"><span class="linenos">296</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_eadd</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector.eadd-297"><a href="#Vector.eadd-297"><span class="linenos">297</span></a>                                         <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector.eadd-298"><a href="#Vector.eadd-298"><span class="linenos">298</span></a>
-</span><span id="Vector.eadd-299"><a href="#Vector.eadd-299"><span class="linenos">299</span></a>        <span class="k">return</span> <span class="n">r</span>
+</span><span id="Vector.eadd-288"><a href="#Vector.eadd-288"><span class="linenos">288</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector.eadd-289"><a href="#Vector.eadd-289"><span class="linenos">289</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Vector.eadd-290"><a href="#Vector.eadd-290"><span class="linenos">290</span></a>
+</span><span id="Vector.eadd-291"><a href="#Vector.eadd-291"><span class="linenos">291</span></a>        <span class="k">assert</span> <span class="n">v</span>
+</span><span id="Vector.eadd-292"><a href="#Vector.eadd-292"><span class="linenos">292</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector.eadd-293"><a href="#Vector.eadd-293"><span class="linenos">293</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector.eadd-294"><a href="#Vector.eadd-294"><span class="linenos">294</span></a>        <span class="k">assert</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector.eadd-295"><a href="#Vector.eadd-295"><span class="linenos">295</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector.eadd-296"><a href="#Vector.eadd-296"><span class="linenos">296</span></a>        <span class="k">assert</span> <span class="n">op_add</span>
+</span><span id="Vector.eadd-297"><a href="#Vector.eadd-297"><span class="linenos">297</span></a>
+</span><span id="Vector.eadd-298"><a href="#Vector.eadd-298"><span class="linenos">298</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_eadd</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_add</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector.eadd-299"><a href="#Vector.eadd-299"><span class="linenos">299</span></a>                                         <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Vector.eadd-300"><a href="#Vector.eadd-300"><span class="linenos">300</span></a>
+</span><span id="Vector.eadd-301"><a href="#Vector.eadd-301"><span class="linenos">301</span></a>        <span class="k">return</span> <span class="n">out</span>
 </span></pre></div>
 
 
@@ -4641,11 +4645,11 @@ Optional distribution for uniform generation of values.</p></li>
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><p><strong>op</strong>:  OpBinary.
+<li><p><strong>op_add</strong>:  OpBinary.
 Binary operation to sum values.</p></li>
 <li><p><strong>v</strong>:  Vector.
 Other right vector to sum with this.</p></li>
-<li><p><strong>r: optional: Vector. default</strong>:  None.
+<li><p><strong>out: optional: Vector. default</strong>:  None.
 Optional vector to store result.</p></li>
 <li><p><strong>desc: optional: Descriptor. default</strong>:  None.
 Optional descriptor object to configure the execution.</p></li>
@@ -4671,38 +4675,38 @@ Optional descriptor object to configure the execution.</p></li>
 
     </div>
     <a class="headerlink" href="#Vector.assign"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.assign-301"><a href="#Vector.assign-301"><span class="linenos">301</span></a>    <span class="k">def</span> <span class="nf">assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op_assign</span><span class="p">,</span> <span class="n">op_select</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Vector.assign-302"><a href="#Vector.assign-302"><span class="linenos">302</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Vector.assign-303"><a href="#Vector.assign-303"><span class="linenos">303</span></a><span class="sd">        Assign scalar value to a vector by mask.</span>
-</span><span id="Vector.assign-304"><a href="#Vector.assign-304"><span class="linenos">304</span></a>
-</span><span id="Vector.assign-305"><a href="#Vector.assign-305"><span class="linenos">305</span></a><span class="sd">        :param mask: Vector.</span>
-</span><span id="Vector.assign-306"><a href="#Vector.assign-306"><span class="linenos">306</span></a><span class="sd">            Mask vector which structure will be used to select entries for assignment.</span>
-</span><span id="Vector.assign-307"><a href="#Vector.assign-307"><span class="linenos">307</span></a>
-</span><span id="Vector.assign-308"><a href="#Vector.assign-308"><span class="linenos">308</span></a><span class="sd">        :param value: Scalar.</span>
-</span><span id="Vector.assign-309"><a href="#Vector.assign-309"><span class="linenos">309</span></a><span class="sd">            Value to assign.</span>
-</span><span id="Vector.assign-310"><a href="#Vector.assign-310"><span class="linenos">310</span></a>
-</span><span id="Vector.assign-311"><a href="#Vector.assign-311"><span class="linenos">311</span></a><span class="sd">        :param op_assign: OpBinary.</span>
-</span><span id="Vector.assign-312"><a href="#Vector.assign-312"><span class="linenos">312</span></a><span class="sd">            Binary operation used to combine existing value in vector and scalar.</span>
-</span><span id="Vector.assign-313"><a href="#Vector.assign-313"><span class="linenos">313</span></a>
-</span><span id="Vector.assign-314"><a href="#Vector.assign-314"><span class="linenos">314</span></a><span class="sd">        :param op_select: OpSelect.</span>
-</span><span id="Vector.assign-315"><a href="#Vector.assign-315"><span class="linenos">315</span></a><span class="sd">            Predicate to select entries in the mask to assign.</span>
-</span><span id="Vector.assign-316"><a href="#Vector.assign-316"><span class="linenos">316</span></a>
-</span><span id="Vector.assign-317"><a href="#Vector.assign-317"><span class="linenos">317</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Vector.assign-318"><a href="#Vector.assign-318"><span class="linenos">318</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
-</span><span id="Vector.assign-319"><a href="#Vector.assign-319"><span class="linenos">319</span></a>
-</span><span id="Vector.assign-320"><a href="#Vector.assign-320"><span class="linenos">320</span></a><span class="sd">        :return: This vector.</span>
-</span><span id="Vector.assign-321"><a href="#Vector.assign-321"><span class="linenos">321</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Vector.assign-322"><a href="#Vector.assign-322"><span class="linenos">322</span></a>
-</span><span id="Vector.assign-323"><a href="#Vector.assign-323"><span class="linenos">323</span></a>        <span class="k">assert</span> <span class="n">mask</span>
-</span><span id="Vector.assign-324"><a href="#Vector.assign-324"><span class="linenos">324</span></a>        <span class="k">assert</span> <span class="n">value</span>
-</span><span id="Vector.assign-325"><a href="#Vector.assign-325"><span class="linenos">325</span></a>        <span class="k">assert</span> <span class="n">mask</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
-</span><span id="Vector.assign-326"><a href="#Vector.assign-326"><span class="linenos">326</span></a>        <span class="k">assert</span> <span class="n">op_assign</span>
-</span><span id="Vector.assign-327"><a href="#Vector.assign-327"><span class="linenos">327</span></a>        <span class="k">assert</span> <span class="n">op_select</span>
-</span><span id="Vector.assign-328"><a href="#Vector.assign-328"><span class="linenos">328</span></a>
-</span><span id="Vector.assign-329"><a href="#Vector.assign-329"><span class="linenos">329</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_assign_masked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_select</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector.assign-330"><a href="#Vector.assign-330"><span class="linenos">330</span></a>                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector.assign-331"><a href="#Vector.assign-331"><span class="linenos">331</span></a>
-</span><span id="Vector.assign-332"><a href="#Vector.assign-332"><span class="linenos">332</span></a>        <span class="k">return</span> <span class="bp">self</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.assign-303"><a href="#Vector.assign-303"><span class="linenos">303</span></a>    <span class="k">def</span> <span class="nf">assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op_assign</span><span class="p">,</span> <span class="n">op_select</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Vector.assign-304"><a href="#Vector.assign-304"><span class="linenos">304</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Vector.assign-305"><a href="#Vector.assign-305"><span class="linenos">305</span></a><span class="sd">        Assign scalar value to a vector by mask.</span>
+</span><span id="Vector.assign-306"><a href="#Vector.assign-306"><span class="linenos">306</span></a>
+</span><span id="Vector.assign-307"><a href="#Vector.assign-307"><span class="linenos">307</span></a><span class="sd">        :param mask: Vector.</span>
+</span><span id="Vector.assign-308"><a href="#Vector.assign-308"><span class="linenos">308</span></a><span class="sd">            Mask vector which structure will be used to select entries for assignment.</span>
+</span><span id="Vector.assign-309"><a href="#Vector.assign-309"><span class="linenos">309</span></a>
+</span><span id="Vector.assign-310"><a href="#Vector.assign-310"><span class="linenos">310</span></a><span class="sd">        :param value: Scalar.</span>
+</span><span id="Vector.assign-311"><a href="#Vector.assign-311"><span class="linenos">311</span></a><span class="sd">            Value to assign.</span>
+</span><span id="Vector.assign-312"><a href="#Vector.assign-312"><span class="linenos">312</span></a>
+</span><span id="Vector.assign-313"><a href="#Vector.assign-313"><span class="linenos">313</span></a><span class="sd">        :param op_assign: OpBinary.</span>
+</span><span id="Vector.assign-314"><a href="#Vector.assign-314"><span class="linenos">314</span></a><span class="sd">            Binary operation used to combine existing value in vector and scalar.</span>
+</span><span id="Vector.assign-315"><a href="#Vector.assign-315"><span class="linenos">315</span></a>
+</span><span id="Vector.assign-316"><a href="#Vector.assign-316"><span class="linenos">316</span></a><span class="sd">        :param op_select: OpSelect.</span>
+</span><span id="Vector.assign-317"><a href="#Vector.assign-317"><span class="linenos">317</span></a><span class="sd">            Predicate to select entries in the mask to assign.</span>
+</span><span id="Vector.assign-318"><a href="#Vector.assign-318"><span class="linenos">318</span></a>
+</span><span id="Vector.assign-319"><a href="#Vector.assign-319"><span class="linenos">319</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Vector.assign-320"><a href="#Vector.assign-320"><span class="linenos">320</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Vector.assign-321"><a href="#Vector.assign-321"><span class="linenos">321</span></a>
+</span><span id="Vector.assign-322"><a href="#Vector.assign-322"><span class="linenos">322</span></a><span class="sd">        :return: This vector.</span>
+</span><span id="Vector.assign-323"><a href="#Vector.assign-323"><span class="linenos">323</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Vector.assign-324"><a href="#Vector.assign-324"><span class="linenos">324</span></a>
+</span><span id="Vector.assign-325"><a href="#Vector.assign-325"><span class="linenos">325</span></a>        <span class="k">assert</span> <span class="n">mask</span>
+</span><span id="Vector.assign-326"><a href="#Vector.assign-326"><span class="linenos">326</span></a>        <span class="k">assert</span> <span class="n">value</span>
+</span><span id="Vector.assign-327"><a href="#Vector.assign-327"><span class="linenos">327</span></a>        <span class="k">assert</span> <span class="n">mask</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Vector.assign-328"><a href="#Vector.assign-328"><span class="linenos">328</span></a>        <span class="k">assert</span> <span class="n">op_assign</span>
+</span><span id="Vector.assign-329"><a href="#Vector.assign-329"><span class="linenos">329</span></a>        <span class="k">assert</span> <span class="n">op_select</span>
+</span><span id="Vector.assign-330"><a href="#Vector.assign-330"><span class="linenos">330</span></a>
+</span><span id="Vector.assign-331"><a href="#Vector.assign-331"><span class="linenos">331</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_assign_masked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_select</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector.assign-332"><a href="#Vector.assign-332"><span class="linenos">332</span></a>                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Vector.assign-333"><a href="#Vector.assign-333"><span class="linenos">333</span></a>
+</span><span id="Vector.assign-334"><a href="#Vector.assign-334"><span class="linenos">334</span></a>        <span class="k">return</span> <span class="bp">self</span>
 </span></pre></div>
 
 
@@ -4737,43 +4741,43 @@ Optional descriptor object to configure the execution.</p></li>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">reduce</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">op</span>, </span><span class="param"><span class="n">r</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">init</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
+        <span class="name">reduce</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">op_reduce</span>, </span><span class="param"><span class="n">out</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">init</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="Vector.reduce-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#Vector.reduce"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.reduce-334"><a href="#Vector.reduce-334"><span class="linenos">334</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Vector.reduce-335"><a href="#Vector.reduce-335"><span class="linenos">335</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Vector.reduce-336"><a href="#Vector.reduce-336"><span class="linenos">336</span></a><span class="sd">        Reduce vector elements.</span>
-</span><span id="Vector.reduce-337"><a href="#Vector.reduce-337"><span class="linenos">337</span></a>
-</span><span id="Vector.reduce-338"><a href="#Vector.reduce-338"><span class="linenos">338</span></a><span class="sd">        :param op: OpBinary.</span>
-</span><span id="Vector.reduce-339"><a href="#Vector.reduce-339"><span class="linenos">339</span></a><span class="sd">            Binary operation to apply for reduction of vector elements.</span>
-</span><span id="Vector.reduce-340"><a href="#Vector.reduce-340"><span class="linenos">340</span></a>
-</span><span id="Vector.reduce-341"><a href="#Vector.reduce-341"><span class="linenos">341</span></a><span class="sd">        :param r: optional: Scalar: default: 0.</span>
-</span><span id="Vector.reduce-342"><a href="#Vector.reduce-342"><span class="linenos">342</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
-</span><span id="Vector.reduce-343"><a href="#Vector.reduce-343"><span class="linenos">343</span></a>
-</span><span id="Vector.reduce-344"><a href="#Vector.reduce-344"><span class="linenos">344</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
-</span><span id="Vector.reduce-345"><a href="#Vector.reduce-345"><span class="linenos">345</span></a><span class="sd">            Optional neutral init value for reduction.</span>
-</span><span id="Vector.reduce-346"><a href="#Vector.reduce-346"><span class="linenos">346</span></a>
-</span><span id="Vector.reduce-347"><a href="#Vector.reduce-347"><span class="linenos">347</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Vector.reduce-348"><a href="#Vector.reduce-348"><span class="linenos">348</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
-</span><span id="Vector.reduce-349"><a href="#Vector.reduce-349"><span class="linenos">349</span></a>
-</span><span id="Vector.reduce-350"><a href="#Vector.reduce-350"><span class="linenos">350</span></a><span class="sd">        :return: Scalar value with result.</span>
-</span><span id="Vector.reduce-351"><a href="#Vector.reduce-351"><span class="linenos">351</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Vector.reduce-352"><a href="#Vector.reduce-352"><span class="linenos">352</span></a>
-</span><span id="Vector.reduce-353"><a href="#Vector.reduce-353"><span class="linenos">353</span></a>        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector.reduce-354"><a href="#Vector.reduce-354"><span class="linenos">354</span></a>            <span class="n">r</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Vector.reduce-355"><a href="#Vector.reduce-355"><span class="linenos">355</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Vector.reduce-356"><a href="#Vector.reduce-356"><span class="linenos">356</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Vector.reduce-357"><a href="#Vector.reduce-357"><span class="linenos">357</span></a>
-</span><span id="Vector.reduce-358"><a href="#Vector.reduce-358"><span class="linenos">358</span></a>        <span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector.reduce-359"><a href="#Vector.reduce-359"><span class="linenos">359</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Vector.reduce-360"><a href="#Vector.reduce-360"><span class="linenos">360</span></a>
-</span><span id="Vector.reduce-361"><a href="#Vector.reduce-361"><span class="linenos">361</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_reduce</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Vector.reduce-362"><a href="#Vector.reduce-362"><span class="linenos">362</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Vector.reduce-363"><a href="#Vector.reduce-363"><span class="linenos">363</span></a>
-</span><span id="Vector.reduce-364"><a href="#Vector.reduce-364"><span class="linenos">364</span></a>        <span class="k">return</span> <span class="n">r</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Vector.reduce-336"><a href="#Vector.reduce-336"><span class="linenos">336</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Vector.reduce-337"><a href="#Vector.reduce-337"><span class="linenos">337</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Vector.reduce-338"><a href="#Vector.reduce-338"><span class="linenos">338</span></a><span class="sd">        Reduce vector elements.</span>
+</span><span id="Vector.reduce-339"><a href="#Vector.reduce-339"><span class="linenos">339</span></a>
+</span><span id="Vector.reduce-340"><a href="#Vector.reduce-340"><span class="linenos">340</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Vector.reduce-341"><a href="#Vector.reduce-341"><span class="linenos">341</span></a><span class="sd">            Binary operation to apply for reduction of vector elements.</span>
+</span><span id="Vector.reduce-342"><a href="#Vector.reduce-342"><span class="linenos">342</span></a>
+</span><span id="Vector.reduce-343"><a href="#Vector.reduce-343"><span class="linenos">343</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
+</span><span id="Vector.reduce-344"><a href="#Vector.reduce-344"><span class="linenos">344</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
+</span><span id="Vector.reduce-345"><a href="#Vector.reduce-345"><span class="linenos">345</span></a>
+</span><span id="Vector.reduce-346"><a href="#Vector.reduce-346"><span class="linenos">346</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Vector.reduce-347"><a href="#Vector.reduce-347"><span class="linenos">347</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Vector.reduce-348"><a href="#Vector.reduce-348"><span class="linenos">348</span></a>
+</span><span id="Vector.reduce-349"><a href="#Vector.reduce-349"><span class="linenos">349</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Vector.reduce-350"><a href="#Vector.reduce-350"><span class="linenos">350</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Vector.reduce-351"><a href="#Vector.reduce-351"><span class="linenos">351</span></a>
+</span><span id="Vector.reduce-352"><a href="#Vector.reduce-352"><span class="linenos">352</span></a><span class="sd">        :return: Scalar value with result.</span>
+</span><span id="Vector.reduce-353"><a href="#Vector.reduce-353"><span class="linenos">353</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Vector.reduce-354"><a href="#Vector.reduce-354"><span class="linenos">354</span></a>
+</span><span id="Vector.reduce-355"><a href="#Vector.reduce-355"><span class="linenos">355</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector.reduce-356"><a href="#Vector.reduce-356"><span class="linenos">356</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Vector.reduce-357"><a href="#Vector.reduce-357"><span class="linenos">357</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Vector.reduce-358"><a href="#Vector.reduce-358"><span class="linenos">358</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Vector.reduce-359"><a href="#Vector.reduce-359"><span class="linenos">359</span></a>
+</span><span id="Vector.reduce-360"><a href="#Vector.reduce-360"><span class="linenos">360</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector.reduce-361"><a href="#Vector.reduce-361"><span class="linenos">361</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Vector.reduce-362"><a href="#Vector.reduce-362"><span class="linenos">362</span></a>
+</span><span id="Vector.reduce-363"><a href="#Vector.reduce-363"><span class="linenos">363</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_v_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Vector.reduce-364"><a href="#Vector.reduce-364"><span class="linenos">364</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Vector.reduce-365"><a href="#Vector.reduce-365"><span class="linenos">365</span></a>
+</span><span id="Vector.reduce-366"><a href="#Vector.reduce-366"><span class="linenos">366</span></a>        <span class="k">return</span> <span class="n">out</span>
 </span></pre></div>
 
 
@@ -4782,9 +4786,9 @@ Optional descriptor object to configure the execution.</p></li>
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><p><strong>op</strong>:  OpBinary.
+<li><p><strong>op_reduce</strong>:  OpBinary.
 Binary operation to apply for reduction of vector elements.</p></li>
-<li><p><strong>r: optional: Scalar: default</strong>:  0.
+<li><p><strong>out: optional: Scalar: default</strong>:  0.
 Optional scalar to store result of reduction.</p></li>
 <li><p><strong>init: optional: Scalar: default</strong>:  0.
 Optional neutral init value for reduction.</p></li>
