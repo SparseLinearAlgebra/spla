@@ -57,14 +57,16 @@ SOFTWARE.
 
 import ctypes
 
-from .bridge import backend
+from .bridge import backend, check
+from .op import OpBinary, OpSelect
 
 __all__ = [
-    &#39;Type&#39;,
-    &#39;INT&#39;,
-    &#39;UINT&#39;,
-    &#39;FLOAT&#39;,
-    &#39;BUILT_IN&#39;
+    &#34;Type&#34;,
+    &#34;BOOL&#34;,
+    &#34;INT&#34;,
+    &#34;UINT&#34;,
+    &#34;FLOAT&#34;,
+    &#34;BUILT_IN&#34;
 ]
 
 
@@ -84,13 +86,120 @@ class Type:
     _matrix_set = None
     _hnd = None
 
+    PLUS = None
+    MINUS = None
+    MULT = None
+    DIV = None
+    MINUS_POW2 = None
+    FIRST = None
+    SECOND = None
+    ONE = None
+    MIN = None
+    MAX = None
+    BOR = None
+    BAND = None
+    BXOR = None
+
+    EQZERO = None
+    NQZERO = None
+    GTZERO = None
+    GEZERO = None
+    LTZERO = None
+    LEZERO = None
+    ALWAYS = None
+    NEVER = None
+
     @classmethod
     def get_code(cls):
         return cls._code
 
     @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         pass
+
+    @classmethod
+    def format_value(cls, value, width=2, precision=2):
+        f = &#34;{:&gt;%s}&#34; % width
+        if not isinstance(value, bool):
+            return f.format(value)
+        return f.format(&#34;t&#34;) if value is True else f.format(&#34;f&#34;)
+
+    @classmethod
+    def _setup_op_binary(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpBinary_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpBinary(hnd=func(), name=name, dtype_res=cls, dtype_arg0=cls, dtype_arg1=cls) if func else None
+
+        cls.PLUS = load_op(&#39;PLUS&#39;)
+        cls.MINUS = load_op(&#39;MINUS&#39;)
+        cls.MULT = load_op(&#39;MULT&#39;)
+        cls.DIV = load_op(&#39;DIV&#39;)
+        cls.MINUS_POW2 = load_op(&#39;MINUS_POW2&#39;)
+        cls.FIRST = load_op(&#39;FIRST&#39;)
+        cls.SECOND = load_op(&#39;SECOND&#39;)
+        cls.ONE = load_op(&#39;ONE&#39;)
+        cls.MIN = load_op(&#39;MIN&#39;)
+        cls.MAX = load_op(&#39;MAX&#39;)
+        cls.BOR = load_op(&#39;BOR&#39;)
+        cls.BAND = load_op(&#39;BAND&#39;)
+        cls.BXOR = load_op(&#39;BXOR&#39;)
+
+    @classmethod
+    def _setup_op_select(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpSelect_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpSelect(hnd=func(), name=name, dtype_arg0=cls) if func else None
+
+        cls.EQZERO = load_op(&#39;EQZERO&#39;)
+        cls.NQZERO = load_op(&#39;NQZERO&#39;)
+        cls.GTZERO = load_op(&#39;GTZERO&#39;)
+        cls.GEZERO = load_op(&#39;GEZERO&#39;)
+        cls.LTZERO = load_op(&#39;LTZERO&#39;)
+        cls.LEZERO = load_op(&#39;LEZERO&#39;)
+        cls.ALWAYS = load_op(&#39;ALWAYS&#39;)
+        cls.NEVER = load_op(&#39;NEVER&#39;)
+
+    @classmethod
+    def _setup(cls):
+        b = backend()
+        type_name = cls.__name__
+        type_name_lower = type_name.lower()
+
+        if not b:
+            return
+
+        cls._scalar_get = getattr(b, f&#34;spla_Scalar_get_{type_name_lower}&#34;)
+        cls._scalar_set = getattr(b, f&#34;spla_Scalar_set_{type_name_lower}&#34;)
+        cls._array_get = getattr(b, f&#34;spla_Array_get_{type_name_lower}&#34;)
+        cls._array_set = getattr(b, f&#34;spla_Array_set_{type_name_lower}&#34;)
+        cls._vector_get = getattr(b, f&#34;spla_Vector_get_{type_name_lower}&#34;)
+        cls._vector_set = getattr(b, f&#34;spla_Vector_set_{type_name_lower}&#34;)
+        cls._matrix_get = getattr(b, f&#34;spla_Matrix_get_{type_name_lower}&#34;)
+        cls._matrix_set = getattr(b, f&#34;spla_Matrix_set_{type_name_lower}&#34;)
+        cls._hnd = getattr(b, f&#34;spla_Type_{type_name}&#34;)()
+
+        cls._setup_op_binary()
+        cls._setup_op_select()
+
+
+class BOOL(Type):
+    &#34;&#34;&#34;Spla logical BOOL-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_bool
+    _c_type_p = ctypes.POINTER(ctypes.c_bool)
+    _code = &#39;B&#39;
+
+    @classmethod
+    def cast_value(cls, value):
+        return bool(value.value)
 
 
 class INT(Type):
@@ -101,19 +210,7 @@ class INT(Type):
     _code = &#39;I&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_int
-        cls._scalar_set = backend().spla_Scalar_set_int
-        cls._array_get = backend().spla_Array_get_int
-        cls._array_set = backend().spla_Array_set_int
-        cls._vector_get = backend().spla_Vector_get_int
-        cls._vector_set = backend().spla_Vector_set_int
-        cls._matrix_get = backend().spla_Matrix_get_int
-        cls._matrix_set = backend().spla_Matrix_set_int
-        cls._hnd = backend().spla_Type_int()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)
 
 
@@ -125,19 +222,7 @@ class UINT(Type):
     _code = &#39;U&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_uint
-        cls._scalar_set = backend().spla_Scalar_set_uint
-        cls._array_get = backend().spla_Array_get_uint
-        cls._array_set = backend().spla_Array_set_uint
-        cls._vector_get = backend().spla_Vector_get_uint
-        cls._vector_set = backend().spla_Vector_set_uint
-        cls._matrix_get = backend().spla_Matrix_get_uint
-        cls._matrix_set = backend().spla_Matrix_set_uint
-        cls._hnd = backend().spla_Type_uint()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)
 
 
@@ -149,23 +234,18 @@ class FLOAT(Type):
     _code = &#39;F&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_float
-        cls._scalar_set = backend().spla_Scalar_set_float
-        cls._array_get = backend().spla_Array_get_float
-        cls._array_set = backend().spla_Array_set_float
-        cls._vector_get = backend().spla_Vector_get_float
-        cls._vector_set = backend().spla_Vector_set_float
-        cls._matrix_get = backend().spla_Matrix_get_float
-        cls._matrix_set = backend().spla_Matrix_set_float
-        cls._hnd = backend().spla_Type_float()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return float(value.value)
 
+    @classmethod
+    def format_value(cls, value, width=2, precision=2):
+        return f&#34;{value:&gt;{width}.{precision}}&#34;
 
-BUILT_IN = [INT, UINT, FLOAT]</code></pre>
+
+BUILT_IN = [INT, UINT, FLOAT]
+
+for dtype in BUILT_IN:
+    dtype._setup()</code></pre>
 </details>
 </section>
 <section>
@@ -177,6 +257,48 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="pyspla.type.BOOL"><code class="flex name class">
+<span>class <span class="ident">BOOL</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla logical BOOL-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BOOL(Type):
+    &#34;&#34;&#34;Spla logical BOOL-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_bool
+    _c_type_p = ctypes.POINTER(ctypes.c_bool)
+    _code = &#39;B&#39;
+
+    @classmethod
+    def cast_value(cls, value):
+        return bool(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.type.BOOL.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def cast_value(cls, value):
+    return bool(value.value)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="pyspla.type.FLOAT"><code class="flex name class">
 <span>class <span class="ident">FLOAT</span></span>
 </code></dt>
@@ -194,20 +316,12 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
     _code = &#39;F&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_float
-        cls._scalar_set = backend().spla_Scalar_set_float
-        cls._array_get = backend().spla_Array_get_float
-        cls._array_set = backend().spla_Array_set_float
-        cls._vector_get = backend().spla_Vector_get_float
-        cls._vector_set = backend().spla_Vector_set_float
-        cls._matrix_get = backend().spla_Matrix_get_float
-        cls._matrix_set = backend().spla_Matrix_set_float
-        cls._hnd = backend().spla_Type_float()
+    def cast_value(cls, value):
+        return float(value.value)
 
     @classmethod
-    def to_py(cls, value):
-        return float(value.value)</code></pre>
+    def format_value(cls, value, width=2, precision=2):
+        return f&#34;{value:&gt;{width}.{precision}}&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -215,8 +329,8 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.type.FLOAT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.type.FLOAT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -225,8 +339,22 @@ BUILT_IN = [INT, UINT, FLOAT]</code></pre>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return float(value.value)</code></pre>
+</details>
+</dd>
+<dt id="pyspla.type.FLOAT.format_value"><code class="name flex">
+<span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def format_value(cls, value, width=2, precision=2):
+    return f&#34;{value:&gt;{width}.{precision}}&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -248,19 +376,7 @@ def to_py(cls, value):
     _code = &#39;I&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_int
-        cls._scalar_set = backend().spla_Scalar_set_int
-        cls._array_get = backend().spla_Array_get_int
-        cls._array_set = backend().spla_Array_set_int
-        cls._vector_get = backend().spla_Vector_get_int
-        cls._vector_set = backend().spla_Vector_set_int
-        cls._matrix_get = backend().spla_Matrix_get_int
-        cls._matrix_set = backend().spla_Matrix_set_int
-        cls._hnd = backend().spla_Type_int()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -269,8 +385,8 @@ def to_py(cls, value):
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.type.INT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.type.INT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -279,7 +395,7 @@ def to_py(cls, value):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return int(value.value)</code></pre>
 </details>
 </dd>
@@ -310,22 +426,236 @@ def to_py(cls, value):
     _matrix_set = None
     _hnd = None
 
+    PLUS = None
+    MINUS = None
+    MULT = None
+    DIV = None
+    MINUS_POW2 = None
+    FIRST = None
+    SECOND = None
+    ONE = None
+    MIN = None
+    MAX = None
+    BOR = None
+    BAND = None
+    BXOR = None
+
+    EQZERO = None
+    NQZERO = None
+    GTZERO = None
+    GEZERO = None
+    LTZERO = None
+    LEZERO = None
+    ALWAYS = None
+    NEVER = None
+
     @classmethod
     def get_code(cls):
         return cls._code
 
     @classmethod
-    def to_py(cls, value):
-        pass</code></pre>
+    def cast_value(cls, value):
+        pass
+
+    @classmethod
+    def format_value(cls, value, width=2, precision=2):
+        f = &#34;{:&gt;%s}&#34; % width
+        if not isinstance(value, bool):
+            return f.format(value)
+        return f.format(&#34;t&#34;) if value is True else f.format(&#34;f&#34;)
+
+    @classmethod
+    def _setup_op_binary(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpBinary_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpBinary(hnd=func(), name=name, dtype_res=cls, dtype_arg0=cls, dtype_arg1=cls) if func else None
+
+        cls.PLUS = load_op(&#39;PLUS&#39;)
+        cls.MINUS = load_op(&#39;MINUS&#39;)
+        cls.MULT = load_op(&#39;MULT&#39;)
+        cls.DIV = load_op(&#39;DIV&#39;)
+        cls.MINUS_POW2 = load_op(&#39;MINUS_POW2&#39;)
+        cls.FIRST = load_op(&#39;FIRST&#39;)
+        cls.SECOND = load_op(&#39;SECOND&#39;)
+        cls.ONE = load_op(&#39;ONE&#39;)
+        cls.MIN = load_op(&#39;MIN&#39;)
+        cls.MAX = load_op(&#39;MAX&#39;)
+        cls.BOR = load_op(&#39;BOR&#39;)
+        cls.BAND = load_op(&#39;BAND&#39;)
+        cls.BXOR = load_op(&#39;BXOR&#39;)
+
+    @classmethod
+    def _setup_op_select(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpSelect_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpSelect(hnd=func(), name=name, dtype_arg0=cls) if func else None
+
+        cls.EQZERO = load_op(&#39;EQZERO&#39;)
+        cls.NQZERO = load_op(&#39;NQZERO&#39;)
+        cls.GTZERO = load_op(&#39;GTZERO&#39;)
+        cls.GEZERO = load_op(&#39;GEZERO&#39;)
+        cls.LTZERO = load_op(&#39;LTZERO&#39;)
+        cls.LEZERO = load_op(&#39;LEZERO&#39;)
+        cls.ALWAYS = load_op(&#39;ALWAYS&#39;)
+        cls.NEVER = load_op(&#39;NEVER&#39;)
+
+    @classmethod
+    def _setup(cls):
+        b = backend()
+        type_name = cls.__name__
+        type_name_lower = type_name.lower()
+
+        if not b:
+            return
+
+        cls._scalar_get = getattr(b, f&#34;spla_Scalar_get_{type_name_lower}&#34;)
+        cls._scalar_set = getattr(b, f&#34;spla_Scalar_set_{type_name_lower}&#34;)
+        cls._array_get = getattr(b, f&#34;spla_Array_get_{type_name_lower}&#34;)
+        cls._array_set = getattr(b, f&#34;spla_Array_set_{type_name_lower}&#34;)
+        cls._vector_get = getattr(b, f&#34;spla_Vector_get_{type_name_lower}&#34;)
+        cls._vector_set = getattr(b, f&#34;spla_Vector_set_{type_name_lower}&#34;)
+        cls._matrix_get = getattr(b, f&#34;spla_Matrix_get_{type_name_lower}&#34;)
+        cls._matrix_set = getattr(b, f&#34;spla_Matrix_set_{type_name_lower}&#34;)
+        cls._hnd = getattr(b, f&#34;spla_Type_{type_name}&#34;)()
+
+        cls._setup_op_binary()
+        cls._setup_op_select()</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="pyspla.type.BOOL" href="#pyspla.type.BOOL">BOOL</a></li>
 <li><a title="pyspla.type.FLOAT" href="#pyspla.type.FLOAT">FLOAT</a></li>
 <li><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></li>
 <li><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyspla.type.Type.ALWAYS"><code class="name">var <span class="ident">ALWAYS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.BAND"><code class="name">var <span class="ident">BAND</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.BOR"><code class="name">var <span class="ident">BOR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.BXOR"><code class="name">var <span class="ident">BXOR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.DIV"><code class="name">var <span class="ident">DIV</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.EQZERO"><code class="name">var <span class="ident">EQZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.FIRST"><code class="name">var <span class="ident">FIRST</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.GEZERO"><code class="name">var <span class="ident">GEZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.GTZERO"><code class="name">var <span class="ident">GTZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.LEZERO"><code class="name">var <span class="ident">LEZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.LTZERO"><code class="name">var <span class="ident">LTZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.MAX"><code class="name">var <span class="ident">MAX</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.MIN"><code class="name">var <span class="ident">MIN</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.MINUS"><code class="name">var <span class="ident">MINUS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.MINUS_POW2"><code class="name">var <span class="ident">MINUS_POW2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.MULT"><code class="name">var <span class="ident">MULT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.NEVER"><code class="name">var <span class="ident">NEVER</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.NQZERO"><code class="name">var <span class="ident">NQZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.ONE"><code class="name">var <span class="ident">ONE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.PLUS"><code class="name">var <span class="ident">PLUS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.type.Type.SECOND"><code class="name">var <span class="ident">SECOND</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
+<dt id="pyspla.type.Type.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def cast_value(cls, value):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="pyspla.type.Type.format_value"><code class="name flex">
+<span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def format_value(cls, value, width=2, precision=2):
+    f = &#34;{:&gt;%s}&#34; % width
+    if not isinstance(value, bool):
+        return f.format(value)
+    return f.format(&#34;t&#34;) if value is True else f.format(&#34;f&#34;)</code></pre>
+</details>
+</dd>
 <dt id="pyspla.type.Type.get_code"><code class="name flex">
 <span>def <span class="ident">get_code</span></span>(<span>)</span>
 </code></dt>
@@ -338,20 +668,6 @@ def to_py(cls, value):
 <pre><code class="python">@classmethod
 def get_code(cls):
     return cls._code</code></pre>
-</details>
-</dd>
-<dt id="pyspla.type.Type.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def to_py(cls, value):
-    pass</code></pre>
 </details>
 </dd>
 </dl>
@@ -373,19 +689,7 @@ def to_py(cls, value):
     _code = &#39;U&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_uint
-        cls._scalar_set = backend().spla_Scalar_set_uint
-        cls._array_get = backend().spla_Array_get_uint
-        cls._array_set = backend().spla_Array_set_uint
-        cls._vector_get = backend().spla_Vector_get_uint
-        cls._vector_set = backend().spla_Vector_set_uint
-        cls._matrix_get = backend().spla_Matrix_get_uint
-        cls._matrix_set = backend().spla_Matrix_set_uint
-        cls._hnd = backend().spla_Type_uint()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -394,8 +698,8 @@ def to_py(cls, value):
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.type.UINT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.type.UINT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -404,7 +708,7 @@ def to_py(cls, value):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return int(value.value)</code></pre>
 </details>
 </dd>
@@ -427,28 +731,57 @@ def to_py(cls, value):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="pyspla.type.BOOL" href="#pyspla.type.BOOL">BOOL</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.type.BOOL.cast_value" href="#pyspla.type.BOOL.cast_value">cast_value</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyspla.type.FLOAT" href="#pyspla.type.FLOAT">FLOAT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.type.FLOAT.to_py" href="#pyspla.type.FLOAT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.type.FLOAT.cast_value" href="#pyspla.type.FLOAT.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.FLOAT.format_value" href="#pyspla.type.FLOAT.format_value">format_value</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.INT" href="#pyspla.type.INT">INT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.type.INT.to_py" href="#pyspla.type.INT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.type.INT.cast_value" href="#pyspla.type.INT.cast_value">cast_value</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.Type" href="#pyspla.type.Type">Type</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyspla.type.Type.ALWAYS" href="#pyspla.type.Type.ALWAYS">ALWAYS</a></code></li>
+<li><code><a title="pyspla.type.Type.BAND" href="#pyspla.type.Type.BAND">BAND</a></code></li>
+<li><code><a title="pyspla.type.Type.BOR" href="#pyspla.type.Type.BOR">BOR</a></code></li>
+<li><code><a title="pyspla.type.Type.BXOR" href="#pyspla.type.Type.BXOR">BXOR</a></code></li>
+<li><code><a title="pyspla.type.Type.DIV" href="#pyspla.type.Type.DIV">DIV</a></code></li>
+<li><code><a title="pyspla.type.Type.EQZERO" href="#pyspla.type.Type.EQZERO">EQZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.FIRST" href="#pyspla.type.Type.FIRST">FIRST</a></code></li>
+<li><code><a title="pyspla.type.Type.GEZERO" href="#pyspla.type.Type.GEZERO">GEZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.GTZERO" href="#pyspla.type.Type.GTZERO">GTZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.LEZERO" href="#pyspla.type.Type.LEZERO">LEZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.LTZERO" href="#pyspla.type.Type.LTZERO">LTZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.MAX" href="#pyspla.type.Type.MAX">MAX</a></code></li>
+<li><code><a title="pyspla.type.Type.MIN" href="#pyspla.type.Type.MIN">MIN</a></code></li>
+<li><code><a title="pyspla.type.Type.MINUS" href="#pyspla.type.Type.MINUS">MINUS</a></code></li>
+<li><code><a title="pyspla.type.Type.MINUS_POW2" href="#pyspla.type.Type.MINUS_POW2">MINUS_POW2</a></code></li>
+<li><code><a title="pyspla.type.Type.MULT" href="#pyspla.type.Type.MULT">MULT</a></code></li>
+<li><code><a title="pyspla.type.Type.NEVER" href="#pyspla.type.Type.NEVER">NEVER</a></code></li>
+<li><code><a title="pyspla.type.Type.NQZERO" href="#pyspla.type.Type.NQZERO">NQZERO</a></code></li>
+<li><code><a title="pyspla.type.Type.ONE" href="#pyspla.type.Type.ONE">ONE</a></code></li>
+<li><code><a title="pyspla.type.Type.PLUS" href="#pyspla.type.Type.PLUS">PLUS</a></code></li>
+<li><code><a title="pyspla.type.Type.SECOND" href="#pyspla.type.Type.SECOND">SECOND</a></code></li>
+<li><code><a title="pyspla.type.Type.cast_value" href="#pyspla.type.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.type.Type.format_value" href="#pyspla.type.Type.format_value">format_value</a></code></li>
 <li><code><a title="pyspla.type.Type.get_code" href="#pyspla.type.Type.get_code">get_code</a></code></li>
-<li><code><a title="pyspla.type.Type.to_py" href="#pyspla.type.Type.to_py">to_py</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.type.UINT" href="#pyspla.type.UINT">UINT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.type.UINT.to_py" href="#pyspla.type.UINT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.type.UINT.cast_value" href="#pyspla.type.UINT.cast_value">cast_value</a></code></li>
 </ul>
 </li>
 </ul>

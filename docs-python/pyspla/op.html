@@ -53,7 +53,228 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-&#34;&#34;&#34;</code></pre>
+&#34;&#34;&#34;
+
+from .object import Object
+
+__all__ = [
+    &#34;Op&#34;,
+    &#34;OpUnary&#34;,
+    &#34;OpBinary&#34;,
+    &#34;OpSelect&#34;
+]
+
+
+class Op(Object):
+    &#34;&#34;&#34;
+    Wrapper for a spla Op (operation) object.
+
+    Notes
+    -----
+
+    Operation represents some callable function with a return value.
+    This function may be used for mathematical calculations with
+    library primitives such as scalars, vectors and matrices.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_name&#34;, &#34;_dtype_res&#34;]
+
+    def __init__(self, hnd, name, dtype_res, label=None):
+        &#34;&#34;&#34;
+        Creates new operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        assert hnd
+        assert name
+        assert dtype_res
+
+        super().__init__(hnd, label)
+
+        self._name = name
+        self._dtype_res = dtype_res
+
+    @property
+    def name(self):
+        &#34;&#34;&#34;
+        Name of operation.
+        &#34;&#34;&#34;
+        return self._name
+
+    @property
+    def dtype_res(self):
+        &#34;&#34;&#34;
+        Data type of the return value of the operation.
+        &#34;&#34;&#34;
+        return self._dtype_res
+
+
+class OpUnary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpUnary (unary operation) object.
+
+    Notes
+    -----
+
+    Unary operation is a callable function with a signature `T0 -&gt; R`.
+    This function may be used in transformation and apply operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new unary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the unary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0
+
+
+class OpBinary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpBinary (binary operation) object.
+
+    Notes
+    -----
+
+    Binary operation is a callable function with signature `T0 x T1 -&gt; R`.
+    It is commonly used in math matrix vector products, reductions, etc.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;, &#34;_dtype_arg1&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, dtype_arg1, label=None):
+        &#34;&#34;&#34;
+        Creates new binary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        dtype_arg1:
+            Type of the second operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+        self._dtype_arg1 = dtype_arg1
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0
+
+    @property
+    def dtype_arg1(self):
+        &#34;&#34;&#34;
+        Data type of the second argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg1
+
+
+class OpSelect(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpSelect (select operation) object.
+
+    Notes
+    -----
+
+    Selection operation is a special kind of callable function with signature `T0 -&gt; BOOL`.
+    This type of `unary predicate` usually used for masking and filtering operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new select operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        from .type import BOOL
+
+        super().__init__(hnd, name, BOOL, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the select operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0</code></pre>
 </details>
 </section>
 <section>
@@ -63,6 +284,489 @@ SOFTWARE.
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyspla.op.Op"><code class="flex name class">
+<span>class <span class="ident">Op</span></span>
+<span>(</span><span>hnd, name, dtype_res, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla Op (operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Operation represents some callable function with a return value.
+This function may be used for mathematical calculations with
+library primitives such as scalars, vectors and matrices.</p>
+<p>Creates new operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Op(Object):
+    &#34;&#34;&#34;
+    Wrapper for a spla Op (operation) object.
+
+    Notes
+    -----
+
+    Operation represents some callable function with a return value.
+    This function may be used for mathematical calculations with
+    library primitives such as scalars, vectors and matrices.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_name&#34;, &#34;_dtype_res&#34;]
+
+    def __init__(self, hnd, name, dtype_res, label=None):
+        &#34;&#34;&#34;
+        Creates new operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        assert hnd
+        assert name
+        assert dtype_res
+
+        super().__init__(hnd, label)
+
+        self._name = name
+        self._dtype_res = dtype_res
+
+    @property
+    def name(self):
+        &#34;&#34;&#34;
+        Name of operation.
+        &#34;&#34;&#34;
+        return self._name
+
+    @property
+    def dtype_res(self):
+        &#34;&#34;&#34;
+        Data type of the return value of the operation.
+        &#34;&#34;&#34;
+        return self._dtype_res</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.OpBinary" href="#pyspla.op.OpBinary">OpBinary</a></li>
+<li><a title="pyspla.op.OpSelect" href="#pyspla.op.OpSelect">OpSelect</a></li>
+<li><a title="pyspla.op.OpUnary" href="#pyspla.op.OpUnary">OpUnary</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.op.Op.dtype_res"><code class="name">var <span class="ident">dtype_res</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the return value of the operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_res(self):
+    &#34;&#34;&#34;
+    Data type of the return value of the operation.
+    &#34;&#34;&#34;
+    return self._dtype_res</code></pre>
+</details>
+</dd>
+<dt id="pyspla.op.Op.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"><p>Name of operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def name(self):
+    &#34;&#34;&#34;
+    Name of operation.
+    &#34;&#34;&#34;
+    return self._name</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.op.OpBinary"><code class="flex name class">
+<span>class <span class="ident">OpBinary</span></span>
+<span>(</span><span>hnd, name, dtype_res, dtype_arg0, dtype_arg1, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpBinary (binary operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Binary operation is a callable function with signature <code>T0 x T1 -&gt; R</code>.
+It is commonly used in math matrix vector products, reductions, etc.</p>
+<p>Creates new binary operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>dtype_arg1:
+Type of the second operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpBinary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpBinary (binary operation) object.
+
+    Notes
+    -----
+
+    Binary operation is a callable function with signature `T0 x T1 -&gt; R`.
+    It is commonly used in math matrix vector products, reductions, etc.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;, &#34;_dtype_arg1&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, dtype_arg1, label=None):
+        &#34;&#34;&#34;
+        Creates new binary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        dtype_arg1:
+            Type of the second operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+        self._dtype_arg1 = dtype_arg1
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0
+
+    @property
+    def dtype_arg1(self):
+        &#34;&#34;&#34;
+        Data type of the second argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg1</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.op.OpBinary.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the binary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the binary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+<dt id="pyspla.op.OpBinary.dtype_arg1"><code class="name">var <span class="ident">dtype_arg1</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the second argument of the binary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg1(self):
+    &#34;&#34;&#34;
+    Data type of the second argument of the binary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.op.OpSelect"><code class="flex name class">
+<span>class <span class="ident">OpSelect</span></span>
+<span>(</span><span>hnd, name, dtype_arg0, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpSelect (select operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Selection operation is a special kind of callable function with signature <code>T0 -&gt; BOOL</code>.
+This type of <code>unary predicate</code> usually used for masking and filtering operations.</p>
+<p>Creates new select operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpSelect(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpSelect (select operation) object.
+
+    Notes
+    -----
+
+    Selection operation is a special kind of callable function with signature `T0 -&gt; BOOL`.
+    This type of `unary predicate` usually used for masking and filtering operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new select operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        from .type import BOOL
+
+        super().__init__(hnd, name, BOOL, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the select operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.op.OpSelect.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the select operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the select operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.op.OpUnary"><code class="flex name class">
+<span>class <span class="ident">OpUnary</span></span>
+<span>(</span><span>hnd, name, dtype_res, dtype_arg0, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpUnary (unary operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Unary operation is a callable function with a signature <code>T0 -&gt; R</code>.
+This function may be used in transformation and apply operations.</p>
+<p>Creates new unary operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpUnary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpUnary (unary operation) object.
+
+    Notes
+    -----
+
+    Unary operation is a callable function with a signature `T0 -&gt; R`.
+    This function may be used in transformation and apply operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new unary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the unary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.op.OpUnary.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the unary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the unary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -74,6 +778,36 @@ SOFTWARE.
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="pyspla" href="index.html">pyspla</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyspla.op.Op" href="#pyspla.op.Op">Op</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.op.Op.dtype_res" href="#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.op.OpBinary" href="#pyspla.op.OpBinary">OpBinary</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.op.OpBinary.dtype_arg0" href="#pyspla.op.OpBinary.dtype_arg0">dtype_arg0</a></code></li>
+<li><code><a title="pyspla.op.OpBinary.dtype_arg1" href="#pyspla.op.OpBinary.dtype_arg1">dtype_arg1</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.op.OpSelect" href="#pyspla.op.OpSelect">OpSelect</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.op.OpSelect.dtype_arg0" href="#pyspla.op.OpSelect.dtype_arg0">dtype_arg0</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.op.OpUnary" href="#pyspla.op.OpUnary">OpUnary</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.op.OpUnary.dtype_arg0" href="#pyspla.op.OpUnary.dtype_arg0">dtype_arg0</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

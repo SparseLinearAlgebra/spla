@@ -77,62 +77,163 @@ possible to create large-dimension but low data containers. Containers
 are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.</p>
-<ul>
-<li><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code> - Generalized statically-typed sparse storage-invariant matrix primitive.</li>
-<li><code><a title="pyspla.Vector" href="#pyspla.Vector">Vector</a></code> - Generalized statically-typed sparse storage-invariant vector primitive.</li>
-<li><code><a title="pyspla.Scalar" href="#pyspla.Scalar">Scalar</a></code> - Generalized statically-typed scalar primitive.</li>
-</ul>
+<pre><code>&lt;code&gt;&lt;a title="pyspla.Matrix" href="#pyspla.Matrix"&gt;Matrix&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed sparse storage-invariant matrix primitive.
+
+&lt;code&gt;&lt;a title="pyspla.Vector" href="#pyspla.Vector"&gt;Vector&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed sparse storage-invariant vector primitive.
+
+&lt;code&gt;&lt;a title="pyspla.Scalar" href="#pyspla.Scalar"&gt;Scalar&lt;/a&gt;&lt;/code&gt;. Generalized statically-typed scalar primitive.
+</code></pre>
 <h2 id="schedule">Schedule</h2>
 <p>Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks' execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.</p>
-<ul>
-<li><code>Schedule</code> - Schedule object which may be executed by library.</li>
-<li><code>Task</code> - A particular wort to be done inside a step of schedule.</li>
-</ul>
+<pre><code>&lt;code&gt;Schedule&lt;/code&gt;. Schedule object which may be executed by library.
+
+&lt;code&gt;Task&lt;/code&gt;. A particular wort to be done inside a step of schedule.
+</code></pre>
 <h2 id="types">Types</h2>
 <p>Library provides a set of standard and common built-in data types. Library value types
 differ a bit from a classic type definition. In spla library type is essentially is a
 storage characteristic, which defines count and layout of bytes per element. User
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</p>
-<ul>
-<li><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code>
-- 4-byte-sized signed integral value</li>
-<li><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code>
-- 4-byte-sized unsigned integral value</li>
-<li><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code> - 4-byte-sized single-precision floating point value</li>
-</ul>
-<h2 id="op">Op</h2>
+<pre><code>&lt;code&gt;&lt;a title="pyspla.BOOL" href="#pyspla.BOOL"&gt;BOOL&lt;/a&gt;&lt;/code&gt;. 4-byte-sized signed logical value (auxiliary type).
+
+&lt;code&gt;&lt;a title="pyspla.INT" href="#pyspla.INT"&gt;INT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized signed integral value.
+
+&lt;code&gt;&lt;a title="pyspla.UINT" href="#pyspla.UINT"&gt;UINT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized unsigned integral value.
+
+&lt;code&gt;&lt;a title="pyspla.FLOAT" href="#pyspla.FLOAT"&gt;FLOAT&lt;/a&gt;&lt;/code&gt;. 4-byte-sized single-precision floating point value.
+</code></pre>
+<h2 id="operations">Operations</h2>
 <p>Library provides a set of unary, binary and select ops for values data manipulation inside
-matrix and vector containers.</p>
-<ul>
-<li><code>PLUS</code>
-- binary(x,y): r = x + y</li>
-<li><code>MINUS</code>
-- binary(x,y): r = x - y</li>
-<li><code>MULT</code>
-- binary(x,y): r = x * y</li>
-<li><code>DIV</code>
-- binary(x,y): r = x / y</li>
-<li><code>FIRST</code>
-- binary(x,y): r = x</li>
-<li><code>SECOND</code> - binary(x,y): r = y</li>
-<li><code>ONE</code>
-- binary(x,y): r = 1</li>
-<li><code>MIN</code>
-- binary(x,y): r = min(x, y)</li>
-<li><code>MAX</code>
-- binary(x,y): r = max(x, y)</li>
-<li><code>BOR</code>
-- binary(x,y): r = x | y, for integral only</li>
-<li><code>BAND</code>
-- binary(x,y): r = x &amp; y, for integral only</li>
-<li><code>BXOR</code>
-- binary(x,y): r = x ^ y, for integral only</li>
-</ul>
-<h2 id="usage-information">Usage Information</h2>
-<p>TBD.</p>
+matrix and vector containers. Unary operations commonly used for apply and transformation
+operations, binary operations used for reductions and products, select operations used for
+filtration and mask application.</p>
+<p>List of built-in binary operations:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PLUS</code></td>
+<td>binary(x,y)</td>
+<td>r = x + y</td>
+</tr>
+<tr>
+<td><code>MINUS</code></td>
+<td>binary(x,y)</td>
+<td>r = x - y</td>
+</tr>
+<tr>
+<td><code>MULT</code></td>
+<td>binary(x,y)</td>
+<td>r = x * y</td>
+</tr>
+<tr>
+<td><code>DIV</code></td>
+<td>binary(x,y)</td>
+<td>r = x / y</td>
+</tr>
+<tr>
+<td><code>FIRST</code></td>
+<td>binary(x,y)</td>
+<td>r = x</td>
+</tr>
+<tr>
+<td><code>SECOND</code></td>
+<td>binary(x,y)</td>
+<td>r = y</td>
+</tr>
+<tr>
+<td><code>ONE</code></td>
+<td>binary(x,y)</td>
+<td>r = 1</td>
+</tr>
+<tr>
+<td><code>MIN</code></td>
+<td>binary(x,y)</td>
+<td>r = min(x, y)</td>
+</tr>
+<tr>
+<td><code>MAX</code></td>
+<td>binary(x,y)</td>
+<td>r = max(x, y)</td>
+</tr>
+<tr>
+<td><code>BOR</code></td>
+<td>binary(x,y)</td>
+<td>r = x</td>
+</tr>
+<tr>
+<td><code>BAND</code></td>
+<td>binary(x,y)</td>
+<td>r = x &amp; y, for integral only</td>
+</tr>
+<tr>
+<td><code>BXOR</code></td>
+<td>binary(x,y)</td>
+<td>r = x ^ y, for integral only</td>
+</tr>
+</tbody>
+</table>
+<p>List of built-in select operations:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EQZERO</code></td>
+<td>select(x)</td>
+<td>x == 0</td>
+</tr>
+<tr>
+<td><code>NQZERO</code></td>
+<td>select(x)</td>
+<td>x != 0</td>
+</tr>
+<tr>
+<td><code>GTZERO</code></td>
+<td>select(x)</td>
+<td>x &gt; 0</td>
+</tr>
+<tr>
+<td><code>GEZERO</code></td>
+<td>select(x)</td>
+<td>x &gt;= 0</td>
+</tr>
+<tr>
+<td><code>LTZERO</code></td>
+<td>select(x)</td>
+<td>x &lt; 0</td>
+</tr>
+<tr>
+<td><code>LEZERO</code></td>
+<td>select(x)</td>
+<td>x &lt;= 0</td>
+</tr>
+<tr>
+<td><code>ALWAYS</code></td>
+<td>select(x)</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>NEVER</code></td>
+<td>select(x)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
 <h2 id="details">Details</h2>
 <p>Spla C/C++ backend compiled library is automatically loaded and initialized on package import.
 State of the library managed by internal <code><a title="pyspla.bridge" href="bridge.html">pyspla.bridge</a></code> module. All resources are unloaded automatically
@@ -212,9 +313,11 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-- `Matrix` - Generalized statically-typed sparse storage-invariant matrix primitive.
-- `Vector` - Generalized statically-typed sparse storage-invariant vector primitive.
-- `Scalar` - Generalized statically-typed scalar primitive.
+    `Matrix`. Generalized statically-typed sparse storage-invariant matrix primitive.
+
+    `Vector`. Generalized statically-typed sparse storage-invariant vector primitive.
+
+    `Scalar`. Generalized statically-typed scalar primitive.
 
 Schedule
 --------
@@ -223,8 +326,9 @@ Schedule allows to build sequence of tasks to be executed. It allows user
 control the order of the tasks&#39; execution, parallel execution of tasks
 on some level, notification on some steps completion and etc.
 
-- `Schedule` - Schedule object which may be executed by library.
-- `Task` - A particular wort to be done inside a step of schedule.
+    `Schedule`. Schedule object which may be executed by library.
+
+    `Task`. A particular wort to be done inside a step of schedule.
 
 Types
 -----
@@ -235,33 +339,51 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
 
-- `INT`   - 4-byte-sized signed integral value
-- `UINT`  - 4-byte-sized unsigned integral value
-- `FLOAT` - 4-byte-sized single-precision floating point value
+    `BOOL`. 4-byte-sized signed logical value (auxiliary type).
 
-Op
---
+    `INT`. 4-byte-sized signed integral value.
+
+    `UINT`. 4-byte-sized unsigned integral value.
+
+    `FLOAT`. 4-byte-sized single-precision floating point value.
+
+Operations
+----------
 
 Library provides a set of unary, binary and select ops for values data manipulation inside
-matrix and vector containers.
+matrix and vector containers. Unary operations commonly used for apply and transformation
+operations, binary operations used for reductions and products, select operations used for
+filtration and mask application.
 
-- `PLUS`   - binary(x,y): r = x + y
-- `MINUS`  - binary(x,y): r = x - y
-- `MULT`   - binary(x,y): r = x * y
-- `DIV`    - binary(x,y): r = x / y
-- `FIRST`  - binary(x,y): r = x
-- `SECOND` - binary(x,y): r = y
-- `ONE`    - binary(x,y): r = 1
-- `MIN`    - binary(x,y): r = min(x, y)
-- `MAX`    - binary(x,y): r = max(x, y)
-- `BOR`    - binary(x,y): r = x | y, for integral only
-- `BAND`   - binary(x,y): r = x &amp; y, for integral only
-- `BXOR`   - binary(x,y): r = x ^ y, for integral only
+List of built-in binary operations:
 
-Usage information
------------------
+Name | Type | Meaning
+---  | ---  | ---
+`PLUS`   | binary(x,y) | r = x + y
+`MINUS`  | binary(x,y) | r = x - y
+`MULT`   | binary(x,y) | r = x * y
+`DIV`    | binary(x,y) | r = x / y
+`FIRST`  | binary(x,y) | r = x
+`SECOND` | binary(x,y) | r = y
+`ONE`    | binary(x,y) | r = 1
+`MIN`    | binary(x,y) | r = min(x, y)
+`MAX`    | binary(x,y) | r = max(x, y)
+`BOR`    | binary(x,y) | r = x | y, for integral only
+`BAND`   | binary(x,y) | r = x &amp; y, for integral only
+`BXOR`   | binary(x,y) | r = x ^ y, for integral only
 
-TBD.
+List of built-in select operations:
+
+Name | Type | Meaning
+---  | ---  | ---
+`EQZERO` | select(x) | x == 0
+`NQZERO` | select(x) | x != 0
+`GTZERO` | select(x) | x &gt; 0
+`GEZERO` | select(x) | x &gt;= 0
+`LTZERO` | select(x) | x &lt; 0
+`LEZERO` | select(x) | x &lt;= 0
+`ALWAYS` | select(x) | true
+`NEVER`  | select(x) | false
 
 Details
 -------
@@ -310,17 +432,19 @@ from .vector import *
 from .scalar import *
 from .version import *
 
-if not bridge.is_docs():
-    for t in BUILT_IN:
-        t._setup()
-
 __version__ = VERSIONS[-1]
 
 __all__ = [
     &#34;Type&#34;,
+    &#34;BOOL&#34;,
     &#34;INT&#34;,
     &#34;UINT&#34;,
     &#34;FLOAT&#34;,
+    &#34;Op&#34;,
+    &#34;OpUnary&#34;,
+    &#34;OpBinary&#34;,
+    &#34;OpSelect&#34;,
+    &#34;MemView&#34;,
     &#34;Object&#34;,
     &#34;Array&#34;,
     &#34;Matrix&#34;,
@@ -581,7 +705,7 @@ Optional label to assign.</p></div>
 
         value = self._dtype._c_type(0)
         check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def build(self, view: MemView):
         &#34;&#34;&#34;
@@ -991,7 +1115,7 @@ Index at which to get value.</p>
 
     value = self._dtype._c_type(0)
     check(self._dtype._array_get(self._hnd, ctypes.c_uint(index), ctypes.byref(value)))
-    return self._dtype.to_py(value)</code></pre>
+    return self._dtype.cast_value(value)</code></pre>
 </details>
 </dd>
 <dt id="pyspla.Array.read"><code class="name flex">
@@ -1106,6 +1230,57 @@ Value to set, must be convertible to destination type.</p></div>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.BOOL"><code class="flex name class">
+<span>class <span class="ident">BOOL</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spla logical BOOL-32 type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BOOL(Type):
+    &#34;&#34;&#34;Spla logical BOOL-32 type.&#34;&#34;&#34;
+
+    _c_type = ctypes.c_bool
+    _c_type_p = ctypes.POINTER(ctypes.c_bool)
+    _code = &#39;B&#39;
+
+    @classmethod
+    def cast_value(cls, value):
+        return bool(value.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.type.Type" href="type.html#pyspla.type.Type">Type</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyspla.BOOL.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def cast_value(cls, value):
+    return bool(value.value)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="pyspla.FLOAT"><code class="flex name class">
 <span>class <span class="ident">FLOAT</span></span>
@@ -1124,20 +1299,12 @@ Value to set, must be convertible to destination type.</p></div>
     _code = &#39;F&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_float
-        cls._scalar_set = backend().spla_Scalar_set_float
-        cls._array_get = backend().spla_Array_get_float
-        cls._array_set = backend().spla_Array_set_float
-        cls._vector_get = backend().spla_Vector_get_float
-        cls._vector_set = backend().spla_Vector_set_float
-        cls._matrix_get = backend().spla_Matrix_get_float
-        cls._matrix_set = backend().spla_Matrix_set_float
-        cls._hnd = backend().spla_Type_float()
+    def cast_value(cls, value):
+        return float(value.value)
 
     @classmethod
-    def to_py(cls, value):
-        return float(value.value)</code></pre>
+    def format_value(cls, value, width=2, precision=2):
+        return f&#34;{value:&gt;{width}.{precision}}&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1145,8 +1312,8 @@ Value to set, must be convertible to destination type.</p></div>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.FLOAT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.FLOAT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1155,8 +1322,22 @@ Value to set, must be convertible to destination type.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return float(value.value)</code></pre>
+</details>
+</dd>
+<dt id="pyspla.FLOAT.format_value"><code class="name flex">
+<span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def format_value(cls, value, width=2, precision=2):
+    return f&#34;{value:&gt;{width}.{precision}}&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -1178,19 +1359,7 @@ def to_py(cls, value):
     _code = &#39;I&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_int
-        cls._scalar_set = backend().spla_Scalar_set_int
-        cls._array_get = backend().spla_Array_get_int
-        cls._array_set = backend().spla_Array_set_int
-        cls._vector_get = backend().spla_Vector_get_int
-        cls._vector_set = backend().spla_Vector_set_int
-        cls._matrix_get = backend().spla_Matrix_get_int
-        cls._matrix_set = backend().spla_Matrix_set_int
-        cls._hnd = backend().spla_Type_int()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1199,8 +1368,8 @@ def to_py(cls, value):
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.INT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.INT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1209,7 +1378,7 @@ def to_py(cls, value):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return int(value.value)</code></pre>
 </details>
 </dd>
@@ -1340,6 +1509,203 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
         pass</code></pre>
 </details>
 </dd>
+<dt id="pyspla.MemView"><code class="flex name class">
+<span>class <span class="ident">MemView</span></span>
+<span>(</span><span>label=None, hnd=None, buffer=None, size=None, mutable=None, owner=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a memory view object from a library.</p>
+<h2 id="attributes">Attributes</h2>
+<ul>
+<li>buffer : <code>ctypes.c_void_p</code> hnd to native raw memory buffer</li>
+<li>size : <code>int</code> size of the buffer in bytes</li>
+<li>is_mutable : <code>bool</code> whenever buffer content can be modified</li>
+</ul>
+<h2 id="details">Details</h2>
+<p>Memory view is a wrapper for a raw memory resource. It allows to inspect
+spla library containers data without an extra overhead on copy operations
+and without explicit memory lifetime control.</p>
+<p>Creates a new memory view from existing hnd or making new for a buffer resource.</p>
+<h2 id="parameters">Parameters</h2>
+<p>label: optional: str. default: None.
+MemView name for debugging.</p>
+<p>hnd: optional: ctypes.c_void_p. default: None.
+MemView native void* handle to a C counterpart.</p>
+<p>buffer: optional: ctypes.c_void_p. default: None.
+Optional buffer in case making new view.</p>
+<p>size: optional: int. default: None.
+Optional size, must be provided if buffer provided.</p>
+<p>mutable: optional: bool. default: None.
+Optional flag if buffer content is mutable.</p>
+<p>owner: optional: Object. default: None.
+Optional owner of a given memory view.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MemView(Object):
+    &#34;&#34;&#34;
+    Wrapper for a memory view object from a library.
+
+    Attributes
+    ----------
+
+    - buffer : `ctypes.c_void_p` hnd to native raw memory buffer
+    - size : `int` size of the buffer in bytes
+    - is_mutable : `bool` whenever buffer content can be modified
+
+    Details
+    -------
+
+    Memory view is a wrapper for a raw memory resource. It allows to inspect
+    spla library containers data without an extra overhead on copy operations
+    and without explicit memory lifetime control.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_buffer&#34;, &#34;_owner&#34;]
+
+    def __init__(self, label=None, hnd=None, buffer=None, size=None, mutable=None, owner=None):
+        &#34;&#34;&#34;
+        Creates a new memory view from existing hnd or making new for a buffer resource.
+
+        Parameters
+        ----------
+
+        label: optional: str. default: None.
+            MemView name for debugging.
+
+        hnd: optional: ctypes.c_void_p. default: None.
+            MemView native void* handle to a C counterpart.
+
+        buffer: optional: ctypes.c_void_p. default: None.
+            Optional buffer in case making new view.
+
+        size: optional: int. default: None.
+            Optional size, must be provided if buffer provided.
+
+        mutable: optional: bool. default: None.
+            Optional flag if buffer content is mutable.
+
+        owner: optional: Object. default: None.
+            Optional owner of a given memory view.
+        &#34;&#34;&#34;
+
+        super().__init__(None, None)
+
+        self._buffer = buffer
+        self._owner = owner
+
+        if hnd is None:
+            assert buffer
+            assert size
+
+            if mutable is None:
+                mutable = 0
+
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_MemView_make(ctypes.byref(hnd), buffer, ctypes.c_size_t(size), ctypes.c_int(mutable)))
+
+        super().__init__(label, hnd)
+
+    @property
+    def buffer(self):
+        &#34;&#34;&#34;
+        Pointer to a native C-buffer viewed by this view.
+        &#34;&#34;&#34;
+        c_buffer = ctypes.c_void_p(0)
+        check(backend().spla_MemView_get_buffer(self._hnd, ctypes.byref(c_buffer)))
+        return c_buffer
+
+    @property
+    def size(self):
+        &#34;&#34;&#34;
+        Size of viewed memory buffer in bytes.
+        &#34;&#34;&#34;
+
+        c_size = ctypes.c_size_t(0)
+        check(backend().spla_MemView_get_size(self._hnd, ctypes.byref(c_size)))
+        return int(c_size.value)
+
+    @property
+    def is_mutable(self):
+        &#34;&#34;&#34;
+        True if the content of viewed memory buffer can be modified.
+        &#34;&#34;&#34;
+
+        c_is_mutable = ctypes.c_int(0)
+        check(backend().spla_MemView_get_buffer(self._hnd, ctypes.byref(c_is_mutable)))
+        return bool(c_is_mutable.value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.MemView.buffer"><code class="name">var <span class="ident">buffer</span></code></dt>
+<dd>
+<div class="desc"><p>Pointer to a native C-buffer viewed by this view.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def buffer(self):
+    &#34;&#34;&#34;
+    Pointer to a native C-buffer viewed by this view.
+    &#34;&#34;&#34;
+    c_buffer = ctypes.c_void_p(0)
+    check(backend().spla_MemView_get_buffer(self._hnd, ctypes.byref(c_buffer)))
+    return c_buffer</code></pre>
+</details>
+</dd>
+<dt id="pyspla.MemView.is_mutable"><code class="name">var <span class="ident">is_mutable</span></code></dt>
+<dd>
+<div class="desc"><p>True if the content of viewed memory buffer can be modified.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_mutable(self):
+    &#34;&#34;&#34;
+    True if the content of viewed memory buffer can be modified.
+    &#34;&#34;&#34;
+
+    c_is_mutable = ctypes.c_int(0)
+    check(backend().spla_MemView_get_buffer(self._hnd, ctypes.byref(c_is_mutable)))
+    return bool(c_is_mutable.value)</code></pre>
+</details>
+</dd>
+<dt id="pyspla.MemView.size"><code class="name">var <span class="ident">size</span></code></dt>
+<dd>
+<div class="desc"><p>Size of viewed memory buffer in bytes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def size(self):
+    &#34;&#34;&#34;
+    Size of viewed memory buffer in bytes.
+    &#34;&#34;&#34;
+
+    c_size = ctypes.c_size_t(0)
+    check(backend().spla_MemView_get_size(self._hnd, ctypes.byref(c_size)))
+    return int(c_size.value)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="pyspla.Object"><code class="flex name class">
 <span>class <span class="ident">Object</span></span>
 <span>(</span><span>label, hnd)</span>
@@ -1409,47 +1775,540 @@ Object native void* handle to a C counterpart.</p></div>
         if self._hnd:
             check(backend().spla_RefCnt_unref(self._hnd))
 
-    def set_label(self, label):
-        self._label = label
+    @property
+    def hnd(self):
+        &#34;&#34;&#34;
+        Return handle (ctypes.c_void_p) to a wrapped native C object.
+        &#34;&#34;&#34;
+        return self._hnd
 
-    def get_label(self):
+    @property
+    def label(self):
+        &#34;&#34;&#34;
+        Returns optional debug string label for the object.
+        &#34;&#34;&#34;
         return self._label</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="pyspla.array.Array" href="array.html#pyspla.array.Array">Array</a></li>
 <li><a title="pyspla.memview.MemView" href="memview.html#pyspla.memview.MemView">MemView</a></li>
+<li><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></li>
 <li><a title="pyspla.scalar.Scalar" href="scalar.html#pyspla.scalar.Scalar">Scalar</a></li>
 </ul>
-<h3>Methods</h3>
+<h3>Instance variables</h3>
 <dl>
-<dt id="pyspla.Object.get_label"><code class="name flex">
-<span>def <span class="ident">get_label</span></span>(<span>self)</span>
-</code></dt>
+<dt id="pyspla.Object.hnd"><code class="name">var <span class="ident">hnd</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return handle (ctypes.c_void_p) to a wrapped native C object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_label(self):
+<pre><code class="python">@property
+def hnd(self):
+    &#34;&#34;&#34;
+    Return handle (ctypes.c_void_p) to a wrapped native C object.
+    &#34;&#34;&#34;
+    return self._hnd</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Object.label"><code class="name">var <span class="ident">label</span></code></dt>
+<dd>
+<div class="desc"><p>Returns optional debug string label for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def label(self):
+    &#34;&#34;&#34;
+    Returns optional debug string label for the object.
+    &#34;&#34;&#34;
     return self._label</code></pre>
 </details>
 </dd>
-<dt id="pyspla.Object.set_label"><code class="name flex">
-<span>def <span class="ident">set_label</span></span>(<span>self, label)</span>
+</dl>
+</dd>
+<dt id="pyspla.Op"><code class="flex name class">
+<span>class <span class="ident">Op</span></span>
+<span>(</span><span>hnd, name, dtype_res, label=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Wrapper for a spla Op (operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Operation represents some callable function with a return value.
+This function may be used for mathematical calculations with
+library primitives such as scalars, vectors and matrices.</p>
+<p>Creates new operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_label(self, label):
-    self._label = label</code></pre>
+<pre><code class="python">class Op(Object):
+    &#34;&#34;&#34;
+    Wrapper for a spla Op (operation) object.
+
+    Notes
+    -----
+
+    Operation represents some callable function with a return value.
+    This function may be used for mathematical calculations with
+    library primitives such as scalars, vectors and matrices.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_name&#34;, &#34;_dtype_res&#34;]
+
+    def __init__(self, hnd, name, dtype_res, label=None):
+        &#34;&#34;&#34;
+        Creates new operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        assert hnd
+        assert name
+        assert dtype_res
+
+        super().__init__(hnd, label)
+
+        self._name = name
+        self._dtype_res = dtype_res
+
+    @property
+    def name(self):
+        &#34;&#34;&#34;
+        Name of operation.
+        &#34;&#34;&#34;
+        return self._name
+
+    @property
+    def dtype_res(self):
+        &#34;&#34;&#34;
+        Data type of the return value of the operation.
+        &#34;&#34;&#34;
+        return self._dtype_res</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.OpBinary" href="op.html#pyspla.op.OpBinary">OpBinary</a></li>
+<li><a title="pyspla.op.OpSelect" href="op.html#pyspla.op.OpSelect">OpSelect</a></li>
+<li><a title="pyspla.op.OpUnary" href="op.html#pyspla.op.OpUnary">OpUnary</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.Op.dtype_res"><code class="name">var <span class="ident">dtype_res</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the return value of the operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_res(self):
+    &#34;&#34;&#34;
+    Data type of the return value of the operation.
+    &#34;&#34;&#34;
+    return self._dtype_res</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Op.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"><p>Name of operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def name(self):
+    &#34;&#34;&#34;
+    Name of operation.
+    &#34;&#34;&#34;
+    return self._name</code></pre>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.OpBinary"><code class="flex name class">
+<span>class <span class="ident">OpBinary</span></span>
+<span>(</span><span>hnd, name, dtype_res, dtype_arg0, dtype_arg1, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpBinary (binary operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Binary operation is a callable function with signature <code>T0 x T1 -&gt; R</code>.
+It is commonly used in math matrix vector products, reductions, etc.</p>
+<p>Creates new binary operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>dtype_arg1:
+Type of the second operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpBinary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpBinary (binary operation) object.
+
+    Notes
+    -----
+
+    Binary operation is a callable function with signature `T0 x T1 -&gt; R`.
+    It is commonly used in math matrix vector products, reductions, etc.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;, &#34;_dtype_arg1&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, dtype_arg1, label=None):
+        &#34;&#34;&#34;
+        Creates new binary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        dtype_arg1:
+            Type of the second operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+        self._dtype_arg1 = dtype_arg1
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0
+
+    @property
+    def dtype_arg1(self):
+        &#34;&#34;&#34;
+        Data type of the second argument of the binary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg1</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.OpBinary.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the binary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the binary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+<dt id="pyspla.OpBinary.dtype_arg1"><code class="name">var <span class="ident">dtype_arg1</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the second argument of the binary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg1(self):
+    &#34;&#34;&#34;
+    Data type of the second argument of the binary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="op.html#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="op.html#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.OpSelect"><code class="flex name class">
+<span>class <span class="ident">OpSelect</span></span>
+<span>(</span><span>hnd, name, dtype_arg0, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpSelect (select operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Selection operation is a special kind of callable function with signature <code>T0 -&gt; BOOL</code>.
+This type of <code>unary predicate</code> usually used for masking and filtering operations.</p>
+<p>Creates new select operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpSelect(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpSelect (select operation) object.
+
+    Notes
+    -----
+
+    Selection operation is a special kind of callable function with signature `T0 -&gt; BOOL`.
+    This type of `unary predicate` usually used for masking and filtering operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new select operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        from .type import BOOL
+
+        super().__init__(hnd, name, BOOL, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the select operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.OpSelect.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the select operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the select operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="op.html#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="op.html#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyspla.OpUnary"><code class="flex name class">
+<span>class <span class="ident">OpUnary</span></span>
+<span>(</span><span>hnd, name, dtype_res, dtype_arg0, label=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper for a spla OpUnary (unary operation) object.</p>
+<h2 id="notes">Notes</h2>
+<p>Unary operation is a callable function with a signature <code>T0 -&gt; R</code>.
+This function may be used in transformation and apply operations.</p>
+<p>Creates new unary operation from a native C api object handle.</p>
+<h2 id="parameters">Parameters</h2>
+<p>hnd: ctypes.c_void_p.
+Mandatory handle to native C object.</p>
+<p>name: str.
+Mandatory name of the operation.</p>
+<p>dtype_res:
+Type of the return value of the operation.</p>
+<p>dtype_arg0:
+Type of the first operation argument.</p>
+<p>label: optional: str. default: None.
+Optional debug label to set for the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OpUnary(Op):
+    &#34;&#34;&#34;
+    Wrapper for a spla OpUnary (unary operation) object.
+
+    Notes
+    -----
+
+    Unary operation is a callable function with a signature `T0 -&gt; R`.
+    This function may be used in transformation and apply operations.
+    &#34;&#34;&#34;
+
+    __slots__ = [&#34;_dtype_arg0&#34;]
+
+    def __init__(self, hnd, name, dtype_res, dtype_arg0, label=None):
+        &#34;&#34;&#34;
+        Creates new unary operation from a native C api object handle.
+
+        Parameters
+        ----------
+
+        hnd: ctypes.c_void_p.
+            Mandatory handle to native C object.
+
+        name: str.
+            Mandatory name of the operation.
+
+        dtype_res:
+            Type of the return value of the operation.
+
+        dtype_arg0:
+            Type of the first operation argument.
+
+        label: optional: str. default: None.
+            Optional debug label to set for the object.
+        &#34;&#34;&#34;
+
+        super().__init__(hnd, name, dtype_res, label)
+
+        self._dtype_arg0 = dtype_arg0
+
+    @property
+    def dtype_arg0(self):
+        &#34;&#34;&#34;
+        Data type of the first argument of the unary operation.
+        &#34;&#34;&#34;
+        return self._dtype_arg0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></li>
+<li><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyspla.OpUnary.dtype_arg0"><code class="name">var <span class="ident">dtype_arg0</span></code></dt>
+<dd>
+<div class="desc"><p>Data type of the first argument of the unary operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dtype_arg0(self):
+    &#34;&#34;&#34;
+    Data type of the first argument of the unary operation.
+    &#34;&#34;&#34;
+    return self._dtype_arg0</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.op.Op" href="op.html#pyspla.op.Op">Op</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.op.Op.dtype_res" href="op.html#pyspla.op.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.op.Op.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.op.Op.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+<li><code><a title="pyspla.op.Op.name" href="op.html#pyspla.op.Op.name">name</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.Scalar"><code class="flex name class">
 <span>class <span class="ident">Scalar</span></span>
@@ -1620,7 +2479,7 @@ Optional debug label of the scalar.</p></div>
 
         value = self._dtype._c_type(0)
         check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def __str__(self):
         return str(self.get())
@@ -1708,7 +2567,7 @@ def shape(self):
 
     value = self._dtype._c_type(0)
     check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-    return self._dtype.to_py(value)</code></pre>
+    return self._dtype.cast_value(value)</code></pre>
 </details>
 </dd>
 <dt id="pyspla.Scalar.set"><code class="name flex">
@@ -1738,6 +2597,15 @@ Optional value to store in scalar.</p></div>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyspla.Type"><code class="flex name class">
 <span>class <span class="ident">Type</span></span>
@@ -1764,22 +2632,236 @@ Optional value to store in scalar.</p></div>
     _matrix_set = None
     _hnd = None
 
+    PLUS = None
+    MINUS = None
+    MULT = None
+    DIV = None
+    MINUS_POW2 = None
+    FIRST = None
+    SECOND = None
+    ONE = None
+    MIN = None
+    MAX = None
+    BOR = None
+    BAND = None
+    BXOR = None
+
+    EQZERO = None
+    NQZERO = None
+    GTZERO = None
+    GEZERO = None
+    LTZERO = None
+    LEZERO = None
+    ALWAYS = None
+    NEVER = None
+
     @classmethod
     def get_code(cls):
         return cls._code
 
     @classmethod
-    def to_py(cls, value):
-        pass</code></pre>
+    def cast_value(cls, value):
+        pass
+
+    @classmethod
+    def format_value(cls, value, width=2, precision=2):
+        f = &#34;{:&gt;%s}&#34; % width
+        if not isinstance(value, bool):
+            return f.format(value)
+        return f.format(&#34;t&#34;) if value is True else f.format(&#34;f&#34;)
+
+    @classmethod
+    def _setup_op_binary(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpBinary_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpBinary(hnd=func(), name=name, dtype_res=cls, dtype_arg0=cls, dtype_arg1=cls) if func else None
+
+        cls.PLUS = load_op(&#39;PLUS&#39;)
+        cls.MINUS = load_op(&#39;MINUS&#39;)
+        cls.MULT = load_op(&#39;MULT&#39;)
+        cls.DIV = load_op(&#39;DIV&#39;)
+        cls.MINUS_POW2 = load_op(&#39;MINUS_POW2&#39;)
+        cls.FIRST = load_op(&#39;FIRST&#39;)
+        cls.SECOND = load_op(&#39;SECOND&#39;)
+        cls.ONE = load_op(&#39;ONE&#39;)
+        cls.MIN = load_op(&#39;MIN&#39;)
+        cls.MAX = load_op(&#39;MAX&#39;)
+        cls.BOR = load_op(&#39;BOR&#39;)
+        cls.BAND = load_op(&#39;BAND&#39;)
+        cls.BXOR = load_op(&#39;BXOR&#39;)
+
+    @classmethod
+    def _setup_op_select(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f&#34;spla_OpSelect_{name}_{type_name}&#34;
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpSelect(hnd=func(), name=name, dtype_arg0=cls) if func else None
+
+        cls.EQZERO = load_op(&#39;EQZERO&#39;)
+        cls.NQZERO = load_op(&#39;NQZERO&#39;)
+        cls.GTZERO = load_op(&#39;GTZERO&#39;)
+        cls.GEZERO = load_op(&#39;GEZERO&#39;)
+        cls.LTZERO = load_op(&#39;LTZERO&#39;)
+        cls.LEZERO = load_op(&#39;LEZERO&#39;)
+        cls.ALWAYS = load_op(&#39;ALWAYS&#39;)
+        cls.NEVER = load_op(&#39;NEVER&#39;)
+
+    @classmethod
+    def _setup(cls):
+        b = backend()
+        type_name = cls.__name__
+        type_name_lower = type_name.lower()
+
+        if not b:
+            return
+
+        cls._scalar_get = getattr(b, f&#34;spla_Scalar_get_{type_name_lower}&#34;)
+        cls._scalar_set = getattr(b, f&#34;spla_Scalar_set_{type_name_lower}&#34;)
+        cls._array_get = getattr(b, f&#34;spla_Array_get_{type_name_lower}&#34;)
+        cls._array_set = getattr(b, f&#34;spla_Array_set_{type_name_lower}&#34;)
+        cls._vector_get = getattr(b, f&#34;spla_Vector_get_{type_name_lower}&#34;)
+        cls._vector_set = getattr(b, f&#34;spla_Vector_set_{type_name_lower}&#34;)
+        cls._matrix_get = getattr(b, f&#34;spla_Matrix_get_{type_name_lower}&#34;)
+        cls._matrix_set = getattr(b, f&#34;spla_Matrix_set_{type_name_lower}&#34;)
+        cls._hnd = getattr(b, f&#34;spla_Type_{type_name}&#34;)()
+
+        cls._setup_op_binary()
+        cls._setup_op_select()</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="pyspla.type.BOOL" href="type.html#pyspla.type.BOOL">BOOL</a></li>
 <li><a title="pyspla.type.FLOAT" href="type.html#pyspla.type.FLOAT">FLOAT</a></li>
 <li><a title="pyspla.type.INT" href="type.html#pyspla.type.INT">INT</a></li>
 <li><a title="pyspla.type.UINT" href="type.html#pyspla.type.UINT">UINT</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyspla.Type.ALWAYS"><code class="name">var <span class="ident">ALWAYS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.BAND"><code class="name">var <span class="ident">BAND</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.BOR"><code class="name">var <span class="ident">BOR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.BXOR"><code class="name">var <span class="ident">BXOR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.DIV"><code class="name">var <span class="ident">DIV</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.EQZERO"><code class="name">var <span class="ident">EQZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.FIRST"><code class="name">var <span class="ident">FIRST</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.GEZERO"><code class="name">var <span class="ident">GEZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.GTZERO"><code class="name">var <span class="ident">GTZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.LEZERO"><code class="name">var <span class="ident">LEZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.LTZERO"><code class="name">var <span class="ident">LTZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.MAX"><code class="name">var <span class="ident">MAX</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.MIN"><code class="name">var <span class="ident">MIN</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.MINUS"><code class="name">var <span class="ident">MINUS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.MINUS_POW2"><code class="name">var <span class="ident">MINUS_POW2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.MULT"><code class="name">var <span class="ident">MULT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.NEVER"><code class="name">var <span class="ident">NEVER</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.NQZERO"><code class="name">var <span class="ident">NQZERO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.ONE"><code class="name">var <span class="ident">ONE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.PLUS"><code class="name">var <span class="ident">PLUS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyspla.Type.SECOND"><code class="name">var <span class="ident">SECOND</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
+<dt id="pyspla.Type.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def cast_value(cls, value):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="pyspla.Type.format_value"><code class="name flex">
+<span>def <span class="ident">format_value</span></span>(<span>value, width=2, precision=2)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def format_value(cls, value, width=2, precision=2):
+    f = &#34;{:&gt;%s}&#34; % width
+    if not isinstance(value, bool):
+        return f.format(value)
+    return f.format(&#34;t&#34;) if value is True else f.format(&#34;f&#34;)</code></pre>
+</details>
+</dd>
 <dt id="pyspla.Type.get_code"><code class="name flex">
 <span>def <span class="ident">get_code</span></span>(<span>)</span>
 </code></dt>
@@ -1792,20 +2874,6 @@ Optional value to store in scalar.</p></div>
 <pre><code class="python">@classmethod
 def get_code(cls):
     return cls._code</code></pre>
-</details>
-</dd>
-<dt id="pyspla.Type.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def to_py(cls, value):
-    pass</code></pre>
 </details>
 </dd>
 </dl>
@@ -1827,19 +2895,7 @@ def to_py(cls, value):
     _code = &#39;U&#39;
 
     @classmethod
-    def _setup(cls):
-        cls._scalar_get = backend().spla_Scalar_get_uint
-        cls._scalar_set = backend().spla_Scalar_set_uint
-        cls._array_get = backend().spla_Array_get_uint
-        cls._array_set = backend().spla_Array_set_uint
-        cls._vector_get = backend().spla_Vector_get_uint
-        cls._vector_set = backend().spla_Vector_set_uint
-        cls._matrix_get = backend().spla_Matrix_get_uint
-        cls._matrix_set = backend().spla_Matrix_set_uint
-        cls._hnd = backend().spla_Type_uint()
-
-    @classmethod
-    def to_py(cls, value):
+    def cast_value(cls, value):
         return int(value.value)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1848,8 +2904,8 @@ def to_py(cls, value):
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="pyspla.UINT.to_py"><code class="name flex">
-<span>def <span class="ident">to_py</span></span>(<span>value)</span>
+<dt id="pyspla.UINT.cast_value"><code class="name flex">
+<span>def <span class="ident">cast_value</span></span>(<span>value)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1858,7 +2914,7 @@ def to_py(cls, value):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def to_py(cls, value):
+def cast_value(cls, value):
     return int(value.value)</code></pre>
 </details>
 </dd>
@@ -1982,8 +3038,7 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 <li><a href="#containers">Containers</a></li>
 <li><a href="#schedule">Schedule</a></li>
 <li><a href="#types">Types</a></li>
-<li><a href="#op">Op</a></li>
-<li><a href="#usage-information">Usage information</a></li>
+<li><a href="#operations">Operations</a></li>
 <li><a href="#details">Details</a></li>
 </ul>
 </li>
@@ -2027,25 +3082,66 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </ul>
 </li>
 <li>
+<h4><code><a title="pyspla.BOOL" href="#pyspla.BOOL">BOOL</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.BOOL.cast_value" href="#pyspla.BOOL.cast_value">cast_value</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyspla.FLOAT" href="#pyspla.FLOAT">FLOAT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.FLOAT.to_py" href="#pyspla.FLOAT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.FLOAT.cast_value" href="#pyspla.FLOAT.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.FLOAT.format_value" href="#pyspla.FLOAT.format_value">format_value</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.INT" href="#pyspla.INT">INT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.INT.to_py" href="#pyspla.INT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.INT.cast_value" href="#pyspla.INT.cast_value">cast_value</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.Matrix" href="#pyspla.Matrix">Matrix</a></code></h4>
 </li>
 <li>
+<h4><code><a title="pyspla.MemView" href="#pyspla.MemView">MemView</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.MemView.buffer" href="#pyspla.MemView.buffer">buffer</a></code></li>
+<li><code><a title="pyspla.MemView.is_mutable" href="#pyspla.MemView.is_mutable">is_mutable</a></code></li>
+<li><code><a title="pyspla.MemView.size" href="#pyspla.MemView.size">size</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pyspla.Object" href="#pyspla.Object">Object</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.Object.get_label" href="#pyspla.Object.get_label">get_label</a></code></li>
-<li><code><a title="pyspla.Object.set_label" href="#pyspla.Object.set_label">set_label</a></code></li>
+<li><code><a title="pyspla.Object.hnd" href="#pyspla.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.Object.label" href="#pyspla.Object.label">label</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.Op" href="#pyspla.Op">Op</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.Op.dtype_res" href="#pyspla.Op.dtype_res">dtype_res</a></code></li>
+<li><code><a title="pyspla.Op.name" href="#pyspla.Op.name">name</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.OpBinary" href="#pyspla.OpBinary">OpBinary</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.OpBinary.dtype_arg0" href="#pyspla.OpBinary.dtype_arg0">dtype_arg0</a></code></li>
+<li><code><a title="pyspla.OpBinary.dtype_arg1" href="#pyspla.OpBinary.dtype_arg1">dtype_arg1</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.OpSelect" href="#pyspla.OpSelect">OpSelect</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.OpSelect.dtype_arg0" href="#pyspla.OpSelect.dtype_arg0">dtype_arg0</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyspla.OpUnary" href="#pyspla.OpUnary">OpUnary</a></code></h4>
+<ul class="">
+<li><code><a title="pyspla.OpUnary.dtype_arg0" href="#pyspla.OpUnary.dtype_arg0">dtype_arg0</a></code></li>
 </ul>
 </li>
 <li>
@@ -2060,15 +3156,37 @@ using one of built-in OpenCL or CUDA accelerators.</p></div>
 </li>
 <li>
 <h4><code><a title="pyspla.Type" href="#pyspla.Type">Type</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyspla.Type.ALWAYS" href="#pyspla.Type.ALWAYS">ALWAYS</a></code></li>
+<li><code><a title="pyspla.Type.BAND" href="#pyspla.Type.BAND">BAND</a></code></li>
+<li><code><a title="pyspla.Type.BOR" href="#pyspla.Type.BOR">BOR</a></code></li>
+<li><code><a title="pyspla.Type.BXOR" href="#pyspla.Type.BXOR">BXOR</a></code></li>
+<li><code><a title="pyspla.Type.DIV" href="#pyspla.Type.DIV">DIV</a></code></li>
+<li><code><a title="pyspla.Type.EQZERO" href="#pyspla.Type.EQZERO">EQZERO</a></code></li>
+<li><code><a title="pyspla.Type.FIRST" href="#pyspla.Type.FIRST">FIRST</a></code></li>
+<li><code><a title="pyspla.Type.GEZERO" href="#pyspla.Type.GEZERO">GEZERO</a></code></li>
+<li><code><a title="pyspla.Type.GTZERO" href="#pyspla.Type.GTZERO">GTZERO</a></code></li>
+<li><code><a title="pyspla.Type.LEZERO" href="#pyspla.Type.LEZERO">LEZERO</a></code></li>
+<li><code><a title="pyspla.Type.LTZERO" href="#pyspla.Type.LTZERO">LTZERO</a></code></li>
+<li><code><a title="pyspla.Type.MAX" href="#pyspla.Type.MAX">MAX</a></code></li>
+<li><code><a title="pyspla.Type.MIN" href="#pyspla.Type.MIN">MIN</a></code></li>
+<li><code><a title="pyspla.Type.MINUS" href="#pyspla.Type.MINUS">MINUS</a></code></li>
+<li><code><a title="pyspla.Type.MINUS_POW2" href="#pyspla.Type.MINUS_POW2">MINUS_POW2</a></code></li>
+<li><code><a title="pyspla.Type.MULT" href="#pyspla.Type.MULT">MULT</a></code></li>
+<li><code><a title="pyspla.Type.NEVER" href="#pyspla.Type.NEVER">NEVER</a></code></li>
+<li><code><a title="pyspla.Type.NQZERO" href="#pyspla.Type.NQZERO">NQZERO</a></code></li>
+<li><code><a title="pyspla.Type.ONE" href="#pyspla.Type.ONE">ONE</a></code></li>
+<li><code><a title="pyspla.Type.PLUS" href="#pyspla.Type.PLUS">PLUS</a></code></li>
+<li><code><a title="pyspla.Type.SECOND" href="#pyspla.Type.SECOND">SECOND</a></code></li>
+<li><code><a title="pyspla.Type.cast_value" href="#pyspla.Type.cast_value">cast_value</a></code></li>
+<li><code><a title="pyspla.Type.format_value" href="#pyspla.Type.format_value">format_value</a></code></li>
 <li><code><a title="pyspla.Type.get_code" href="#pyspla.Type.get_code">get_code</a></code></li>
-<li><code><a title="pyspla.Type.to_py" href="#pyspla.Type.to_py">to_py</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyspla.UINT" href="#pyspla.UINT">UINT</a></code></h4>
 <ul class="">
-<li><code><a title="pyspla.UINT.to_py" href="#pyspla.UINT.to_py">to_py</a></code></li>
+<li><code><a title="pyspla.UINT.cast_value" href="#pyspla.UINT.cast_value">cast_value</a></code></li>
 </ul>
 </li>
 <li>

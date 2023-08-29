@@ -184,7 +184,7 @@ class Scalar(Object):
 
         value = self._dtype._c_type(0)
         check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def __str__(self):
         return str(self.get())
@@ -371,7 +371,7 @@ Optional debug label of the scalar.</p></div>
 
         value = self._dtype._c_type(0)
         check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-        return self._dtype.to_py(value)
+        return self._dtype.cast_value(value)
 
     def __str__(self):
         return str(self.get())
@@ -459,7 +459,7 @@ def shape(self):
 
     value = self._dtype._c_type(0)
     check(self._dtype._scalar_get(self._hnd, ctypes.byref(value)))
-    return self._dtype.to_py(value)</code></pre>
+    return self._dtype.cast_value(value)</code></pre>
 </details>
 </dd>
 <dt id="pyspla.scalar.Scalar.set"><code class="name flex">
@@ -489,6 +489,15 @@ Optional value to store in scalar.</p></div>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyspla.object.Object" href="object.html#pyspla.object.Object">Object</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyspla.object.Object.hnd" href="object.html#pyspla.object.Object.hnd">hnd</a></code></li>
+<li><code><a title="pyspla.object.Object.label" href="object.html#pyspla.object.Object.label">label</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
