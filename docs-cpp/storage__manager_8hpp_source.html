@@ -190,85 +190,98 @@ $(function() {
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordflow">if</span> (!storage.<a class="code" href="classspla_1_1TDecorationStorage.html#ae96ad3783f4027a1945439c38479d3a2">is_valid_any</a>()) {</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(format);</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">if</span> (!storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aca4ad9efe386ac1a32fb9114478b5b49">get_ptr_i</a>(i)) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                m_constructors[i](storage);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">if</span> (m_validators[i]) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                m_validators[i](storage);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> source   = -1;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> infinity = -2;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> target   = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(format);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        std::array&lt;int, capacity&gt; reached;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        std::queue&lt;int&gt;           queue;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        reached.fill(infinity);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; capacity; ++i) {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">if</span> (storage.<a class="code" href="classspla_1_1TDecorationStorage.html#afe4ab7c0da8e67f92a2dfc6bc5f505d1">is_valid_i</a>(i)) {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                reached[i] = source;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                queue.push(i);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keywordflow">if</span> (!m_constructors[i]) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    <a class="code" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a>(<a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">Status::NotImplemented</a>, <span class="stringliteral">&quot;no such constructor for format &quot;</span> &lt;&lt; i);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                m_constructors[i](storage);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">if</span> (m_validators[i]) {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                m_validators[i](storage);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> source   = -1;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> infinity = -2;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> target   = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(format);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        std::array&lt;int, capacity&gt; reached;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        std::queue&lt;int&gt;           queue;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        reached.fill(infinity);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        assert(storage.<a class="code" href="classspla_1_1TDecorationStorage.html#ae96ad3783f4027a1945439c38479d3a2">is_valid_any</a>());</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">while</span> (reached[target] == infinity) {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">int</span> u = queue.front();</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            queue.pop();</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; target_format : m_convert_rules[u]) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordflow">if</span> (reached[target_format.first] == infinity) {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                    reached[target_format.first] = u;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    queue.push(target_format.first);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        std::vector&lt;std::pair&lt;int, int&gt;&gt; path;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordtype">int</span>                              current = target;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">while</span> (reached[current] != source) {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            path.push_back({reached[current], current});</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            current = reached[current];</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> iter = path.rbegin(); iter != path.rend(); ++iter) {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            std::pair&lt;int, int&gt; from_to          = *iter;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keyword">auto</span>                search_predicate = [from_to](<span class="keyword">const</span> std::pair&lt;int, int&gt;&amp; rule) { <span class="keywordflow">return</span> rule.first == from_to.second; };</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keyword">auto</span>                rule             = std::find_if(m_convert_rules[from_to.first].begin(), m_convert_rules[from_to.first].end(), search_predicate);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; capacity; ++i) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">if</span> (storage.<a class="code" href="classspla_1_1TDecorationStorage.html#afe4ab7c0da8e67f92a2dfc6bc5f505d1">is_valid_i</a>(i)) {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                reached[i] = source;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                queue.push(i);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">while</span> (reached[target] == infinity) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <span class="keywordflow">if</span> (queue.empty()) {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <a class="code" href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a>(<a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">Status::NotImplemented</a>, <span class="stringliteral">&quot;no conversion path to target format &quot;</span> &lt;&lt; target);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                assert(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordtype">int</span> u = queue.front();</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            queue.pop();</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; target_format : m_convert_rules[u]) {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                <span class="keywordflow">if</span> (reached[target_format.first] == infinity) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                    reached[target_format.first] = u;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                    queue.push(target_format.first);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        }</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">if</span> (storage.<a class="code" href="classspla_1_1TDecorationStorage.html#af8a975f12881a4a8c9544e0349e5e325">get_ref_i</a>(from_to.second).is_null()) {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                m_constructors[from_to.second](storage);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            }</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            m_converters[rule-&gt;second](storage);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(<span class="keyword">static_cast&lt;</span>F<span class="keyword">&gt;</span>(from_to.second));</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        std::vector&lt;std::pair&lt;int, int&gt;&gt; path;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordtype">int</span>                              current = target;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="keywordflow">while</span> (reached[current] != source) {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            path.push_back({reached[current], current});</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            current = reached[current];</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keywordtype">int</span> capacity&gt;</div>
-<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">  193</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">StorageManager&lt;T, F, capacity&gt;::validate_rwd</a>(F format, <a class="code" href="classspla_1_1TDecorationStorage.html">Storage</a>&amp; storage) {</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        validate_rw(format, storage);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#a4627692263b38eee810c9d73aa10dcc5">invalidate</a>();</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keywordtype">int</span> capacity&gt;</div>
-<div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">  199</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">StorageManager&lt;T, F, capacity&gt;::validate_wd</a>(F format, <a class="code" href="classspla_1_1TDecorationStorage.html">Storage</a>&amp; storage) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(format);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (!storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aca4ad9efe386ac1a32fb9114478b5b49">get_ptr_i</a>(i)) {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            m_constructors[i](storage);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> iter = path.rbegin(); iter != path.rend(); ++iter) {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            std::pair&lt;int, int&gt; from_to          = *iter;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keyword">auto</span>                search_predicate = [from_to](<span class="keyword">const</span> std::pair&lt;int, int&gt;&amp; rule) { <span class="keywordflow">return</span> rule.first == from_to.second; };</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keyword">auto</span>                rule             = std::find_if(m_convert_rules[from_to.first].begin(), m_convert_rules[from_to.first].end(), search_predicate);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">if</span> (storage.<a class="code" href="classspla_1_1TDecorationStorage.html#af8a975f12881a4a8c9544e0349e5e325">get_ref_i</a>(from_to.second).is_null()) {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                m_constructors[from_to.second](storage);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            }</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            m_converters[rule-&gt;second](storage);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(<span class="keyword">static_cast&lt;</span>F<span class="keyword">&gt;</span>(from_to.second));</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keywordflow">if</span> (m_discards[i]) {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            m_discards[i](storage);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#a4627692263b38eee810c9d73aa10dcc5">invalidate</a>();</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_STORAGE_MANAGER_HPP</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keywordtype">int</span> capacity&gt;</div>
+<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">  206</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">StorageManager&lt;T, F, capacity&gt;::validate_rwd</a>(F format, <a class="code" href="classspla_1_1TDecorationStorage.html">Storage</a>&amp; storage) {</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        validate_rw(format, storage);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#a4627692263b38eee810c9d73aa10dcc5">invalidate</a>();</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keywordtype">int</span> capacity&gt;</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">  212</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">StorageManager&lt;T, F, capacity&gt;::validate_wd</a>(F format, <a class="code" href="classspla_1_1TDecorationStorage.html">Storage</a>&amp; storage) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(format);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordflow">if</span> (!storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aca4ad9efe386ac1a32fb9114478b5b49">get_ptr_i</a>(i)) {</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            m_constructors[i](storage);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keywordflow">if</span> (m_discards[i]) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            m_discards[i](storage);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#a4627692263b38eee810c9d73aa10dcc5">invalidate</a>();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        storage.<a class="code" href="classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595">validate</a>(format);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_STORAGE_MANAGER_HPP</span></div>
 <div class="ttc" id="aclassspla_1_1StorageManager_html"><div class="ttname"><a href="classspla_1_1StorageManager.html">spla::StorageManager</a></div><div class="ttdoc">General format converter for vector or matrix decoration storage.</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:57</div></div>
 <div class="ttc" id="aclassspla_1_1StorageManager_html_a1eb213d8c6d56d5596d4d556fd372681"><div class="ttname"><a href="classspla_1_1StorageManager.html#a1eb213d8c6d56d5596d4d556fd372681">spla::StorageManager::Function</a></div><div class="ttdeci">std::function&lt; void(Storage &amp;storage)&gt; Function</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:60</div></div>
 <div class="ttc" id="aclassspla_1_1StorageManager_html_a51827d49ae299c61ab756998bdb9230c"><div class="ttname"><a href="classspla_1_1StorageManager.html#a51827d49ae299c61ab756998bdb9230c">spla::StorageManager::Storage</a></div><div class="ttdeci">TDecorationStorage&lt; T, F, capacity &gt; Storage</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:59</div></div>
@@ -284,13 +297,15 @@ $(function() {
 <div class="ttc" id="agroup__internal_html_ga296e0cd6965b99fa46bc58d664541215"><div class="ttname"><a href="group__internal.html#ga296e0cd6965b99fa46bc58d664541215">spla::StorageManager::register_converter</a></div><div class="ttdeci">void register_converter(F from, F to, Function function)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:112</div></div>
 <div class="ttc" id="agroup__internal_html_ga40bd18bae468d2581e4fa6dcd026302e"><div class="ttname"><a href="group__internal.html#ga40bd18bae468d2581e4fa6dcd026302e">spla::StorageManager::StorageManager</a></div><div class="ttdeci">StorageManager()</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:84</div></div>
 <div class="ttc" id="agroup__internal_html_ga43b20dd69a76e9db36a0899d9890414c"><div class="ttname"><a href="group__internal.html#ga43b20dd69a76e9db36a0899d9890414c">spla::StorageManager::register_discard</a></div><div class="ttdeci">void register_discard(F format, Function function)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:102</div></div>
-<div class="ttc" id="agroup__internal_html_ga47956ee8969d75dfe6f32bb44f4a1757"><div class="ttname"><a href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">spla::StorageManager::validate_wd</a></div><div class="ttdeci">void validate_wd(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:199</div></div>
+<div class="ttc" id="agroup__internal_html_ga47956ee8969d75dfe6f32bb44f4a1757"><div class="ttname"><a href="group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757">spla::StorageManager::validate_wd</a></div><div class="ttdeci">void validate_wd(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:212</div></div>
 <div class="ttc" id="agroup__internal_html_ga5b966107b9ef69b57fb13a50f31120b1"><div class="ttname"><a href="group__internal.html#ga5b966107b9ef69b57fb13a50f31120b1">spla::StorageManager::validate_rw</a></div><div class="ttdeci">void validate_rw(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:128</div></div>
 <div class="ttc" id="agroup__internal_html_gac9341c980f3831e21ee1ba6c1ea68105"><div class="ttname"><a href="group__internal.html#gac9341c980f3831e21ee1ba6c1ea68105">spla::StorageManager::validate_ctor</a></div><div class="ttdeci">void validate_ctor(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:121</div></div>
-<div class="ttc" id="agroup__internal_html_gacf348af6c29f12ef96c8e7048c14e011"><div class="ttname"><a href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">spla::StorageManager::validate_rwd</a></div><div class="ttdeci">void validate_rwd(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:193</div></div>
+<div class="ttc" id="agroup__internal_html_gacf348af6c29f12ef96c8e7048c14e011"><div class="ttname"><a href="group__internal.html#gacf348af6c29f12ef96c8e7048c14e011">spla::StorageManager::validate_rwd</a></div><div class="ttdeci">void validate_rwd(F format, Storage &amp;storage)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:206</div></div>
 <div class="ttc" id="agroup__internal_html_gadf3839c13bdebe924f40ee4c73e592af"><div class="ttname"><a href="group__internal.html#gadf3839c13bdebe924f40ee4c73e592af">spla::StorageManager::register_validator</a></div><div class="ttdeci">void register_validator(F format, Function function)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:97</div></div>
 <div class="ttc" id="agroup__internal_html_gaefb686365331808e9145c2a339911c9f"><div class="ttname"><a href="group__internal.html#gaefb686365331808e9145c2a339911c9f">spla::StorageManager::register_validator_discard</a></div><div class="ttdeci">void register_validator_discard(F format, Function function)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:107</div></div>
 <div class="ttc" id="agroup__internal_html_gaff92dc845e91171abdf7cc38e6570c4c"><div class="ttname"><a href="group__internal.html#gaff92dc845e91171abdf7cc38e6570c4c">spla::StorageManager::register_constructor</a></div><div class="ttdeci">void register_constructor(F format, Function function)</div><div class="ttdef"><b>Definition:</b> storage_manager.hpp:92</div></div>
+<div class="ttc" id="agroup__spla_html_ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e"><div class="ttname"><a href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743a997ca4ce119685f40f03a9a8a6c5346e">spla::Status::NotImplemented</a></div><div class="ttdeci">@ NotImplemented</div></div>
+<div class="ttc" id="alogger_8hpp_html_af10c23177855b77e6dfb971906b5f027"><div class="ttname"><a href="logger_8hpp.html#af10c23177855b77e6dfb971906b5f027">LOG_MSG</a></div><div class="ttdeci">#define LOG_MSG(status, msg)</div><div class="ttdef"><b>Definition:</b> logger.hpp:66</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
 <div class="ttc" id="atdecoration_8hpp_html"><div class="ttname"><a href="tdecoration_8hpp.html">tdecoration.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

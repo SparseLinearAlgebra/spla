@@ -222,6 +222,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">spla::register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ca145a43180c9e0caa9bd5633506481"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga2ca145a43180c9e0caa9bd5633506481"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2ca145a43180c9e0caa9bd5633506481">spla::cpu_coo_resize</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:ga2ca145a43180c9e0caa9bd5633506481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga60388c4406e177aa850a5c40746a68f2">spla::cpu_coo_clear</a> (<a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in)</td></tr>
+<tr class="separator:ga60388c4406e177aa850a5c40746a68f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga82085e43c0c4cd99e2702ae7cff74636">spla::cpu_coo_to_dok</a> (const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0649c8a851178bf399e95ce8773610c9">spla::cpu_coo_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
 <tr class="separator:ga0649c8a851178bf399e95ce8773610c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1302,6 +1311,56 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ga60388c4406e177aa850a5c40746a68f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga60388c4406e177aa850a5c40746a68f2">&#9670;&nbsp;</a></span>cpu_coo_clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga2ca145a43180c9e0caa9bd5633506481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2ca145a43180c9e0caa9bd5633506481">&#9670;&nbsp;</a></span>cpu_coo_resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_resize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ga0649c8a851178bf399e95ce8773610c9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0649c8a851178bf399e95ce8773610c9">&#9670;&nbsp;</a></span>cpu_coo_to_csr()</h2>
 
@@ -1326,6 +1385,36 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga82085e43c0c4cd99e2702ae7cff74636"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82085e43c0c4cd99e2702ae7cff74636">&#9670;&nbsp;</a></span>cpu_coo_to_dok()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_to_dok </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>

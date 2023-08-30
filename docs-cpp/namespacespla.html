@@ -404,11 +404,6 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:ga556579e7c92bd09dcf035bd88d76fbea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28f203e2c48f35b140beaf012792d2ab"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spla.html#ga28f203e2c48f35b140beaf012792d2ab">FormatArray</a> : uint { <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba54c82ef76ecbbd4c2293e09bae01b54e">Cpu</a> = 0
-, <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2aba2e02ea7283618d93898c1342e8361dfa">Acc</a> = 1
-, <a class="el" href="group__spla.html#gga28f203e2c48f35b140beaf012792d2abae93f994f01c537c4e2f7d8528c3eb5e9">Count</a> = 2
- }</td></tr>
-<tr class="separator:ga28f203e2c48f35b140beaf012792d2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -487,6 +482,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">register_algo_cpu</a> (class <a class="el" href="classspla_1_1Registry.html">Registry</a> *g_registry)</td></tr>
 <tr class="memdesc:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all cpu-specific algorithms.  <a href="group__internal.html#ga8cf03e6ac9524d52548b35cab7509f1f">More...</a><br /></td></tr>
 <tr class="separator:ga8cf03e6ac9524d52548b35cab7509f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ca145a43180c9e0caa9bd5633506481"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga2ca145a43180c9e0caa9bd5633506481"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2ca145a43180c9e0caa9bd5633506481">cpu_coo_resize</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values, <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;storage)</td></tr>
+<tr class="separator:ga2ca145a43180c9e0caa9bd5633506481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga60388c4406e177aa850a5c40746a68f2">cpu_coo_clear</a> (<a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in)</td></tr>
+<tr class="separator:ga60388c4406e177aa850a5c40746a68f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga82085e43c0c4cd99e2702ae7cff74636">cpu_coo_to_dok</a> (const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0649c8a851178bf399e95ce8773610c9">cpu_coo_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
 <tr class="separator:ga0649c8a851178bf399e95ce8773610c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
