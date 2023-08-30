@@ -76,6 +76,17 @@ class Matrix(Object):
         """
         Creates new matrix of specified type and shape.
 
+        >>> M = Matrix((4, 5), INT)
+        >>> print(M)
+        '
+            0 1 2 3 4
+         0| . . . . .|  0
+         1| . . . . .|  1
+         2| . . . . .|  2
+         3| . . . . .|  3
+            0 1 2 3 4
+        '
+
         :param dtype: Type.
             Type parametrization of a storage.
 
@@ -112,6 +123,12 @@ class Matrix(Object):
     def dtype(self):
         """
         Type used for storage parametrization of this container.
+
+        >>> M = Matrix((4, 5), INT)
+        >>> print(M.dtype)
+        '
+            <class 'pyspla.type.INT'>
+        '
         """
         return self._dtype
 
@@ -119,6 +136,12 @@ class Matrix(Object):
     def n_rows(self):
         """
         Number of rows in the matrix.
+
+        >>> M = Matrix((4, 5), INT)
+        >>> print(M.n_rows)
+        '
+            4
+        '
         """
         return self._shape[0]
 
@@ -126,6 +149,12 @@ class Matrix(Object):
     def n_cols(self):
         """
         Number of cols in the matrix.
+
+        >>> M = Matrix((4, 5), INT)
+        >>> print(M.n_cols)
+        '
+            5
+        '
         """
         return self._shape[1]
 
@@ -133,6 +162,12 @@ class Matrix(Object):
     def shape(self):
         """
         2-Tuple with shape of matrix.
+
+        >>> M = Matrix((4, 5), INT)
+        >>> print(M.shape)
+        '
+            (4, 5)
+        '
         """
 
         return self._shape
@@ -155,6 +190,20 @@ class Matrix(Object):
         """
         Set value at specified index
 
+        >>> M = Matrix((4, 4), INT)
+        >>> M.set(0, 0, -1)
+        >>> M.set(1, 2, 4)
+        >>> M.set(3, 1, 10)
+        >>> print(M)
+        '
+            0 1 2 3
+         0|-1 . . .|  0
+         1| . . 4 .|  1
+         2| . . . .|  2
+         3| .10 . .|  3
+            0 1 2 3
+        '
+
         :param i: uint.
             Row index to set.
 
@@ -170,6 +219,18 @@ class Matrix(Object):
     def get(self, i, j):
         """
         Get value at specified index.
+
+        >>> M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)
+        >>> print(M.get(1, 0))
+        '
+            -1
+        '
+
+        >>> M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)
+        >>> print(M.get(1, 3))
+        '
+            0
+        '
 
         :param i: uint.
             Row index of value to get.
@@ -226,6 +287,12 @@ class Matrix(Object):
         """
         Read matrix data as a python lists of I, J and V.
 
+        >>> M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)
+        >>> print(M.to_lists())
+        '
+            ([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2])
+        '
+
         :return: Tuple (List, List, List) with the matrix keys and matrix values.
         """
 
@@ -255,6 +322,12 @@ class Matrix(Object):
     def to_list(self):
         """
         Read matrix data as a python lists of tuples where key and value stored together.
+
+        >>> M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)
+        >>> print(M.to_list())
+        '
+            [(1, 0, -1), (2, 1, -4), (3, 0, 4), (3, 3, 2)]
+        '
 
         :return: List of matrix entries as (I, J, V).
         """
@@ -427,6 +500,12 @@ class Matrix(Object):
     def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce matrix elements.
+
+        >>> M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)
+        >>> print(M.reduce(op_reduce=INT.MULT, init=Scalar(INT, 1)))
+        '
+            32
+        '
 
         :param op_reduce: OpBinary.
             Binary operation to apply for reduction of matrix elements.

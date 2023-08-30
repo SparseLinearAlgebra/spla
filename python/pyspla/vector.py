@@ -76,6 +76,16 @@ class Vector(Object):
         """
         Creates new vector of specified type and shape.
 
+        >>> v = Vector(5, INT)
+        >>> print(v)
+        '
+         0| .
+         1| .
+         2| .
+         3| .
+         4| .
+        '
+
         :param dtype: Type.
             Type parametrization of a storage.
 
@@ -109,6 +119,12 @@ class Vector(Object):
     def dtype(self):
         """
         Type used for storage parametrization of this container.
+
+        >>> v = Vector(5, INT)
+        >>> print(v.dtype)
+        '
+            <class 'pyspla.type.INT'>
+        '
         """
         return self._dtype
 
@@ -116,6 +132,12 @@ class Vector(Object):
     def n_rows(self):
         """
         Number of rows in the vector.
+
+        >>> v = Vector(5, INT)
+        >>> print(v.n_rows)
+        '
+            5
+        '
         """
         return self._shape[0]
 
@@ -123,6 +145,12 @@ class Vector(Object):
     def shape(self):
         """
         2-Tuple with shape of vector where second value is always 1.
+
+        >>> v = Vector(5, INT)
+        >>> print(v.shape)
+        '
+            (5, 1)
+        '
         """
 
         return self._shape
@@ -145,6 +173,19 @@ class Vector(Object):
         """
         Set value at specified index
 
+        >>> v = Vector(5, INT)
+        >>> v.set(1, 10)
+        >>> v.set(2, -1)
+        >>> v.set(4, 15)
+        >>> print(v)
+        '
+         0| .
+         1|10
+         2|-1
+         3| .
+         4|15
+        '
+
         :param i: uint.
             Row index to set.
 
@@ -157,6 +198,18 @@ class Vector(Object):
     def get(self, i):
         """
         Get value at specified index.
+
+        >>> v = Vector.from_lists([0, 1], [-2, -3], 5, INT)
+        >>> print(v.get(0))
+        '
+            -2
+        '
+
+        >>> v = Vector.from_lists([0, 1], [-2, -3], 5, INT)
+        >>> print(v.get(4))
+        '
+            0
+        '
 
         :param i: uint.
             Row index of value to get.
@@ -207,6 +260,12 @@ class Vector(Object):
         """
         Read vector data as a python lists of keys and values.
 
+        >>> v = Vector.from_lists([0, 1, 4], [-2, -3, 10], 5, INT)
+        >>> print(v.to_lists())
+        '
+            ([0, 1, 4], [-2, -3, 10])
+        '
+
         :return: Tuple (List, List) with the vector keys and vector values.
         """
 
@@ -224,6 +283,12 @@ class Vector(Object):
     def to_list(self):
         """
         Read vector data as a python lists of tuples where key and value stored together.
+
+        >>> v = Vector.from_lists([0, 1, 4], [-2, -3, 10], 5, INT)
+        >>> print(v.to_list())
+        '
+            [(0, -2), (1, -3), (4, 10)]
+        '
 
         :return: List of vector entries.
         """
@@ -375,6 +440,16 @@ class Vector(Object):
         """
         Element-wise add one vector to another and return result.
 
+        >>> u = Vector.from_lists([0, 1], [10, 20], 4, INT)
+        >>> v = Vector.from_lists([1, 3], [-5, 12], 4, INT)
+        >>> print(u.eadd(INT.PLUS, v))
+        '
+         0|10
+         1|15
+         2| .
+         3|12
+        '
+
         :param op_add: OpBinary.
             Binary operation to sum values.
 
@@ -409,6 +484,18 @@ class Vector(Object):
         """
         Assign scalar value to a vector by mask.
 
+        >>> v = Vector(4, INT)
+        >>> m = Vector.from_lists([0, 1, 3], [1, 0, 1], 4, INT)
+        >>> s = Scalar(INT, 4)
+        >>> v.assign(mask=m, value=s, op_assign=INT.SECOND, op_select=INT.GTZERO)
+        >>> print(v)
+        '
+         0| 4
+         1| .
+         2| .
+         3| 4
+        '
+
         :param mask: Vector.
             Mask vector which structure will be used to select entries for assignment.
 
@@ -441,6 +528,18 @@ class Vector(Object):
     def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce vector elements.
+
+        >>> v = Vector.from_lists([0, 1, 2], [-1, 2, 5], 4, INT)
+        >>> print(v.reduce(op_reduce=INT.PLUS))
+        '
+            6
+        '
+
+        >>> v = Vector.from_lists([0, 1, 2], [-0.5, 4.0, 12.3], 4, FLOAT)
+        >>> print(v.reduce(op_reduce=FLOAT.MAX))
+        '
+            12.3
+        '
 
         :param op_reduce: OpBinary.
             Binary operation to apply for reduction of vector elements.
