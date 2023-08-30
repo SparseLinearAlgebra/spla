@@ -255,7 +255,7 @@ namespace spla {
         const auto key_size   = sizeof(uint);
         const auto value_size = sizeof(T);
 
-        validate_rwd(FormatMatrix::CpuCoo);
+        validate_rw(FormatMatrix::CpuCoo);
         CpuCoo<T>& coo = *get<CpuCoo<T>>();
 
         const auto elements_count = coo.Ai.size();

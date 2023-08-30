@@ -132,6 +132,11 @@ namespace spla {
         if (!storage.is_valid_any()) {
             const int i = static_cast<int>(format);
             if (!storage.get_ptr_i(i)) {
+                if (!m_constructors[i]) {
+                    LOG_MSG(Status::NotImplemented, "no such constructor for format " << i);
+                    assert(false);
+                    return;
+                }
                 m_constructors[i](storage);
             }
             if (m_validators[i]) {

@@ -22,3 +22,11 @@ m = pyspla.Vector.from_lists([0, 2, 5], [-1, 1, 1], shape=10, dtype=pyspla.INT)
 t = pyspla.Vector(shape=10, dtype=pyspla.INT)
 t.assign(m, pyspla.Scalar(pyspla.INT, 10), pyspla.INT.SECOND, pyspla.INT.GEZERO)
 print(t.to_list())
+
+M = pyspla.Matrix((10, 10), pyspla.INT)
+G = pyspla.Matrix.generate((10, 10), pyspla.INT, density=0.1, dist=[0, 10])
+
+print(M.to_list())
+print(G.to_lists())
+
+print(G.reduce(pyspla.INT.PLUS))

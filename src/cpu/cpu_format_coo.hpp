@@ -38,6 +38,14 @@ namespace spla {
      */
 
     template<typename T>
+    void cpu_coo_clear(CpuCoo<T>& in) {
+        in.Ai.clear();
+        in.Aj.clear();
+        in.Ax.clear();
+        in.values = 0;
+    }
+
+    template<typename T>
     void cpu_coo_to_csr(uint             n_rows,
                         const CpuCoo<T>& in,
                         CpuCsr<T>&       out) {

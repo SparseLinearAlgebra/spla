@@ -59,28 +59,28 @@ class Type:
     _matrix_set = None
     _hnd = None
 
-    PLUS = None
-    MINUS = None
-    MULT = None
-    DIV = None
-    MINUS_POW2 = None
-    FIRST = None
-    SECOND = None
-    ONE = None
-    MIN = None
-    MAX = None
-    BOR = None
-    BAND = None
-    BXOR = None
+    PLUS: OpBinary
+    MINUS: OpBinary
+    MULT: OpBinary
+    DIV: OpBinary
+    MINUS_POW2: OpBinary
+    FIRST: OpBinary
+    SECOND: OpBinary
+    ONE: OpBinary
+    MIN: OpBinary
+    MAX: OpBinary
+    BOR: OpBinary
+    BAND: OpBinary
+    BXOR: OpBinary
 
-    EQZERO = None
-    NQZERO = None
-    GTZERO = None
-    GEZERO = None
-    LTZERO = None
-    LEZERO = None
-    ALWAYS = None
-    NEVER = None
+    EQZERO: OpSelect
+    NQZERO: OpSelect
+    GTZERO: OpSelect
+    GEZERO: OpSelect
+    LTZERO: OpSelect
+    LEZERO: OpSelect
+    ALWAYS: OpSelect
+    NEVER: OpSelect
 
     @classmethod
     def get_code(cls):

@@ -30,6 +30,7 @@
 
 #include <storage/storage_manager.hpp>
 
+#include <cpu/cpu_format_coo.hpp>
 #include <cpu/cpu_format_csr.hpp>
 #include <cpu/cpu_format_dok.hpp>
 #include <cpu/cpu_format_lil.hpp>
@@ -56,6 +57,9 @@ namespace spla {
         manager.register_constructor(FormatMatrix::CpuDok, [](Storage& s) {
             s.get_ref(FormatMatrix::CpuDok) = make_ref<CpuDok<T>>();
         });
+        manager.register_constructor(FormatMatrix::CpuCoo, [](Storage& s) {
+            s.get_ref(FormatMatrix::CpuCoo) = make_ref<CpuCoo<T>>();
+        });
         manager.register_constructor(FormatMatrix::CpuCsr, [](Storage& s) {
             s.get_ref(FormatMatrix::CpuCsr) = make_ref<CpuCsr<T>>();
         });
@@ -69,6 +73,10 @@ namespace spla {
             auto* dok = s.template get<CpuDok<T>>();
             cpu_dok_clear(*dok);
         });
+        manager.register_validator_discard(FormatMatrix::CpuCoo, [](Storage& s) {
+            auto* coo = s.template get<CpuCoo<T>>();
+            cpu_coo_clear(*coo);
+        });
 
         manager.register_converter(FormatMatrix::CpuLil, FormatMatrix::CpuDok, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
@@ -81,6 +89,13 @@ namespace spla {
             auto* csr = s.template get<CpuCsr<T>>();
             cpu_csr_resize(s.get_n_rows(), lil->values, *csr);
             cpu_lil_to_csr(s.get_n_rows(), *lil, *csr);
+        });
+
+        manager.register_converter(FormatMatrix::CpuCoo, FormatMatrix::CpuCsr, [](Storage& s) {
+            auto* coo = s.template get<CpuCoo<T>>();
+            auto* csr = s.template get<CpuCsr<T>>();
+            cpu_csr_resize(s.get_n_rows(), coo->values, *csr);
+            cpu_coo_to_csr(s.get_n_rows(), *coo, *csr);
         });
 
         manager.register_converter(FormatMatrix::CpuCsr, FormatMatrix::CpuDok, [](Storage& s) {

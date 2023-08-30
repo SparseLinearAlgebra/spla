@@ -33,7 +33,6 @@ from .type import Type, INT, UINT, FLOAT
 from .object import Object
 from .memview import MemView
 from .scalar import Scalar
-from .matrix import Matrix
 from .descriptor import Descriptor
 from .op import OpUnary, OpBinary, OpSelect
 import random as rnd
@@ -128,21 +127,21 @@ class Vector(Object):
 
         return self._shape
 
-    def build(self, keys_view: MemView, values_view: MemView):
+    def build(self, view_I: MemView, view_V: MemView):
         """
         Builds vector content from a raw memory view resources.
 
-        :param keys_view: MemView.
+        :param view_I: MemView.
             View to keys of vector to assign.
 
-        :param values_view: MemView.
+        :param view_V: MemView.
             View to actual values to store.
         """
 
-        assert keys_view
-        assert values_view
+        assert view_I
+        assert view_V
 
-        check(backend().spla_Vector_build(self._hnd, keys_view._hnd, values_view._hnd))
+        check(backend().spla_Vector_build(self.hnd, view_I.hnd, view_V.hnd))
 
     def read(self):
         """
@@ -153,7 +152,7 @@ class Vector(Object):
 
         keys_view_hnd = ctypes.c_void_p(0)
         values_view_hnd = ctypes.c_void_p(0)
-        check(backend().spla_Vector_read(self._hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)))
+        check(backend().spla_Vector_read(self.hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)))
         return MemView(hnd=keys_view_hnd, owner=self), MemView(hnd=values_view_hnd, owner=self)
 
     def to_lists(self):
@@ -163,16 +162,16 @@ class Vector(Object):
         :return: Tuple (List, List) with the vector keys and vector values.
         """
 
-        keys, values = self.read()
-        count = int(keys.size / ctypes.sizeof(UINT._c_type))
+        I, V = self.read()
+        count = int(I.size / ctypes.sizeof(UINT._c_type))
 
-        buffer_keys = (UINT._c_type * count)()
-        buffer_values = (self._dtype._c_type * count)()
+        buffer_I = (UINT._c_type * count)()
+        buffer_V = (self._dtype._c_type * count)()
 
-        check(backend().spla_MemView_read(keys._hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_keys), buffer_keys))
-        check(backend().spla_MemView_read(values._hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_values), buffer_values))
+        check(backend().spla_MemView_read(I.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_I), buffer_I))
+        check(backend().spla_MemView_read(V.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_V), buffer_V))
 
-        return list(buffer_keys), list(buffer_values)
+        return list(buffer_I), list(buffer_V)
 
     def to_list(self):
         """
@@ -181,19 +180,19 @@ class Vector(Object):
         :return: List of vector entries.
         """
 
-        keys, values = self.to_lists()
-        return list(zip(keys, values))
+        I, V = self.to_lists()
+        return list(zip(I, V))
 
     @classmethod
-    def from_lists(cls, keys: list, values: list, shape, dtype=INT):
+    def from_lists(cls, I: list, V: list, shape, dtype=INT):
         """
         Build vector from a list of sorted keys and associated values to store in vector.
         List with keys `keys` must index entries from range [0, shape-1] and all keys must be sorted.
 
-        :param keys: list[UINT].
+        :param I: list[UINT].
              List with integral keys of entries.
 
-        :param values: list[Type].
+        :param V: list[Type].
              List with values to store in the vector.
 
         :param shape: int.
@@ -205,22 +204,22 @@ class Vector(Object):
         :return: Created vector filled with values.
         """
 
-        assert len(keys) == len(values)
+        assert len(I) == len(V)
         assert shape > 0
 
-        if not keys:
+        if not I:
             return Vector(shape, dtype)
 
-        count = len(keys)
+        count = len(I)
 
-        c_keys = (UINT._c_type * count)(*keys)
-        c_values = (dtype._c_type * count)(*values)
+        c_I = (UINT._c_type * count)(*I)
+        c_V = (dtype._c_type * count)(*V)
 
-        view_keys = MemView(buffer=c_keys, size=ctypes.sizeof(c_keys), mutable=False)
-        view_values = MemView(buffer=c_values, size=ctypes.sizeof(c_values), mutable=False)
+        view_I = MemView(buffer=c_I, size=ctypes.sizeof(c_I), mutable=False)
+        view_V = MemView(buffer=c_V, size=ctypes.sizeof(c_V), mutable=False)
 
         v = Vector(shape=shape, dtype=dtype)
-        v.build(view_keys, view_values)
+        v.build(view_I, view_V)
 
         return v
 
@@ -231,7 +230,7 @@ class Vector(Object):
         with random values, generated using specified distribution.
 
         :param shape: int.
-            Size of the array (number of values).
+            Size of the vector.
 
         :param dtype: optional: Type. default: INT.
             Type of values vector will have.
@@ -245,25 +244,25 @@ class Vector(Object):
         :param dist: optional: tuple. default: [0,1].
             Optional distribution for uniform generation of values.
 
-        :return: Created array filled with values.
+        :return: Created vector filled with values.
         """
 
         if seed is not None:
             rnd.seed(seed)
 
-        keys = [i for i in range(0, shape) if rnd.uniform(0, 1) < density]
-        count = len(keys)
+        I = sorted(list({rnd.randint(0, shape - 1) for _ in range(int(shape * density))}))
+        count = len(I)
 
         if dtype is INT:
-            values = [rnd.randint(dist[0], dist[1]) for i in range(count)]
+            V = [rnd.randint(dist[0], dist[1]) for i in range(count)]
         elif dtype is UINT:
-            values = [rnd.randint(dist[0], dist[1]) for i in range(count)]
+            V = [rnd.randint(dist[0], dist[1]) for i in range(count)]
         elif dtype is FLOAT:
-            values = [rnd.uniform(dist[0], dist[1]) for i in range(count)]
+            V = [rnd.uniform(dist[0], dist[1]) for i in range(count)]
         else:
             raise Exception("unknown type")
 
-        return cls.from_lists(keys, values, shape=shape, dtype=dtype)
+        return cls.from_lists(I, V, shape=shape, dtype=dtype)
 
     def eadd(self, op_add, v, out=None, desc=None):
         """
@@ -365,8 +364,8 @@ class Vector(Object):
         return out
 
     def __iter__(self):
-        keys, values = self.to_lists()
-        return zip(keys, values)
+        I, V = self.to_lists()
+        return zip(I, V)
 
     def _get_desc(self, desc: Descriptor):
         return desc.hnd if desc else ctypes.c_void_p(0)
