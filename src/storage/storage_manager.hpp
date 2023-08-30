@@ -154,6 +154,8 @@ namespace spla {
         std::queue<int>           queue;
         reached.fill(infinity);
 
+        assert(storage.is_valid_any());
+
         for (int i = 0; i < capacity; ++i) {
             if (storage.is_valid_i(i)) {
                 reached[i] = source;
@@ -162,6 +164,12 @@ namespace spla {
         }
 
         while (reached[target] == infinity) {
+            if (queue.empty()) {
+                LOG_MSG(Status::NotImplemented, "no conversion path to target format " << target);
+                assert(false);
+                return;
+            }
+
             int u = queue.front();
             queue.pop();
 

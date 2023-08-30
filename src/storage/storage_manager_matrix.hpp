@@ -84,6 +84,12 @@ namespace spla {
             cpu_dok_clear(*dok);
             cpu_lil_to_dok(s.get_n_rows(), *lil, *dok);
         });
+        manager.register_converter(FormatMatrix::CpuLil, FormatMatrix::CpuCoo, [](Storage& s) {
+            auto* lil = s.template get<CpuLil<T>>();
+            auto* coo = s.template get<CpuCoo<T>>();
+            cpu_coo_resize(lil->values, *coo);
+            cpu_lil_to_coo(s.get_n_rows(), *lil, *coo);
+        });
         manager.register_converter(FormatMatrix::CpuLil, FormatMatrix::CpuCsr, [](Storage& s) {
             auto* lil = s.template get<CpuLil<T>>();
             auto* csr = s.template get<CpuCsr<T>>();
@@ -91,6 +97,12 @@ namespace spla {
             cpu_lil_to_csr(s.get_n_rows(), *lil, *csr);
         });
 
+        manager.register_converter(FormatMatrix::CpuCoo, FormatMatrix::CpuDok, [](Storage& s) {
+            auto* coo = s.template get<CpuCoo<T>>();
+            auto* dok = s.template get<CpuDok<T>>();
+            cpu_dok_clear(*dok);
+            cpu_coo_to_dok(*coo, *dok);
+        });
         manager.register_converter(FormatMatrix::CpuCoo, FormatMatrix::CpuCsr, [](Storage& s) {
             auto* coo = s.template get<CpuCoo<T>>();
             auto* csr = s.template get<CpuCsr<T>>();
@@ -103,6 +115,12 @@ namespace spla {
             auto* dok = s.template get<CpuDok<T>>();
             cpu_dok_clear(*dok);
             cpu_csr_to_dok(s.get_n_rows(), *csr, *dok);
+        });
+        manager.register_converter(FormatMatrix::CpuCsr, FormatMatrix::CpuCoo, [](Storage& s) {
+            auto* csr = s.template get<CpuCsr<T>>();
+            auto* coo = s.template get<CpuCoo<T>>();
+            cpu_coo_resize(csr->values, *coo);
+            cpu_csr_to_coo(s.get_n_rows(), *csr, *coo);
         });
 
 #if defined(SPLA_BUILD_OPENCL)

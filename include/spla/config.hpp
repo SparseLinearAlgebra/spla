@@ -142,21 +142,6 @@ namespace spla {
     };
 
     /**
-     * @class FormatArray
-     * @brief Named storage formats of array
-     *
-     * @warning Do not change order of values
-     */
-    enum class FormatArray : uint {
-        /** CPU side data allocation */
-        Cpu = 0,
-        /** Acc side allocation */
-        Acc = 1,
-        /** Total formats count */
-        Count = 2
-    };
-
-    /**
      * @class MessageCallback
      * @brief Callback function called on library message event
      *

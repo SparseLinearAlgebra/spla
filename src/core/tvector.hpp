@@ -158,6 +158,7 @@ namespace spla {
     template<typename T>
     Status TVector<T>::set_int(uint row_id, std::int32_t value) {
         if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }
@@ -169,6 +170,7 @@ namespace spla {
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
         if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }
@@ -180,6 +182,7 @@ namespace spla {
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
         if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
             get<CpuDenseVec<T>>()->Ax[row_id] = static_cast<T>(value);
             return Status::Ok;
         }

@@ -189,7 +189,6 @@ class Array(Object):
         """
         Clears array removing all elements, so it has 0 values.
         """
-
         check(backend().spla_Array_clear(self._hnd))
 
     def to_list(self):

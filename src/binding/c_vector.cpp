@@ -32,6 +32,9 @@ spla_Status spla_Vector_make(spla_Vector* v, spla_uint n_rows, spla_Type type) {
     *v          = as_ptr<spla_Vector_t>(vector.release());
     return SPLA_STATUS_OK;
 }
+spla_Status spla_Vector_set_format(spla_Vector v, int format) {
+    return to_c_status(as_ptr<spla::Vector>(v)->set_format(static_cast<spla::FormatVector>(format)));
+}
 spla_Status spla_Vector_set_fill_value(spla_Vector v, spla_Scalar value) {
     return to_c_status(as_ptr<spla::Vector>(v)->set_fill_value(as_ref<spla::Scalar>(value)));
 }

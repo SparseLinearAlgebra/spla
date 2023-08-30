@@ -38,11 +38,37 @@ namespace spla {
      */
 
     template<typename T>
+    void cpu_coo_resize(const uint n_values,
+                        CpuCoo<T>& storage) {
+        storage.Ai.resize(n_values);
+        storage.Aj.resize(n_values);
+        storage.Ax.resize(n_values);
+        storage.values = n_values;
+    }
+
+    template<typename T>
     void cpu_coo_clear(CpuCoo<T>& in) {
         in.Ai.clear();
         in.Aj.clear();
         in.Ax.clear();
         in.values = 0;
+    }
+
+    template<typename T>
+    void cpu_coo_to_dok(const CpuCoo<T>& in,
+                        CpuDok<T>&       out) {
+        auto& Rx = out.Ax;
+
+        auto& Ai = in.Ai;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
+
+        assert(Rx.empty());
+
+        for (uint i = 0; i < in.values; i++) {
+            typename CpuDok<T>::Key key{Ai[i], Aj[i]};
+            Rx[key] = Ax[i];
+        }
     }
 
     template<typename T>

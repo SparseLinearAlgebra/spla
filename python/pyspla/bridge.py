@@ -29,7 +29,9 @@ SOFTWARE.
 __all__ = [
     "backend",
     "check",
-    "is_docs"
+    "is_docs",
+    "FormatMatrix",
+    "FormatVector"
 ]
 
 import os
@@ -37,6 +39,7 @@ import ctypes
 import pathlib
 import platform
 import atexit
+import enum
 
 ARCH = {'AMD64': 'x64', 'x86_64': 'x64', 'arm64': 'arm64'}[platform.machine()]
 SYSTEM = {'Darwin': 'macos', 'Linux': 'linux', 'Windows': 'windows'}[platform.system()]
@@ -93,6 +96,35 @@ class SplaCompilationError(SplaError):
 
 class SplaNotImplemented(SplaError):
     pass
+
+
+class FormatMatrix(enum.Enum):
+    """
+    Mapping for spla supported matrix storage formats enumeration.
+    """
+
+    CPU_LIL = 0
+    CPU_DOK = 1
+    CPU_COO = 2
+    CPU_CSR = 3
+    CPU_CSC = 4
+    ACC_COO = 5
+    ACC_CSR = 6
+    ACC_CSC = 7
+    COUNT = 8
+
+
+class FormatVector(enum.Enum):
+    """
+    Mapping for spla supported vector storage formats enumeration.
+    """
+
+    CPU_DOK = 0
+    CPU_DENSE = 1
+    CPU_COO = 2
+    ACC_DENSE = 3
+    ACC_COO = 4
+    COUNT = 5
 
 
 _status_mapping = {
@@ -350,6 +382,7 @@ def load_library(lib_path):
     _spla.spla_Array_clear.argtypes = [_object_t]
 
     _spla.spla_Vector_make.restype = _status_t
+    _spla.spla_Vector_set_format.restype = _status_t
     _spla.spla_Vector_set_fill_value.restype = _status_t
     _spla.spla_Vector_set_reduce.restype = _status_t
     _spla.spla_Vector_set_int.restype = _status_t
@@ -363,6 +396,7 @@ def load_library(lib_path):
     _spla.spla_Vector_clear.restype = _status_t
 
     _spla.spla_Vector_make.argtypes = [_p_object_t, _uint, _object_t]
+    _spla.spla_Vector_set_format.argtypes = [_object_t, ctypes.c_int]
     _spla.spla_Vector_set_fill_value.argtypes = [_object_t, _object_t]
     _spla.spla_Vector_set_reduce.argtypes = [_object_t, _object_t]
     _spla.spla_Vector_set_int.argtypes = [_object_t, _uint, _int]
@@ -376,6 +410,7 @@ def load_library(lib_path):
     _spla.spla_Vector_clear.argtypes = [_object_t]
 
     _spla.spla_Matrix_make.restype = _status_t
+    _spla.spla_Matrix_set_format.restype = _status_t
     _spla.spla_Matrix_set_fill_value.restype = _status_t
     _spla.spla_Matrix_set_reduce.restype = _status_t
     _spla.spla_Matrix_set_int.restype = _status_t
@@ -389,6 +424,7 @@ def load_library(lib_path):
     _spla.spla_Matrix_clear.restype = _status_t
 
     _spla.spla_Matrix_make.argtypes = [_p_object_t, _uint, _uint, _object_t]
+    _spla.spla_Matrix_set_format.argtypes = [_object_t, ctypes.c_int]
     _spla.spla_Matrix_set_fill_value.argtypes = [_object_t, _object_t]
     _spla.spla_Matrix_set_reduce.argtypes = [_object_t, _object_t]
     _spla.spla_Matrix_set_int.argtypes = [_object_t, _uint, _uint, _int]

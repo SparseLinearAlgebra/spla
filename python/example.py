@@ -23,10 +23,12 @@ t = pyspla.Vector(shape=10, dtype=pyspla.INT)
 t.assign(m, pyspla.Scalar(pyspla.INT, 10), pyspla.INT.SECOND, pyspla.INT.GEZERO)
 print(t.to_list())
 
-M = pyspla.Matrix((10, 10), pyspla.INT)
 G = pyspla.Matrix.generate((10, 10), pyspla.INT, density=0.1, dist=[0, 10])
-
-print(M.to_list())
 print(G.to_lists())
-
 print(G.reduce(pyspla.INT.PLUS))
+
+M = pyspla.Matrix.from_lists([1, 2, 3], [1, 2, 3], [-1, 5, 10], (10, 10), pyspla.INT)
+M.set_format(pyspla.FormatMatrix.ACC_CSR)
+print(M.get(1, 0))
+print(M.get(1, 1))
+print(M.to_list())

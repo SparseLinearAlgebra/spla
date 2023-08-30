@@ -85,6 +85,27 @@ typedef enum spla_AcceleratorType {
     SPLA_ACCELERATOR_TYPE_OPENCL = 1
 } spla_AcceleratorType;
 
+typedef enum spla_FormatMatrix {
+    SPLA_FORMAT_MATRIX_CPU_LIL = 0,
+    SPLA_FORMAT_MATRIX_CPU_DOK = 1,
+    SPLA_FORMAT_MATRIX_CPU_COO = 2,
+    SPLA_FORMAT_MATRIX_CPU_CSR = 3,
+    SPLA_FORMAT_MATRIX_CPU_CSC = 4,
+    SPLA_FORMAT_MATRIX_ACC_COO = 5,
+    SPLA_FORMAT_MATRIX_ACC_CSR = 6,
+    SPLA_FORMAT_MATRIX_ACC_CSC = 7,
+    SPLA_FORMAT_MATRIX_COUNT   = 8
+} spla_FormatMatrix;
+
+typedef enum spla_FormatVector {
+    SPLA_FORMAT_VECTOR_CPU_DOK   = 0,
+    SPLA_FORMAT_VECTOR_CPU_DENSE = 1,
+    SPLA_FORMAT_VECTOR_CPU_COO   = 2,
+    SPLA_FORMAT_VECTOR_ACC_DENSE = 3,
+    SPLA_FORMAT_VECTOR_ACC_COO   = 4,
+    SPLA_FORMAT_VECTOR_COUNT     = 5
+} spla_FormatVector;
+
 #define SPLA_NULL NULL
 
 typedef int32_t  spla_bool;
@@ -257,6 +278,7 @@ SPLA_API spla_Status spla_Array_clear(spla_Array a);
 /* Vector container creation and manipulation */
 
 SPLA_API spla_Status spla_Vector_make(spla_Vector* v, spla_uint n_rows, spla_Type type);
+SPLA_API spla_Status spla_Vector_set_format(spla_Vector v, int format);
 SPLA_API spla_Status spla_Vector_set_fill_value(spla_Vector v, spla_Scalar value);
 SPLA_API spla_Status spla_Vector_set_reduce(spla_Vector v, spla_OpBinary reduce);
 SPLA_API spla_Status spla_Vector_set_int(spla_Vector v, spla_uint row_id, int value);
@@ -274,6 +296,7 @@ SPLA_API spla_Status spla_Vector_clear(spla_Vector v);
 /* Matrix container creation and manipulation */
 
 SPLA_API spla_Status spla_Matrix_make(spla_Matrix* M, spla_uint n_rows, spla_uint n_cols, spla_Type type);
+SPLA_API spla_Status spla_Matrix_set_format(spla_Matrix M, int format);
 SPLA_API spla_Status spla_Matrix_set_fill_value(spla_Matrix M, spla_Scalar value);
 SPLA_API spla_Status spla_Matrix_set_reduce(spla_Matrix M, spla_OpBinary reduce);
 SPLA_API spla_Status spla_Matrix_set_int(spla_Matrix M, spla_uint row_id, spla_uint col_id, int value);

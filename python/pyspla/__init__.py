@@ -191,6 +191,8 @@ __all__ = [
     "INT",
     "UINT",
     "FLOAT",
+    "FormatMatrix",
+    "FormatVector",
     "Descriptor",
     "Op",
     "OpUnary",

@@ -137,6 +137,53 @@ class Matrix(Object):
 
         return self._shape
 
+    def set_format(self, fmt):
+        """
+        Instruct container to format internal data with desired storage format.
+        Multiple different formats may be set at same time, data will be duplicated in different formats.
+        If selected data already in a selected format, then nothing to do.
+
+        See `FormatMatrix` enumeration for all supported formats.
+
+        :param fmt: FormatMatrix.
+            One of built-in storage formats to set.
+        """
+
+        check(backend().spla_Matrix_set_format(self.hnd, ctypes.c_int(fmt.value)))
+
+    def set(self, i, j, v):
+        """
+        Set value at specified index
+
+        :param i: uint.
+            Row index to set.
+
+        :param j: uint.
+            Column index to set.
+
+        :param v: any.
+            Value to set.
+        """
+
+        check(self._dtype._matrix_set(self.hnd, ctypes.c_uint(i), ctypes.c_uint(j), self._dtype._c_type(v)))
+
+    def get(self, i, j):
+        """
+        Get value at specified index.
+
+        :param i: uint.
+            Row index of value to get.
+
+        :param j: uint.
+            Column index of value to get.
+
+        :return: Value.
+        """
+
+        c_value = self._dtype._c_type(0)
+        check(self._dtype._matrix_get(self.hnd, ctypes.c_uint(i), ctypes.c_uint(j), ctypes.byref(c_value)))
+        return self._dtype.cast_value(c_value)
+
     def build(self, view_I: MemView, view_J: MemView, view_V: MemView):
         """
         Builds matrix content from a raw memory view resources.
@@ -197,6 +244,13 @@ class Matrix(Object):
         check(backend().spla_MemView_read(V.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_V), buffer_V))
 
         return list(buffer_I), list(buffer_J), list(buffer_V)
+
+    def clear(self):
+        """
+        Clears matrix removing all elements, so it has 0 values.
+        """
+
+        check(backend().spla_Vector_clear(self.hnd))
 
     def to_list(self):
         """

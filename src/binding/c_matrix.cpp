@@ -32,6 +32,9 @@ spla_Status spla_Matrix_make(spla_Matrix* M, spla_uint n_rows, spla_uint n_cols,
     *M          = as_ptr<spla_Matrix_t>(matrix.release());
     return SPLA_STATUS_OK;
 }
+spla_Status spla_Matrix_set_format(spla_Matrix M, int format) {
+    return to_c_status(as_ptr<spla::Matrix>(M)->set_format(static_cast<spla::FormatMatrix>(format)));
+}
 spla_Status spla_Matrix_set_fill_value(spla_Matrix M, spla_Scalar value) {
     return to_c_status(as_ptr<spla::Matrix>(M)->set_fill_value(as_ref<spla::Scalar>(value)));
 }

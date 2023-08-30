@@ -156,19 +156,19 @@ namespace spla {
 
     template<typename T>
     Status TMatrix<T>::set_int(uint row_id, uint col_id, std::int32_t value) {
-        validate_rw(FormatMatrix::CpuLil);
+        validate_rwd(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
     template<typename T>
     Status TMatrix<T>::set_uint(uint row_id, uint col_id, std::uint32_t value) {
-        validate_rw(FormatMatrix::CpuLil);
+        validate_rwd(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
     template<typename T>
     Status TMatrix<T>::set_float(uint row_id, uint col_id, float value) {
-        validate_rw(FormatMatrix::CpuLil);
+        validate_rwd(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }

@@ -127,6 +127,47 @@ class Vector(Object):
 
         return self._shape
 
+    def set_format(self, fmt):
+        """
+        Instruct container to format internal data with desired storage format.
+        Multiple different formats may be set at same time, data will be duplicated in different formats.
+        If selected data already in a selected format, then nothing to do.
+
+        See `FormatVector` enumeration for all supported formats.
+
+        :param fmt: FormatVector.
+            One of built-in storage formats to set.
+        """
+
+        check(backend().spla_Vector_set_format(self.hnd, ctypes.c_int(fmt.value)))
+
+    def set(self, i, v):
+        """
+        Set value at specified index
+
+        :param i: uint.
+            Row index to set.
+
+        :param v: any.
+            Value to set.
+        """
+
+        check(self._dtype._vector_set(self.hnd, ctypes.c_uint(i), self._dtype._c_type(v)))
+
+    def get(self, i):
+        """
+        Get value at specified index.
+
+        :param i: uint.
+            Row index of value to get.
+
+        :return: Value.
+        """
+
+        c_value = self._dtype._c_type(0)
+        check(self._dtype._vector_get(self.hnd, ctypes.c_uint(i), ctypes.byref(c_value)))
+        return self._dtype.cast_value(c_value)
+
     def build(self, view_I: MemView, view_V: MemView):
         """
         Builds vector content from a raw memory view resources.
@@ -154,6 +195,13 @@ class Vector(Object):
         values_view_hnd = ctypes.c_void_p(0)
         check(backend().spla_Vector_read(self.hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)))
         return MemView(hnd=keys_view_hnd, owner=self), MemView(hnd=values_view_hnd, owner=self)
+
+    def clear(self):
+        """
+        Clears vector removing all elements, so it has 0 values.
+        """
+
+        check(backend().spla_Vector_clear(self.hnd))
 
     def to_lists(self):
         """
