@@ -262,11 +262,70 @@ class Matrix(Object):
         I, J, V = self.to_lists()
         return list(zip(I, J, V))
 
+    def to_string(self, format_string="{:>%s}", width=2, precision=2, skip_value=0, cell_sep=""):
+        """
+        Generate from a vector a pretty string for a display.
+
+        >>> M = Matrix.from_lists([1, 2, 3], [1, 2, 3], [-1, 5, 10], (4, 4), INT)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| . . . .|  0
+         1| .-1 . .|  1
+         2| . . 5 .|  2
+         3| . . .10|  3
+            0 1 2 3
+        '
+
+        :param format_string: str.
+            How to format single value.
+
+        :param width: int.
+            Integral part length.
+
+        :param precision: int.
+            Fractional part length.
+
+        :param skip_value: any.
+            Value to skip and not display
+
+        :param cell_sep: str.
+            How to separate values in a row.
+
+        :return: Pretty string with vector content.
+        """
+
+        format_string = format_string % width
+        header = format_string.format("") + " " + "".join(format_string.format(i) for i in range(self.n_cols))
+
+        result = header + "\n"
+        for row in range(self.n_rows):
+            result += format_string.format(row) + "|"
+            for col in range(self.n_cols):
+                value = self.get(row, col)
+                value = value if value != skip_value else "."
+                result += cell_sep + self.dtype.format_value(value, width, precision)
+            result += "|  " + str(row) + "\n"
+        result += header
+
+        return result
+
     @classmethod
     def from_lists(cls, I: list, J: list, V: list, shape, dtype=INT):
         """
         Build matrix from a list of sorted keys and associated values to store in matrix.
         List with keys `I` and `J` must index entries from range [0, shape-1] and all keys must be sorted.
+
+        >>> M = Matrix.from_lists([1, 2, 3], [1, 2, 3], [-1, 5, 10], (4, 4), INT)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| . . . .|  0
+         1| .-1 . .|  1
+         2| . . 5 .|  2
+         3| . . .10|  3
+            0 1 2 3
+        '
 
         :param I: list[UINT].
              List with integral keys of entries.
@@ -314,6 +373,17 @@ class Matrix(Object):
         """
         Creates new matrix of desired type and shape and fills its content
         with random values, generated using specified distribution.
+
+        >>> M = Matrix.generate((4, 4), INT, density=0.3, dist=[0, 10])
+        >>> print(M)
+        '
+            0 1 2 3
+         0| . 4 . 5|  0
+         1| . 7 . .|  1
+         2| . . . .|  2
+         3| . . . 2|  3
+            0 1 2 3
+        '
 
         :param shape: tuple.
             Size of the matrix (number of values).
@@ -385,6 +455,9 @@ class Matrix(Object):
                                            self._get_desc(desc), self._get_task(None)))
 
         return out
+
+    def __str__(self):
+        return self.to_string()
 
     def __iter__(self):
         I, J, V = self.to_lists()

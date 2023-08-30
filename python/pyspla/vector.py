@@ -231,11 +231,61 @@ class Vector(Object):
         I, V = self.to_lists()
         return list(zip(I, V))
 
+    def to_string(self, format_string="{:>%s}", width=2, precision=2, skip_value=0):
+        """
+        Generate from a vector a pretty string for a display.
+
+        >>> v = Vector.from_lists([0, 1, 3], [-1, 7, 5], 4, INT)
+        >>> print(v)
+        '
+         0|-1
+         1| 7
+         2| .
+         3| 5
+        '
+
+        :param format_string: str.
+            How to format single value.
+
+        :param width: int.
+            Integral part length.
+
+        :param precision: int.
+            Fractional part length.
+
+        :param skip_value: any.
+            Value to skip and not display
+
+        :return: Pretty string with vector content.
+        """
+
+        format_string = format_string % width
+        result = ""
+
+        for row in range(self.n_rows):
+            value = self.get(row)
+            value = value if value != skip_value else "."
+            result += format_string.format(row) + "|"
+            result += format_string.format(self.dtype.format_value(value, width, precision)).rstrip()
+            if row < self.n_rows - 1:
+                result += "\n"
+
+        return result
+
     @classmethod
     def from_lists(cls, I: list, V: list, shape, dtype=INT):
         """
         Build vector from a list of sorted keys and associated values to store in vector.
         List with keys `keys` must index entries from range [0, shape-1] and all keys must be sorted.
+
+        >>> v = Vector.from_lists([0, 1, 3], [-1, 7, 5], 4, INT)
+        >>> print(v)
+        '
+         0|-1
+         1| 7
+         2| .
+         3| 5
+        '
 
         :param I: list[UINT].
              List with integral keys of entries.
@@ -276,6 +326,15 @@ class Vector(Object):
         """
         Creates new vector of desired type and shape and fills its content
         with random values, generated using specified distribution.
+
+        >>> v = Vector.generate(shape=4, dtype=INT, density=0.5, dist=[1,10])
+        >>> print(v)
+        '
+         0| .
+         1| .
+         2| 5
+         3| .
+        '
 
         :param shape: int.
             Size of the vector.
@@ -410,6 +469,9 @@ class Vector(Object):
                                            self._get_desc(desc), self._get_task(None)))
 
         return out
+
+    def __str__(self):
+        return self.to_string()
 
     def __iter__(self):
         I, V = self.to_lists()
