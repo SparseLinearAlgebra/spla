@@ -93,6 +93,46 @@ namespace spla {
         SPLA_API static ref_ptr<OpSelect> make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function);
     };
 
+    //////////////////////////////// Unary ////////////////////////////////
+
+    SPLA_API extern ref_ptr<OpUnary> IDENTITY_INT;
+    SPLA_API extern ref_ptr<OpUnary> IDENTITY_UINT;
+    SPLA_API extern ref_ptr<OpUnary> IDENTITY_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> AINV_INT;
+    SPLA_API extern ref_ptr<OpUnary> AINV_UINT;
+    SPLA_API extern ref_ptr<OpUnary> AINV_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> MINV_INT;
+    SPLA_API extern ref_ptr<OpUnary> MINV_UINT;
+    SPLA_API extern ref_ptr<OpUnary> MINV_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> LNOT_INT;
+    SPLA_API extern ref_ptr<OpUnary> LNOT_UINT;
+    SPLA_API extern ref_ptr<OpUnary> LNOT_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> UONE_INT;
+    SPLA_API extern ref_ptr<OpUnary> UONE_UINT;
+    SPLA_API extern ref_ptr<OpUnary> UONE_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> ABS_INT;
+    SPLA_API extern ref_ptr<OpUnary> ABS_UINT;
+    SPLA_API extern ref_ptr<OpUnary> ABS_FLOAT;
+
+    SPLA_API extern ref_ptr<OpUnary> BNOT_INT;
+    SPLA_API extern ref_ptr<OpUnary> BNOT_UINT;
+
+    SPLA_API extern ref_ptr<OpUnary> SQRT_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> LOG_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> EXP_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> SIN_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> COS_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> TAN_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> ASIN_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> ACOS_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> ATAN_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> CEIL_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> FLOOR_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> ROUND_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> TRUNC_FLOAT;
+
+    //////////////////////////////// Binary ////////////////////////////////
+
     SPLA_API extern ref_ptr<OpBinary> PLUS_INT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_UINT;
     SPLA_API extern ref_ptr<OpBinary> PLUS_FLOAT;
@@ -117,9 +157,9 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> SECOND_UINT;
     SPLA_API extern ref_ptr<OpBinary> SECOND_FLOAT;
 
-    SPLA_API extern ref_ptr<OpBinary> ONE_INT;
-    SPLA_API extern ref_ptr<OpBinary> ONE_UINT;
-    SPLA_API extern ref_ptr<OpBinary> ONE_FLOAT;
+    SPLA_API extern ref_ptr<OpBinary> BONE_INT;
+    SPLA_API extern ref_ptr<OpBinary> BONE_UINT;
+    SPLA_API extern ref_ptr<OpBinary> BONE_FLOAT;
 
     SPLA_API extern ref_ptr<OpBinary> MIN_INT;
     SPLA_API extern ref_ptr<OpBinary> MIN_UINT;
@@ -128,12 +168,21 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> MAX_UINT;
     SPLA_API extern ref_ptr<OpBinary> MAX_FLOAT;
 
+    SPLA_API extern ref_ptr<OpBinary> LOR_INT;
+    SPLA_API extern ref_ptr<OpBinary> LOR_UINT;
+    SPLA_API extern ref_ptr<OpBinary> LOR_FLOAT;
+    SPLA_API extern ref_ptr<OpBinary> LAND_INT;
+    SPLA_API extern ref_ptr<OpBinary> LAND_UINT;
+    SPLA_API extern ref_ptr<OpBinary> LAND_FLOAT;
+
     SPLA_API extern ref_ptr<OpBinary> BOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BOR_UINT;
     SPLA_API extern ref_ptr<OpBinary> BAND_INT;
     SPLA_API extern ref_ptr<OpBinary> BAND_UINT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
+
+    //////////////////////////////// Select ////////////////////////////////
 
     SPLA_API extern ref_ptr<OpSelect> EQZERO_INT;
     SPLA_API extern ref_ptr<OpSelect> EQZERO_UINT;

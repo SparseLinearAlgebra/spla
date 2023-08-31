@@ -102,7 +102,6 @@ Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a
 | rgg_n_2_23_s0     |     8.4M |  127.0M |    15.1 |    3.9 |      40.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_23_s0.tar.gz) |
 | road_central      |    14.1M |   33.9M |     2.4 |    0.9 |       8.0 |                                              [link](http://sparse.tamu.edu/DIMACS10/road_central) |
 
-
 Containers
 ----------
 
@@ -115,20 +114,6 @@ are storage-invariant, so the best format for the storage is automatically
 managed by container internally. All required format conversion done
 in the context of particular primitive usage.
 
-- `Matrix`. Generalized statically-typed sparse storage-invariant matrix primitive.
-- `Vector`. Generalized statically-typed sparse storage-invariant vector primitive.
-- `Scalar`. Generalized statically-typed scalar primitive.
-
-Schedule
---------
-
-Schedule allows to build sequence of tasks to be executed. It allows user
-control the order of the tasks' execution, parallel execution of tasks
-on some level, notification on some steps completion and etc.
-
-- `Schedule`. Schedule object which may be executed by library.
-- `Task`. A particular wort to be done inside a step of schedule.
-
 Types
 -----
 
@@ -138,11 +123,6 @@ storage characteristic, which defines count and layout of bytes per element. Use
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
 
-- `BOOL`. 4-byte-sized signed logical value (auxiliary type).
-- `INT`. 4-byte-sized signed integral value.
-- `UINT`. 4-byte-sized unsigned integral value.
-- `FLOAT`. 4-byte-sized single-precision floating point value.
-
 Ops
 ---
 
@@ -151,42 +131,13 @@ matrix and vector containers. Unary operations commonly used for apply and trans
 operations, binary operations used for reductions and products, select operations used for
 filtration and mask application.
 
-List of built-in binary operations:
-
-| Name    | Type        | Meaning        |
-|:--------|:------------|:---------------|
-|`PLUS`   | binary(x,y) | r = x + y      |
-|`MINUS`  | binary(x,y) | r = x - y      |
-|`MULT`   | binary(x,y) | r = x * y      |
-|`DIV`    | binary(x,y) | r = x / y      |
-|`FIRST`  | binary(x,y) | r = x          |
-|`SECOND` | binary(x,y) | r = y          |
-|`ONE`    | binary(x,y) | r = 1          |
-|`MIN`    | binary(x,y) | r = min(x, y)  |
-|`MAX`    | binary(x,y) | r = max(x, y)  |
-|`BOR`    | binary(x,y) | r = x or y     |
-|`BAND`   | binary(x,y) | r = x & y      |
-|`BXOR`   | binary(x,y) | r = x ^ y      |
-
-List of built-in select operations:
-
-| Name    | Type        | Meaning        |
-|:--------|:------------|:---------------|
-|`EQZERO` | select(x)   | x == 0         |
-|`NQZERO` | select(x)   | x != 0         |
-|`GTZERO` | select(x)   | x > 0          |
-|`GEZERO` | select(x)   | x >= 0         |
-|`LTZERO` | select(x)   | x < 0          |
-|`LEZERO` | select(x)   | x <= 0         |
-|`ALWAYS` | select(x)   | true           |
-|`NEVER`  | select(x)   | false          |
-
 Details
 -------
 
 Spla C/C++ backend compiled library is automatically loaded and initialized on package import.
 State of the library managed by internal `bridge` module. All resources are unloaded automatically
 on package exit. Library state finalized automatically.
+
 """
 
 __copyright__ = "Copyright (c) 2021-2023 SparseLinearAlgebra"

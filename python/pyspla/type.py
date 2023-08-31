@@ -28,8 +28,8 @@ SOFTWARE.
 
 import ctypes
 
-from .bridge import backend, check
-from .op import OpBinary, OpSelect
+from .bridge import backend
+from .op import OpUnary, OpBinary, OpSelect
 
 __all__ = [
     "Type",
@@ -44,6 +44,67 @@ __all__ = [
 class Type:
     """
     Spla base Type for storage parametrization.
+
+    List of built-in Unary operations
+    ---------------------------------
+
+    | Name      | Type     | Meaning        |
+    |:----------|:---------|:---------------|
+    |`IDENTITY` | unary(x) | r = x          |
+    |`AINV`     | unary(x) | r = -x         |
+    |`MINV`     | unary(x) | r = 1/x        |
+    |`LNOT`     | unary(x) | r = !(x!=0)    |
+    |`UONE`     | unary(x) | r = 1          |
+    |`ABS`      | unary(x) | r = abs(x)     |
+    |`BNOT`     | unary(x) | r = ~x         |
+    |`SQRT`     | unary(x) | r = sqrt(x)    |
+    |`LOG`      | unary(x) | r = log(x)     |
+    |`EXP`      | unary(x) | r = exp(x)     |
+    |`SIN`      | unary(x) | r = sin(x)     |
+    |`COS`      | unary(x) | r = cos(x)     |
+    |`TAN`      | unary(x) | r = tan(x)     |
+    |`ASIN`     | unary(x) | r = asin(x)    |
+    |`ACOS`     | unary(x) | r = acos(x)    |
+    |`ATAN`     | unary(x) | r = atan(x)    |
+    |`CEIL`     | unary(x) | r = ceil(x)    |
+    |`FLOOR`    | unary(x) | r = floor(x)   |
+    |`ROUND`    | unary(x) | r = round(x)   |
+    |`TRUNC`    | unary(x) | r = trunc(x)   |
+
+    List of built-in Binary operations
+    ----------------------------------
+
+    | Name    | Type        | Meaning        |
+    |:--------|:------------|:---------------|
+    |`PLUS`   | binary(x,y) | r = x + y      |
+    |`MINUS`  | binary(x,y) | r = x - y      |
+    |`MULT`   | binary(x,y) | r = x * y      |
+    |`DIV`    | binary(x,y) | r = x / y      |
+    |`FIRST`  | binary(x,y) | r = x          |
+    |`SECOND` | binary(x,y) | r = y          |
+    |`BONE`   | binary(x,y) | r = 1          |
+    |`MIN`    | binary(x,y) | r = min(x, y)  |
+    |`MAX`    | binary(x,y) | r = max(x, y)  |
+    |`LOR`    | binary(x,y) | r = x lor y    |
+    |`LAND`   | binary(x,y) | r = x && y     |
+    |`BOR`    | binary(x,y) | r = x bor y    |
+    |`BAND`   | binary(x,y) | r = x & y      |
+    |`BXOR`   | binary(x,y) | r = x ^ y      |
+
+    List of built-in Select operations
+    ----------------------------------
+
+    | Name    | Type        | Meaning        |
+    |:--------|:------------|:---------------|
+    |`EQZERO` | select(x)   | x == 0         |
+    |`NQZERO` | select(x)   | x != 0         |
+    |`GTZERO` | select(x)   | x > 0          |
+    |`GEZERO` | select(x)   | x >= 0         |
+    |`LTZERO` | select(x)   | x < 0          |
+    |`LEZERO` | select(x)   | x <= 0         |
+    |`ALWAYS` | select(x)   | true           |
+    |`NEVER`  | select(x)   | false          |
+
     """
 
     _c_type = None
@@ -59,6 +120,27 @@ class Type:
     _matrix_set = None
     _hnd = None
 
+    IDENTITY: OpUnary
+    AINV: OpUnary
+    MINV: OpUnary
+    LNOT: OpUnary
+    UONE: OpUnary
+    ABS: OpUnary
+    BNOT: OpUnary
+    SQRT: OpUnary
+    LOG: OpUnary
+    EXP: OpUnary
+    SIN: OpUnary
+    COS: OpUnary
+    TAN: OpUnary
+    ASIN: OpUnary
+    ACOS: OpUnary
+    ATAN: OpUnary
+    CEIL: OpUnary
+    FLOOR: OpUnary
+    ROUND: OpUnary
+    TRUNC: OpUnary
+
     PLUS: OpBinary
     MINUS: OpBinary
     MULT: OpBinary
@@ -66,9 +148,11 @@ class Type:
     MINUS_POW2: OpBinary
     FIRST: OpBinary
     SECOND: OpBinary
-    ONE: OpBinary
+    BONE: OpBinary
     MIN: OpBinary
     MAX: OpBinary
+    LOR: OpBinary
+    LAND: OpBinary
     BOR: OpBinary
     BAND: OpBinary
     BXOR: OpBinary
@@ -123,6 +207,37 @@ class Type:
         return f.format("t") if value is True else f.format("f")
 
     @classmethod
+    def _setup_op_unary(cls):
+        b = backend()
+        type_name = cls.__name__
+
+        def load_op(name):
+            f = f"spla_OpUnary_{name}_{type_name}"
+            func = getattr(b, f) if hasattr(b, f) else None
+            return OpUnary(hnd=func(), name=name, dtype_res=cls, dtype_arg0=cls) if func else None
+
+        cls.IDENTITY = load_op('IDENTITY')
+        cls.AINV = load_op('AINV')
+        cls.MINV = load_op('MINV')
+        cls.LNOT = load_op('LNOT')
+        cls.UONE = load_op('UONE')
+        cls.ABS = load_op('ABS')
+        cls.BNOT = load_op('BNOT')
+        cls.SQRT = load_op('SQRT')
+        cls.LOG = load_op('LOG')
+        cls.EXP = load_op('EXP')
+        cls.SIN = load_op('SIN')
+        cls.COS = load_op('COS')
+        cls.TAN = load_op('TAN')
+        cls.ASIN = load_op('ASIN')
+        cls.ACOS = load_op('ACOS')
+        cls.ATAN = load_op('ATAN')
+        cls.CEIL = load_op('CEIL')
+        cls.FLOOR = load_op('FLOOR')
+        cls.ROUND = load_op('ROUND')
+        cls.TRUNC = load_op('TRUNC')
+
+    @classmethod
     def _setup_op_binary(cls):
         b = backend()
         type_name = cls.__name__
@@ -139,9 +254,11 @@ class Type:
         cls.MINUS_POW2 = load_op('MINUS_POW2')
         cls.FIRST = load_op('FIRST')
         cls.SECOND = load_op('SECOND')
-        cls.ONE = load_op('ONE')
+        cls.BONE = load_op('BONE')
         cls.MIN = load_op('MIN')
         cls.MAX = load_op('MAX')
+        cls.LOR = load_op('LOR')
+        cls.LAND = load_op('LAND')
         cls.BOR = load_op('BOR')
         cls.BAND = load_op('BAND')
         cls.BXOR = load_op('BXOR')
@@ -184,6 +301,7 @@ class Type:
         cls._matrix_set = getattr(b, f"spla_Matrix_set_{type_name_lower}")
         cls._hnd = getattr(b, f"spla_Type_{type_name}")()
 
+        cls._setup_op_unary()
         cls._setup_op_binary()
         cls._setup_op_select()
 

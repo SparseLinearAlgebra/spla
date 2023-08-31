@@ -154,6 +154,44 @@ SPLA_API spla_Type spla_Type_FLOAT();
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+/* Built-in unary element-wise operations */
+
+SPLA_API spla_OpUnary spla_OpUnary_IDENTITY_INT();
+SPLA_API spla_OpUnary spla_OpUnary_IDENTITY_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_IDENTITY_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_AINV_INT();
+SPLA_API spla_OpUnary spla_OpUnary_AINV_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_AINV_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_MINV_INT();
+SPLA_API spla_OpUnary spla_OpUnary_MINV_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_MINV_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_LNOT_INT();
+SPLA_API spla_OpUnary spla_OpUnary_LNOT_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_LNOT_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_UONE_INT();
+SPLA_API spla_OpUnary spla_OpUnary_UONE_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_UONE_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_ABS_INT();
+SPLA_API spla_OpUnary spla_OpUnary_ABS_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_ABS_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_BNOT_INT();
+SPLA_API spla_OpUnary spla_OpUnary_BNOT_UINT();
+SPLA_API spla_OpUnary spla_OpUnary_SQRT_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_LOG_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_EXP_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_SIN_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_COS_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_TAN_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_ASIN_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_ACOS_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_ATAN_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_CEIL_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_FLOOR_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_ROUND_FLOAT();
+SPLA_API spla_OpUnary spla_OpUnary_TRUNC_FLOAT();
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 /* Built-in binary element-wise operations  */
 
 SPLA_API spla_OpBinary spla_OpBinary_PLUS_INT();
@@ -177,15 +215,21 @@ SPLA_API spla_OpBinary spla_OpBinary_FIRST_FLOAT();
 SPLA_API spla_OpBinary spla_OpBinary_SECOND_INT();
 SPLA_API spla_OpBinary spla_OpBinary_SECOND_UINT();
 SPLA_API spla_OpBinary spla_OpBinary_SECOND_FLOAT();
-SPLA_API spla_OpBinary spla_OpBinary_ONE_INT();
-SPLA_API spla_OpBinary spla_OpBinary_ONE_UINT();
-SPLA_API spla_OpBinary spla_OpBinary_ONE_FLOAT();
+SPLA_API spla_OpBinary spla_OpBinary_BONE_INT();
+SPLA_API spla_OpBinary spla_OpBinary_BONE_UINT();
+SPLA_API spla_OpBinary spla_OpBinary_BONE_FLOAT();
 SPLA_API spla_OpBinary spla_OpBinary_MIN_INT();
 SPLA_API spla_OpBinary spla_OpBinary_MIN_UINT();
 SPLA_API spla_OpBinary spla_OpBinary_MIN_FLOAT();
 SPLA_API spla_OpBinary spla_OpBinary_MAX_INT();
 SPLA_API spla_OpBinary spla_OpBinary_MAX_UINT();
 SPLA_API spla_OpBinary spla_OpBinary_MAX_FLOAT();
+SPLA_API spla_OpBinary spla_OpBinary_LOR_INT();
+SPLA_API spla_OpBinary spla_OpBinary_LOR_UINT();
+SPLA_API spla_OpBinary spla_OpBinary_LOR_FLOAT();
+SPLA_API spla_OpBinary spla_OpBinary_LAND_INT();
+SPLA_API spla_OpBinary spla_OpBinary_LAND_UINT();
+SPLA_API spla_OpBinary spla_OpBinary_LAND_FLOAT();
 SPLA_API spla_OpBinary spla_OpBinary_BOR_INT();
 SPLA_API spla_OpBinary spla_OpBinary_BOR_UINT();
 SPLA_API spla_OpBinary spla_OpBinary_BAND_INT();

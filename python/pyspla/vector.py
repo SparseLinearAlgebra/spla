@@ -525,6 +525,44 @@ class Vector(Object):
 
         return self
 
+    def map(self, op_map, out=None, desc=None):
+        """
+        Map this vector by applying element-wise unary function to each element.
+
+        >>> v = Vector.from_lists([0, 1, 3], [5, -1, 3], 4, INT)
+        >>> print(v.map(INT.AINV))
+        '
+         0|-5
+         1| 1
+         2| .
+         3|-3
+        '
+
+        :param op_map: OpUnary.
+            Unary operation to apply to transform values.
+
+        :param out: optional: Vector. default: None.
+            Optional vector where to store result.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Result of a map as vector.
+        """
+
+        if out is None:
+            out = Vector(self.n_rows, self.dtype)
+
+        assert out
+        assert op_map
+        assert out.n_rows == self.n_rows
+        assert out.dtype == self.dtype
+
+        check(backend().spla_Exec_v_map(out.hnd, self.hnd, op_map.hnd,
+                                        self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce vector elements.

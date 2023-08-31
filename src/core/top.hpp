@@ -39,6 +39,32 @@
 
 namespace spla {
 
+#define DECL_OP_UNA(fname, key_prefix, A0, R, ...)          \
+    {                                                       \
+        auto func = make_ref<TOpUnary<A0, R>>();            \
+                                                            \
+        func->function = [](A0 a) -> R __VA_ARGS__;         \
+        func->name     = #fname;                            \
+                                                            \
+        std::stringstream source_builder;                   \
+        source_builder << "("                               \
+                       << func->get_type_arg_0()->get_cpp() \
+                       << " a)" #__VA_ARGS__;               \
+                                                            \
+        func->source = source_builder.str();                \
+                                                            \
+        std::stringstream key_builder;                      \
+        key_builder << #key_prefix << "_"                   \
+                    << func->get_type_arg_0()->get_code()   \
+                    << func->get_type_res()->get_code();    \
+        func->key = key_builder.str();                      \
+                                                            \
+        fname = func.as<OpUnary>();                         \
+    }
+
+#define DECL_OP_UNA_S(name, key_prefix, T, ...) \
+    DECL_OP_UNA(name, key_prefix, T, T, __VA_ARGS__)
+
 #define DECL_OP_BIN(fname, key_prefix, A0, A1, R, ...)      \
     {                                                       \
         auto func = make_ref<TOpBinary<A0, A1, R>>();       \
