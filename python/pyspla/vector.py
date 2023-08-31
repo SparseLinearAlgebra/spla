@@ -436,6 +436,119 @@ class Vector(Object):
 
         return cls.from_lists(I, V, shape=shape, dtype=dtype)
 
+    @classmethod
+    def dense(cls, shape, dtype=INT, fill_value=0):
+        """
+        Creates new dense vector of specified shape and fills with desired value.
+
+        >>> v = Vector.dense(5, INT, 4)
+        >>> print(v)
+        '
+         0| 4
+         1| 4
+         2| 4
+         3| 4
+         4| 4
+        '
+
+        :param shape: int.
+            Size of the vector.
+
+        :param dtype: optional: Type. default: INT.
+            Type of values vector will have.
+
+        :param fill_value: optional: any. default: 0.
+            Optional value to fill with.
+
+        :return: Vector filled with value.
+        """
+
+        from .bridge import FormatVector
+
+        v = Vector(shape, dtype)
+        v.set_format(FormatVector.CPU_DENSE)
+
+        for i in range(shape):
+            v.set(i, fill_value)
+
+        return v
+
+    def vxm(self, mask, M, op_mult, op_add, op_select, out=None, init=None, desc=None):
+        """
+        Masked sparse-vector by sparse-matrix product with dense mask.
+
+        >>> M = Matrix.from_lists([0, 1, 2, 2, 3], [1, 2, 0, 3, 2], [1, 2, 3, 4, 5], (4, 4), INT)
+        >>> v = Vector.from_lists([2], [1], 4, INT)
+        >>> mask = Vector.from_lists(list(range(4)), [1] * 4, 4, INT)
+        >>> print(v.vxm(mask, M, INT.LAND, INT.LOR, INT.GTZERO))
+        '
+         0| 1
+         1| .
+         2| .
+         3| 1
+        '
+
+        >>> M = Matrix.from_lists([0, 1, 2], [1, 2, 0], [1, 2, 3], (4, 4), INT)
+        >>> v = Vector.from_lists([0, 1, 2], [2, 3, 4], 4, INT)
+        >>> mask = Vector.from_lists(list(range(4)), [0] * 4, 4, INT)
+        >>> print(v.vxm(mask, M, INT.MULT, INT.PLUS, INT.EQZERO))
+        '
+         0|12
+         1| 2
+         2| 6
+         3| .
+        '
+
+        :param mask: Vector.
+            Vector to select for which values to compute product.
+
+        :param M: Matrix.
+            Matrix for a product.
+
+        :param op_mult: OpBinary.
+            Element-wise binary operator for matrix vector elements product.
+
+        :param op_add: OpBinary.
+            Element-wise binary operator for matrix vector products sum.
+
+        :param op_select: OpSelect.
+            Selection op to filter mask.
+
+        :param out: optional: Vector: default: None.
+            Optional vector to store result of product.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        if out is None:
+            out = Vector(shape=M.n_cols, dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert M
+        assert out
+        assert init
+        assert mask
+        assert out.dtype == self.dtype
+        assert M.dtype == self.dtype
+        assert mask.dtype == self.dtype
+        assert init.dtype == self.dtype
+        assert out.n_rows == M.n_cols
+        assert mask.n_rows == M.n_cols
+        assert M.n_rows == self.n_rows
+
+        check(backend().spla_Exec_vxm_masked(out.hnd, mask.hnd, self.hnd, M.hnd,
+                                             op_mult.hnd, op_add.hnd, op_select.hnd,
+                                             init.hnd, self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def eadd(self, op_add, v, out=None, desc=None):
         """
         Element-wise add one vector to another and return result.

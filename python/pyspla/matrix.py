@@ -497,6 +497,279 @@ class Matrix(Object):
 
         return cls.from_lists(I, J, V, shape=shape, dtype=dtype)
 
+    @classmethod
+    def dense(cls, shape, dtype=INT, fill_value=0):
+        """
+        Creates new dense matrix of specified shape and fills with desired value.
+
+        >>> M = Matrix.dense((3, 4), INT, 2)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| 2 2 2 2|  0
+         1| 2 2 2 2|  1
+         2| 2 2 2 2|  2
+            0 1 2 3
+        '
+
+        :param shape: 2-tuple.
+            Size of the matrix.
+
+        :param dtype: optional: Type. default: INT.
+            Type of values matrix will have.
+
+        :param fill_value: optional: any. default: 0.
+            Optional value to fill with.
+
+        :return: Matrix filled with value.
+        """
+
+        from .bridge import FormatMatrix
+
+        M = Matrix(shape, dtype)
+        M.set_format(FormatMatrix.CPU_LIL)
+
+        for i in range(shape[0]):
+            for j in range(shape[1]):
+                M.set(i, j, fill_value)
+
+        return M
+
+    def mxmT(self, mask, M, op_mult, op_add, op_select, out=None, init=None, desc=None):
+        """
+        Masked sparse-matrix by sparse-matrix^T (transposed) product with sparse-mask.
+
+        Generate left operand matrix of shape 3x5 for product.
+        >>> M = Matrix.from_lists([0, 1, 2, 2], [1, 2, 0, 4], [1, 2, 3, 4], (3, 5), INT)
+        >>> print(M)
+        '
+            0 1 2 3 4
+         0| . 1 . . .|  0
+         1| . . 2 . .|  1
+         2| 3 . . . 4|  2
+            0 1 2 3 4
+        '
+
+        Generate right operand matrix of shape 4x5 for product, since transposed only num of columns must match.
+        >>> N = Matrix.from_lists([0, 1, 2, 3], [1, 2, 0, 3], [2, 3, 4, 5], (4, 5), INT)
+        >>> print(N)
+        '
+            0 1 2 3 4
+         0| . 2 . . .|  0
+         1| . . 3 . .|  1
+         2| 4 . . . .|  2
+         3| . . . 5 .|  3
+            0 1 2 3 4
+        '
+
+        Generate mask of interested us values of shape 3x4 where dim is num of rows from `M` and `N`.
+        >>> mask = Matrix.dense((3, 4), INT, fill_value=1)
+        >>> print(mask)
+        '
+            0 1 2 3
+         0| 1 1 1 1|  0
+         1| 1 1 1 1|  1
+         2| 1 1 1 1|  2
+            0 1 2 3
+        '
+
+        Evaluate product for all values using respective select operation.
+        >>> R = M.mxmT(mask, N, INT.MULT, INT.PLUS, INT.GTZERO)
+        >>> print(R)
+        '
+            0 1 2 3
+         0| 2 . . .|  0
+         1| . 6 . .|  1
+         2| . .12 .|  2
+            0 1 2 3
+        '
+
+        Evaluate the same product but disable by mask using falsified predicate.
+        >>> R = M.mxmT(mask, N, INT.MULT, INT.PLUS, INT.EQZERO)
+        >>> print(R)
+        '
+            0 1 2 3
+         0| . . . .|  0
+         1| . . . .|  1
+         2| . . . .|  2
+            0 1 2 3
+        '
+
+        :param mask: Matrix.
+            Matrix to select for which values to compute product.
+
+        :param M: Matrix.
+            Matrix for a product.
+
+        :param op_mult: OpBinary.
+            Element-wise binary operator for matrix vector elements product.
+
+        :param op_add: OpBinary.
+            Element-wise binary operator for matrix vector products sum.
+
+        :param op_select: OpSelect.
+            Selection op to filter mask.
+
+        :param out: optional: Vector: default: None.
+            Optional vector to store result of product.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Matrix with result.
+        """
+
+        if out is None:
+            out = Matrix(shape=mask.shape, dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert M
+        assert out
+        assert init
+        assert mask
+        assert out.dtype == self.dtype
+        assert M.dtype == self.dtype
+        assert mask.dtype == self.dtype
+        assert init.dtype == self.dtype
+        assert out.n_rows == self.n_rows
+        assert out.n_cols == M.n_rows
+        assert self.n_cols == M.n_cols
+        assert mask.shape == out.shape
+
+        check(backend().spla_Exec_mxmT_masked(out.hnd, mask.hnd, self.hnd, M.hnd,
+                                              op_mult.hnd, op_add.hnd, op_select.hnd,
+                                              init.hnd, self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def mxv(self, mask, v, op_mult, op_add, op_select, out=None, init=None, desc=None):
+        """
+        Masked sparse-matrix by a dense vector product with dense mask.
+
+        >>> M = Matrix.from_lists([0, 1, 2, 2, 3], [1, 2, 0, 3, 2], [1, 2, 3, 4, 5], (4, 4), INT)
+        >>> v = Vector.from_lists([2], [1], 4, INT)
+        >>> mask = Vector.from_lists(list(range(4)), [1] * 4, 4, INT)
+        >>> print(M.mxv(mask, v, INT.LAND, INT.LOR, INT.GTZERO))
+        '
+         0| .
+         1| 1
+         2| .
+         3| 1
+        '
+
+        >>> M = Matrix.from_lists([0, 1, 2], [1, 2, 0], [1, 2, 3], (4, 4), INT)
+        >>> v = Vector.from_lists([0, 1, 2], [2, 3, 4], 4, INT)
+        >>> mask = Vector.from_lists(list(range(4)), [0] * 4, 4, INT)
+        >>> print(M.mxv(mask, v, INT.MULT, INT.PLUS, INT.EQZERO))
+        '
+         0| 3
+         1| 8
+         2| 6
+         3| .
+        '
+
+        :param mask: Vector.
+            Vector to select for which values to compute product.
+
+        :param v: Vector.
+            Vector for a product.
+
+        :param op_mult: OpBinary.
+            Element-wise binary operator for matrix vector elements product.
+
+        :param op_add: OpBinary.
+            Element-wise binary operator for matrix vector products sum.
+
+        :param op_select: OpSelect.
+            Selection op to filter mask.
+
+        :param out: optional: Vector: default: None.
+            Optional vector to store result of product.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        from .vector import Vector
+
+        if out is None:
+            out = Vector(shape=self.n_rows, dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert v
+        assert out
+        assert init
+        assert mask
+        assert out.dtype == self.dtype
+        assert v.dtype == self.dtype
+        assert mask.dtype == self.dtype
+        assert init.dtype == self.dtype
+        assert out.n_rows == self.n_rows
+        assert mask.n_rows == self.n_rows
+        assert v.n_rows == self.n_cols
+
+        check(backend().spla_Exec_mxv_masked(out.hnd, mask.hnd, self.hnd, v.hnd,
+                                             op_mult.hnd, op_add.hnd, op_select.hnd,
+                                             init.hnd, self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def reduce_by_row(self, op_reduce, out=None, init=None, desc=None):
+        """
+        Reduce matrix elements by a row to a column vector.
+
+        >>> M = Matrix.from_lists([0, 2, 2, 3], [0, 1, 3, 2], [1, 2, 3, 4], (4, 4), INT)
+        >>> print(M.reduce_by_row(INT.PLUS))
+        '
+         0| 1
+         1| .
+         2| 5
+         3| 4
+        '
+
+        :param op_reduce: OpBinary.
+            Binary operation to apply for reduction of matrix elements.
+
+        :param out: optional: Vector: default: None.
+            Optional vector to store result of reduction.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        from .vector import Vector
+
+        if out is None:
+            out = Vector(shape=self.n_rows, dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert out
+        assert init
+        assert out.n_rows == self.n_rows
+        assert out.dtype == self.dtype
+        assert init.dtype == self.dtype
+
+        check(backend().spla_Exec_m_reduce_by_row(out.hnd, self.hnd, op_reduce.hnd, init.hnd,
+                                                  self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce matrix elements.
