@@ -26,6 +26,7 @@
     <li><a href="#installation">Installation</a></li>
     <li><a href="#summary">Summary</a></li>
     <li><a href="#performance">Performance</a></li>
+    <li><a href="#example-of-usage">Example of usage</a></li>
     <li><a href="#containers">Containers</a></li>
     <li><a href="#types">Types</a></li>
     <li><a href="#ops">Ops</a></li>
@@ -575,6 +576,9 @@
                                 <a class="variable" href="#Scalar.n_vals">n_vals</a>
                         </li>
                         <li>
+                                <a class="function" href="#Scalar.from_value">from_value</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#Scalar.set">set</a>
                         </li>
                         <li>
@@ -829,6 +833,94 @@ Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a
 </tbody>
 </table>
 
+<h2 id="example-of-usage">Example of usage</h2>
+
+<p>Import <code>spla</code> package to your python script.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspla</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre>
+</div>
+
+<p>Create an adjacency matrix of graph using lists of row-column indices and values.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    0 1 2 3</span>
+<span class="go"> 0| . 1 . .|  0</span>
+<span class="go"> 1| . . 1 .|  1</span>
+<span class="go"> 2| 1 . . 1|  2</span>
+<span class="go"> 3| . . 1 .|  3</span>
+<span class="go">    0 1 2 3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>The following code snippet shows how to create breadth-first search algoritm using <code>spla</code> package API
+through masked matrix-vector product. The algorithm accepts starting vertex and an adjacency matrix
+of a graph. It raverces graph using <code>vxm</code> and assign depth to reached vertices. Mask is used to update
+only unvisited vertices reducing number of required computations. More details highlighted in the
+comments to the code fragment.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bfs</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="n">Matrix</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># to store depths</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front</span> <span class="o">=</span> <span class="n"><a href="#Vector.from_lists">Vector.from_lists</a></span><span class="p">([</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># front of new vertices to study</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># current front size</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">depth</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># depth of search</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># num of reached vertices</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">while</span> <span class="n">front_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># while have something to study</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">count</span> <span class="o">+=</span> <span class="n">front_size</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">=</span><span class="n"><a href="#INT.SECOND">INT.SECOND</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.NQZERO">INT.NQZERO</a></span><span class="p">)</span>  <span class="c1"># assign depths</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">vxm</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">op_mult</span><span class="o">=</span><span class="n"><a href="#INT.LAND">INT.LAND</a></span><span class="p">,</span> <span class="n">op_add</span><span class="o">=</span><span class="n"><a href="#INT.LOR">INT.LOR</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.EQZERO">INT.EQZERO</a></span><span class="p">)</span>  <span class="c1"># do traversal</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front_size</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">op_reduce</span><span class="o">=</span><span class="n"><a href="#INT.PLUS">INT.PLUS</a></span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># update front count to end algorithm</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">depth</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| 1</span>
+<span class="go"> 1| 2</span>
+<span class="go"> 2| 3</span>
+<span class="go"> 3| 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>Total number of reached vertices.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>Maximum depth of a discovered vertex.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
 <h2 id="containers">Containers</h2>
 
 <p>Library provides fundamental generalized linear algebra containers
@@ -970,107 +1062,172 @@ on package exit. Library state finalized automatically.</p>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">| rgg_n_2_23_s0     |     8.4M |  127.0M |    15.1 |    3.9 |      40.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_23_s0.tar.gz) |</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">| road_central      |    14.1M |   33.9M |     2.4 |    0.9 |       8.0 |                                              [link](http://sparse.tamu.edu/DIMACS10/road_central) |</span>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">Containers</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">----------</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">Example of usage</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">----------------</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">Library provides fundamental generalized linear algebra containers</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">for data storage and mathematical computations. These containers</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">are generalized, so any of built-in types may be used to parametrize</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">type of data. Containers have sparse formats by default, so it is</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">possible to create large-dimension but low data containers. Containers</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">are storage-invariant, so the best format for the storage is automatically</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">managed by container internally. All required format conversion done</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">in the context of particular primitive usage.</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">Types</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">-----</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">Library provides a set of standard and common built-in data types. Library value types</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">differ a bit from a classic type definition. In spla library type is essentially is a</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">storage characteristic, which defines count and layout of bytes per element. User</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">can interpret stored data as her/she wants. Spla types set is limited due to the nature</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">Import `spla` package to your python script.</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">&gt;&gt;&gt; from pyspla import *</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">Create an adjacency matrix of graph using lists of row-column indices and values.</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">&gt;&gt;&gt; I = [0, 1, 2, 2, 3]</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">&gt;&gt;&gt; J = [1, 2, 0, 3, 2]</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">&gt;&gt;&gt; V = [1, 1, 1, 1, 1]</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">&gt;&gt;&gt; A = Matrix.from_lists(I, J, V, shape=(4, 4), dtype=INT)</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">&gt;&gt;&gt; print(A)</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">&#39;</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">    0 1 2 3</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd"> 0| . 1 . .|  0</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd"> 1| . . 1 .|  1</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd"> 2| 1 . . 1|  2</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd"> 3| . . 1 .|  3</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">    0 1 2 3</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">&#39;</span>
 </span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">Ops</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">---</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">Library provides a set of unary, binary and select ops for values data manipulation inside</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">matrix and vector containers. Unary operations commonly used for apply and transformation</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">operations, binary operations used for reductions and products, select operations used for</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">filtration and mask application.</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">Details</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">-------</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">Spla C/C++ backend compiled library is automatically loaded and initialized on package import.</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">State of the library managed by internal `bridge` module. All resources are unloaded automatically</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">on package exit. Library state finalized automatically.</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2021-2023 SparseLinearAlgebra&quot;</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="s2">MIT License</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">The following code snippet shows how to create breadth-first search algoritm using `spla` package API</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">through masked matrix-vector product. The algorithm accepts starting vertex and an adjacency matrix</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">of a graph. It raverces graph using `vxm` and assign depth to reached vertices. Mask is used to update</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">only unvisited vertices reducing number of required computations. More details highlighted in the</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">comments to the code fragment.</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">&gt;&gt;&gt; def bfs(s: int, A: Matrix):</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">&gt;&gt;&gt;     v = Vector(A.n_rows, INT)  # to store depths</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">&gt;&gt;&gt;     front = Vector.from_lists([s], [1], A.n_rows, INT)  # front of new vertices to study</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">&gt;&gt;&gt;     front_size = 1  # current front size</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">&gt;&gt;&gt;     depth = Scalar(INT, 0)  # depth of search</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">&gt;&gt;&gt;     count = 0  # num of reached vertices</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">&gt;&gt;&gt;     while front_size &gt; 0:  # while have something to study</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">&gt;&gt;&gt;         depth += 1</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">&gt;&gt;&gt;         count += front_size</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">&gt;&gt;&gt;         v.assign(front, depth, op_assign=INT.SECOND, op_select=INT.NQZERO)  # assign depths</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">&gt;&gt;&gt;         front = front.vxm(v, A, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO)  # do traversal</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">&gt;&gt;&gt;         front_size = front.reduce(op_reduce=INT.PLUS).get()  # update front count to end algorithm</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">&gt;&gt;&gt;     return v, count, depth.get()</span>
 </span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="s2">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="s2">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="s2">in the Software without restriction, including without limitation the rights</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="s2">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="s2">copies of the Software, and to permit persons to whom the Software is</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="s2">furnished to do so, subject to the following conditions:</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="s2">The above copyright notice and this permission notice shall be included in all</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="s2">copies or substantial portions of the Software.</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier.</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">&gt;&gt;&gt; v, c, d = bfs(0, A)</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">&gt;&gt;&gt; print(v)</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">&#39;</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd"> 0| 1</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd"> 1| 2</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd"> 2| 3</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd"> 3| 4</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">&#39;</span>
 </span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="s2">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="s2">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="s2">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="s2">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="s2">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="s2">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="s2">SOFTWARE.</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="s2">&quot;&quot;&quot;</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="kn">from</span> <span class="nn">.bridge</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="n">bridge</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="kn">from</span> <span class="nn">.library</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="kn">from</span> <span class="nn">.descriptor</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="kn">from</span> <span class="nn">.op</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="kn">from</span> <span class="nn">.object</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="kn">from</span> <span class="nn">.schedule</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="kn">from</span> <span class="nn">.type</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="kn">from</span> <span class="nn">.matrix</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="kn">from</span> <span class="nn">.scalar</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSIONS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">Total number of reached vertices.</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">&gt;&gt;&gt; print(c)</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">&#39;</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd"> 4</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">&#39;</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">Maximum depth of a discovered vertex.</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">&gt;&gt;&gt; print(d)</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">&#39;</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd"> 4</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">&#39;</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">Containers</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">----------</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">Library provides fundamental generalized linear algebra containers</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">for data storage and mathematical computations. These containers</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">are generalized, so any of built-in types may be used to parametrize</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">type of data. Containers have sparse formats by default, so it is</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">possible to create large-dimension but low data containers. Containers</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">are storage-invariant, so the best format for the storage is automatically</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">managed by container internally. All required format conversion done</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">in the context of particular primitive usage.</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">Types</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">-----</span>
 </span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>    <span class="s2">&quot;Type&quot;</span><span class="p">,</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>    <span class="s2">&quot;BOOL&quot;</span><span class="p">,</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>    <span class="s2">&quot;INT&quot;</span><span class="p">,</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>    <span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>    <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>    <span class="s2">&quot;FormatMatrix&quot;</span><span class="p">,</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>    <span class="s2">&quot;FormatVector&quot;</span><span class="p">,</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>    <span class="s2">&quot;Descriptor&quot;</span><span class="p">,</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>    <span class="s2">&quot;Op&quot;</span><span class="p">,</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>    <span class="s2">&quot;OpUnary&quot;</span><span class="p">,</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>    <span class="s2">&quot;OpBinary&quot;</span><span class="p">,</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>    <span class="s2">&quot;OpSelect&quot;</span><span class="p">,</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>    <span class="s2">&quot;MemView&quot;</span><span class="p">,</span>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>    <span class="s2">&quot;Object&quot;</span><span class="p">,</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>    <span class="s2">&quot;Array&quot;</span><span class="p">,</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>    <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>    <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="s2">&quot;Scalar&quot;</span><span class="p">,</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="s2">&quot;VERSIONS&quot;</span>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="p">]</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">Library provides a set of standard and common built-in data types. Library value types</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">differ a bit from a classic type definition. In spla library type is essentially is a</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">storage characteristic, which defines count and layout of bytes per element. User</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">can interpret stored data as her/she wants. Spla types set is limited due to the nature</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">Ops</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">---</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">Library provides a set of unary, binary and select ops for values data manipulation inside</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">matrix and vector containers. Unary operations commonly used for apply and transformation</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">operations, binary operations used for reductions and products, select operations used for</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">filtration and mask application.</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">Details</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">-------</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">Spla C/C++ backend compiled library is automatically loaded and initialized on package import.</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">State of the library managed by internal `bridge` module. All resources are unloaded automatically</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">on package exit. Library state finalized automatically.</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2021-2023 SparseLinearAlgebra&quot;</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="s2">MIT License</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="s2">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="s2">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="s2">in the Software without restriction, including without limitation the rights</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a><span class="s2">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a><span class="s2">copies of the Software, and to permit persons to whom the Software is</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a><span class="s2">furnished to do so, subject to the following conditions:</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="s2">The above copyright notice and this permission notice shall be included in all</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="s2">copies or substantial portions of the Software.</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a><span class="s2">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="s2">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="s2">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="s2">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="s2">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="s2">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="s2">SOFTWARE.</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="s2">&quot;&quot;&quot;</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="kn">from</span> <span class="nn">.bridge</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a><span class="n">bridge</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a><span class="kn">from</span> <span class="nn">.library</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a><span class="kn">from</span> <span class="nn">.descriptor</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="kn">from</span> <span class="nn">.op</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="kn">from</span> <span class="nn">.object</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a><span class="kn">from</span> <span class="nn">.schedule</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a><span class="kn">from</span> <span class="nn">.type</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a><span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a><span class="kn">from</span> <span class="nn">.matrix</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a><span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="kn">from</span> <span class="nn">.scalar</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a><span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSIONS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="s2">&quot;Type&quot;</span><span class="p">,</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>    <span class="s2">&quot;BOOL&quot;</span><span class="p">,</span>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>    <span class="s2">&quot;INT&quot;</span><span class="p">,</span>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>    <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>    <span class="s2">&quot;FormatMatrix&quot;</span><span class="p">,</span>
+</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>    <span class="s2">&quot;FormatVector&quot;</span><span class="p">,</span>
+</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>    <span class="s2">&quot;Descriptor&quot;</span><span class="p">,</span>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>    <span class="s2">&quot;Op&quot;</span><span class="p">,</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>    <span class="s2">&quot;OpUnary&quot;</span><span class="p">,</span>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>    <span class="s2">&quot;OpBinary&quot;</span><span class="p">,</span>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>    <span class="s2">&quot;OpSelect&quot;</span><span class="p">,</span>
+</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>    <span class="s2">&quot;MemView&quot;</span><span class="p">,</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>    <span class="s2">&quot;Object&quot;</span><span class="p">,</span>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>    <span class="s2">&quot;Array&quot;</span><span class="p">,</span>
+</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>    <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
+</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>    <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>    <span class="s2">&quot;Scalar&quot;</span><span class="p">,</span>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>    <span class="s2">&quot;VERSIONS&quot;</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a><span class="p">]</span>
 </span></pre></div>
 
 
@@ -9545,80 +9702,181 @@ Optional descriptor object to configure the execution.</p></li>
 </span><span id="Scalar-67"><a href="#Scalar-67"><span class="linenos"> 67</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Scalar-68"><a href="#Scalar-68"><span class="linenos"> 68</span></a><span class="sd">        Creates new scalar of desired type or retains existing C object.</span>
 </span><span id="Scalar-69"><a href="#Scalar-69"><span class="linenos"> 69</span></a>
-</span><span id="Scalar-70"><a href="#Scalar-70"><span class="linenos"> 70</span></a><span class="sd">        :param dtype: optional: Type. default: INT.</span>
-</span><span id="Scalar-71"><a href="#Scalar-71"><span class="linenos"> 71</span></a><span class="sd">            Type of the scalar value.</span>
-</span><span id="Scalar-72"><a href="#Scalar-72"><span class="linenos"> 72</span></a>
-</span><span id="Scalar-73"><a href="#Scalar-73"><span class="linenos"> 73</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
-</span><span id="Scalar-74"><a href="#Scalar-74"><span class="linenos"> 74</span></a><span class="sd">            Optional value to store in scalar on creation.</span>
+</span><span id="Scalar-70"><a href="#Scalar-70"><span class="linenos"> 70</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT, 10)</span>
+</span><span id="Scalar-71"><a href="#Scalar-71"><span class="linenos"> 71</span></a><span class="sd">        &gt;&gt;&gt; print(s)</span>
+</span><span id="Scalar-72"><a href="#Scalar-72"><span class="linenos"> 72</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-73"><a href="#Scalar-73"><span class="linenos"> 73</span></a><span class="sd">            10</span>
+</span><span id="Scalar-74"><a href="#Scalar-74"><span class="linenos"> 74</span></a><span class="sd">        &#39;</span>
 </span><span id="Scalar-75"><a href="#Scalar-75"><span class="linenos"> 75</span></a>
-</span><span id="Scalar-76"><a href="#Scalar-76"><span class="linenos"> 76</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
-</span><span id="Scalar-77"><a href="#Scalar-77"><span class="linenos"> 77</span></a><span class="sd">            Optional handle to C object to retain in this scalar instance.</span>
+</span><span id="Scalar-76"><a href="#Scalar-76"><span class="linenos"> 76</span></a><span class="sd">        :param dtype: optional: Type. default: INT.</span>
+</span><span id="Scalar-77"><a href="#Scalar-77"><span class="linenos"> 77</span></a><span class="sd">            Type of the scalar value.</span>
 </span><span id="Scalar-78"><a href="#Scalar-78"><span class="linenos"> 78</span></a>
-</span><span id="Scalar-79"><a href="#Scalar-79"><span class="linenos"> 79</span></a><span class="sd">        :param label: optional: str. default: None.</span>
-</span><span id="Scalar-80"><a href="#Scalar-80"><span class="linenos"> 80</span></a><span class="sd">            Optional debug label of the scalar.</span>
-</span><span id="Scalar-81"><a href="#Scalar-81"><span class="linenos"> 81</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar-82"><a href="#Scalar-82"><span class="linenos"> 82</span></a>
-</span><span id="Scalar-83"><a href="#Scalar-83"><span class="linenos"> 83</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="Scalar-79"><a href="#Scalar-79"><span class="linenos"> 79</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
+</span><span id="Scalar-80"><a href="#Scalar-80"><span class="linenos"> 80</span></a><span class="sd">            Optional value to store in scalar on creation.</span>
+</span><span id="Scalar-81"><a href="#Scalar-81"><span class="linenos"> 81</span></a>
+</span><span id="Scalar-82"><a href="#Scalar-82"><span class="linenos"> 82</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
+</span><span id="Scalar-83"><a href="#Scalar-83"><span class="linenos"> 83</span></a><span class="sd">            Optional handle to C object to retain in this scalar instance.</span>
 </span><span id="Scalar-84"><a href="#Scalar-84"><span class="linenos"> 84</span></a>
-</span><span id="Scalar-85"><a href="#Scalar-85"><span class="linenos"> 85</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
-</span><span id="Scalar-86"><a href="#Scalar-86"><span class="linenos"> 86</span></a>
-</span><span id="Scalar-87"><a href="#Scalar-87"><span class="linenos"> 87</span></a>        <span class="k">if</span> <span class="n">hnd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Scalar-88"><a href="#Scalar-88"><span class="linenos"> 88</span></a>            <span class="n">hnd</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Scalar-89"><a href="#Scalar-89"><span class="linenos"> 89</span></a>            <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Scalar_make</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">hnd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">.</span><span class="n">_hnd</span><span class="p">))</span>
+</span><span id="Scalar-85"><a href="#Scalar-85"><span class="linenos"> 85</span></a><span class="sd">        :param label: optional: str. default: None.</span>
+</span><span id="Scalar-86"><a href="#Scalar-86"><span class="linenos"> 86</span></a><span class="sd">            Optional debug label of the scalar.</span>
+</span><span id="Scalar-87"><a href="#Scalar-87"><span class="linenos"> 87</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-88"><a href="#Scalar-88"><span class="linenos"> 88</span></a>
+</span><span id="Scalar-89"><a href="#Scalar-89"><span class="linenos"> 89</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span><span id="Scalar-90"><a href="#Scalar-90"><span class="linenos"> 90</span></a>
-</span><span id="Scalar-91"><a href="#Scalar-91"><span class="linenos"> 91</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hnd</span><span class="p">)</span>
-</span><span id="Scalar-92"><a href="#Scalar-92"><span class="linenos"> 92</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</span><span id="Scalar-93"><a href="#Scalar-93"><span class="linenos"> 93</span></a>
-</span><span id="Scalar-94"><a href="#Scalar-94"><span class="linenos"> 94</span></a>    <span class="nd">@property</span>
-</span><span id="Scalar-95"><a href="#Scalar-95"><span class="linenos"> 95</span></a>    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-96"><a href="#Scalar-96"><span class="linenos"> 96</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar-97"><a href="#Scalar-97"><span class="linenos"> 97</span></a><span class="sd">        Returns the type of stored value in the scalar.</span>
-</span><span id="Scalar-98"><a href="#Scalar-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-91"><a href="#Scalar-91"><span class="linenos"> 91</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+</span><span id="Scalar-92"><a href="#Scalar-92"><span class="linenos"> 92</span></a>
+</span><span id="Scalar-93"><a href="#Scalar-93"><span class="linenos"> 93</span></a>        <span class="k">if</span> <span class="n">hnd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Scalar-94"><a href="#Scalar-94"><span class="linenos"> 94</span></a>            <span class="n">hnd</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Scalar-95"><a href="#Scalar-95"><span class="linenos"> 95</span></a>            <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Scalar_make</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">hnd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">.</span><span class="n">_hnd</span><span class="p">))</span>
+</span><span id="Scalar-96"><a href="#Scalar-96"><span class="linenos"> 96</span></a>
+</span><span id="Scalar-97"><a href="#Scalar-97"><span class="linenos"> 97</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hnd</span><span class="p">)</span>
+</span><span id="Scalar-98"><a href="#Scalar-98"><span class="linenos"> 98</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span><span id="Scalar-99"><a href="#Scalar-99"><span class="linenos"> 99</span></a>
-</span><span id="Scalar-100"><a href="#Scalar-100"><span class="linenos">100</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
-</span><span id="Scalar-101"><a href="#Scalar-101"><span class="linenos">101</span></a>
-</span><span id="Scalar-102"><a href="#Scalar-102"><span class="linenos">102</span></a>    <span class="nd">@property</span>
-</span><span id="Scalar-103"><a href="#Scalar-103"><span class="linenos">103</span></a>    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-104"><a href="#Scalar-104"><span class="linenos">104</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar-105"><a href="#Scalar-105"><span class="linenos">105</span></a><span class="sd">        2-tuple shape of the storage. For scalar object it is always 1 by 1.</span>
-</span><span id="Scalar-106"><a href="#Scalar-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar-107"><a href="#Scalar-107"><span class="linenos">107</span></a>
-</span><span id="Scalar-108"><a href="#Scalar-108"><span class="linenos">108</span></a>        <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
-</span><span id="Scalar-109"><a href="#Scalar-109"><span class="linenos">109</span></a>
-</span><span id="Scalar-110"><a href="#Scalar-110"><span class="linenos">110</span></a>    <span class="nd">@property</span>
-</span><span id="Scalar-111"><a href="#Scalar-111"><span class="linenos">111</span></a>    <span class="k">def</span> <span class="nf">n_vals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-112"><a href="#Scalar-112"><span class="linenos">112</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar-113"><a href="#Scalar-113"><span class="linenos">113</span></a><span class="sd">        Number of stored values in the scalar. Always 1.</span>
-</span><span id="Scalar-114"><a href="#Scalar-114"><span class="linenos">114</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar-115"><a href="#Scalar-115"><span class="linenos">115</span></a>
-</span><span id="Scalar-116"><a href="#Scalar-116"><span class="linenos">116</span></a>        <span class="k">return</span> <span class="mi">1</span>
-</span><span id="Scalar-117"><a href="#Scalar-117"><span class="linenos">117</span></a>
-</span><span id="Scalar-118"><a href="#Scalar-118"><span class="linenos">118</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Scalar-119"><a href="#Scalar-119"><span class="linenos">119</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar-120"><a href="#Scalar-120"><span class="linenos">120</span></a><span class="sd">        Set the value stored in the scalar. If no value passed the default value is set.</span>
-</span><span id="Scalar-121"><a href="#Scalar-121"><span class="linenos">121</span></a>
-</span><span id="Scalar-122"><a href="#Scalar-122"><span class="linenos">122</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
-</span><span id="Scalar-123"><a href="#Scalar-123"><span class="linenos">123</span></a><span class="sd">            Optional value to store in scalar.</span>
+</span><span id="Scalar-100"><a href="#Scalar-100"><span class="linenos">100</span></a>    <span class="nd">@property</span>
+</span><span id="Scalar-101"><a href="#Scalar-101"><span class="linenos">101</span></a>    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-102"><a href="#Scalar-102"><span class="linenos">102</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-103"><a href="#Scalar-103"><span class="linenos">103</span></a><span class="sd">        Returns the type of stored value in the scalar.</span>
+</span><span id="Scalar-104"><a href="#Scalar-104"><span class="linenos">104</span></a>
+</span><span id="Scalar-105"><a href="#Scalar-105"><span class="linenos">105</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT)</span>
+</span><span id="Scalar-106"><a href="#Scalar-106"><span class="linenos">106</span></a><span class="sd">        &gt;&gt;&gt; print(s.dtype)</span>
+</span><span id="Scalar-107"><a href="#Scalar-107"><span class="linenos">107</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-108"><a href="#Scalar-108"><span class="linenos">108</span></a><span class="sd">            &lt;class &#39;pyspla.type.INT&#39;&gt;</span>
+</span><span id="Scalar-109"><a href="#Scalar-109"><span class="linenos">109</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-110"><a href="#Scalar-110"><span class="linenos">110</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-111"><a href="#Scalar-111"><span class="linenos">111</span></a>
+</span><span id="Scalar-112"><a href="#Scalar-112"><span class="linenos">112</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+</span><span id="Scalar-113"><a href="#Scalar-113"><span class="linenos">113</span></a>
+</span><span id="Scalar-114"><a href="#Scalar-114"><span class="linenos">114</span></a>    <span class="nd">@property</span>
+</span><span id="Scalar-115"><a href="#Scalar-115"><span class="linenos">115</span></a>    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-116"><a href="#Scalar-116"><span class="linenos">116</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-117"><a href="#Scalar-117"><span class="linenos">117</span></a><span class="sd">        2-tuple shape of the storage. For scalar object it is always 1 by 1.</span>
+</span><span id="Scalar-118"><a href="#Scalar-118"><span class="linenos">118</span></a>
+</span><span id="Scalar-119"><a href="#Scalar-119"><span class="linenos">119</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT)</span>
+</span><span id="Scalar-120"><a href="#Scalar-120"><span class="linenos">120</span></a><span class="sd">        &gt;&gt;&gt; print(s.shape)</span>
+</span><span id="Scalar-121"><a href="#Scalar-121"><span class="linenos">121</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-122"><a href="#Scalar-122"><span class="linenos">122</span></a><span class="sd">            (1, 1)</span>
+</span><span id="Scalar-123"><a href="#Scalar-123"><span class="linenos">123</span></a><span class="sd">        &#39;</span>
 </span><span id="Scalar-124"><a href="#Scalar-124"><span class="linenos">124</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Scalar-125"><a href="#Scalar-125"><span class="linenos">125</span></a>
-</span><span id="Scalar-126"><a href="#Scalar-126"><span class="linenos">126</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
+</span><span id="Scalar-126"><a href="#Scalar-126"><span class="linenos">126</span></a>        <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
 </span><span id="Scalar-127"><a href="#Scalar-127"><span class="linenos">127</span></a>
-</span><span id="Scalar-128"><a href="#Scalar-128"><span class="linenos">128</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-129"><a href="#Scalar-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar-130"><a href="#Scalar-130"><span class="linenos">130</span></a><span class="sd">        Read the value stored in the scalar.</span>
-</span><span id="Scalar-131"><a href="#Scalar-131"><span class="linenos">131</span></a>
-</span><span id="Scalar-132"><a href="#Scalar-132"><span class="linenos">132</span></a><span class="sd">        :return: Value from scalar.</span>
-</span><span id="Scalar-133"><a href="#Scalar-133"><span class="linenos">133</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar-134"><a href="#Scalar-134"><span class="linenos">134</span></a>
-</span><span id="Scalar-135"><a href="#Scalar-135"><span class="linenos">135</span></a>        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Scalar-136"><a href="#Scalar-136"><span class="linenos">136</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
-</span><span id="Scalar-137"><a href="#Scalar-137"><span class="linenos">137</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">cast_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</span><span id="Scalar-138"><a href="#Scalar-138"><span class="linenos">138</span></a>
-</span><span id="Scalar-139"><a href="#Scalar-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-140"><a href="#Scalar-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+</span><span id="Scalar-128"><a href="#Scalar-128"><span class="linenos">128</span></a>    <span class="nd">@property</span>
+</span><span id="Scalar-129"><a href="#Scalar-129"><span class="linenos">129</span></a>    <span class="k">def</span> <span class="nf">n_vals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-130"><a href="#Scalar-130"><span class="linenos">130</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-131"><a href="#Scalar-131"><span class="linenos">131</span></a><span class="sd">        Number of stored values in the scalar. Always 1.</span>
+</span><span id="Scalar-132"><a href="#Scalar-132"><span class="linenos">132</span></a>
+</span><span id="Scalar-133"><a href="#Scalar-133"><span class="linenos">133</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT)</span>
+</span><span id="Scalar-134"><a href="#Scalar-134"><span class="linenos">134</span></a><span class="sd">        &gt;&gt;&gt; print(s.n_vals)</span>
+</span><span id="Scalar-135"><a href="#Scalar-135"><span class="linenos">135</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-136"><a href="#Scalar-136"><span class="linenos">136</span></a><span class="sd">            1</span>
+</span><span id="Scalar-137"><a href="#Scalar-137"><span class="linenos">137</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-138"><a href="#Scalar-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-139"><a href="#Scalar-139"><span class="linenos">139</span></a>
+</span><span id="Scalar-140"><a href="#Scalar-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="mi">1</span>
 </span><span id="Scalar-141"><a href="#Scalar-141"><span class="linenos">141</span></a>
-</span><span id="Scalar-142"><a href="#Scalar-142"><span class="linenos">142</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar-143"><a href="#Scalar-143"><span class="linenos">143</span></a>        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span>
+</span><span id="Scalar-142"><a href="#Scalar-142"><span class="linenos">142</span></a>    <span class="nd">@classmethod</span>
+</span><span id="Scalar-143"><a href="#Scalar-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">from_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span id="Scalar-144"><a href="#Scalar-144"><span class="linenos">144</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-145"><a href="#Scalar-145"><span class="linenos">145</span></a><span class="sd">        Create scalar and infer type.</span>
+</span><span id="Scalar-146"><a href="#Scalar-146"><span class="linenos">146</span></a>
+</span><span id="Scalar-147"><a href="#Scalar-147"><span class="linenos">147</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar.from_value(0.5)</span>
+</span><span id="Scalar-148"><a href="#Scalar-148"><span class="linenos">148</span></a><span class="sd">        &gt;&gt;&gt; print(s.dtype)</span>
+</span><span id="Scalar-149"><a href="#Scalar-149"><span class="linenos">149</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-150"><a href="#Scalar-150"><span class="linenos">150</span></a><span class="sd">            &lt;class &#39;pyspla.type.FLOAT&#39;&gt;</span>
+</span><span id="Scalar-151"><a href="#Scalar-151"><span class="linenos">151</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-152"><a href="#Scalar-152"><span class="linenos">152</span></a>
+</span><span id="Scalar-153"><a href="#Scalar-153"><span class="linenos">153</span></a><span class="sd">        :param value: any.</span>
+</span><span id="Scalar-154"><a href="#Scalar-154"><span class="linenos">154</span></a><span class="sd">            Value to create scalar from.</span>
+</span><span id="Scalar-155"><a href="#Scalar-155"><span class="linenos">155</span></a>
+</span><span id="Scalar-156"><a href="#Scalar-156"><span class="linenos">156</span></a><span class="sd">        :return: Scalar with value.</span>
+</span><span id="Scalar-157"><a href="#Scalar-157"><span class="linenos">157</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-158"><a href="#Scalar-158"><span class="linenos">158</span></a>
+</span><span id="Scalar-159"><a href="#Scalar-159"><span class="linenos">159</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+</span><span id="Scalar-160"><a href="#Scalar-160"><span class="linenos">160</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar-161"><a href="#Scalar-161"><span class="linenos">161</span></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="Scalar-162"><a href="#Scalar-162"><span class="linenos">162</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar-163"><a href="#Scalar-163"><span class="linenos">163</span></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+</span><span id="Scalar-164"><a href="#Scalar-164"><span class="linenos">164</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar-165"><a href="#Scalar-165"><span class="linenos">165</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="Scalar-166"><a href="#Scalar-166"><span class="linenos">166</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;cannot infer type&quot;</span><span class="p">)</span>
+</span><span id="Scalar-167"><a href="#Scalar-167"><span class="linenos">167</span></a>
+</span><span id="Scalar-168"><a href="#Scalar-168"><span class="linenos">168</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Scalar-169"><a href="#Scalar-169"><span class="linenos">169</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-170"><a href="#Scalar-170"><span class="linenos">170</span></a><span class="sd">        Set the value stored in the scalar. If no value passed the default value is set.</span>
+</span><span id="Scalar-171"><a href="#Scalar-171"><span class="linenos">171</span></a>
+</span><span id="Scalar-172"><a href="#Scalar-172"><span class="linenos">172</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT)</span>
+</span><span id="Scalar-173"><a href="#Scalar-173"><span class="linenos">173</span></a><span class="sd">        &gt;&gt;&gt; s.set(10)</span>
+</span><span id="Scalar-174"><a href="#Scalar-174"><span class="linenos">174</span></a><span class="sd">        &gt;&gt;&gt; print(s)</span>
+</span><span id="Scalar-175"><a href="#Scalar-175"><span class="linenos">175</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-176"><a href="#Scalar-176"><span class="linenos">176</span></a><span class="sd">            10</span>
+</span><span id="Scalar-177"><a href="#Scalar-177"><span class="linenos">177</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-178"><a href="#Scalar-178"><span class="linenos">178</span></a>
+</span><span id="Scalar-179"><a href="#Scalar-179"><span class="linenos">179</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
+</span><span id="Scalar-180"><a href="#Scalar-180"><span class="linenos">180</span></a><span class="sd">            Optional value to store in scalar.</span>
+</span><span id="Scalar-181"><a href="#Scalar-181"><span class="linenos">181</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-182"><a href="#Scalar-182"><span class="linenos">182</span></a>
+</span><span id="Scalar-183"><a href="#Scalar-183"><span class="linenos">183</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
+</span><span id="Scalar-184"><a href="#Scalar-184"><span class="linenos">184</span></a>
+</span><span id="Scalar-185"><a href="#Scalar-185"><span class="linenos">185</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-186"><a href="#Scalar-186"><span class="linenos">186</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar-187"><a href="#Scalar-187"><span class="linenos">187</span></a><span class="sd">        Read the value stored in the scalar.</span>
+</span><span id="Scalar-188"><a href="#Scalar-188"><span class="linenos">188</span></a>
+</span><span id="Scalar-189"><a href="#Scalar-189"><span class="linenos">189</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT, 10)</span>
+</span><span id="Scalar-190"><a href="#Scalar-190"><span class="linenos">190</span></a><span class="sd">        &gt;&gt;&gt; print(s.get())</span>
+</span><span id="Scalar-191"><a href="#Scalar-191"><span class="linenos">191</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-192"><a href="#Scalar-192"><span class="linenos">192</span></a><span class="sd">            10</span>
+</span><span id="Scalar-193"><a href="#Scalar-193"><span class="linenos">193</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar-194"><a href="#Scalar-194"><span class="linenos">194</span></a>
+</span><span id="Scalar-195"><a href="#Scalar-195"><span class="linenos">195</span></a><span class="sd">        :return: Value from scalar.</span>
+</span><span id="Scalar-196"><a href="#Scalar-196"><span class="linenos">196</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar-197"><a href="#Scalar-197"><span class="linenos">197</span></a>
+</span><span id="Scalar-198"><a href="#Scalar-198"><span class="linenos">198</span></a>        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Scalar-199"><a href="#Scalar-199"><span class="linenos">199</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+</span><span id="Scalar-200"><a href="#Scalar-200"><span class="linenos">200</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">cast_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar-201"><a href="#Scalar-201"><span class="linenos">201</span></a>
+</span><span id="Scalar-202"><a href="#Scalar-202"><span class="linenos">202</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-203"><a href="#Scalar-203"><span class="linenos">203</span></a>        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+</span><span id="Scalar-204"><a href="#Scalar-204"><span class="linenos">204</span></a>
+</span><span id="Scalar-205"><a href="#Scalar-205"><span class="linenos">205</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar-206"><a href="#Scalar-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span>
+</span><span id="Scalar-207"><a href="#Scalar-207"><span class="linenos">207</span></a>
+</span><span id="Scalar-208"><a href="#Scalar-208"><span class="linenos">208</span></a>    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-209"><a href="#Scalar-209"><span class="linenos">209</span></a>        <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-210"><a href="#Scalar-210"><span class="linenos">210</span></a>
+</span><span id="Scalar-211"><a href="#Scalar-211"><span class="linenos">211</span></a>    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-212"><a href="#Scalar-212"><span class="linenos">212</span></a>        <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-213"><a href="#Scalar-213"><span class="linenos">213</span></a>
+</span><span id="Scalar-214"><a href="#Scalar-214"><span class="linenos">214</span></a>    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-215"><a href="#Scalar-215"><span class="linenos">215</span></a>        <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">*</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-216"><a href="#Scalar-216"><span class="linenos">216</span></a>
+</span><span id="Scalar-217"><a href="#Scalar-217"><span class="linenos">217</span></a>    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-218"><a href="#Scalar-218"><span class="linenos">218</span></a>        <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">/</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-219"><a href="#Scalar-219"><span class="linenos">219</span></a>
+</span><span id="Scalar-220"><a href="#Scalar-220"><span class="linenos">220</span></a>    <span class="k">def</span> <span class="fm">__floordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-221"><a href="#Scalar-221"><span class="linenos">221</span></a>        <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">//</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-222"><a href="#Scalar-222"><span class="linenos">222</span></a>
+</span><span id="Scalar-223"><a href="#Scalar-223"><span class="linenos">223</span></a>    <span class="k">def</span> <span class="fm">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-224"><a href="#Scalar-224"><span class="linenos">224</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-225"><a href="#Scalar-225"><span class="linenos">225</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Scalar-226"><a href="#Scalar-226"><span class="linenos">226</span></a>
+</span><span id="Scalar-227"><a href="#Scalar-227"><span class="linenos">227</span></a>    <span class="k">def</span> <span class="fm">__isub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-228"><a href="#Scalar-228"><span class="linenos">228</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">-</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-229"><a href="#Scalar-229"><span class="linenos">229</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Scalar-230"><a href="#Scalar-230"><span class="linenos">230</span></a>
+</span><span id="Scalar-231"><a href="#Scalar-231"><span class="linenos">231</span></a>    <span class="k">def</span> <span class="fm">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-232"><a href="#Scalar-232"><span class="linenos">232</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">*</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-233"><a href="#Scalar-233"><span class="linenos">233</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Scalar-234"><a href="#Scalar-234"><span class="linenos">234</span></a>
+</span><span id="Scalar-235"><a href="#Scalar-235"><span class="linenos">235</span></a>    <span class="k">def</span> <span class="nf">__idiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-236"><a href="#Scalar-236"><span class="linenos">236</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">/</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">_value</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+</span><span id="Scalar-237"><a href="#Scalar-237"><span class="linenos">237</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="Scalar-238"><a href="#Scalar-238"><span class="linenos">238</span></a>
+</span><span id="Scalar-239"><a href="#Scalar-239"><span class="linenos">239</span></a>    <span class="nd">@classmethod</span>
+</span><span id="Scalar-240"><a href="#Scalar-240"><span class="linenos">240</span></a>    <span class="k">def</span> <span class="nf">_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="Scalar-241"><a href="#Scalar-241"><span class="linenos">241</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Scalar</span><span class="p">):</span>
+</span><span id="Scalar-242"><a href="#Scalar-242"><span class="linenos">242</span></a>            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span id="Scalar-243"><a href="#Scalar-243"><span class="linenos">243</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="Scalar-244"><a href="#Scalar-244"><span class="linenos">244</span></a>            <span class="k">return</span> <span class="n">other</span>
 </span></pre></div>
 
 
@@ -9662,33 +9920,48 @@ Meta-data additionally stored with each scalar value.</p>
 </span><span id="Scalar.__init__-67"><a href="#Scalar.__init__-67"><span class="linenos">67</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Scalar.__init__-68"><a href="#Scalar.__init__-68"><span class="linenos">68</span></a><span class="sd">        Creates new scalar of desired type or retains existing C object.</span>
 </span><span id="Scalar.__init__-69"><a href="#Scalar.__init__-69"><span class="linenos">69</span></a>
-</span><span id="Scalar.__init__-70"><a href="#Scalar.__init__-70"><span class="linenos">70</span></a><span class="sd">        :param dtype: optional: Type. default: INT.</span>
-</span><span id="Scalar.__init__-71"><a href="#Scalar.__init__-71"><span class="linenos">71</span></a><span class="sd">            Type of the scalar value.</span>
-</span><span id="Scalar.__init__-72"><a href="#Scalar.__init__-72"><span class="linenos">72</span></a>
-</span><span id="Scalar.__init__-73"><a href="#Scalar.__init__-73"><span class="linenos">73</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
-</span><span id="Scalar.__init__-74"><a href="#Scalar.__init__-74"><span class="linenos">74</span></a><span class="sd">            Optional value to store in scalar on creation.</span>
+</span><span id="Scalar.__init__-70"><a href="#Scalar.__init__-70"><span class="linenos">70</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT, 10)</span>
+</span><span id="Scalar.__init__-71"><a href="#Scalar.__init__-71"><span class="linenos">71</span></a><span class="sd">        &gt;&gt;&gt; print(s)</span>
+</span><span id="Scalar.__init__-72"><a href="#Scalar.__init__-72"><span class="linenos">72</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.__init__-73"><a href="#Scalar.__init__-73"><span class="linenos">73</span></a><span class="sd">            10</span>
+</span><span id="Scalar.__init__-74"><a href="#Scalar.__init__-74"><span class="linenos">74</span></a><span class="sd">        &#39;</span>
 </span><span id="Scalar.__init__-75"><a href="#Scalar.__init__-75"><span class="linenos">75</span></a>
-</span><span id="Scalar.__init__-76"><a href="#Scalar.__init__-76"><span class="linenos">76</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
-</span><span id="Scalar.__init__-77"><a href="#Scalar.__init__-77"><span class="linenos">77</span></a><span class="sd">            Optional handle to C object to retain in this scalar instance.</span>
+</span><span id="Scalar.__init__-76"><a href="#Scalar.__init__-76"><span class="linenos">76</span></a><span class="sd">        :param dtype: optional: Type. default: INT.</span>
+</span><span id="Scalar.__init__-77"><a href="#Scalar.__init__-77"><span class="linenos">77</span></a><span class="sd">            Type of the scalar value.</span>
 </span><span id="Scalar.__init__-78"><a href="#Scalar.__init__-78"><span class="linenos">78</span></a>
-</span><span id="Scalar.__init__-79"><a href="#Scalar.__init__-79"><span class="linenos">79</span></a><span class="sd">        :param label: optional: str. default: None.</span>
-</span><span id="Scalar.__init__-80"><a href="#Scalar.__init__-80"><span class="linenos">80</span></a><span class="sd">            Optional debug label of the scalar.</span>
-</span><span id="Scalar.__init__-81"><a href="#Scalar.__init__-81"><span class="linenos">81</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar.__init__-82"><a href="#Scalar.__init__-82"><span class="linenos">82</span></a>
-</span><span id="Scalar.__init__-83"><a href="#Scalar.__init__-83"><span class="linenos">83</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="Scalar.__init__-79"><a href="#Scalar.__init__-79"><span class="linenos">79</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
+</span><span id="Scalar.__init__-80"><a href="#Scalar.__init__-80"><span class="linenos">80</span></a><span class="sd">            Optional value to store in scalar on creation.</span>
+</span><span id="Scalar.__init__-81"><a href="#Scalar.__init__-81"><span class="linenos">81</span></a>
+</span><span id="Scalar.__init__-82"><a href="#Scalar.__init__-82"><span class="linenos">82</span></a><span class="sd">        :param hnd: optional: ctypes.c_void_p. default: None.</span>
+</span><span id="Scalar.__init__-83"><a href="#Scalar.__init__-83"><span class="linenos">83</span></a><span class="sd">            Optional handle to C object to retain in this scalar instance.</span>
 </span><span id="Scalar.__init__-84"><a href="#Scalar.__init__-84"><span class="linenos">84</span></a>
-</span><span id="Scalar.__init__-85"><a href="#Scalar.__init__-85"><span class="linenos">85</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
-</span><span id="Scalar.__init__-86"><a href="#Scalar.__init__-86"><span class="linenos">86</span></a>
-</span><span id="Scalar.__init__-87"><a href="#Scalar.__init__-87"><span class="linenos">87</span></a>        <span class="k">if</span> <span class="n">hnd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Scalar.__init__-88"><a href="#Scalar.__init__-88"><span class="linenos">88</span></a>            <span class="n">hnd</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Scalar.__init__-89"><a href="#Scalar.__init__-89"><span class="linenos">89</span></a>            <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Scalar_make</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">hnd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">.</span><span class="n">_hnd</span><span class="p">))</span>
+</span><span id="Scalar.__init__-85"><a href="#Scalar.__init__-85"><span class="linenos">85</span></a><span class="sd">        :param label: optional: str. default: None.</span>
+</span><span id="Scalar.__init__-86"><a href="#Scalar.__init__-86"><span class="linenos">86</span></a><span class="sd">            Optional debug label of the scalar.</span>
+</span><span id="Scalar.__init__-87"><a href="#Scalar.__init__-87"><span class="linenos">87</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar.__init__-88"><a href="#Scalar.__init__-88"><span class="linenos">88</span></a>
+</span><span id="Scalar.__init__-89"><a href="#Scalar.__init__-89"><span class="linenos">89</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span><span id="Scalar.__init__-90"><a href="#Scalar.__init__-90"><span class="linenos">90</span></a>
-</span><span id="Scalar.__init__-91"><a href="#Scalar.__init__-91"><span class="linenos">91</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hnd</span><span class="p">)</span>
-</span><span id="Scalar.__init__-92"><a href="#Scalar.__init__-92"><span class="linenos">92</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar.__init__-91"><a href="#Scalar.__init__-91"><span class="linenos">91</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+</span><span id="Scalar.__init__-92"><a href="#Scalar.__init__-92"><span class="linenos">92</span></a>
+</span><span id="Scalar.__init__-93"><a href="#Scalar.__init__-93"><span class="linenos">93</span></a>        <span class="k">if</span> <span class="n">hnd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Scalar.__init__-94"><a href="#Scalar.__init__-94"><span class="linenos">94</span></a>            <span class="n">hnd</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Scalar.__init__-95"><a href="#Scalar.__init__-95"><span class="linenos">95</span></a>            <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Scalar_make</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">hnd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">.</span><span class="n">_hnd</span><span class="p">))</span>
+</span><span id="Scalar.__init__-96"><a href="#Scalar.__init__-96"><span class="linenos">96</span></a>
+</span><span id="Scalar.__init__-97"><a href="#Scalar.__init__-97"><span class="linenos">97</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">hnd</span><span class="p">)</span>
+</span><span id="Scalar.__init__-98"><a href="#Scalar.__init__-98"><span class="linenos">98</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Creates new scalar of desired type or retains existing C object.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    10</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
 
 <h6 id="parameters">Parameters</h6>
 
@@ -9715,6 +9988,15 @@ Optional debug label of the scalar.</p></li>
     <a class="headerlink" href="#Scalar.dtype"></a>
     
             <div class="docstring"><p>Returns the type of stored value in the scalar.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    &lt;class &#39;<a href="#INT">pyspla.INT</a>&#39;&gt;</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
 </div>
 
 
@@ -9728,6 +10010,15 @@ Optional debug label of the scalar.</p></li>
     <a class="headerlink" href="#Scalar.shape"></a>
     
             <div class="docstring"><p>2-tuple shape of the storage. For scalar object it is always 1 by 1.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    (1, 1)</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
 </div>
 
 
@@ -9741,6 +10032,82 @@ Optional debug label of the scalar.</p></li>
     <a class="headerlink" href="#Scalar.n_vals"></a>
     
             <div class="docstring"><p>Number of stored values in the scalar. Always 1.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">n_vals</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    1</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+</div>
+
+
+                            </div>
+                            <div id="Scalar.from_value" class="classattr">
+                                        <input id="Scalar.from_value-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">from_value</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="n">value</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="Scalar.from_value-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Scalar.from_value"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Scalar.from_value-142"><a href="#Scalar.from_value-142"><span class="linenos">142</span></a>    <span class="nd">@classmethod</span>
+</span><span id="Scalar.from_value-143"><a href="#Scalar.from_value-143"><span class="linenos">143</span></a>    <span class="k">def</span> <span class="nf">from_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+</span><span id="Scalar.from_value-144"><a href="#Scalar.from_value-144"><span class="linenos">144</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar.from_value-145"><a href="#Scalar.from_value-145"><span class="linenos">145</span></a><span class="sd">        Create scalar and infer type.</span>
+</span><span id="Scalar.from_value-146"><a href="#Scalar.from_value-146"><span class="linenos">146</span></a>
+</span><span id="Scalar.from_value-147"><a href="#Scalar.from_value-147"><span class="linenos">147</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar.from_value(0.5)</span>
+</span><span id="Scalar.from_value-148"><a href="#Scalar.from_value-148"><span class="linenos">148</span></a><span class="sd">        &gt;&gt;&gt; print(s.dtype)</span>
+</span><span id="Scalar.from_value-149"><a href="#Scalar.from_value-149"><span class="linenos">149</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.from_value-150"><a href="#Scalar.from_value-150"><span class="linenos">150</span></a><span class="sd">            &lt;class &#39;pyspla.type.FLOAT&#39;&gt;</span>
+</span><span id="Scalar.from_value-151"><a href="#Scalar.from_value-151"><span class="linenos">151</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.from_value-152"><a href="#Scalar.from_value-152"><span class="linenos">152</span></a>
+</span><span id="Scalar.from_value-153"><a href="#Scalar.from_value-153"><span class="linenos">153</span></a><span class="sd">        :param value: any.</span>
+</span><span id="Scalar.from_value-154"><a href="#Scalar.from_value-154"><span class="linenos">154</span></a><span class="sd">            Value to create scalar from.</span>
+</span><span id="Scalar.from_value-155"><a href="#Scalar.from_value-155"><span class="linenos">155</span></a>
+</span><span id="Scalar.from_value-156"><a href="#Scalar.from_value-156"><span class="linenos">156</span></a><span class="sd">        :return: Scalar with value.</span>
+</span><span id="Scalar.from_value-157"><a href="#Scalar.from_value-157"><span class="linenos">157</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar.from_value-158"><a href="#Scalar.from_value-158"><span class="linenos">158</span></a>
+</span><span id="Scalar.from_value-159"><a href="#Scalar.from_value-159"><span class="linenos">159</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+</span><span id="Scalar.from_value-160"><a href="#Scalar.from_value-160"><span class="linenos">160</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar.from_value-161"><a href="#Scalar.from_value-161"><span class="linenos">161</span></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="Scalar.from_value-162"><a href="#Scalar.from_value-162"><span class="linenos">162</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar.from_value-163"><a href="#Scalar.from_value-163"><span class="linenos">163</span></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+</span><span id="Scalar.from_value-164"><a href="#Scalar.from_value-164"><span class="linenos">164</span></a>            <span class="k">return</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</span><span id="Scalar.from_value-165"><a href="#Scalar.from_value-165"><span class="linenos">165</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="Scalar.from_value-166"><a href="#Scalar.from_value-166"><span class="linenos">166</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;cannot infer type&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Create scalar and infer type.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n"><a href="#Scalar.from_value">Scalar.from_value</a></span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    &lt;class &#39;<a href="#FLOAT">pyspla.FLOAT</a>&#39;&gt;</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>value</strong>:  any.
+Value to create scalar from.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Scalar with value.</p>
+</blockquote>
 </div>
 
 
@@ -9756,19 +10123,36 @@ Optional debug label of the scalar.</p></li>
 
     </div>
     <a class="headerlink" href="#Scalar.set"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Scalar.set-118"><a href="#Scalar.set-118"><span class="linenos">118</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Scalar.set-119"><a href="#Scalar.set-119"><span class="linenos">119</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar.set-120"><a href="#Scalar.set-120"><span class="linenos">120</span></a><span class="sd">        Set the value stored in the scalar. If no value passed the default value is set.</span>
-</span><span id="Scalar.set-121"><a href="#Scalar.set-121"><span class="linenos">121</span></a>
-</span><span id="Scalar.set-122"><a href="#Scalar.set-122"><span class="linenos">122</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
-</span><span id="Scalar.set-123"><a href="#Scalar.set-123"><span class="linenos">123</span></a><span class="sd">            Optional value to store in scalar.</span>
-</span><span id="Scalar.set-124"><a href="#Scalar.set-124"><span class="linenos">124</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar.set-125"><a href="#Scalar.set-125"><span class="linenos">125</span></a>
-</span><span id="Scalar.set-126"><a href="#Scalar.set-126"><span class="linenos">126</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Scalar.set-168"><a href="#Scalar.set-168"><span class="linenos">168</span></a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Scalar.set-169"><a href="#Scalar.set-169"><span class="linenos">169</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar.set-170"><a href="#Scalar.set-170"><span class="linenos">170</span></a><span class="sd">        Set the value stored in the scalar. If no value passed the default value is set.</span>
+</span><span id="Scalar.set-171"><a href="#Scalar.set-171"><span class="linenos">171</span></a>
+</span><span id="Scalar.set-172"><a href="#Scalar.set-172"><span class="linenos">172</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT)</span>
+</span><span id="Scalar.set-173"><a href="#Scalar.set-173"><span class="linenos">173</span></a><span class="sd">        &gt;&gt;&gt; s.set(10)</span>
+</span><span id="Scalar.set-174"><a href="#Scalar.set-174"><span class="linenos">174</span></a><span class="sd">        &gt;&gt;&gt; print(s)</span>
+</span><span id="Scalar.set-175"><a href="#Scalar.set-175"><span class="linenos">175</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.set-176"><a href="#Scalar.set-176"><span class="linenos">176</span></a><span class="sd">            10</span>
+</span><span id="Scalar.set-177"><a href="#Scalar.set-177"><span class="linenos">177</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.set-178"><a href="#Scalar.set-178"><span class="linenos">178</span></a>
+</span><span id="Scalar.set-179"><a href="#Scalar.set-179"><span class="linenos">179</span></a><span class="sd">        :param value: optional: Any. default: None.</span>
+</span><span id="Scalar.set-180"><a href="#Scalar.set-180"><span class="linenos">180</span></a><span class="sd">            Optional value to store in scalar.</span>
+</span><span id="Scalar.set-181"><a href="#Scalar.set-181"><span class="linenos">181</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar.set-182"><a href="#Scalar.set-182"><span class="linenos">182</span></a>
+</span><span id="Scalar.set-183"><a href="#Scalar.set-183"><span class="linenos">183</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Set the value stored in the scalar. If no value passed the default value is set.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    10</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
 
 <h6 id="parameters">Parameters</h6>
 
@@ -9791,20 +10175,35 @@ Optional value to store in scalar.</li>
 
     </div>
     <a class="headerlink" href="#Scalar.get"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Scalar.get-128"><a href="#Scalar.get-128"><span class="linenos">128</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Scalar.get-129"><a href="#Scalar.get-129"><span class="linenos">129</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Scalar.get-130"><a href="#Scalar.get-130"><span class="linenos">130</span></a><span class="sd">        Read the value stored in the scalar.</span>
-</span><span id="Scalar.get-131"><a href="#Scalar.get-131"><span class="linenos">131</span></a>
-</span><span id="Scalar.get-132"><a href="#Scalar.get-132"><span class="linenos">132</span></a><span class="sd">        :return: Value from scalar.</span>
-</span><span id="Scalar.get-133"><a href="#Scalar.get-133"><span class="linenos">133</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Scalar.get-134"><a href="#Scalar.get-134"><span class="linenos">134</span></a>
-</span><span id="Scalar.get-135"><a href="#Scalar.get-135"><span class="linenos">135</span></a>        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Scalar.get-136"><a href="#Scalar.get-136"><span class="linenos">136</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
-</span><span id="Scalar.get-137"><a href="#Scalar.get-137"><span class="linenos">137</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">cast_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Scalar.get-185"><a href="#Scalar.get-185"><span class="linenos">185</span></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Scalar.get-186"><a href="#Scalar.get-186"><span class="linenos">186</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Scalar.get-187"><a href="#Scalar.get-187"><span class="linenos">187</span></a><span class="sd">        Read the value stored in the scalar.</span>
+</span><span id="Scalar.get-188"><a href="#Scalar.get-188"><span class="linenos">188</span></a>
+</span><span id="Scalar.get-189"><a href="#Scalar.get-189"><span class="linenos">189</span></a><span class="sd">        &gt;&gt;&gt; s = Scalar(INT, 10)</span>
+</span><span id="Scalar.get-190"><a href="#Scalar.get-190"><span class="linenos">190</span></a><span class="sd">        &gt;&gt;&gt; print(s.get())</span>
+</span><span id="Scalar.get-191"><a href="#Scalar.get-191"><span class="linenos">191</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.get-192"><a href="#Scalar.get-192"><span class="linenos">192</span></a><span class="sd">            10</span>
+</span><span id="Scalar.get-193"><a href="#Scalar.get-193"><span class="linenos">193</span></a><span class="sd">        &#39;</span>
+</span><span id="Scalar.get-194"><a href="#Scalar.get-194"><span class="linenos">194</span></a>
+</span><span id="Scalar.get-195"><a href="#Scalar.get-195"><span class="linenos">195</span></a><span class="sd">        :return: Value from scalar.</span>
+</span><span id="Scalar.get-196"><a href="#Scalar.get-196"><span class="linenos">196</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Scalar.get-197"><a href="#Scalar.get-197"><span class="linenos">197</span></a>
+</span><span id="Scalar.get-198"><a href="#Scalar.get-198"><span class="linenos">198</span></a>        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_c_type</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Scalar.get-199"><a href="#Scalar.get-199"><span class="linenos">199</span></a>        <span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">_scalar_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+</span><span id="Scalar.get-200"><a href="#Scalar.get-200"><span class="linenos">200</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="o">.</span><span class="n">cast_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Read the value stored in the scalar.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+<span class="go">&#39;</span>
+<span class="go">    10</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
 
 <h6 id="returns">Returns</h6>
 
