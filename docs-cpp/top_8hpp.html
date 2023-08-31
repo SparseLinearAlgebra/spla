@@ -171,6 +171,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a06ea4f557983c48bad15d37bcecfa31b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top_8hpp.html#a06ea4f557983c48bad15d37bcecfa31b">DECL_OP_UNA</a>(fname,  key_prefix,  A0,  R, ...)</td></tr>
+<tr class="separator:a06ea4f557983c48bad15d37bcecfa31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f7adc7691b7635372d7e9c681bbe03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top_8hpp.html#a82f7adc7691b7635372d7e9c681bbe03">DECL_OP_UNA_S</a>(name,  key_prefix,  T, ...)&#160;&#160;&#160;    <a class="el" href="top_8hpp.html#a06ea4f557983c48bad15d37bcecfa31b">DECL_OP_UNA</a>(name, key_prefix, T, T, __VA_ARGS__)</td></tr>
+<tr class="separator:a82f7adc7691b7635372d7e9c681bbe03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fe5d0089ee3c73c28471d90deec890c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top_8hpp.html#a6fe5d0089ee3c73c28471d90deec890c">DECL_OP_BIN</a>(fname,  key_prefix,  A0,  A1,  R, ...)</td></tr>
 <tr class="separator:a6fe5d0089ee3c73c28471d90deec890c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab24d7758955a4947bfe10fa945ad1950"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top_8hpp.html#ab24d7758955a4947bfe10fa945ad1950">DECL_OP_BIN_S</a>(name,  key_prefix,  T, ...)&#160;&#160;&#160;    <a class="el" href="top_8hpp.html#a6fe5d0089ee3c73c28471d90deec890c">DECL_OP_BIN</a>(name, key_prefix, T, T, T, __VA_ARGS__)</td></tr>
@@ -359,6 +363,113 @@ Functions</h2></td></tr>
 <div class="line">        fname = func.as&lt;OpSelect&gt;();                        \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a06ea4f557983c48bad15d37bcecfa31b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06ea4f557983c48bad15d37bcecfa31b">&#9670;&nbsp;</a></span>DECL_OP_UNA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DECL_OP_UNA</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">key_prefix, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">A0, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">R, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    {                                                       \</div>
+<div class="line">        auto func = make_ref&lt;TOpUnary&lt;A0, R&gt;&gt;();            \</div>
+<div class="line">                                                            \</div>
+<div class="line">        func-&gt;function = [](A0 a) -&gt; R __VA_ARGS__;         \</div>
+<div class="line">        func-&gt;name     = #fname;                            \</div>
+<div class="line">                                                            \</div>
+<div class="line">        std::stringstream source_builder;                   \</div>
+<div class="line">        source_builder &lt;&lt; <span class="stringliteral">&quot;(&quot;</span>                               \</div>
+<div class="line">                       &lt;&lt; func-&gt;get_type_arg_0()-&gt;get_cpp() \</div>
+<div class="line">                       &lt;&lt; <span class="stringliteral">&quot; a)&quot;</span> #__VA_ARGS__;               \</div>
+<div class="line">                                                            \</div>
+<div class="line">        func-&gt;source = source_builder.str();                \</div>
+<div class="line">                                                            \</div>
+<div class="line">        std::stringstream key_builder;                      \</div>
+<div class="line">        key_builder &lt;&lt; #key_prefix &lt;&lt; <span class="stringliteral">&quot;_&quot;</span>                   \</div>
+<div class="line">                    &lt;&lt; func-&gt;get_type_arg_0()-&gt;get_code()   \</div>
+<div class="line">                    &lt;&lt; func-&gt;get_type_res()-&gt;get_code();    \</div>
+<div class="line">        func-&gt;key = key_builder.str();                      \</div>
+<div class="line">                                                            \</div>
+<div class="line">        fname = func.as&lt;OpUnary&gt;();                         \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a82f7adc7691b7635372d7e9c681bbe03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f7adc7691b7635372d7e9c681bbe03">&#9670;&nbsp;</a></span>DECL_OP_UNA_S</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DECL_OP_UNA_S</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">key_prefix, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;    <a class="el" href="top_8hpp.html#a06ea4f557983c48bad15d37bcecfa31b">DECL_OP_UNA</a>(name, key_prefix, T, T, __VA_ARGS__)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 </div><!-- contents -->
