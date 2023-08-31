@@ -101,6 +101,18 @@ class SplaNotImplemented(SplaError):
 class FormatMatrix(enum.Enum):
     """
     Mapping for spla supported matrix storage formats enumeration.
+
+    | Name     | Memory type   | Description                                                       |
+    |:---------|--------------:|:------------------------------------------------------------------|
+    |`CPU_LIL` | RAM (host)    | List of lists, storing adjacency lists per vertex                 |
+    |`CPU_DOK` | RAM (host)    | Dictionary of keys, effectively hash map of row,column to value   |
+    |`CPU_COO` | RAM (host)    | Lists of coordinates, storing rows, columns and values separately |
+    |`CPU_CSR` | RAM (host)    | Compressed sparse rows format                                     |
+    |`CPU_CSC` | RAM (host)    | Compressed sparse columns format                                  |
+    |`ACC_COO` | VRAM (device) | List of coordinates, but implemented for GPU/ACC usage            |
+    |`ACC_CSR` | VRAM (device) | CSR, but implemented for GPU/ACC usage                            |
+    |`ACC_CSC` | VRAM (device) | CSC, but implemented for GPU/ACC usage                            |
+
     """
 
     CPU_LIL = 0
@@ -117,6 +129,14 @@ class FormatMatrix(enum.Enum):
 class FormatVector(enum.Enum):
     """
     Mapping for spla supported vector storage formats enumeration.
+
+    | Name       | Memory type   | Description                                                    |
+    |:-----------|--------------:|:---------------------------------------------------------------|
+    |`CPU_DOK`   | RAM (host)    | Dictionary of keys, hash map of index to value                 |
+    |`CPU_DENSE` | RAM (host)    | Dense array of values with direct indexing                     |
+    |`CPU_COO`   | RAM (host)    | List of coordinates, storing rows and values separately        |
+    |`ACC_DENSE` | VRAM (device) | Dense array, but implemented for GPU/ACC usage                 |
+    |`ACC_COO`   | VRAM (device) | List of coordinates, but implemented for GPU/ACC usage         |
     """
 
     CPU_DOK = 0

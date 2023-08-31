@@ -57,6 +57,75 @@ It automatically attempts to initialize accelerator and trys to use
 it to speed-up some operations. All GPU communication, data transformations
 and transfers done internally automatically without any efforts from user perspective.
 
+Example of usage
+----------------
+
+This example demonstrates basic library primitives usage and shows how to implement simple breadth-first search
+algorithm using `spla` primitives in a few lines of code and run it on your GPU using OpenCL backend for acceleration.
+
+Import `spla` package to your python script.
+>>> from pyspla import *
+
+Create an adjacency matrix of graph using lists of row-column indices and values.
+>>> I = [0, 1, 2, 2, 3]
+>>> J = [1, 2, 0, 3, 2]
+>>> V = [1, 1, 1, 1, 1]
+>>> A = Matrix.from_lists(I, J, V, shape=(4, 4), dtype=INT)
+>>> print(A)
+'
+    0 1 2 3
+ 0| . 1 . .|  0
+ 1| . . 1 .|  1
+ 2| 1 . . 1|  2
+ 3| . . 1 .|  3
+    0 1 2 3
+'
+
+The following function implements single-source breadth-first search algoritm through masked matrix-vector product.
+The algorithm accepts starting vertex and an adjacency matrix of a graph. It traverces graph using `vxm` and assigns
+depths to reached vertices. Mask is used to update only unvisited vertices reducing number of required computations.
+>>> def bfs(s: int, A: Matrix):
+>>>     v = Vector(A.n_rows, INT)  # to store depths
+>>>
+>>>     front = Vector.from_lists([s], [1], A.n_rows, INT)  # front of new vertices to study
+>>>     front_size = 1              # current front size
+>>>     depth = Scalar(INT, 0)      # depth of search
+>>>     count = 0                   # num of reached vertices
+>>>
+>>>     while front_size > 0:       # while have something to study
+>>>         depth += 1
+>>>         count += front_size
+>>>         v.assign(front, depth, op_assign=INT.SECOND, op_select=INT.NQZERO)              # assign depths
+>>>         front = front.vxm(v, A, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO) # do traversal
+>>>         front_size = front.reduce(op_reduce=INT.PLUS).get()                             # update front count to end algorithm
+>>>
+>>>     return v, count, depth.get()
+
+Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier. None, that `spla` will
+automatically select GPU-based acceleration backed for computations.
+>>> v, c, d = bfs(0, A)
+
+Outhput the result vector with distances of reached vertices.
+>>> print(v)
+'
+ 0| 1
+ 1| 2
+ 2| 3
+ 3| 4
+'
+
+Total number of reached vertices.
+>>> print(c)
+'
+ 4
+'
+
+Maximum depth of a discovered vertex.
+>>> print(d)
+'
+ 4
+'
+
 Performance
 -----------
 
@@ -130,6 +199,15 @@ Library provides a set of unary, binary and select ops for values data manipulat
 matrix and vector containers. Unary operations commonly used for apply and transformation
 operations, binary operations used for reductions and products, select operations used for
 filtration and mask application.
+
+Math operations
+---------------
+
+Library provides as of high-level linera algebra operations over matrices and vectors with
+parametrization by binary, unary and select `ops`. There is avalable implementation for
+masked `mxmT` matrix-matrix, `mxv` matrix-vector, `vxm` vector-matrix products, matrix and
+vector reductions, assignment, and so on. Most operations have both CPU and GPU implementation.
+Thus, you will have GPU performance in computations out of the box.
 
 Details
 -------

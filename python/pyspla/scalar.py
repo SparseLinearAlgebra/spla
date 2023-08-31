@@ -29,7 +29,7 @@ SOFTWARE.
 import ctypes
 
 from .bridge import backend, check
-from .type import INT
+from .type import INT, FLOAT
 from .object import Object
 
 
@@ -66,6 +66,12 @@ class Scalar(Object):
         """
         Creates new scalar of desired type or retains existing C object.
 
+        >>> s = Scalar(INT, 10)
+        >>> print(s)
+        '
+            10
+        '
+
         :param dtype: optional: Type. default: INT.
             Type of the scalar value.
 
@@ -94,6 +100,12 @@ class Scalar(Object):
     def dtype(self):
         """
         Returns the type of stored value in the scalar.
+
+        >>> s = Scalar(INT)
+        >>> print(s.dtype)
+        '
+            <class 'pyspla.type.INT'>
+        '
         """
 
         return self._dtype
@@ -102,6 +114,12 @@ class Scalar(Object):
     def shape(self):
         """
         2-tuple shape of the storage. For scalar object it is always 1 by 1.
+
+        >>> s = Scalar(INT)
+        >>> print(s.shape)
+        '
+            (1, 1)
+        '
         """
 
         return 1, 1
@@ -110,13 +128,52 @@ class Scalar(Object):
     def n_vals(self):
         """
         Number of stored values in the scalar. Always 1.
+
+        >>> s = Scalar(INT)
+        >>> print(s.n_vals)
+        '
+            1
+        '
         """
 
         return 1
 
+    @classmethod
+    def from_value(cls, value):
+        """
+        Create scalar and infer type.
+
+        >>> s = Scalar.from_value(0.5)
+        >>> print(s.dtype)
+        '
+            <class 'pyspla.type.FLOAT'>
+        '
+
+        :param value: any.
+            Value to create scalar from.
+
+        :return: Scalar with value.
+        """
+
+        if isinstance(value, float):
+            return Scalar(dtype=FLOAT, value=value)
+        elif isinstance(value, int):
+            return Scalar(dtype=INT, value=value)
+        elif isinstance(value, bool):
+            return Scalar(dtype=INT, value=value)
+        else:
+            raise Exception("cannot infer type")
+
     def set(self, value=None):
         """
         Set the value stored in the scalar. If no value passed the default value is set.
+
+        >>> s = Scalar(INT)
+        >>> s.set(10)
+        >>> print(s)
+        '
+            10
+        '
 
         :param value: optional: Any. default: None.
             Optional value to store in scalar.
@@ -127,6 +184,12 @@ class Scalar(Object):
     def get(self):
         """
         Read the value stored in the scalar.
+
+        >>> s = Scalar(INT, 10)
+        >>> print(s.get())
+        '
+            10
+        '
 
         :return: Value from scalar.
         """
@@ -140,3 +203,41 @@ class Scalar(Object):
 
     def __iter__(self):
         return iter([self.get()])
+
+    def __add__(self, other):
+        return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
+
+    def __sub__(self, other):
+        return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
+
+    def __mul__(self, other):
+        return Scalar(dtype=self.dtype, value=self.get() * Scalar._value(other))
+
+    def __truediv__(self, other):
+        return Scalar(dtype=self.dtype, value=self.get() / Scalar._value(other))
+
+    def __floordiv__(self, other):
+        return Scalar(dtype=self.dtype, value=self.get() // Scalar._value(other))
+
+    def __iadd__(self, other):
+        self.set(self.get() + Scalar._value(other))
+        return self
+
+    def __isub__(self, other):
+        self.set(self.get() - Scalar._value(other))
+        return self
+
+    def __imul__(self, other):
+        self.set(self.get() * Scalar._value(other))
+        return self
+
+    def __idiv__(self, other):
+        self.set(self.get() / Scalar._value(other))
+        return self
+
+    @classmethod
+    def _value(cls, other):
+        if isinstance(other, Scalar):
+            return other.get()
+        else:
+            return other
