@@ -237,6 +237,27 @@ namespace spla {
         return {r.as<Object>(), u.as<Object>(), v.as<Object>(), op.as<Object>()};
     }
 
+    std::string ScheduleTask_v_emult::get_name() {
+        return "v_emult";
+    }
+    std::string ScheduleTask_v_emult::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_v_emult::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_v_emult::get_args() {
+        return {r.as<Object>(), u.as<Object>(), v.as<Object>(), op.as<Object>()};
+    }
+
     std::string ScheduleTask_v_eadd_fdb::get_name() {
         return "v_eadd_fdb";
     }

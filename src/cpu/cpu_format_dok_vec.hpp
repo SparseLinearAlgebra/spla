@@ -30,6 +30,8 @@
 
 #include <cpu/cpu_formats.hpp>
 
+#include <algorithm>
+
 namespace spla {
 
     /**
@@ -43,9 +45,19 @@ namespace spla {
         assert(out.Ai.size() == in.values);
         assert(out.Ax.size() == in.values);
 
-        uint k = 0;
+
+        std::vector<std::pair<uint, T>> tmp;
+        tmp.reserve(in.values);
 
         for (const auto& entry : in.Ax) {
+            tmp.emplace_back(entry.first, entry.second);
+        }
+
+        std::sort(tmp.begin(), tmp.end(), [](const auto& a, const auto& b) { return a.first < b.first; });
+
+        uint k = 0;
+
+        for (const auto& entry : tmp) {
             const uint i = entry.first;
             const T    x = entry.second;
             out.Ai[k]    = i;

@@ -219,6 +219,22 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_emult(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        u,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task  = make_ref<ScheduleTask_v_emult>();
+        task->r    = std::move(r);
+        task->u    = std::move(u);
+        task->v    = std::move(v);
+        task->op   = std::move(op);
+        task->desc = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_eadd_fdb(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        v,

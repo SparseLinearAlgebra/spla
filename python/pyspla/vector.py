@@ -593,6 +593,50 @@ class Vector(Object):
 
         return out
 
+    def emult(self, op_mult, v, out=None, desc=None):
+        """
+        Element-wise mult one vector to another and return result.
+
+        >>> u = Vector.from_lists([0, 1], [10, 20], 4, INT)
+        >>> v = Vector.from_lists([1, 3], [-5, 12], 4, INT)
+        >>> print(u.emult(INT.PLUS, v))
+        '
+         0| .
+         1|15
+         2| .
+         3| .
+        '
+
+        :param op_mult: OpBinary.
+            Binary operation to mult values.
+
+        :param v: Vector.
+            Other right vector to mult with this.
+
+        :param out: optional: Vector. default: None.
+            Optional vector to store result.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        if out is None:
+            out = Vector(shape=self.n_rows, dtype=self.dtype)
+
+        assert v
+        assert v.n_rows == self.n_rows
+        assert out.n_rows == self.n_rows
+        assert v.dtype == self.dtype
+        assert out.dtype == out.dtype
+        assert op_mult
+
+        check(backend().spla_Exec_v_emult(out.hnd, self.hnd, v.hnd, op_mult.hnd,
+                                          self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def assign(self, mask, value, op_assign, op_select, desc=None):
         """
         Assign scalar value to a vector by mask.

@@ -331,6 +331,7 @@ add_library(spla SHARED
         src/cpu/cpu_v_count_mf.hpp
         src/cpu/cpu_v_eadd.hpp
         src/cpu/cpu_v_eadd_fdb.hpp
+        src/cpu/cpu_v_emult.hpp
         src/cpu/cpu_v_map.hpp
         src/cpu/cpu_v_reduce.hpp
         src/util/pair_hash.hpp

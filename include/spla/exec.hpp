@@ -260,6 +260,26 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) element-wise multiplication by structure of two vectors
+     *
+     * @param r Vector to store result of operation
+     * @param u Vector input to mult
+     * @param v Vector input to mult
+     * @param op Element-wise binary operator mult elements of vectors
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_emult(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        u,
+            ref_ptr<Vector>        v,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) element-wise addition by structure of two vectors with feedback
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.

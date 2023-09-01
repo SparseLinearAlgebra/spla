@@ -214,6 +214,32 @@ TEST(vector, eadd_sub_pow2) {
     }
 }
 
+TEST(vector, emult_min) {
+    const spla::uint N = 1000000;
+    auto             r = spla::Vector::make(N, spla::FLOAT);
+    auto             u = spla::Vector::make(N, spla::FLOAT);
+    auto             v = spla::Vector::make(N, spla::FLOAT);
+
+    for (spla::uint i = 0; i < N; i += 1) {
+        if (i % 2) u->set_float(i, 1.0f);
+        v->set_float(i, 2.0f);
+    }
+
+    spla::exec_v_emult(r, u, v, spla::MIN_FLOAT);
+
+    for (spla::uint i = 0; i < N; i += 1) {
+        const float error = 0.00001f;
+        float       actual;
+        r->get_float(i, actual);
+
+        if (i % 2) {
+            EXPECT_TRUE(std::abs(1.0f - actual) <= error);
+        } else {
+            EXPECT_TRUE(std::abs(0.0f - actual) <= error);
+        }
+    }
+}
+
 TEST(vector, eadd_fdb_min) {
     const spla::uint N    = 20;
     const spla::uint K    = 8;

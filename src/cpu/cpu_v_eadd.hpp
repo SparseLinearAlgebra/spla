@@ -54,19 +54,19 @@ namespace spla {
 
         Status execute(const DispatchContext& ctx) override {
             auto                t = ctx.task.template cast_safe<ScheduleTask_v_eadd>();
-            ref_ptr<TVector<T>> u = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>> u = t->u.template cast_safe<TVector<T>>();
             ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
 
             if (u->is_valid(FormatVector::CpuDense) && v->is_valid(FormatVector::CpuDense)) {
-                return execute_dn2dn(ctx);
+                return execute_dnNdn(ctx);
             }
 
-            return execute_dn2dn(ctx);
+            return execute_dnNdn(ctx);
         }
 
     private:
-        Status execute_dn2dn(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/vector_eadd_dn2dn");
+        Status execute_dnNdn(const DispatchContext& ctx) {
+            TIME_PROFILE_SCOPE("cpu/vector_eadd_dnNdn");
 
             auto                        t  = ctx.task.template cast_safe<ScheduleTask_v_eadd>();
             ref_ptr<TVector<T>>         r  = t->r.template cast_safe<TVector<T>>();

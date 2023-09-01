@@ -67,6 +67,9 @@ spla_Status spla_Exec_m_reduce(spla_Scalar r, spla_Scalar s, spla_Matrix M, spla
 spla_Status spla_Exec_v_eadd(spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_v_eadd, AS_V(r), AS_V(u), AS_V(v), AS_OB(op));
 }
+spla_Status spla_Exec_v_emult(spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_v_emult, AS_V(r), AS_V(u), AS_V(v), AS_OB(op));
+}
 spla_Status spla_Exec_v_eadd_fdb(spla_Vector r, spla_Vector v, spla_Vector fdb, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_v_eadd_fdb, AS_V(r), AS_V(v), AS_V(fdb), AS_OB(op));
 }
