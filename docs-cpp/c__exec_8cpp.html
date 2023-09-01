@@ -106,6 +106,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a47a272c770e3760a499e18de07c3289e"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a47a272c770e3760a499e18de07c3289e">spla_Exec_mxm</a> (spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
+<tr class="separator:a47a272c770e3760a499e18de07c3289e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab716e4145a93953a7559174aef12459f"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#ab716e4145a93953a7559174aef12459f">spla_Exec_mxmT_masked</a> (spla_Matrix R, spla_Matrix mask, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:ab716e4145a93953a7559174aef12459f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef21924980b26e2ca5be2ada637e443"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a6ef21924980b26e2ca5be2ada637e443">spla_Exec_mxv_masked</a> (spla_Vector r, spla_Vector mask, spla_Matrix M, spla_Vector v, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
@@ -407,6 +409,70 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">spla_OpBinary&#160;</td>
           <td class="paramname"><em>op_reduce</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Scalar&#160;</td>
+          <td class="paramname"><em>init</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Descriptor&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_ScheduleTask *&#160;</td>
+          <td class="paramname"><em>task</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a47a272c770e3760a499e18de07c3289e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a272c770e3760a499e18de07c3289e">&#9670;&nbsp;</a></span>spla_Exec_mxm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Exec_mxm </td>
+          <td>(</td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpBinary&#160;</td>
+          <td class="paramname"><em>op_multiply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpBinary&#160;</td>
+          <td class="paramname"><em>op_add</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -189,17 +189,19 @@ $(function() {
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                        }</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    }</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    R_lst.emplace_back(mask_i, r);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    };</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    <span class="keywordflow">if</span> (r != I) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        R_lst.emplace_back(mask_i, r);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                    }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    };</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXMT_MASKED_HPP</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_MXMT_MASKED_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html">spla::Algo_mxmT_masked_cpu</a></div><div class="ttdef"><b>Definition:</b> cpu_mxmT_masked.hpp:44</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__mxmT__masked__cpu_html_a02b05918292e77b9f999feb54df8ceaa"><div class="ttname"><a href="classspla_1_1Algo__mxmT__masked__cpu.html#a02b05918292e77b9f999feb54df8ceaa">spla::Algo_mxmT_masked_cpu::~Algo_mxmT_masked_cpu</a></div><div class="ttdeci">~Algo_mxmT_masked_cpu() override=default</div></div>

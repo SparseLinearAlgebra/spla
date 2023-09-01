@@ -203,6 +203,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__m__reduce__by__row__cpu.html">Algo_m_reduce_by_row_cpu</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__mxm__cpu.html">Algo_mxm_cpu</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__mxmT__masked__cpu.html">Algo_mxmT_masked_cpu</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__mxv__masked__cpu.html">Algo_mxv_masked_cpu</a></td></tr>
@@ -294,6 +296,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__callback.html">ScheduleTask_callback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback task.  <a href="classspla_1_1ScheduleTask__callback.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__mxm.html">ScheduleTask_mxm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse matrix sparse matrix product.  <a href="classspla_1_1ScheduleTask__mxm.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__mxmT__masked.html">ScheduleTask_mxmT_masked</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked matrix matrix-transposed product.  <a href="classspla_1_1ScheduleTask__mxmT__masked.html#details">More...</a><br /></td></tr>
@@ -439,6 +444,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab79daac2eadc8b4c074da567ec1d8a47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ab79daac2eadc8b4c074da567ec1d8a47">exec_callback</a> (<a class="el" href="group__spla.html#gad09a33345c60faa341702747b8e1022d">ScheduleCallback</a> callback, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:ab79daac2eadc8b4c074da567ec1d8a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) callback function.  <a href="namespacespla.html#ab79daac2eadc8b4c074da567ec1d8a47">More...</a><br /></td></tr>
 <tr class="separator:ab79daac2eadc8b4c074da567ec1d8a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac84a81e80db3fdde62f3ace6406d958f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#ac84a81e80db3fdde62f3ace6406d958f">exec_mxm</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; R, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; A, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; B, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_multiply, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_add, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; init, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
+<tr class="memdesc:ac84a81e80db3fdde62f3ace6406d958f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) sparse-matrix sparse-matrix product.  <a href="namespacespla.html#ac84a81e80db3fdde62f3ace6406d958f">More...</a><br /></td></tr>
+<tr class="separator:ac84a81e80db3fdde62f3ace6406d958f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a353dd074a27c8402db7760098559e9f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a353dd074a27c8402db7760098559e9f9">exec_mxmT_masked</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; R, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; mask, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; A, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt; B, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_multiply, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op_add, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpSelect.html">OpSelect</a> &gt; op_select, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt; init, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:a353dd074a27c8402db7760098559e9f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) sparse masked matrix matrix-transposed product.  <a href="namespacespla.html#a353dd074a27c8402db7760098559e9f9">More...</a><br /></td></tr>
 <tr class="separator:a353dd074a27c8402db7760098559e9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -496,6 +504,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga60388c4406e177aa850a5c40746a68f2">cpu_coo_clear</a> (<a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in)</td></tr>
 <tr class="separator:ga60388c4406e177aa850a5c40746a68f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga9f576d3c7a7c1f53c02e4e3ed3207cfd">cpu_coo_to_lil</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga82085e43c0c4cd99e2702ae7cff74636">cpu_coo_to_dok</a> (const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;out)</td></tr>
 <tr class="separator:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1575,6 +1586,89 @@ template&lt;typename T &gt; </div>
     <tr><td class="paramname">M</td><td><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> to reduce rows </td></tr>
     <tr><td class="paramname">op_reduce</td><td>Binary op to sum elements of single row </td></tr>
     <tr><td class="paramname">init</td><td><a class="el" href="classspla_1_1Scalar.html" title="Box for a single typed scalar value.">Scalar</a> identity element for reduction </td></tr>
+    <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
+    <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classStatus.html" title="Status of library operation execution.">Status</a> on task execution or status on hnd creation </dd></dl>
+
+</div>
+</div>
+<a id="ac84a81e80db3fdde62f3ace6406d958f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac84a81e80db3fdde62f3ace6406d958f">&#9670;&nbsp;</a></span>exec_mxm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::exec_mxm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt;&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Matrix.html">Matrix</a> &gt;&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
+          <td class="paramname"><em>op_multiply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
+          <td class="paramname"><em>op_add</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Scalar.html">Scalar</a> &gt;&#160;</td>
+          <td class="paramname"><em>init</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *&#160;</td>
+          <td class="paramname"><em>task_hnd</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Execute (schedule) sparse-matrix sparse-matrix product. </p>
+<dl class="section note"><dt>Note</dt><dd>Operation equivalent semantic is <code>R = AB</code> </dd>
+<dd>
+Pass valid <code>task_hnd</code> to store as a task, rather then execute immediately.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">R</td><td><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> to store result of the operation </td></tr>
+    <tr><td class="paramname">A</td><td>Left matrix for product </td></tr>
+    <tr><td class="paramname">B</td><td>Right matrix for product </td></tr>
+    <tr><td class="paramname">op_multiply</td><td>Element-wise binary operator for matrices elements product </td></tr>
+    <tr><td class="paramname">op_add</td><td>Element-wise binary operator for matrices elements products sum </td></tr>
+    <tr><td class="paramname">init</td><td>Init of matrix row and column product </td></tr>
     <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
     <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
   </table>

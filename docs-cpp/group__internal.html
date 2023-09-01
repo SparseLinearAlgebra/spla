@@ -172,6 +172,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__callback.html">spla::ScheduleTask_callback</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback task.  <a href="classspla_1_1ScheduleTask__callback.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__mxm.html">spla::ScheduleTask_mxm</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse matrix sparse matrix product.  <a href="classspla_1_1ScheduleTask__mxm.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__mxmT__masked.html">spla::ScheduleTask_mxmT_masked</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked matrix matrix-transposed product.  <a href="classspla_1_1ScheduleTask__mxmT__masked.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,6 +234,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga60388c4406e177aa850a5c40746a68f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga60388c4406e177aa850a5c40746a68f2">spla::cpu_coo_clear</a> (<a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in)</td></tr>
 <tr class="separator:ga60388c4406e177aa850a5c40746a68f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga9f576d3c7a7c1f53c02e4e3ed3207cfd">spla::cpu_coo_to_lil</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:ga9f576d3c7a7c1f53c02e4e3ed3207cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga82085e43c0c4cd99e2702ae7cff74636">spla::cpu_coo_to_dok</a> (const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;out)</td></tr>
 <tr class="separator:ga82085e43c0c4cd99e2702ae7cff74636"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1418,6 +1424,42 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classspla_1_1CpuDok.html">CpuDok</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga9f576d3c7a7c1f53c02e4e3ed3207cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f576d3c7a7c1f53c02e4e3ed3207cfd">&#9670;&nbsp;</a></span>cpu_coo_to_lil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_to_lil </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td>
+          <td class="paramname"><em>n_rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuLil.html">CpuLil</a>&lt; T &gt; &amp;&#160;</td>
           <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
