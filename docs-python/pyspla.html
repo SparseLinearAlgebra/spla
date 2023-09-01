@@ -487,6 +487,9 @@
                                 <a class="function" href="#Matrix.reduce_by_row">reduce_by_row</a>
                         </li>
                         <li>
+                                <a class="function" href="#Matrix.reduce_by_column">reduce_by_column</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#Matrix.reduce">reduce</a>
                         </li>
                 </ul>
@@ -5919,56 +5922,102 @@ Optional distribution for uniform generation of values.</p></li>
 </span><span id="Matrix-771"><a href="#Matrix-771"><span class="linenos">771</span></a>
 </span><span id="Matrix-772"><a href="#Matrix-772"><span class="linenos">772</span></a>        <span class="k">return</span> <span class="n">out</span>
 </span><span id="Matrix-773"><a href="#Matrix-773"><span class="linenos">773</span></a>
-</span><span id="Matrix-774"><a href="#Matrix-774"><span class="linenos">774</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix-774"><a href="#Matrix-774"><span class="linenos">774</span></a>    <span class="k">def</span> <span class="nf">reduce_by_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </span><span id="Matrix-775"><a href="#Matrix-775"><span class="linenos">775</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Matrix-776"><a href="#Matrix-776"><span class="linenos">776</span></a><span class="sd">        Reduce matrix elements.</span>
+</span><span id="Matrix-776"><a href="#Matrix-776"><span class="linenos">776</span></a><span class="sd">        Reduce matrix elements by a column to a row vector.</span>
 </span><span id="Matrix-777"><a href="#Matrix-777"><span class="linenos">777</span></a>
-</span><span id="Matrix-778"><a href="#Matrix-778"><span class="linenos">778</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)</span>
-</span><span id="Matrix-779"><a href="#Matrix-779"><span class="linenos">779</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce(op_reduce=INT.MULT, init=Scalar(INT, 1)))</span>
+</span><span id="Matrix-778"><a href="#Matrix-778"><span class="linenos">778</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 1, 2, 3], [0, 3, 3, 2], [1, 2, 3, 4], (4, 4), INT)</span>
+</span><span id="Matrix-779"><a href="#Matrix-779"><span class="linenos">779</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce_by_column(INT.PLUS))</span>
 </span><span id="Matrix-780"><a href="#Matrix-780"><span class="linenos">780</span></a><span class="sd">        &#39;</span>
-</span><span id="Matrix-781"><a href="#Matrix-781"><span class="linenos">781</span></a><span class="sd">            32</span>
-</span><span id="Matrix-782"><a href="#Matrix-782"><span class="linenos">782</span></a><span class="sd">        &#39;</span>
-</span><span id="Matrix-783"><a href="#Matrix-783"><span class="linenos">783</span></a>
-</span><span id="Matrix-784"><a href="#Matrix-784"><span class="linenos">784</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
-</span><span id="Matrix-785"><a href="#Matrix-785"><span class="linenos">785</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
+</span><span id="Matrix-781"><a href="#Matrix-781"><span class="linenos">781</span></a><span class="sd">         0| 1</span>
+</span><span id="Matrix-782"><a href="#Matrix-782"><span class="linenos">782</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix-783"><a href="#Matrix-783"><span class="linenos">783</span></a><span class="sd">         2| 4</span>
+</span><span id="Matrix-784"><a href="#Matrix-784"><span class="linenos">784</span></a><span class="sd">         3| 5</span>
+</span><span id="Matrix-785"><a href="#Matrix-785"><span class="linenos">785</span></a><span class="sd">        &#39;</span>
 </span><span id="Matrix-786"><a href="#Matrix-786"><span class="linenos">786</span></a>
-</span><span id="Matrix-787"><a href="#Matrix-787"><span class="linenos">787</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
-</span><span id="Matrix-788"><a href="#Matrix-788"><span class="linenos">788</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
+</span><span id="Matrix-787"><a href="#Matrix-787"><span class="linenos">787</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Matrix-788"><a href="#Matrix-788"><span class="linenos">788</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
 </span><span id="Matrix-789"><a href="#Matrix-789"><span class="linenos">789</span></a>
-</span><span id="Matrix-790"><a href="#Matrix-790"><span class="linenos">790</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
-</span><span id="Matrix-791"><a href="#Matrix-791"><span class="linenos">791</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Matrix-790"><a href="#Matrix-790"><span class="linenos">790</span></a><span class="sd">        :param out: optional: Vector: default: None.</span>
+</span><span id="Matrix-791"><a href="#Matrix-791"><span class="linenos">791</span></a><span class="sd">            Optional vector to store result of reduction.</span>
 </span><span id="Matrix-792"><a href="#Matrix-792"><span class="linenos">792</span></a>
-</span><span id="Matrix-793"><a href="#Matrix-793"><span class="linenos">793</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Matrix-794"><a href="#Matrix-794"><span class="linenos">794</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix-793"><a href="#Matrix-793"><span class="linenos">793</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Matrix-794"><a href="#Matrix-794"><span class="linenos">794</span></a><span class="sd">            Optional neutral init value for reduction.</span>
 </span><span id="Matrix-795"><a href="#Matrix-795"><span class="linenos">795</span></a>
-</span><span id="Matrix-796"><a href="#Matrix-796"><span class="linenos">796</span></a><span class="sd">        :return: Scalar value with result.</span>
-</span><span id="Matrix-797"><a href="#Matrix-797"><span class="linenos">797</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix-796"><a href="#Matrix-796"><span class="linenos">796</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix-797"><a href="#Matrix-797"><span class="linenos">797</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
 </span><span id="Matrix-798"><a href="#Matrix-798"><span class="linenos">798</span></a>
-</span><span id="Matrix-799"><a href="#Matrix-799"><span class="linenos">799</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Matrix-800"><a href="#Matrix-800"><span class="linenos">800</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Matrix-801"><a href="#Matrix-801"><span class="linenos">801</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Matrix-802"><a href="#Matrix-802"><span class="linenos">802</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix-799"><a href="#Matrix-799"><span class="linenos">799</span></a><span class="sd">        :return: Vector with result.</span>
+</span><span id="Matrix-800"><a href="#Matrix-800"><span class="linenos">800</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix-801"><a href="#Matrix-801"><span class="linenos">801</span></a>
+</span><span id="Matrix-802"><a href="#Matrix-802"><span class="linenos">802</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
 </span><span id="Matrix-803"><a href="#Matrix-803"><span class="linenos">803</span></a>
-</span><span id="Matrix-804"><a href="#Matrix-804"><span class="linenos">804</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Matrix-805"><a href="#Matrix-805"><span class="linenos">805</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Matrix-806"><a href="#Matrix-806"><span class="linenos">806</span></a>
-</span><span id="Matrix-807"><a href="#Matrix-807"><span class="linenos">807</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Matrix-808"><a href="#Matrix-808"><span class="linenos">808</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Matrix-809"><a href="#Matrix-809"><span class="linenos">809</span></a>
-</span><span id="Matrix-810"><a href="#Matrix-810"><span class="linenos">810</span></a>        <span class="k">return</span> <span class="n">out</span>
-</span><span id="Matrix-811"><a href="#Matrix-811"><span class="linenos">811</span></a>
-</span><span id="Matrix-812"><a href="#Matrix-812"><span class="linenos">812</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Matrix-813"><a href="#Matrix-813"><span class="linenos">813</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+</span><span id="Matrix-804"><a href="#Matrix-804"><span class="linenos">804</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-805"><a href="#Matrix-805"><span class="linenos">805</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix-806"><a href="#Matrix-806"><span class="linenos">806</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-807"><a href="#Matrix-807"><span class="linenos">807</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix-808"><a href="#Matrix-808"><span class="linenos">808</span></a>
+</span><span id="Matrix-809"><a href="#Matrix-809"><span class="linenos">809</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix-810"><a href="#Matrix-810"><span class="linenos">810</span></a>        <span class="k">assert</span> <span class="n">init</span>
+</span><span id="Matrix-811"><a href="#Matrix-811"><span class="linenos">811</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix-812"><a href="#Matrix-812"><span class="linenos">812</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix-813"><a href="#Matrix-813"><span class="linenos">813</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
 </span><span id="Matrix-814"><a href="#Matrix-814"><span class="linenos">814</span></a>
-</span><span id="Matrix-815"><a href="#Matrix-815"><span class="linenos">815</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Matrix-816"><a href="#Matrix-816"><span class="linenos">816</span></a>        <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
-</span><span id="Matrix-817"><a href="#Matrix-817"><span class="linenos">817</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
-</span><span id="Matrix-818"><a href="#Matrix-818"><span class="linenos">818</span></a>
-</span><span id="Matrix-819"><a href="#Matrix-819"><span class="linenos">819</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
-</span><span id="Matrix-820"><a href="#Matrix-820"><span class="linenos">820</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Matrix-821"><a href="#Matrix-821"><span class="linenos">821</span></a>
-</span><span id="Matrix-822"><a href="#Matrix-822"><span class="linenos">822</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
-</span><span id="Matrix-823"><a href="#Matrix-823"><span class="linenos">823</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
+</span><span id="Matrix-815"><a href="#Matrix-815"><span class="linenos">815</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce_by_column</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix-816"><a href="#Matrix-816"><span class="linenos">816</span></a>                                                     <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix-817"><a href="#Matrix-817"><span class="linenos">817</span></a>
+</span><span id="Matrix-818"><a href="#Matrix-818"><span class="linenos">818</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Matrix-819"><a href="#Matrix-819"><span class="linenos">819</span></a>
+</span><span id="Matrix-820"><a href="#Matrix-820"><span class="linenos">820</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix-821"><a href="#Matrix-821"><span class="linenos">821</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix-822"><a href="#Matrix-822"><span class="linenos">822</span></a><span class="sd">        Reduce matrix elements.</span>
+</span><span id="Matrix-823"><a href="#Matrix-823"><span class="linenos">823</span></a>
+</span><span id="Matrix-824"><a href="#Matrix-824"><span class="linenos">824</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)</span>
+</span><span id="Matrix-825"><a href="#Matrix-825"><span class="linenos">825</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce(op_reduce=INT.MULT, init=Scalar(INT, 1)))</span>
+</span><span id="Matrix-826"><a href="#Matrix-826"><span class="linenos">826</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-827"><a href="#Matrix-827"><span class="linenos">827</span></a><span class="sd">            32</span>
+</span><span id="Matrix-828"><a href="#Matrix-828"><span class="linenos">828</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-829"><a href="#Matrix-829"><span class="linenos">829</span></a>
+</span><span id="Matrix-830"><a href="#Matrix-830"><span class="linenos">830</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Matrix-831"><a href="#Matrix-831"><span class="linenos">831</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
+</span><span id="Matrix-832"><a href="#Matrix-832"><span class="linenos">832</span></a>
+</span><span id="Matrix-833"><a href="#Matrix-833"><span class="linenos">833</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
+</span><span id="Matrix-834"><a href="#Matrix-834"><span class="linenos">834</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
+</span><span id="Matrix-835"><a href="#Matrix-835"><span class="linenos">835</span></a>
+</span><span id="Matrix-836"><a href="#Matrix-836"><span class="linenos">836</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Matrix-837"><a href="#Matrix-837"><span class="linenos">837</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Matrix-838"><a href="#Matrix-838"><span class="linenos">838</span></a>
+</span><span id="Matrix-839"><a href="#Matrix-839"><span class="linenos">839</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix-840"><a href="#Matrix-840"><span class="linenos">840</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix-841"><a href="#Matrix-841"><span class="linenos">841</span></a>
+</span><span id="Matrix-842"><a href="#Matrix-842"><span class="linenos">842</span></a><span class="sd">        :return: Scalar value with result.</span>
+</span><span id="Matrix-843"><a href="#Matrix-843"><span class="linenos">843</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix-844"><a href="#Matrix-844"><span class="linenos">844</span></a>
+</span><span id="Matrix-845"><a href="#Matrix-845"><span class="linenos">845</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-846"><a href="#Matrix-846"><span class="linenos">846</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix-847"><a href="#Matrix-847"><span class="linenos">847</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-848"><a href="#Matrix-848"><span class="linenos">848</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix-849"><a href="#Matrix-849"><span class="linenos">849</span></a>
+</span><span id="Matrix-850"><a href="#Matrix-850"><span class="linenos">850</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix-851"><a href="#Matrix-851"><span class="linenos">851</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix-852"><a href="#Matrix-852"><span class="linenos">852</span></a>
+</span><span id="Matrix-853"><a href="#Matrix-853"><span class="linenos">853</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix-854"><a href="#Matrix-854"><span class="linenos">854</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix-855"><a href="#Matrix-855"><span class="linenos">855</span></a>
+</span><span id="Matrix-856"><a href="#Matrix-856"><span class="linenos">856</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Matrix-857"><a href="#Matrix-857"><span class="linenos">857</span></a>
+</span><span id="Matrix-858"><a href="#Matrix-858"><span class="linenos">858</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Matrix-859"><a href="#Matrix-859"><span class="linenos">859</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+</span><span id="Matrix-860"><a href="#Matrix-860"><span class="linenos">860</span></a>
+</span><span id="Matrix-861"><a href="#Matrix-861"><span class="linenos">861</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Matrix-862"><a href="#Matrix-862"><span class="linenos">862</span></a>        <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
+</span><span id="Matrix-863"><a href="#Matrix-863"><span class="linenos">863</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+</span><span id="Matrix-864"><a href="#Matrix-864"><span class="linenos">864</span></a>
+</span><span id="Matrix-865"><a href="#Matrix-865"><span class="linenos">865</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
+</span><span id="Matrix-866"><a href="#Matrix-866"><span class="linenos">866</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix-867"><a href="#Matrix-867"><span class="linenos">867</span></a>
+</span><span id="Matrix-868"><a href="#Matrix-868"><span class="linenos">868</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+</span><span id="Matrix-869"><a href="#Matrix-869"><span class="linenos">869</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
 </span></pre></div>
 
 
@@ -7498,6 +7547,101 @@ Optional descriptor object to configure the execution.</p></li>
 
 
                             </div>
+                            <div id="Matrix.reduce_by_column" class="classattr">
+                                        <input id="Matrix.reduce_by_column-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">reduce_by_column</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">op_reduce</span>, </span><span class="param"><span class="n">out</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">init</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="Matrix.reduce_by_column-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Matrix.reduce_by_column"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Matrix.reduce_by_column-774"><a href="#Matrix.reduce_by_column-774"><span class="linenos">774</span></a>    <span class="k">def</span> <span class="nf">reduce_by_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix.reduce_by_column-775"><a href="#Matrix.reduce_by_column-775"><span class="linenos">775</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix.reduce_by_column-776"><a href="#Matrix.reduce_by_column-776"><span class="linenos">776</span></a><span class="sd">        Reduce matrix elements by a column to a row vector.</span>
+</span><span id="Matrix.reduce_by_column-777"><a href="#Matrix.reduce_by_column-777"><span class="linenos">777</span></a>
+</span><span id="Matrix.reduce_by_column-778"><a href="#Matrix.reduce_by_column-778"><span class="linenos">778</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 1, 2, 3], [0, 3, 3, 2], [1, 2, 3, 4], (4, 4), INT)</span>
+</span><span id="Matrix.reduce_by_column-779"><a href="#Matrix.reduce_by_column-779"><span class="linenos">779</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce_by_column(INT.PLUS))</span>
+</span><span id="Matrix.reduce_by_column-780"><a href="#Matrix.reduce_by_column-780"><span class="linenos">780</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.reduce_by_column-781"><a href="#Matrix.reduce_by_column-781"><span class="linenos">781</span></a><span class="sd">         0| 1</span>
+</span><span id="Matrix.reduce_by_column-782"><a href="#Matrix.reduce_by_column-782"><span class="linenos">782</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix.reduce_by_column-783"><a href="#Matrix.reduce_by_column-783"><span class="linenos">783</span></a><span class="sd">         2| 4</span>
+</span><span id="Matrix.reduce_by_column-784"><a href="#Matrix.reduce_by_column-784"><span class="linenos">784</span></a><span class="sd">         3| 5</span>
+</span><span id="Matrix.reduce_by_column-785"><a href="#Matrix.reduce_by_column-785"><span class="linenos">785</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.reduce_by_column-786"><a href="#Matrix.reduce_by_column-786"><span class="linenos">786</span></a>
+</span><span id="Matrix.reduce_by_column-787"><a href="#Matrix.reduce_by_column-787"><span class="linenos">787</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Matrix.reduce_by_column-788"><a href="#Matrix.reduce_by_column-788"><span class="linenos">788</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
+</span><span id="Matrix.reduce_by_column-789"><a href="#Matrix.reduce_by_column-789"><span class="linenos">789</span></a>
+</span><span id="Matrix.reduce_by_column-790"><a href="#Matrix.reduce_by_column-790"><span class="linenos">790</span></a><span class="sd">        :param out: optional: Vector: default: None.</span>
+</span><span id="Matrix.reduce_by_column-791"><a href="#Matrix.reduce_by_column-791"><span class="linenos">791</span></a><span class="sd">            Optional vector to store result of reduction.</span>
+</span><span id="Matrix.reduce_by_column-792"><a href="#Matrix.reduce_by_column-792"><span class="linenos">792</span></a>
+</span><span id="Matrix.reduce_by_column-793"><a href="#Matrix.reduce_by_column-793"><span class="linenos">793</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Matrix.reduce_by_column-794"><a href="#Matrix.reduce_by_column-794"><span class="linenos">794</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Matrix.reduce_by_column-795"><a href="#Matrix.reduce_by_column-795"><span class="linenos">795</span></a>
+</span><span id="Matrix.reduce_by_column-796"><a href="#Matrix.reduce_by_column-796"><span class="linenos">796</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix.reduce_by_column-797"><a href="#Matrix.reduce_by_column-797"><span class="linenos">797</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix.reduce_by_column-798"><a href="#Matrix.reduce_by_column-798"><span class="linenos">798</span></a>
+</span><span id="Matrix.reduce_by_column-799"><a href="#Matrix.reduce_by_column-799"><span class="linenos">799</span></a><span class="sd">        :return: Vector with result.</span>
+</span><span id="Matrix.reduce_by_column-800"><a href="#Matrix.reduce_by_column-800"><span class="linenos">800</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix.reduce_by_column-801"><a href="#Matrix.reduce_by_column-801"><span class="linenos">801</span></a>
+</span><span id="Matrix.reduce_by_column-802"><a href="#Matrix.reduce_by_column-802"><span class="linenos">802</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+</span><span id="Matrix.reduce_by_column-803"><a href="#Matrix.reduce_by_column-803"><span class="linenos">803</span></a>
+</span><span id="Matrix.reduce_by_column-804"><a href="#Matrix.reduce_by_column-804"><span class="linenos">804</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.reduce_by_column-805"><a href="#Matrix.reduce_by_column-805"><span class="linenos">805</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix.reduce_by_column-806"><a href="#Matrix.reduce_by_column-806"><span class="linenos">806</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.reduce_by_column-807"><a href="#Matrix.reduce_by_column-807"><span class="linenos">807</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix.reduce_by_column-808"><a href="#Matrix.reduce_by_column-808"><span class="linenos">808</span></a>
+</span><span id="Matrix.reduce_by_column-809"><a href="#Matrix.reduce_by_column-809"><span class="linenos">809</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix.reduce_by_column-810"><a href="#Matrix.reduce_by_column-810"><span class="linenos">810</span></a>        <span class="k">assert</span> <span class="n">init</span>
+</span><span id="Matrix.reduce_by_column-811"><a href="#Matrix.reduce_by_column-811"><span class="linenos">811</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix.reduce_by_column-812"><a href="#Matrix.reduce_by_column-812"><span class="linenos">812</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.reduce_by_column-813"><a href="#Matrix.reduce_by_column-813"><span class="linenos">813</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.reduce_by_column-814"><a href="#Matrix.reduce_by_column-814"><span class="linenos">814</span></a>
+</span><span id="Matrix.reduce_by_column-815"><a href="#Matrix.reduce_by_column-815"><span class="linenos">815</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce_by_column</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix.reduce_by_column-816"><a href="#Matrix.reduce_by_column-816"><span class="linenos">816</span></a>                                                     <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix.reduce_by_column-817"><a href="#Matrix.reduce_by_column-817"><span class="linenos">817</span></a>
+</span><span id="Matrix.reduce_by_column-818"><a href="#Matrix.reduce_by_column-818"><span class="linenos">818</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Reduce matrix elements by a column to a row vector.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">reduce_by_column</span><span class="p">(</span><span class="n"><a href="#INT.PLUS">INT.PLUS</a></span><span class="p">))</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| 1</span>
+<span class="go"> 1| .</span>
+<span class="go"> 2| 4</span>
+<span class="go"> 3| 5</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><p><strong>op_reduce</strong>:  OpBinary.
+Binary operation to apply for reduction of matrix elements.</p></li>
+<li><p><strong>out: optional: Vector: default</strong>:  None.
+Optional vector to store result of reduction.</p></li>
+<li><p><strong>init: optional: Scalar: default</strong>:  0.
+Optional neutral init value for reduction.</p></li>
+<li><p><strong>desc: optional: Descriptor. default</strong>:  None.
+Optional descriptor object to configure the execution.</p></li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Vector with result.</p>
+</blockquote>
+</div>
+
+
+                            </div>
                             <div id="Matrix.reduce" class="classattr">
                                         <input id="Matrix.reduce-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -7509,43 +7653,43 @@ Optional descriptor object to configure the execution.</p></li>
 
     </div>
     <a class="headerlink" href="#Matrix.reduce"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Matrix.reduce-774"><a href="#Matrix.reduce-774"><span class="linenos">774</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span id="Matrix.reduce-775"><a href="#Matrix.reduce-775"><span class="linenos">775</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Matrix.reduce-776"><a href="#Matrix.reduce-776"><span class="linenos">776</span></a><span class="sd">        Reduce matrix elements.</span>
-</span><span id="Matrix.reduce-777"><a href="#Matrix.reduce-777"><span class="linenos">777</span></a>
-</span><span id="Matrix.reduce-778"><a href="#Matrix.reduce-778"><span class="linenos">778</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)</span>
-</span><span id="Matrix.reduce-779"><a href="#Matrix.reduce-779"><span class="linenos">779</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce(op_reduce=INT.MULT, init=Scalar(INT, 1)))</span>
-</span><span id="Matrix.reduce-780"><a href="#Matrix.reduce-780"><span class="linenos">780</span></a><span class="sd">        &#39;</span>
-</span><span id="Matrix.reduce-781"><a href="#Matrix.reduce-781"><span class="linenos">781</span></a><span class="sd">            32</span>
-</span><span id="Matrix.reduce-782"><a href="#Matrix.reduce-782"><span class="linenos">782</span></a><span class="sd">        &#39;</span>
-</span><span id="Matrix.reduce-783"><a href="#Matrix.reduce-783"><span class="linenos">783</span></a>
-</span><span id="Matrix.reduce-784"><a href="#Matrix.reduce-784"><span class="linenos">784</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
-</span><span id="Matrix.reduce-785"><a href="#Matrix.reduce-785"><span class="linenos">785</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
-</span><span id="Matrix.reduce-786"><a href="#Matrix.reduce-786"><span class="linenos">786</span></a>
-</span><span id="Matrix.reduce-787"><a href="#Matrix.reduce-787"><span class="linenos">787</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
-</span><span id="Matrix.reduce-788"><a href="#Matrix.reduce-788"><span class="linenos">788</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
-</span><span id="Matrix.reduce-789"><a href="#Matrix.reduce-789"><span class="linenos">789</span></a>
-</span><span id="Matrix.reduce-790"><a href="#Matrix.reduce-790"><span class="linenos">790</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
-</span><span id="Matrix.reduce-791"><a href="#Matrix.reduce-791"><span class="linenos">791</span></a><span class="sd">            Optional neutral init value for reduction.</span>
-</span><span id="Matrix.reduce-792"><a href="#Matrix.reduce-792"><span class="linenos">792</span></a>
-</span><span id="Matrix.reduce-793"><a href="#Matrix.reduce-793"><span class="linenos">793</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
-</span><span id="Matrix.reduce-794"><a href="#Matrix.reduce-794"><span class="linenos">794</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
-</span><span id="Matrix.reduce-795"><a href="#Matrix.reduce-795"><span class="linenos">795</span></a>
-</span><span id="Matrix.reduce-796"><a href="#Matrix.reduce-796"><span class="linenos">796</span></a><span class="sd">        :return: Scalar value with result.</span>
-</span><span id="Matrix.reduce-797"><a href="#Matrix.reduce-797"><span class="linenos">797</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Matrix.reduce-798"><a href="#Matrix.reduce-798"><span class="linenos">798</span></a>
-</span><span id="Matrix.reduce-799"><a href="#Matrix.reduce-799"><span class="linenos">799</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Matrix.reduce-800"><a href="#Matrix.reduce-800"><span class="linenos">800</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-</span><span id="Matrix.reduce-801"><a href="#Matrix.reduce-801"><span class="linenos">801</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Matrix.reduce-802"><a href="#Matrix.reduce-802"><span class="linenos">802</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Matrix.reduce-803"><a href="#Matrix.reduce-803"><span class="linenos">803</span></a>
-</span><span id="Matrix.reduce-804"><a href="#Matrix.reduce-804"><span class="linenos">804</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Matrix.reduce-805"><a href="#Matrix.reduce-805"><span class="linenos">805</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
-</span><span id="Matrix.reduce-806"><a href="#Matrix.reduce-806"><span class="linenos">806</span></a>
-</span><span id="Matrix.reduce-807"><a href="#Matrix.reduce-807"><span class="linenos">807</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
-</span><span id="Matrix.reduce-808"><a href="#Matrix.reduce-808"><span class="linenos">808</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-</span><span id="Matrix.reduce-809"><a href="#Matrix.reduce-809"><span class="linenos">809</span></a>
-</span><span id="Matrix.reduce-810"><a href="#Matrix.reduce-810"><span class="linenos">810</span></a>        <span class="k">return</span> <span class="n">out</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Matrix.reduce-820"><a href="#Matrix.reduce-820"><span class="linenos">820</span></a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_reduce</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix.reduce-821"><a href="#Matrix.reduce-821"><span class="linenos">821</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix.reduce-822"><a href="#Matrix.reduce-822"><span class="linenos">822</span></a><span class="sd">        Reduce matrix elements.</span>
+</span><span id="Matrix.reduce-823"><a href="#Matrix.reduce-823"><span class="linenos">823</span></a>
+</span><span id="Matrix.reduce-824"><a href="#Matrix.reduce-824"><span class="linenos">824</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([1, 2, 3, 3], [0, 1, 0, 3], [-1, -4, 4, 2], (4, 4), INT)</span>
+</span><span id="Matrix.reduce-825"><a href="#Matrix.reduce-825"><span class="linenos">825</span></a><span class="sd">        &gt;&gt;&gt; print(M.reduce(op_reduce=INT.MULT, init=Scalar(INT, 1)))</span>
+</span><span id="Matrix.reduce-826"><a href="#Matrix.reduce-826"><span class="linenos">826</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.reduce-827"><a href="#Matrix.reduce-827"><span class="linenos">827</span></a><span class="sd">            32</span>
+</span><span id="Matrix.reduce-828"><a href="#Matrix.reduce-828"><span class="linenos">828</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.reduce-829"><a href="#Matrix.reduce-829"><span class="linenos">829</span></a>
+</span><span id="Matrix.reduce-830"><a href="#Matrix.reduce-830"><span class="linenos">830</span></a><span class="sd">        :param op_reduce: OpBinary.</span>
+</span><span id="Matrix.reduce-831"><a href="#Matrix.reduce-831"><span class="linenos">831</span></a><span class="sd">            Binary operation to apply for reduction of matrix elements.</span>
+</span><span id="Matrix.reduce-832"><a href="#Matrix.reduce-832"><span class="linenos">832</span></a>
+</span><span id="Matrix.reduce-833"><a href="#Matrix.reduce-833"><span class="linenos">833</span></a><span class="sd">        :param out: optional: Scalar: default: 0.</span>
+</span><span id="Matrix.reduce-834"><a href="#Matrix.reduce-834"><span class="linenos">834</span></a><span class="sd">            Optional scalar to store result of reduction.</span>
+</span><span id="Matrix.reduce-835"><a href="#Matrix.reduce-835"><span class="linenos">835</span></a>
+</span><span id="Matrix.reduce-836"><a href="#Matrix.reduce-836"><span class="linenos">836</span></a><span class="sd">        :param init: optional: Scalar: default: 0.</span>
+</span><span id="Matrix.reduce-837"><a href="#Matrix.reduce-837"><span class="linenos">837</span></a><span class="sd">            Optional neutral init value for reduction.</span>
+</span><span id="Matrix.reduce-838"><a href="#Matrix.reduce-838"><span class="linenos">838</span></a>
+</span><span id="Matrix.reduce-839"><a href="#Matrix.reduce-839"><span class="linenos">839</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix.reduce-840"><a href="#Matrix.reduce-840"><span class="linenos">840</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix.reduce-841"><a href="#Matrix.reduce-841"><span class="linenos">841</span></a>
+</span><span id="Matrix.reduce-842"><a href="#Matrix.reduce-842"><span class="linenos">842</span></a><span class="sd">        :return: Scalar value with result.</span>
+</span><span id="Matrix.reduce-843"><a href="#Matrix.reduce-843"><span class="linenos">843</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix.reduce-844"><a href="#Matrix.reduce-844"><span class="linenos">844</span></a>
+</span><span id="Matrix.reduce-845"><a href="#Matrix.reduce-845"><span class="linenos">845</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.reduce-846"><a href="#Matrix.reduce-846"><span class="linenos">846</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix.reduce-847"><a href="#Matrix.reduce-847"><span class="linenos">847</span></a>        <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.reduce-848"><a href="#Matrix.reduce-848"><span class="linenos">848</span></a>            <span class="n">init</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix.reduce-849"><a href="#Matrix.reduce-849"><span class="linenos">849</span></a>
+</span><span id="Matrix.reduce-850"><a href="#Matrix.reduce-850"><span class="linenos">850</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.reduce-851"><a href="#Matrix.reduce-851"><span class="linenos">851</span></a>        <span class="k">assert</span> <span class="n">init</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.reduce-852"><a href="#Matrix.reduce-852"><span class="linenos">852</span></a>
+</span><span id="Matrix.reduce-853"><a href="#Matrix.reduce-853"><span class="linenos">853</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_reduce</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">init</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">op_reduce</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix.reduce-854"><a href="#Matrix.reduce-854"><span class="linenos">854</span></a>                                           <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix.reduce-855"><a href="#Matrix.reduce-855"><span class="linenos">855</span></a>
+</span><span id="Matrix.reduce-856"><a href="#Matrix.reduce-856"><span class="linenos">856</span></a>        <span class="k">return</span> <span class="n">out</span>
 </span></pre></div>
 
 
