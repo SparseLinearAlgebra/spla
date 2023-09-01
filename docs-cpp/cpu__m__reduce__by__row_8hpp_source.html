@@ -130,45 +130,75 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">auto</span> t = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_m_reduce_by_row&gt;();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keyword">auto</span> M = t-&gt;M.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">if</span> (M-&gt;is_valid(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">FormatMatrix::CpuDok</a>)) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keywordflow">return</span> execute_dok(ctx);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">if</span> (M-&gt;is_valid(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409">FormatMatrix::CpuLil</a>)) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keywordflow">return</span> execute_lil(ctx);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> execute_dok(ctx);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (M-&gt;is_valid(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">FormatMatrix::CpuDok</a>)) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">return</span> execute_dok(ctx);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dok(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">auto</span> t         = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_m_reduce_by_row&gt;();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span> M         = t-&gt;M.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> init      = t-&gt;init.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            M-&gt;validate_rw(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">FormatMatrix::CpuDok</a>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> execute_dok(ctx);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_dok(<span class="keyword">const</span> <a class="code" href="structspla_1_1DispatchContext.html">DispatchContext</a>&amp; ctx) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> t         = ctx.<a class="code" href="structspla_1_1DispatchContext.html#a98e2290d311615d7d9ccdcff5e5fff25">task</a>.template cast_safe&lt;ScheduleTask_m_reduce_by_row&gt;();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span> M         = t-&gt;M.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> init      = t-&gt;init.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>*  p_dense_r = r-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuDok.html">CpuDok&lt;T&gt;</a>* p_dok_M   = M-&gt;template get&lt;CpuDok&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            M-&gt;validate_rw(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">FormatMatrix::CpuDok</a>);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            std::fill(p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.begin(), p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.end(), init-&gt;get_value());</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keyword">auto</span>&amp; func_reduce = op_reduce-&gt;function;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : p_dok_M-&gt;Ax) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = entry.first.first;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keyword">const</span> T    x = entry.second;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = func_reduce(p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i], x);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <a class="code" href="classspla_1_1CpuDenseVec.html">CpuDenseVec&lt;T&gt;</a>*  p_dense_r = r-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">const</span> <a class="code" href="classspla_1_1CpuDok.html">CpuDok&lt;T&gt;</a>* p_dok_M   = M-&gt;template get&lt;CpuDok&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            std::fill(p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.begin(), p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>.end(), init-&gt;get_value());</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">auto</span>&amp; func_reduce = op_reduce-&gt;function;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : p_dok_M-&gt;Ax) {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keyword">const</span> <a class="code" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> i = entry.first.first;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keyword">const</span> T    x = entry.second;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    };</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_M_REDUCE_BY_ROW_HPP</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i] = func_reduce(p_dense_r-&gt;<a class="code" href="classspla_1_1CpuDenseVec.html#af07982f0c83b5b51b77938122576c2ba">Ax</a>[i], x);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="classStatus.html">Status</a> execute_lil(<span class="keyword">const</span> DispatchContext&amp; ctx) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">auto</span> t         = ctx.task.template cast_safe&lt;ScheduleTask_m_reduce_by_row&gt;();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">auto</span> r         = t-&gt;r.template cast_safe&lt;TVector&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keyword">auto</span> M         = t-&gt;M.template cast_safe&lt;TMatrix&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">auto</span> op_reduce = t-&gt;op_reduce.template cast_safe&lt;TOpBinary&lt;T, T, T&gt;&gt;();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">auto</span> init      = t-&gt;init.template cast_safe&lt;TScalar&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            r-&gt;validate_wd(<a class="code" href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">FormatVector::CpuDense</a>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            M-&gt;validate_rw(<a class="code" href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409">FormatMatrix::CpuLil</a>);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            CpuDenseVec&lt;T&gt;*  p_dense_r = r-&gt;template get&lt;CpuDenseVec&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">const</span> CpuLil&lt;T&gt;* p_lil_M   = M-&gt;template get&lt;CpuLil&lt;T&gt;&gt;();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            std::fill(p_dense_r-&gt;Ax.begin(), p_dense_r-&gt;Ax.end(), init-&gt;get_value());</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keyword">auto</span>&amp; func_reduce = op_reduce-&gt;function;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; p_lil_M-&gt;Ar.size(); i++) {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; entry : p_lil_M-&gt;Ar[i]) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                    <span class="keyword">const</span> T x = entry.second;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    p_dense_r-&gt;Ax[i] = func_reduce(p_dense_r-&gt;Ax[i], x);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">Status::Ok</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    };</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_CPU_M_REDUCE_BY_ROW_HPP</span></div>
 <div class="ttc" id="aclassStatus_html"><div class="ttname"><a href="classStatus.html">Status</a></div><div class="ttdoc">Status of library operation execution.</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__m__reduce__by__row__cpu_html"><div class="ttname"><a href="classspla_1_1Algo__m__reduce__by__row__cpu.html">spla::Algo_m_reduce_by_row_cpu</a></div><div class="ttdef"><b>Definition:</b> cpu_m_reduce_by_row.hpp:46</div></div>
 <div class="ttc" id="aclassspla_1_1Algo__m__reduce__by__row__cpu_html_a3d33a2afb8b32017f8fd88615a448cf7"><div class="ttname"><a href="classspla_1_1Algo__m__reduce__by__row__cpu.html#a3d33a2afb8b32017f8fd88615a448cf7">spla::Algo_m_reduce_by_row_cpu::get_description</a></div><div class="ttdeci">std::string get_description() override</div><div class="ttdef"><b>Definition:</b> cpu_m_reduce_by_row.hpp:54</div></div>
@@ -182,6 +212,7 @@ $(function() {
 <div class="ttc" id="adispatcher_8hpp_html"><div class="ttname"><a href="dispatcher_8hpp.html">dispatcher.hpp</a></div></div>
 <div class="ttc" id="agroup__spla_html_ga669156f74132dd261f21223177f0b458"><div class="ttname"><a href="group__spla.html#ga669156f74132dd261f21223177f0b458">spla::uint</a></div><div class="ttdeci">std::uint32_t uint</div><div class="ttdoc">Library index and size type.</div><div class="ttdef"><b>Definition:</b> config.hpp:56</div></div>
 <div class="ttc" id="agroup__spla_html_gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160"><div class="ttname"><a href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a1dc4506f3792165c9fa807e02e744160">spla::FormatMatrix::CpuDok</a></div><div class="ttdeci">@ CpuDok</div></div>
+<div class="ttc" id="agroup__spla_html_gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409"><div class="ttname"><a href="group__spla.html#gga06cb3985a4f58f453d247aa66ea91f97a6fbd0e9f8af4e1afcbb4a7229b810409">spla::FormatMatrix::CpuLil</a></div><div class="ttdeci">@ CpuLil</div></div>
 <div class="ttc" id="agroup__spla_html_gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43"><div class="ttname"><a href="group__spla.html#gga556579e7c92bd09dcf035bd88d76fbeaa81a2555e58709e058df3ac504d32ab43">spla::FormatVector::CpuDense</a></div><div class="ttdeci">@ CpuDense</div></div>
 <div class="ttc" id="agroup__spla_html_ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115"><div class="ttname"><a href="group__spla.html#ggad00e3dd620150c8d6435a879a68d4743aa60852f204ed8028c1c58808b746d115">spla::Status::Ok</a></div><div class="ttdeci">@ Ok</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
