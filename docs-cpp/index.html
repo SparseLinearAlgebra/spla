@@ -88,6 +88,33 @@ $(function() {
 <div class="fragment"><div class="line">$ pip install -i https://test.pypi.org/simple/ pyspla</div>
 </div><!-- fragment --><p>Delete package if no more required:</p>
 <div class="fragment"><div class="line">$ pip uninstall pyspla</div>
+</div><!-- fragment --><h2>Example of usage</h2>
+<p>This example demonstrates basic library primitives usage and shows how to implement simple breadth-first search algorithm using <code>spla</code> primitives in a few lines of code and run it on your GPU using OpenCL backend for acceleration.</p>
+<div class="fragment"><div class="line">from pyspla import *</div>
+<div class="line"> </div>
+<div class="line">def bfs(s: int, A: Matrix):</div>
+<div class="line">    v = Vector(A.n_rows, INT)  # to store depths</div>
+<div class="line"> </div>
+<div class="line">    front = Vector.from_lists([s], [1], A.n_rows, INT)  # front of new vertices to study</div>
+<div class="line">    front_size = 1  # current front size</div>
+<div class="line">    depth = Scalar(INT, 0)  # depth of search</div>
+<div class="line">    count = 0  # num of reached vertices</div>
+<div class="line"> </div>
+<div class="line">    while front_size &gt; 0:  # while have something to study</div>
+<div class="line">        depth += 1</div>
+<div class="line">        count += front_size</div>
+<div class="line">        v.assign(front, depth, op_assign=INT.SECOND, op_select=INT.NQZERO)  # assign depths</div>
+<div class="line">        front = front.vxm(v, A, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO)  # do traversal</div>
+<div class="line">        front_size = front.reduce(op_reduce=INT.PLUS).get()  # update front count to end algorithm</div>
+<div class="line"> </div>
+<div class="line">    return v, count, depth.get()</div>
+</div><!-- fragment --><p>Create an adjacency matrix for a simple graph containing 4 vertices and 5 edges.</p>
+<div class="fragment"><div class="line">I = [0, 1, 2, 2, 3]</div>
+<div class="line">J = [1, 2, 0, 3, 2]</div>
+<div class="line">V = [1, 1, 1, 1, 1]</div>
+<div class="line">A = Matrix.from_lists(I, J, V, shape=(4, 4), dtype=INT)</div>
+</div><!-- fragment --><p>Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier. None, that <code>spla</code> will automatically select GPU-based acceleration backed for computations.</p>
+<div class="fragment"><div class="line">v, c, d = bfs(0, A)</div>
 </div><!-- fragment --><h2>Performance</h2>
 <h3>Comparison on a Nvidia GPU</h3>
 <table class="markdownTable">
