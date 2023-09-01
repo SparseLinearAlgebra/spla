@@ -32,10 +32,10 @@
 <area shape="rect" id="node28" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="807,638,942,679"/>
 <area shape="rect" id="node29" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="807,703,942,745"/>
 <area shape="rect" id="node30" href="$classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="807,769,942,810"/>
-<area shape="rect" id="node31" href="$classspla_1_1ScheduleTask__v__eadd.html" title="Vector ewise." alt="" coords="807,834,942,875"/>
+<area shape="rect" id="node31" href="$classspla_1_1ScheduleTask__v__eadd.html" title="Vector ewise add." alt="" coords="807,834,942,875"/>
 <area shape="rect" id="node32" href="$classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="807,899,942,941"/>
-<area shape="rect" id="node33" href="$classspla_1_1ScheduleTask__v__map.html" title="Vector map to vector." alt="" coords="807,965,942,1006"/>
-<area shape="rect" id="node34" href="$classspla_1_1ScheduleTask__v__reduce.html" title="Vector reduction to scalar." alt="" coords="807,1030,942,1071"/>
+<area shape="rect" id="node33" href="$classspla_1_1ScheduleTask__v__emult.html" title="Vector ewise mult." alt="" coords="807,965,942,1006"/>
+<area shape="rect" id="node34" href="$classspla_1_1ScheduleTask__v__map.html" title="Vector map to vector." alt="" coords="807,1030,942,1071"/>
 <area shape="rect" id="node36" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="586,631,714,657"/>
 <area shape="rect" id="node38" href="$classspla_1_1CLCooVec.html" title="OpenCL list&#45;of&#45;coordinates sparse vector representation." alt="" coords="355,461,501,488"/>
 <area shape="rect" id="node39" href="$classspla_1_1CLCsr.html" title="OpenCL compressed sparse row matrix representation." alt="" coords="369,512,487,539"/>

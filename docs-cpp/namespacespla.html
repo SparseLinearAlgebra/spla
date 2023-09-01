@@ -217,6 +217,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__v__eadd__fdb__cpu.html">Algo_v_eadd_fdb_cpu</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__v__emult__cpu.html">Algo_v_emult_cpu</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__v__map__cpu.html">Algo_v_map_cpu</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1Algo__v__reduce__cpu.html">Algo_v_reduce_cpu</a></td></tr>
@@ -319,7 +321,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> reduction to scalar.  <a href="classspla_1_1ScheduleTask__m__reduce.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__eadd.html">ScheduleTask_v_eadd</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> ewise.  <a href="classspla_1_1ScheduleTask__v__eadd.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> ewise add.  <a href="classspla_1_1ScheduleTask__v__eadd.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__emult.html">ScheduleTask_v_emult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> ewise mult.  <a href="classspla_1_1ScheduleTask__v__emult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__eadd__fdb.html">ScheduleTask_v_eadd_fdb</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> ewise with feedback.  <a href="classspla_1_1ScheduleTask__v__eadd__fdb.html#details">More...</a><br /></td></tr>
@@ -468,6 +473,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4584b03f86c50d5976ca5c281aa5c07f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a4584b03f86c50d5976ca5c281aa5c07f">exec_v_eadd</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; u, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:a4584b03f86c50d5976ca5c281aa5c07f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) element-wise addition by structure of two vectors.  <a href="namespacespla.html#a4584b03f86c50d5976ca5c281aa5c07f">More...</a><br /></td></tr>
 <tr class="separator:a4584b03f86c50d5976ca5c281aa5c07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af326135291d48690a9912fec8e8d2a80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#af326135291d48690a9912fec8e8d2a80">exec_v_emult</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; u, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
+<tr class="memdesc:af326135291d48690a9912fec8e8d2a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) element-wise multiplication by structure of two vectors.  <a href="namespacespla.html#af326135291d48690a9912fec8e8d2a80">More...</a><br /></td></tr>
+<tr class="separator:af326135291d48690a9912fec8e8d2a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8065f10e31ef4f23f8a7ff26cbf6eeb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacespla.html#a8065f10e31ef4f23f8a7ff26cbf6eeb7">exec_v_eadd_fdb</a> (<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; r, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; v, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt; fdb, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt; op, <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt; desc=<a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;(), <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *task_hnd=nullptr)</td></tr>
 <tr class="memdesc:a8065f10e31ef4f23f8a7ff26cbf6eeb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute (schedule) element-wise addition by structure of two vectors with feedback.  <a href="namespacespla.html#a8065f10e31ef4f23f8a7ff26cbf6eeb7">More...</a><br /></td></tr>
 <tr class="separator:a8065f10e31ef4f23f8a7ff26cbf6eeb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2122,6 +2130,72 @@ Pass valid <code>task_hnd</code> to store as a task, rather then execute immedia
     <tr><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> add to r element-wise </td></tr>
     <tr><td class="paramname">fdb</td><td>feedback vector storing affected r values </td></tr>
     <tr><td class="paramname">op</td><td>Element-wise binary operator sum elements of vectors </td></tr>
+    <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
+    <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classStatus.html" title="Status of library operation execution.">Status</a> on task execution or status on hnd creation </dd></dl>
+
+</div>
+</div>
+<a id="af326135291d48690a9912fec8e8d2a80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af326135291d48690a9912fec8e8d2a80">&#9670;&nbsp;</a></span>exec_v_emult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gad00e3dd620150c8d6435a879a68d4743">Status</a> spla::exec_v_emult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Vector.html">Vector</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1OpBinary.html">OpBinary</a> &gt;&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1Descriptor.html">Descriptor</a> &gt;&#160;</td>
+          <td class="paramname"><em>desc</em> = <code><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt;<a class="el" href="classspla_1_1Descriptor.html">Descriptor</a>&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1ScheduleTask.html">ScheduleTask</a> &gt; *&#160;</td>
+          <td class="paramname"><em>task_hnd</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Execute (schedule) element-wise multiplication by structure of two vectors. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> to store result of operation </td></tr>
+    <tr><td class="paramname">u</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> input to mult </td></tr>
+    <tr><td class="paramname">v</td><td><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> input to mult </td></tr>
+    <tr><td class="paramname">op</td><td>Element-wise binary operator mult elements of vectors </td></tr>
     <tr><td class="paramname">desc</td><td>Scheduled task descriptor; default is null </td></tr>
     <tr><td class="paramname">task_hnd</td><td>Optional task hnd; pass not-null pointer to store task</td></tr>
   </table>
