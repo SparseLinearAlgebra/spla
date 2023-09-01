@@ -97,6 +97,13 @@ namespace spla {
             cpu_lil_to_csr(s.get_n_rows(), *lil, *csr);
         });
 
+        manager.register_converter(FormatMatrix::CpuCoo, FormatMatrix::CpuLil, [](Storage& s) {
+            auto* coo = s.template get<CpuCoo<T>>();
+            auto* lil = s.template get<CpuLil<T>>();
+            cpu_lil_clear(*lil);
+            cpu_lil_resize(s.get_n_rows(), *lil);
+            cpu_coo_to_lil(s.get_n_rows(), *coo, *lil);
+        });
         manager.register_converter(FormatMatrix::CpuCoo, FormatMatrix::CpuDok, [](Storage& s) {
             auto* coo = s.template get<CpuCoo<T>>();
             auto* dok = s.template get<CpuDok<T>>();

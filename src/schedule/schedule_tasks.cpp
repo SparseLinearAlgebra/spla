@@ -62,6 +62,28 @@ namespace spla {
         return {};
     }
 
+    std::string ScheduleTask_mxm::get_name() {
+        return "mxm";
+    }
+    std::string ScheduleTask_mxm::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(R->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_mxm::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_multiply)
+            << OP_KEY(op_add);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_mxm::get_args() {
+        return {R.as<Object>(), A.as<Object>(), B.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>(), init.as<Object>()};
+    }
+
     std::string ScheduleTask_mxmT_masked::get_name() {
         return "mxmT_masked";
     }

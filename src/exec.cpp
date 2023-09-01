@@ -63,6 +63,26 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_mxm(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op_multiply,
+            ref_ptr<OpBinary>      op_add,
+            ref_ptr<Scalar>        init,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task         = make_ref<ScheduleTask_mxm>();
+        task->R           = std::move(R);
+        task->A           = std::move(A);
+        task->B           = std::move(B);
+        task->op_multiply = std::move(op_multiply);
+        task->op_add      = std::move(op_add);
+        task->init        = std::move(init);
+        task->desc        = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_mxmT_masked(
             ref_ptr<Matrix>        R,
             ref_ptr<Matrix>        mask,

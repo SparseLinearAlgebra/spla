@@ -56,6 +56,33 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) sparse-matrix sparse-matrix product
+     *
+     * @note Operation equivalent semantic is `R = AB`
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param R Matrix to store result of the operation
+     * @param A Left matrix for product
+     * @param B Right matrix for product
+     * @param op_multiply Element-wise binary operator for matrices elements product
+     * @param op_add Element-wise binary operator for matrices elements products sum
+     * @param init Init of matrix row and column product
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_mxm(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op_multiply,
+            ref_ptr<OpBinary>      op_add,
+            ref_ptr<Scalar>        init,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) sparse masked matrix matrix-transposed product
      *
      * @note Operation equivalent semantic is `R = AB^t .mask`

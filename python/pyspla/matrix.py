@@ -535,6 +535,87 @@ class Matrix(Object):
 
         return M
 
+    def mxm(self, M, op_mult, op_add, out=None, init=None, desc=None):
+        """
+        General sparse-matrix by sparse-matrix product.
+
+        Generate left operand matrix of shape 3x5 for product.
+        >>> M = Matrix.from_lists([0, 1, 2, 2], [1, 2, 0, 4], [1, 2, 3, 4], (3, 5), INT)
+        >>> print(M)
+        '
+            0 1 2 3 4
+         0| . 1 . . .|  0
+         1| . . 2 . .|  1
+         2| 3 . . . 4|  2
+            0 1 2 3 4
+        '
+
+        Generate right operand matrix of shape 5x4 for product, num of rows must match.
+        >>> N = Matrix.from_lists([0, 1, 2, 3], [2, 0, 1, 3], [2, 3, 4, 5], (5, 4), INT)
+        >>> print(N)
+        '
+            0 1 2 3
+         0| . . 2 .|  0
+         1| 3 . . .|  1
+         2| . 4 . .|  2
+         3| . . . 5|  3
+         4| . . . .|  4
+            0 1 2 3
+        '
+
+        Evaluate product using respective element-wise operations.
+        >>> R = M.mxm(N, INT.MULT, INT.PLUS)
+        >>> print(R)
+        '
+            0 1 2 3
+         0| 3 . . .|  0
+         1| . 8 . .|  1
+         2| . . 6 .|  2
+            0 1 2 3
+        '
+
+        :param M: Matrix.
+            Matrix for a product.
+
+        :param op_mult: OpBinary.
+            Element-wise binary operator for matrix vector elements product.
+
+        :param op_add: OpBinary.
+            Element-wise binary operator for matrix vector products sum.
+
+        :param out: optional: Matrix: default: None.
+            Optional matrix to store result of product.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Matrix with result.
+        """
+
+        if out is None:
+            out = Matrix(shape=(self.n_rows, M.n_cols), dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert M
+        assert out
+        assert init
+        assert out.dtype == self.dtype
+        assert M.dtype == self.dtype
+        assert init.dtype == self.dtype
+        assert out.n_rows == self.n_rows
+        assert out.n_cols == M.n_cols
+        assert self.n_cols == M.n_rows
+
+        check(backend().spla_Exec_mxm(out.hnd, self.hnd, M.hnd,
+                                      op_mult.hnd, op_add.hnd,
+                                      init.hnd, self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def mxmT(self, mask, M, op_mult, op_add, op_select, out=None, init=None, desc=None):
         """
         Masked sparse-matrix by sparse-matrix^T (transposed) product with sparse-mask.
@@ -610,8 +691,8 @@ class Matrix(Object):
         :param op_select: OpSelect.
             Selection op to filter mask.
 
-        :param out: optional: Vector: default: None.
-            Optional vector to store result of product.
+        :param out: optional: Matrix: default: None.
+            Optional matrix to store result of product.
 
         :param init: optional: Scalar: default: 0.
             Optional neutral init value for reduction.

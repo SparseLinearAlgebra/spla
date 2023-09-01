@@ -74,6 +74,27 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_mxm
+     * @brief Sparse matrix sparse matrix product
+     */
+    class ScheduleTask_mxm final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_mxm() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>   R;
+        ref_ptr<Matrix>   A;
+        ref_ptr<Matrix>   B;
+        ref_ptr<OpBinary> op_multiply;
+        ref_ptr<OpBinary> op_add;
+        ref_ptr<Scalar>   init;
+    };
+
+    /**
      * @class ScheduleTask_mxmT_masked
      * @brief Masked matrix matrix-transposed product
      */

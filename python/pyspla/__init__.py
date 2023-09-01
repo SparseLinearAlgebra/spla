@@ -105,7 +105,7 @@ Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created
 automatically select GPU-based acceleration backed for computations.
 >>> v, c, d = bfs(0, A)
 
-Outhput the result vector with distances of reached vertices.
+Output the result vector with distances of reached vertices.
 >>> print(v)
 '
  0| 1
@@ -205,9 +205,10 @@ Math operations
 
 Library provides as of high-level linera algebra operations over matrices and vectors with
 parametrization by binary, unary and select `ops`. There is avalable implementation for
-masked `mxmT` matrix-matrix, `mxv` matrix-vector, `vxm` vector-matrix products, matrix and
-vector reductions, assignment, and so on. Most operations have both CPU and GPU implementation.
-Thus, you will have GPU performance in computations out of the box.
+general `mxm` matrix-matrix, masked `mxmT` matrix-matrix, masked `mxv` matrix-vector,
+masked `vxm` vector-matrix products, matrix and vector reductions, assignment, and so on.
+Most operations have both CPU and GPU implementation. Thus, you will have GPU performance
+in computations out of the box.
 
 Details
 -------

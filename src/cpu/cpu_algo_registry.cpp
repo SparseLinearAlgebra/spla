@@ -34,6 +34,7 @@
 #include <cpu/cpu_m_reduce.hpp>
 #include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
+#include <cpu/cpu_mxm.hpp>
 #include <cpu/cpu_mxmT_masked.hpp>
 #include <cpu/cpu_mxv.hpp>
 #include <cpu/cpu_v_assign.hpp>
@@ -109,6 +110,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cpu<T_FLOAT>>());
+
+        // algorthm mxm
+        g_registry->add(MAKE_KEY_CPU_0("mxm", INT), std::make_shared<Algo_mxm_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("mxm", UINT), std::make_shared<Algo_mxm_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("mxm", FLOAT), std::make_shared<Algo_mxm_cpu<T_FLOAT>>());
     }
 
 }// namespace spla

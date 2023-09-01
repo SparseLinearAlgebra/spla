@@ -547,6 +547,7 @@ def load_library(lib_path):
     _spla.spla_Algorithm_pr.argtypes = [_p_object_t, _object_t, _float, _float, _object_t]
     _spla.spla_Algorithm_tc.argtypes = [_p_int, _object_t, _object_t, _object_t]
 
+    _spla.spla_Exec_mxm.restype = _status_t
     _spla.spla_Exec_mxmT_masked.restype = _status_t
     _spla.spla_Exec_mxv_masked.restype = _status_t
     _spla.spla_Exec_vxm_masked.restype = _status_t
@@ -560,6 +561,8 @@ def load_library(lib_path):
     _spla.spla_Exec_v_reduce.restype = _status_t
     _spla.spla_Exec_v_count_mf.restype = _status_t
 
+    _spla.spla_Exec_mxm.argtypes = \
+        [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
     _spla.spla_Exec_mxmT_masked.argtypes = \
         [_object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
     _spla.spla_Exec_mxv_masked.argtypes = \

@@ -43,6 +43,9 @@
 #define AS_OU(x) as_ref<spla::OpUnary>(x)
 #define AS_OS(x) as_ref<spla::OpSelect>(x)
 
+spla_Status spla_Exec_mxm(spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_mxm, AS_M(R), AS_M(A), AS_M(B), AS_OB(op_multiply), AS_OB(op_add), AS_S(init));
+}
 spla_Status spla_Exec_mxmT_masked(spla_Matrix R, spla_Matrix mask, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_mxmT_masked, AS_M(R), AS_M(mask), AS_M(A), AS_M(B), AS_OB(op_multiply), AS_OB(op_add), AS_OS(op_select), AS_S(init));
 }

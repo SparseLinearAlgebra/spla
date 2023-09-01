@@ -55,6 +55,27 @@ namespace spla {
     }
 
     template<typename T>
+    void cpu_coo_to_lil(uint             n_rows,
+                        const CpuCoo<T>& in,
+                        CpuLil<T>&       out) {
+        auto& Rr = out.Ar;
+
+        auto& Ai = in.Ai;
+        auto& Aj = in.Aj;
+        auto& Ax = in.Ax;
+
+        assert(Rr.size() == n_rows);
+
+        for (uint k = 0; k < in.values; k++) {
+            const uint i = Ai[k];
+            const uint j = Aj[k];
+            const T    x = Ax[k];
+
+            Rr[i].emplace_back(j, x);
+        }
+    }
+
+    template<typename T>
     void cpu_coo_to_dok(const CpuCoo<T>& in,
                         CpuDok<T>&       out) {
         auto& Rx = out.Ax;

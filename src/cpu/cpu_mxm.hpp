@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_MXMT_MASKED_HPP
-#define SPLA_CPU_MXMT_MASKED_HPP
+#ifndef SPLA_CPU_MXM_HPP
+#define SPLA_CPU_MXM_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -38,88 +38,77 @@
 #include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
+#include <algorithm>
+
 namespace spla {
 
     template<typename T>
-    class Algo_mxmT_masked_cpu final : public RegistryAlgo {
+    class Algo_mxm_cpu final : public RegistryAlgo {
     public:
-        ~Algo_mxmT_masked_cpu() override = default;
+        ~Algo_mxm_cpu() override = default;
 
         std::string get_name() override {
-            return "mxmT_masked";
+            return "mxm";
         }
 
         std::string get_description() override {
-            return "sequential masked matrix matrix-transposed product on cpu";
+            return "sequential sparse matrix sparse matrix product on cpu";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            TIME_PROFILE_SCOPE("cpu/mxmT_masked");
+            TIME_PROFILE_SCOPE("cpu/mxm");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_mxmT_masked>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_mxm>();
 
             auto R           = t->R.template cast_safe<TMatrix<T>>();
-            auto mask        = t->mask.template cast_safe<TMatrix<T>>();
             auto A           = t->A.template cast_safe<TMatrix<T>>();
             auto B           = t->B.template cast_safe<TMatrix<T>>();
             auto op_multiply = t->op_multiply.template cast_safe<TOpBinary<T, T, T>>();
             auto op_add      = t->op_add.template cast_safe<TOpBinary<T, T, T>>();
-            auto op_select   = t->op_select.template cast_safe<TOpSelect<T>>();
             auto init        = t->init.template cast_safe<TScalar<T>>();
 
             R->validate_wd(FormatMatrix::CpuLil);
             A->validate_rw(FormatMatrix::CpuLil);
             B->validate_rw(FormatMatrix::CpuLil);
-            mask->validate_rw(FormatMatrix::CpuLil);
 
-            CpuLil<T>*       p_lil_R    = R->template get<CpuLil<T>>();
-            const CpuLil<T>* p_lil_A    = A->template get<CpuLil<T>>();
-            const CpuLil<T>* p_lil_B    = B->template get<CpuLil<T>>();
-            const CpuLil<T>* p_lil_mask = mask->template get<CpuLil<T>>();
+            CpuLil<T>*       p_lil_R = R->template get<CpuLil<T>>();
+            const CpuLil<T>* p_lil_A = A->template get<CpuLil<T>>();
+            const CpuLil<T>* p_lil_B = B->template get<CpuLil<T>>();
 
             auto& func_multiply = op_multiply->function;
             auto& func_add      = op_add->function;
-            auto& func_select   = op_select->function;
 
             auto DM = R->get_n_rows();
+            auto DN = R->get_n_cols();
             auto I  = init->get_value();
 
+            std::vector<T> R_tmp(DN, I);
+
             for (uint row_R = 0; row_R < DM; row_R++) {
-                const auto& mask_lst = p_lil_mask->Ar[row_R];
-                const auto& A_lst    = p_lil_A->Ar[row_R];
-                auto&       R_lst    = p_lil_R->Ar[row_R];
+                const auto& A_lst = p_lil_A->Ar[row_R];
+                auto&       R_lst = p_lil_R->Ar[row_R];
 
                 assert(R_lst.empty());
 
-                for (const typename CpuLil<T>::Entry& entry_mask : mask_lst) {
-                    const uint mask_i = entry_mask.first;
-                    const T    mask_x = entry_mask.second;
+                std::fill(R_tmp.begin(), R_tmp.end(), I);
 
-                    T r = I;
+                for (const typename CpuLil<T>::Entry& entry_A : A_lst) {
+                    const uint i       = entry_A.first;
+                    const T    value_A = entry_A.second;
 
-                    if (func_select(mask_x)) {
-                        const auto& B_lst = p_lil_B->Ar[mask_i];
+                    const auto& B_lst = p_lil_B->Ar[i];
 
-                        auto       A_it  = A_lst.begin();
-                        auto       B_it  = B_lst.begin();
-                        const auto A_end = A_lst.end();
-                        const auto B_end = B_lst.end();
+                    for (const typename CpuLil<T>::Entry& entry_B : B_lst) {
+                        const uint j       = entry_B.first;
+                        const T    value_B = entry_B.second;
 
-                        while (A_it != A_end && B_it != B_end) {
-                            if (A_it->first == B_it->first) {
-                                r = func_add(r, func_multiply(A_it->second, B_it->second));
-                                ++A_it;
-                                ++B_it;
-                            } else if (A_it->first < B_it->first) {
-                                ++A_it;
-                            } else {
-                                ++B_it;
-                            }
-                        }
+                        R_tmp[j] = func_add(R_tmp[j], func_multiply(value_A, value_B));
                     }
+                }
 
-                    if (r != I) {
-                        R_lst.emplace_back(mask_i, r);
+                for (uint col_R = 0; col_R < DN; col_R++) {
+                    if (R_tmp[col_R] != I) {
+                        R_lst.emplace_back(col_R, R_tmp[col_R]);
                     }
                 }
             }
@@ -130,4 +119,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_MXMT_MASKED_HPP
+#endif//SPLA_CPU_MXM_HPP

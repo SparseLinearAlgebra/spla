@@ -323,6 +323,7 @@ add_library(spla SHARED
         src/cpu/cpu_m_reduce.hpp
         src/cpu/cpu_m_reduce_by_column.hpp
         src/cpu/cpu_m_reduce_by_row.hpp
+        src/cpu/cpu_mxm.hpp
         src/cpu/cpu_mxmT_masked.hpp
         src/cpu/cpu_mxv.hpp
         src/cpu/cpu_vxm.hpp
