@@ -25,11 +25,12 @@
   <ul>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#summary">Summary</a></li>
-    <li><a href="#performance">Performance</a></li>
     <li><a href="#example-of-usage">Example of usage</a></li>
+    <li><a href="#performance">Performance</a></li>
     <li><a href="#containers">Containers</a></li>
     <li><a href="#types">Types</a></li>
     <li><a href="#ops">Ops</a></li>
+    <li><a href="#math-operations">Math operations</a></li>
     <li><a href="#details">Details</a></li>
   </ul></li>
 </ul>
@@ -666,6 +667,104 @@ It automatically attempts to initialize accelerator and trys to use
 it to speed-up some operations. All GPU communication, data transformations
 and transfers done internally automatically without any efforts from user perspective.</p>
 
+<h2 id="example-of-usage">Example of usage</h2>
+
+<p>This example demonstrates basic library primitives usage and shows how to implement simple breadth-first search
+algorithm using <code>spla</code> primitives in a few lines of code and run it on your GPU using OpenCL backend for acceleration.</p>
+
+<p>Import <code>spla</code> package to your python script.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspla</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre>
+</div>
+
+<p>Create an adjacency matrix of graph using lists of row-column indices and values.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    0 1 2 3</span>
+<span class="go"> 0| . 1 . .|  0</span>
+<span class="go"> 1| . . 1 .|  1</span>
+<span class="go"> 2| 1 . . 1|  2</span>
+<span class="go"> 3| . . 1 .|  3</span>
+<span class="go">    0 1 2 3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>The following function implements single-source breadth-first search algoritm through masked matrix-vector product.
+The algorithm accepts starting vertex and an adjacency matrix of a graph. It traverces graph using <code>vxm</code> and assigns
+depths to reached vertices. Mask is used to update only unvisited vertices reducing number of required computations.</p>
+
+<p>More details are described in the comments to the code fragment bellow.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bfs</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="n">Matrix</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># to store depths</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front</span> <span class="o">=</span> <span class="n"><a href="#Vector.from_lists">Vector.from_lists</a></span><span class="p">([</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># front of new vertices to study</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front_size</span> <span class="o">=</span> <span class="mi">1</span>              <span class="c1"># current front size</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">depth</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>      <span class="c1"># depth of search</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>                   <span class="c1"># num of reached vertices</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">while</span> <span class="n">front_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>       <span class="c1"># while have something to study</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">count</span> <span class="o">+=</span> <span class="n">front_size</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">=</span><span class="n"><a href="#INT.SECOND">INT.SECOND</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.NQZERO">INT.NQZERO</a></span><span class="p">)</span>              <span class="c1"># assign depths</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">vxm</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">op_mult</span><span class="o">=</span><span class="n"><a href="#INT.LAND">INT.LAND</a></span><span class="p">,</span> <span class="n">op_add</span><span class="o">=</span><span class="n"><a href="#INT.LOR">INT.LOR</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.EQZERO">INT.EQZERO</a></span><span class="p">)</span> <span class="c1"># do traversal</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front_size</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">op_reduce</span><span class="o">=</span><span class="n"><a href="#INT.PLUS">INT.PLUS</a></span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>                             <span class="c1"># update front count to end algorithm</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">depth</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier. None, that <code>spla</code> will
+automatically select GPU-based acceleration backed for computations.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Outhput the result vector with distances of reached vertices.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| 1</span>
+<span class="go"> 1| 2</span>
+<span class="go"> 2| 3</span>
+<span class="go"> 3| 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>Total number of reached vertices.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<p>Maximum depth of a discovered vertex.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go"> 4</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
 <h2 id="performance">Performance</h2>
 
 <p><strong>Comparison on a Nvidia GPU</strong></p>
@@ -833,94 +932,6 @@ Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a
 </tbody>
 </table>
 
-<h2 id="example-of-usage">Example of usage</h2>
-
-<p>Import <code>spla</code> package to your python script.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyspla</span> <span class="kn">import</span> <span class="o">*</span>
-</code></pre>
-</div>
-
-<p>Create an adjacency matrix of graph using lists of row-column indices and values.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">INT</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="go">&#39;</span>
-<span class="go">    0 1 2 3</span>
-<span class="go"> 0| . 1 . .|  0</span>
-<span class="go"> 1| . . 1 .|  1</span>
-<span class="go"> 2| 1 . . 1|  2</span>
-<span class="go"> 3| . . 1 .|  3</span>
-<span class="go">    0 1 2 3</span>
-<span class="go">&#39;</span>
-</code></pre>
-</div>
-
-<p>The following code snippet shows how to create breadth-first search algoritm using <code>spla</code> package API
-through masked matrix-vector product. The algorithm accepts starting vertex and an adjacency matrix
-of a graph. It raverces graph using <code>vxm</code> and assign depth to reached vertices. Mask is used to update
-only unvisited vertices reducing number of required computations. More details highlighted in the
-comments to the code fragment.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bfs</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">A</span><span class="p">:</span> <span class="n">Matrix</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># to store depths</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front</span> <span class="o">=</span> <span class="n"><a href="#Vector.from_lists">Vector.from_lists</a></span><span class="p">([</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">A</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">INT</span><span class="p">)</span>  <span class="c1"># front of new vertices to study</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">front_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># current front size</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">depth</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span><span class="n">INT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># depth of search</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># num of reached vertices</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">while</span> <span class="n">front_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># while have something to study</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">depth</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">count</span> <span class="o">+=</span> <span class="n">front_size</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">op_assign</span><span class="o">=</span><span class="n"><a href="#INT.SECOND">INT.SECOND</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.NQZERO">INT.NQZERO</a></span><span class="p">)</span>  <span class="c1"># assign depths</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">vxm</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">op_mult</span><span class="o">=</span><span class="n"><a href="#INT.LAND">INT.LAND</a></span><span class="p">,</span> <span class="n">op_add</span><span class="o">=</span><span class="n"><a href="#INT.LOR">INT.LOR</a></span><span class="p">,</span> <span class="n">op_select</span><span class="o">=</span><span class="n"><a href="#INT.EQZERO">INT.EQZERO</a></span><span class="p">)</span>  <span class="c1"># do traversal</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">front_size</span> <span class="o">=</span> <span class="n">front</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">op_reduce</span><span class="o">=</span><span class="n"><a href="#INT.PLUS">INT.PLUS</a></span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># update front count to end algorithm</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">depth</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-</div>
-
-<p>Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="go">&#39;</span>
-<span class="go"> 0| 1</span>
-<span class="go"> 1| 2</span>
-<span class="go"> 2| 3</span>
-<span class="go"> 3| 4</span>
-<span class="go">&#39;</span>
-</code></pre>
-</div>
-
-<p>Total number of reached vertices.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&#39;</span>
-<span class="go"> 4</span>
-<span class="go">&#39;</span>
-</code></pre>
-</div>
-
-<p>Maximum depth of a discovered vertex.</p>
-
-<div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="go">&#39;</span>
-<span class="go"> 4</span>
-<span class="go">&#39;</span>
-</code></pre>
-</div>
-
 <h2 id="containers">Containers</h2>
 
 <p>Library provides fundamental generalized linear algebra containers
@@ -946,6 +957,14 @@ of GPUs accelerations, where arbitrary layout of data causes significant perform
 matrix and vector containers. Unary operations commonly used for apply and transformation
 operations, binary operations used for reductions and products, select operations used for
 filtration and mask application.</p>
+
+<h2 id="math-operations">Math operations</h2>
+
+<p>Library provides as of high-level linera algebra operations over matrices and vectors with
+parametrization by binary, unary and select <code>ops</code>. There is avalable implementation for
+masked <code>mxmT</code> matrix-matrix, <code>mxv</code> matrix-vector, <code>vxm</code> vector-matrix products, matrix and
+vector reductions, assignment, and so on. Most operations have both CPU and GPU implementation.
+Thus, you will have GPU performance in computations out of the box.</p>
 
 <h2 id="details">Details</h2>
 
@@ -1017,217 +1036,232 @@ on package exit. Library state finalized automatically.</p>
 </span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">it to speed-up some operations. All GPU communication, data transformations</span>
 </span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">and transfers done internally automatically without any efforts from user perspective.</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">Performance</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">-----------</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">Example of usage</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">----------------</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">**Comparison on a Nvidia GPU**</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">![stats](../../docs/stats/rq1_rel_compact.png)</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">Description: Relative speedup of GraphBLAST, Gunrock and Spla compared to a LaGraph (SuiteSparse) used a baseline. Logarithmic scale is used.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">&gt; **Configuration**: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Nvidia GeForce GTX 1070</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">&gt; dedicated GPU with 8Gb on-board VRAM.</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">**Scalability on Intel, Amd and Nvidia GPUs**</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">![stats](../../docs/stats/rq2_cores_compact.png)</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">Description: Throughput of Spla library shown as a number of processed edges/s per single GPU core. Logarithmic scale is used.</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">&gt; **Configuration**: Nvidia GeForce GTX 1070 dedicated GPU with 8Gb on-board VRAM, Intel Arc A770 flux dedicated GPU</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">&gt; with 8GB on-board VRAM and or AMD Radeon Vega Frontier Edition dedicated GPU with 16GB on-board VRAM.</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">**Comparison running on integrated Intel and Amd GPUs**</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">![stats](../../docs/stats/rq3_int_compact.png)</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a baseline running on a single CPU device with integrated GPU.</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">This example demonstrates basic library primitives usage and shows how to implement simple breadth-first search</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">algorithm using `spla` primitives in a few lines of code and run it on your GPU using OpenCL backend for acceleration.</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">Import `spla` package to your python script.</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">&gt;&gt;&gt; from pyspla import *</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">Create an adjacency matrix of graph using lists of row-column indices and values.</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">&gt;&gt;&gt; I = [0, 1, 2, 2, 3]</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">&gt;&gt;&gt; J = [1, 2, 0, 3, 2]</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">&gt;&gt;&gt; V = [1, 1, 1, 1, 1]</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">&gt;&gt;&gt; A = Matrix.from_lists(I, J, V, shape=(4, 4), dtype=INT)</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">&gt;&gt;&gt; print(A)</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">&#39;</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">    0 1 2 3</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd"> 0| . 1 . .|  0</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd"> 1| . . 1 .|  1</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd"> 2| 1 . . 1|  2</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd"> 3| . . 1 .|  3</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">    0 1 2 3</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">&#39;</span>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">&gt; **Configuration**: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Intel HD Graphics 530 integrated</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">&gt; GPU and Ubuntu 22.04, 4.70Hz AMD Ryzen 9 7900x 12-core CPU, DDR4 128 GB RAM, AMD GFX1036 integrated GPU.</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">**Dataset**</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">| Name              | Vertices |   Edges | Avg Deg | Sd Deg |   Max Deg |                                                                                              Link |</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">|:------------------|---------:|--------:|--------:|-------:|----------:|--------------------------------------------------------------------------------------------------:|</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">| coAuthorsCiteseer |   227.3K |    1.6M |     7.2 |   10.6 |    1372.0 | [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coAuthorsCiteseer.tar.gz) |</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">| coPapersDBLP      |   540.5K |   30.5M |    56.4 |   66.2 |    3299.0 |      [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coPapersDBLP.tar.gz) |</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">| amazon-2008       |   735.3K |    7.0M |     9.6 |    7.6 |    1077.0 |                                                    [link](http://sparse.tamu.edu/LAW/amazon-2008) |</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">| hollywood-2009    |     1.1M |  112.8M |    98.9 |  271.9 |   11467.0 |         [link](https://suitesparse-collection-website.herokuapp.com/MM/LAW/hollywood-2009.tar.gz) |</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">| belgium_osm       |     1.4M |    3.1M |     2.2 |    0.5 |      10.0 |                                               [link](http://sparse.tamu.edu/DIMACS10/belgium_osm) |</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">| roadNet-CA        |     2.0M |    5.5M |     2.8 |    1.0 |      12.0 |            [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/roadNet-CA.tar.gz) |</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">| com-Orkut         |     3.1M |  234.4M |    76.3 |  154.8 |   33313.0 |             [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/com-Orkut.tar.gz) |</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">| cit-Patents       |     3.8M |   33.0M |     8.8 |   10.5 |     793.0 |           [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/cit-Patents.tar.gz) |</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">| rgg_n_2_22_s0     |     4.2M |   60.7M |    14.5 |    3.8 |      36.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_22_s0.tar.gz) |</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">| soc-LiveJournal   |     4.8M |   85.7M |    17.7 |   52.0 |   20333.0 |      [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/soc-LiveJournal1.tar.gz) |</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">| indochina-2004    |     7.4M |  302.0M |    40.7 |  329.6 |  256425.0 |         [link](https://suitesparse-collection-website.herokuapp.com/MM/LAW/indochina-2004.tar.gz) |</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">| rgg_n_2_23_s0     |     8.4M |  127.0M |    15.1 |    3.9 |      40.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_23_s0.tar.gz) |</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">| road_central      |    14.1M |   33.9M |     2.4 |    0.9 |       8.0 |                                              [link](http://sparse.tamu.edu/DIMACS10/road_central) |</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">Example of usage</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">----------------</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">Import `spla` package to your python script.</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">&gt;&gt;&gt; from pyspla import *</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">Create an adjacency matrix of graph using lists of row-column indices and values.</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">&gt;&gt;&gt; I = [0, 1, 2, 2, 3]</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">&gt;&gt;&gt; J = [1, 2, 0, 3, 2]</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">&gt;&gt;&gt; V = [1, 1, 1, 1, 1]</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">&gt;&gt;&gt; A = Matrix.from_lists(I, J, V, shape=(4, 4), dtype=INT)</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">&gt;&gt;&gt; print(A)</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">The following function implements single-source breadth-first search algoritm through masked matrix-vector product.</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">The algorithm accepts starting vertex and an adjacency matrix of a graph. It traverces graph using `vxm` and assigns</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">depths to reached vertices. Mask is used to update only unvisited vertices reducing number of required computations.</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">More details are described in the comments to the code fragment bellow.</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">&gt;&gt;&gt; def bfs(s: int, A: Matrix):</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">&gt;&gt;&gt;     v = Vector(A.n_rows, INT)  # to store depths</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">&gt;&gt;&gt;     front = Vector.from_lists([s], [1], A.n_rows, INT)  # front of new vertices to study</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">&gt;&gt;&gt;     front_size = 1              # current front size</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">&gt;&gt;&gt;     depth = Scalar(INT, 0)      # depth of search</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">&gt;&gt;&gt;     count = 0                   # num of reached vertices</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">&gt;&gt;&gt;     while front_size &gt; 0:       # while have something to study</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">&gt;&gt;&gt;         depth += 1</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">&gt;&gt;&gt;         count += front_size</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">&gt;&gt;&gt;         v.assign(front, depth, op_assign=INT.SECOND, op_select=INT.NQZERO)              # assign depths</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">&gt;&gt;&gt;         front = front.vxm(v, A, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO) # do traversal</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">&gt;&gt;&gt;         front_size = front.reduce(op_reduce=INT.PLUS).get()                             # update front count to end algorithm</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">&gt;&gt;&gt;</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">&gt;&gt;&gt;     return v, count, depth.get()</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier. None, that `spla` will</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">automatically select GPU-based acceleration backed for computations.</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">&gt;&gt;&gt; v, c, d = bfs(0, A)</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">Outhput the result vector with distances of reached vertices.</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">&gt;&gt;&gt; print(v)</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">&#39;</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd"> 0| 1</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd"> 1| 2</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd"> 2| 3</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd"> 3| 4</span>
 </span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">&#39;</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">    0 1 2 3</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd"> 0| . 1 . .|  0</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd"> 1| . . 1 .|  1</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd"> 2| 1 . . 1|  2</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd"> 3| . . 1 .|  3</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">    0 1 2 3</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">&#39;</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">The following code snippet shows how to create breadth-first search algoritm using `spla` package API</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">through masked matrix-vector product. The algorithm accepts starting vertex and an adjacency matrix</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">of a graph. It raverces graph using `vxm` and assign depth to reached vertices. Mask is used to update</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">only unvisited vertices reducing number of required computations. More details highlighted in the</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">comments to the code fragment.</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">&gt;&gt;&gt; def bfs(s: int, A: Matrix):</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">&gt;&gt;&gt;     v = Vector(A.n_rows, INT)  # to store depths</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">&gt;&gt;&gt;</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">&gt;&gt;&gt;     front = Vector.from_lists([s], [1], A.n_rows, INT)  # front of new vertices to study</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="sd">&gt;&gt;&gt;     front_size = 1  # current front size</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">&gt;&gt;&gt;     depth = Scalar(INT, 0)  # depth of search</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">&gt;&gt;&gt;     count = 0  # num of reached vertices</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">&gt;&gt;&gt;</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">&gt;&gt;&gt;     while front_size &gt; 0:  # while have something to study</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">&gt;&gt;&gt;         depth += 1</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">&gt;&gt;&gt;         count += front_size</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">&gt;&gt;&gt;         v.assign(front, depth, op_assign=INT.SECOND, op_select=INT.NQZERO)  # assign depths</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">&gt;&gt;&gt;         front = front.vxm(v, A, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO)  # do traversal</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">&gt;&gt;&gt;         front_size = front.reduce(op_reduce=INT.PLUS).get()  # update front count to end algorithm</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">&gt;&gt;&gt;</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">&gt;&gt;&gt;     return v, count, depth.get()</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">Run bfs algorithm starting from 0-vertex with the graph adjacency matrix created earlier.</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">&gt;&gt;&gt; v, c, d = bfs(0, A)</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">&gt;&gt;&gt; print(v)</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">&#39;</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd"> 0| 1</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd"> 1| 2</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd"> 2| 3</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd"> 3| 4</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">&#39;</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">Total number of reached vertices.</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">&gt;&gt;&gt; print(c)</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">&#39;</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd"> 4</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">&#39;</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">Maximum depth of a discovered vertex.</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">&gt;&gt;&gt; print(d)</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">&#39;</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd"> 4</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">&#39;</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">Performance</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">-----------</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">**Comparison on a Nvidia GPU**</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">![stats](../../docs/stats/rq1_rel_compact.png)</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">Description: Relative speedup of GraphBLAST, Gunrock and Spla compared to a LaGraph (SuiteSparse) used a baseline. Logarithmic scale is used.</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">&gt; **Configuration**: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Nvidia GeForce GTX 1070</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">&gt; dedicated GPU with 8Gb on-board VRAM.</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">**Scalability on Intel, Amd and Nvidia GPUs**</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">![stats](../../docs/stats/rq2_cores_compact.png)</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">Description: Throughput of Spla library shown as a number of processed edges/s per single GPU core. Logarithmic scale is used.</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">&gt; **Configuration**: Nvidia GeForce GTX 1070 dedicated GPU with 8Gb on-board VRAM, Intel Arc A770 flux dedicated GPU</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">&gt; with 8GB on-board VRAM and or AMD Radeon Vega Frontier Edition dedicated GPU with 16GB on-board VRAM.</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">**Comparison running on integrated Intel and Amd GPUs**</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">![stats](../../docs/stats/rq3_int_compact.png)</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a baseline running on a single CPU device with integrated GPU.</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">&gt; **Configuration**: Ubuntu 20.04, 3.40Hz Intel Core i7-6700 4-core CPU, DDR4 64Gb RAM, Intel HD Graphics 530 integrated</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">&gt; GPU and Ubuntu 22.04, 4.70Hz AMD Ryzen 9 7900x 12-core CPU, DDR4 128 GB RAM, AMD GFX1036 integrated GPU.</span>
 </span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">Total number of reached vertices.</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">&gt;&gt;&gt; print(c)</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">&#39;</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd"> 4</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">&#39;</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">Maximum depth of a discovered vertex.</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">&gt;&gt;&gt; print(d)</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">&#39;</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd"> 4</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">&#39;</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">Containers</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">----------</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">Library provides fundamental generalized linear algebra containers</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">for data storage and mathematical computations. These containers</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">are generalized, so any of built-in types may be used to parametrize</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">type of data. Containers have sparse formats by default, so it is</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">possible to create large-dimension but low data containers. Containers</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="sd">are storage-invariant, so the best format for the storage is automatically</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">managed by container internally. All required format conversion done</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">in the context of particular primitive usage.</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">Types</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">-----</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">Library provides a set of standard and common built-in data types. Library value types</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">differ a bit from a classic type definition. In spla library type is essentially is a</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">storage characteristic, which defines count and layout of bytes per element. User</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">can interpret stored data as her/she wants. Spla types set is limited due to the nature</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">**Dataset**</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">| Name              | Vertices |   Edges | Avg Deg | Sd Deg |   Max Deg |                                                                                              Link |</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">|:------------------|---------:|--------:|--------:|-------:|----------:|--------------------------------------------------------------------------------------------------:|</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">| coAuthorsCiteseer |   227.3K |    1.6M |     7.2 |   10.6 |    1372.0 | [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coAuthorsCiteseer.tar.gz) |</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">| coPapersDBLP      |   540.5K |   30.5M |    56.4 |   66.2 |    3299.0 |      [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coPapersDBLP.tar.gz) |</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">| amazon-2008       |   735.3K |    7.0M |     9.6 |    7.6 |    1077.0 |                                                    [link](http://sparse.tamu.edu/LAW/amazon-2008) |</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">| hollywood-2009    |     1.1M |  112.8M |    98.9 |  271.9 |   11467.0 |         [link](https://suitesparse-collection-website.herokuapp.com/MM/LAW/hollywood-2009.tar.gz) |</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">| belgium_osm       |     1.4M |    3.1M |     2.2 |    0.5 |      10.0 |                                               [link](http://sparse.tamu.edu/DIMACS10/belgium_osm) |</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">| roadNet-CA        |     2.0M |    5.5M |     2.8 |    1.0 |      12.0 |            [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/roadNet-CA.tar.gz) |</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">| com-Orkut         |     3.1M |  234.4M |    76.3 |  154.8 |   33313.0 |             [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/com-Orkut.tar.gz) |</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">| cit-Patents       |     3.8M |   33.0M |     8.8 |   10.5 |     793.0 |           [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/cit-Patents.tar.gz) |</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">| rgg_n_2_22_s0     |     4.2M |   60.7M |    14.5 |    3.8 |      36.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_22_s0.tar.gz) |</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">| soc-LiveJournal   |     4.8M |   85.7M |    17.7 |   52.0 |   20333.0 |      [link](https://suitesparse-collection-website.herokuapp.com/MM/SNAP/soc-LiveJournal1.tar.gz) |</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">| indochina-2004    |     7.4M |  302.0M |    40.7 |  329.6 |  256425.0 |         [link](https://suitesparse-collection-website.herokuapp.com/MM/LAW/indochina-2004.tar.gz) |</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">| rgg_n_2_23_s0     |     8.4M |  127.0M |    15.1 |    3.9 |      40.0 |     [link](https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/rgg_n_2_23_s0.tar.gz) |</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">| road_central      |    14.1M |   33.9M |     2.4 |    0.9 |       8.0 |                                              [link](http://sparse.tamu.edu/DIMACS10/road_central) |</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">Containers</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="sd">----------</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="sd">Library provides fundamental generalized linear algebra containers</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="sd">for data storage and mathematical computations. These containers</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="sd">are generalized, so any of built-in types may be used to parametrize</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">type of data. Containers have sparse formats by default, so it is</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">possible to create large-dimension but low data containers. Containers</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">are storage-invariant, so the best format for the storage is automatically</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">managed by container internally. All required format conversion done</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">in the context of particular primitive usage.</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">Types</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">-----</span>
 </span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">Ops</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">---</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">Library provides a set of unary, binary and select ops for values data manipulation inside</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">matrix and vector containers. Unary operations commonly used for apply and transformation</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">operations, binary operations used for reductions and products, select operations used for</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">filtration and mask application.</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">Details</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">-------</span>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">Spla C/C++ backend compiled library is automatically loaded and initialized on package import.</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">State of the library managed by internal `bridge` module. All resources are unloaded automatically</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">on package exit. Library state finalized automatically.</span>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">Library provides a set of standard and common built-in data types. Library value types</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">differ a bit from a classic type definition. In spla library type is essentially is a</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">storage characteristic, which defines count and layout of bytes per element. User</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">can interpret stored data as her/she wants. Spla types set is limited due to the nature</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">Ops</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">---</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">Library provides a set of unary, binary and select ops for values data manipulation inside</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="sd">matrix and vector containers. Unary operations commonly used for apply and transformation</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">operations, binary operations used for reductions and products, select operations used for</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="sd">filtration and mask application.</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">Math operations</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">---------------</span>
 </span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2021-2023 SparseLinearAlgebra&quot;</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="s2">MIT License</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="s2">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="s2">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="s2">in the Software without restriction, including without limitation the rights</span>
-</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a><span class="s2">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a><span class="s2">copies of the Software, and to permit persons to whom the Software is</span>
-</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a><span class="s2">furnished to do so, subject to the following conditions:</span>
-</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="s2">The above copyright notice and this permission notice shall be included in all</span>
-</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="s2">copies or substantial portions of the Software.</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">Library provides as of high-level linera algebra operations over matrices and vectors with</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">parametrization by binary, unary and select `ops`. There is avalable implementation for</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="sd">masked `mxmT` matrix-matrix, `mxv` matrix-vector, `vxm` vector-matrix products, matrix and</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">vector reductions, assignment, and so on. Most operations have both CPU and GPU implementation.</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">Thus, you will have GPU performance in computations out of the box.</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="sd">Details</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="sd">-------</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a><span class="sd">Spla C/C++ backend compiled library is automatically loaded and initialized on package import.</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a><span class="sd">State of the library managed by internal `bridge` module. All resources are unloaded automatically</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a><span class="sd">on package exit. Library state finalized automatically.</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>
-</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a><span class="s2">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="s2">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="s2">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="s2">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="s2">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="s2">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="s2">SOFTWARE.</span>
-</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="s2">&quot;&quot;&quot;</span>
-</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
-</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="kn">from</span> <span class="nn">.bridge</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>
-</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a><span class="n">bridge</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>
-</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a><span class="kn">from</span> <span class="nn">.library</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a><span class="kn">from</span> <span class="nn">.descriptor</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="kn">from</span> <span class="nn">.op</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="kn">from</span> <span class="nn">.object</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a><span class="kn">from</span> <span class="nn">.schedule</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a><span class="kn">from</span> <span class="nn">.type</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a><span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a><span class="kn">from</span> <span class="nn">.matrix</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a><span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="kn">from</span> <span class="nn">.scalar</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a><span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>
-</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSIONS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>
-</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="s2">&quot;Type&quot;</span><span class="p">,</span>
-</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>    <span class="s2">&quot;BOOL&quot;</span><span class="p">,</span>
-</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>    <span class="s2">&quot;INT&quot;</span><span class="p">,</span>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
-</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>    <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
-</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>    <span class="s2">&quot;FormatMatrix&quot;</span><span class="p">,</span>
-</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>    <span class="s2">&quot;FormatVector&quot;</span><span class="p">,</span>
-</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>    <span class="s2">&quot;Descriptor&quot;</span><span class="p">,</span>
-</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>    <span class="s2">&quot;Op&quot;</span><span class="p">,</span>
-</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>    <span class="s2">&quot;OpUnary&quot;</span><span class="p">,</span>
-</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>    <span class="s2">&quot;OpBinary&quot;</span><span class="p">,</span>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>    <span class="s2">&quot;OpSelect&quot;</span><span class="p">,</span>
-</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>    <span class="s2">&quot;MemView&quot;</span><span class="p">,</span>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>    <span class="s2">&quot;Object&quot;</span><span class="p">,</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>    <span class="s2">&quot;Array&quot;</span><span class="p">,</span>
-</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>    <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
-</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>    <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>    <span class="s2">&quot;Scalar&quot;</span><span class="p">,</span>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>    <span class="s2">&quot;VERSIONS&quot;</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a><span class="p">]</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a><span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2021-2023 SparseLinearAlgebra&quot;</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="s2">MIT License</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="s2">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="s2">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="s2">in the Software without restriction, including without limitation the rights</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a><span class="s2">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="s2">copies of the Software, and to permit persons to whom the Software is</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a><span class="s2">furnished to do so, subject to the following conditions:</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a><span class="s2">The above copyright notice and this permission notice shall be included in all</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a><span class="s2">copies or substantial portions of the Software.</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="s2">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="s2">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a><span class="s2">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a><span class="s2">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a><span class="s2">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a><span class="s2">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a><span class="s2">SOFTWARE.</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="s2">&quot;&quot;&quot;</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a><span class="kn">from</span> <span class="nn">.bridge</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a><span class="n">bridge</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a><span class="kn">from</span> <span class="nn">.library</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a><span class="kn">from</span> <span class="nn">.descriptor</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a><span class="kn">from</span> <span class="nn">.op</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a><span class="kn">from</span> <span class="nn">.object</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a><span class="kn">from</span> <span class="nn">.schedule</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a><span class="kn">from</span> <span class="nn">.type</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a><span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a><span class="kn">from</span> <span class="nn">.matrix</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a><span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a><span class="kn">from</span> <span class="nn">.scalar</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a><span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>
+</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSIONS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>    <span class="s2">&quot;Type&quot;</span><span class="p">,</span>
+</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>    <span class="s2">&quot;BOOL&quot;</span><span class="p">,</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>    <span class="s2">&quot;INT&quot;</span><span class="p">,</span>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>    <span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>    <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
+</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>    <span class="s2">&quot;FormatMatrix&quot;</span><span class="p">,</span>
+</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>    <span class="s2">&quot;FormatVector&quot;</span><span class="p">,</span>
+</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>    <span class="s2">&quot;Descriptor&quot;</span><span class="p">,</span>
+</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>    <span class="s2">&quot;Op&quot;</span><span class="p">,</span>
+</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>    <span class="s2">&quot;OpUnary&quot;</span><span class="p">,</span>
+</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a>    <span class="s2">&quot;OpBinary&quot;</span><span class="p">,</span>
+</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a>    <span class="s2">&quot;OpSelect&quot;</span><span class="p">,</span>
+</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>    <span class="s2">&quot;MemView&quot;</span><span class="p">,</span>
+</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>    <span class="s2">&quot;Object&quot;</span><span class="p">,</span>
+</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>    <span class="s2">&quot;Array&quot;</span><span class="p">,</span>
+</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>    <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
+</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a>    <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
+</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>    <span class="s2">&quot;Scalar&quot;</span><span class="p">,</span>
+</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>    <span class="s2">&quot;VERSIONS&quot;</span>
+</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a><span class="p">]</span>
 </span></pre></div>
 
 
