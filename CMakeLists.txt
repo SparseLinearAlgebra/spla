@@ -321,6 +321,7 @@ add_library(spla SHARED
         src/cpu/cpu_format_lil.hpp
         src/cpu/cpu_formats.hpp
         src/cpu/cpu_m_reduce.hpp
+        src/cpu/cpu_m_reduce_by_column.hpp
         src/cpu/cpu_m_reduce_by_row.hpp
         src/cpu/cpu_mxmT_masked.hpp
         src/cpu/cpu_mxv.hpp

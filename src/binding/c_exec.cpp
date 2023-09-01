@@ -55,6 +55,9 @@ spla_Status spla_Exec_vxm_masked(spla_Vector r, spla_Vector mask, spla_Vector v,
 spla_Status spla_Exec_m_reduce_by_row(spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_m_reduce_by_row, AS_V(r), AS_M(M), AS_OB(op_reduce), AS_S(init));
 }
+spla_Status spla_Exec_m_reduce_by_column(spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_m_reduce_by_column, AS_V(r), AS_M(M), AS_OB(op_reduce), AS_S(init));
+}
 spla_Status spla_Exec_m_reduce(spla_Scalar r, spla_Scalar s, spla_Matrix M, spla_OpBinary op_reduce, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_m_reduce, AS_S(r), AS_S(s), AS_M(M), AS_OB(op_reduce));
 }

@@ -29,3 +29,7 @@ v, c, d = bfs(0, A)
 print(v)
 print(c)
 print(d)
+
+M = Matrix.from_lists([0, 1, 2, 3], [0, 3, 3, 2], [1, 2, 3, 4], (4, 4), INT)
+print(M)
+print(M.reduce_by_column(INT.PLUS))

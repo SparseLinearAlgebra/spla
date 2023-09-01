@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_M_REDUCE_BY_ROW_HPP
-#define SPLA_CPU_M_REDUCE_BY_ROW_HPP
+#ifndef SPLA_CPU_M_REDUCE_BY_COLUMN_HPP
+#define SPLA_CPU_M_REDUCE_BY_COLUMN_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -43,20 +43,20 @@
 namespace spla {
 
     template<typename T>
-    class Algo_m_reduce_by_row_cpu final : public RegistryAlgo {
+    class Algo_m_reduce_by_column_cpu final : public RegistryAlgo {
     public:
-        ~Algo_m_reduce_by_row_cpu() override = default;
+        ~Algo_m_reduce_by_column_cpu() override = default;
 
         std::string get_name() override {
-            return "m_reduce_by_row";
+            return "m_reduce_by_column";
         }
 
         std::string get_description() override {
-            return "reduce matrix by row on cpu sequentially";
+            return "reduce matrix by column on cpu sequentially";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_column>();
             auto M = t->M.template cast_safe<TMatrix<T>>();
 
             if (M->is_valid(FormatMatrix::CpuLil)) {
@@ -71,7 +71,7 @@ namespace spla {
 
     private:
         Status execute_dok(const DispatchContext& ctx) {
-            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
+            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_column>();
             auto r         = t->r.template cast_safe<TVector<T>>();
             auto M         = t->M.template cast_safe<TMatrix<T>>();
             auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
@@ -88,16 +88,16 @@ namespace spla {
             auto& func_reduce = op_reduce->function;
 
             for (const auto& entry : p_dok_M->Ax) {
-                const uint i = entry.first.first;
+                const uint j = entry.first.second;
                 const T    x = entry.second;
 
-                p_dense_r->Ax[i] = func_reduce(p_dense_r->Ax[i], x);
+                p_dense_r->Ax[j] = func_reduce(p_dense_r->Ax[j], x);
             }
 
             return Status::Ok;
         }
         Status execute_lil(const DispatchContext& ctx) {
-            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_row>();
+            auto t         = ctx.task.template cast_safe<ScheduleTask_m_reduce_by_column>();
             auto r         = t->r.template cast_safe<TVector<T>>();
             auto M         = t->M.template cast_safe<TMatrix<T>>();
             auto op_reduce = t->op_reduce.template cast_safe<TOpBinary<T, T, T>>();
@@ -115,9 +115,10 @@ namespace spla {
 
             for (std::size_t i = 0; i < p_lil_M->Ar.size(); i++) {
                 for (const auto& entry : p_lil_M->Ar[i]) {
-                    const T x = entry.second;
+                    const uint j = entry.first;
+                    const T    x = entry.second;
 
-                    p_dense_r->Ax[i] = func_reduce(p_dense_r->Ax[i], x);
+                    p_dense_r->Ax[j] = func_reduce(p_dense_r->Ax[j], x);
                 }
             }
 
@@ -127,4 +128,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_M_REDUCE_BY_ROW_HPP
+#endif//SPLA_CPU_M_REDUCE_BY_COLUMN_HPP

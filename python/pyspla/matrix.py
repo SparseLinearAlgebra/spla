@@ -770,6 +770,52 @@ class Matrix(Object):
 
         return out
 
+    def reduce_by_column(self, op_reduce, out=None, init=None, desc=None):
+        """
+        Reduce matrix elements by a column to a row vector.
+
+        >>> M = Matrix.from_lists([0, 1, 2, 3], [0, 3, 3, 2], [1, 2, 3, 4], (4, 4), INT)
+        >>> print(M.reduce_by_column(INT.PLUS))
+        '
+         0| 1
+         1| .
+         2| 4
+         3| 5
+        '
+
+        :param op_reduce: OpBinary.
+            Binary operation to apply for reduction of matrix elements.
+
+        :param out: optional: Vector: default: None.
+            Optional vector to store result of reduction.
+
+        :param init: optional: Scalar: default: 0.
+            Optional neutral init value for reduction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector with result.
+        """
+
+        from .vector import Vector
+
+        if out is None:
+            out = Vector(shape=self.n_cols, dtype=self.dtype)
+        if init is None:
+            init = Scalar(dtype=self.dtype, value=0)
+
+        assert out
+        assert init
+        assert out.n_rows == self.n_cols
+        assert out.dtype == self.dtype
+        assert init.dtype == self.dtype
+
+        check(backend().spla_Exec_m_reduce_by_column(out.hnd, self.hnd, op_reduce.hnd, init.hnd,
+                                                     self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def reduce(self, op_reduce, out=None, init=None, desc=None):
         """
         Reduce matrix elements.

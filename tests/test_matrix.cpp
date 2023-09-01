@@ -141,6 +141,34 @@ TEST(matrix, reduce_by_row) {
     }
 }
 
+TEST(matrix, reduce_by_column) {
+    const spla::uint M = 10000, N = 20000, K = 8;
+
+    auto imat  = spla::Matrix::make(N, M, spla::INT);
+    auto ivec  = spla::Vector::make(N, spla::INT);
+    auto iinit = spla::Scalar::make_int(0);
+
+    std::vector<int> ref(M, 0);
+
+    for (spla::uint i = 0; i < M; i += 1) {
+        for (spla::uint k = 0; k < K; k++) {
+            spla::uint j = (i * K + k) % N;
+            imat->set_int(j, i, k + 1);
+            ref[i] += k + 1;
+        }
+    }
+
+    spla::exec_m_reduce_by_column(ivec, imat, spla::PLUS_INT, iinit);
+
+    for (spla::uint i = 0; i < M; i += 1) {
+        int expected = ref[i];
+        int actual;
+        ivec->get_int(i, actual);
+        EXPECT_EQ(expected, actual);
+    }
+}
+
+
 TEST(matrix, reduce) {
     const spla::uint M = 10000, N = 20000, K = 8;
 

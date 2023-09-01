@@ -32,6 +32,7 @@
 
 #include <cpu/cpu_algo_callback.hpp>
 #include <cpu/cpu_m_reduce.hpp>
+#include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
 #include <cpu/cpu_mxmT_masked.hpp>
 #include <cpu/cpu_mxv.hpp>
@@ -83,6 +84,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", INT), std::make_shared<Algo_m_reduce_by_row_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", UINT), std::make_shared<Algo_m_reduce_by_row_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", FLOAT), std::make_shared<Algo_m_reduce_by_row_cpu<T_FLOAT>>());
+
+        // algorthm m_reduce_by_column
+        g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", INT), std::make_shared<Algo_m_reduce_by_column_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", UINT), std::make_shared<Algo_m_reduce_by_column_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", FLOAT), std::make_shared<Algo_m_reduce_by_column_cpu<T_FLOAT>>());
 
         // algorthm m_reduce
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cpu<T_INT>>());
