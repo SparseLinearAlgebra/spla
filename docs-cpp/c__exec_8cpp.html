@@ -110,6 +110,8 @@ Functions</h2></td></tr>
 <tr class="separator:a47a272c770e3760a499e18de07c3289e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab716e4145a93953a7559174aef12459f"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#ab716e4145a93953a7559174aef12459f">spla_Exec_mxmT_masked</a> (spla_Matrix R, spla_Matrix mask, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:ab716e4145a93953a7559174aef12459f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabee47b321863529c41da6d69eceffe1"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#aabee47b321863529c41da6d69eceffe1">spla_Exec_kron</a> (spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
+<tr class="separator:aabee47b321863529c41da6d69eceffe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef21924980b26e2ca5be2ada637e443"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a6ef21924980b26e2ca5be2ada637e443">spla_Exec_mxv_masked</a> (spla_Vector r, spla_Vector mask, spla_Matrix M, spla_Vector v, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:a6ef21924980b26e2ca5be2ada637e443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c82317db6551dffc0fe064dd6339aa2"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a3c82317db6551dffc0fe064dd6339aa2">spla_Exec_vxm_masked</a> (spla_Vector r, spla_Vector mask, spla_Vector v, spla_Matrix M, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
@@ -286,6 +288,58 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aabee47b321863529c41da6d69eceffe1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabee47b321863529c41da6d69eceffe1">&#9670;&nbsp;</a></span>spla_Exec_kron()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Exec_kron </td>
+          <td>(</td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpBinary&#160;</td>
+          <td class="paramname"><em>op_multiply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Descriptor&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_ScheduleTask *&#160;</td>
+          <td class="paramname"><em>task</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac307d602b22140243e33d5bb9d8c9434"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac307d602b22140243e33d5bb9d8c9434">&#9670;&nbsp;</a></span>spla_Exec_m_reduce()</h2>
 

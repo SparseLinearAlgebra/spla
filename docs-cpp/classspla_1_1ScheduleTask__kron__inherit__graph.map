@@ -1,0 +1,7 @@
+<map id="spla::ScheduleTask_kron" name="spla::ScheduleTask_kron">
+<area shape="rect" id="node1" title="Sparse matrix kronecker product." alt="" coords="5,304,172,331"/>
+<area shape="rect" id="node2" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="6,229,171,256"/>
+<area shape="rect" id="node3" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="21,155,156,181"/>
+<area shape="rect" id="node4" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="43,80,134,107"/>
+<area shape="rect" id="node5" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="43,5,135,32"/>
+</map>
