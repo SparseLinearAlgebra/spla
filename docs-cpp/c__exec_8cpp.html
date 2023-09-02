@@ -120,6 +120,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1206ebc4c202c456495cb968e50fc84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac307d602b22140243e33d5bb9d8c9434"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#ac307d602b22140243e33d5bb9d8c9434">spla_Exec_m_reduce</a> (spla_Scalar r, spla_Scalar s, spla_Matrix M, spla_OpBinary op_reduce, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:ac307d602b22140243e33d5bb9d8c9434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9208732d03d0b70413b9c03a660a92a9"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a9208732d03d0b70413b9c03a660a92a9">spla_Exec_m_transpose</a> (spla_Matrix R, spla_Matrix M, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
+<tr class="separator:a9208732d03d0b70413b9c03a660a92a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cee5329eefdcf12ee11937cf6ff01c4"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a2cee5329eefdcf12ee11937cf6ff01c4">spla_Exec_v_eadd</a> (spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:a2cee5329eefdcf12ee11937cf6ff01c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1096e7da6d267f29c6a6fcde92836c7e"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a1096e7da6d267f29c6a6fcde92836c7e">spla_Exec_v_emult</a> (spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
@@ -417,6 +419,52 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">spla_Scalar&#160;</td>
           <td class="paramname"><em>init</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Descriptor&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_ScheduleTask *&#160;</td>
+          <td class="paramname"><em>task</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9208732d03d0b70413b9c03a660a92a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9208732d03d0b70413b9c03a660a92a9">&#9670;&nbsp;</a></span>spla_Exec_m_transpose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Exec_m_transpose </td>
+          <td>(</td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>M</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpUnary&#160;</td>
+          <td class="paramname"><em>op_apply</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
