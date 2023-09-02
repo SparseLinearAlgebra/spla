@@ -283,6 +283,13 @@ class Matrix(Object):
                MemView(hnd=view_J_hnd, owner=self), \
                MemView(hnd=view_V_hnd, owner=self)
 
+    def clear(self):
+        """
+        Clears matrix removing all elements, so it has no values.
+        """
+
+        check(backend().spla_Matrix_clear(self.hnd))
+
     def to_lists(self):
         """
         Read matrix data as a python lists of I, J and V.
@@ -311,13 +318,6 @@ class Matrix(Object):
         check(backend().spla_MemView_read(V.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_V), buffer_V))
 
         return list(buffer_I), list(buffer_J), list(buffer_V)
-
-    def clear(self):
-        """
-        Clears matrix removing all elements, so it has 0 values.
-        """
-
-        check(backend().spla_Vector_clear(self.hnd))
 
     def to_list(self):
         """
@@ -762,6 +762,179 @@ class Matrix(Object):
                                               init.hnd, self._get_desc(desc), self._get_task(None)))
 
         return out
+
+    def kron(self, M, op_mult, out=None, desc=None):
+        """
+        Kronecker product of two sparse matrices.
+
+        Generate two matrices, sparse with different values and dense with 1.
+        >>> A = Matrix.from_lists([0, 1, 2], [1, 2, 0], [2, 3, 4], (3, 3), INT)
+        >>> B = Matrix.dense((3, 3), INT, 1)
+
+        Evaluate product with default `mutl` and show result.
+        >>> print(A.kron(B, op_mult=INT.MULT))
+        '
+            0 1 2 3 4 5 6 7 8
+         0| . . . 2 2 2 . . .|  0
+         1| . . . 2 2 2 . . .|  1
+         2| . . . 2 2 2 . . .|  2
+         3| . . . . . . 3 3 3|  3
+         4| . . . . . . 3 3 3|  4
+         5| . . . . . . 3 3 3|  5
+         6| 4 4 4 . . . . . .|  6
+         7| 4 4 4 . . . . . .|  7
+         8| 4 4 4 . . . . . .|  8
+            0 1 2 3 4 5 6 7 8
+        '
+
+        The same matrices but order is changed gives a bit of different result.
+        >>> print(B.kron(A, op_mult=INT.MULT))
+        '
+            0 1 2 3 4 5 6 7 8
+         0| . 2 . . 2 . . 2 .|  0
+         1| . . 3 . . 3 . . 3|  1
+         2| 4 . . 4 . . 4 . .|  2
+         3| . 2 . . 2 . . 2 .|  3
+         4| . . 3 . . 3 . . 3|  4
+         5| 4 . . 4 . . 4 . .|  5
+         6| . 2 . . 2 . . 2 .|  6
+         7| . . 3 . . 3 . . 3|  7
+         8| 4 . . 4 . . 4 . .|  8
+            0 1 2 3 4 5 6 7 8
+        '
+
+        Generate diagonal matrix and dense (not square).
+        >>> A = Matrix.diag((3, 3), INT, 1)
+        >>> B = Matrix.dense((2, 4), INT, 1)
+
+        Eval product with `plus` operation instead.
+        >>> print(A.kron(B, op_mult=INT.PLUS).to_string(width=3))
+        '
+              0  1  2  3  4  5  6  7  8  9 10 11
+          0|  2  2  2  2  .  .  .  .  .  .  .  .|  0
+          1|  2  2  2  2  .  .  .  .  .  .  .  .|  1
+          2|  .  .  .  .  2  2  2  2  .  .  .  .|  2
+          3|  .  .  .  .  2  2  2  2  .  .  .  .|  3
+          4|  .  .  .  .  .  .  .  .  2  2  2  2|  4
+          5|  .  .  .  .  .  .  .  .  2  2  2  2|  5
+              0  1  2  3  4  5  6  7  8  9 10 11
+        '
+
+        :param M: Matrix.
+            Right matrix for product.
+
+        :param op_mult: OpBinary.
+            Element-wise binary operator for matrix elements product.
+
+        :param out: optional: Matrix: default: None.
+            Optional matrix to store result of product.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Matrix with result.
+        """
+
+        if out is None:
+            out = Matrix(shape=(self.n_rows * M.n_rows, self.n_cols * M.n_cols), dtype=self.dtype)
+
+        assert M
+        assert out
+        assert M.dtype == self.dtype
+        assert out.dtype == self.dtype
+        assert out.n_rows == self.n_rows * M.n_rows
+        assert out.n_cols == self.n_cols * M.n_cols
+
+        check(backend().spla_Exec_kron(out.hnd, self.hnd, M.hnd, op_mult.hnd,
+                                       self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def kronpow(self, exponent, op_mult=None):
+        """
+        Kronecker's expansion, evaluate product for matrix itself giving nice pattern.
+        Useful operation for synthetic graphs generation.
+
+        Source 2x2 pattern matrix for expansion.
+        >>> M = Matrix.from_lists([0, 0, 1], [0, 1, 1], [1, 2, 3], (2, 2), INT)
+
+        Exponent with 0 is the identinty matrix of the source shape.
+        >>> print(M.kronpow(0))
+        '
+            0 1
+         0| 1 .|  0
+         1| . 1|  1
+            0 1
+        '
+
+        Exmponent with 1 is the source matrix.
+        >>> print(M.kronpow(1))
+        '
+            0 1
+         0| 1 2|  0
+         1| . 3|  1
+            0 1
+        '
+
+        Exmponent with 2 it is kron product of self by itself.
+        >>> print(M.kronpow(2))
+        '
+            0 1 2 3
+         0| 1 2 2 4|  0
+         1| . 3 . 6|  1
+         2| . . 3 6|  2
+         3| . . . 9|  3
+            0 1 2 3
+        '
+
+        Exmponent with 3 it is effectively prev result matrix kron by itself.
+        >>> print(M.kronpow(3).to_string(width=3))
+        '
+              0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+          0|  1  2  2  4  2  4  4  8  2  4  4  8  4  8  8 16|  0
+          1|  .  3  .  6  .  6  . 12  .  6  . 12  . 12  . 24|  1
+          2|  .  .  3  6  .  .  6 12  .  .  6 12  .  . 12 24|  2
+          3|  .  .  .  9  .  .  . 18  .  .  . 18  .  .  . 36|  3
+          4|  .  .  .  .  3  6  6 12  .  .  .  .  6 12 12 24|  4
+          5|  .  .  .  .  .  9  . 18  .  .  .  .  . 18  . 36|  5
+          6|  .  .  .  .  .  .  9 18  .  .  .  .  .  . 18 36|  6
+          7|  .  .  .  .  .  .  . 27  .  .  .  .  .  .  . 54|  7
+          8|  .  .  .  .  .  .  .  .  3  6  6 12  6 12 12 24|  8
+          9|  .  .  .  .  .  .  .  .  .  9  . 18  . 18  . 36|  9
+         10|  .  .  .  .  .  .  .  .  .  .  9 18  .  . 18 36|  10
+         11|  .  .  .  .  .  .  .  .  .  .  . 27  .  .  . 54|  11
+         12|  .  .  .  .  .  .  .  .  .  .  .  .  9 18 18 36|  12
+         13|  .  .  .  .  .  .  .  .  .  .  .  .  . 27  . 54|  13
+         14|  .  .  .  .  .  .  .  .  .  .  .  .  .  . 27 54|  14
+         15|  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 81|  15
+              0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+        '
+
+        :param exponent: int.
+            Power to evaluate, must be >= 0.
+
+        :param op_mult: optional: OpBinary. default: None.
+            Optional operator for `kron`, by default used `mult`.
+
+        :return: Kronecker power of a matrix.
+        """
+
+        assert exponent >= 0
+
+        if op_mult is None:
+            op_mult = self.dtype.MULT
+
+        if exponent == 0:
+            return Matrix.diag(shape=self.shape, dtype=self.dtype)
+        if exponent == 1:
+            return self
+
+        result = self
+
+        for _ in range(exponent - 1):
+            result = result.kron(result, op_mult)
+
+        return result
 
     def mxv(self, mask, v, op_mult, op_add, op_select, out=None, init=None, desc=None):
         """

@@ -118,6 +118,25 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_kron
+     * @brief Sparse matrix kronecker product
+     */
+    class ScheduleTask_kron final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_kron() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>   R;
+        ref_ptr<Matrix>   A;
+        ref_ptr<Matrix>   B;
+        ref_ptr<OpBinary> op_multiply;
+    };
+
+    /**
      * @class ScheduleTask_mxv_masked
      * @brief Masked matrix-vector product
      */

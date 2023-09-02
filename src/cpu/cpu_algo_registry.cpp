@@ -31,6 +31,7 @@
 #include <core/top.hpp>
 
 #include <cpu/cpu_algo_callback.hpp>
+#include <cpu/cpu_kron.hpp>
 #include <cpu/cpu_m_reduce.hpp>
 #include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
@@ -117,6 +118,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", UINT), std::make_shared<Algo_vxm_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", FLOAT), std::make_shared<Algo_vxm_masked_cpu<T_FLOAT>>());
+
+        // algorthm kron
+        g_registry->add(MAKE_KEY_CPU_0("kron", INT), std::make_shared<Algo_kron_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("kron", UINT), std::make_shared<Algo_kron_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("kron", FLOAT), std::make_shared<Algo_kron_cpu<T_FLOAT>>());
 
         // algorthm mxmT_masked
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cpu<T_INT>>());

@@ -368,6 +368,7 @@ SPLA_API spla_Status spla_Algorithm_tc(int* ntrins, spla_Matrix A, spla_Matrix B
 
 SPLA_API spla_Status spla_Exec_mxm(spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_mxmT_masked(spla_Matrix R, spla_Matrix mask, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);
+SPLA_API spla_Status spla_Exec_kron(spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op_multiply, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_mxv_masked(spla_Vector r, spla_Vector mask, spla_Matrix M, spla_Vector v, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_vxm_masked(spla_Vector r, spla_Vector mask, spla_Vector v, spla_Matrix M, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_m_reduce_by_row(spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);

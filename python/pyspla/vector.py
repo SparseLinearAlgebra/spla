@@ -251,7 +251,7 @@ class Vector(Object):
 
     def clear(self):
         """
-        Clears vector removing all elements, so it has 0 values.
+        Clears vector removing all elements, so it has no values.
         """
 
         check(backend().spla_Vector_clear(self.hnd))
