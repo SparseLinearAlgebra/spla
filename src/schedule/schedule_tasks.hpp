@@ -221,6 +221,24 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_m_transpose
+     * @brief Matrix transpose
+     */
+    class ScheduleTask_m_transpose final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_transpose() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>  R;
+        ref_ptr<Matrix>  M;
+        ref_ptr<OpUnary> op_apply;
+    };
+
+    /**
      * @class ScheduleTask_v_eadd
      * @brief Vector ewise add
      */

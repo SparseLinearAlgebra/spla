@@ -100,6 +100,14 @@ v, c, d = bfs(0, A)
 
 ## Performance
 
+Spla shows greate performance comparing to Nvidia CUDA based optimized GraphBLAST library, processing large graphs
+in extreme cases counting 1 BILLION edges with speed and without memory issues. Also, spla shows outstanding performance
+in Page-Rank algorithms, outperforming low-level Nvidia CUDA highly-optimized Gunrock library. Spla shows scalability
+on GPUs on Intel, Nvidia and AMD with acceptable performance. Spla can be run even on integrated GPUs. Here you can
+get good speedup, what is much faster than `scipy` or `networkx`.
+
+More details with performance study given down bellow.
+
 ### Comparison on a Nvidia GPU
 
 | ![stats](./docs/stats/rq1_rel.png)                                                                                                            |

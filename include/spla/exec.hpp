@@ -240,6 +240,26 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) matrix transpose operation
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param R Matrix to store result
+     * @param M Matrix to transpose
+     * @param op_apply Unary op to transform value
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_transpose(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) element-wise addition by structure of two vectors
      *
      * @param r Vector to store result of operation

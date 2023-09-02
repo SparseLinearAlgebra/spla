@@ -1,5 +1,10 @@
 from pyspla import *
 
-u = Vector.from_lists([0, 1], [10, 20], 4, INT)
-v = Vector.from_lists([1, 3], [-5, 12], 4, INT)
-print(u.emult(INT.PLUS, v))
+M = Matrix.from_lists([0, 1, 2], [3, 2, 0], [-5, 3, 9], (3, 4), INT)
+print(M)
+
+print(M.transpose())
+
+print(M.transpose(op_apply=INT.UONE))
+
+print(M.transpose(op_apply=INT.AINV))

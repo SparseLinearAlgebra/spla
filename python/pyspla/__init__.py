@@ -129,6 +129,14 @@ Maximum depth of a discovered vertex.
 Performance
 -----------
 
+Spla shows greate performance comparing to Nvidia CUDA based optimized GraphBLAST library, processing large graphs
+in extreme cases counting 1 BILLION edges with speed and without memory issues. Also, spla shows outstanding performance
+in Page-Rank algorithms, outperforming low-level Nvidia CUDA highly-optimized Gunrock library. Spla shows scalability
+on GPUs on Intel, Nvidia and AMD with acceptable performance. Spla can be run even on integrated GPUs. Here you can
+get good speedup, what is much faster than `scipy` or `networkx`.
+
+More details with performance study given down bellow.
+
 **Comparison on a Nvidia GPU**
 
 ![stats](../../docs/stats/rq1_rel_compact.png)
@@ -174,23 +182,21 @@ Description: Relative speedup of Spla compared to a LaGraph (SuiteSparse) used a
 Containers
 ----------
 
-Library provides fundamental generalized linear algebra containers
-for data storage and mathematical computations. These containers
-are generalized, so any of built-in types may be used to parametrize
-type of data. Containers have sparse formats by default, so it is
-possible to create large-dimension but low data containers. Containers
-are storage-invariant, so the best format for the storage is automatically
-managed by container internally. All required format conversion done
-in the context of particular primitive usage.
+Library provides fundamental generalized linear algebra containers for data storage and mathematical computations.
+These containers are generalized, so any of built-in types may be used to parametrize type of data. Containers
+have sparse formats by default, so it is possible to create large-dimension but low data containers. Containers
+are storage-invariant, so the best format for the storage is automatically managed by container internally.
+All required format conversion done in the context of particular primitive usage.
 
 Types
 -----
 
 Library provides a set of standard and common built-in data types. Library value types
-differ a bit from a classic type definition. In spla library type is essentially is a
+differ a bit from a classic type definition. In `spla` library type is essentially is a
 storage characteristic, which defines count and layout of bytes per element. User
 can interpret stored data as her/she wants. Spla types set is limited due to the nature
 of GPUs accelerations, where arbitrary layout of data causes significant performance penalties.
+Types such as `int` `float` `uint` `bool` are supported. More types can be added on demand.
 
 Ops
 ---
@@ -203,8 +209,8 @@ filtration and mask application.
 Math operations
 ---------------
 
-Library provides as of high-level linera algebra operations over matrices and vectors with
-parametrization by binary, unary and select `ops`. There is avalable implementation for
+Library provides a set of high-level linera algebra operations over matrices and vectors with
+parametrization by binary, unary and select `ops`. There is avalable implementations for
 general `mxm` matrix-matrix, masked `mxmT` matrix-matrix, masked `mxv` matrix-vector,
 masked `vxm` vector-matrix products, matrix and vector reductions, assignment, and so on.
 Most operations have both CPU and GPU implementation. Thus, you will have GPU performance

@@ -535,6 +535,42 @@ class Matrix(Object):
 
         return M
 
+    @classmethod
+    def diag(cls, shape, dtype=INT, diag_value=1):
+        """
+        Diagonal matrix of desired shape and desired fill value on diagonal.
+
+        >>> M = Matrix.diag((5, 5), INT, -1)
+        >>> print(M)
+        '
+            0 1 2 3 4
+         0|-1 . . . .|  0
+         1| .-1 . . .|  1
+         2| . .-1 . .|  2
+         3| . . .-1 .|  3
+         4| . . . .-1|  4
+            0 1 2 3 4
+        '
+
+        :param shape: 2-tuple.
+            Size of the matrix.
+
+        :param dtype: optional: Type. default: INT.
+            Type of values matrix will have.
+
+        :param diag_value: optional: any. default: 1.
+            Optional value to fill the diagonal with.
+
+        :return: Matrix with main diagonal filled with value.
+        """
+
+        M = Matrix(shape, dtype)
+
+        for i in range(min(shape[0], shape[1])):
+            M.set(i, i, diag_value)
+
+        return M
+
     def mxm(self, M, op_mult, op_add, out=None, init=None, desc=None):
         """
         General sparse-matrix by sparse-matrix product.
@@ -932,6 +968,82 @@ class Matrix(Object):
 
         check(backend().spla_Exec_m_reduce(out.hnd, init.hnd, self.hnd, op_reduce.hnd,
                                            self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def transpose(self, out=None, op_apply=None, desc=None):
+        """
+        Transpose matrix.
+
+        Generate 3x4 matrix with int source data.
+        >>> M = Matrix.from_lists([0, 1, 2], [3, 2, 0], [-5, 3, 9], (3, 4), INT)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| . . .-5|  0
+         1| . . 3 .|  1
+         2| 9 . . .|  2
+            0 1 2 3
+        '
+
+        Transpose matrix `M` as usual and print result.
+        >>> print(M.transpose())
+        '
+            0 1 2
+         0| . . 9|  0
+         1| . . .|  1
+         2| . 3 .|  2
+         3|-5 . .|  3
+            0 1 2
+        '
+
+        Transpose by map each value to `1`, discarding prev value.
+        >>> print(M.transpose(op_apply=INT.UONE))
+        '
+            0 1 2
+         0| . . 1|  0
+         1| . . .|  1
+         2| . 1 .|  2
+         3| 1 . .|  3
+            0 1 2
+        '
+
+        Transpose and apply additive-inverse for each value effectively changing the sign of values.
+        >>> print(M.transpose(op_apply=INT.AINV))
+        '
+            0 1 2
+         0| . .-9|  0
+         1| . . .|  1
+         2| .-3 .|  2
+         3| 5 . .|  3
+            0 1 2
+        '
+
+        :param out: optional: Matrix: default: none.
+            Optional matrix to store result.
+
+        :param op_apply: optional: OpUnary. default: None.
+            Optional unary function to apply on transposition.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Transposed matrix.
+        """
+
+        if out is None:
+            out = Matrix(shape=(self.n_cols, self.n_rows), dtype=self.dtype)
+        if op_apply is None:
+            op_apply = self.dtype.IDENTITY
+
+        assert out
+        assert op_apply
+        assert out.n_rows == self.n_cols
+        assert out.n_cols == self.n_rows
+        assert out.dtype == self.dtype
+
+        check(backend().spla_Exec_m_transpose(out.hnd, self.hnd, op_apply.hnd,
+                                              self._get_desc(desc), self._get_task(None)))
 
         return out
 

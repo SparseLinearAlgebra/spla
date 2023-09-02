@@ -320,20 +320,6 @@ add_library(spla SHARED
         src/cpu/cpu_format_dok_vec.hpp
         src/cpu/cpu_format_lil.hpp
         src/cpu/cpu_formats.hpp
-        src/cpu/cpu_m_reduce.hpp
-        src/cpu/cpu_m_reduce_by_column.hpp
-        src/cpu/cpu_m_reduce_by_row.hpp
-        src/cpu/cpu_mxm.hpp
-        src/cpu/cpu_mxmT_masked.hpp
-        src/cpu/cpu_mxv.hpp
-        src/cpu/cpu_vxm.hpp
-        src/cpu/cpu_v_assign.hpp
-        src/cpu/cpu_v_count_mf.hpp
-        src/cpu/cpu_v_eadd.hpp
-        src/cpu/cpu_v_eadd_fdb.hpp
-        src/cpu/cpu_v_emult.hpp
-        src/cpu/cpu_v_map.hpp
-        src/cpu/cpu_v_reduce.hpp
         src/util/pair_hash.hpp
         src/profiling/time_profiler.cpp
         src/profiling/time_profiler.hpp

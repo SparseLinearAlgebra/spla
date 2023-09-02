@@ -59,17 +59,17 @@ namespace spla {
             auto t = ctx.task.template cast_safe<ScheduleTask_m_reduce>();
             auto M = t->M.template cast_safe<TMatrix<T>>();
 
-            if (M->is_valid(FormatMatrix::CpuDok)) {
-                return execute_dok(ctx);
+            if (M->is_valid(FormatMatrix::CpuCsr)) {
+                return execute_csr(ctx);
             }
             if (M->is_valid(FormatMatrix::CpuLil)) {
                 return execute_lil(ctx);
             }
-            if (M->is_valid(FormatMatrix::CpuCsr)) {
-                return execute_csr(ctx);
+            if (M->is_valid(FormatMatrix::CpuDok)) {
+                return execute_dok(ctx);
             }
 
-            return execute_dok(ctx);
+            return execute_csr(ctx);
         }
 
     private:

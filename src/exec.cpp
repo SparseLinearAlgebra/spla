@@ -203,6 +203,20 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_m_transpose(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        M,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task      = make_ref<ScheduleTask_m_transpose>();
+        task->R        = std::move(R);
+        task->M        = std::move(M);
+        task->op_apply = std::move(op_apply);
+        task->desc     = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_eadd(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        u,

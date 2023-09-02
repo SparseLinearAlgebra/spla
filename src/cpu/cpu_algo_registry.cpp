@@ -34,6 +34,7 @@
 #include <cpu/cpu_m_reduce.hpp>
 #include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
+#include <cpu/cpu_m_transpose.hpp>
 #include <cpu/cpu_mxm.hpp>
 #include <cpu/cpu_mxmT_masked.hpp>
 #include <cpu/cpu_mxv.hpp>
@@ -101,6 +102,11 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", UINT), std::make_shared<Algo_m_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", FLOAT), std::make_shared<Algo_m_reduce_cpu<T_FLOAT>>());
+
+        // algorthm m_transpose
+        g_registry->add(MAKE_KEY_CPU_0("m_transpose", INT), std::make_shared<Algo_m_transpose_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_transpose", UINT), std::make_shared<Algo_m_transpose_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_transpose", FLOAT), std::make_shared<Algo_m_transpose_cpu<T_FLOAT>>());
 
         // algorthm mxv_masked
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());

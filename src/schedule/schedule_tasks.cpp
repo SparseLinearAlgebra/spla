@@ -216,6 +216,27 @@ namespace spla {
         return {r.as<Object>(), s.as<Object>(), M.as<Object>(), op_reduce.as<Object>()};
     }
 
+    std::string ScheduleTask_m_transpose::get_name() {
+        return "m_transpose";
+    }
+    std::string ScheduleTask_m_transpose::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(R->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_transpose::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_apply);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_transpose::get_args() {
+        return {R.as<Object>(), M.as<Object>(), op_apply.as<Object>()};
+    }
+
     std::string ScheduleTask_v_eadd::get_name() {
         return "v_eadd";
     }

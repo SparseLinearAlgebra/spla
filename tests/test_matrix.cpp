@@ -188,4 +188,31 @@ TEST(matrix, reduce) {
     EXPECT_EQ(ir->as_int(), M * K * 2);
 }
 
+TEST(matrix, transpose) {
+    const spla::uint M = 100, N = 200, K = 8;
+
+    auto iM = spla::Matrix::make(M, N, spla::INT);
+    auto iR = spla::Matrix::make(N, M, spla::INT);
+
+    for (spla::uint i = 0; i < M; i += 1) {
+        for (spla::uint j = 0; j < N; j += 1) {
+            if ((i + j) % 2) iM->set_int(i, j, i * 10 + j);
+        }
+    }
+
+    spla::exec_m_transpose(iR, iM, spla::AINV_INT);
+
+    for (spla::uint i = 0; i < M; i += 1) {
+        for (spla::uint j = 0; j < N; j += 1) {
+            int v;
+            iR->get_int(j, i, v);
+            if ((i + j) % 2) {
+                EXPECT_EQ(-(i * 10 + j), v);
+            } else {
+                EXPECT_EQ(0, v);
+            }
+        }
+    }
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE
