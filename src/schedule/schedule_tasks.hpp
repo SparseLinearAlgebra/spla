@@ -183,6 +183,44 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_m_eadd
+     * @brief Matrix ewise add
+     */
+    class ScheduleTask_m_eadd final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_eadd() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>   R;
+        ref_ptr<Matrix>   A;
+        ref_ptr<Matrix>   B;
+        ref_ptr<OpBinary> op;
+    };
+
+    /**
+     * @class ScheduleTask_m_emult
+     * @brief Matrix ewise add
+     */
+    class ScheduleTask_m_emult final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_emult() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>   R;
+        ref_ptr<Matrix>   A;
+        ref_ptr<Matrix>   B;
+        ref_ptr<OpBinary> op;
+    };
+
+    /**
      * @class ScheduleTask_m_reduce_by_row
      * @brief Matrix by row reduction
      */

@@ -32,6 +32,8 @@
 
 #include <cpu/cpu_algo_callback.hpp>
 #include <cpu/cpu_kron.hpp>
+#include <cpu/cpu_m_eadd.hpp>
+#include <cpu/cpu_m_emult.hpp>
 #include <cpu/cpu_m_reduce.hpp>
 #include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
@@ -103,6 +105,16 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", UINT), std::make_shared<Algo_m_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", FLOAT), std::make_shared<Algo_m_reduce_cpu<T_FLOAT>>());
+
+        // algorthm m_eadd
+        g_registry->add(MAKE_KEY_CPU_0("m_eadd", INT), std::make_shared<Algo_m_eadd_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_eadd", UINT), std::make_shared<Algo_m_eadd_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_eadd", FLOAT), std::make_shared<Algo_m_eadd_cpu<T_FLOAT>>());
+
+        // algorthm m_emult
+        g_registry->add(MAKE_KEY_CPU_0("m_emult", INT), std::make_shared<Algo_m_emult_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_emult", UINT), std::make_shared<Algo_m_emult_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_emult", FLOAT), std::make_shared<Algo_m_emult_cpu<T_FLOAT>>());
 
         // algorthm m_transpose
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", INT), std::make_shared<Algo_m_transpose_cpu<T_INT>>());

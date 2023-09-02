@@ -387,12 +387,12 @@ class Vector(Object):
         return v
 
     @classmethod
-    def generate(cls, shape, dtype=INT, density=0.1, seed=None, dist=(0, 1)):
+    def rand(cls, shape, dtype=INT, density=0.1, seed=None, dist=(0, 1)):
         """
         Creates new vector of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        >>> v = Vector.generate(shape=4, dtype=INT, density=0.5, dist=[1,10])
+        >>> v = Vector.rand(shape=4, dtype=INT, density=0.5, dist=[1,10])
         >>> print(v)
         '
          0| .

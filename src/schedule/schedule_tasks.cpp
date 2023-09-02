@@ -174,6 +174,48 @@ namespace spla {
         return {r.as<Object>(), mask.as<Object>(), v.as<Object>(), M.as<Object>(), op_multiply.as<Object>(), op_add.as<Object>(), op_select.as<Object>(), init.as<Object>()};
     }
 
+    std::string ScheduleTask_m_eadd::get_name() {
+        return "m_eadd";
+    }
+    std::string ScheduleTask_m_eadd::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(R->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_eadd::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_eadd::get_args() {
+        return {R.as<Object>(), A.as<Object>(), B.as<Object>(), op.as<Object>()};
+    }
+
+    std::string ScheduleTask_m_emult::get_name() {
+        return "m_emult";
+    }
+    std::string ScheduleTask_m_emult::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(R->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_emult::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_emult::get_args() {
+        return {R.as<Object>(), A.as<Object>(), B.as<Object>(), op.as<Object>()};
+    }
+
     std::string ScheduleTask_m_reduce_by_row::get_name() {
         return "m_reduce_by_row";
     }

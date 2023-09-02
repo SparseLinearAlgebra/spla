@@ -85,6 +85,7 @@ namespace spla {
         void validate_wd(FormatMatrix format);
         void validate_ctor(FormatMatrix format);
         bool is_valid(FormatMatrix format) const;
+        T    get_fill_value() const { return m_storage.get_fill_value(); }
 
         static StorageManagerMatrix<T>* get_storage_manager();
 

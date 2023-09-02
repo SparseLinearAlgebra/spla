@@ -442,12 +442,12 @@ class Matrix(Object):
         return M
 
     @classmethod
-    def generate(cls, shape, dtype=INT, density=0.1, seed=None, dist=(0, 1)):
+    def rand(cls, shape, dtype=INT, density=0.1, seed=None, dist=(0, 1)):
         """
         Creates new matrix of desired type and shape and fills its content
         with random values, generated using specified distribution.
 
-        >>> M = Matrix.generate((4, 4), INT, density=0.3, dist=[0, 10])
+        >>> M = Matrix.rand((4, 4), INT, density=0.3, dist=[0, 10])
         >>> print(M)
         '
             0 1 2 3
@@ -1011,6 +1011,124 @@ class Matrix(Object):
         check(backend().spla_Exec_mxv_masked(out.hnd, mask.hnd, self.hnd, v.hnd,
                                              op_mult.hnd, op_add.hnd, op_select.hnd,
                                              init.hnd, self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def eadd(self, op_add, M, out=None, desc=None):
+        """
+        Element-wise addition with other matrix.
+
+        Element-wise addition takes the set union of the patterns of A and B and applies a binary operator
+        for all entries that appear in the set intersection of the patterns of A and B, preserving values
+        without the pair unchanged in the result.
+
+        >>> A = Matrix.from_lists([0, 1, 2], [1, 0, 2], [1, 2, 3], (3, 3), INT)
+        >>> B = Matrix.from_lists([0, 1, 2], [1, 2, 2], [4, 5, 6], (3, 3), INT)
+        >>> print(A.eadd(INT.PLUS, B))
+        '
+            0 1 2
+         0| . 5 .|  0
+         1| 2 . 5|  1
+         2| . . 9|  2
+            0 1 2
+        '
+
+        >>> M = Matrix.from_lists([0, 0, 1], [0, 1, 1], [1, 2, 3], (2, 2), INT)
+        >>> print(M.eadd(INT.MULT, M.transpose()))
+        '
+            0 1
+         0| 1 2|  0
+         1| 2 9|  1
+            0 1
+        '
+
+        :param op_add: OpBinary.
+            Binary element-wise operation to apply.
+
+        :param M: Matrix.
+            Matrix for operation on the right side.
+
+        :param out: optional: Matrix. default: None.
+            Optional matrix to store result.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Matrix with a result.
+        """
+
+        if out is None:
+            out = Matrix(shape=self.shape, dtype=self.dtype)
+
+        assert M
+        assert out
+        assert op_add
+        assert self.shape == M.shape
+        assert self.shape == out.shape
+        assert self.dtype == M.dtype
+        assert self.dtype == out.dtype
+
+        check(backend().spla_Exec_m_eadd(out.hnd, self.hnd, M.hnd, op_add.hnd,
+                                         self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def emult(self, op_mult, M, out=None, desc=None):
+        """
+        Element-wise multiplication with other matrix.
+
+        Element-wise multiplication takes the set intersection of the patterns of A and B and applies a binary operator
+        for all entries that appear in the set intersection of the patterns of A and B, removing the values without
+        the pair from the result.
+
+        >>> A = Matrix.from_lists([0, 1, 2], [1, 0, 2], [1, 2, 3], (3, 3), INT)
+        >>> B = Matrix.from_lists([0, 1, 2], [1, 2, 2], [4, 5, 6], (3, 3), INT)
+        >>> print(A.emult(INT.PLUS, B))
+        '
+            0 1 2
+         0| . 5 .|  0
+         1| . . .|  1
+         2| . . 9|  2
+            0 1 2
+        '
+
+        >>> M = Matrix.from_lists([0, 0, 1], [0, 1, 1], [1, 2, 3], (2, 2), INT)
+        >>> print(M.emult(INT.MULT, M.transpose()))
+        '
+            0 1
+         0| 1 .|  0
+         1| . 9|  1
+            0 1
+        '
+
+        :param op_mult: OpBinary.
+            Binary element-wise operation to apply.
+
+        :param M: Matrix.
+            Matrix for operation on the right side.
+
+        :param out: optional: Matrix. default: None.
+            Optional matrix to store result.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Matrix with a result.
+        """
+
+        if out is None:
+            out = Matrix(shape=self.shape, dtype=self.dtype)
+
+        assert M
+        assert out
+        assert op_mult
+        assert self.shape == M.shape
+        assert self.shape == out.shape
+        assert self.dtype == M.dtype
+        assert self.dtype == out.dtype
+
+        check(backend().spla_Exec_m_emult(out.hnd, self.hnd, M.hnd, op_mult.hnd,
+                                          self._get_desc(desc), self._get_task(None)))
 
         return out
 

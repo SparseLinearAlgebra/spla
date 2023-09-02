@@ -171,6 +171,38 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_m_eadd(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task  = make_ref<ScheduleTask_m_eadd>();
+        task->R    = std::move(R);
+        task->A    = std::move(A);
+        task->B    = std::move(B);
+        task->op   = std::move(op);
+        task->desc = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
+    Status exec_m_emult(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task  = make_ref<ScheduleTask_m_emult>();
+        task->R    = std::move(R);
+        task->A    = std::move(A);
+        task->B    = std::move(B);
+        task->op   = std::move(op);
+        task->desc = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_m_reduce_by_row(
             ref_ptr<Vector>        r,
             ref_ptr<Matrix>        M,

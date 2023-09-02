@@ -215,4 +215,60 @@ TEST(matrix, transpose) {
     }
 }
 
+TEST(matrix, eadd) {
+    spla::uint M = 200, N = 100;
+    auto       iA = spla::Matrix::make(M, N, spla::INT);
+    auto       iB = spla::Matrix::make(M, N, spla::INT);
+    auto       iR = spla::Matrix::make(M, N, spla::INT);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            iA->set_int(i, j, 1);
+            if (i % 2) iB->set_int(i, j, 2);
+        }
+    }
+
+    spla::exec_m_eadd(iR, iA, iB, spla::PLUS_INT);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            int v;
+            iR->get_int(i, j, v);
+            if (i % 2) {
+                EXPECT_EQ(3, v);
+            } else {
+                EXPECT_EQ(1, v);
+            }
+        }
+    }
+}
+
+TEST(matrix, emult) {
+    spla::uint M = 200, N = 100;
+    auto       iA = spla::Matrix::make(M, N, spla::INT);
+    auto       iB = spla::Matrix::make(M, N, spla::INT);
+    auto       iR = spla::Matrix::make(M, N, spla::INT);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            iA->set_int(i, j, 1);
+            if (i % 2) iB->set_int(i, j, 2);
+        }
+    }
+
+    spla::exec_m_emult(iR, iA, iB, spla::PLUS_INT);
+
+    for (spla::uint i = 0; i < M; i++) {
+        for (spla::uint j = 0; j < N; j++) {
+            int v;
+            iR->get_int(i, j, v);
+            if (i % 2) {
+                EXPECT_EQ(3, v);
+            } else {
+                EXPECT_EQ(0, v);
+            }
+        }
+    }
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE

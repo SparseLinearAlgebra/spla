@@ -197,6 +197,46 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) element-wise addition by structure of two matrices
+     *
+     * @param R Matrix to store result of operation
+     * @param A Matrix input to sum
+     * @param B Matrix input to sum
+     * @param op Element-wise binary operator sum elements of matrices
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_eadd(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) element-wise multiplication by structure of two matrices
+     *
+     * @param R Matrix to store result of operation
+     * @param A Matrix input to mult
+     * @param B Matrix input to mult
+     * @param op Element-wise binary operator mult elements of matrices
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_emult(
+            ref_ptr<Matrix>        R,
+            ref_ptr<Matrix>        A,
+            ref_ptr<Matrix>        B,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) matrix by row reduction to single vector column
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.

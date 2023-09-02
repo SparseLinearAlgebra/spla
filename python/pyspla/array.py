@@ -225,7 +225,7 @@ class Array(Object):
         return array
 
     @classmethod
-    def generate(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
+    def rand(cls, dtype=INT, shape=0, seed=None, dist=(0, 1)):
         """
         Creates new array of desired type and shape and fills its content
         with random values, generated using specified distribution.

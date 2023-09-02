@@ -212,7 +212,8 @@ Math operations
 Library provides a set of high-level linera algebra operations over matrices and vectors with
 parametrization by binary, unary and select `ops`. There is avalable implementations for
 general `mxm` matrix-matrix, masked `mxmT` matrix-matrix, masked `mxv` matrix-vector,
-masked `vxm` vector-matrix products, matrix and vector reductions, assignment, and so on.
+masked `vxm` vector-matrix products, matrix and vector reductions, assignment,
+matrix and vector element-wise `eadd` and `emult` oprations, and so on.
 Most operations have both CPU and GPU implementation. Thus, you will have GPU performance
 in computations out of the box.
 
