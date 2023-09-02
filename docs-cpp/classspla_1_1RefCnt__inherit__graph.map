@@ -25,17 +25,17 @@
 <area shape="rect" id="node21" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="567,580,733,607"/>
 <area shape="rect" id="node22" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="807,259,942,301"/>
 <area shape="rect" id="node23" href="$classspla_1_1ScheduleTask__kron.html" title="Sparse matrix kronecker product." alt="" coords="791,325,958,352"/>
-<area shape="rect" id="node24" href="$classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="807,377,942,418"/>
-<area shape="rect" id="node25" href="$classspla_1_1ScheduleTask__m__reduce__by__column.html" title="Matrix by col reduction." alt="" coords="797,442,952,483"/>
-<area shape="rect" id="node26" href="$classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="807,507,942,549"/>
-<area shape="rect" id="node27" href="$classspla_1_1ScheduleTask__m__transpose.html" title="Matrix transpose." alt="" coords="807,573,942,614"/>
-<area shape="rect" id="node28" href="$classspla_1_1ScheduleTask__mxm.html" title="Sparse matrix sparse matrix product." alt="" coords="789,639,960,665"/>
-<area shape="rect" id="node29" href="$classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="807,690,942,731"/>
-<area shape="rect" id="node30" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="807,755,942,797"/>
-<area shape="rect" id="node31" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="807,821,942,862"/>
-<area shape="rect" id="node32" href="$classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="807,886,942,927"/>
-<area shape="rect" id="node33" href="$classspla_1_1ScheduleTask__v__eadd.html" title="Vector ewise add." alt="" coords="807,951,942,993"/>
-<area shape="rect" id="node34" href="$classspla_1_1ScheduleTask__v__eadd__fdb.html" title="Vector ewise with feedback." alt="" coords="807,1017,942,1058"/>
+<area shape="rect" id="node24" href="$classspla_1_1ScheduleTask__m__eadd.html" title="Matrix ewise add." alt="" coords="807,377,942,418"/>
+<area shape="rect" id="node25" href="$classspla_1_1ScheduleTask__m__emult.html" title="Matrix ewise add." alt="" coords="807,442,942,483"/>
+<area shape="rect" id="node26" href="$classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="807,507,942,549"/>
+<area shape="rect" id="node27" href="$classspla_1_1ScheduleTask__m__reduce__by__column.html" title="Matrix by col reduction." alt="" coords="797,573,952,614"/>
+<area shape="rect" id="node28" href="$classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="807,638,942,679"/>
+<area shape="rect" id="node29" href="$classspla_1_1ScheduleTask__m__transpose.html" title="Matrix transpose." alt="" coords="807,703,942,745"/>
+<area shape="rect" id="node30" href="$classspla_1_1ScheduleTask__mxm.html" title="Sparse matrix sparse matrix product." alt="" coords="789,769,960,796"/>
+<area shape="rect" id="node31" href="$classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="807,821,942,862"/>
+<area shape="rect" id="node32" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="807,886,942,927"/>
+<area shape="rect" id="node33" href="$classspla_1_1ScheduleTask__v__assign__masked.html" title="Masked vector assignment." alt="" coords="807,951,942,993"/>
+<area shape="rect" id="node34" href="$classspla_1_1ScheduleTask__v__count__mf.html" title="Vector count meaningful elements." alt="" coords="807,1017,942,1058"/>
 <area shape="rect" id="node36" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="586,631,714,657"/>
 <area shape="rect" id="node38" href="$classspla_1_1CLCooVec.html" title="OpenCL list&#45;of&#45;coordinates sparse vector representation." alt="" coords="355,461,501,488"/>
 <area shape="rect" id="node39" href="$classspla_1_1CLCsr.html" title="OpenCL compressed sparse row matrix representation." alt="" coords="369,512,487,539"/>

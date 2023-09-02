@@ -116,6 +116,10 @@ Functions</h2></td></tr>
 <tr class="separator:a6ef21924980b26e2ca5be2ada637e443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c82317db6551dffc0fe064dd6339aa2"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a3c82317db6551dffc0fe064dd6339aa2">spla_Exec_vxm_masked</a> (spla_Vector r, spla_Vector mask, spla_Vector v, spla_Matrix M, spla_OpBinary op_multiply, spla_OpBinary op_add, spla_OpSelect op_select, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:a3c82317db6551dffc0fe064dd6339aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ee1c4a554df9b1af07bf53838d2950"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a89ee1c4a554df9b1af07bf53838d2950">spla_Exec_m_eadd</a> (spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
+<tr class="separator:a89ee1c4a554df9b1af07bf53838d2950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbcd53c0cd350bed1c9df7bb157f1f02"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#acbcd53c0cd350bed1c9df7bb157f1f02">spla_Exec_m_emult</a> (spla_Matrix R, spla_Matrix A, spla_Matrix B, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
+<tr class="separator:acbcd53c0cd350bed1c9df7bb157f1f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fbb21f10a8e6775ae7574a2a55b2f7c"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a0fbb21f10a8e6775ae7574a2a55b2f7c">spla_Exec_m_reduce_by_row</a> (spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
 <tr class="separator:a0fbb21f10a8e6775ae7574a2a55b2f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1206ebc4c202c456495cb968e50fc84d"><td class="memItemLeft" align="right" valign="top">spla_Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__exec_8cpp.html#a1206ebc4c202c456495cb968e50fc84d">spla_Exec_m_reduce_by_column</a> (spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask *task)</td></tr>
@@ -317,6 +321,110 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">spla_OpBinary&#160;</td>
           <td class="paramname"><em>op_multiply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Descriptor&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_ScheduleTask *&#160;</td>
+          <td class="paramname"><em>task</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89ee1c4a554df9b1af07bf53838d2950"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89ee1c4a554df9b1af07bf53838d2950">&#9670;&nbsp;</a></span>spla_Exec_m_eadd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Exec_m_eadd </td>
+          <td>(</td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpBinary&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Descriptor&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_ScheduleTask *&#160;</td>
+          <td class="paramname"><em>task</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acbcd53c0cd350bed1c9df7bb157f1f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbcd53c0cd350bed1c9df7bb157f1f02">&#9670;&nbsp;</a></span>spla_Exec_m_emult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">spla_Status spla_Exec_m_emult </td>
+          <td>(</td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_Matrix&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">spla_OpBinary&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
