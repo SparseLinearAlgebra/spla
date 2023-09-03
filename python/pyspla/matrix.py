@@ -1338,6 +1338,130 @@ class Matrix(Object):
 
         return out
 
+    def extract_row(self, index, out=None, op_apply=None, desc=None):
+        """
+        Extract matrix row.
+
+        >>> M = Matrix.from_lists([0, 0, 1, 2], [1, 2, 3, 0], [-1, 1, 2, 3], (3, 4), INT)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| .-1 1 .|  0
+         1| . . . 2|  1
+         2| 3 . . .|  2
+            0 1 2 3
+        '
+
+        >>> print(M.extract_row(0))
+        '
+         0| .
+         1|-1
+         2| 1
+         3| .
+        '
+
+        >>> print(M.extract_row(0, op_apply=INT.AINV))
+        '
+         0| .
+         1| 1
+         2|-1
+         3| .
+        '
+
+        :param index: int.
+            Index of row to extract.
+
+        :param out: optional: Vector: default: none.
+            Optional vector to store result.
+
+        :param op_apply: optional: OpUnary. default: None.
+            Optional unary function to apply on extraction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector.
+        """
+
+        from .vector import Vector
+
+        if out is None:
+            out = Vector(shape=self.n_cols, dtype=self.dtype)
+        if op_apply is None:
+            op_apply = self.dtype.IDENTITY
+
+        assert out
+        assert op_apply
+        assert out.dtype == self.dtype
+        assert out.n_rows == self.n_cols
+        assert 0 <= index < self.n_rows
+
+        check(backend().spla_Exec_m_extract_row(out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd,
+                                                self._get_desc(desc), self._get_task(None)))
+
+        return out
+
+    def extract_column(self, index, out=None, op_apply=None, desc=None):
+        """
+        Extract matrix column.
+
+        >>> M = Matrix.from_lists([0, 1, 1, 2], [1, 0, 3, 1], [-1, 1, 2, 3], (3, 4), INT)
+        >>> print(M)
+        '
+            0 1 2 3
+         0| .-1 . .|  0
+         1| 1 . . 2|  1
+         2| . 3 . .|  2
+            0 1 2 3
+        '
+
+        >>> print(M.extract_column(1))
+        '
+         0|-1
+         1| .
+         2| 3
+        '
+
+        >>> print(M.extract_column(1, op_apply=INT.AINV))
+        '
+         0| 1
+         1| .
+         2|-3
+        '
+
+        :param index: int.
+            Index of column to extract.
+
+        :param out: optional: Vector: default: none.
+            Optional vector to store result.
+
+        :param op_apply: optional: OpUnary. default: None.
+            Optional unary function to apply on extraction.
+
+        :param desc: optional: Descriptor. default: None.
+            Optional descriptor object to configure the execution.
+
+        :return: Vector.
+        """
+
+        from .vector import Vector
+
+        if out is None:
+            out = Vector(shape=self.n_rows, dtype=self.dtype)
+        if op_apply is None:
+            op_apply = self.dtype.IDENTITY
+
+        assert out
+        assert op_apply
+        assert out.dtype == self.dtype
+        assert out.n_rows == self.n_rows
+        assert 0 <= index < self.n_cols
+
+        check(backend().spla_Exec_m_extract_column(out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd,
+                                                   self._get_desc(desc), self._get_task(None)))
+
+        return out
+
     def __str__(self):
         return self.to_string()
 

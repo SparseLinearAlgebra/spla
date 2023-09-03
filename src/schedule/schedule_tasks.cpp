@@ -300,6 +300,48 @@ namespace spla {
         return {R.as<Object>(), M.as<Object>(), op_apply.as<Object>()};
     }
 
+    std::string ScheduleTask_m_extract_row::get_name() {
+        return "m_extract_row";
+    }
+    std::string ScheduleTask_m_extract_row::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_extract_row::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_apply);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_extract_row::get_args() {
+        return {r.as<Object>(), M.as<Object>(), op_apply.as<Object>()};
+    }
+
+    std::string ScheduleTask_m_extract_column::get_name() {
+        return "m_extract_column";
+    }
+    std::string ScheduleTask_m_extract_column::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+    std::string ScheduleTask_m_extract_column::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << OP_KEY(op_apply);
+
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_m_extract_column::get_args() {
+        return {r.as<Object>(), M.as<Object>(), op_apply.as<Object>()};
+    }
+
     std::string ScheduleTask_v_eadd::get_name() {
         return "v_eadd";
     }

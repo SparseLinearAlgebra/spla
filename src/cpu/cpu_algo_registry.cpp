@@ -34,6 +34,8 @@
 #include <cpu/cpu_kron.hpp>
 #include <cpu/cpu_m_eadd.hpp>
 #include <cpu/cpu_m_emult.hpp>
+#include <cpu/cpu_m_extract_column.hpp>
+#include <cpu/cpu_m_extract_row.hpp>
 #include <cpu/cpu_m_reduce.hpp>
 #include <cpu/cpu_m_reduce_by_column.hpp>
 #include <cpu/cpu_m_reduce_by_row.hpp>
@@ -120,6 +122,16 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", INT), std::make_shared<Algo_m_transpose_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", UINT), std::make_shared<Algo_m_transpose_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", FLOAT), std::make_shared<Algo_m_transpose_cpu<T_FLOAT>>());
+
+        // algorthm m_extract_row
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_row", INT), std::make_shared<Algo_m_extract_row_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_row", UINT), std::make_shared<Algo_m_extract_row_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_row", FLOAT), std::make_shared<Algo_m_extract_row_cpu<T_FLOAT>>());
+
+        // algorthm m_extract_column
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_column", INT), std::make_shared<Algo_m_extract_column_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_column", UINT), std::make_shared<Algo_m_extract_column_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_column", FLOAT), std::make_shared<Algo_m_extract_column_cpu<T_FLOAT>>());
 
         // algorthm mxv_masked
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());

@@ -76,6 +76,12 @@ spla_Status spla_Exec_m_reduce(spla_Scalar r, spla_Scalar s, spla_Matrix M, spla
 spla_Status spla_Exec_m_transpose(spla_Matrix R, spla_Matrix M, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_m_transpose, AS_M(R), AS_M(M), AS_OU(op_apply));
 }
+spla_Status spla_Exec_m_extract_row(spla_Vector r, spla_Matrix M, spla_uint index, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_m_extract_row, AS_V(r), AS_M(M), index, AS_OU(op_apply));
+}
+spla_Status spla_Exec_m_extract_column(spla_Vector r, spla_Matrix M, spla_uint index, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_m_extract_column, AS_V(r), AS_M(M), index, AS_OU(op_apply));
+}
 spla_Status spla_Exec_v_eadd(spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_v_eadd, AS_V(r), AS_V(u), AS_V(v), AS_OB(op));
 }

@@ -296,6 +296,44 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_m_extract_row
+     * @brief Matrix extract vector
+     */
+    class ScheduleTask_m_extract_row final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_extract_row() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>  r;
+        ref_ptr<Matrix>  M;
+        uint             index;
+        ref_ptr<OpUnary> op_apply;
+    };
+
+    /**
+     * @class ScheduleTask_m_extract_column
+     * @brief Matrix extract vector
+     */
+    class ScheduleTask_m_extract_column final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_extract_column() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>  r;
+        ref_ptr<Matrix>  M;
+        uint             index;
+        ref_ptr<OpUnary> op_apply;
+    };
+
+    /**
      * @class ScheduleTask_v_eadd
      * @brief Vector ewise add
      */

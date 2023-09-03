@@ -377,6 +377,8 @@ SPLA_API spla_Status spla_Exec_m_reduce_by_row(spla_Vector r, spla_Matrix M, spl
 SPLA_API spla_Status spla_Exec_m_reduce_by_column(spla_Vector r, spla_Matrix M, spla_OpBinary op_reduce, spla_Scalar init, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_m_reduce(spla_Scalar r, spla_Scalar s, spla_Matrix M, spla_OpBinary op_reduce, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_m_transpose(spla_Matrix R, spla_Matrix M, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task);
+SPLA_API spla_Status spla_Exec_m_extract_row(spla_Vector r, spla_Matrix M, spla_uint index, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task);
+SPLA_API spla_Status spla_Exec_m_extract_column(spla_Vector r, spla_Matrix M, spla_uint index, spla_OpUnary op_apply, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_v_eadd(spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_v_emult(spla_Vector r, spla_Vector u, spla_Vector v, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_v_eadd_fdb(spla_Vector r, spla_Vector v, spla_Vector fdb, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task);

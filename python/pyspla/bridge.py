@@ -558,6 +558,8 @@ def load_library(lib_path):
     _spla.spla_Exec_m_reduce_by_column.restype = _status_t
     _spla.spla_Exec_m_reduce.restype = _status_t
     _spla.spla_Exec_m_transpose.restype = _status_t
+    _spla.spla_Exec_m_extract_row.restype = _status_t
+    _spla.spla_Exec_m_extract_column.restype = _status_t
     _spla.spla_Exec_v_eadd.restype = _status_t
     _spla.spla_Exec_v_emult.restype = _status_t
     _spla.spla_Exec_v_eadd_fdb.restype = _status_t
@@ -588,6 +590,10 @@ def load_library(lib_path):
         [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
     _spla.spla_Exec_m_transpose.argtypes = \
         [_object_t, _object_t, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_m_extract_row.argtypes = \
+        [_object_t, _object_t, _uint, _object_t, _object_t, _p_object_t]
+    _spla.spla_Exec_m_extract_column.argtypes = \
+        [_object_t, _object_t, _uint, _object_t, _object_t, _p_object_t]
     _spla.spla_Exec_v_eadd.argtypes = \
         [_object_t, _object_t, _object_t, _object_t, _object_t, _p_object_t]
     _spla.spla_Exec_v_emult.argtypes = \

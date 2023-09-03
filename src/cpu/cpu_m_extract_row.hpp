@@ -25,8 +25,8 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#ifndef SPLA_CPU_M_TRANSPOSE_HPP
-#define SPLA_CPU_M_TRANSPOSE_HPP
+#ifndef SPLA_CPU_M_EXTRACT_ROW_HPP
+#define SPLA_CPU_M_EXTRACT_ROW_HPP
 
 #include <schedule/schedule_tasks.hpp>
 
@@ -44,20 +44,20 @@
 namespace spla {
 
     template<typename T>
-    class Algo_m_transpose_cpu final : public RegistryAlgo {
+    class Algo_m_extract_row_cpu final : public RegistryAlgo {
     public:
-        ~Algo_m_transpose_cpu() override = default;
+        ~Algo_m_extract_row_cpu() override = default;
 
         std::string get_name() override {
-            return "m_transpose";
+            return "m_extract_row";
         }
 
         std::string get_description() override {
-            return "transpose matrix on cpu sequentially";
+            return "extract matrix row on cpu sequentially";
         }
 
         Status execute(const DispatchContext& ctx) override {
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_transpose>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_extract_row>();
             auto M = t->M.template cast_safe<TMatrix<T>>();
 
             if (M->is_valid(FormatMatrix::CpuCsr)) {
@@ -75,118 +75,97 @@ namespace spla {
 
     private:
         Status execute_dok(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/m_transpose_dok");
+            TIME_PROFILE_SCOPE("cpu/m_extract_row_dok");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_transpose>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_extract_row>();
 
-            ref_ptr<TMatrix<T>>     R        = t->R.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>     r        = t->r.template cast_safe<TVector<T>>();
             ref_ptr<TMatrix<T>>     M        = t->M.template cast_safe<TMatrix<T>>();
             ref_ptr<TOpUnary<T, T>> op_apply = t->op_apply.template cast_safe<TOpUnary<T, T>>();
+            uint                    index    = t->index;
 
-            R->validate_wd(FormatMatrix::CpuDok);
+            r->validate_wd(FormatVector::CpuCoo);
             M->validate_rw(FormatMatrix::CpuDok);
 
-            CpuDok<T>*       p_dok_R    = R->template get<CpuDok<T>>();
+            CpuCooVec<T>*    p_coo_r    = r->template get<CpuCooVec<T>>();
             const CpuDok<T>* p_dok_M    = M->template get<CpuDok<T>>();
             auto&            func_apply = op_apply->function;
 
-            assert(p_dok_R->Ax.empty());
-
-            p_dok_R->Ax.reserve(p_dok_M->Ax.size());
-
-            for (const auto& entry : p_dok_M->Ax) {
-                p_dok_R->Ax[{entry.first.second, entry.first.first}] = func_apply(entry.second);
+            for (const auto [key, value] : p_dok_M->Ax) {
+                if (key.first == index) {
+                    p_coo_r->values += 1;
+                    p_coo_r->Ai.push_back(key.second);
+                    p_coo_r->Ax.push_back(func_apply(value));
+                }
             }
 
-            p_dok_R->values = p_dok_M->values;
+            cpu_coo_vec_sort(*p_coo_r);
 
             return Status::Ok;
         }
 
         Status execute_lil(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/m_transpose_lil");
+            TIME_PROFILE_SCOPE("cpu/m_extract_row_lil");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_transpose>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_extract_row>();
 
-            ref_ptr<TMatrix<T>>     R        = t->R.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>     r        = t->r.template cast_safe<TVector<T>>();
             ref_ptr<TMatrix<T>>     M        = t->M.template cast_safe<TMatrix<T>>();
             ref_ptr<TOpUnary<T, T>> op_apply = t->op_apply.template cast_safe<TOpUnary<T, T>>();
+            uint                    index    = t->index;
 
-            R->validate_wd(FormatMatrix::CpuLil);
+            r->validate_wd(FormatVector::CpuCoo);
             M->validate_rw(FormatMatrix::CpuLil);
 
-            CpuLil<T>*       p_lil_R    = R->template get<CpuLil<T>>();
+            CpuCooVec<T>*    p_coo_r    = r->template get<CpuCooVec<T>>();
             const CpuLil<T>* p_lil_M    = M->template get<CpuLil<T>>();
             auto&            func_apply = op_apply->function;
 
-            const uint DM = M->get_n_rows();
-            const uint DN = M->get_n_cols();
+            assert(index < M->get_n_rows());
 
-            assert(M->get_n_rows() == R->get_n_cols());
-            assert(M->get_n_cols() == R->get_n_rows());
+            p_coo_r->Ai.reserve(p_lil_M->Ar[index].size());
+            p_coo_r->Ax.reserve(p_lil_M->Ar[index].size());
 
-            assert(p_lil_R->Ar.size() == DN);
-
-            for (uint i = 0; i < DM; i++) {
-                for (const auto [j, x] : p_lil_M->Ar[i]) {
-                    p_lil_R->Ar[j].emplace_back(i, func_apply(x));
-                }
+            for (const auto [key, value] : p_lil_M->Ar[index]) {
+                p_coo_r->values += 1;
+                p_coo_r->Ai.push_back(key);
+                p_coo_r->Ax.push_back(func_apply(value));
             }
-
-            p_lil_R->values = p_lil_M->values;
 
             return Status::Ok;
         }
 
         Status execute_csr(const DispatchContext& ctx) {
-            TIME_PROFILE_SCOPE("cpu/m_transpose_csr");
+            TIME_PROFILE_SCOPE("cpu/m_extract_row_csr");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_m_transpose>();
+            auto t = ctx.task.template cast_safe<ScheduleTask_m_extract_row>();
 
-            ref_ptr<TMatrix<T>>     R        = t->R.template cast_safe<TMatrix<T>>();
+            ref_ptr<TVector<T>>     r        = t->r.template cast_safe<TVector<T>>();
             ref_ptr<TMatrix<T>>     M        = t->M.template cast_safe<TMatrix<T>>();
             ref_ptr<TOpUnary<T, T>> op_apply = t->op_apply.template cast_safe<TOpUnary<T, T>>();
+            uint                    index    = t->index;
 
-            R->validate_wd(FormatMatrix::CpuCsr);
+            r->validate_wd(FormatVector::CpuCoo);
             M->validate_rw(FormatMatrix::CpuCsr);
 
-            CpuCsr<T>*       p_csr_R    = R->template get<CpuCsr<T>>();
+            CpuCooVec<T>*    p_coo_r    = r->template get<CpuCooVec<T>>();
             const CpuCsr<T>* p_csr_M    = M->template get<CpuCsr<T>>();
             auto&            func_apply = op_apply->function;
 
-            const uint DM = M->get_n_rows();
-            const uint DN = M->get_n_cols();
+            assert(index < M->get_n_rows());
 
-            assert(M->get_n_rows() == R->get_n_cols());
-            assert(M->get_n_cols() == R->get_n_rows());
+            const uint start = p_csr_M->Ap[index];
+            const uint end   = p_csr_M->Ap[index + 1];
+            const uint count = end - start;
 
-            std::vector<uint> sizes(DN + 1, 0);
+            p_coo_r->Ai.reserve(count);
+            p_coo_r->Ax.reserve(count);
 
-            for (uint i = 0; i < DM; i++) {
-                for (uint k = p_csr_M->Ap[i]; k < p_csr_M->Ap[i + 1]; k++) {
-                    uint j = p_csr_M->Aj[k];
-                    sizes[j] += 1;
-                }
+            for (uint k = start; k < end; k++) {
+                p_coo_r->values += 1;
+                p_coo_r->Ai.push_back(p_csr_M->Aj[k]);
+                p_coo_r->Ax.push_back(func_apply(p_csr_M->Ax[k]));
             }
-
-            cpu_csr_resize(DN, uint(p_csr_M->Ax.size()), *p_csr_R);
-            std::exclusive_scan(sizes.begin(), sizes.end(), p_csr_R->Ap.begin(), 0);
-
-            std::vector<uint> offsets(DN, 0);
-
-            for (uint i = 0; i < DM; i++) {
-                for (uint k = p_csr_M->Ap[i]; k < p_csr_M->Ap[i + 1]; k++) {
-                    uint j = p_csr_M->Aj[k];
-                    T    x = p_csr_M->Ax[k];
-
-                    p_csr_R->Aj[p_csr_R->Ap[j] + offsets[j]] = i;
-                    p_csr_R->Ax[p_csr_R->Ap[j] + offsets[j]] = func_apply(x);
-
-                    offsets[j] += 1;
-                }
-            }
-
-            p_csr_R->values = p_csr_M->values;
 
             return Status::Ok;
         }
@@ -194,4 +173,4 @@ namespace spla {
 
 }// namespace spla
 
-#endif//SPLA_CPU_M_TRANSPOSE_HPP
+#endif//SPLA_CPU_M_EXTRACT_ROW_HPP

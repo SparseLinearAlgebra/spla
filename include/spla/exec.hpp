@@ -323,6 +323,50 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) matrix row extract
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Result vector
+     * @param M Source matrix
+     * @param index index of row
+     * @param op_apply Unary op to transform value
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_extract_row(
+            ref_ptr<Vector>        r,
+            ref_ptr<Matrix>        M,
+            uint                   index,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) matrix column extract
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Result vector
+     * @param M Source matrix
+     * @param index Index of column
+     * @param op_apply Unary op to transform value
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_extract_column(
+            ref_ptr<Vector>        r,
+            ref_ptr<Matrix>        M,
+            uint                   index,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) element-wise addition by structure of two vectors
      *
      * @param r Vector to store result of operation

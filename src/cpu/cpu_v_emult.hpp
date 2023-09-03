@@ -103,6 +103,7 @@ namespace spla {
                 } else if (p_v->Ai[v_iter] < p_u->Ai[u_iter]) {
                     v_iter += 1;
                 } else {
+                    p_r->values += 1;
                     p_r->Ai.push_back(p_u->Ai[u_iter]);
                     p_r->Ax.push_back(function(p_u->Ax[u_iter], p_v->Ax[v_iter]));
                     u_iter += 1;
@@ -138,6 +139,7 @@ namespace spla {
                 const uint i = p_u->Ai[k];
 
                 if (p_v->Ax[i] != skip) {
+                    p_r->values += 1;
                     p_r->Ai.push_back(i);
                     p_r->Ax.push_back(function(p_u->Ax[k], p_v->Ax[i]));
                 }
@@ -171,6 +173,7 @@ namespace spla {
                 const uint i = p_v->Ai[k];
 
                 if (p_u->Ax[i] != skip) {
+                    p_r->values += 1;
                     p_r->Ai.push_back(i);
                     p_r->Ax.push_back(function(p_u->Ax[i], p_v->Ax[k]));
                 }

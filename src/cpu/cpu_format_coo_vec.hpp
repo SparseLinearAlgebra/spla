@@ -30,12 +30,32 @@
 
 #include <cpu/cpu_formats.hpp>
 
+#include <algorithm>
+#include <vector>
+
 namespace spla {
 
     /**
      * @addtogroup internal
      * @{
      */
+
+    template<typename T>
+    void cpu_coo_vec_sort(CpuCooVec<T>& vec) {
+        std::vector<std::pair<uint, T>> buffer;
+        buffer.reserve(vec.values);
+
+        for (uint i = 0; i < vec.values; i++) {
+            buffer.emplace_back(vec.Ai[i], vec.Ax[i]);
+        }
+
+        std::sort(buffer.begin(), buffer.end(), [](auto& a, auto& b) { return a.first < b.first; });
+
+        for (uint i = 0; i < vec.values; i++) {
+            vec.Ai[i] = buffer[i].first;
+            vec.Ax[i] = buffer[i].second;
+        }
+    }
 
     template<typename T>
     void cpu_coo_vec_resize(const uint    n_values,

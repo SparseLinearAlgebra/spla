@@ -265,6 +265,38 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_m_extract_row(
+            ref_ptr<Vector>        r,
+            ref_ptr<Matrix>        M,
+            uint                   index,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task      = make_ref<ScheduleTask_m_extract_row>();
+        task->r        = std::move(r);
+        task->M        = std::move(M);
+        task->index    = index;
+        task->op_apply = std::move(op_apply);
+        task->desc     = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
+    Status exec_m_extract_column(
+            ref_ptr<Vector>        r,
+            ref_ptr<Matrix>        M,
+            uint                   index,
+            ref_ptr<OpUnary>       op_apply,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task      = make_ref<ScheduleTask_m_extract_column>();
+        task->r        = std::move(r);
+        task->M        = std::move(M);
+        task->index    = index;
+        task->op_apply = std::move(op_apply);
+        task->desc     = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_eadd(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        u,
