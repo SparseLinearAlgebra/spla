@@ -513,6 +513,12 @@
                         <li>
                                 <a class="function" href="#Matrix.transpose">transpose</a>
                         </li>
+                        <li>
+                                <a class="function" href="#Matrix.extract_row">extract_row</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Matrix.extract_column">extract_column</a>
+                        </li>
                 </ul>
 
             </li>
@@ -6530,18 +6536,142 @@ Optional distribution for uniform generation of values.</p></li>
 </span><span id="Matrix-1339"><a href="#Matrix-1339"><span class="linenos">1339</span></a>
 </span><span id="Matrix-1340"><a href="#Matrix-1340"><span class="linenos">1340</span></a>        <span class="k">return</span> <span class="n">out</span>
 </span><span id="Matrix-1341"><a href="#Matrix-1341"><span class="linenos">1341</span></a>
-</span><span id="Matrix-1342"><a href="#Matrix-1342"><span class="linenos">1342</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Matrix-1343"><a href="#Matrix-1343"><span class="linenos">1343</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
-</span><span id="Matrix-1344"><a href="#Matrix-1344"><span class="linenos">1344</span></a>
-</span><span id="Matrix-1345"><a href="#Matrix-1345"><span class="linenos">1345</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Matrix-1346"><a href="#Matrix-1346"><span class="linenos">1346</span></a>        <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
-</span><span id="Matrix-1347"><a href="#Matrix-1347"><span class="linenos">1347</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
-</span><span id="Matrix-1348"><a href="#Matrix-1348"><span class="linenos">1348</span></a>
-</span><span id="Matrix-1349"><a href="#Matrix-1349"><span class="linenos">1349</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
-</span><span id="Matrix-1350"><a href="#Matrix-1350"><span class="linenos">1350</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="Matrix-1351"><a href="#Matrix-1351"><span class="linenos">1351</span></a>
-</span><span id="Matrix-1352"><a href="#Matrix-1352"><span class="linenos">1352</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
-</span><span id="Matrix-1353"><a href="#Matrix-1353"><span class="linenos">1353</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
+</span><span id="Matrix-1342"><a href="#Matrix-1342"><span class="linenos">1342</span></a>    <span class="k">def</span> <span class="nf">extract_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix-1343"><a href="#Matrix-1343"><span class="linenos">1343</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix-1344"><a href="#Matrix-1344"><span class="linenos">1344</span></a><span class="sd">        Extract matrix row.</span>
+</span><span id="Matrix-1345"><a href="#Matrix-1345"><span class="linenos">1345</span></a>
+</span><span id="Matrix-1346"><a href="#Matrix-1346"><span class="linenos">1346</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 0, 1, 2], [1, 2, 3, 0], [-1, 1, 2, 3], (3, 4), INT)</span>
+</span><span id="Matrix-1347"><a href="#Matrix-1347"><span class="linenos">1347</span></a><span class="sd">        &gt;&gt;&gt; print(M)</span>
+</span><span id="Matrix-1348"><a href="#Matrix-1348"><span class="linenos">1348</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1349"><a href="#Matrix-1349"><span class="linenos">1349</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix-1350"><a href="#Matrix-1350"><span class="linenos">1350</span></a><span class="sd">         0| .-1 1 .|  0</span>
+</span><span id="Matrix-1351"><a href="#Matrix-1351"><span class="linenos">1351</span></a><span class="sd">         1| . . . 2|  1</span>
+</span><span id="Matrix-1352"><a href="#Matrix-1352"><span class="linenos">1352</span></a><span class="sd">         2| 3 . . .|  2</span>
+</span><span id="Matrix-1353"><a href="#Matrix-1353"><span class="linenos">1353</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix-1354"><a href="#Matrix-1354"><span class="linenos">1354</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1355"><a href="#Matrix-1355"><span class="linenos">1355</span></a>
+</span><span id="Matrix-1356"><a href="#Matrix-1356"><span class="linenos">1356</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_row(0))</span>
+</span><span id="Matrix-1357"><a href="#Matrix-1357"><span class="linenos">1357</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1358"><a href="#Matrix-1358"><span class="linenos">1358</span></a><span class="sd">         0| .</span>
+</span><span id="Matrix-1359"><a href="#Matrix-1359"><span class="linenos">1359</span></a><span class="sd">         1|-1</span>
+</span><span id="Matrix-1360"><a href="#Matrix-1360"><span class="linenos">1360</span></a><span class="sd">         2| 1</span>
+</span><span id="Matrix-1361"><a href="#Matrix-1361"><span class="linenos">1361</span></a><span class="sd">         3| .</span>
+</span><span id="Matrix-1362"><a href="#Matrix-1362"><span class="linenos">1362</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1363"><a href="#Matrix-1363"><span class="linenos">1363</span></a>
+</span><span id="Matrix-1364"><a href="#Matrix-1364"><span class="linenos">1364</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_row(0, op_apply=INT.AINV))</span>
+</span><span id="Matrix-1365"><a href="#Matrix-1365"><span class="linenos">1365</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1366"><a href="#Matrix-1366"><span class="linenos">1366</span></a><span class="sd">         0| .</span>
+</span><span id="Matrix-1367"><a href="#Matrix-1367"><span class="linenos">1367</span></a><span class="sd">         1| 1</span>
+</span><span id="Matrix-1368"><a href="#Matrix-1368"><span class="linenos">1368</span></a><span class="sd">         2|-1</span>
+</span><span id="Matrix-1369"><a href="#Matrix-1369"><span class="linenos">1369</span></a><span class="sd">         3| .</span>
+</span><span id="Matrix-1370"><a href="#Matrix-1370"><span class="linenos">1370</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1371"><a href="#Matrix-1371"><span class="linenos">1371</span></a>
+</span><span id="Matrix-1372"><a href="#Matrix-1372"><span class="linenos">1372</span></a><span class="sd">        :param index: int.</span>
+</span><span id="Matrix-1373"><a href="#Matrix-1373"><span class="linenos">1373</span></a><span class="sd">            Index of row to extract.</span>
+</span><span id="Matrix-1374"><a href="#Matrix-1374"><span class="linenos">1374</span></a>
+</span><span id="Matrix-1375"><a href="#Matrix-1375"><span class="linenos">1375</span></a><span class="sd">        :param out: optional: Vector: default: none.</span>
+</span><span id="Matrix-1376"><a href="#Matrix-1376"><span class="linenos">1376</span></a><span class="sd">            Optional vector to store result.</span>
+</span><span id="Matrix-1377"><a href="#Matrix-1377"><span class="linenos">1377</span></a>
+</span><span id="Matrix-1378"><a href="#Matrix-1378"><span class="linenos">1378</span></a><span class="sd">        :param op_apply: optional: OpUnary. default: None.</span>
+</span><span id="Matrix-1379"><a href="#Matrix-1379"><span class="linenos">1379</span></a><span class="sd">            Optional unary function to apply on extraction.</span>
+</span><span id="Matrix-1380"><a href="#Matrix-1380"><span class="linenos">1380</span></a>
+</span><span id="Matrix-1381"><a href="#Matrix-1381"><span class="linenos">1381</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix-1382"><a href="#Matrix-1382"><span class="linenos">1382</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix-1383"><a href="#Matrix-1383"><span class="linenos">1383</span></a>
+</span><span id="Matrix-1384"><a href="#Matrix-1384"><span class="linenos">1384</span></a><span class="sd">        :return: Vector.</span>
+</span><span id="Matrix-1385"><a href="#Matrix-1385"><span class="linenos">1385</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix-1386"><a href="#Matrix-1386"><span class="linenos">1386</span></a>
+</span><span id="Matrix-1387"><a href="#Matrix-1387"><span class="linenos">1387</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+</span><span id="Matrix-1388"><a href="#Matrix-1388"><span class="linenos">1388</span></a>
+</span><span id="Matrix-1389"><a href="#Matrix-1389"><span class="linenos">1389</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-1390"><a href="#Matrix-1390"><span class="linenos">1390</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix-1391"><a href="#Matrix-1391"><span class="linenos">1391</span></a>        <span class="k">if</span> <span class="n">op_apply</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-1392"><a href="#Matrix-1392"><span class="linenos">1392</span></a>            <span class="n">op_apply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">IDENTITY</span>
+</span><span id="Matrix-1393"><a href="#Matrix-1393"><span class="linenos">1393</span></a>
+</span><span id="Matrix-1394"><a href="#Matrix-1394"><span class="linenos">1394</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix-1395"><a href="#Matrix-1395"><span class="linenos">1395</span></a>        <span class="k">assert</span> <span class="n">op_apply</span>
+</span><span id="Matrix-1396"><a href="#Matrix-1396"><span class="linenos">1396</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix-1397"><a href="#Matrix-1397"><span class="linenos">1397</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix-1398"><a href="#Matrix-1398"><span class="linenos">1398</span></a>        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Matrix-1399"><a href="#Matrix-1399"><span class="linenos">1399</span></a>
+</span><span id="Matrix-1400"><a href="#Matrix-1400"><span class="linenos">1400</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_extract_row</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">op_apply</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix-1401"><a href="#Matrix-1401"><span class="linenos">1401</span></a>                                                <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix-1402"><a href="#Matrix-1402"><span class="linenos">1402</span></a>
+</span><span id="Matrix-1403"><a href="#Matrix-1403"><span class="linenos">1403</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Matrix-1404"><a href="#Matrix-1404"><span class="linenos">1404</span></a>
+</span><span id="Matrix-1405"><a href="#Matrix-1405"><span class="linenos">1405</span></a>    <span class="k">def</span> <span class="nf">extract_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix-1406"><a href="#Matrix-1406"><span class="linenos">1406</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix-1407"><a href="#Matrix-1407"><span class="linenos">1407</span></a><span class="sd">        Extract matrix column.</span>
+</span><span id="Matrix-1408"><a href="#Matrix-1408"><span class="linenos">1408</span></a>
+</span><span id="Matrix-1409"><a href="#Matrix-1409"><span class="linenos">1409</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 1, 1, 2], [1, 0, 3, 1], [-1, 1, 2, 3], (3, 4), INT)</span>
+</span><span id="Matrix-1410"><a href="#Matrix-1410"><span class="linenos">1410</span></a><span class="sd">        &gt;&gt;&gt; print(M)</span>
+</span><span id="Matrix-1411"><a href="#Matrix-1411"><span class="linenos">1411</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1412"><a href="#Matrix-1412"><span class="linenos">1412</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix-1413"><a href="#Matrix-1413"><span class="linenos">1413</span></a><span class="sd">         0| .-1 . .|  0</span>
+</span><span id="Matrix-1414"><a href="#Matrix-1414"><span class="linenos">1414</span></a><span class="sd">         1| 1 . . 2|  1</span>
+</span><span id="Matrix-1415"><a href="#Matrix-1415"><span class="linenos">1415</span></a><span class="sd">         2| . 3 . .|  2</span>
+</span><span id="Matrix-1416"><a href="#Matrix-1416"><span class="linenos">1416</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix-1417"><a href="#Matrix-1417"><span class="linenos">1417</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1418"><a href="#Matrix-1418"><span class="linenos">1418</span></a>
+</span><span id="Matrix-1419"><a href="#Matrix-1419"><span class="linenos">1419</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_column(1))</span>
+</span><span id="Matrix-1420"><a href="#Matrix-1420"><span class="linenos">1420</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1421"><a href="#Matrix-1421"><span class="linenos">1421</span></a><span class="sd">         0|-1</span>
+</span><span id="Matrix-1422"><a href="#Matrix-1422"><span class="linenos">1422</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix-1423"><a href="#Matrix-1423"><span class="linenos">1423</span></a><span class="sd">         2| 3</span>
+</span><span id="Matrix-1424"><a href="#Matrix-1424"><span class="linenos">1424</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1425"><a href="#Matrix-1425"><span class="linenos">1425</span></a>
+</span><span id="Matrix-1426"><a href="#Matrix-1426"><span class="linenos">1426</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_column(1, op_apply=INT.AINV))</span>
+</span><span id="Matrix-1427"><a href="#Matrix-1427"><span class="linenos">1427</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1428"><a href="#Matrix-1428"><span class="linenos">1428</span></a><span class="sd">         0| 1</span>
+</span><span id="Matrix-1429"><a href="#Matrix-1429"><span class="linenos">1429</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix-1430"><a href="#Matrix-1430"><span class="linenos">1430</span></a><span class="sd">         2|-3</span>
+</span><span id="Matrix-1431"><a href="#Matrix-1431"><span class="linenos">1431</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix-1432"><a href="#Matrix-1432"><span class="linenos">1432</span></a>
+</span><span id="Matrix-1433"><a href="#Matrix-1433"><span class="linenos">1433</span></a><span class="sd">        :param index: int.</span>
+</span><span id="Matrix-1434"><a href="#Matrix-1434"><span class="linenos">1434</span></a><span class="sd">            Index of column to extract.</span>
+</span><span id="Matrix-1435"><a href="#Matrix-1435"><span class="linenos">1435</span></a>
+</span><span id="Matrix-1436"><a href="#Matrix-1436"><span class="linenos">1436</span></a><span class="sd">        :param out: optional: Vector: default: none.</span>
+</span><span id="Matrix-1437"><a href="#Matrix-1437"><span class="linenos">1437</span></a><span class="sd">            Optional vector to store result.</span>
+</span><span id="Matrix-1438"><a href="#Matrix-1438"><span class="linenos">1438</span></a>
+</span><span id="Matrix-1439"><a href="#Matrix-1439"><span class="linenos">1439</span></a><span class="sd">        :param op_apply: optional: OpUnary. default: None.</span>
+</span><span id="Matrix-1440"><a href="#Matrix-1440"><span class="linenos">1440</span></a><span class="sd">            Optional unary function to apply on extraction.</span>
+</span><span id="Matrix-1441"><a href="#Matrix-1441"><span class="linenos">1441</span></a>
+</span><span id="Matrix-1442"><a href="#Matrix-1442"><span class="linenos">1442</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix-1443"><a href="#Matrix-1443"><span class="linenos">1443</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix-1444"><a href="#Matrix-1444"><span class="linenos">1444</span></a>
+</span><span id="Matrix-1445"><a href="#Matrix-1445"><span class="linenos">1445</span></a><span class="sd">        :return: Vector.</span>
+</span><span id="Matrix-1446"><a href="#Matrix-1446"><span class="linenos">1446</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix-1447"><a href="#Matrix-1447"><span class="linenos">1447</span></a>
+</span><span id="Matrix-1448"><a href="#Matrix-1448"><span class="linenos">1448</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+</span><span id="Matrix-1449"><a href="#Matrix-1449"><span class="linenos">1449</span></a>
+</span><span id="Matrix-1450"><a href="#Matrix-1450"><span class="linenos">1450</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-1451"><a href="#Matrix-1451"><span class="linenos">1451</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix-1452"><a href="#Matrix-1452"><span class="linenos">1452</span></a>        <span class="k">if</span> <span class="n">op_apply</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix-1453"><a href="#Matrix-1453"><span class="linenos">1453</span></a>            <span class="n">op_apply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">IDENTITY</span>
+</span><span id="Matrix-1454"><a href="#Matrix-1454"><span class="linenos">1454</span></a>
+</span><span id="Matrix-1455"><a href="#Matrix-1455"><span class="linenos">1455</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix-1456"><a href="#Matrix-1456"><span class="linenos">1456</span></a>        <span class="k">assert</span> <span class="n">op_apply</span>
+</span><span id="Matrix-1457"><a href="#Matrix-1457"><span class="linenos">1457</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix-1458"><a href="#Matrix-1458"><span class="linenos">1458</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Matrix-1459"><a href="#Matrix-1459"><span class="linenos">1459</span></a>        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix-1460"><a href="#Matrix-1460"><span class="linenos">1460</span></a>
+</span><span id="Matrix-1461"><a href="#Matrix-1461"><span class="linenos">1461</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_extract_column</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">op_apply</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix-1462"><a href="#Matrix-1462"><span class="linenos">1462</span></a>                                                   <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix-1463"><a href="#Matrix-1463"><span class="linenos">1463</span></a>
+</span><span id="Matrix-1464"><a href="#Matrix-1464"><span class="linenos">1464</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span><span id="Matrix-1465"><a href="#Matrix-1465"><span class="linenos">1465</span></a>
+</span><span id="Matrix-1466"><a href="#Matrix-1466"><span class="linenos">1466</span></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Matrix-1467"><a href="#Matrix-1467"><span class="linenos">1467</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+</span><span id="Matrix-1468"><a href="#Matrix-1468"><span class="linenos">1468</span></a>
+</span><span id="Matrix-1469"><a href="#Matrix-1469"><span class="linenos">1469</span></a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Matrix-1470"><a href="#Matrix-1470"><span class="linenos">1470</span></a>        <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_lists</span><span class="p">()</span>
+</span><span id="Matrix-1471"><a href="#Matrix-1471"><span class="linenos">1471</span></a>        <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+</span><span id="Matrix-1472"><a href="#Matrix-1472"><span class="linenos">1472</span></a>
+</span><span id="Matrix-1473"><a href="#Matrix-1473"><span class="linenos">1473</span></a>    <span class="k">def</span> <span class="nf">_get_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="n">Descriptor</span><span class="p">):</span>
+</span><span id="Matrix-1474"><a href="#Matrix-1474"><span class="linenos">1474</span></a>        <span class="k">return</span> <span class="n">desc</span><span class="o">.</span><span class="n">hnd</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="Matrix-1475"><a href="#Matrix-1475"><span class="linenos">1475</span></a>
+</span><span id="Matrix-1476"><a href="#Matrix-1476"><span class="linenos">1476</span></a>    <span class="k">def</span> <span class="nf">_get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+</span><span id="Matrix-1477"><a href="#Matrix-1477"><span class="linenos">1477</span></a>        <span class="k">return</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)()</span>
 </span></pre></div>
 
 
@@ -9316,6 +9446,272 @@ Optional descriptor object to configure the execution.</p></li>
 
 <blockquote>
   <p>Transposed matrix.</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="Matrix.extract_row" class="classattr">
+                                        <input id="Matrix.extract_row-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_row</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">index</span>, </span><span class="param"><span class="n">out</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="Matrix.extract_row-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Matrix.extract_row"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Matrix.extract_row-1342"><a href="#Matrix.extract_row-1342"><span class="linenos">1342</span></a>    <span class="k">def</span> <span class="nf">extract_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix.extract_row-1343"><a href="#Matrix.extract_row-1343"><span class="linenos">1343</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix.extract_row-1344"><a href="#Matrix.extract_row-1344"><span class="linenos">1344</span></a><span class="sd">        Extract matrix row.</span>
+</span><span id="Matrix.extract_row-1345"><a href="#Matrix.extract_row-1345"><span class="linenos">1345</span></a>
+</span><span id="Matrix.extract_row-1346"><a href="#Matrix.extract_row-1346"><span class="linenos">1346</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 0, 1, 2], [1, 2, 3, 0], [-1, 1, 2, 3], (3, 4), INT)</span>
+</span><span id="Matrix.extract_row-1347"><a href="#Matrix.extract_row-1347"><span class="linenos">1347</span></a><span class="sd">        &gt;&gt;&gt; print(M)</span>
+</span><span id="Matrix.extract_row-1348"><a href="#Matrix.extract_row-1348"><span class="linenos">1348</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1349"><a href="#Matrix.extract_row-1349"><span class="linenos">1349</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix.extract_row-1350"><a href="#Matrix.extract_row-1350"><span class="linenos">1350</span></a><span class="sd">         0| .-1 1 .|  0</span>
+</span><span id="Matrix.extract_row-1351"><a href="#Matrix.extract_row-1351"><span class="linenos">1351</span></a><span class="sd">         1| . . . 2|  1</span>
+</span><span id="Matrix.extract_row-1352"><a href="#Matrix.extract_row-1352"><span class="linenos">1352</span></a><span class="sd">         2| 3 . . .|  2</span>
+</span><span id="Matrix.extract_row-1353"><a href="#Matrix.extract_row-1353"><span class="linenos">1353</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix.extract_row-1354"><a href="#Matrix.extract_row-1354"><span class="linenos">1354</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1355"><a href="#Matrix.extract_row-1355"><span class="linenos">1355</span></a>
+</span><span id="Matrix.extract_row-1356"><a href="#Matrix.extract_row-1356"><span class="linenos">1356</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_row(0))</span>
+</span><span id="Matrix.extract_row-1357"><a href="#Matrix.extract_row-1357"><span class="linenos">1357</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1358"><a href="#Matrix.extract_row-1358"><span class="linenos">1358</span></a><span class="sd">         0| .</span>
+</span><span id="Matrix.extract_row-1359"><a href="#Matrix.extract_row-1359"><span class="linenos">1359</span></a><span class="sd">         1|-1</span>
+</span><span id="Matrix.extract_row-1360"><a href="#Matrix.extract_row-1360"><span class="linenos">1360</span></a><span class="sd">         2| 1</span>
+</span><span id="Matrix.extract_row-1361"><a href="#Matrix.extract_row-1361"><span class="linenos">1361</span></a><span class="sd">         3| .</span>
+</span><span id="Matrix.extract_row-1362"><a href="#Matrix.extract_row-1362"><span class="linenos">1362</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1363"><a href="#Matrix.extract_row-1363"><span class="linenos">1363</span></a>
+</span><span id="Matrix.extract_row-1364"><a href="#Matrix.extract_row-1364"><span class="linenos">1364</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_row(0, op_apply=INT.AINV))</span>
+</span><span id="Matrix.extract_row-1365"><a href="#Matrix.extract_row-1365"><span class="linenos">1365</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1366"><a href="#Matrix.extract_row-1366"><span class="linenos">1366</span></a><span class="sd">         0| .</span>
+</span><span id="Matrix.extract_row-1367"><a href="#Matrix.extract_row-1367"><span class="linenos">1367</span></a><span class="sd">         1| 1</span>
+</span><span id="Matrix.extract_row-1368"><a href="#Matrix.extract_row-1368"><span class="linenos">1368</span></a><span class="sd">         2|-1</span>
+</span><span id="Matrix.extract_row-1369"><a href="#Matrix.extract_row-1369"><span class="linenos">1369</span></a><span class="sd">         3| .</span>
+</span><span id="Matrix.extract_row-1370"><a href="#Matrix.extract_row-1370"><span class="linenos">1370</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_row-1371"><a href="#Matrix.extract_row-1371"><span class="linenos">1371</span></a>
+</span><span id="Matrix.extract_row-1372"><a href="#Matrix.extract_row-1372"><span class="linenos">1372</span></a><span class="sd">        :param index: int.</span>
+</span><span id="Matrix.extract_row-1373"><a href="#Matrix.extract_row-1373"><span class="linenos">1373</span></a><span class="sd">            Index of row to extract.</span>
+</span><span id="Matrix.extract_row-1374"><a href="#Matrix.extract_row-1374"><span class="linenos">1374</span></a>
+</span><span id="Matrix.extract_row-1375"><a href="#Matrix.extract_row-1375"><span class="linenos">1375</span></a><span class="sd">        :param out: optional: Vector: default: none.</span>
+</span><span id="Matrix.extract_row-1376"><a href="#Matrix.extract_row-1376"><span class="linenos">1376</span></a><span class="sd">            Optional vector to store result.</span>
+</span><span id="Matrix.extract_row-1377"><a href="#Matrix.extract_row-1377"><span class="linenos">1377</span></a>
+</span><span id="Matrix.extract_row-1378"><a href="#Matrix.extract_row-1378"><span class="linenos">1378</span></a><span class="sd">        :param op_apply: optional: OpUnary. default: None.</span>
+</span><span id="Matrix.extract_row-1379"><a href="#Matrix.extract_row-1379"><span class="linenos">1379</span></a><span class="sd">            Optional unary function to apply on extraction.</span>
+</span><span id="Matrix.extract_row-1380"><a href="#Matrix.extract_row-1380"><span class="linenos">1380</span></a>
+</span><span id="Matrix.extract_row-1381"><a href="#Matrix.extract_row-1381"><span class="linenos">1381</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix.extract_row-1382"><a href="#Matrix.extract_row-1382"><span class="linenos">1382</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix.extract_row-1383"><a href="#Matrix.extract_row-1383"><span class="linenos">1383</span></a>
+</span><span id="Matrix.extract_row-1384"><a href="#Matrix.extract_row-1384"><span class="linenos">1384</span></a><span class="sd">        :return: Vector.</span>
+</span><span id="Matrix.extract_row-1385"><a href="#Matrix.extract_row-1385"><span class="linenos">1385</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix.extract_row-1386"><a href="#Matrix.extract_row-1386"><span class="linenos">1386</span></a>
+</span><span id="Matrix.extract_row-1387"><a href="#Matrix.extract_row-1387"><span class="linenos">1387</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+</span><span id="Matrix.extract_row-1388"><a href="#Matrix.extract_row-1388"><span class="linenos">1388</span></a>
+</span><span id="Matrix.extract_row-1389"><a href="#Matrix.extract_row-1389"><span class="linenos">1389</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.extract_row-1390"><a href="#Matrix.extract_row-1390"><span class="linenos">1390</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix.extract_row-1391"><a href="#Matrix.extract_row-1391"><span class="linenos">1391</span></a>        <span class="k">if</span> <span class="n">op_apply</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.extract_row-1392"><a href="#Matrix.extract_row-1392"><span class="linenos">1392</span></a>            <span class="n">op_apply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">IDENTITY</span>
+</span><span id="Matrix.extract_row-1393"><a href="#Matrix.extract_row-1393"><span class="linenos">1393</span></a>
+</span><span id="Matrix.extract_row-1394"><a href="#Matrix.extract_row-1394"><span class="linenos">1394</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix.extract_row-1395"><a href="#Matrix.extract_row-1395"><span class="linenos">1395</span></a>        <span class="k">assert</span> <span class="n">op_apply</span>
+</span><span id="Matrix.extract_row-1396"><a href="#Matrix.extract_row-1396"><span class="linenos">1396</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.extract_row-1397"><a href="#Matrix.extract_row-1397"><span class="linenos">1397</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix.extract_row-1398"><a href="#Matrix.extract_row-1398"><span class="linenos">1398</span></a>        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Matrix.extract_row-1399"><a href="#Matrix.extract_row-1399"><span class="linenos">1399</span></a>
+</span><span id="Matrix.extract_row-1400"><a href="#Matrix.extract_row-1400"><span class="linenos">1400</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_extract_row</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">op_apply</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix.extract_row-1401"><a href="#Matrix.extract_row-1401"><span class="linenos">1401</span></a>                                                <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix.extract_row-1402"><a href="#Matrix.extract_row-1402"><span class="linenos">1402</span></a>
+</span><span id="Matrix.extract_row-1403"><a href="#Matrix.extract_row-1403"><span class="linenos">1403</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Extract matrix row.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    0 1 2 3</span>
+<span class="go"> 0| .-1 1 .|  0</span>
+<span class="go"> 1| . . . 2|  1</span>
+<span class="go"> 2| 3 . . .|  2</span>
+<span class="go">    0 1 2 3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">extract_row</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| .</span>
+<span class="go"> 1|-1</span>
+<span class="go"> 2| 1</span>
+<span class="go"> 3| .</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">extract_row</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="n"><a href="#INT.AINV">INT.AINV</a></span><span class="p">))</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| .</span>
+<span class="go"> 1| 1</span>
+<span class="go"> 2|-1</span>
+<span class="go"> 3| .</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><p><strong>index</strong>:  int.
+Index of row to extract.</p></li>
+<li><p><strong>out: optional: Vector: default</strong>:  none.
+Optional vector to store result.</p></li>
+<li><p><strong>op_apply: optional: OpUnary. default</strong>:  None.
+Optional unary function to apply on extraction.</p></li>
+<li><p><strong>desc: optional: Descriptor. default</strong>:  None.
+Optional descriptor object to configure the execution.</p></li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Vector.</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="Matrix.extract_column" class="classattr">
+                                        <input id="Matrix.extract_column-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_column</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">index</span>, </span><span class="param"><span class="n">out</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span>, </span><span class="param"><span class="n">desc</span><span class="o">=</span><span class="kc">None</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="Matrix.extract_column-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Matrix.extract_column"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Matrix.extract_column-1405"><a href="#Matrix.extract_column-1405"><span class="linenos">1405</span></a>    <span class="k">def</span> <span class="nf">extract_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="Matrix.extract_column-1406"><a href="#Matrix.extract_column-1406"><span class="linenos">1406</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Matrix.extract_column-1407"><a href="#Matrix.extract_column-1407"><span class="linenos">1407</span></a><span class="sd">        Extract matrix column.</span>
+</span><span id="Matrix.extract_column-1408"><a href="#Matrix.extract_column-1408"><span class="linenos">1408</span></a>
+</span><span id="Matrix.extract_column-1409"><a href="#Matrix.extract_column-1409"><span class="linenos">1409</span></a><span class="sd">        &gt;&gt;&gt; M = Matrix.from_lists([0, 1, 1, 2], [1, 0, 3, 1], [-1, 1, 2, 3], (3, 4), INT)</span>
+</span><span id="Matrix.extract_column-1410"><a href="#Matrix.extract_column-1410"><span class="linenos">1410</span></a><span class="sd">        &gt;&gt;&gt; print(M)</span>
+</span><span id="Matrix.extract_column-1411"><a href="#Matrix.extract_column-1411"><span class="linenos">1411</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1412"><a href="#Matrix.extract_column-1412"><span class="linenos">1412</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix.extract_column-1413"><a href="#Matrix.extract_column-1413"><span class="linenos">1413</span></a><span class="sd">         0| .-1 . .|  0</span>
+</span><span id="Matrix.extract_column-1414"><a href="#Matrix.extract_column-1414"><span class="linenos">1414</span></a><span class="sd">         1| 1 . . 2|  1</span>
+</span><span id="Matrix.extract_column-1415"><a href="#Matrix.extract_column-1415"><span class="linenos">1415</span></a><span class="sd">         2| . 3 . .|  2</span>
+</span><span id="Matrix.extract_column-1416"><a href="#Matrix.extract_column-1416"><span class="linenos">1416</span></a><span class="sd">            0 1 2 3</span>
+</span><span id="Matrix.extract_column-1417"><a href="#Matrix.extract_column-1417"><span class="linenos">1417</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1418"><a href="#Matrix.extract_column-1418"><span class="linenos">1418</span></a>
+</span><span id="Matrix.extract_column-1419"><a href="#Matrix.extract_column-1419"><span class="linenos">1419</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_column(1))</span>
+</span><span id="Matrix.extract_column-1420"><a href="#Matrix.extract_column-1420"><span class="linenos">1420</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1421"><a href="#Matrix.extract_column-1421"><span class="linenos">1421</span></a><span class="sd">         0|-1</span>
+</span><span id="Matrix.extract_column-1422"><a href="#Matrix.extract_column-1422"><span class="linenos">1422</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix.extract_column-1423"><a href="#Matrix.extract_column-1423"><span class="linenos">1423</span></a><span class="sd">         2| 3</span>
+</span><span id="Matrix.extract_column-1424"><a href="#Matrix.extract_column-1424"><span class="linenos">1424</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1425"><a href="#Matrix.extract_column-1425"><span class="linenos">1425</span></a>
+</span><span id="Matrix.extract_column-1426"><a href="#Matrix.extract_column-1426"><span class="linenos">1426</span></a><span class="sd">        &gt;&gt;&gt; print(M.extract_column(1, op_apply=INT.AINV))</span>
+</span><span id="Matrix.extract_column-1427"><a href="#Matrix.extract_column-1427"><span class="linenos">1427</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1428"><a href="#Matrix.extract_column-1428"><span class="linenos">1428</span></a><span class="sd">         0| 1</span>
+</span><span id="Matrix.extract_column-1429"><a href="#Matrix.extract_column-1429"><span class="linenos">1429</span></a><span class="sd">         1| .</span>
+</span><span id="Matrix.extract_column-1430"><a href="#Matrix.extract_column-1430"><span class="linenos">1430</span></a><span class="sd">         2|-3</span>
+</span><span id="Matrix.extract_column-1431"><a href="#Matrix.extract_column-1431"><span class="linenos">1431</span></a><span class="sd">        &#39;</span>
+</span><span id="Matrix.extract_column-1432"><a href="#Matrix.extract_column-1432"><span class="linenos">1432</span></a>
+</span><span id="Matrix.extract_column-1433"><a href="#Matrix.extract_column-1433"><span class="linenos">1433</span></a><span class="sd">        :param index: int.</span>
+</span><span id="Matrix.extract_column-1434"><a href="#Matrix.extract_column-1434"><span class="linenos">1434</span></a><span class="sd">            Index of column to extract.</span>
+</span><span id="Matrix.extract_column-1435"><a href="#Matrix.extract_column-1435"><span class="linenos">1435</span></a>
+</span><span id="Matrix.extract_column-1436"><a href="#Matrix.extract_column-1436"><span class="linenos">1436</span></a><span class="sd">        :param out: optional: Vector: default: none.</span>
+</span><span id="Matrix.extract_column-1437"><a href="#Matrix.extract_column-1437"><span class="linenos">1437</span></a><span class="sd">            Optional vector to store result.</span>
+</span><span id="Matrix.extract_column-1438"><a href="#Matrix.extract_column-1438"><span class="linenos">1438</span></a>
+</span><span id="Matrix.extract_column-1439"><a href="#Matrix.extract_column-1439"><span class="linenos">1439</span></a><span class="sd">        :param op_apply: optional: OpUnary. default: None.</span>
+</span><span id="Matrix.extract_column-1440"><a href="#Matrix.extract_column-1440"><span class="linenos">1440</span></a><span class="sd">            Optional unary function to apply on extraction.</span>
+</span><span id="Matrix.extract_column-1441"><a href="#Matrix.extract_column-1441"><span class="linenos">1441</span></a>
+</span><span id="Matrix.extract_column-1442"><a href="#Matrix.extract_column-1442"><span class="linenos">1442</span></a><span class="sd">        :param desc: optional: Descriptor. default: None.</span>
+</span><span id="Matrix.extract_column-1443"><a href="#Matrix.extract_column-1443"><span class="linenos">1443</span></a><span class="sd">            Optional descriptor object to configure the execution.</span>
+</span><span id="Matrix.extract_column-1444"><a href="#Matrix.extract_column-1444"><span class="linenos">1444</span></a>
+</span><span id="Matrix.extract_column-1445"><a href="#Matrix.extract_column-1445"><span class="linenos">1445</span></a><span class="sd">        :return: Vector.</span>
+</span><span id="Matrix.extract_column-1446"><a href="#Matrix.extract_column-1446"><span class="linenos">1446</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Matrix.extract_column-1447"><a href="#Matrix.extract_column-1447"><span class="linenos">1447</span></a>
+</span><span id="Matrix.extract_column-1448"><a href="#Matrix.extract_column-1448"><span class="linenos">1448</span></a>        <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+</span><span id="Matrix.extract_column-1449"><a href="#Matrix.extract_column-1449"><span class="linenos">1449</span></a>
+</span><span id="Matrix.extract_column-1450"><a href="#Matrix.extract_column-1450"><span class="linenos">1450</span></a>        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.extract_column-1451"><a href="#Matrix.extract_column-1451"><span class="linenos">1451</span></a>            <span class="n">out</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</span><span id="Matrix.extract_column-1452"><a href="#Matrix.extract_column-1452"><span class="linenos">1452</span></a>        <span class="k">if</span> <span class="n">op_apply</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Matrix.extract_column-1453"><a href="#Matrix.extract_column-1453"><span class="linenos">1453</span></a>            <span class="n">op_apply</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">IDENTITY</span>
+</span><span id="Matrix.extract_column-1454"><a href="#Matrix.extract_column-1454"><span class="linenos">1454</span></a>
+</span><span id="Matrix.extract_column-1455"><a href="#Matrix.extract_column-1455"><span class="linenos">1455</span></a>        <span class="k">assert</span> <span class="n">out</span>
+</span><span id="Matrix.extract_column-1456"><a href="#Matrix.extract_column-1456"><span class="linenos">1456</span></a>        <span class="k">assert</span> <span class="n">op_apply</span>
+</span><span id="Matrix.extract_column-1457"><a href="#Matrix.extract_column-1457"><span class="linenos">1457</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+</span><span id="Matrix.extract_column-1458"><a href="#Matrix.extract_column-1458"><span class="linenos">1458</span></a>        <span class="k">assert</span> <span class="n">out</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span>
+</span><span id="Matrix.extract_column-1459"><a href="#Matrix.extract_column-1459"><span class="linenos">1459</span></a>        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+</span><span id="Matrix.extract_column-1460"><a href="#Matrix.extract_column-1460"><span class="linenos">1460</span></a>
+</span><span id="Matrix.extract_column-1461"><a href="#Matrix.extract_column-1461"><span class="linenos">1461</span></a>        <span class="n">check</span><span class="p">(</span><span class="n">backend</span><span class="p">()</span><span class="o">.</span><span class="n">spla_Exec_m_extract_column</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">op_apply</span><span class="o">.</span><span class="n">hnd</span><span class="p">,</span>
+</span><span id="Matrix.extract_column-1462"><a href="#Matrix.extract_column-1462"><span class="linenos">1462</span></a>                                                   <span class="bp">self</span><span class="o">.</span><span class="n">_get_desc</span><span class="p">(</span><span class="n">desc</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_task</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+</span><span id="Matrix.extract_column-1463"><a href="#Matrix.extract_column-1463"><span class="linenos">1463</span></a>
+</span><span id="Matrix.extract_column-1464"><a href="#Matrix.extract_column-1464"><span class="linenos">1464</span></a>        <span class="k">return</span> <span class="n">out</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Extract matrix column.</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n"><a href="#Matrix.from_lists">Matrix.from_lists</a></span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">INT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="go">&#39;</span>
+<span class="go">    0 1 2 3</span>
+<span class="go"> 0| .-1 . .|  0</span>
+<span class="go"> 1| 1 . . 2|  1</span>
+<span class="go"> 2| . 3 . .|  2</span>
+<span class="go">    0 1 2 3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">extract_column</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">&#39;</span>
+<span class="go"> 0|-1</span>
+<span class="go"> 1| .</span>
+<span class="go"> 2| 3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">extract_column</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">op_apply</span><span class="o">=</span><span class="n"><a href="#INT.AINV">INT.AINV</a></span><span class="p">))</span>
+<span class="go">&#39;</span>
+<span class="go"> 0| 1</span>
+<span class="go"> 1| .</span>
+<span class="go"> 2|-3</span>
+<span class="go">&#39;</span>
+</code></pre>
+</div>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><p><strong>index</strong>:  int.
+Index of column to extract.</p></li>
+<li><p><strong>out: optional: Vector: default</strong>:  none.
+Optional vector to store result.</p></li>
+<li><p><strong>op_apply: optional: OpUnary. default</strong>:  None.
+Optional unary function to apply on extraction.</p></li>
+<li><p><strong>desc: optional: Descriptor. default</strong>:  None.
+Optional descriptor object to configure the execution.</p></li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Vector.</p>
 </blockquote>
 </div>
 
