@@ -205,6 +205,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__m__transpose.html">spla::ScheduleTask_m_transpose</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> transpose.  <a href="classspla_1_1ScheduleTask__m__transpose.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__m__extract__row.html">spla::ScheduleTask_m_extract_row</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> extract vector.  <a href="classspla_1_1ScheduleTask__m__extract__row.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__m__extract__column.html">spla::ScheduleTask_m_extract_column</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object.">Matrix</a> extract vector.  <a href="classspla_1_1ScheduleTask__m__extract__column.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspla_1_1ScheduleTask__v__eadd.html">spla::ScheduleTask_v_eadd</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classspla_1_1Vector.html" title="Generalized N dimensional vector object.">Vector</a> ewise add.  <a href="classspla_1_1ScheduleTask__v__eadd.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,6 +264,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga0649c8a851178bf399e95ce8773610c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0649c8a851178bf399e95ce8773610c9">spla::cpu_coo_to_csr</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_rows, const <a class="el" href="classspla_1_1CpuCoo.html">CpuCoo</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CpuCsr.html">CpuCsr</a>&lt; T &gt; &amp;out)</td></tr>
 <tr class="separator:ga0649c8a851178bf399e95ce8773610c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga73525524c1d87dfe338c8cf850a54bf0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga73525524c1d87dfe338c8cf850a54bf0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga73525524c1d87dfe338c8cf850a54bf0">spla::cpu_coo_vec_sort</a> (<a class="el" href="classspla_1_1CpuCooVec.html">CpuCooVec</a>&lt; T &gt; &amp;vec)</td></tr>
+<tr class="separator:ga73525524c1d87dfe338c8cf850a54bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5809b7bca1a7f597b423c2ca881c3040"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga5809b7bca1a7f597b423c2ca881c3040"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga5809b7bca1a7f597b423c2ca881c3040">spla::cpu_coo_vec_resize</a> (const <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values, <a class="el" href="classspla_1_1CpuCooVec.html">CpuCooVec</a>&lt; T &gt; &amp;vec)</td></tr>
 <tr class="separator:ga5809b7bca1a7f597b423c2ca881c3040"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1531,6 +1540,26 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga73525524c1d87dfe338c8cf850a54bf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga73525524c1d87dfe338c8cf850a54bf0">&#9670;&nbsp;</a></span>cpu_coo_vec_sort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::cpu_coo_vec_sort </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CpuCooVec.html">CpuCooVec</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
