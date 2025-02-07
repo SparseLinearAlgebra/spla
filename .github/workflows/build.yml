@@ -49,9 +49,9 @@ jobs:
         run: cmake --build ${{ env.build_dir }}
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{env.artifact}}
+          name: windows-${{env.artifact}}
           path: ${{env.build_dir}}/spla_x64.dll
 
 
@@ -75,9 +75,9 @@ jobs:
         run: cmake --build ${{ env.build_dir }}
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{env.artifact}}
+          name: linux-${{env.artifact}}
           path: ${{env.build_dir}}/libspla_x64.so
 
   macos:
@@ -105,9 +105,9 @@ jobs:
         run: cmake --build ${{ env.build_dir }}
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{env.artifact}}
+          name: macos-${{env.artifact}}
           path: |
             ${{env.build_dir}}/libspla_x64.dylib
             ${{env.build_dir}}/libspla_arm64.dylib
