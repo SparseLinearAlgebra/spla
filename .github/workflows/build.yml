@@ -81,7 +81,7 @@ jobs:
           path: ${{env.build_dir}}/libspla_x64.so
 
   macos:
-    runs-on: macos-11
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v2
         with:
