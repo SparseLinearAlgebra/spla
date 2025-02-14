@@ -369,6 +369,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga274cd3c51e824f27c8583aa556d74454">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">spla::hash_combine</a> (std::size_t &amp;seed, const T &amp;v)</td></tr>
+<tr class="separator:ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0d6585b7c910f70d714ef826129dba4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gab0d6585b7c910f70d714ef826129dba4">spla::TArray&lt; T &gt;::TArray</a> (<a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> n_values)</td></tr>
 <tr class="separator:gab0d6585b7c910f70d714ef826129dba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gace59720b6c46ed11e58527698661f53c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gace59720b6c46ed11e58527698661f53c">spla::TArray&lt; T &gt;::get_n_values</a> () override</td></tr>
@@ -3725,6 +3728,44 @@ template&lt;typename T &gt; </div>
           <td class="memname">T <a class="el" href="classspla_1_1TScalar.html">spla::TScalar</a>&lt; T &gt;::get_value</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga0d18fc5d68f681a0abe2f8fdf243ad9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d18fc5d68f681a0abe2f8fdf243ad9f">&#9670;&nbsp;</a></span>hash_combine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spla::hash_combine </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

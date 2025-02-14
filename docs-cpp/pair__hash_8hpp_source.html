@@ -103,20 +103,30 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespla.html">spla</a> {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structspla_1_1pair__hash.html">   40</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspla_1_1pair__hash.html">pair_hash</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">   43</a></span>&#160;        std::size_t <a class="code" href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">operator()</a>(<span class="keyword">const</span> std::pair&lt;T, U&gt;&amp; x)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">return</span> std::hash&lt;T&gt;()(x.first) ^ std::hash&lt;U&gt;()(x.second);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}<span class="comment">// namespace spla</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_PAIR_HASH_HPP</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">   41</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">hash_combine</a>(std::size_t&amp; seed, <span class="keyword">const</span> T&amp; v) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        std::hash&lt;T&gt; hasher;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        seed ^= hasher(v) + 0x9e3779b9 + (seed &lt;&lt; 6) + (seed &gt;&gt; 2);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structspla_1_1pair__hash.html">   46</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspla_1_1pair__hash.html">pair_hash</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">   49</a></span>&#160;        std::size_t <a class="code" href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">operator()</a>(<span class="keyword">const</span> std::pair&lt;T, U&gt;&amp; x)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            std::size_t seed = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <a class="code" href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">hash_combine</a>(seed, x.first);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">hash_combine</a>(seed, x.second);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> seed;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}<span class="comment">// namespace spla</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span><span class="comment">//SPLA_PAIR_HASH_HPP</span></div>
+<div class="ttc" id="agroup__internal_html_ga0d18fc5d68f681a0abe2f8fdf243ad9f"><div class="ttname"><a href="group__internal.html#ga0d18fc5d68f681a0abe2f8fdf243ad9f">spla::hash_combine</a></div><div class="ttdeci">void hash_combine(std::size_t &amp;seed, const T &amp;v)</div><div class="ttdef"><b>Definition:</b> pair_hash.hpp:41</div></div>
 <div class="ttc" id="anamespacespla_html"><div class="ttname"><a href="namespacespla.html">spla</a></div><div class="ttdef"><b>Definition:</b> algorithm.hpp:37</div></div>
-<div class="ttc" id="astructspla_1_1pair__hash_html"><div class="ttname"><a href="structspla_1_1pair__hash.html">spla::pair_hash</a></div><div class="ttdef"><b>Definition:</b> pair_hash.hpp:40</div></div>
-<div class="ttc" id="astructspla_1_1pair__hash_html_ab984d9fca39fd14872dc93b3553eaf62"><div class="ttname"><a href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">spla::pair_hash::operator()</a></div><div class="ttdeci">std::size_t operator()(const std::pair&lt; T, U &gt; &amp;x) const</div><div class="ttdef"><b>Definition:</b> pair_hash.hpp:43</div></div>
+<div class="ttc" id="astructspla_1_1pair__hash_html"><div class="ttname"><a href="structspla_1_1pair__hash.html">spla::pair_hash</a></div><div class="ttdef"><b>Definition:</b> pair_hash.hpp:46</div></div>
+<div class="ttc" id="astructspla_1_1pair__hash_html_ab984d9fca39fd14872dc93b3553eaf62"><div class="ttname"><a href="structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62">spla::pair_hash::operator()</a></div><div class="ttdeci">std::size_t operator()(const std::pair&lt; T, U &gt; &amp;x) const</div><div class="ttdef"><b>Definition:</b> pair_hash.hpp:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
