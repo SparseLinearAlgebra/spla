@@ -29,6 +29,8 @@
 
 #include <spla.hpp>
 
+#include <algorithm>
+
 TEST(vector, get_set_naive) {
     const spla::uint N    = 10;
     const int        X[N] = {1, 2, 3, 4, 5, -3, -3, 5, -8, 1};
