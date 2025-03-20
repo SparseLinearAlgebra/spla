@@ -119,7 +119,7 @@ TEST(vector, reduce_plus) {
     auto istart = spla::Scalar::make_int(0);
     int  isum   = 0;
 
-    for (int k = 0; k < K; ++k) {
+    for (spla::uint k = 0; k < K; ++k) {
         ivec->set_int(I[k], X[k]);
         isum += X[k];
     }
@@ -143,11 +143,11 @@ TEST(vector, reduce_mult) {
     auto istart = spla::Scalar::make_int(1);
     int  isum   = 1;
 
-    for (int k = 0; k < N; ++k) {
+    for (spla::uint k = 0; k < N; ++k) {
         ivec->set_int(k, 1);
     }
 
-    for (int k = 0; k < K; ++k) {
+    for (spla::uint k = 0; k < K; ++k) {
         ivec->set_int(I[k], X[k]);
         isum *= X[k];
     }
@@ -255,13 +255,13 @@ TEST(vector, eadd_fdb_min) {
     auto iv   = spla::Vector::make(N, spla::INT);
     auto ifdb = spla::Vector::make(N, spla::INT);
 
-    for (int k = 0; k < N; ++k) {
+    for (spla::uint k = 0; k < N; ++k) {
         ir->set_int(k, S);
         R[k] = S;
         F[k] = 0;
     }
 
-    for (int k = 0; k < K; ++k) {
+    for (spla::uint k = 0; k < K; ++k) {
         iv->set_int(I[k], V[k]);
         R[I[k]] = std::min(R[I[k]], V[k]);
         if (R[I[k]] != S) F[I[k]] = R[I[k]];
@@ -269,13 +269,13 @@ TEST(vector, eadd_fdb_min) {
 
     spla::exec_v_eadd_fdb(ir, iv, ifdb, spla::MIN_INT);
 
-    for (int k = 0; k < N; k++) {
+    for (spla::uint k = 0; k < N; k++) {
         int r;
         ir->get_int(k, r);
         EXPECT_EQ(R[k], r);
     }
 
-    for (int k = 0; k < N; k++) {
+    for (spla::uint k = 0; k < N; k++) {
         int r;
         ifdb->get_int(k, r);
         EXPECT_EQ(F[k], r);
@@ -325,20 +325,20 @@ TEST(vector, assign_plus) {
     auto imask = spla::Vector::make(N, spla::INT);
     auto ival  = spla::Scalar::make_int(S);
 
-    for (int k = 0; k < N; ++k) {
+    for (spla::uint k = 0; k < N; ++k) {
         ivec->set_int(k, 14);
         imask->set_int(k, 0);
         R[k] = 14;
     }
 
-    for (int k = 0; k < K; ++k) {
+    for (spla::uint k = 0; k < K; ++k) {
         imask->set_int(I[k], 1);
         R[I[k]] = R[I[k]] + S;
     }
 
     spla::exec_v_assign_masked(ivec, imask, ival, spla::PLUS_INT, spla::NQZERO_INT);
 
-    for (int k = 0; k < N; k++) {
+    for (spla::uint k = 0; k < N; k++) {
         int r;
         ivec->get_int(k, r);
         EXPECT_EQ(R[k], r);
@@ -356,20 +356,20 @@ TEST(vector, assign_second) {
     auto imask = spla::Vector::make(N, spla::INT);
     auto ival  = spla::Scalar::make_int(S);
 
-    for (int k = 0; k < N; ++k) {
+    for (spla::uint k = 0; k < N; ++k) {
         ivec->set_int(k, 14);
         imask->set_int(k, 0);
         R[k] = 14;
     }
 
-    for (int k = 0; k < K; ++k) {
+    for (spla::uint k = 0; k < K; ++k) {
         imask->set_int(I[k], 1);
         R[I[k]] = S;
     }
 
     spla::exec_v_assign_masked(ivec, imask, ival, spla::SECOND_INT, spla::NQZERO_INT);
 
-    for (int k = 0; k < N; k++) {
+    for (spla::uint k = 0; k < N; k++) {
         int r;
         ivec->get_int(k, r);
         EXPECT_EQ(R[k], r);
