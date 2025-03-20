@@ -33,10 +33,9 @@
 #include <CL/opencl.hpp>
 
 #include <algorithm>
-#include <cinttypes>
+#include <cstdint>
 #include <iostream>
 #include <random>
-#include <thread>
 #include <vector>
 
 using uint = std::uint32_t;
