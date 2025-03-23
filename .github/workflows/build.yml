@@ -18,7 +18,7 @@ on:
       - '.gitmodules'
       - 'CMakeLists.txt'
   pull_request:
-    branches: [ main ]
+    branches: [ main, koreshin/self-hosted-runner ]
 
 env:
   build_dir: "build"
@@ -28,37 +28,37 @@ env:
 
 jobs:
 
-  windows:
-    runs-on: windows-2019
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-          fetch-depth: 0
+  # windows:
+  #   runs-on: windows-2019
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: true
+  #         fetch-depth: 0
 
-      - uses: seanmiddleditch/gha-setup-ninja@master
+  #     - uses: seanmiddleditch/gha-setup-ninja@master
 
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64
+  #     - uses: ilammy/msvc-dev-cmd@v1
+  #       with:
+  #         arch: amd64
 
-      - name: Configure CMake
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
+  #     - name: Configure CMake
+  #       run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
 
-      - name: Build library sources
-        run: cmake --build ${{ env.build_dir }}
+  #     - name: Build library sources
+  #       run: cmake --build ${{ env.build_dir }}
 
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-${{env.artifact}}
-          path: ${{env.build_dir}}/spla_x64.dll
+  #     - name: Upload binary
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: windows-${{env.artifact}}
+  #         path: ${{env.build_dir}}/spla_x64.dll
 
 
   ubuntu:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -68,8 +68,8 @@ jobs:
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
         env:
-          CC: gcc-9
-          CXX: g++-9
+          CC: gcc-13
+          CXX: g++-13
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }}
@@ -80,34 +80,34 @@ jobs:
           name: linux-${{env.artifact}}
           path: ${{env.build_dir}}/libspla_x64.so
 
-  macos:
-    runs-on: macos-14
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-          fetch-depth: 0
+  # macos:
+  #   runs-on: macos-14
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: true
+  #         fetch-depth: 0
 
-      - uses: seanmiddleditch/gha-setup-ninja@master
+  #     - uses: seanmiddleditch/gha-setup-ninja@master
 
-      - name: Configure CMake x64
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=x86_64
+  #     - name: Configure CMake x64
+  #       run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=x86_64
 
-      - name: Build library sources x64
-        run: cmake --build ${{ env.build_dir }}
+  #     - name: Build library sources x64
+  #       run: cmake --build ${{ env.build_dir }}
 
-      - name: Configure CMake arm64
-        run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=arm64
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+  #     - name: Configure CMake arm64
+  #       run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=arm64
+  #       env:
+  #         BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
-      - name: Build library sources arm64
-        run: cmake --build ${{ env.build_dir }}
+  #     - name: Build library sources arm64
+  #       run: cmake --build ${{ env.build_dir }}
 
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-${{env.artifact}}
-          path: |
-            ${{env.build_dir}}/libspla_x64.dylib
-            ${{env.build_dir}}/libspla_arm64.dylib
+  #     - name: Upload binary
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: macos-${{env.artifact}}
+  #         path: |
+  #           ${{env.build_dir}}/libspla_x64.dylib
+  #           ${{env.build_dir}}/libspla_arm64.dylib
