@@ -19,14 +19,14 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
 
-      - uses: seanmiddleditch/gha-setup-ninja@master
+    #   - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
@@ -43,15 +43,6 @@ jobs:
           name: linux-${{env.artifact}}
           path: ${{env.build_dir}}/libspla_x64.so
 
-      - name: Archive repository
-        run: tar -cvzf repository.tar.gz deps/ docs/ examples/ ide/ include/ python/ src/ tests/ ${{ env.build_dir }}/ *.py *.txt
-
-      - name: Upload library
-        uses: actions/upload-artifact@v4
-        with:
-          name: repository
-          path: repository.tar.gz
-
   deploy:
     name: Run tests
     needs: build
@@ -59,13 +50,5 @@ jobs:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Download repository
-        uses: actions/download-artifact@v4
-        with:
-          name: repository
-
-      - name: Unarchive reposiotry
-        run: tar -xzvf repository.tar.gz
-
       - name: Run tests
         run: python3 ./run_tests.py --build-dir=${{ env.build_dir }}
