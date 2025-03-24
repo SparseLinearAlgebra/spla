@@ -44,7 +44,7 @@ jobs:
           path: ${{env.build_dir}}/libspla_x64.so
 
       - name: Archive repository
-        run: tar -cvzf repository.tar.gz run_tests.py build/
+        run: tar -cvzf repository.tar.gz shared.py run_tests.py build/
 
       - name: Upload library
         uses: actions/upload-artifact@v4
