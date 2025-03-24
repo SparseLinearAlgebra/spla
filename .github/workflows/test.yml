@@ -44,7 +44,7 @@ jobs:
           path: ${{env.build_dir}}/libspla_x64.so
 
       - name: Archive repository
-        run: tar --exculde='.github' --exclude='**/*.md' -cvzf repository.tar.gz .
+        run: tar -cvzf repository.tar.gz !(.github)
 
       - name: Upload library
         uses: actions/upload-artifact@v4
