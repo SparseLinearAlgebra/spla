@@ -65,7 +65,7 @@ jobs:
           name: repository
 
       - name: Unarchive reposiotry
-        run: tar -xzvf repo.tar.gz
+        run: tar -xzvf repository.tar.gz
 
       - name: Run tests
         run: python3 ./run_tests.py --build-dir=build
