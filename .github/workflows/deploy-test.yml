@@ -2,8 +2,8 @@ name: Python Package (Test)
 
 on:
   workflow_run:
-    workflows: [ "Build" ]
-    # branches: [ "pre-release" ]
+    workflows: [ Build ]
+    branches: [ "pre-release" ]
     types:
       - completed
 
@@ -14,41 +14,30 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Download repository
-        uses: actions/download-artifact@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          name: repository
+          python-version: '3.8'
 
-      - name: Unarchive reposiotry
-        run: tar -xzvf repo.tar.gz
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
 
-      - name: Run tests
-        run: python3 ./run_tests.py --build-dir=build
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          workflow_conclusion: success
+          branch: pre-release
+          name: native
+          path: python/pyspla
 
-      # - name: Set up Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.8'
-
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install setuptools wheel twine
-
-      # - name: Download artifact
-      #   uses: dawidd6/action-download-artifact@v2
-      #   with:
-      #     workflow: build.yml
-      #     workflow_conclusion: success
-      #     branch: pre-release
-      #     name: native
-      #     path: python/pyspla
-
-      # - name: Build and publish
-      #   env:
-      #     TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
-      #     TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
-      #   run: |
-      #     python setup.py sdist bdist_wheel
-      #     twine upload --verbose --repository testpypi dist/*
-      #   working-directory: python
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload --verbose --repository testpypi dist/*
+        working-directory: python

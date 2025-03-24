@@ -1,0 +1,26 @@
+name: Run Tests
+
+on:
+  workflow_run:
+    workflows: [ Build ]
+    # branches: [ "pre-release" ]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    name: Deploy Python package
+    runs-on: self-hosted
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Download repository
+        uses: actions/download-artifact@v4
+        with:
+          name: repository
+
+      - name: Unarchive reposiotry
+        run: tar -xzvf repo.tar.gz
+
+      - name: Run tests
+        run: python3 ./run_tests.py --build-dir=build
