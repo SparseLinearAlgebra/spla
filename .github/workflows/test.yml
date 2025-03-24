@@ -64,6 +64,11 @@ jobs:
         with:
           name: repository
 
+      - name: Download binary
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-${{env.artifact}}
+
       - name: Unarchive reposiotry
         run: tar -xzvf repository.tar.gz
 
