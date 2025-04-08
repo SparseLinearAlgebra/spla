@@ -86,6 +86,9 @@ namespace spla {
             const CpuCooVec<T>* p_v      = v->template get<CpuCooVec<T>>();
             const auto&         function = op->function;
 
+            const T u_fill_value = u->get_fill_value();
+            const T v_fill_value = v->get_fill_value();
+
             assert(p_r->Ax.empty());
 
             const auto u_count = p_u->values;
@@ -96,11 +99,11 @@ namespace spla {
             while (u_iter < u_count && v_iter < v_count) {
                 if (p_u->Ai[u_iter] < p_v->Ai[v_iter]) {
                     p_r->Ai.push_back(p_u->Ai[u_iter]);
-                    p_r->Ax.push_back(p_u->Ax[u_iter]);
+                    p_r->Ax.push_back(function(p_u->Ax[u_iter], v_fill_value));
                     u_iter += 1;
                 } else if (p_v->Ai[v_iter] < p_u->Ai[u_iter]) {
                     p_r->Ai.push_back(p_v->Ai[v_iter]);
-                    p_r->Ax.push_back(p_v->Ax[v_iter]);
+                    p_r->Ax.push_back(function(u_fill_value, p_v->Ax[v_iter]));
                     v_iter += 1;
                 } else {
                     p_r->Ai.push_back(p_u->Ai[u_iter]);
@@ -112,13 +115,13 @@ namespace spla {
             }
             while (u_iter < u_count) {
                 p_r->Ai.push_back(p_u->Ai[u_iter]);
-                p_r->Ax.push_back(p_u->Ax[u_iter]);
+                p_r->Ax.push_back(function(p_u->Ax[u_iter], v_fill_value));
                 u_iter += 1;
                 p_r->values += 1;
             }
             while (v_iter < v_count) {
                 p_r->Ai.push_back(p_v->Ai[v_iter]);
-                p_r->Ax.push_back(p_v->Ax[v_iter]);
+                p_r->Ax.push_back(function(u_fill_value, p_v->Ax[v_iter]));
                 v_iter += 1;
                 p_r->values += 1;
             }
