@@ -77,17 +77,19 @@ namespace spla {
             ref_ptr<TVector<T>>         v  = t->v.template cast_safe<TVector<T>>();
             ref_ptr<TOpBinary<T, T, T>> op = t->op.template cast_safe<TOpBinary<T, T, T>>();
 
+            const auto& function = op->function;
+
+            const T u_fill_value = u->get_fill_value();
+            const T v_fill_value = v->get_fill_value();
+            r->set_fill_value(ref_ptr<Scalar>(new TScalar<T>(function(u_fill_value, v_fill_value))));
+
             r->validate_wd(FormatVector::CpuCoo);
             u->validate_rw(FormatVector::CpuCoo);
             v->validate_rw(FormatVector::CpuCoo);
 
-            CpuCooVec<T>*       p_r      = r->template get<CpuCooVec<T>>();
-            const CpuCooVec<T>* p_u      = u->template get<CpuCooVec<T>>();
-            const CpuCooVec<T>* p_v      = v->template get<CpuCooVec<T>>();
-            const auto&         function = op->function;
-
-            const T u_fill_value = u->get_fill_value();
-            const T v_fill_value = v->get_fill_value();
+            CpuCooVec<T>*       p_r = r->template get<CpuCooVec<T>>();
+            const CpuCooVec<T>* p_u = u->template get<CpuCooVec<T>>();
+            const CpuCooVec<T>* p_v = v->template get<CpuCooVec<T>>();
 
             assert(p_r->Ax.empty());
 
