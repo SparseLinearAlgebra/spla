@@ -67,7 +67,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: linux-${{env.artifact}}
-          path: ${{env.build_dir}}/libspla_x64.so
+      
+      - name: Move artifact to the build directory
+        run: mv libspla_x64.so build/libspla_x64.so
 
       - name: Run tests
         run: python3 ./run_tests.py --build-dir=${{ env.build_dir }}
