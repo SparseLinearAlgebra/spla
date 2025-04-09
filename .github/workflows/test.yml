@@ -62,7 +62,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: repository
-          path: repository.tar.gz
 
       - name: Unarchive reposiotry
         run: tar -xzvf repository.tar.gz
