@@ -42,14 +42,14 @@ jobs:
           name: linux-${{env.artifact}}
           path: ${{env.build_dir}}/libspla_x64.so
 
-      # - name: Archive repository
-      #   run: tar -cvzf repository.tar.gz deps/ docs/ examples/ ide/ include/ python/ src/ tests/ ${{ env.build_dir }}/ *.py *.txt
+      - name: Archive repository
+        run: tar -cvzf repository.tar.gz ${{ env.build_dir }}/
 
-      # - name: Upload library
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: repository
-      #     path: repository.tar.gz
+      - name: Upload build directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository
+          path: repository.tar.gz
 
   deploy:
     name: Run tests
@@ -66,10 +66,10 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: linux-${{env.artifact}}
+          name: repository
       
       - name: Move artifact to the build directory
-        run: mv libspla_x64.so build/libspla_x64.so
+        run: tar -xvzf repository.tar.gz
 
       - name: Run tests
         run: python3 ./run_tests.py --build-dir=${{ env.build_dir }}
