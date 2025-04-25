@@ -34,11 +34,22 @@ jobs:
     needs: build
     runs-on: self-hosted
     timeout-minutes: 2
+    env:
+      test-result-file: test_result.txt
 
     steps:
       - name: Run tests
         run: |
-          python3 ./run_tests.py --build-dir=${{ env.build_dir }} | tee >(grep -qE "FAILED|ERROR" && echo "HAS_ERRORS=true" >> $GITHUB_ENV)
-          if [[ $HAS_ERRORS == "true" ]]; then
+          python3 ./run_tests.py --build-dir=${{ env.build_dir }} | tee ${{ env.test-result-file }}
+
+      - name: Upload tests results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.test-result-file }}
+          path: ${{ env.test-result-file }}
+
+      - name: Check for tests results
+        run: |
+          if cat ${{ env.test-result-file }} | grep -q "FAILED"; then
             exit 1
           fi
