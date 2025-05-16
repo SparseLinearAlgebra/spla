@@ -146,7 +146,12 @@ namespace spla {
             auto* cl_csr  = s.template get<CLCsr<T>>();
             auto* cpu_csr = s.template get<CpuCsr<T>>();
             cpu_csr_resize(s.get_n_rows(), cl_csr->values, *cpu_csr);
-            cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default());
+            if (!cl_acc->is_img()) {
+                cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default());
+            } else {
+                cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default(),
+                            CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR);
+            }
         });
 #endif
     }

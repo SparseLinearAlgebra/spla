@@ -105,7 +105,8 @@ namespace spla {
                          T*                 Ax,
                          const CLCooVec<T>& storage,
                          cl::CommandQueue&  queue,
-                         bool               blocking = true) {
+                         cl_mem_flags       staging_flags = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR,
+                         bool               blocking      = true) {
         if (n_values == 0) {
             LOG_MSG(Status::Ok, "nothing to do");
             return;
@@ -113,10 +114,9 @@ namespace spla {
 
         const std::size_t buffer_size_Ai = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
-        const auto        flags          = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;
 
-        cl::Buffer staging_Ai(get_acc_cl()->get_context(), flags, buffer_size_Ai);
-        cl::Buffer staging_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
+        cl::Buffer staging_Ai(get_acc_cl()->get_context(), staging_flags, buffer_size_Ai);
+        cl::Buffer staging_Ax(get_acc_cl()->get_context(), staging_flags, buffer_size_Ax);
 
         queue.enqueueCopyBuffer(storage.Ai, staging_Ai, 0, 0, buffer_size_Ai);
         queue.enqueueCopyBuffer(storage.Ax, staging_Ax, 0, 0, buffer_size_Ax);

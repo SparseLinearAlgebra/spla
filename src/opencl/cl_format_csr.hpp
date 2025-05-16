@@ -84,16 +84,15 @@ namespace spla {
                      T*                Ax,
                      CLCsr<T>&         storage,
                      cl::CommandQueue& queue,
-                     bool              blocking = true) {
+                     cl_mem_flags      staging_flags = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR,
+                     bool              blocking      = true) {
         const std::size_t buffer_size_Ap = (n_rows + 1) * sizeof(uint);
         const std::size_t buffer_size_Aj = n_values * sizeof(uint);
         const std::size_t buffer_size_Ax = n_values * sizeof(T);
 
-        const auto flags = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR;
-
-        cl::Buffer staging_Ap(get_acc_cl()->get_context(), flags, buffer_size_Ap);
-        cl::Buffer staging_Aj(get_acc_cl()->get_context(), flags, buffer_size_Aj);
-        cl::Buffer staging_Ax(get_acc_cl()->get_context(), flags, buffer_size_Ax);
+        cl::Buffer staging_Ap(get_acc_cl()->get_context(), staging_flags, buffer_size_Ap);
+        cl::Buffer staging_Aj(get_acc_cl()->get_context(), staging_flags, buffer_size_Aj);
+        cl::Buffer staging_Ax(get_acc_cl()->get_context(), staging_flags, buffer_size_Ax);
 
         queue.enqueueCopyBuffer(storage.Ap, staging_Ap, 0, 0, buffer_size_Ap);
         queue.enqueueCopyBuffer(storage.Aj, staging_Aj, 0, 0, buffer_size_Aj);
