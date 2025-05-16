@@ -108,6 +108,7 @@ namespace spla {
         m_is_nvidia = false;
         m_is_amd    = false;
         m_is_intel  = false;
+        m_is_img    = false;
 
         if (m_vendor_name.find("Intel") != std::string::npos ||
             m_vendor_name.find("intel") != std::string::npos ||
@@ -140,6 +141,15 @@ namespace spla {
 
             // Likely, it is an integrated amd device
             if (m_max_wgs <= 256 || m_max_cu == 1) m_wave_size = 16;
+        }
+        if (m_vendor_name.find("Imagination Technologies") != std::string::npos ||
+            m_vendor_name.find("IMG") != std::string::npos ||
+            m_vendor_name.find("img") != std::string::npos ||
+            m_vendor_id == 0x1010) {
+            m_vendor_code = VENDOR_CODE_IMG;
+            m_default_wgs = 32;
+            m_wave_size   = 32;
+            m_is_img      = true;
         }
 
         if (m_vendor_code.empty()) {

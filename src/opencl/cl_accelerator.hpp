@@ -49,6 +49,7 @@
 #define VENDOR_CODE_NVIDIA "nvidia"
 #define VENDOR_CODE_INTEL  "intel"
 #define VENDOR_CODE_AMD    "amd"
+#define VENDOR_CODE_IMG    "img"
 
 namespace spla {
 
@@ -96,6 +97,7 @@ namespace spla {
         [[nodiscard]] bool               is_nvidia() const { return m_is_nvidia; }
         [[nodiscard]] bool               is_amd() const { return m_is_amd; }
         [[nodiscard]] bool               is_intel() const { return m_is_intel; }
+        [[nodiscard]] bool               is_img() const { return m_is_img; }
 
     private:
         cl::Platform                          m_platform;
@@ -123,6 +125,7 @@ namespace spla {
         bool        m_is_nvidia        = false;
         bool        m_is_amd           = false;
         bool        m_is_intel         = false;
+        bool        m_is_img           = false;
 
         ankerl::svector<cl::CommandQueue, 2> m_queues;
     };

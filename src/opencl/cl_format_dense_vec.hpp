@@ -77,9 +77,10 @@ namespace spla {
                            T*                values,
                            CLDenseVec<T>&    storage,
                            cl::CommandQueue& queue,
-                           bool              blocking = true) {
+                           cl_mem_flags      staging_flags = CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR,
+                           bool              blocking      = true) {
         const std::size_t buffer_size = n_rows * sizeof(T);
-        cl::Buffer        staging(get_acc_cl()->get_context(), CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, buffer_size);
+        cl::Buffer        staging(get_acc_cl()->get_context(), staging_flags, buffer_size);
 
         queue.enqueueCopyBuffer(storage.Ax, staging, 0, 0, buffer_size);
         queue.enqueueReadBuffer(staging, blocking, 0, buffer_size, values);

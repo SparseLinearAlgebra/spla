@@ -126,7 +126,12 @@ namespace spla {
             auto* cl_acc    = get_acc_cl();
             auto* cl_dense  = s.template get<CLDenseVec<T>>();
             auto* cpu_dense = s.template get<CpuDenseVec<T>>();
-            cl_dense_vec_read(s.get_n_rows(), cpu_dense->Ax.data(), *cl_dense, cl_acc->get_queue_default());
+            if (!cl_acc->is_img()) {
+                cl_dense_vec_read(s.get_n_rows(), cpu_dense->Ax.data(), *cl_dense, cl_acc->get_queue_default());
+            } else {
+                cl_dense_vec_read(s.get_n_rows(), cpu_dense->Ax.data(), *cl_dense, cl_acc->get_queue_default(),
+                                  CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR);
+            }
         });
         manager.register_converter(FormatVector::CpuCoo, FormatVector::AccCoo, [](Storage& s) {
             auto* cpu_coo = s.template get<CpuCooVec<T>>();
@@ -138,7 +143,12 @@ namespace spla {
             auto* cl_coo  = s.template get<CLCooVec<T>>();
             auto* cpu_coo = s.template get<CpuCooVec<T>>();
             cpu_coo_vec_resize(cl_coo->values, *cpu_coo);
-            cl_coo_vec_read(cl_coo->values, cpu_coo->Ai.data(), cpu_coo->Ax.data(), *cl_coo, cl_acc->get_queue_default());
+            if (!cl_acc->is_img()) {
+                cl_coo_vec_read(cl_coo->values, cpu_coo->Ai.data(), cpu_coo->Ax.data(), *cl_coo, cl_acc->get_queue_default());
+            } else {
+                cl_coo_vec_read(cl_coo->values, cpu_coo->Ai.data(), cpu_coo->Ax.data(), *cl_coo, cl_acc->get_queue_default(),
+                                CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR);
+            }
         });
         manager.register_converter(FormatVector::AccCoo, FormatVector::AccDense, [](Storage& s) {
             auto* cl_acc   = get_acc_cl();
