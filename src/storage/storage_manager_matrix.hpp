@@ -149,6 +149,9 @@ namespace spla {
             if (!cl_acc->is_img()) {
                 cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default());
             } else {
+                // On Imagination Technologies devices copying data to staging buffer created with CL_MEM_READ_ONLY flag does not affect this buffer.
+                // According to the [documentation](https://registry.khronos.org/OpenCL/specs/3.0-unified/html/OpenCL_API.html#clEnqueueCopyBuffer),
+                // this flag should not affect copying, but you have to create a buffer without this flag to keep it correct.
                 cl_csr_read(s.get_n_rows(), cl_csr->values, cpu_csr->Ap.data(), cpu_csr->Aj.data(), cpu_csr->Ax.data(), *cl_csr, cl_acc->get_queue_default(),
                             CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR);
             }
