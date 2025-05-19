@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['vendor_5fcode_5famd_2223',['VENDOR_CODE_AMD',['../cl__accelerator_8hpp.html#ae4e23993e1b778b1a500cfa3d766a92b',1,'cl_accelerator.hpp']]],
-  ['vendor_5fcode_5fintel_2224',['VENDOR_CODE_INTEL',['../cl__accelerator_8hpp.html#a5c28ca6e319af1527e81f2dd9b744e19',1,'cl_accelerator.hpp']]],
-  ['vendor_5fcode_5fnvidia_2225',['VENDOR_CODE_NVIDIA',['../cl__accelerator_8hpp.html#a114637670bfd3bfb6420b7bd333c3419',1,'cl_accelerator.hpp']]]
+  ['vendor_5fcode_5famd_2226',['VENDOR_CODE_AMD',['../cl__accelerator_8hpp.html#ae4e23993e1b778b1a500cfa3d766a92b',1,'cl_accelerator.hpp']]],
+  ['vendor_5fcode_5fimg_2227',['VENDOR_CODE_IMG',['../cl__accelerator_8hpp.html#aaf94a7bd9ff6dd182fbaad277760f706',1,'cl_accelerator.hpp']]],
+  ['vendor_5fcode_5fintel_2228',['VENDOR_CODE_INTEL',['../cl__accelerator_8hpp.html#a5c28ca6e319af1527e81f2dd9b744e19',1,'cl_accelerator.hpp']]],
+  ['vendor_5fcode_5fnvidia_2229',['VENDOR_CODE_NVIDIA',['../cl__accelerator_8hpp.html#a114637670bfd3bfb6420b7bd333c3419',1,'cl_accelerator.hpp']]]
 ];

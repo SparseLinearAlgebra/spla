@@ -339,9 +339,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3ff18779de67829a0bd5183dc46b10c7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga3ff18779de67829a0bd5183dc46b10c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga3ff18779de67829a0bd5183dc46b10c7">spla::cl_coo_vec_clear</a> (<a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:ga3ff18779de67829a0bd5183dc46b10c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga2d463993b19f7f9a0be221d8d5f748cb">spla::cl_coo_vec_read</a> (const std::size_t n_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ai, T *Ax, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
-<tr class="separator:ga2d463993b19f7f9a0be221d8d5f748cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga076b144894b54b9fa95710258e086a93"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga076b144894b54b9fa95710258e086a93"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga076b144894b54b9fa95710258e086a93">spla::cl_coo_vec_read</a> (const std::size_t n_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ai, T *Ax, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, cl_mem_flags staging_flags=CL_MEM_READ_ONLY|CL_MEM_HOST_READ_ONLY|CL_MEM_ALLOC_HOST_PTR, bool blocking=true)</td></tr>
+<tr class="separator:ga076b144894b54b9fa95710258e086a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga38770e53f9bbca2ad48a0d96106570c3">spla::cl_coo_vec_to_dense</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga38770e53f9bbca2ad48a0d96106570c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -351,9 +351,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa5c7a4efc47d4b0b5406b8ae71405106"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gaa5c7a4efc47d4b0b5406b8ae71405106"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa5c7a4efc47d4b0b5406b8ae71405106">spla::cl_csr_resize</a> (std::size_t n_rows, std::size_t n_values, <a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:gaa5c7a4efc47d4b0b5406b8ae71405106"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4bae4d6917d9b8712a8a95d1fe033cc4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga4bae4d6917d9b8712a8a95d1fe033cc4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga4bae4d6917d9b8712a8a95d1fe033cc4">spla::cl_csr_read</a> (std::size_t n_rows, std::size_t n_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ap, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Aj, T *Ax, <a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
-<tr class="separator:ga4bae4d6917d9b8712a8a95d1fe033cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7d14d4f7a19513d99352293e2ffc8b0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:gaa7d14d4f7a19513d99352293e2ffc8b0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gaa7d14d4f7a19513d99352293e2ffc8b0">spla::cl_csr_read</a> (std::size_t n_rows, std::size_t n_values, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Ap, <a class="el" href="group__spla.html#ga669156f74132dd261f21223177f0b458">uint</a> *Aj, T *Ax, <a class="el" href="classspla_1_1CLCsr.html">CLCsr</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, cl_mem_flags staging_flags=CL_MEM_READ_ONLY|CL_MEM_HOST_READ_ONLY|CL_MEM_ALLOC_HOST_PTR, bool blocking=true)</td></tr>
+<tr class="separator:gaa7d14d4f7a19513d99352293e2ffc8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfb9efc056b21096a784a2113ab069c6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gacfb9efc056b21096a784a2113ab069c6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gacfb9efc056b21096a784a2113ab069c6">spla::cl_dense_vec_resize</a> (const std::size_t n_rows, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:gacfb9efc056b21096a784a2113ab069c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,9 +363,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga6c51985843ce62c9858f3b7a8f31d50c">spla::cl_dense_vec_init</a> (const std::size_t n_rows, const T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage)</td></tr>
 <tr class="separator:ga6c51985843ce62c9858f3b7a8f31d50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#gafaacecf12b98cec3ae6244aaf8a5b6f5">spla::cl_dense_vec_read</a> (const std::size_t n_rows, T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, bool blocking=true)</td></tr>
-<tr class="separator:gafaacecf12b98cec3ae6244aaf8a5b6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59ce98b22d8a06dd76bddde8a8a2c90a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga59ce98b22d8a06dd76bddde8a8a2c90a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga59ce98b22d8a06dd76bddde8a8a2c90a">spla::cl_dense_vec_read</a> (const std::size_t n_rows, T *values, <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;storage, cl::CommandQueue &amp;queue, cl_mem_flags staging_flags=CL_MEM_READ_ONLY|CL_MEM_HOST_READ_ONLY|CL_MEM_ALLOC_HOST_PTR, bool blocking=true)</td></tr>
+<tr class="separator:ga59ce98b22d8a06dd76bddde8a8a2c90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__internal.html#ga274cd3c51e824f27c8583aa556d74454">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -783,8 +783,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga2d463993b19f7f9a0be221d8d5f748cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2d463993b19f7f9a0be221d8d5f748cb">&#9670;&nbsp;</a></span>cl_coo_vec_read()</h2>
+<a id="ga076b144894b54b9fa95710258e086a93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga076b144894b54b9fa95710258e086a93">&#9670;&nbsp;</a></span>cl_coo_vec_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -820,6 +820,12 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl_mem_flags&#160;</td>
+          <td class="paramname"><em>staging_flags</em> = <code>CL_MEM_READ_ONLY&#160;|&#160;CL_MEM_HOST_READ_ONLY&#160;|&#160;CL_MEM_ALLOC_HOST_PTR</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -969,8 +975,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ga4bae4d6917d9b8712a8a95d1fe033cc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4bae4d6917d9b8712a8a95d1fe033cc4">&#9670;&nbsp;</a></span>cl_csr_read()</h2>
+<a id="gaa7d14d4f7a19513d99352293e2ffc8b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7d14d4f7a19513d99352293e2ffc8b0">&#9670;&nbsp;</a></span>cl_csr_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1018,6 +1024,12 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl_mem_flags&#160;</td>
+          <td class="paramname"><em>staging_flags</em> = <code>CL_MEM_READ_ONLY&#160;|&#160;CL_MEM_HOST_READ_ONLY&#160;|&#160;CL_MEM_ALLOC_HOST_PTR</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1143,8 +1155,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="gafaacecf12b98cec3ae6244aaf8a5b6f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafaacecf12b98cec3ae6244aaf8a5b6f5">&#9670;&nbsp;</a></span>cl_dense_vec_read()</h2>
+<a id="ga59ce98b22d8a06dd76bddde8a8a2c90a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59ce98b22d8a06dd76bddde8a8a2c90a">&#9670;&nbsp;</a></span>cl_dense_vec_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1174,6 +1186,12 @@ template&lt;typename T &gt; </div>
           <td></td>
           <td class="paramtype">cl::CommandQueue &amp;&#160;</td>
           <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">cl_mem_flags&#160;</td>
+          <td class="paramname"><em>staging_flags</em> = <code>CL_MEM_READ_ONLY&#160;|&#160;CL_MEM_HOST_READ_ONLY&#160;|&#160;CL_MEM_ALLOC_HOST_PTR</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
