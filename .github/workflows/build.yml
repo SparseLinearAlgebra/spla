@@ -31,7 +31,7 @@ jobs:
   windows:
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -56,9 +56,9 @@ jobs:
 
 
   ubuntu:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -67,9 +67,6 @@ jobs:
 
       - name: Configure CMake
         run: cmake . -G Ninja -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
-        env:
-          CC: gcc-9
-          CXX: g++-9
 
       - name: Build library sources
         run: cmake --build ${{ env.build_dir }}
@@ -83,7 +80,7 @@ jobs:
   macos:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
