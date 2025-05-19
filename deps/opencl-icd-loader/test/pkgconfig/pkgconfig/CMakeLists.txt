@@ -1,25 +1,40 @@
 cmake_minimum_required(VERSION 3.16)
+find_package(PkgConfig REQUIRED)
 
 project(PkgConfigTest
   LANGUAGES C
 )
 
-find_package(OpenCL
-  REQUIRED
-  CONFIG
-  COMPONENTS
-    Headers
-    OpenCL
-)
+pkg_check_modules(OPENCL REQUIRED OpenCL)
+
+if(CMAKE_VERSION VERSION_LESS 3.12)
+  link_directories("${OPENCL_LIBRARY_DIRS}")
+endif()
 
 add_executable(${PROJECT_NAME}
   ../pkgconfig.c
 )
 
+target_include_directories(${PROJECT_NAME}
+  PRIVATE
+    ${OPENCL_INCLUDE_DIRS}
+)
+
+if(CMAKE_VERSION VERSION_LESS 3.12)
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
-    OpenCL::Headers
-    OpenCL::OpenCL
+    ${OPENCL_LIBRARIES}
+)
+else()
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+    ${OPENCL_LINK_LIBRARIES}
+)
+endif()
+
+target_compile_options(${PROJECT_NAME}
+  PRIVATE
+    ${OPENCL_CFLAGS_OTHER}
 )
 
 target_compile_definitions(${PROJECT_NAME}

@@ -19,14 +19,16 @@
 #ifndef _ICD_PLATFORM_H_
 #define _ICD_PLATFORM_H_
 
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 
 #define PATH_SEPARATOR  ':'
 #define DIRECTORY_SYMBOL '/'
 #ifdef __ANDROID__
-#define ICD_VENDOR_PATH "/system/vendor/Khronos/OpenCL/vendors";
+#define ICD_VENDOR_PATH "/system/vendor/Khronos/OpenCL/vendors"
+#define LAYER_PATH "/system/vendor/Khronos/OpenCL/layers"
 #else
-#define ICD_VENDOR_PATH "/etc/OpenCL/vendors";
+#define ICD_VENDOR_PATH "/etc/OpenCL/vendors"
+#define LAYER_PATH "/etc/OpenCL/layers"
 #endif // ANDROID
 
 #elif defined(_WIN32)
@@ -34,6 +36,15 @@
 #define PATH_SEPARATOR ';'
 #define DIRECTORY_SYMBOL '\\'
 
+#else
+#error Unknown OS!
 #endif
+
+#ifdef __MINGW32__
+#if !defined(_WIN32_WINNT) || (_WIN32_WINNT < 0x0600)
+#undef _WIN32_WINNT
+#define _WIN32_WINNT 0x0600
+#endif
+#endif // __MINGW32__
 
 #endif
