@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 The Khronos Group Inc.
+// Copyright (c) 2020-2022 The Khronos Group Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,22 @@
 // limitations under the License.
 //
 
+/*
+Some versions of inttypes.h required defining the macro __STDC_FORMAT_MACROS to
+use the format macros for C++ compiles, but not all.  To improve robustness we
+will use inttypes.h for C compiles and cinttypes for C++ compiles.
+*/
+#if defined(__cplusplus)
+#include <cinttypes>
+#else
 #include <inttypes.h>
+#endif
+
 #include <stdio.h>
 
 #include "CL/cl.h"
 
-int test_char()
+int test_char(void)
 {
 /* char */
     /* Constructor */
@@ -79,7 +89,7 @@ int test_char()
     return 0;
 }
 
-int test_uchar()
+int test_uchar(void)
 {
 /* uchar */
     /* Constructor */
@@ -139,7 +149,7 @@ int test_uchar()
     return 0;
 }
 
-int test_short()
+int test_short(void)
 {
 /* short */
     /* Constructor */
@@ -199,7 +209,7 @@ int test_short()
     return 0;
 }
 
-int test_ushort()
+int test_ushort(void)
 {
 /* ushort */
     /* Constructor */
@@ -259,7 +269,7 @@ int test_ushort()
     return 0;
 }
 
-int test_int()
+int test_int(void)
 {
 /* int */
     /* Constructor */
@@ -319,7 +329,7 @@ int test_int()
     return 0;
 }
 
-int test_uint()
+int test_uint(void)
 {
 /* uint */
     /* Constructor */
@@ -379,7 +389,7 @@ int test_uint()
     return 0;
 }
 
-int test_long()
+int test_long(void)
 {
 /* long */
     /* Constructor */
@@ -439,7 +449,7 @@ int test_long()
     return 0;
 }
 
-int test_ulong()
+int test_ulong(void)
 {
 /* ulong */
     /* Constructor */
@@ -499,7 +509,7 @@ int test_ulong()
     return 0;
 }
 
-int test_float()
+int test_float(void)
 {
 /* float */
     /* Constructor */
@@ -561,7 +571,7 @@ int test_float()
     return 0;
 }
 
-int test_double()
+int test_double(void)
 {
 /* double */
     /* Constructor */
