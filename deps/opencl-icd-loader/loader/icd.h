@@ -33,6 +33,18 @@
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #endif
 
+#ifndef CL_USE_DEPRECATED_OPENCL_2_0_APIS
+#define CL_USE_DEPRECATED_OPENCL_2_0_APIS
+#endif
+
+#ifndef CL_USE_DEPRECATED_OPENCL_2_1_APIS
+#define CL_USE_DEPRECATED_OPENCL_2_1_APIS
+#endif
+
+#ifndef CL_USE_DEPRECATED_OPENCL_2_2_APIS
+#define CL_USE_DEPRECATED_OPENCL_2_2_APIS
+#endif
+
 #include <CL/cl.h>
 #include <CL/cl_ext.h>
 #include <CL/cl_icd.h>
@@ -42,19 +54,19 @@
  * type definitions
  */
 
-typedef CL_API_ENTRY cl_int (CL_API_CALL *pfn_clIcdGetPlatformIDs)(
+typedef cl_int (CL_API_CALL *pfn_clIcdGetPlatformIDs)(
     cl_uint num_entries, 
     cl_platform_id *platforms, 
     cl_uint *num_platforms) CL_API_SUFFIX__VERSION_1_0;
 
-typedef CL_API_ENTRY cl_int (CL_API_CALL *pfn_clGetPlatformInfo)(
+typedef cl_int (CL_API_CALL *pfn_clGetPlatformInfo)(
     cl_platform_id   platform, 
     cl_platform_info param_name,
     size_t           param_value_size, 
     void *           param_value,
     size_t *         param_value_size_ret) CL_API_SUFFIX__VERSION_1_0;
 
-typedef CL_API_ENTRY void *(CL_API_CALL *pfn_clGetExtensionFunctionAddress)(
+typedef void *(CL_API_CALL *pfn_clGetExtensionFunctionAddress)(
     const char *function_name)  CL_API_SUFFIX__VERSION_1_0;
 
 typedef struct KHRicdVendorRec KHRicdVendor;
@@ -85,13 +97,7 @@ struct KHRicdVendorRec
 // the global state
 extern KHRicdVendor * khrIcdVendors;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    extern int khrEnableTrace;
-#ifdef __cplusplus
-}
-#endif
+extern int khrEnableTrace;
 
 #if defined(CL_ENABLE_LAYERS)
 /*
@@ -108,6 +114,12 @@ struct KHRLayer
     struct _cl_icd_dispatch dispatch;
     // The next layer in the chain
     struct KHRLayer *next;
+#ifdef CL_LAYER_INFO
+    // The layer library name
+    char *libraryName;
+    // the pointer to the clGetLayerInfo funciton
+    void *p_clGetLayerInfo;
+#endif
 };
 
 // the global layer state
@@ -125,6 +137,9 @@ extern struct _cl_icd_dispatch khrMasterDispatch;
 // dispatch function which may be a valid first call into the
 // API (e.g, getPlatformIDs, etc).
 void khrIcdInitialize(void);
+
+// entrypoint to check and initialize trace.
+void khrIcdInitializeTrace(void);
 
 // go through the list of vendors (in /etc/OpenCL.conf or through 
 // the registry) and call khrIcdVendorAdd for each vendor encountered
@@ -186,41 +201,46 @@ do \
 #define KHR_ICD_WIDE_TRACE(...)
 #endif
 
-#define KHR_ICD_ASSERT(x) \
-do \
-{ \
-    if (khrEnableTrace) \
-    { \
-        if (!(x)) \
-        { \
-            fprintf(stderr, "KHR ICD assert at %s:%d: %s failed", __FILE__, __LINE__, #x); \
-        } \
-    } \
+// Check if the passed-in handle is NULL, and if it is, return the error.
+#define KHR_ICD_VALIDATE_HANDLE_RETURN_ERROR(_handle, _error)       \
+do {                                                                \
+    if (!_handle) {                                                 \
+        return _error;                                              \
+    }                                                               \
 } while (0)
 
-// if handle is NULL then return invalid_handle_error_code
-#define KHR_ICD_VALIDATE_HANDLE_RETURN_ERROR(handle,invalid_handle_error_code) \
-do \
-{ \
-    if (!handle) \
-    { \
-        return invalid_handle_error_code; \
-    } \
+// Check if the passed-in handle is NULL, and if it is, first check and set
+// errcode_ret to the error, then return NULL (NULL being an invalid handle).
+#define KHR_ICD_VALIDATE_HANDLE_RETURN_HANDLE(_handle, _error)      \
+do {                                                                \
+    if (!_handle) {                                                 \
+        if (errcode_ret) {                                          \
+            *errcode_ret = _error;                                  \
+        }                                                           \
+        return NULL;                                                \
+    }                                                               \
 } while (0)
 
-// if handle is NULL then set errcode_ret to invalid_handle_error and return NULL 
-// (NULL being an invalid handle)
-#define KHR_ICD_VALIDATE_HANDLE_RETURN_HANDLE(handle,invalid_handle_error) \
-do \
-{ \
-    if (!handle) \
-    { \
-        if (errcode_ret) \
-        { \
-            *errcode_ret = invalid_handle_error; \
-        } \
-        return NULL; \
-    } \
+// Check if the passed-in function pointer is NULL, and if it is, return
+// CL_INVALID_OPERATION.
+#define KHR_ICD_VALIDATE_POINTER_RETURN_ERROR(_pointer)             \
+do {                                                                \
+    if (!_pointer) {                                                \
+        return CL_INVALID_OPERATION;                                \
+    }                                                               \
+} while (0)
+
+// Check if the passed-in function pointer is NULL, and if it is, first
+// check and set errcode_ret to CL_INVALID_OPERATION, then return NULL
+// (NULL being an invalid handle).
+#define KHR_ICD_VALIDATE_POINTER_RETURN_HANDLE(_pointer)            \
+do {                                                                \
+    if (!_pointer) {                                                \
+        if (errcode_ret) {                                          \
+            *errcode_ret = CL_INVALID_OPERATION;                    \
+        }                                                           \
+        return NULL;                                                \
+    }                                                               \
 } while (0)
 
 #endif

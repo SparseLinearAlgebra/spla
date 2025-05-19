@@ -23,7 +23,7 @@ apihandles = {
     'cl_sampler'        : 'CL_INVALID_SAMPLER',
     }
 %>/*
- * Copyright (c) 2012-2020 The Khronos Group Inc.
+ * Copyright (c) 2012-2023 The Khronos Group Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ apihandles = {
  * OpenCL is a trademark of Apple Inc. used under license by Khronos.
  */
 
-#include "icd_dispatch.h"
 #include "icd.h"
+#include "icd_dispatch.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,7 +63,7 @@ extern "C" {
 %  if disp == 1:
 #if defined(CL_ENABLE_LAYERS)
 %  endif
-${("", "static ")[disp]}CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + ("", "_disp")[disp]}(
+${("CL_API_ENTRY", "static")[disp]} ${api.RetType} CL_API_CALL ${api.Name + ("", "_disp")[disp]}(
 %for i, param in enumerate(api.Params):
 %  if i < len(api.Params)-1:
     ${param.Type} ${param.Name}${param.TypeEnd},
@@ -162,7 +162,7 @@ ${("", "static ")[disp]}CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + (""
 %endfor
 %else:
 #if defined(CL_ENABLE_LAYERS)
-extern CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + "_disp"}(
+extern ${api.RetType} CL_API_CALL ${api.Name + "_disp"}(
 %for i, param in enumerate(api.Params):
 %  if i < len(api.Params)-1:
     ${param.Type} ${param.Name}${param.TypeEnd},
@@ -171,7 +171,6 @@ extern CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + "_disp"}(
 %  endif
 %endfor
 #endif // defined(CL_ENABLE_LAYERS)
-
 %endif
 %endfor
 %endfor
@@ -213,7 +212,7 @@ win32extensions = {
 %  if disp == 1:
 #if defined(CL_ENABLE_LAYERS)
 %  endif
-${("", "static ")[disp]}CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + ("", "_disp")[disp]}(
+${("CL_API_ENTRY", "static")[disp]} ${api.RetType} CL_API_CALL ${api.Name + ("", "_disp")[disp]}(
 %for i, param in enumerate(api.Params):
 %  if i < len(api.Params)-1:
     ${param.Type} ${param.Name}${param.TypeEnd},
@@ -240,14 +239,17 @@ ${("", "static ")[disp]}CL_API_ENTRY ${api.RetType} CL_API_CALL ${api.Name + (""
     // api.Name == "clXXX":  # There are currently no API special cases here.
 %  else:
     KHR_ICD_VALIDATE_HANDLE_RETURN_HANDLE(${handle.Name}, ${invalid});
+    KHR_ICD_VALIDATE_POINTER_RETURN_HANDLE(${handle.Name}->dispatch->${api.Name});
 % endif
 %else:
 %  if api.Name == "clGetGLContextInfoKHR":
     cl_platform_id platform = NULL;
     khrIcdContextPropertiesGetPlatform(properties, &platform);
     KHR_ICD_VALIDATE_HANDLE_RETURN_ERROR(platform, CL_INVALID_PLATFORM);
+    KHR_ICD_VALIDATE_POINTER_RETURN_ERROR(platform->dispatch->${api.Name});
 %  else:
     KHR_ICD_VALIDATE_HANDLE_RETURN_ERROR(${handle.Name}, ${invalid});
+    KHR_ICD_VALIDATE_POINTER_RETURN_ERROR(${handle.Name}->dispatch->${api.Name});
 %  endif
 %endif
 %if api.Name == "clGetGLContextInfoKHR":

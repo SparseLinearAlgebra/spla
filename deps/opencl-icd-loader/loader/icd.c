@@ -48,7 +48,6 @@ void khrIcdInitializeTrace(void)
 // entrypoint to initialize the ICD and add all vendors
 void khrIcdInitialize(void)
 {
-    khrIcdInitializeTrace();
     // enumerate vendors present on the system
     khrIcdOsVendorsEnumerateOnce();
 }
@@ -286,6 +285,20 @@ void khrIcdLayerAdd(const char *libraryName)
         KHR_ICD_TRACE("failed to allocate memory\n");
         goto Done;
     }
+#ifdef CL_LAYER_INFO
+    {
+        // Not using strdup as it is not standard c
+        size_t sz_name = strlen(libraryName) + 1;
+        layer->libraryName = malloc(sz_name);
+        if (!layer->libraryName)
+        {
+            KHR_ICD_TRACE("failed to allocate memory\n");
+            goto Done;
+        }
+        memcpy(layer->libraryName, libraryName, sz_name);
+        layer->p_clGetLayerInfo = (void *)(size_t)p_clGetLayerInfo;
+    }
+#endif
 
     if (khrFirstLayer) {
         targetDispatch = &(khrFirstLayer->dispatch);
@@ -313,11 +326,11 @@ void khrIcdLayerAdd(const char *libraryName)
 
     for (cl_uint i = 0; i < limit; i++) {
         ((void **)&(layer->dispatch))[i] =
-            ((void **)layerDispatch)[i] ?
-                ((void **)layerDispatch)[i] : ((void **)targetDispatch)[i];
+            ((void *const*)layerDispatch)[i] ?
+                ((void *const*)layerDispatch)[i] : ((void *const*)targetDispatch)[i];
     }
     for (cl_uint i = limit; i < loaderDispatchNumEntries; i++) {
-        ((void **)&(layer->dispatch))[i] = ((void **)targetDispatch)[i];
+        ((void **)&(layer->dispatch))[i] = ((void *const*)targetDispatch)[i];
     }
 
     KHR_ICD_TRACE("successfully added layer %s\n", libraryName);

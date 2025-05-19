@@ -35,9 +35,6 @@ The OpenCL ICD Loader requires:
   - It is recommended to install the headers via CMake, however a convenience shorthand is provided. Providing `OPENCL_ICD_LOADER_HEADERS_DIR` to CMake, one may specify the location of OpenCL Headers. By default, the OpenCL ICD Loader will look for OpenCL Headers in the inc directory.
 - The OpenCL ICD Loader uses CMake for its build system.
 If CMake is not provided by your build system or OS package manager, please consult the [CMake website](https://cmake.org).
-- The Windows OpenCL ICD Loader requires the Windows SDK to check for and enumerate the OpenCLOn12 ICD.
-An OpenCL ICD Loader can be built without a dependency on the Windows SDK using the CMake variable `OPENCL_ICD_LOADER_DISABLE_OPENCLON12`.
-This variable should only be used when building an import lib to link with, and must be enabled when building an OpenCL ICD Loader for distribution!
 
 ### Example Build
 
@@ -147,5 +144,6 @@ The following debug environment variables are available for use with the OpenCL 
 |:---------------------------------:|---------------------|----------------------|
 | OCL_ICD_FILENAMES                 | Specifies a list of additional ICDs to load.  The ICDs will be enumerated first, before any ICDs discovered via default mechanisms. | `export OCL_ICD_FILENAMES=libVendorA.so:libVendorB.so`<br/><br/>`set OCL_ICD_FILENAMES=vendor_a.dll;vendor_b.dll` |
 | OCL_ICD_VENDORS                   | On Linux and Android, specifies a directory to scan for ICDs to enumerate in place of the default `/etc/OpenCL/vendors'. |  `export OCL_ICD_VENDORS=/my/local/icd/search/path` |
-| OPENCL_LAYERS                    | Specifies a list of layers to load. |  `export OPENCL_LAYERS=libLayerA.so:libLayerB.so`<br/><br/>`set OPENCL_LAYERS=libLayerA.dll;libLayerB.dll` |
-| OCL_ICD_ENABLE_TRACE             | Enable the trace mechanism          |  `export OCL_ICD_ENABLE_TRACE=True`<br/><br/>`set OCL_ICD_ENABLE_TRACE=True`<br/>`true, T, 1 can also be used here.`  |
+| OPENCL_LAYERS                     | Specifies a list of layers to load. |  `export OPENCL_LAYERS=libLayerA.so:libLayerB.so`<br/><br/>`set OPENCL_LAYERS=libLayerA.dll;libLayerB.dll` |
+| OPENCL_LAYER_PATH                 | On Linux and Android, specifies a directory to scan for layers to enumerate in place of the default `/etc/OpenCL/layers'. | `export OPENCL_LAYER_PATH=/my/local/layers/search/path` |
+| OCL_ICD_ENABLE_TRACE              | Enable the trace mechanism          |  `export OCL_ICD_ENABLE_TRACE=True`<br/><br/>`set OCL_ICD_ENABLE_TRACE=True`<br/>`true, T, 1 can also be used here.`  |
