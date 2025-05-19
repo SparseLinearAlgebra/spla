@@ -32,6 +32,8 @@ add_test(find-package-test ${CMAKE_CTEST_COMMAND}
     --build-makeprogram ${CMAKE_MAKE_PROGRAM}
     --build-options
     "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+    "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
+    "-DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-Dcxxopts_DIR=${PROJECT_BINARY_DIR}"
 )
@@ -46,8 +48,17 @@ add_test(add-subdirectory-test ${CMAKE_CTEST_COMMAND}
     --build-makeprogram ${CMAKE_MAKE_PROGRAM}
     --build-options
     "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+    "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
+    "-DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
 )
 
 add_executable(link_test link_a.cpp link_b.cpp)
 target_link_libraries(link_test cxxopts)
+
+if(("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang") AND ("${CMAKE_SYSTEM}" MATCHES "Linux"))
+    add_executable(fuzzer fuzz.cpp)
+    target_link_libraries(fuzzer PRIVATE cxxopts)
+    target_compile_options(fuzzer PRIVATE -fsanitize=fuzzer)
+    target_link_options(fuzzer PRIVATE -fsanitize=fuzzer)
+endif()

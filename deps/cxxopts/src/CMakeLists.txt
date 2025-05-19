@@ -20,3 +20,7 @@
 
 add_executable(example example.cpp)
 target_link_libraries(example cxxopts)
+
+target_compile_features(example PRIVATE cxx_std_17)
+target_compile_options(example PRIVATE
+    "$<$<CXX_COMPILER_ID:MSVC>:/utf-8;>")

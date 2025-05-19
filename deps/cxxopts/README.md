@@ -85,9 +85,6 @@ result["opt"].as<type>()
 to get its value. If "opt" doesn't exist, or isn't of the right type, then an
 exception will be thrown.
 
-Note that the result of `options.parse` should only be used as long as the
-`options` object that created it is in scope.
-
 ## Unrecognised arguments
 
 You can allow unrecognised arguments to be skipped. This applies to both
@@ -109,9 +106,9 @@ result.unmatched()
 
 Exceptional situations throw C++ exceptions. There are two types of
 exceptions: errors defining the options, and errors when parsing a list of
-arguments. All exceptions derive from `cxxopts::OptionException`. Errors
-defining options derive from `cxxopts::OptionSpecException` and errors
-parsing arguments derive from `cxxopts::OptionParseException`.
+arguments. All exceptions derive from `cxxopts::exceptions::exception`. Errors
+defining options derive from `cxxopts::exceptions::specification` and errors
+parsing arguments derive from `cxxopts::exceptions::parsing`.
 
 All exceptions define a `what()` function to get a printable string
 explaining the error.
@@ -125,15 +122,37 @@ vector to the `help` function.
 
 ## Positional Arguments
 
-Positional arguments can be optionally parsed into one or more options.
-To set up positional arguments, call
+Positional arguments are those given without a preceding flag and can be used
+alongside non-positional arguments. There may be multiple positional arguments,
+and the final positional argument may be a container type to hold a list of all
+remaining positionals.
+
+To set up positional arguments, first declare the options, then configure a
+set of those arguments as positional like:
 
 ```cpp
-options.parse_positional({"first", "second", "last"})
+options.add_options()
+  ("script", "The script file to execute", cxxopts::value<std::string>())
+  ("server", "The server to execute on", cxxopts::value<std::string>())
+  ("filenames", "The filename(s) to process", cxxopts::value<std::vector<std::string>>());
+
+options.parse_positional({"script", "server", "filenames"});
+
+// Parse options the usual way
+options.parse(argc, argv);
 ```
 
-where "last" should be the name of an option with a container type, and the
-others should have a single value.
+For example, parsing the following arguments:
+~~~
+my_script.py my_server.com file1.txt file2.txt file3.txt
+~~~
+will result in parsed arguments like the following table:
+
+| Field         | Value                                     |
+| ------------- | ----------------------------------------- |
+| `"script"`    | `"my_script.py"`                          |
+| `"server"`    | `"my_server.com"`                         |
+| `"filenames"` | `{"file1.txt", "file2.txt", "file3.txt"}` |
 
 ## Default and implicit values
 
@@ -174,8 +193,8 @@ therefore, `-o false` does not work.
 
 ## `std::vector<T>` values
 
-Parsing of list of values in form of an `std::vector<T>` is also supported, as long as `T`
-can be parsed. To separate single values in a list the definition `CXXOPTS_VECTOR_DELIMITER`
+Parsing a list of values into a `std::vector<T>` is also supported, as long as `T`
+can be parsed. To separate single values in a list the define symbol `CXXOPTS_VECTOR_DELIMITER`
 is used, which is ',' by default. Ensure that you use no whitespaces between values because
 those would be interpreted as the next command line option. Example for a command line option
 that can be parsed as a `std::vector<double>`:
@@ -256,7 +275,3 @@ GCC >= 4.9 or clang >= 3.1 with libc++ are known to work.
 The following compilers are known not to work:
 
 * MSVC 2013
-
-# TODO list
-
-* Allow unrecognised options.
