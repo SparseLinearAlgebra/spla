@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16)
 
 project(OpenCLHeadersCpp
   VERSION 3.0
@@ -75,6 +75,10 @@ install(
 
 include(GNUInstallDirs)
 
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(JoinPaths)
+include(Package)
+
 install(
   DIRECTORY include/CL
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
@@ -113,7 +117,7 @@ install(
   DESTINATION ${config_package_location}
 )
 
-set(UNITY_DIR ${PROJECT_SOURCE_DIR}/external/Unity CACHE PATH "Unity dir")
+set(UNITY_DIR ${PROJECT_SOURCE_DIR}/external/CMock/vendor/unity CACHE PATH "Unity dir")
 set(CMOCK_DIR ${PROJECT_SOURCE_DIR}/external/CMock CACHE PATH "CMock dir")
 
 if(BUILD_DOCS)
