@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
-cmake_policy(VERSION 3.0...3.22)
+cmake_minimum_required(VERSION 3.16...3.26)
 
 # Include guard for including this project multiple times
 if(TARGET Headers)
@@ -7,7 +6,7 @@ if(TARGET Headers)
 endif()
 
 project(OpenCLHeaders
-  VERSION 2.2
+  VERSION 3.0
   LANGUAGES C # Ideally should be NONE, but GNUInstallDirs detects platform arch using try_compile
   # https://stackoverflow.com/questions/43379311/why-does-project-affect-cmakes-opinion-on-cmake-sizeof-void-p
 )
@@ -15,15 +14,18 @@ project(OpenCLHeaders
 option(OPENCL_HEADERS_BUILD_TESTING "Enable support for OpenCL C headers testing." OFF)
 option(OPENCL_HEADERS_BUILD_CXX_TESTS "Enable support for OpenCL C headers testing in C++ mode." ON)
 
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(GNUInstallDirs)
+include(JoinPaths)
+include(Package)
 
 add_library(Headers INTERFACE)
 add_library(OpenCL::Headers ALIAS Headers)
 
 if(CMAKE_SYSTEM_NAME MATCHES Darwin)
   execute_process(
-    COMMAND ln -shf ${CMAKE_CURRENT_SOURCE_DIR}/CL ${CMAKE_CURRENT_BINARY_DIR}/CL
-    COMMAND ln -shf ${CMAKE_CURRENT_SOURCE_DIR}/CL ${CMAKE_CURRENT_BINARY_DIR}/OpenCL
+    COMMAND ln -snf ${CMAKE_CURRENT_SOURCE_DIR}/CL ${CMAKE_CURRENT_BINARY_DIR}/CL
+    COMMAND ln -snf ${CMAKE_CURRENT_SOURCE_DIR}/CL ${CMAKE_CURRENT_BINARY_DIR}/OpenCL
   )
   target_include_directories(Headers
     INTERFACE
@@ -31,9 +33,9 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
   install(CODE "
-    file(MAKE_DIRECTORY  ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/CL)
+    file(MAKE_DIRECTORY  ${CMAKE_INSTALL_FULL_INCLUDEDIR}/CL)
     execute_process(
-      COMMAND ln -shf CL ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/OpenCL
+      COMMAND ln -snf CL ${CMAKE_INSTALL_FULL_INCLUDEDIR}/OpenCL
     )"
   )
 else()
@@ -92,4 +94,48 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR OPENCL_HEADERS_BUILD_TESTING)
 endif()
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR OPENCL_HEADERS_BUILD_TESTING) AND BUILD_TESTING)
   add_subdirectory(tests)
+endif()
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    find_package(Python3 COMPONENTS Interpreter)
+    set(OPENCL_HEADERS_XML_PATH CACHE FILEPATH "Path to cl.xml for OpenCL Header genereration")
+    set(OPENCL_HEADERS_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
+    add_custom_target(headers_generate
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENCL_HEADERS_OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR}/scripts
+            ${Python3_EXECUTABLE} gen_headers.py
+            -registry ${OPENCL_HEADERS_XML_PATH}
+            -o ${OPENCL_HEADERS_OUTPUT_DIRECTORY}
+    )
+    add_custom_target(headers_copy
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_d3d10.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_d3d11.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_dx9_media_sharing.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_egl.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_ext.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_gl.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_layer.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_va_api_media_sharing_intel.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${OPENCL_HEADERS_OUTPUT_DIRECTORY}/cl_function_types.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/CL
+    )
+    set_target_properties(headers_generate PROPERTIES FOLDER "Generation")
+    set_target_properties(headers_copy PROPERTIES FOLDER "Generation")
 endif()

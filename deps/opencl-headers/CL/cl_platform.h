@@ -77,7 +77,7 @@ extern "C" {
 #ifdef __GNUC__
   #define CL_API_SUFFIX_DEPRECATED __attribute__((deprecated))
   #define CL_API_PREFIX_DEPRECATED
-#elif defined(_WIN32)
+#elif defined(_MSC_VER) && !defined(__clang__)
   #define CL_API_SUFFIX_DEPRECATED
   #define CL_API_PREFIX_DEPRECATED __declspec(deprecated)
 #else
@@ -361,11 +361,6 @@ typedef double          cl_double;
 
 #include <stddef.h>
 
-/* Mirror types to GL types. Mirror types allow us to avoid deciding which 87s to load based on whether we are using GL or GLES here. */
-typedef unsigned int cl_GLuint;
-typedef int          cl_GLint;
-typedef unsigned int cl_GLenum;
-
 /*
  * Vector types
  *
@@ -514,6 +509,9 @@ typedef unsigned int cl_GLenum;
 #define  __CL_HAS_ANON_STRUCT__ 1
 #define  __CL_ANON_STRUCT__
 #elif defined(__GNUC__) && ! defined(__STRICT_ANSI__)
+#define  __CL_HAS_ANON_STRUCT__ 1
+#define  __CL_ANON_STRUCT__ __extension__
+#elif defined(__clang__)
 #define  __CL_HAS_ANON_STRUCT__ 1
 #define  __CL_ANON_STRUCT__ __extension__
 #else

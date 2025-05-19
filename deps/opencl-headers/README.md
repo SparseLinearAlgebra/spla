@@ -70,6 +70,51 @@ include the OpenCL API headers as follows:
 #include <CL/opencl.h>
 ```
 
+## Controlling Function Prototypes
+
+By default, the OpenCL API headers in this repository declare function
+prototypes for every known core OpenCL API and OpenCL extension API.  If this is
+not desired, the declared function prototypes can be controlled by the following
+preprocessor defines:
+
+* `CL_NO_PROTOTYPES`: No function prototypes will be declared.  This control
+  applies to core OpenCL APIs and OpenCL extension APIs.
+* `CL_NO_CORE_PROTOTYPES`: No function prototypes will be declared for core
+  OpenCL APIs.  
+* `CL_NO_EXTENSION_PROTOTYPES`: No function prototypes will be declared for
+  OpenCL extension APIs.  This control applies to all OpenCL extension APIs.
+* `CL_NO_ICD_DISPATCH_EXTENSION_PROTOTYPES`: No function prototypes will be
+  declared for OpenCL extension APIs that are in the ICD dispatch table for
+  historical reasons.
+* `CL_NO_NON_ICD_DISPATCH_EXTENSION_PROTOTYPES`: No function prototypes will be
+  declared for OpenCL extension APIs that are not in the ICD dispatch table.
+
+For example, to declare function prototypes for core OpenCL 3.0 APIs only, you
+may include the OpenCL API headers as follows:
+
+```c
+#define CL_TARGET_OPENCL_VERSION 300
+#define CL_NO_EXTENSION_PROTOTYPES
+#include <CL/opencl.h>
+```
+
+## Compatibility Notes
+
+OpenCL values backward compatibility and in most cases an application using an
+older version of the OpenCL API headers can seamlessly update to a newer version
+of the OpenCL API headers.  In rare cases, though, the OpenCL API headers may
+break backward compatibility:
+
+* Very rarely, there may be bugs or other issues in the OpenCL API headers that
+  cannot be fixed without breaking compatibility.
+* The OpenCL API headers for provisional features or provisional extensions may
+  be changed in a way that breaks compatibility.
+
+Applications or libraries that require stable OpenCL API headers are encouraged
+to use tagged or released OpenCL API headers.  We will do our best to document
+any breaking changes in the description of each release.  The OpenCL API headers
+are tagged at least as often as each OpenCL specification release.
+
 ## Directory Structure
 
 ```
@@ -77,6 +122,11 @@ README.md               This file
 LICENSE                 Source license for the OpenCL API headers
 CL/                     Unified OpenCL API headers tree
 ```
+
+## Packaging
+
+For packaging instructions, see [RELEASE.md](https://github.com/KhronosGroup/OpenCL-SDK/blob/main/docs/RELEASE.md)
+in the OpenCL SDK repository.
 
 ## License
 
