@@ -29,6 +29,7 @@
 #define SPLA_OPTIONS_HPP
 
 #include <cxxopts.hpp>
+#include <iostream>
 
 #define OPT_MTXPATH      "mtxpath"
 #define OPT_NITERS       "niters"
