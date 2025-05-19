@@ -40,27 +40,35 @@ endif()
 # End of workaround
 
 add_custom_command(
-    OUTPUT stripped/cl.h
+    OUTPUT stripped/cl.h stripped/cl_ext.h stripped/cl_gl.h
     COMMAND ${CMAKE_COMMAND} -E make_directory stripped
     COMMAND ${CMAKE_COMMAND} -E make_directory mocks
     COMMAND ${CMAKE_COMMAND} -D INPUT="${OPENCL_HEADERS_INTERFACE_INCLUDE_DIRECTORIES}/CL/cl.h" -D OUTPUT="stripped/cl.h" -P ${CMAKE_CURRENT_SOURCE_DIR}/strip_defines.cmake
-    COMMENT "Stripping defines from cl.h"
+    COMMAND ${CMAKE_COMMAND} -D INPUT="${OPENCL_HEADERS_INTERFACE_INCLUDE_DIRECTORIES}/CL/cl_ext.h" -D OUTPUT="stripped/cl_ext.h" -P ${CMAKE_CURRENT_SOURCE_DIR}/strip_defines.cmake
+    COMMAND ${CMAKE_COMMAND} -D INPUT="${OPENCL_HEADERS_INTERFACE_INCLUDE_DIRECTORIES}/CL/cl_gl.h" -D OUTPUT="stripped/cl_gl.h" -P ${CMAKE_CURRENT_SOURCE_DIR}/strip_defines.cmake
+    COMMENT "Stripping defines from cl.h, cl_ext.h and cl_gl.h"
     DEPENDS ${OPENCL_HEADERS_INTERFACE_INCLUDE_DIRECTORIES}/CL/cl.h strip_defines.cmake)
 
 add_custom_target(
     strip_cl_defines ALL
     DEPENDS stripped/cl.h
+    DEPENDS stripped/cl_ext.h
+    DEPENDS stripped/cl_gl.h
     SOURCES strip_defines.cmake)
 
 add_custom_command(
-    OUTPUT mocks/Mockcl.c mocks/Mockcl.h
+    OUTPUT mocks/Mockcl.c mocks/Mockcl.h mocks/Mockcl_ext.c mocks/Mockcl_ext.h mocks/Mockcl_gl.c mocks/Mockcl_gl.h
     COMMAND ${RUBY_EXECUTABLE} ${CMOCK_DIR}/lib/cmock.rb -o${CMAKE_CURRENT_SOURCE_DIR}/cmock.yml stripped/cl.h
+    COMMAND ${RUBY_EXECUTABLE} ${CMOCK_DIR}/lib/cmock.rb -o${CMAKE_CURRENT_SOURCE_DIR}/cmock.yml stripped/cl_ext.h
+    COMMAND ${RUBY_EXECUTABLE} ${CMOCK_DIR}/lib/cmock.rb -o${CMAKE_CURRENT_SOURCE_DIR}/cmock.yml stripped/cl_gl.h
     COMMENT "Generating mocks"
-    DEPENDS stripped/cl.h cmock.yml)
+    DEPENDS stripped/cl.h stripped/cl_ext.h stripped/cl_gl.h cmock.yml)
 
 add_custom_target(
     mock_cl_header ALL
     DEPENDS mocks/Mockcl.c mocks/Mockcl.h
+    DEPENDS mocks/Mockcl_ext.c mocks/Mockcl_ext.h
+    DEPENDS mocks/Mockcl_gl.c mocks/Mockcl_gl.h
     SOURCES cmock.yml)
 
 add_dependencies(mock_cl_header strip_cl_defines)
@@ -79,6 +87,8 @@ add_custom_target(
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?Clang")
     add_compile_options(-Wno-deprecated-declarations)
+elseif(MSVC)
+    add_compile_options(/wd4996)
 endif()
 
 add_definitions(-DCL_TARGET_OPENCL_VERSION=300)
@@ -96,18 +106,22 @@ endif()
 
 set(TEST_HEADERS
     ${PROJECT_SOURCE_DIR}/include/CL/opencl.hpp
-    mocks/Mockcl.h)
+    mocks/Mockcl.h
+    mocks/Mockcl_ext.h
+    mocks/Mockcl_gl.h)
 
 set(TEST_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/test_openclhpp_Runner.c
     test_openclhpp.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/mocks/Mockcl.c
+    ${CMAKE_CURRENT_BINARY_DIR}/mocks/Mockcl_ext.c
+    ${CMAKE_CURRENT_BINARY_DIR}/mocks/Mockcl_gl.c
     ${CMOCK_DIR}/src/cmock.c
     ${UNITY_DIR}/src/unity.c)
 
 # TODO enable testing for OpenCL 1.0 and 1.1
 foreach(VERSION 120 200 210 220 300)
-  foreach(OPTION "" CL_HPP_ENABLE_EXCEPTIONS CL_HPP_ENABLE_SIZE_T_COMPATIBILITY CL_HPP_ENABLE_PROGRAM_CONSTRUCTION_FROM_ARRAY_COMPATIBILITY CL_HPP_CL_1_2_DEFAULT_BUILD CL_HPP_USE_CL_DEVICE_FISSION CL_HPP_USE_CL_IMAGE2D_FROM_BUFFER_KHR CL_HPP_USE_CL_SUB_GROUPS_KHR CL_HPP_USE_IL_KHR)
+  foreach(OPTION "" CL_HPP_ENABLE_EXCEPTIONS CL_HPP_ENABLE_SIZE_T_COMPATIBILITY CL_HPP_ENABLE_PROGRAM_CONSTRUCTION_FROM_ARRAY_COMPATIBILITY CL_HPP_CL_1_2_DEFAULT_BUILD CL_HPP_USE_CL_SUB_GROUPS_KHR CL_HPP_USE_IL_KHR)
     if(OPTION STREQUAL "")
       # The empty string means we're not setting any special option.
       set(UNDERSCORE_OPTION "${OPTION}")
@@ -138,6 +152,14 @@ foreach(VERSION 120 200 210 220 300)
     target_compile_definitions(${TEST_EXE}
         PUBLIC -DCL_HPP_TARGET_OPENCL_VERSION=${VERSION} ${DEFINE_OPTION}
     )
+    if(MSVC AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+      # This is quite hacky, but the definition noreturn in Clang's
+      # stdnoreturn.h is not compatible with stdlib.h in the Windows SDK.
+      # This could normally be resolved by changing the order of include
+      # files, but not possible in this project due to the generated nature
+      # of the source files.
+      target_compile_definitions(${TEST_EXE} PRIVATE __STDNORETURN_H UNITY_NORETURN=_Noreturn)
+    endif()
     add_dependencies(${TEST_EXE}
         strip_cl_defines
         mock_cl_header
@@ -146,3 +168,26 @@ foreach(VERSION 120 200 210 220 300)
     add_test(NAME ${TEST_EXE} COMMAND ${TEST_EXE})
   endforeach(OPTION)
 endforeach(VERSION)
+
+if(NOT TARGET OpenCL::openCL)
+  find_package(OpenCLICDLoader)
+endif()
+if(TARGET OpenCL::OpenCL)
+  # TODO enable testing for OpenCL 1.0 and 1.1
+  foreach(MINVERSION 120 200 210 220 300)
+    foreach(TARGETVERSION 120 200 210 220 300)
+      if(NOT (${MINVERSION} GREATER ${TARGETVERSION}))
+        set(TEST_EXE test_openclhpp_version_min_${MINVERSION}_target_${TARGETVERSION})
+        add_executable(${TEST_EXE} test_versions.cpp)
+        target_compile_definitions(${TEST_EXE} PUBLIC
+          CL_HPP_MINIMUM_OPENCL_VERSION=${MINVERSION}
+          CL_HPP_TARGET_OPENCL_VERSION=${TARGETVERSION})
+        target_link_libraries(${TEST_EXE} PRIVATE
+          OpenCL::HeadersCpp
+          OpenCL::Headers
+          OpenCL::OpenCL)
+        add_test(NAME ${TEST_EXE} COMMAND ${TEST_EXE})
+      endif()
+    endforeach()
+  endforeach()
+endif()
