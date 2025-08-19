@@ -412,6 +412,9 @@ void cl_merge_v2(const cl::CommandQueue& queue,
 TEST(opencl_merge, merge_path_v1) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.back();
 
     std::cout << "Platforms: " << std::endl;
@@ -422,7 +425,10 @@ TEST(opencl_merge, merge_path_v1) {
     std::cout << "Current platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices[0];
 
     std::cout << "Devices: " << std::endl;
@@ -502,6 +508,9 @@ TEST(opencl_merge, merge_path_v1) {
 TEST(opencl_merge, merge_path_v2) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.back();
 
     std::cout << "Platforms: " << std::endl;
@@ -512,7 +521,10 @@ TEST(opencl_merge, merge_path_v2) {
     std::cout << "Current platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices[0];
 
     std::cout << "Devices: " << std::endl;

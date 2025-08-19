@@ -105,35 +105,42 @@ namespace spla {
         m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
         m_addr_align    = m_device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() / 8;// from bits to bytes
 
+        m_is_pocl   = false;
         m_is_nvidia = false;
         m_is_amd    = false;
         m_is_intel  = false;
         m_is_img    = false;
 
-        if (m_vendor_name.find("Intel") != std::string::npos ||
-            m_vendor_name.find("intel") != std::string::npos ||
-            m_vendor_name.find("INTEL") != std::string::npos ||
-            m_vendor_id == 32902) {
+        auto dev_type = m_device.getInfo<CL_DEVICE_TYPE>();
+
+        if (m_vendor_id == 0x10006 &&
+            dev_type == CL_DEVICE_TYPE_CPU) {
+            m_vendor_code = VENDOR_CODE_POCL_CPU;
+            m_default_wgs = 64;
+            m_wave_size   = 1;
+            m_is_pocl     = true;
+        } else if (m_vendor_name.find("Intel") != std::string::npos ||
+                   m_vendor_name.find("intel") != std::string::npos ||
+                   m_vendor_name.find("INTEL") != std::string::npos ||
+                   m_vendor_id == 32902) {
             m_vendor_code = VENDOR_CODE_INTEL;
             m_default_wgs = 64;
             m_wave_size   = 8;
             m_is_intel    = true;
-        }
-        if (m_vendor_name.find("Nvidia") != std::string::npos ||
-            m_vendor_name.find("nvidia") != std::string::npos ||
-            m_vendor_name.find("NVIDIA") != std::string::npos ||
-            m_vendor_id == 4318) {
+        } else if (m_vendor_name.find("Nvidia") != std::string::npos ||
+                   m_vendor_name.find("nvidia") != std::string::npos ||
+                   m_vendor_name.find("NVIDIA") != std::string::npos ||
+                   m_vendor_id == 4318) {
             m_vendor_code = VENDOR_CODE_NVIDIA;
             m_default_wgs = 64;
             m_wave_size   = 32;
             m_is_nvidia   = true;
-        }
-        if (m_vendor_name.find("Amd") != std::string::npos ||
-            m_vendor_name.find("amd") != std::string::npos ||
-            m_vendor_name.find("AMD") != std::string::npos ||
-            m_vendor_name.find("Advanced Micro Devices") != std::string::npos ||
-            m_vendor_name.find("advanced micro devices") != std::string::npos ||
-            m_vendor_name.find("ADVANCED MICRO DEVICES") != std::string::npos) {
+        } else if (m_vendor_name.find("Amd") != std::string::npos ||
+                   m_vendor_name.find("amd") != std::string::npos ||
+                   m_vendor_name.find("AMD") != std::string::npos ||
+                   m_vendor_name.find("Advanced Micro Devices") != std::string::npos ||
+                   m_vendor_name.find("advanced micro devices") != std::string::npos ||
+                   m_vendor_name.find("ADVANCED MICRO DEVICES") != std::string::npos) {
             m_vendor_code = VENDOR_CODE_AMD;
             m_default_wgs = 64;
             m_wave_size   = 64;
@@ -141,11 +148,10 @@ namespace spla {
 
             // Likely, it is an integrated amd device
             if (m_max_wgs <= 256 || m_max_cu == 1) m_wave_size = 16;
-        }
-        if (m_vendor_name.find("Imagination Technologies") != std::string::npos ||
-            m_vendor_name.find("IMG") != std::string::npos ||
-            m_vendor_name.find("img") != std::string::npos ||
-            m_vendor_id == 0x1010) {
+        } else if (m_vendor_name.find("Imagination Technologies") != std::string::npos ||
+                   m_vendor_name.find("IMG") != std::string::npos ||
+                   m_vendor_name.find("img") != std::string::npos ||
+                   m_vendor_id == 0x1010) {
             m_vendor_code = VENDOR_CODE_IMG;
             m_default_wgs = 32;
             m_wave_size   = 32;

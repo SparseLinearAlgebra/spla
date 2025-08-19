@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include "test_common.hpp"
+#include <gtest/gtest.h>
 
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
 #define CL_HPP_TARGET_OPENCL_VERSION  120
@@ -37,13 +38,19 @@
 #include <thread>
 #include <vector>
 
-TEST(opencl, basic_gpu) {
+TEST(opencl, basic) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.front();
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices.front();
 
     cl::Context      context(device);
@@ -87,10 +94,16 @@ TEST(opencl, basic_gpu) {
 TEST(opencl, bitonic_sort_local) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.front();
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices.front();
 
     cl::Context      context(device);
@@ -137,10 +150,16 @@ TEST(opencl, bitonic_sort_local) {
 TEST(opencl, bitonic_sort_global) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.front();
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices.front();
 
     cl::Context      context(device);
@@ -188,10 +207,16 @@ TEST(opencl, bitonic_sort_global) {
 TEST(opencl, custom_value) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.front();
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices.front();
 
     cl::Context      context(device);
@@ -236,10 +261,16 @@ TEST(opencl, custom_value) {
 TEST(opencl, reduce_by_key_small) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
     cl::Platform platform = platforms.front();
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
     cl::Device device = devices.front();
 
     cl::Context      context(device);
