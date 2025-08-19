@@ -1,0 +1,45 @@
+name: Run tests
+
+on:
+  push:
+    paths:
+      - '.github/**'
+      - 'deps/**'
+      - 'include/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'python/**'
+      - '.gitignore'
+      - '.gitmodules'
+      - 'CMakeLists.txt'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  build_dir: "build"
+  config: "Release"
+
+jobs:
+  test-with-pocl:
+    runs-on:
+      ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Install PoCL
+        run: |
+          sudo apt update
+          sudo apt install -y pocl-opencl-icd clinfo
+      - name: Show available OpenCL devices
+        run: |
+          clinfo -l
+      - name: Build spla
+        run: |
+          python3 ./build.py --build-dir=${{ env.build_dir }}
+      - name: Run tests
+        run: |
+          python3 ./run_tests.py --build-dir=${{ env.build_dir }}
