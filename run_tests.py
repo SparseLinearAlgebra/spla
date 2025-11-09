@@ -57,12 +57,12 @@ def main():
     all_tests = test_names(shared.ROOT / "tests")
     for test_name in all_tests:
         full_test_name = str(tests_dir / test_name)
-        print(f"Exec unit-test: `{full_test_name}`")
         try:
             subprocess.check_call(full_test_name)
+            print(f"Exec unit-test: `{full_test_name}`")
         except FileNotFoundError:
             skipped_tests.append(test_name)
-            print(f"Skipped: `{test_name}`")
+            print(f"Skipped: `{full_test_name}`")
         except subprocess.CalledProcessError as err:
             failed_tests.append(test_name)
             print(f"Failed: `{err.output}`")
