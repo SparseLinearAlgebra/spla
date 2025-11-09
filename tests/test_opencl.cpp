@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include "test_common.hpp"
+#include <gtest/gtest.h>
 
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
 #define CL_HPP_TARGET_OPENCL_VERSION  120
@@ -37,14 +38,27 @@
 #include <thread>
 #include <vector>
 
-TEST(opencl, basic_gpu) {
+TEST(opencl, basic) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    cl::Platform platform = platforms.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
+    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device = devices.front();
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
+
+    const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
+    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device device = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -87,11 +101,24 @@ TEST(opencl, basic_gpu) {
 TEST(opencl, bitonic_sort_local) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    cl::Platform platform = platforms.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
+    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device = devices.front();
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
+
+    const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
+    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device device = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -137,11 +164,24 @@ TEST(opencl, bitonic_sort_local) {
 TEST(opencl, bitonic_sort_global) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    cl::Platform platform = platforms.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
+    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device = devices.front();
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
+
+    const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
+    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device device = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -188,11 +228,24 @@ TEST(opencl, bitonic_sort_global) {
 TEST(opencl, custom_value) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    cl::Platform platform = platforms.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
+    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device = devices.front();
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
+    }
+
+    const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
+    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device device = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -236,11 +289,24 @@ TEST(opencl, custom_value) {
 TEST(opencl, reduce_by_key_small) {
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    cl::Platform platform = platforms.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
+    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    cl::Device device = devices.front();
+    if (platforms.empty()) {
+        GTEST_SKIP() << "No platforms found";
+    }
+
+    const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
+    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device device = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context, CL_QUEUE_PROFILING_ENABLE);
