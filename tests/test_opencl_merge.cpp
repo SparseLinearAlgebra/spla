@@ -417,7 +417,7 @@ TEST(opencl_merge, merge_path_v1) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -435,8 +435,8 @@ TEST(opencl_merge, merge_path_v1) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     std::cout << "Devices: " << std::endl;
     for (auto& it : devices) {
@@ -520,7 +520,7 @@ TEST(opencl_merge, merge_path_v2) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -538,8 +538,8 @@ TEST(opencl_merge, merge_path_v2) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     std::cout << "Devices: " << std::endl;
     for (auto& it : devices) {

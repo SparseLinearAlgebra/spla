@@ -46,7 +46,7 @@ TEST(opencl, basic) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -57,8 +57,8 @@ TEST(opencl, basic) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -106,7 +106,7 @@ TEST(opencl, bitonic_sort_local) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -117,8 +117,8 @@ TEST(opencl, bitonic_sort_local) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -169,7 +169,7 @@ TEST(opencl, bitonic_sort_global) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -180,8 +180,8 @@ TEST(opencl, bitonic_sort_global) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -233,7 +233,7 @@ TEST(opencl, custom_value) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -244,8 +244,8 @@ TEST(opencl, custom_value) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context);
@@ -294,7 +294,7 @@ TEST(opencl, reduce_by_key_small) {
     }
 
     const char* spla_opencl_platform = std::getenv("SPLA_OPENCL_PLATFORM");
-    int platform_index = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
 
     cl::Platform platform = platforms[platform_index];
 
@@ -305,8 +305,8 @@ TEST(opencl, reduce_by_key_small) {
     }
 
     const char* spla_opencl_device = std::getenv("SPLA_OPENCL_DEVICE");
-    int device_index = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
-    cl::Device device = devices[device_index];
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     cl::Context      context(device);
     cl::CommandQueue queue(context, CL_QUEUE_PROFILING_ENABLE);
