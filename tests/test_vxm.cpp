@@ -186,4 +186,4 @@ TEST(vxm_masked, perf_and_or) {
     std::cout << std::endl;
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)
+SPLA_GTEST_MAIN

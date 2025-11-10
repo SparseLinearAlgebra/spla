@@ -46,8 +46,11 @@ def main():
     parser.add_argument("--device", default="0")
     args = parser.parse_args()
 
-    os.environ["SPLA_OPENCL_PLATFORM"] = args.platform
-    os.environ["SPLA_OPENCL_DEVICE"] = args.device
+    spla_opencl_platform = "SPLA_OPENCL_PLATFORM"
+    spla_opencl_device = "SPLA_OPENCL_DEVICE"
+
+    os.environ[spla_opencl_platform] = args.platform
+    os.environ[spla_opencl_device] = args.device
 
     tests_dir = shared.ROOT / args.build_dir / "tests"
     print(f"Searching for unit-tests in `{tests_dir}` folder")

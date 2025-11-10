@@ -129,4 +129,4 @@ TEST(mxv_masked, perf) {
     std::cout << std::endl;
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)
+SPLA_GTEST_MAIN
