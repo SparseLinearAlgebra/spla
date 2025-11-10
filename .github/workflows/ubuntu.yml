@@ -67,7 +67,7 @@ jobs:
 
   test:
     name: Test CPU ${{ matrix.cpu }}
-    needs: ubuntu
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
