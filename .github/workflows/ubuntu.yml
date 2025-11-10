@@ -27,8 +27,14 @@ env:
   nt: "4"
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-24.04
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
         with:
