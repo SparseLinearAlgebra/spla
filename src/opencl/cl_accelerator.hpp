@@ -99,6 +99,7 @@ namespace spla {
         [[nodiscard]] bool               is_amd() const { return m_is_amd; }
         [[nodiscard]] bool               is_intel() const { return m_is_intel; }
         [[nodiscard]] bool               is_img() const { return m_is_img; }
+        [[nodiscard]] bool               is_pocl() const { return m_is_pocl; }
 
     private:
         cl::Platform                          m_platform;
