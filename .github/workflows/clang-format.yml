@@ -2,7 +2,7 @@ name: Clang Format
 
 on:
   push:
-    branches: [ main, self-hosted-runner ]
+    branches: [ main ]
     paths:
       - '.github/**'
       - 'include/**'
