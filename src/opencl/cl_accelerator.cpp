@@ -118,7 +118,7 @@ namespace spla {
 
         auto dev_type = m_device.getInfo<CL_DEVICE_TYPE>();
 
-        if (m_vendor_id == 0x10006 &&
+        if (m_vendor_id == 65538 &&
             dev_type == CL_DEVICE_TYPE_CPU) {
             m_vendor_code = VENDOR_CODE_POCL_CPU;
             m_default_wgs = 64;
