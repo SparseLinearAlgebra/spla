@@ -23,7 +23,7 @@ on:
 
 env:
   build-dir: "build"
-  config: "Release"
+  config: "Debug"
   artifact: "native"
   nt: "4"
 
