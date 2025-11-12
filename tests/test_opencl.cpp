@@ -53,7 +53,7 @@ TEST(opencl, basic) {
     cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
@@ -113,7 +113,7 @@ TEST(opencl, bitonic_sort_local) {
     cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
@@ -176,7 +176,7 @@ TEST(opencl, bitonic_sort_global) {
     cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
@@ -240,7 +240,7 @@ TEST(opencl, custom_value) {
     cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
@@ -301,7 +301,7 @@ TEST(opencl, reduce_by_key_small) {
     cl::Platform platform = platforms[platform_index];
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
     if (platforms.empty()) {
         GTEST_SKIP() << "No platforms found";
     }
