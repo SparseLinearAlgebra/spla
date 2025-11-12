@@ -22,7 +22,7 @@ on:
 
 env:
   build-dir: "build"
-  config: "Debug"
+  config: "Release"
   artifact: "spla-ubuntu-build.tar.xz"
   nt: "4"
 
