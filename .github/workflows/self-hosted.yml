@@ -33,7 +33,7 @@ jobs:
         include:
           - os: ubuntu-24.04
     env:
-      config: "Debug"
+      config: "Release"
       nt: "4"
 
     steps:
