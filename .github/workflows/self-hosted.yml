@@ -70,9 +70,6 @@ jobs:
           - gpu: AMD-Radeon-RX-6750-XT
             platform: 1
             device: 0
-          - gpu: Intel-Core-i7-4790
-            platform: 0
-            device: 0
 
     env:
       test-file: ${{ matrix.gpu }}_tests.log

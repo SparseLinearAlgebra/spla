@@ -88,7 +88,7 @@ namespace spla {
     }
     Status CLAccelerator::set_device(int index) {
         std::vector<cl::Device> available_devices;
-        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);
+        m_platform.getDevices(CL_DEVICE_TYPE_GPU, &available_devices);
 
         if (available_devices.empty()) {
             LOG_MSG(Status::DeviceNotFound, "no device in selected platform, check your OpenCL runtime");

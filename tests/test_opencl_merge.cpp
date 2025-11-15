@@ -431,7 +431,7 @@ TEST(opencl_merge, merge_path_v1) {
     std::cout << "Current platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
@@ -534,7 +534,7 @@ TEST(opencl_merge, merge_path_v2) {
     std::cout << "Current platform: " << platform.getInfo<CL_PLATFORM_NAME>() << std::endl;
 
     std::vector<cl::Device> devices;
-    platform.getDevices(CL_DEVICE_TYPE_ALL, &devices);
+    platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
