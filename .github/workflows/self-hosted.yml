@@ -18,7 +18,7 @@ on:
       - '.gitmodules'
       - 'CMakeLists.txt'
   pull_request:
-    branches: [ main ]
+    branches: [ main, pocl-support ]
 
 env:
   build-dir: "build"
@@ -64,12 +64,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - gpu: NVIDIA-GeForce-GT-1030
-            platform: 2
-            device: 0
-          - gpu: AMD-Radeon-RX-6750-XT
-            platform: 1
-            device: 0
           - gpu: Intel-Core-i7-4790
             platform: 0
             device: 0
