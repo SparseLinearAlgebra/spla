@@ -30,6 +30,8 @@
 #define CL_HPP_MINIMUM_OPENCL_VERSION 120
 #define CL_HPP_TARGET_OPENCL_VERSION  120
 #define CL_HPP_ENABLE_EXCEPTIONS
+#define SPLA_OPENCL_PLATFORM "SPLA_OPENCL_PLATFORM"
+#define SPLA_OPENCL_DEVICE   "SPLA_OPENCL_DEVICE"
 #include <CL/opencl.hpp>
 
 #include <algorithm>
@@ -415,7 +417,11 @@ TEST(opencl_merge, merge_path_v1) {
     if (platforms.empty()) {
         GTEST_SKIP() << "No platforms found";
     }
-    cl::Platform platform = platforms.back();
+
+    const char* spla_opencl_platform = std::getenv(SPLA_OPENCL_PLATFORM);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::cout << "Platforms: " << std::endl;
     for (auto& it : platforms) {
@@ -429,7 +435,10 @@ TEST(opencl_merge, merge_path_v1) {
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
-    cl::Device device = devices[0];
+
+    const char* spla_opencl_device = std::getenv(SPLA_OPENCL_DEVICE);
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     std::cout << "Devices: " << std::endl;
     for (auto& it : devices) {
@@ -511,7 +520,11 @@ TEST(opencl_merge, merge_path_v2) {
     if (platforms.empty()) {
         GTEST_SKIP() << "No platforms found";
     }
-    cl::Platform platform = platforms.back();
+
+    const char* spla_opencl_platform = std::getenv(SPLA_OPENCL_PLATFORM);
+    int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+
+    cl::Platform platform = platforms[platform_index];
 
     std::cout << "Platforms: " << std::endl;
     for (auto& it : platforms) {
@@ -525,7 +538,10 @@ TEST(opencl_merge, merge_path_v2) {
     if (devices.empty()) {
         GTEST_SKIP() << "No devices found";
     }
-    cl::Device device = devices[0];
+
+    const char* spla_opencl_device = std::getenv(SPLA_OPENCL_DEVICE);
+    int         device_index       = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+    cl::Device  device             = devices[device_index];
 
     std::cout << "Devices: " << std::endl;
     for (auto& it : devices) {

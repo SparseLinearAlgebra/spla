@@ -52,6 +52,9 @@
 #define VENDOR_CODE_IMG      "img"
 #define VENDOR_CODE_POCL_CPU "pocl_cpu"
 
+#define SPLA_OPENCL_PLATFORM "SPLA_OPENCL_PLATFORM"
+#define SPLA_OPENCL_DEVICE   "SPLA_OPENCL_DEVICE"
+
 namespace spla {
 
     /**
@@ -99,6 +102,7 @@ namespace spla {
         [[nodiscard]] bool               is_amd() const { return m_is_amd; }
         [[nodiscard]] bool               is_intel() const { return m_is_intel; }
         [[nodiscard]] bool               is_img() const { return m_is_img; }
+        [[nodiscard]] bool               is_pocl() const { return m_is_pocl; }
 
     private:
         cl::Platform                          m_platform;

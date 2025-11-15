@@ -1,0 +1,109 @@
+name: Ubuntu
+
+on:
+  push:
+    branches:
+      - main
+      - release
+      - pre-release
+    paths:
+      - '.github/**'
+      - 'deps/**'
+      - 'include/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'python/**'
+      - '.gitignore'
+      - '.gitmodules'
+      - 'CMakeLists.txt'
+  pull_request:
+    branches: [ main ]
+
+env:
+  build-dir: "build"
+  config: "Release"
+  artifact: "spla-ubuntu-build.tar.xz"
+  nt: "4"
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Configure CMake
+        run: |
+          cmake . -G Ninja                \
+                  -B ${{ env.build-dir }} \
+                  -DCMAKE_BUILD_TYPE=${{ env.config }} \
+                  -DSPLA_BUILD_TESTS=ON \
+                  -DSPLA_BUILD_OPENCL=OFF
+
+      - name: Build library sources
+        run: |
+          cmake --build ${{ env.build-dir }} --verbose -j ${{ env.nt }}
+
+      - name: Prepare upload binary
+        run: |
+          tar cfz ${{ env.artifact }} ${{ env.build-dir }}
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.artifact}}
+          path: ${{env.artifact}}
+
+  test:
+    name: Test CPU ${{ matrix.cpu }}
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            cpu: AMD-EPYC-7763
+  
+    env:
+      test-file: cpu_tests.log
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.artifact }}
+
+      - name: Unarchive artifact
+        run: |
+          tar xzf ${{ env.artifact }}
+          rm ${{ env.artifact }}
+
+      - name: Run tests
+        run: |
+          python3 ./run_tests.py --build-dir=${{ env.build-dir }} | tee ${{ env.test-file }}
+
+      - name: Upload tests resutls
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.test-file }}
+          path: ${{ env.test-file }}
+
+      - name: Check for tests results
+        run: |
+          ! grep -qi "FAILED" ${{ env.test-file }}
