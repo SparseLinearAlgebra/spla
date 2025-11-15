@@ -93,7 +93,7 @@ jobs:
 
       - name: Check for tests results
         run: |
-          ! grep -q "FAILED" ${{ env.test-file }}
+          ! grep -qi "FAILED" ${{ env.test-file }}
 
   clean:
     name: Cleanup workspace
