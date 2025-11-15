@@ -119,7 +119,7 @@ namespace spla {
         auto dev_type        = m_device.getInfo<CL_DEVICE_TYPE>();
         auto m_platform_name = m_platform.getInfo<CL_PLATFORM_NAME>();
 
-        if ((m_vendor_id == 65538 ||
+        if ((m_vendor_id == 65542 ||
              m_vendor_name.find("pocl") != std::string::npos ||
              m_vendor_name.find("POCL") != std::string::npos ||
              m_vendor_name.find("PoCL") != std::string::npos ||
