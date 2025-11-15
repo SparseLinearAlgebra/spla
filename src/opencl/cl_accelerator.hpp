@@ -46,11 +46,10 @@
 #define CL_HPP_TARGET_OPENCL_VERSION  120
 #include <CL/opencl.hpp>
 
-#define VENDOR_CODE_NVIDIA   "nvidia"
-#define VENDOR_CODE_INTEL    "intel"
-#define VENDOR_CODE_AMD      "amd"
-#define VENDOR_CODE_IMG      "img"
-#define VENDOR_CODE_POCL_CPU "pocl_cpu"
+#define VENDOR_CODE_NVIDIA "nvidia"
+#define VENDOR_CODE_INTEL  "intel"
+#define VENDOR_CODE_AMD    "amd"
+#define VENDOR_CODE_IMG    "img"
 
 #define SPLA_OPENCL_PLATFORM "SPLA_OPENCL_PLATFORM"
 #define SPLA_OPENCL_DEVICE   "SPLA_OPENCL_DEVICE"
@@ -127,7 +126,6 @@ namespace spla {
         uint        m_default_wgs      = 64;
         uint        m_wave_size        = 32;
         uint        m_num_of_mem_banks = 32;
-        bool        m_is_pocl          = false;
         bool        m_is_nvidia        = false;
         bool        m_is_amd           = false;
         bool        m_is_intel         = false;
