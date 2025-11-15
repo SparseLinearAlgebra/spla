@@ -302,8 +302,8 @@ TEST(opencl, reduce_by_key_small) {
 
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
-    if (platforms.empty()) {
-        GTEST_SKIP() << "No platforms found";
+    if (devices.empty()) {
+        GTEST_SKIP() << "No devices found";
     }
 
     const char* spla_opencl_device = std::getenv(SPLA_OPENCL_DEVICE);
