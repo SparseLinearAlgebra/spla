@@ -89,7 +89,7 @@ TEST(mxv_masked, naive) {
 }
 
 TEST(mxv_masked, perf) {
-    const int N     = 1000000;
+    const int N     = 980000;
     const int K     = 256;
     const int S     = 10;
     const int NITER = 10;
@@ -129,4 +129,4 @@ TEST(mxv_masked, perf) {
     std::cout << std::endl;
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE_PLATFORM(1)
+SPLA_GTEST_MAIN

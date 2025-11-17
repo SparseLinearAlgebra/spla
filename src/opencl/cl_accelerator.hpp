@@ -52,6 +52,9 @@
 #define VENDOR_CODE_IMG      "img"
 #define VENDOR_CODE_POCL_CPU "pocl_cpu"
 
+#define SPLA_OPENCL_PLATFORM "SPLA_OPENCL_PLATFORM"
+#define SPLA_OPENCL_DEVICE   "SPLA_OPENCL_DEVICE"
+
 namespace spla {
 
     /**

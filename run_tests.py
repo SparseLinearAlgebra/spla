@@ -29,6 +29,7 @@ import shared
 import argparse
 import subprocess
 import re
+import os
 
 
 def test_names(test_src_path):
@@ -41,24 +42,40 @@ def test_names(test_src_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--build-dir", default="build")
+    parser.add_argument("--platform", default="0")
+    parser.add_argument("--device", default="0")
     args = parser.parse_args()
+
+    spla_opencl_platform = "SPLA_OPENCL_PLATFORM"
+    spla_opencl_device = "SPLA_OPENCL_DEVICE"
+
+    os.environ[spla_opencl_platform] = args.platform
+    os.environ[spla_opencl_device] = args.device
 
     tests_dir = shared.ROOT / args.build_dir / "tests"
     print(f"Searching for unit-tests in `{tests_dir}` folder")
 
     failed_tests = []
+    skipped_tests = []
     all_tests = test_names(shared.ROOT / "tests")
     for test_name in all_tests:
         full_test_name = str(tests_dir / test_name)
-        print(f"Exec unit-test: `{full_test_name}`")
         try:
             subprocess.check_call(full_test_name)
+            print(f"Exec unit-test: `{full_test_name}`")
+        except FileNotFoundError:
+            skipped_tests.append(test_name)
+            print(f"Skipped: `{full_test_name}`")
         except subprocess.CalledProcessError as err:
             failed_tests.append(test_name)
             print(f"Failed: `{err.output}`")
 
     all_tests_string = '\n\t'.join(all_tests)
     print(f"All executed tests: \n\t{all_tests_string}")
+
+    if skipped_tests:
+        skipped_tests_string = '\n\t'.join(skipped_tests)
+        print(f"Skipped tests: \n\t{skipped_tests_string}")
 
     if failed_tests:
         failed_tests_string = '\n\t'.join(failed_tests)

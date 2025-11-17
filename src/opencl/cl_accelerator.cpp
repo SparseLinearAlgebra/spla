@@ -42,10 +42,15 @@ namespace spla {
     Status CLAccelerator::init() {
         m_description = "no platform or device";
 
-        if (set_platform(0) != Status::Ok)
+        const char* spla_opencl_platform = std::getenv(SPLA_OPENCL_PLATFORM);
+        const char* spla_opencl_device   = std::getenv(SPLA_OPENCL_DEVICE);
+        int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
+        int         device_index         = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+
+        if (set_platform(platform_index) != Status::Ok)
             return Status::PlatformNotFound;
 
-        if (set_device(0) != Status::Ok)
+        if (set_device(device_index) != Status::Ok)
             return Status::DeviceNotFound;
 
         if (set_queues_count(1) != Status::Ok)
@@ -83,7 +88,7 @@ namespace spla {
     }
     Status CLAccelerator::set_device(int index) {
         std::vector<cl::Device> available_devices;
-        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);
+        m_platform.getDevices(CL_DEVICE_TYPE_GPU, &available_devices);
 
         if (available_devices.empty()) {
             LOG_MSG(Status::DeviceNotFound, "no device in selected platform, check your OpenCL runtime");
