@@ -1,6 +1,9 @@
 <map id="spla::TVector&lt; T &gt;" name="spla::TVector&lt; T &gt;">
-<area shape="rect" id="node1" title="Vector interface implementation with type information bound." alt="" coords="5,229,133,256"/>
-<area shape="rect" id="node2" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="24,155,115,181"/>
-<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="24,80,115,107"/>
-<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="23,5,115,32"/>
+<area shape="rect" id="Node000001" title="Vector interface implementation with type information bound." alt="" coords="5,226,133,252"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="24,153,114,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,194,72,226,66,226,66,194"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="24,79,114,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="72,120,72,152,66,152,66,120"/>
+<area shape="rect" id="Node000004" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="23,5,115,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="72,46,72,79,66,79,66,46"/>
 </map>

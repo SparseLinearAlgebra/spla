@@ -1,5 +1,7 @@
 <map id="spla::DispatchContext" name="spla::DispatchContext">
-<area shape="rect" id="node1" title="Execution context of a single task." alt="" coords="67,109,214,136"/>
-<area shape="rect" id="node2" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="5,5,129,47"/>
-<area shape="rect" id="node3" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="153,5,277,47"/>
+<area shape="rect" id="Node000001" title="Execution context of a single task." alt="" coords="67,109,214,135"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="5,5,129,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,57,133,107,129,110,89,60"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1ref__ptr.html" title=" " alt="" coords="153,5,277,46"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,60,174,87,153,111,149,107,170,83,191,57"/>
 </map>

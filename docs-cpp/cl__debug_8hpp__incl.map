@@ -1,9 +1,15 @@
 <map id="src/opencl/cl_debug.hpp" name="src/opencl/cl_debug.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="119,5,281,32"/>
-<area shape="rect" id="node2" href="$time__profiler_8hpp.html" title=" " alt="" coords="118,80,282,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,67,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="91,155,152,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="177,155,223,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="248,155,317,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="342,155,397,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="116,5,278,31"/>
+<area shape="rect" id="Node000002" href="$time__profiler_8hpp.html" title=" " alt="" coords="115,79,278,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,31,200,63,194,63,194,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,66,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="171,108,78,148,76,144,168,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="89,153,150,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="186,107,145,144,142,140,182,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="174,153,220,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="200,105,200,137,194,137,194,105"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="244,153,312,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="212,103,255,140,251,144,209,107"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="337,153,390,178"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="226,103,323,144,321,149,224,108"/>
 </map>

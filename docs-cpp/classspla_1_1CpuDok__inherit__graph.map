@@ -1,5 +1,7 @@
 <map id="spla::CpuDok&lt; T &gt;" name="spla::CpuDok&lt; T &gt;">
-<area shape="rect" id="node1" title="Dictionary of keys sparse matrix format." alt="" coords="17,155,145,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,80,157,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="35,5,127,32"/>
+<area shape="rect" id="Node000001" title="Dictionary of keys sparse matrix format." alt="" coords="17,153,145,178"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="5,79,157,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,120,84,152,78,152,78,120"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="35,5,127,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="84,46,84,79,78,79,78,46"/>
 </map>

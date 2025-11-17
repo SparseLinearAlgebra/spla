@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classspla_1_1CLAlloc.html" title="Base class for any device&#45;local opencl buffer allocator." alt="" coords="5,31,104,57"/>
-<area shape="rect" id="node2" href="$classspla_1_1CLAllocGeneral.html" title="Wrapper for default OpenCL buffer allcoation." alt="" coords="152,5,295,32"/>
-<area shape="rect" id="node3" href="$classspla_1_1CLAllocLinear.html" title="Linear allocator for temporary device local buffer allocations." alt="" coords="156,56,291,83"/>
+<area shape="rect" id="Node000000" href="$classspla_1_1CLAlloc.html" title="Base class for any device&#45;local opencl buffer allocator." alt="" coords="5,31,103,56"/>
+<area shape="rect" id="Node000001" href="$classspla_1_1CLAllocGeneral.html" title="Wrapper for default OpenCL buffer allcoation." alt="" coords="151,5,293,31"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="118,31,150,26,151,32,118,37"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1CLAllocLinear.html" title="Linear allocator for temporary device local buffer allocations." alt="" coords="155,55,288,80"/>
+<area shape="poly" id="edge3_Node000000_Node000002" title=" " alt="" coords="118,50,155,55,155,61,118,55"/>
 </map>

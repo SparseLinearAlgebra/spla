@@ -1,8 +1,13 @@
 <map id="src/binding/c_ref.cpp" name="src/binding/c_ref.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="94,5,237,32"/>
-<area shape="rect" id="node2" href="$c__config_8hpp.html" title=" " alt="" coords="118,80,213,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,61,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="86,155,157,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="181,155,240,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="264,155,325,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="93,5,234,31"/>
+<area shape="rect" id="Node000002" href="$c__config_8hpp.html" title=" " alt="" coords="117,79,210,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,31,166,63,161,63,161,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,61,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="143,108,69,147,67,143,140,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="85,153,154,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="159,106,137,141,133,138,154,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="179,153,236,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="173,103,194,138,190,141,169,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="260,153,320,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="186,103,257,142,254,147,184,108"/>
 </map>

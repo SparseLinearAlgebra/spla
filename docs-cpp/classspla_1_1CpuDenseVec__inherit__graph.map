@@ -1,5 +1,7 @@
 <map id="spla::CpuDenseVec&lt; T &gt;" name="spla::CpuDenseVec&lt; T &gt;">
-<area shape="rect" id="node1" title="CPU one&#45;dim array for dense vector representation." alt="" coords="5,155,171,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="12,80,164,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="42,5,134,32"/>
+<area shape="rect" id="Node000001" title="CPU one&#45;dim array for dense vector representation." alt="" coords="5,153,170,178"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="12,79,163,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,120,90,152,85,152,85,120"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="42,5,133,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,46,90,79,85,79,85,46"/>
 </map>

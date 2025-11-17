@@ -1,7 +1,12 @@
 <map id="src/opencl/generated/auto_reduce.hpp" name="src/opencl/generated/auto_reduce.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="129,5,271,47"/>
-<area shape="rect" id="node2" href="$cl__reduce_8hpp.html" title=" " alt="" coords="117,95,283,121"/>
-<area shape="rect" id="node3" href="$cl__m__reduce_8hpp.html" title=" " alt="" coords="5,169,189,196"/>
-<area shape="rect" id="node5" href="$cl__v__reduce_8hpp.html" title=" " alt="" coords="214,169,394,196"/>
-<area shape="rect" id="node4" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="137,244,263,285"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="128,5,271,46"/>
+<area shape="rect" id="Node000002" href="$cl__reduce_8hpp.html" title=" " alt="" coords="117,94,282,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,62,202,93,197,93,197,62"/>
+<area shape="rect" id="Node000003" href="$cl__m__reduce_8hpp.html" title=" " alt="" coords="5,168,189,193"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="172,131,116,169,113,165,169,126"/>
+<area shape="rect" id="Node000005" href="$cl__v__reduce_8hpp.html" title=" " alt="" coords="213,168,392,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="231,126,286,165,283,169,228,131"/>
+<area shape="rect" id="Node000004" href="$cl__algo__registry_8cpp.html" title=" " alt="" coords="136,241,263,282"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="126,201,176,239,173,243,123,205"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="276,205,227,243,223,239,273,201"/>
 </map>

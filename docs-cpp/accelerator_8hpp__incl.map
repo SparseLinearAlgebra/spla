@@ -1,8 +1,14 @@
 <map id="src/core/accelerator.hpp" name="src/core/accelerator.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="197,5,358,32"/>
-<area shape="rect" id="node2" href="$config_8hpp.html" title=" " alt="" coords="178,80,286,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="297,155,351,181"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,80,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="105,155,170,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="194,155,273,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="194,5,354,31"/>
+<area shape="rect" id="Node000002" href="$config_8hpp.html" title=" " alt="" coords="175,79,282,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,33,247,67,242,64,264,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="293,153,346,178"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="281,30,297,78,314,137,309,139,291,80,276,32"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,79,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="198,108,89,149,87,144,196,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="103,153,168,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="214,107,165,145,161,141,211,103"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="191,153,269,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="232,105,232,137,227,137,226,105"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="246,103,294,141,291,145,242,107"/>
 </map>

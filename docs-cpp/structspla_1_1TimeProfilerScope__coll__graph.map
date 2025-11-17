@@ -1,4 +1,6 @@
 <map id="spla::TimeProfilerScope" name="spla::TimeProfilerScope">
-<area shape="rect" id="node1" title=" " alt="" coords="5,95,164,121"/>
-<area shape="rect" id="node2" href="$structspla_1_1TimeProfilerLabel.html" title=" " alt="" coords="8,5,161,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,163,120"/>
+<area shape="rect" id="Node000002" href="$structspla_1_1TimeProfilerLabel.html" title=" " alt="" coords="8,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,47,87,94,81,94,81,47"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="177,10,187,18,179,26,161,29,160,23,176,21,182,18,174,15"/>
 </map>

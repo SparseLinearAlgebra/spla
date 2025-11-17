@@ -1,7 +1,11 @@
 <map id="spla::ScheduleTask_callback" name="spla::ScheduleTask_callback">
-<area shape="rect" id="node1" title="Callback task." alt="" coords="21,304,155,345"/>
-<area shape="rect" id="node2" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="5,229,171,256"/>
-<area shape="rect" id="node3" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="21,155,155,181"/>
-<area shape="rect" id="node4" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="43,80,133,107"/>
-<area shape="rect" id="node5" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="42,5,134,32"/>
+<area shape="rect" id="Node000001" title="Callback task." alt="" coords="20,300,155,341"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="5,226,170,252"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,267,90,300,85,300,85,267"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="20,153,155,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,194,90,226,85,226,85,194"/>
+<area shape="rect" id="Node000004" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="43,79,132,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="90,120,90,152,85,152,85,120"/>
+<area shape="rect" id="Node000005" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="42,5,133,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="90,46,90,79,85,79,85,46"/>
 </map>

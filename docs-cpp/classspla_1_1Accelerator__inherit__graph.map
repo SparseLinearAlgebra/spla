@@ -1,4 +1,5 @@
 <map id="spla::Accelerator" name="spla::Accelerator">
-<area shape="rect" id="node1" title="Interface for an computations acceleration backend." alt="" coords="13,5,132,32"/>
-<area shape="rect" id="node2" href="$classspla_1_1CLAccelerator.html" title="Single&#45;device OpenCL acceleration implementation." alt="" coords="5,80,140,107"/>
+<area shape="rect" id="Node000001" title="Interface for an computations acceleration backend." alt="" coords="14,5,131,31"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1CLAccelerator.html" title="Single&#45;device OpenCL acceleration implementation." alt="" coords="5,79,140,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,46,75,79,70,79,70,46"/>
 </map>

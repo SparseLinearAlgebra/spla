@@ -1,51 +1,99 @@
 <map id="spla::RefCnt" name="spla::RefCnt">
-<area shape="rect" id="node1" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,487,97,513"/>
-<area shape="rect" id="node2" href="$classspla_1_1MemView.html" title="View to some memory resource without life&#45;time control." alt="" coords="166,233,277,260"/>
-<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="176,284,267,311"/>
-<area shape="rect" id="node37" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="145,664,297,691"/>
-<area shape="rect" id="node48" href="$classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values." alt="" coords="181,841,261,868"/>
-<area shape="rect" id="node4" href="$classspla_1_1Array.html" title="One&#45;dimensional dense tightly packed array of typed values." alt="" coords="387,31,469,57"/>
-<area shape="rect" id="node6" href="$classspla_1_1Descriptor.html" title="Descriptor object used to parametrize execution of particular scheduled tasks." alt="" coords="373,107,483,133"/>
-<area shape="rect" id="node7" href="$classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object." alt="" coords="385,157,471,184"/>
-<area shape="rect" id="node9" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="393,208,463,235"/>
-<area shape="rect" id="node16" href="$classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="383,259,473,285"/>
-<area shape="rect" id="node18" href="$classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="375,309,481,336"/>
-<area shape="rect" id="node20" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="361,360,495,387"/>
-<area shape="rect" id="node35" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="383,411,473,437"/>
-<area shape="rect" id="node5" href="$classspla_1_1TArray.html" title="Array interface implementation with type information bound." alt="" coords="590,5,710,32"/>
-<area shape="rect" id="node8" href="$classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="587,56,713,83"/>
-<area shape="rect" id="node10" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="597,107,703,133"/>
-<area shape="rect" id="node12" href="$classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="597,157,703,184"/>
-<area shape="rect" id="node14" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="599,208,701,235"/>
-<area shape="rect" id="node11" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="803,91,947,133"/>
-<area shape="rect" id="node13" href="$classspla_1_1TOpSelect.html" title=" " alt="" coords="799,157,951,184"/>
-<area shape="rect" id="node15" href="$classspla_1_1TOpUnary.html" title=" " alt="" coords="792,208,957,235"/>
-<area shape="rect" id="node17" href="$classspla_1_1TScalar.html" title=" " alt="" coords="587,259,713,285"/>
-<area shape="rect" id="node19" href="$classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="559,309,741,336"/>
-<area shape="rect" id="node21" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="567,580,733,607"/>
-<area shape="rect" id="node22" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="807,259,942,301"/>
-<area shape="rect" id="node23" href="$classspla_1_1ScheduleTask__kron.html" title="Sparse matrix kronecker product." alt="" coords="791,325,958,352"/>
-<area shape="rect" id="node24" href="$classspla_1_1ScheduleTask__m__eadd.html" title="Matrix ewise add." alt="" coords="807,377,942,418"/>
-<area shape="rect" id="node25" href="$classspla_1_1ScheduleTask__m__emult.html" title="Matrix ewise add." alt="" coords="807,442,942,483"/>
-<area shape="rect" id="node26" href="$classspla_1_1ScheduleTask__m__extract__column.html" title="Matrix extract vector." alt="" coords="807,507,942,549"/>
-<area shape="rect" id="node27" href="$classspla_1_1ScheduleTask__m__extract__row.html" title="Matrix extract vector." alt="" coords="807,573,942,614"/>
-<area shape="rect" id="node28" href="$classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="807,638,942,679"/>
-<area shape="rect" id="node29" href="$classspla_1_1ScheduleTask__m__reduce__by__column.html" title="Matrix by col reduction." alt="" coords="797,703,952,745"/>
-<area shape="rect" id="node30" href="$classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="807,769,942,810"/>
-<area shape="rect" id="node31" href="$classspla_1_1ScheduleTask__m__transpose.html" title="Matrix transpose." alt="" coords="807,834,942,875"/>
-<area shape="rect" id="node32" href="$classspla_1_1ScheduleTask__mxm.html" title="Sparse matrix sparse matrix product." alt="" coords="789,900,960,927"/>
-<area shape="rect" id="node33" href="$classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="807,951,942,993"/>
-<area shape="rect" id="node34" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="807,1017,942,1058"/>
-<area shape="rect" id="node36" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="586,631,714,657"/>
-<area shape="rect" id="node38" href="$classspla_1_1CLCooVec.html" title="OpenCL list&#45;of&#45;coordinates sparse vector representation." alt="" coords="355,461,501,488"/>
-<area shape="rect" id="node39" href="$classspla_1_1CLCsr.html" title="OpenCL compressed sparse row matrix representation." alt="" coords="369,512,487,539"/>
-<area shape="rect" id="node40" href="$classspla_1_1CLDenseVec.html" title="OpenCL one&#45;dim array for dense vector representation." alt="" coords="349,563,507,589"/>
-<area shape="rect" id="node41" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="364,613,492,640"/>
-<area shape="rect" id="node42" href="$classspla_1_1CpuCooVec.html" title="CPU list&#45;of&#45;coordinates sparse vector representation." alt="" coords="353,664,503,691"/>
-<area shape="rect" id="node43" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="365,715,491,741"/>
-<area shape="rect" id="node44" href="$classspla_1_1CpuDenseVec.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="345,765,511,792"/>
-<area shape="rect" id="node45" href="$classspla_1_1CpuDok.html" title="Dictionary of keys sparse matrix format." alt="" coords="364,816,492,843"/>
-<area shape="rect" id="node46" href="$classspla_1_1CpuDokVec.html" title=" " alt="" coords="353,867,503,893"/>
-<area shape="rect" id="node47" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="369,917,487,944"/>
-<area shape="rect" id="node49" href="$classspla_1_1TType.html" title="Type interface implementation with actual type info bound." alt="" coords="369,968,487,995"/>
+<area shape="rect" id="Node000001" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,475,97,500"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1MemView.html" title="View to some memory resource without life&#45;time control." alt="" coords="166,228,275,254"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,459,63,416,79,363,105,310,123,285,143,263,164,250,167,254,146,267,127,288,110,312,84,365,68,417,59,460"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="176,277,265,303"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="71,461,206,302,210,305,75,465"/>
+<area shape="rect" id="Node000045" href="$classspla_1_1TDecoration.html" title="Base class for typed decoration for storage object." alt="" coords="145,647,296,672"/>
+<area shape="poly" id="edge36_Node000001_Node000045" title=" " alt="" coords="78,510,208,644,204,648,74,514"/>
+<area shape="rect" id="Node000056" href="$classspla_1_1Type.html" title="Type representation for parametrisation of containers stored values." alt="" coords="181,819,260,844"/>
+<area shape="poly" id="edge47_Node000001_Node000056" title=" " alt="" coords="67,514,147,684,214,817,210,819,142,686,62,516"/>
+<area shape="rect" id="Node000004" href="$classspla_1_1Array.html" title="One&#45;dimensional dense tightly packed array of typed values." alt="" coords="386,29,467,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="278,276,294,264,310,243,318,223,320,181,321,137,328,114,342,90,364,69,390,53,392,58,367,73,346,93,333,116,327,138,325,181,323,224,314,246,298,268,281,280"/>
+<area shape="rect" id="Node000006" href="$classspla_1_1Descriptor.html" title="Descriptor object used to parametrize execution of particular scheduled tasks." alt="" coords="371,104,481,130"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="278,275,294,264,306,249,313,234,317,203,322,171,329,155,342,139,369,123,372,128,346,143,333,158,327,172,322,204,318,236,311,252,298,268,281,279"/>
+<area shape="rect" id="Node000007" href="$classspla_1_1Matrix.html" title="Generalized M x N dimensional matrix object." alt="" coords="383,153,469,179"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="278,274,294,264,310,246,317,227,325,207,342,188,361,177,382,170,384,175,364,182,346,192,330,210,322,229,315,249,298,268,281,278"/>
+<area shape="rect" id="Node000009" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="392,203,460,228"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="279,270,295,264,343,237,391,221,392,226,345,242,297,269,281,275"/>
+<area shape="rect" id="Node000016" href="$classspla_1_1Scalar.html" title="Box for a single typed scalar value." alt="" coords="382,252,470,278"/>
+<area shape="poly" id="edge15_Node000003_Node000016" title=" " alt="" coords="280,280,381,268,382,273,281,285"/>
+<area shape="rect" id="Node000018" href="$classspla_1_1Schedule.html" title="Object with sequence of steps with tasks forming schedule for execution." alt="" coords="374,301,479,327"/>
+<area shape="poly" id="edge17_Node000003_Node000018" title=" " alt="" coords="281,294,373,305,373,311,280,300"/>
+<area shape="rect" id="Node000020" href="$classspla_1_1ScheduleTask.html" title="Represent single smallest evaluation tasks which can scheduled." alt="" coords="359,351,493,376"/>
+<area shape="poly" id="edge19_Node000003_Node000020" title=" " alt="" coords="267,307,345,337,378,347,376,353,343,342,265,312"/>
+<area shape="rect" id="Node000043" href="$classspla_1_1Vector.html" title="Generalized N dimensional vector object." alt="" coords="382,400,471,426"/>
+<area shape="poly" id="edge34_Node000003_Node000043" title=" " alt="" coords="247,312,291,350,345,386,382,401,380,406,343,391,288,355,244,316"/>
+<area shape="rect" id="Node000005" href="$classspla_1_1TArray.html" title="Array interface implementation with type information bound." alt="" coords="587,5,707,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="482,34,586,22,587,27,482,39"/>
+<area shape="rect" id="Node000008" href="$classspla_1_1TMatrix.html" title="Matrix interface implementation with type information bound." alt="" coords="585,55,709,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="483,151,507,140,521,128,530,115,539,102,555,89,583,77,585,82,558,94,543,106,534,118,525,131,510,144,485,156"/>
+<area shape="rect" id="Node000010" href="$classspla_1_1OpBinary.html" title="Binary operation with 2&#45;arity." alt="" coords="595,104,699,130"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="474,203,507,189,521,177,530,165,539,151,555,139,594,123,596,128,558,143,543,155,534,168,525,181,510,194,477,208"/>
+<area shape="rect" id="Node000012" href="$classspla_1_1OpSelect.html" title="Select operation with 1&#45;arity and bool return type." alt="" coords="594,153,700,179"/>
+<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="475,202,593,175,595,180,476,207"/>
+<area shape="rect" id="Node000014" href="$classspla_1_1OpUnary.html" title="Unary operation with 1&#45;arity." alt="" coords="596,203,698,228"/>
+<area shape="poly" id="edge13_Node000009_Node000014" title=" " alt="" coords="476,213,596,213,596,218,476,218"/>
+<area shape="rect" id="Node000011" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="799,88,942,129"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="714,112,798,109,798,114,715,117"/>
+<area shape="rect" id="Node000013" href="$classspla_1_1TOpSelect.html" title=" " alt="" coords="795,153,946,179"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="715,164,794,164,794,169,715,169"/>
+<area shape="rect" id="Node000015" href="$classspla_1_1TOpUnary.html" title=" " alt="" coords="788,203,952,228"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="713,213,788,213,788,218,713,218"/>
+<area shape="rect" id="Node000017" href="$classspla_1_1TScalar.html" title=" " alt="" coords="584,252,710,278"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="486,262,583,262,583,268,486,268"/>
+<area shape="rect" id="Node000019" href="$classspla_1_1ScheduleSingleThread.html" title="Single&#45;thread dispatch sequential execution schedule." alt="" coords="556,301,738,327"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="494,312,556,312,556,317,494,317"/>
+<area shape="rect" id="Node000021" href="$classspla_1_1ScheduleTaskBase.html" title="Base schedule task class with common public properties." alt="" coords="565,571,729,596"/>
+<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="504,382,510,385,535,406,558,431,597,483,625,533,643,569,638,571,621,535,592,486,554,434,532,410,507,390,501,386"/>
+<area shape="rect" id="Node000022" href="$classspla_1_1ScheduleTask__callback.html" title="Callback task." alt="" coords="803,252,938,293"/>
+<area shape="poly" id="edge21_Node000021_Node000022" title=" " alt="" coords="652,555,668,502,694,435,732,365,756,332,784,303,801,291,804,295,787,307,760,335,737,368,699,437,673,504,657,556"/>
+<area shape="rect" id="Node000023" href="$classspla_1_1ScheduleTask__kron.html" title="Sparse matrix kronecker product." alt="" coords="787,317,954,343"/>
+<area shape="poly" id="edge22_Node000021_Node000023" title=" " alt="" coords="655,555,672,511,700,457,737,401,759,376,784,353,805,341,808,346,787,358,763,379,741,404,704,459,677,513,660,557"/>
+<area shape="rect" id="Node000024" href="$classspla_1_1ScheduleTask__m__eadd.html" title="Matrix ewise add." alt="" coords="803,367,938,408"/>
+<area shape="poly" id="edge23_Node000021_Node000024" title=" " alt="" coords="662,556,712,488,746,451,784,419,805,406,808,411,787,423,749,455,716,492,667,559"/>
+<area shape="rect" id="Node000025" href="$classspla_1_1ScheduleTask__m__emult.html" title="Matrix ewise add." alt="" coords="803,432,938,473"/>
+<area shape="poly" id="edge24_Node000021_Node000025" title=" " alt="" coords="675,559,724,521,784,484,811,471,813,476,787,489,728,526,678,563"/>
+<area shape="rect" id="Node000026" href="$classspla_1_1ScheduleTask__m__extract__column.html" title="Matrix extract vector." alt="" coords="803,498,938,538"/>
+<area shape="poly" id="edge25_Node000021_Node000026" title=" " alt="" coords="707,563,802,535,803,540,709,568"/>
+<area shape="rect" id="Node000027" href="$classspla_1_1ScheduleTask__m__extract__row.html" title="Matrix extract vector." alt="" coords="803,563,938,604"/>
+<area shape="poly" id="edge26_Node000021_Node000027" title=" " alt="" coords="744,581,803,581,803,586,744,586"/>
+<area shape="rect" id="Node000028" href="$classspla_1_1ScheduleTask__m__reduce.html" title="Matrix reduction to scalar." alt="" coords="803,628,938,669"/>
+<area shape="poly" id="edge27_Node000021_Node000028" title=" " alt="" coords="715,598,738,605,805,625,804,630,737,610,714,604"/>
+<area shape="rect" id="Node000029" href="$classspla_1_1ScheduleTask__m__reduce__by__column.html" title="Matrix by col reduction." alt="" coords="793,694,948,734"/>
+<area shape="poly" id="edge28_Node000021_Node000029" title=" " alt="" coords="733,602,739,605,756,624,765,642,772,661,787,679,806,691,803,696,784,683,768,664,760,645,752,627,736,610,731,606"/>
+<area shape="rect" id="Node000030" href="$classspla_1_1ScheduleTask__m__reduce__by__row.html" title="Matrix by row reduction." alt="" coords="803,759,938,800"/>
+<area shape="poly" id="edge29_Node000021_Node000030" title=" " alt="" coords="737,603,740,606,754,623,762,641,765,676,768,710,775,727,788,744,804,757,801,762,784,748,770,730,763,711,760,676,756,642,749,626,736,609,733,607"/>
+<area shape="rect" id="Node000031" href="$classspla_1_1ScheduleTask__m__transpose.html" title="Matrix transpose." alt="" coords="803,824,938,865"/>
+<area shape="poly" id="edge30_Node000021_Node000031" title=" " alt="" coords="738,604,740,606,758,631,767,657,768,683,766,708,764,734,764,759,771,784,788,810,804,824,801,828,784,813,766,786,759,760,758,733,761,708,763,683,761,658,753,634,736,609,734,607"/>
+<area shape="rect" id="Node000032" href="$classspla_1_1ScheduleTask__mxm.html" title="Sparse matrix sparse matrix product." alt="" coords="786,889,955,915"/>
+<area shape="poly" id="edge31_Node000021_Node000032" title=" " alt="" coords="738,604,740,606,762,640,771,674,770,708,765,742,759,776,758,809,766,842,788,875,803,887,799,891,784,879,761,844,753,809,754,775,760,741,765,708,766,675,758,642,736,609,734,608"/>
+<area shape="rect" id="Node000033" href="$classspla_1_1ScheduleTask__mxmT__masked.html" title="Masked matrix matrix&#45;transposed product." alt="" coords="803,939,938,980"/>
+<area shape="poly" id="edge32_Node000021_Node000033" title=" " alt="" coords="739,605,740,606,755,626,766,647,776,687,774,727,766,766,759,806,756,845,764,885,774,905,788,926,804,940,801,944,784,929,769,908,759,887,751,845,754,805,761,765,769,726,770,687,761,648,751,629,736,609,735,608"/>
+<area shape="rect" id="Node000034" href="$classspla_1_1ScheduleTask__mxv__masked.html" title="Masked matrix&#45;vector product." alt="" coords="803,1004,938,1045"/>
+<area shape="poly" id="edge33_Node000021_Node000034" title=" " alt="" coords="739,605,740,606,758,630,770,655,778,679,781,703,777,750,767,798,757,845,752,892,755,916,761,940,771,965,788,990,805,1005,801,1009,784,993,767,967,756,942,749,917,747,892,751,844,762,797,772,750,775,703,772,680,765,657,753,633,736,609,735,608"/>
+<area shape="rect" id="Node000044" href="$classspla_1_1TVector.html" title="Vector interface implementation with type information bound." alt="" coords="583,620,711,646"/>
+<area shape="poly" id="edge35_Node000043_Node000044" title=" " alt="" coords="487,420,510,435,526,457,534,479,535,523,535,566,543,586,558,607,584,623,582,627,555,611,538,589,530,567,529,523,529,480,522,459,507,439,484,424"/>
+<area shape="rect" id="Node000046" href="$classspla_1_1CLCooVec.html" title="OpenCL list&#45;of&#45;coordinates sparse vector representation." alt="" coords="354,449,498,475"/>
+<area shape="poly" id="edge37_Node000045_Node000046" title=" " alt="" coords="231,631,249,598,273,558,305,518,342,484,362,473,364,478,346,488,309,522,278,561,253,600,236,634"/>
+<area shape="rect" id="Node000047" href="$classspla_1_1CLCsr.html" title="OpenCL compressed sparse row matrix representation." alt="" coords="367,499,485,524"/>
+<area shape="poly" id="edge38_Node000045_Node000047" title=" " alt="" coords="238,632,282,582,311,556,343,533,365,523,367,527,345,538,314,560,286,586,242,636"/>
+<area shape="rect" id="Node000048" href="$classspla_1_1CLDenseVec.html" title="OpenCL one&#45;dim array for dense vector representation." alt="" coords="347,548,505,574"/>
+<area shape="poly" id="edge39_Node000045_Node000048" title=" " alt="" coords="251,635,294,608,343,582,371,572,373,577,345,587,296,613,254,640"/>
+<area shape="rect" id="Node000049" href="$classspla_1_1CpuCoo.html" title="CPU list of coordinates matrix format." alt="" coords="362,597,490,623"/>
+<area shape="poly" id="edge40_Node000045_Node000049" title=" " alt="" coords="291,640,369,621,370,626,293,645"/>
+<area shape="rect" id="Node000050" href="$classspla_1_1CpuCooVec.html" title="CPU list&#45;of&#45;coordinates sparse vector representation." alt="" coords="351,647,501,672"/>
+<area shape="poly" id="edge41_Node000045_Node000050" title=" " alt="" coords="311,657,350,657,350,662,311,662"/>
+<area shape="rect" id="Node000051" href="$classspla_1_1CpuCsr.html" title="CPU compressed sparse row matrix format." alt="" coords="364,696,488,722"/>
+<area shape="poly" id="edge42_Node000045_Node000051" title=" " alt="" coords="293,674,370,693,369,698,291,679"/>
+<area shape="rect" id="Node000052" href="$classspla_1_1CpuDenseVec.html" title="CPU one&#45;dim array for dense vector representation." alt="" coords="344,745,508,771"/>
+<area shape="poly" id="edge43_Node000045_Node000052" title=" " alt="" coords="254,679,296,706,345,732,373,742,371,747,343,737,294,711,251,684"/>
+<area shape="rect" id="Node000053" href="$classspla_1_1CpuDok.html" title="Dictionary of keys sparse matrix format." alt="" coords="362,795,490,820"/>
+<area shape="poly" id="edge44_Node000045_Node000053" title=" " alt="" coords="242,683,286,733,314,759,345,781,367,792,365,796,343,786,311,763,282,737,238,687"/>
+<area shape="rect" id="Node000054" href="$classspla_1_1CpuDokVec.html" title=" " alt="" coords="351,844,501,870"/>
+<area shape="poly" id="edge45_Node000045_Node000054" title=" " alt="" coords="236,685,253,719,278,758,309,797,346,831,364,841,362,846,342,835,305,801,273,761,249,721,231,688"/>
+<area shape="rect" id="Node000055" href="$classspla_1_1CpuLil.html" title="CPU list&#45;of&#45;list matrix format for fast incremental build." alt="" coords="367,893,485,919"/>
+<area shape="poly" id="edge46_Node000045_Node000055" title=" " alt="" coords="237,685,296,799,326,852,346,880,368,893,365,897,342,884,321,855,291,801,232,687"/>
+<area shape="rect" id="Node000057" href="$classspla_1_1TType.html" title="Type interface implementation with actual type info bound." alt="" coords="368,943,485,968"/>
+<area shape="poly" id="edge48_Node000056_Node000057" title=" " alt="" coords="247,854,291,892,345,929,370,940,368,945,343,934,287,896,243,858"/>
 </map>

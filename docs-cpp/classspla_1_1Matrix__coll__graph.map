@@ -1,5 +1,7 @@
 <map id="spla::Matrix" name="spla::Matrix">
-<area shape="rect" id="node1" title="Generalized M x N dimensional matrix object." alt="" coords="8,155,95,181"/>
-<area shape="rect" id="node2" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="6,80,97,107"/>
-<area shape="rect" id="node3" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,5,97,32"/>
+<area shape="rect" id="Node000001" title="Generalized M x N dimensional matrix object." alt="" coords="8,153,94,178"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="6,79,96,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,120,54,152,48,152,48,120"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="5,5,97,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="54,46,54,79,48,79,48,46"/>
 </map>

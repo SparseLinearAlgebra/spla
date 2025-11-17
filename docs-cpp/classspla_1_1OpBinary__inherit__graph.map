@@ -1,7 +1,11 @@
 <map id="spla::OpBinary" name="spla::OpBinary">
-<area shape="rect" id="node1" title="Binary operation with 2&#45;arity." alt="" coords="25,229,130,256"/>
-<area shape="rect" id="node5" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="5,304,149,345"/>
-<area shape="rect" id="node2" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="43,155,112,181"/>
-<area shape="rect" id="node3" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="32,80,123,107"/>
-<area shape="rect" id="node4" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="31,5,123,32"/>
+<area shape="rect" id="Node000001" title="Binary operation with 2&#45;arity." alt="" coords="25,226,129,252"/>
+<area shape="rect" id="Node000005" href="$classspla_1_1TOpBinary.html" title=" " alt="" coords="5,300,149,341"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="80,267,80,300,74,300,74,267"/>
+<area shape="rect" id="Node000002" href="$classspla_1_1Op.html" title="An callable operation to parametrize execution of math computations." alt="" coords="43,153,111,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,194,80,226,74,226,74,194"/>
+<area shape="rect" id="Node000003" href="$classspla_1_1Object.html" title="Base class for any library primitive." alt="" coords="32,79,122,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,120,80,152,74,152,74,120"/>
+<area shape="rect" id="Node000004" href="$classspla_1_1RefCnt.html" title="Base class for object with built&#45;in reference counting mechanism." alt="" coords="31,5,123,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="80,46,80,79,74,79,74,46"/>
 </map>
