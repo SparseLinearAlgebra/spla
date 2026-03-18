@@ -28,6 +28,7 @@
 #include <core/top.hpp>
 
 #include "spla/op.hpp"
+#include "spla/pair.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -120,6 +121,9 @@ namespace spla {
     ref_ptr<OpBinary> BAND_UINT;
     ref_ptr<OpBinary> BXOR_INT;
     ref_ptr<OpBinary> BXOR_UINT;
+
+    ref_ptr<OpBinary> MIN_PAIR;
+    ref_ptr<OpBinary> NEQ_PAIR;
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -240,6 +244,8 @@ namespace spla {
         DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
 
+        DECL_OP_BIN_S(MIN_PAIR, MIN, T_PAIR, { return a.weight < b.weight? a : b; });
+
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_FLOAT, EQZERO, T_FLOAT, { return a == 0; });
@@ -309,6 +315,14 @@ namespace spla {
     }
     ref_ptr<OpBinary> OpBinary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function) {
         auto op      = make_ref<TOpBinary<T_FLOAT, T_FLOAT, T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpBinary>();
+    }
+    ref_ptr<OpBinary> OpBinary::make_pair(std::string name, std::string code, std::function<T_PAIR(T_PAIR, T_PAIR)> function) {
+        auto op      = make_ref<TOpBinary<T_PAIR, T_PAIR, T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);

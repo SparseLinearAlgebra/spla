@@ -30,6 +30,8 @@
 
 #include "object.hpp"
 #include "type.hpp"
+#include "spla/pair.hpp"
+
 
 #include <string>
 
@@ -78,6 +80,8 @@ namespace spla {
         SPLA_API static ref_ptr<OpBinary> make_int(std::string name, std::string code, std::function<T_INT(T_INT, T_INT)> function);
         SPLA_API static ref_ptr<OpBinary> make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT, T_UINT)> function);
         SPLA_API static ref_ptr<OpBinary> make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpBinary> make_pair(std::string name, std::string code, std::function<T_PAIR(T_PAIR, T_PAIR)> function);
+
     };
 
     /**
@@ -181,6 +185,8 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BAND_UINT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
+
+    SPLA_API extern ref_ptr<OpBinary> MIN_PAIR;
 
     //////////////////////////////// Select ////////////////////////////////
 

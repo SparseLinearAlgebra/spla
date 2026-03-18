@@ -1,6 +1,6 @@
 #include "test_common.hpp"
 
-#include <spla.hpp>
+#include "spla.hpp"
 
 TEST(pair, struct_creation) {
     spla::Pair p(2.5f, 2);  
@@ -26,4 +26,10 @@ TEST(pair, type_registration) {
         EXPECT_EQ(type->get_size(), sizeof(spla::Pair));
         EXPECT_EQ(type->get_id(), 5);
 }
+
+TEST(pair, op_registration) {
+    spla::Library::get();
+    EXPECT_EQ(spla::MIN_PAIR->get_name(), "MIN_PAIR");
+}
+
 SPLA_GTEST_MAIN
