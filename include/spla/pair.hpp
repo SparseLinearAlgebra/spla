@@ -1,12 +1,14 @@
 #ifndef SPLA_PAIR_HPP
 #define SPLA_PAIR_HPP
+#include <limits>
+
 
 namespace spla {
         struct Pair {
                 float weight;
                 int vertex;
 
-                Pair(): weight(0), vertex(-1){}
+                Pair(): weight(std::numeric_limits<float>::infinity()), vertex(-1){}
                 Pair(float w, int v): weight(w), vertex(v){}
 
                 bool operator<(const Pair& other) const {

@@ -187,6 +187,7 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
     SPLA_API extern ref_ptr<OpBinary> MIN_PAIR;
+    SPLA_API extern ref_ptr<OpBinary> MAKE_PAIR_FROM_INT_FLOAT;
 
     //////////////////////////////// Select ////////////////////////////////
 
@@ -211,6 +212,7 @@ namespace spla {
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_INT;
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_UINT;
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> ALWAYS_PAIR;
     SPLA_API extern ref_ptr<OpSelect> NEVER_INT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_UINT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_FLOAT;
