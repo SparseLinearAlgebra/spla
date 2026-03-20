@@ -14,6 +14,15 @@ namespace spla {
                 bool operator<(const Pair& other) const {
                         return weight < other.weight;
                 }
+                bool operator==(const Pair& other) const {
+                        return weight == other.weight && vertex == other.vertex;
+                }
+                
+                bool operator!=(const Pair& other) const {
+                        return !(*this == other);
+                }
+                
+                Pair& operator=(const Pair& other) = default;
         };
 }
 #endif

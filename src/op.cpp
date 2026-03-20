@@ -123,7 +123,7 @@ namespace spla {
     ref_ptr<OpBinary> BXOR_UINT;
 
     ref_ptr<OpBinary> MIN_PAIR;
-    ref_ptr<OpBinary> MAKE_PAIR_FROM_INT_FLOAT;
+    ref_ptr<OpBinary> MUL_PAIR;
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -249,8 +249,8 @@ namespace spla {
         DECL_OP_BIN_S(MIN_PAIR, MIN, T_PAIR, { 
             if (a.weight == b.weight) return a.vertex < b.vertex? a : b;
             return a.weight < b.weight? a : b; });
-        DECL_OP_BIN(MAKE_PAIR_FROM_INT_FLOAT, MAKE_PAIR_INT_FLOAT, T_FLOAT, T_INT, T_PAIR, {
-            return spla::T_PAIR(a, b);
+        DECL_OP_BIN_S(MUL_PAIR, MUL, T_PAIR, {
+            return spla::T_PAIR(a.weight, b.vertex);
         });
 
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });

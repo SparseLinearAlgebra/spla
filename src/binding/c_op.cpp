@@ -104,7 +104,7 @@ spla_OpBinary spla_OpBinary_BAND_UINT() { return as_ptr<spla_OpBinary_t>(spla::B
 spla_OpBinary spla_OpBinary_BXOR_INT() { return as_ptr<spla_OpBinary_t>(spla::BXOR_INT.ref_and_get()); }
 spla_OpBinary spla_OpBinary_BXOR_UINT() { return as_ptr<spla_OpBinary_t>(spla::BXOR_UINT.ref_and_get()); }
 spla_OpBinary spla_OpBinary_MIN_PAIR() { return as_ptr<spla_OpBinary_t>(spla::MIN_PAIR.ref_and_get()); }
-spla_OpBinary spla_OpBinary_MAKE_PAIR_FROM_INT_FLOAT() { return as_ptr<spla_OpBinary_t>(spla::MAKE_PAIR_FROM_INT_FLOAT.ref_and_get()); }
+spla_OpBinary spla_OpBinary_MUL_PAIR() { return as_ptr<spla_OpBinary_t>(spla::MUL_PAIR.ref_and_get()); }
 
 spla_OpSelect spla_OpSelect_EQZERO_INT() { return as_ptr<spla_OpSelect_t>(spla::EQZERO_INT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_EQZERO_UINT() { return as_ptr<spla_OpSelect_t>(spla::EQZERO_UINT.ref_and_get()); }

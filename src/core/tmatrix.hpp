@@ -70,6 +70,7 @@ namespace spla {
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
         Status             set_float(uint row_id, uint col_id, float value) override;
+        Status set_pair(uint row_id, uint col_id, Pair value) override { return Status::InvalidArgument;}
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
@@ -173,6 +174,7 @@ namespace spla {
         cpu_lil_add_element(row_id, col_id, static_cast<T>(value), *get<CpuLil<T>>());
         return Status::Ok;
     }
+    
 
     template<typename T>
     Status TMatrix<T>::get_int(uint row_id, uint col_id, int32_t& value) {
@@ -313,6 +315,16 @@ namespace spla {
         }
 
         return storage_manager.get();
+    }
+    template<>
+    inline Status TMatrix<Pair>::set_pair(uint row_id, uint col_id, Pair value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+        
+        validate_rwd(FormatMatrix::CpuLil);
+        cpu_lil_add_element(row_id, col_id, value, *get<CpuLil<Pair>>());
+        return Status::Ok;
     }
 
     /**

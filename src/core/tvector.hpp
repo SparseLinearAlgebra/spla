@@ -73,10 +73,11 @@ namespace spla {
         Status             set_int(uint row_id, std::int32_t value) override;
         Status             set_uint(uint row_id, std::uint32_t value) override;
         Status             set_float(uint row_id, float value) override;
+        Status             set_pair(uint row_id, Pair value) override { return Status::InvalidArgument;}
         Status             get_int(uint row_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint32_t& value) override;
         Status             get_float(uint row_id, float& value) override;
-        Status             get_pair(uint row_id, T_PAIR& value) override;
+        Status             get_pair(uint row_id, Pair& value) override { return Status::InvalidArgument;}
         Status             fill_noize(uint seed) override;
         Status             fill_with(const ref_ptr<Scalar>& value) override;
         Status             build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
@@ -169,6 +170,7 @@ namespace spla {
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
+    
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
         if (is_valid(FormatVector::CpuDense)) {
@@ -236,24 +238,6 @@ namespace spla {
 
         return Status::Ok;
     }
-    template<typename T>
-    Status TVector<T>::get_pair(uint row_id, T_PAIR& value) {
-        validate_rw(FormatVector::CpuDok);
-
-        const auto& Ax    = get<CpuDokVec<T>>()->Ax;
-        const auto  entry = Ax.find(row_id);
-        
-        if constexpr (std::is_same_v<T, Pair>) {
-            value = m_storage.get_fill_value();
-            if (entry != Ax.end()) {
-                value = entry->second;
-            }
-            return Status::Ok;
-        } else {
-            return Status::InvalidArgument;
-        }
-    }
-
 
     template<typename T>
     Status TVector<T>::fill_noize(uint seed) {
@@ -378,6 +362,41 @@ namespace spla {
         }
 
         return storage_manager.get();
+    }
+    template<>
+    inline Status TVector<Pair>::set_pair(uint row_id, Pair value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+        
+        if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
+            get<CpuDenseVec<Pair>>()->Ax[row_id] = value;
+            return Status::Ok;
+        }
+        
+        validate_rwd(FormatVector::CpuDok);
+        cpu_dok_vec_add_element(row_id, value, *get<CpuDokVec<Pair>>());
+        return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::get_pair(uint row_id, Pair& value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+        
+        validate_rw(FormatVector::CpuDok);
+        
+        const auto& Ax    = get<CpuDokVec<Pair>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        
+        if (entry != Ax.end()) {
+            value = entry->second;
+        } else {
+            value = m_storage.get_fill_value();
+        }
+        
+        return Status::Ok;
     }
     
 

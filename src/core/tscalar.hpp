@@ -139,6 +139,16 @@ namespace spla {
         explicit TScalar(Pair value) : m_value(value) {}
         ~TScalar() override = default;
 
+        Status set_pair(Pair value) {
+            m_value = value;
+            return Status::Ok;
+        }
+        
+        Status get_pair(Pair& value) const {
+            value = m_value;
+            return Status::Ok;
+        }
+
         ref_ptr<Type> get_type() override {
             return PAIR;
         }

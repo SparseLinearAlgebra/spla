@@ -187,7 +187,7 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
     SPLA_API extern ref_ptr<OpBinary> MIN_PAIR;
-    SPLA_API extern ref_ptr<OpBinary> MAKE_PAIR_FROM_INT_FLOAT;
+    SPLA_API extern ref_ptr<OpBinary> MUL_PAIR;
 
     //////////////////////////////// Select ////////////////////////////////
 
