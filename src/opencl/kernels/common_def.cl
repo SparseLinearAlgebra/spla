@@ -57,6 +57,7 @@ struct float4 {
     float x, y, z, w;
 };
 
+
 #define uint  unsigned int
 #define ulong unsigned long int
 

@@ -60,6 +60,8 @@ namespace spla {
         T_INT         as_int() override { return static_cast<T_INT>(m_value); }
         T_UINT        as_uint() override { return static_cast<T_UINT>(m_value); }
         T_FLOAT       as_float() override { return static_cast<T_FLOAT>(m_value); }
+        T_PAIR        as_pair() override { return static_cast<T_PAIR>(m_value); }
+
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -131,6 +133,18 @@ namespace spla {
     T TScalar<T>::get_value() const {
         return m_value;
     }
+    template<>
+    inline T_PAIR TScalar<std::int32_t>::as_pair() { 
+        return Pair(); 
+    }
+    template<>
+    inline T_PAIR TScalar<std::uint32_t>::as_pair() { 
+        return Pair(); 
+    }
+    template<>
+    inline T_PAIR TScalar<float>::as_pair() { 
+        return Pair(); 
+    }
  
     template<>
     class TScalar<Pair> final : public Scalar {
@@ -190,6 +204,10 @@ namespace spla {
         T_FLOAT as_float() override {
             LOG_MSG(Status::InvalidArgument, "cannot convert Pair to float");
             return 0.0f;
+        }
+        T_PAIR as_pair() override {
+            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to pair");
+            return Pair();
         }
 
         void set_label(std::string label) override {

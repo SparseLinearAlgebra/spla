@@ -95,6 +95,8 @@ namespace spla {
         SPLA_API static ref_ptr<OpSelect> make_int(std::string name, std::string code, std::function<bool(T_INT)> function);
         SPLA_API static ref_ptr<OpSelect> make_uint(std::string name, std::string code, std::function<bool(T_UINT)> function);
         SPLA_API static ref_ptr<OpSelect> make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpSelect> make_pair(std::string name, std::string code, std::function<bool(T_PAIR)> function);
+
     };
 
     //////////////////////////////// Unary ////////////////////////////////

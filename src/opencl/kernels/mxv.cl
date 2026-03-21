@@ -26,6 +26,7 @@
 /**********************************************************************************/
 
 #include "common_def.cl"
+#include "pair_def.cl"
 
 void reduction_group(uint                   block_size,
                      uint                   lid,

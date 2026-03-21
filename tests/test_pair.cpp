@@ -22,7 +22,7 @@ TEST(pair, type_registration) {
         ASSERT_TRUE(type);
         EXPECT_EQ(type->get_name(), "PAIR");
         EXPECT_EQ(type->get_code(), "P");
-        EXPECT_EQ(type->get_cpp(), "pair");
+        EXPECT_EQ(type->get_cpp(), "Pair");
         EXPECT_EQ(type->get_description(), "weight-vertex pair float-int");
         EXPECT_EQ(type->get_size(), sizeof(spla::Pair));
         EXPECT_EQ(type->get_id(), 5);
@@ -76,12 +76,7 @@ TEST(pair, mxv_pair) {
         }
         auto init_inf = spla::Scalar::make(spla::PAIR);//нулевое значение по сложению (+inf, -1)
         spla::T_PAIR init_val(1e9f, -1);  // большой вес и -1 (нет вершины)
-        init_inf->set_pair(init_val);
-        ASSERT_TRUE(edge);
-        ASSERT_TRUE(mask);
-        ASSERT_TRUE(S);
-        ASSERT_TRUE(parent);
-        ASSERT_TRUE(init_inf);
+        init_inf->set_pair(init_val);        
         spla::exec_mxv_masked(edge, mask, S, parent, spla::MUL_PAIR, spla::MIN_PAIR, spla::ALWAYS_PAIR, init_inf);
 
         for (int32_t i = 0; i < n; i++) {

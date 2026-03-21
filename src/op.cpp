@@ -246,12 +246,14 @@ namespace spla {
         DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
 
-        DECL_OP_BIN_S(MIN_PAIR, MIN, T_PAIR, { 
-            if (a.weight == b.weight) return a.vertex < b.vertex? a : b;
-            return a.weight < b.weight? a : b; });
-        DECL_OP_BIN_S(MUL_PAIR, MUL, T_PAIR, {
-            return spla::T_PAIR(a.weight, b.vertex);
-        });
+        MUL_PAIR = OpBinary::make_pair("MUL_PAIR", 
+            "(a, b) make_pair(a.weight, b.vertex)",
+            [](Pair a, Pair b) { return Pair(a.weight, b.vertex); });
+        MIN_PAIR = OpBinary::make_pair("MIN_PAIR", 
+            "(a, b) min_pair(a, b)",
+            [](Pair a, Pair b) { 
+                if (a.weight == b.weight) return a.vertex < b.vertex? a : b;
+                return a.weight < b.weight? a : b; });            
 
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
@@ -274,7 +276,7 @@ namespace spla {
         DECL_OP_SELECT(ALWAYS_INT, ALWAYS, T_INT, { return 1; });
         DECL_OP_SELECT(ALWAYS_UINT, ALWAYS, T_UINT, { return 1; });
         DECL_OP_SELECT(ALWAYS_FLOAT, ALWAYS, T_FLOAT, { return 1; });
-        DECL_OP_SELECT(ALWAYS_PAIR, ALWAYS, T_PAIR, { return 1; });
+        ALWAYS_PAIR = OpSelect::make_pair("ALWAYS_PAIR", "(a) pair_always(a)", [](Pair a) { return 1; });
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
@@ -357,6 +359,14 @@ namespace spla {
     }
     ref_ptr<OpSelect> OpSelect::make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function) {
         auto op      = make_ref<TOpSelect<T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelect>();
+    }
+    ref_ptr<OpSelect> OpSelect::make_pair(std::string name, std::string code, std::function<bool(T_PAIR)> function) {
+        auto op      = make_ref<TOpSelect<T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);

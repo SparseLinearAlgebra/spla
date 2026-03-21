@@ -170,6 +170,10 @@ namespace spla {
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::set_int(uint row_id, std::int32_t value) {
+        return Status::InvalidArgument;
+    }
     
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
@@ -183,6 +187,10 @@ namespace spla {
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::set_uint(uint row_id, std::uint32_t value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
         if (is_valid(FormatVector::CpuDense)) {
@@ -194,6 +202,10 @@ namespace spla {
         validate_rwd(FormatVector::CpuDok);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::set_float(uint row_id, float value) {
+        return Status::InvalidArgument;
     }
 
     template<typename T>
@@ -210,6 +222,10 @@ namespace spla {
 
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::get_int(uint row_id, int32_t& value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
         validate_rw(FormatVector::CpuDok);
@@ -224,6 +240,10 @@ namespace spla {
 
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::get_uint(uint row_id, uint32_t& value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
         validate_rw(FormatVector::CpuDok);
@@ -237,6 +257,10 @@ namespace spla {
         }
 
         return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::get_float(uint row_id, float& value) {
+        return Status::InvalidArgument;
     }
 
     template<typename T>

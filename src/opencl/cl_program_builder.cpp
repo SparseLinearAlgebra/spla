@@ -31,6 +31,7 @@
 #include <spla/timer.hpp>
 
 #include <stdexcept>
+#include <fstream>
 
 namespace spla {
 
@@ -63,6 +64,7 @@ namespace spla {
         return *this;
     }
     void CLProgramBuilder::acquire() {
+        
         CLAccelerator*  acc   = get_acc_cl();
         CLProgramCache* cache = acc->get_cache();
 
@@ -88,8 +90,7 @@ namespace spla {
         builder << source_common_api;
 
         for (const auto& function : m_functions) {
-            builder << function.second->get_type_res()->get_cpp() << " "
-                    << function.first << function.second->get_source_cl() << "\n";
+            builder << "#define " << function.first << function.second->get_source_cl() << "\n";
         }
         builder << m_source;
 
