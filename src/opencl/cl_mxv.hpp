@@ -263,10 +263,12 @@ namespace spla {
                     .add_type("TYPE", get_ttype<T>().template as<Type>())
                     .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
                     .add_op("OP_BINARY2", op_add.template as<OpBinary>())
-                    .add_op("OP_SELECT", op_select.template as<OpSelect>())
-                    .set_source(source_mxv)
-                    .acquire();
+                    .add_op("OP_SELECT", op_select.template as<OpSelect>());
 
+            if constexpr (std::is_same_v<T, Pair>) {
+                program_builder.add_define("USE_PAIR_COMPARISON", 1);
+            }
+            program_builder.set_source(source_mxv).acquire();
             program = program_builder.get_program();
 
             return true;

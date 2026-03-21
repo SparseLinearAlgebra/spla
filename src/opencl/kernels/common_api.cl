@@ -26,6 +26,27 @@
 /**********************************************************************************/
 
 #include "common_def.cl"
+struct Pair{
+    float weight;
+    int vertex;
+};
+
+struct Pair make_pair(float w, int v) {
+    struct Pair p;
+    p.weight = w;
+    p.vertex = v;
+    return p;
+    
+}
+
+struct Pair min_pair(struct Pair a, struct Pair b) {
+    if (a.weight == b.weight) return a.vertex < b.vertex ? a : b;
+    return a.weight < b.weight ? a : b;
+}
+
+int pair_always(struct Pair a) {
+    return 1;
+}
 
 uint random_gen_java(ulong seed) {
     seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48L) - 1);

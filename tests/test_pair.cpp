@@ -22,7 +22,7 @@ TEST(pair, type_registration) {
         ASSERT_TRUE(type);
         EXPECT_EQ(type->get_name(), "PAIR");
         EXPECT_EQ(type->get_code(), "P");
-        EXPECT_EQ(type->get_cpp(), "Pair");
+        EXPECT_EQ(type->get_cpp(), "struct Pair");
         EXPECT_EQ(type->get_description(), "weight-vertex pair float-int");
         EXPECT_EQ(type->get_size(), sizeof(spla::Pair));
         EXPECT_EQ(type->get_id(), 5);

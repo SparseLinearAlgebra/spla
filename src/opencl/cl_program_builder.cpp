@@ -87,6 +87,7 @@ namespace spla {
         for (const auto& define : m_defines) {
             builder << "#define " << define.first << " " << define.second << "\n";
         }
+        
         builder << source_common_api;
 
         for (const auto& function : m_functions) {

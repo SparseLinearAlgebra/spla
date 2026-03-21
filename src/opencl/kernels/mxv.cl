@@ -26,7 +26,6 @@
 /**********************************************************************************/
 
 #include "common_def.cl"
-#include "pair_def.cl"
 
 void reduction_group(uint                   block_size,
                      uint                   lid,
@@ -113,7 +112,13 @@ __kernel void mxv_scalar(__global const uint* g_Ap,
                 const uint col_id = g_Aj[i];
                 sum               = OP_BINARY2(sum, OP_BINARY1(g_Ax[i], g_vx[col_id]));
 
-                if (early_exit && (sum != init)) break;
+                if (early_exit) {
+                    #ifdef USE_PAIR_COMPARISON
+                        if (sum.weight != init.weight || sum.vertex != init.vertex) break;
+                    #else
+                        if (sum != init) break;
+                    #endif
+                }
             }
         }
 
@@ -163,7 +168,13 @@ __kernel void mxv_config_scalar(__global const uint* g_Ap,
             const uint col_id = g_Aj[i];
             sum               = OP_BINARY2(sum, OP_BINARY1(g_Ax[i], g_vx[col_id]));
 
-            if (early_exit && (sum != init)) break;
+            if (early_exit) {
+                    #ifdef USE_PAIR_COMPARISON
+                        if (sum.weight != init.weight || sum.vertex != init.vertex) break;
+                    #else
+                        if (sum != init) break;
+                    #endif
+                }
         }
 
         g_rx[row_id] = sum;
