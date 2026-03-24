@@ -70,10 +70,11 @@ namespace spla {
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
         Status             set_float(uint row_id, uint col_id, float value) override;
-        Status set_pair(uint row_id, uint col_id, Pair value) override { return Status::InvalidArgument;}
+        Status             set_pair(uint row_id, uint col_id, Pair value) override { return Status::InvalidArgument;}
         Status             get_int(uint row_id, uint col_id, int32_t& value) override;
         Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
         Status             get_float(uint row_id, uint col_id, float& value) override;
+        Status             get_pair(uint row_id, uint col_id, Pair& value) override { return Status::InvalidArgument;}
         Status             build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) override;
         Status             read(ref_ptr<MemView>& keys1, ref_ptr<MemView>& keys2, ref_ptr<MemView>& values) override;
         Status             clear() override;
@@ -350,6 +351,23 @@ namespace spla {
         
         validate_rwd(FormatMatrix::CpuLil);
         cpu_lil_add_element(row_id, col_id, value, *get<CpuLil<Pair>>());
+        return Status::Ok;
+    }
+    template<>
+    inline Status TMatrix<Pair>::get_pair(uint row_id, uint col_id, Pair& value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+        validate_rw(FormatMatrix::CpuDok);
+
+        auto& Ax    = get<CpuDok<Pair>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<Pair>::Key(row_id, col_id));
+        value       = m_storage.get_fill_value();
+
+        if (entry != Ax.end()) {
+            value = static_cast<Pair>(entry->second);
+        }
+
         return Status::Ok;
     }
 

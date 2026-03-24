@@ -32,10 +32,15 @@ TEST(pair, op_registration) {
         spla::Library::get();
         EXPECT_EQ(spla::MIN_PAIR->get_name(), "MIN_PAIR");
 }
+TEST(pair, get_pair_matrix) {
+        auto S = spla::Matrix::make(2, 2, spla::PAIR);
+        S->set_pair(0, 1, spla::T_PAIR(7.0f, 1));
+        spla::T_PAIR pair;
+        S->get_pair(0, 1, pair);
+        EXPECT_EQ(pair.vertex, 1);
+        EXPECT_EQ(pair.weight, 7.0f);
 
-
-
-
+}
 TEST(pair, mxv_pair) {
         int32_t n = 7;
         auto S = spla::Matrix::make(n, n, spla::PAIR);
