@@ -70,6 +70,8 @@ namespace spla {
     ref_ptr<OpUnary> FLOOR_FLOAT;
     ref_ptr<OpUnary> ROUND_FLOAT;
     ref_ptr<OpUnary> TRUNC_FLOAT;
+    ref_ptr<OpUnary> IDENTITY_PAIR;
+
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -196,6 +198,7 @@ namespace spla {
         DECL_OP_UNA_S(FLOOR_FLOAT, FLOOR, T_FLOAT, { return floor(a); });
         DECL_OP_UNA_S(ROUND_FLOAT, ROUND, T_FLOAT, { return round(a); });
         DECL_OP_UNA_S(TRUNC_FLOAT, TRUNC, T_FLOAT, { return trunc(a); });
+        IDENTITY_PAIR = spla::OpUnary::make_pair("IDENTITY_PAIR", "(a) {return a;}", [](Pair a) { return a; });
 
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });
@@ -301,6 +304,14 @@ namespace spla {
     }
     ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function) {
         auto op      = make_ref<TOpUnary<T_FLOAT, T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpUnary>();
+    }
+    ref_ptr<OpUnary> OpUnary::make_pair(std::string name, std::string code, std::function<T_PAIR(T_PAIR)> function) {
+        auto op      = make_ref<TOpUnary<T_PAIR, T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);

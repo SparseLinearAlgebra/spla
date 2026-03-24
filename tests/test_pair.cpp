@@ -106,4 +106,21 @@ TEST(pair, mxv_pair) {
             EXPECT_EQ(p.vertex, expected[i].vertex);
         }
 }
+TEST(pair, extract_row) {
+    int32_t n = 3;
+    auto S = spla::Matrix::make(n, n, spla::PAIR);
+    S->set_pair(0, 1, spla::T_PAIR(7.0f, 1));
+    S->set_pair(1, 0, spla::T_PAIR(4.0f, 4));
+    S->set_pair(1, 2, spla::T_PAIR(7.0f, 0));
+       
+    auto row1 = spla::Vector::make(n, spla::PAIR);
+    spla::exec_m_extract_row(row1, S, 1, spla::IDENTITY_PAIR);
+    for (int v = 0; v < n; v++) {
+        spla::T_PAIR p;
+        row1->get_pair(v, p);
+        if (p.weight < 1e8) {
+            std::cout << "  S[1][" << v << "] = (" << p.weight << "," << p.vertex << ")\n";
+        }
+    }
+}
 SPLA_GTEST_MAIN

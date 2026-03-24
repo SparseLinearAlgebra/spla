@@ -127,6 +127,8 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", INT), std::make_shared<Algo_m_extract_row_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", UINT), std::make_shared<Algo_m_extract_row_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", FLOAT), std::make_shared<Algo_m_extract_row_cpu<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_extract_row", PAIR), std::make_shared<Algo_m_extract_row_cpu<T_PAIR>>());
+
 
         // algorthm m_extract_column
         g_registry->add(MAKE_KEY_CPU_0("m_extract_column", INT), std::make_shared<Algo_m_extract_column_cpu<T_INT>>());
