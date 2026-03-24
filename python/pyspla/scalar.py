@@ -208,7 +208,7 @@ class Scalar(Object):
         return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
 
     def __sub__(self, other):
-        return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
+        return Scalar(dtype=self.dtype, value=self.get() - Scalar._value(other))
 
     def __mul__(self, other):
         return Scalar(dtype=self.dtype, value=self.get() * Scalar._value(other))
