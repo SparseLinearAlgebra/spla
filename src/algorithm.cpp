@@ -37,6 +37,9 @@
 #include <iostream>
 #include <limits>
 #include <queue>
+#include <vector>
+
+#define INF std::numeric_limits<float>::infinity()
 
 namespace spla {
 
@@ -448,5 +451,257 @@ namespace spla {
     }
 
 #pragma endregion Pr
+#pragma region Mst
+Status mst(
+        const ref_ptr<Matrix>&     T,
+        ref_ptr<Matrix>&     S,
+        const ref_ptr<Descriptor>& descriptor,
+        ref_ptr<ScheduleTask>*     task_hnd) {
+    
+    assert(S);
+    assert(T);
+
+    const auto n = S->get_n_rows();
+    int comp = n;
+
+    auto parent = Vector::make(n, PAIR);
+    for (uint i = 0; i < n; i++) {
+        parent->set_pair(i, T_PAIR(0.0f, i));
+    }
+    auto edge = Vector::make(n, PAIR);
+    auto cedge = Vector::make(n, PAIR);
+    auto t_vec = Vector::make(n, PAIR);
+    auto mask = Vector::make(n, PAIR);
+    for (uint i = 0; i < n; i++) {
+        mask->set_pair(i, T_PAIR(1.0f, 0));
+    }
+    auto init_inf = Scalar::make(PAIR);
+    T_PAIR init_val;
+    init_inf->set_pair(init_val);
+    int iteration = 0;
+    auto new_S = S;
+#ifdef SPLA_RELEASE
+    std::cout << "start Boruvka MST, vertices = " << n << "\n";
+    Timer tight;
+#endif
+
+    while (comp > 1) {
+#ifdef SPLA_RELEASE
+    tight.start();
+#endif
+        iteration++;
+        // step 1, min edges for each vertices
+        spla::exec_mxv_masked(edge, mask, S, parent, spla::MUL_PAIR, spla::MIN_PAIR, spla::ALWAYS_PAIR, init_inf);
+#ifdef SPLA_DEBUG
+
+    std::cout << "edge = [";
+    for (int32_t i = 0; i < n; i++) {
+        spla::T_PAIR p;
+        edge->get_pair(i, p);
+        std::cout << "(" << p.weight << ", " << p.vertex << "), ";
+    }
+    std::cout << "]\n";
+#endif
+    // step 2, min edges for each component
+        for (int32_t i = 0; i < n; i++) {
+            cedge->set_pair(i, init_val);
+        }
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_PAIR p;
+            spla::T_PAIR p1;
+            spla::T_PAIR p2;
+            parent->get_pair(i, p); 
+            auto p_i = p.vertex; // p_i = parent[i]
+            cedge->get_pair(p_i, p1); // p1 = cedge[parent[i]]
+            edge->get_pair(i, p2); // p2 = edge[i]
+            auto min_for_comp = p1.weight <= p2.weight? p1 : p2; // min(cedge[parent[i]], edge[i])
+            cedge->set_pair(p_i, min_for_comp);
+        }
+#ifdef SPLA_DEBUG
+    std::cout << "cedge = [";
+    for (int32_t i = 0; i < n; i++) {
+        spla::T_PAIR p;
+        cedge->get_pair(i, p);
+        std::cout << "(" << p.weight << ", " << p.vertex << "), ";
+    }
+    std::cout << "]\n";
+#endif
+        // step 3, когда нашли лучшее ребро компоненты распространяем его на все вершины
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_PAIR parent_v;
+            spla::T_PAIR cedge_v;
+            parent->get_pair(i, parent_v);
+            cedge->get_pair(parent_v.vertex, cedge_v);
+            t_vec->set_pair(i, cedge_v); //t[i] = cedge[parent[i]]
+        }
+        //step 4 выбор представителя для каждой компоненты(когда лучшее ребро в edges совпадает с лучшим ребром компоненты t)
+        auto index = spla::Vector::make(n, spla::INT);
+                
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_PAIR edge_v, t_v;
+            edge->get_pair(i, edge_v);
+            t_vec->get_pair(i, t_v);
+            if (edge_v == t_v) index->set_int(i, i);
+            else index->set_int(i, n);
+        }
+        auto temp = spla::Vector::make(n, spla::INT);
+        for (int32_t i = 0; i < n; i++) temp->set_int(i, n);
+        for (int32_t i = 0; i < n; i++) {
+                spla::T_PAIR parent_v;
+                parent->get_pair(i, parent_v);
+                auto p_i = parent_v.vertex;
+                spla::T_INT temp_v, ind_v;
+                temp->get_int(p_i, temp_v);
+                index->get_int(i, ind_v);
+                spla::T_INT min_v = temp_v < ind_v? temp_v : ind_v;
+                temp->set_int(p_i, min_v); //temp[parent[i]] = min(temp[parent[i]], index[i])
+        }
+#ifdef SPLA_DEBUG
+                std::cout << "t = [";
+                for (int32_t i = 0; i < n; i++) {
+                        spla::T_INT p;
+                        temp->get_int(i, p);
+                        std::cout << p << ", ";
+                }
+                std::cout << "]\n";
+#endif
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_PAIR parent_v;
+            parent->get_pair(i, parent_v);
+            auto p_i = parent_v.vertex;
+            spla::T_INT temp_v;
+            temp->get_int(p_i, temp_v);
+            index->set_int(i, temp_v);
+        }
+#ifdef SPLA_DEBUG
+                std::cout << "index = [";
+                for (int32_t i = 0; i < n; i++) {
+                        spla::T_INT p;
+                        index->get_int(i, p);
+                        std::cout << p << ", ";
+                }
+                std::cout << "]\n";
+#endif
+        //step 5 добавляем найденные ребра в MST
+        auto new_parent = spla::Vector::make(n, spla::PAIR);
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_PAIR p;
+            parent->get_pair(i, p);
+            new_parent->set_pair(i, p);
+        }
+        for (int32_t i = 0; i < n; i++) {
+            spla::T_INT ind_v;
+            index->get_int(i, ind_v);
+            if (i == ind_v) {
+                auto row = spla::Vector::make(n, spla::PAIR);
+                spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
+                int min_vertex = -1;
+                float min_weight = INF;
+
+                for (int32_t j = 0; j < n; j++) {
+                    spla::T_PAIR pair_row;
+                    row->get_pair(j, pair_row);
+                    auto pair_row_weight = pair_row.weight;
+                    auto pair_row_vertex = pair_row.vertex;
+                    if (pair_row_weight < INF) {
+                        spla::T_PAIR p1, p2;
+                        parent->get_pair(i, p1);
+                        parent->get_pair(pair_row_vertex, p2);
+                        if (p1.vertex != p2.vertex) { //разные компоненты
+                            if (pair_row_weight < min_weight) {
+                                    min_weight = pair_row_weight;
+                                    min_vertex = j;
+                            }
+
+                        }
+                    }
+                
+
+                }
+                if (min_vertex == -1) continue;
+                T->set_float(i, min_vertex, min_weight);
+                T->set_float(min_vertex, i, min_weight);
+                std::cout << "T <- "  << i << " - " << min_vertex << " (" << min_weight << ")\n";
+                if (i < min_vertex) {
+                    spla::T_PAIR p;
+                    spla::T_PAIR old_p;
+                    new_parent->get_pair(i, p);
+                    new_parent->get_pair(min_vertex, old_p);
+                    new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
+                    for (int k = 0; k < n; k++) {
+                        spla::T_PAIR p1;
+                        new_parent->get_pair(k, p1);
+                        if (p1.vertex == old_p.vertex) new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
+                    }
+                }
+                else {
+                    spla::T_PAIR p;
+                    spla::T_PAIR old_p;
+                    new_parent->get_pair(min_vertex, p);
+                    new_parent->get_pair(i, old_p);
+                    new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
+                    for (int k = 0; k < n; k++) {
+                        spla::T_PAIR p1;
+                        new_parent->get_pair(k, p1);
+                        if (p1.vertex == old_p.vertex) new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
+                    }
+                }
+                                
+            }
+        }
+        parent = new_parent;
+        std::vector<bool> seen(n, false);
+        for (uint i = 0; i < n; i++) {
+            T_PAIR p;
+            parent->get_pair(i, p);
+            seen[p.vertex] = true;
+        }
+        
+        comp = 0;
+        for (uint i = 0; i < n; i++) {
+            if (seen[i]) comp++;
+        }
+#ifdef SPLA_DEBUG
+                std::cout << "parent = [";
+                for (int32_t i = 0; i < n; i++) {
+                        spla::T_PAIR p;
+                        parent->get_pair(i, p);
+                        std::cout << p.vertex << ", ";
+                }
+                std::cout << "]\n";
+#endif
+#ifdef SPLA_RELEASE
+        tight.stop();
+        std::cout << " - iteration " << iteration
+                  << " components " << comp
+                  << " " << tight.get_elapsed_ms() << " ms" << std::endl;
+        Library::get()->time_profile_dump();
+        Library::get()->time_profile_reset();
+#endif
+                //обновляем матрицу смежности
+                auto filtered_S = spla::Matrix::make(n, n, spla::PAIR);
+                for (int32_t i = 0; i < n; i++) {
+                        for (int32_t j = 0; j < n; j++) {
+                                spla::T_PAIR val;
+                                S->get_pair(i, j, val);
+                                if (val.weight != std::numeric_limits<float>::infinity()) {
+                                        spla::T_PAIR parent_i, parent_j;
+                                        parent->get_pair(i, parent_i);
+                                        parent->get_pair(j, parent_j);
+                                        if ((parent_i.vertex != parent_j.vertex) && (val.weight != std::numeric_limits<float>::infinity())) {
+                                                filtered_S->set_pair(i, j, val);
+                                        }
+
+                                }
+                        }
+                }
+                S = filtered_S;
+
+        }
+        return Status::Ok;
+    }
+
+#pragma endregion Mst
+
 
 }// namespace spla

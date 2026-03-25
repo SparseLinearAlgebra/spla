@@ -73,6 +73,11 @@ namespace spla {
         std::stringstream header(line);
         header >> m_n_rows >> m_n_cols >> nnz;
 
+        bool file_has_values = false;
+        if (line.find("pattern") == std::string::npos) { //есть подстрока pattern => граф невзвешенный
+            file_has_values = true;
+        }
+
         std::cout << "Loading matrix-market coordinate format data... " << std::endl;
         std::cout << " Reading from " << m_file_path << std::endl;
         std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols" << std::endl;
@@ -94,10 +99,12 @@ namespace spla {
         std::size_t       to_preallocate = to_read * (make_undirected ? 2 : 1);
         std::vector<uint> Ai;
         std::vector<uint> Aj;
+        std::vector<float> Av;
 
         // preallocate to avoid copy
         Ai.reserve(to_preallocate);
         Aj.reserve(to_preallocate);
+        if (file_has_values) Av.reserve(to_preallocate);
 
         float job_done  = 0.0f;
         float job_total = 35.0f;
@@ -152,6 +159,15 @@ namespace spla {
             char* end     = nullptr;
             auto  i       = uint(std::strtoll(buffer + buffer_offset, &end, 10));
             auto  j       = uint(std::strtoll(end, &end, 10));
+            float val     = 1.0f; //default value
+
+            if (file_has_values) {
+                char* next = end;
+                while (*next == ' ' || *next == '\t') next++;
+                if (*next != '\n' && *next != '\0') {
+                    val = static_cast<float>(std::strtod(next, &end));
+                }
+            }
             buffer_offset = line_end + 1;
 
             assert(i > 0 && j > 0);
@@ -166,10 +182,12 @@ namespace spla {
             if (make_undirected) {
                 Ai.push_back(j);
                 Aj.push_back(i);
+                if (file_has_values) Av.push_back(val);
             }
 
             Ai.push_back(i);
             Aj.push_back(j);
+            if (file_has_values) Av.push_back(val);
         }
         t.lap_end();// parsing
 
@@ -211,6 +229,7 @@ namespace spla {
             m_n_values = reduced_Ai.size();
             m_Ai       = std::move(reduced_Ai);
             m_Aj       = std::move(reduced_Aj);
+            m_Aw       = std::move(Av);
         }
         t.lap_end();// reducing
 
@@ -366,6 +385,9 @@ namespace spla {
     }
     const std::vector<uint>& MtxLoader::get_Aj() const {
         return m_Aj;
+    }
+    const std::vector<float>& MtxLoader::get_Aw() const {
+        return m_Aw;
     }
 
     uint MtxLoader::get_n_rows() const {
