@@ -1,0 +1,7 @@
+%%MatrixMarket matrix coordinate real symmetric
+% square_weighted: 4 vertices, 4 edges
+4 4 4
+1 2 2
+2 3 1
+3 4 2
+1 4 1

@@ -1,0 +1,12 @@
+%%MatrixMarket matrix coordinate real symmetric
+% k33: 6 vertices, 9 edges
+6 6 9
+1 4 1
+1 5 2
+1 6 3
+2 4 4
+2 5 5
+2 6 6
+3 4 7
+3 5 8
+3 6 9

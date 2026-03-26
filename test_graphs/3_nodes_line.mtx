@@ -1,0 +1,5 @@
+%%MatrixMarket matrix coordinate real symmetric
+% 3_nodes_line: 3 vertices, 2 edges
+3 3 2
+1 2 1
+2 3 2

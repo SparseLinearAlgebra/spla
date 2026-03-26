@@ -1,0 +1,16 @@
+%%MatrixMarket matrix coordinate real symmetric
+% random_10: 10 vertices, 13 edges
+10 10 13
+1 2 4
+1 6 2
+2 3 3
+2 7 5
+3 4 1
+3 8 4
+4 5 2
+4 9 6
+5 10 3
+6 7 1
+7 8 2
+8 9 1
+9 10 4

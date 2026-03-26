@@ -1,0 +1,83 @@
+MST Benchmark Results
+Date: 2026-03-26 19:02:27
+Build: Release
+================================================================================
+
+2_nodes_line:
+  Vertices: 2
+  Edges in graph: 1
+  MST weight: 5.0 (expected: 5)
+  MST edges: None (expected: 1)
+
+3_nodes_line:
+  Vertices: 3
+  Edges in graph: 2
+  MST weight: 3.0 (expected: 3)
+  MST edges: None (expected: 2)
+
+4_nodes_line:
+  Vertices: 4
+  Edges in graph: 3
+  MST weight: 6.0 (expected: 6)
+  MST edges: None (expected: 3)
+
+5_nodes_line:
+  Vertices: 5
+  Edges in graph: 4
+  MST weight: 10.0 (expected: 10)
+  MST edges: None (expected: 4)
+
+5_nodes_star:
+  Vertices: 5
+  Edges in graph: 4
+  MST weight: 14.0 (expected: 14)
+  MST edges: None (expected: 4)
+
+5_nodes_complete:
+  Vertices: 5
+  Edges in graph: 10
+  MST weight: 10.0 (expected: 10)
+  MST edges: None (expected: 4)
+
+two_components:
+  Vertices: 6
+  Edges in graph: 6
+  MST weight: 0.0 (expected: 6)
+  MST edges: None (expected: 4)
+
+cycle_6:
+  Vertices: 6
+  Edges in graph: 6
+  MST weight: 15.0 (expected: 15)
+  MST edges: None (expected: 5)
+
+k33:
+  Vertices: 6
+  Edges in graph: 9
+  MST weight: 17.0 (expected: 17)
+  MST edges: None (expected: 5)
+
+triangle:
+  Vertices: 3
+  Edges in graph: 3
+  MST weight: 2.0 (expected: 2)
+  MST edges: None (expected: 2)
+
+square:
+  Vertices: 4
+  Edges in graph: 4
+  MST weight: 3.0 (expected: 3)
+  MST edges: None (expected: 3)
+
+square_weighted:
+  Vertices: 4
+  Edges in graph: 4
+  MST weight: 0.0 (expected: 4)
+  MST edges: None (expected: 3)
+
+graph_7:
+  Vertices: 7
+  Edges in graph: 11
+  MST weight: 0.0 (expected: 40)
+  MST edges: None (expected: 6)
+

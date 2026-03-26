@@ -490,6 +490,7 @@ Status mst(
     tight.start();
 #endif
         iteration++;
+        int edges_added_this_iteration = 0;
         // step 1, min edges for each vertices
         spla::exec_mxv_masked(edge, mask, S, parent, spla::MUL_PAIR, spla::MIN_PAIR, spla::ALWAYS_PAIR, init_inf);
 #ifdef SPLA_DEBUG
@@ -621,6 +622,7 @@ Status mst(
                 if (min_vertex == -1) continue;
                 T->set_float(i, min_vertex, min_weight);
                 T->set_float(min_vertex, i, min_weight);
+                edges_added_this_iteration++;
                 if (i < min_vertex) {
                     spla::T_PAIR p;
                     spla::T_PAIR old_p;
@@ -701,7 +703,7 @@ Status mst(
                         }
                 }
                 S = filtered_S;
-                if (comp > 1 && S->get_n_values() == 0) {
+                if (edges_added_this_iteration == 0) {
                     std::cout << "Graph is disconnected." << std::endl;
                     return Status::Ok;  
                 }

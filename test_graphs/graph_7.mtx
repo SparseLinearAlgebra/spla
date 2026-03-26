@@ -1,0 +1,14 @@
+%%MatrixMarket matrix coordinate real symmetric
+% graph_7: 7 vertices, 11 edges
+7 7 11
+1 2 7
+1 5 4
+2 3 11
+2 4 10
+2 5 9
+3 4 5
+4 5 15
+4 6 12
+4 7 8
+5 6 6
+6 7 13
