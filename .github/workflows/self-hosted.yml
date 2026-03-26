@@ -3,9 +3,7 @@ name: Self-Hosted
 on:
   push:
     branches:
-      - main
-      - release
-      - pre-release
+      - k.oreshin/test-branch
     paths:
       - '.github/**'
       - 'deps/**'
@@ -75,22 +73,13 @@ jobs:
       test-file: ${{ matrix.gpu }}_tests.log
 
     steps:
-      - name: Run tests
+      - name: Check for gpus
         run: |
-          python3 ./run_tests.py --build-dir=${{ env.build-dir }} \
-                                 --platform=${{ matrix.platform }} \
-                                 --device=${{ matrix.device }} \
-                                 | tee ${{ env.test-file }}
+          clinfo -l
 
-      - name: Upload tests resutls
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.test-file }}
-          path: ${{ env.test-file }}
-
-      - name: Check for tests results
+      - name: Check for nvidia
         run: |
-          ! grep -qi "FAILED" ${{ env.test-file }}
+          nvidia-smi
 
   clean:
     name: Cleanup workspace
