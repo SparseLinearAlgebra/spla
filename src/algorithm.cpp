@@ -621,7 +621,6 @@ Status mst(
                 if (min_vertex == -1) continue;
                 T->set_float(i, min_vertex, min_weight);
                 T->set_float(min_vertex, i, min_weight);
-                std::cout << "T <- "  << i << " - " << min_vertex << " (" << min_weight << ")\n";
                 if (i < min_vertex) {
                     spla::T_PAIR p;
                     spla::T_PAIR old_p;
@@ -702,6 +701,10 @@ Status mst(
                         }
                 }
                 S = filtered_S;
+                if (comp > 1 && S->get_n_values() == 0) {
+                    std::cout << "Graph is disconnected." << std::endl;
+                    return Status::Ok;  
+                }
                 
 
         }

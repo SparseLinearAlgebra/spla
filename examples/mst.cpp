@@ -73,11 +73,6 @@ int main(int argc, const char* const* argv) {
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
         S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
     }
-    std::cout << "Loaded edges:" << std::endl;
-for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-    std::cout << "  " << Ai[k] << " - " << Aj[k] 
-              << " weight=" << Aw[k] << std::endl;
-}
     
     auto T_gpu = spla::Matrix::make(N, N, spla::FLOAT);
     
