@@ -31,13 +31,13 @@ jobs:
         run: |
           clinfo -l
 
-      - name: Check for nvidia
-        run: |
-          nvidia-smi
-
       - name: Check for cuda
         run: |
           nvcc --version
+
+      - name: Check for nvidia
+        run: |
+          nvidia-smi
 
   clean:
     name: Cleanup workspace
