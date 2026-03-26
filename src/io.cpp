@@ -191,47 +191,85 @@ namespace spla {
         }
         t.lap_end();// parsing
 
-        std::vector<std::uint64_t> sorted;
-        {
-            sorted.reserve(Ai.size());
-            n_sort = Ai.size();
-
-            for (std::size_t k = 0; k < Ai.size(); k++) {
-                std::uint64_t entry = 0;
-                entry |= std::uint64_t(Ai[k]) << 32u;
-                entry |= std::uint64_t(Aj[k]) << 0u;
-                sorted.push_back(entry);
-            }
-            Ai.clear();
-            Aj.clear();
-
-            std::sort(sorted.begin(), sorted.end());
-        }
-        t.lap_end();// sorting
-
-        std::vector<uint> reduced_Ai;
-        std::vector<uint> reduced_Aj;
-        {
-            reduced_Ai.reserve(sorted.size());
-            reduced_Aj.reserve(sorted.size());
-
-            std::uint64_t entry_prev = 0xffffffffffffffff;
-            for (std::uint64_t entry : sorted) {
-                if (entry_prev != entry) {
-                    uint i = uint((entry >> 32u) & 0xffffffff);
-                    uint j = uint((entry >> 0u) & 0xffffffff);
-                    reduced_Ai.push_back(i);
-                    reduced_Aj.push_back(j);
+        if (file_has_values) {
+            struct Edge {
+                uint i, j;
+                float w;
+                bool operator<(const Edge& other) const {
+                    if (i != other.i) return i < other.i;
+                    return j < other.j;
                 }
-                entry_prev = entry;
+            };
+            
+            std::vector<Edge> edges;
+            edges.reserve(Ai.size());
+            for (std::size_t k = 0; k < Ai.size(); k++) {
+                edges.push_back({Ai[k], Aj[k], Av[k]});
             }
-
+            
+            std::sort(edges.begin(), edges.end());
+            
+            std::vector<uint> reduced_Ai;
+            std::vector<uint> reduced_Aj;
+            std::vector<float> reduced_Av;
+            reduced_Ai.reserve(edges.size());
+            reduced_Aj.reserve(edges.size());
+            reduced_Av.reserve(edges.size());
+            
+            for (std::size_t k = 0; k < edges.size(); k++) {
+                if (k == 0 || edges[k].i != edges[k-1].i || edges[k].j != edges[k-1].j) {
+                    reduced_Ai.push_back(edges[k].i);
+                    reduced_Aj.push_back(edges[k].j);
+                    reduced_Av.push_back(edges[k].w);
+                }
+            }
+            
             m_n_values = reduced_Ai.size();
-            m_Ai       = std::move(reduced_Ai);
-            m_Aj       = std::move(reduced_Aj);
-            m_Aw       = std::move(Av);
+            m_Ai = std::move(reduced_Ai);
+            m_Aj = std::move(reduced_Aj);
+            m_Aw = std::move(reduced_Av);
+            
+        } else {
+            std::vector<std::uint64_t> sorted;
+            {
+                sorted.reserve(Ai.size());
+                n_sort = Ai.size();
+                
+                for (std::size_t k = 0; k < Ai.size(); k++) {
+                    std::uint64_t entry = 0;
+                    entry |= std::uint64_t(Ai[k]) << 32u;
+                    entry |= std::uint64_t(Aj[k]) << 0u;
+                    sorted.push_back(entry);
+                }
+                Ai.clear();
+                Aj.clear();
+                
+                std::sort(sorted.begin(), sorted.end());
+            }
+            t.lap_end();// sorting
+            
+            std::vector<uint> reduced_Ai;
+            std::vector<uint> reduced_Aj;
+            {
+                reduced_Ai.reserve(sorted.size());
+                reduced_Aj.reserve(sorted.size());
+                
+                std::uint64_t entry_prev = 0xffffffffffffffff;
+                for (std::uint64_t entry : sorted) {
+                    if (entry_prev != entry) {
+                        uint i = uint((entry >> 32u) & 0xffffffff);
+                        uint j = uint((entry >> 0u) & 0xffffffff);
+                        reduced_Ai.push_back(i);
+                        reduced_Aj.push_back(j);
+                    }
+                    entry_prev = entry;
+                }
+                
+                m_n_values = reduced_Ai.size();
+                m_Ai = std::move(reduced_Ai);
+                m_Aj = std::move(reduced_Aj);
+            }
         }
-        t.lap_end();// reducing
 
         calc_stats();
         t.lap_end();// stats

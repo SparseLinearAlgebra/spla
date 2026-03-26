@@ -43,7 +43,6 @@ int main(int argc, const char* const* argv) {
     }
     
     spla::Timer timer_total;
-    spla::Timer timer_cpu;
     spla::Timer timer_gpu;
     spla::Timer timer_ref;
     spla::MtxLoader loader;
@@ -74,42 +73,20 @@ int main(int argc, const char* const* argv) {
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
         S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
     }
+    std::cout << "Loaded edges:" << std::endl;
+for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+    std::cout << "  " << Ai[k] << " - " << Aj[k] 
+              << " weight=" << Aw[k] << std::endl;
+}
     
-    auto T_cpu = spla::Matrix::make(N, N, spla::FLOAT);
     auto T_gpu = spla::Matrix::make(N, N, spla::FLOAT);
     
     auto desc = spla::Descriptor::make();
     
     const int n_iters = args["niters"].as<int>();
     
-    float total_weight_cpu = 0.0f;
     float total_weight_gpu = 0.0f;
     
-    // ========== ЗАПУСК НА CPU ==========
-    if (args["run-cpu"].as<bool>()) {
-        library->set_force_no_acceleration(true);
-        
-        for (int i = 0; i < n_iters; ++i) {
-            T_cpu->clear();
-            
-            timer_cpu.lap_begin();
-            spla::mst(T_cpu, S, desc, nullptr);
-            timer_cpu.lap_end();
-        }
-        
-        total_weight_cpu = 0;
-        for (spla::uint i = 0; i < N; ++i) {
-            for (spla::uint j = i + 1; j < N; ++j) {
-                float w;
-                if (T_cpu->get_float(i, j, w) == spla::Status::Ok) {
-                    total_weight_cpu += w;
-                }
-            }
-        }
-        std::cout << "CPU MST total weight: " << total_weight_cpu << std::endl;
-    }
-    
-    // ========== ЗАПУСК НА GPU ==========
     if (args["run-gpu"].as<bool>()) {
         library->set_force_no_acceleration(false);
         
@@ -121,7 +98,6 @@ int main(int argc, const char* const* argv) {
             timer_gpu.lap_end();
         }
         
-        // Вычисляем общий вес MST
         total_weight_gpu = 0;
         for (spla::uint i = 0; i < N; ++i) {
             for (spla::uint j = i + 1; j < N; ++j) {
@@ -134,25 +110,12 @@ int main(int argc, const char* const* argv) {
         std::cout << "GPU MST total weight: " << total_weight_gpu << std::endl;
     }
     
-    // Сравниваем результаты CPU и GPU
-    if (args["run-cpu"].as<bool>() && args["run-gpu"].as<bool>()) {
-        if (std::abs(total_weight_cpu - total_weight_gpu) < 1e-6) {
-            std::cout << "✓ CPU and GPU results match!" << std::endl;
-        } else {
-            std::cout << "✗ CPU and GPU results differ! CPU: " << total_weight_cpu 
-                      << " GPU: " << total_weight_gpu << std::endl;
-        }
-    }
-    
     spla::Library::get()->finalize();
     
     timer_total.stop();
     
     std::cout << "\n=== Timing Results ===" << std::endl;
     std::cout << "Total time (ms): " << timer_total.get_elapsed_ms() << std::endl;
-    std::cout << "CPU time (ms): ";
-    timer_cpu.print();
-    std::cout << std::endl;
     std::cout << "GPU time (ms): ";
     timer_gpu.print();
     std::cout << std::endl;

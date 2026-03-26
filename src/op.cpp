@@ -32,6 +32,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 namespace spla {
 
@@ -198,7 +199,7 @@ namespace spla {
         DECL_OP_UNA_S(FLOOR_FLOAT, FLOOR, T_FLOAT, { return floor(a); });
         DECL_OP_UNA_S(ROUND_FLOAT, ROUND, T_FLOAT, { return round(a); });
         DECL_OP_UNA_S(TRUNC_FLOAT, TRUNC, T_FLOAT, { return trunc(a); });
-        IDENTITY_PAIR = spla::OpUnary::make_pair("IDENTITY_PAIR", "(a) {return a;}", [](Pair a) { return a; });
+        IDENTITY_PAIR = spla::OpUnary::make_pair("IDENTITY_PAIR", "(a) identity_pair(a)", [](Pair a) { return a; });
 
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });

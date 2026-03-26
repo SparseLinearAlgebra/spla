@@ -94,6 +94,7 @@ namespace spla {
             builder << "#define " << function.first << function.second->get_source_cl() << "\n";
         }
         builder << m_source;
+        
 
         m_program_code       = builder.str();
         m_program            = std::make_shared<CLProgram>();

@@ -123,4 +123,5 @@ TEST(pair, extract_row) {
         }
     }
 }
+
 SPLA_GTEST_MAIN

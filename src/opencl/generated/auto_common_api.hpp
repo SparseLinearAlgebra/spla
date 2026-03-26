@@ -28,6 +28,9 @@ struct Pair min_pair(struct Pair a, struct Pair b) {
 int pair_always(struct Pair a) {
     return 1;
 }
+struct Pair identity_pair(struct Pair a) {
+    return a;
+}
 
 uint random_gen_java(ulong seed) {
     seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48L) - 1);

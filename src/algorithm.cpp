@@ -661,6 +661,8 @@ Status mst(
         for (uint i = 0; i < n; i++) {
             if (seen[i]) comp++;
         }
+        
+
 #ifdef SPLA_DEBUG
                 std::cout << "parent = [";
                 for (int32_t i = 0; i < n; i++) {
@@ -678,6 +680,10 @@ Status mst(
         Library::get()->time_profile_dump();
         Library::get()->time_profile_reset();
 #endif
+                if (comp == 1) {
+                    std::cout << "MST complete after " << iteration << " iterations" << std::endl;
+                    return Status::Ok; 
+                }
                 //обновляем матрицу смежности
                 auto filtered_S = spla::Matrix::make(n, n, spla::PAIR);
                 for (int32_t i = 0; i < n; i++) {
@@ -696,6 +702,7 @@ Status mst(
                         }
                 }
                 S = filtered_S;
+                
 
         }
         return Status::Ok;
