@@ -21,6 +21,7 @@ on:
 env:
   build-dir: "build"
 
+jobs:
   test:
     name: Test GPU ${{ matrix.gpu }}
     runs-on: self-hosted
