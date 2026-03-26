@@ -21,56 +21,9 @@ on:
 env:
   build-dir: "build"
 
-jobs:
-  build:
-    name: Build ${{ matrix.os }}
-    runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-24.04
-    env:
-      config: "Release"
-      nt: "4"
-
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          submodules: true
-          fetch-depth: 0
-
-      - name: Configure CMake
-        run: |
-          cmake . -G Ninja                             \
-                  -B ${{ env.build-dir }}              \
-                  -DCMAKE_BUILD_TYPE=${{ env.config }} \
-                  -DSPLA_BUILD_TESTS=ON
-
-      - name: Build library sources
-        run: |
-          cmake --build ${{ env.build-dir }} \
-                --target all \
-                --verbose \
-                -j ${{ env.nt }}
-
   test:
     name: Test GPU ${{ matrix.gpu }}
-    needs: build
     runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - gpu: NVIDIA-GeForce-GT-1030
-            platform: 2
-            device: 0
-          - gpu: AMD-Radeon-RX-6750-XT
-            platform: 1
-            device: 0
-
-    env:
-      test-file: ${{ matrix.gpu }}_tests.log
 
     steps:
       - name: Check for gpus
@@ -80,6 +33,10 @@ jobs:
       - name: Check for nvidia
         run: |
           nvidia-smi
+
+      - name: Check for cuda
+        run: |
+          nvcc --version
 
   clean:
     name: Cleanup workspace
