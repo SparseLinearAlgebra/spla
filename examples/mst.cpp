@@ -87,7 +87,10 @@ int main(int argc, const char* const* argv) {
         
         for (int i = 0; i < n_iters; ++i) {
             T_gpu->clear();
-            
+            S = spla::Matrix::make(N, N, spla::PAIR);
+            for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+                S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
+            }
             timer_gpu.lap_begin();
             spla::mst(T_gpu, S, desc, nullptr);
             timer_gpu.lap_end();
@@ -103,6 +106,7 @@ int main(int argc, const char* const* argv) {
             }
         }
         std::cout << "GPU MST total weight: " << total_weight_gpu << std::endl;
+        total_weight_gpu = 0.0f;
     }
     
     spla::Library::get()->finalize();
@@ -110,8 +114,8 @@ int main(int argc, const char* const* argv) {
     timer_total.stop();
     
     std::cout << "\n=== Timing Results ===" << std::endl;
-    std::cout << "Total time (ms): " << timer_total.get_elapsed_ms() << std::endl;
-    std::cout << "GPU time (ms): ";
+    std::cout << "total(ms):" << timer_total.get_elapsed_ms() << std::endl;
+    std::cout << "gpu(ms): ";
     timer_gpu.print();
     std::cout << std::endl;
     

@@ -14,7 +14,7 @@ EXPECTED = {
     "triangle": 2, "square": 3, "square_weighted": 4, "graph_7": 40,
 }
 def run_test(mtx_file):
-    cmd = [MST_EXEC, "--mtxpath", mtx_file, "--run-gpu=true", "--niters=1"]
+    cmd = [MST_EXEC, "--mtxpath", mtx_file, "--platform=0", "--run-gpu=true", "--niters=1"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     
     weight = None
@@ -22,7 +22,7 @@ def run_test(mtx_file):
     for line in result.stdout.split('\n'):
         if "GPU MST total weight:" in line:
             weight = float(line.split(':')[1].strip())
-        if "GPU time (ms):" in line:
+        if "gpu(ms):" in line:
                 time = float(line.split(':')[1][:-2].strip())
     
     return weight, time

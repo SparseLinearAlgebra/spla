@@ -704,7 +704,6 @@ Status mst(
                 }
                 S = filtered_S;
                 if (edges_added_this_iteration == 0) {
-                    std::cout << "Graph is disconnected." << std::endl;
                     return Status::Ok;  
                 }
                 
