@@ -55,8 +55,10 @@ int main(int argc, const char* const* argv) {
     }
     
     std::string acc_info;
-    
+    setenv("SPLA_OPENCL_PLATFORM", args["platform"].as<std::string>().c_str(), 1);
+    setenv("SPLA_OPENCL_DEVICE", args["device"].as<std::string>().c_str(), 1);
     spla::Library* library = spla::Library::get();
+    
     library->set_platform(args["platform"].as<int>());
     library->set_device(args["device"].as<int>());
     library->set_queues_count(1);
