@@ -1,2 +1,4 @@
 [submodule "deps/LAGraph"]
 	url = https://github.com/polka777/LAGraph.git
+[submodule "graph-bench"]
+	url = https://github.com/polka777/graph-bench.git
