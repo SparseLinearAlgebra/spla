@@ -55,8 +55,6 @@ int main(int argc, const char* const* argv) {
     }
     
     std::string acc_info;
-    setenv("SPLA_OPENCL_PLATFORM", args["platform"].as<std::string>().c_str(), 1);
-    setenv("SPLA_OPENCL_DEVICE", args["device"].as<std::string>().c_str(), 1);
     spla::Library* library = spla::Library::get();
     
     library->set_platform(args["platform"].as<int>());
@@ -82,7 +80,7 @@ int main(int argc, const char* const* argv) {
     
     const int n_iters = args["niters"].as<int>();
     
-    float total_weight_gpu = 0.0f;
+    double total_weight_gpu = 0.0;
     
     if (args["run-gpu"].as<bool>()) {
         library->set_force_no_acceleration(false);
@@ -102,13 +100,14 @@ int main(int argc, const char* const* argv) {
         for (spla::uint i = 0; i < N; ++i) {
             for (spla::uint j = i + 1; j < N; ++j) {
                 float w;
-                if (T_gpu->get_float(i, j, w) == spla::Status::Ok) {
+                T_gpu->get_float(i, j, w);
+                if (w != 0.0) {
                     total_weight_gpu += w;
                 }
             }
         }
+        
         std::cout << "GPU MST total weight: " << total_weight_gpu << std::endl;
-        total_weight_gpu = 0.0f;
     }
     
     spla::Library::get()->finalize();
