@@ -2,3 +2,5 @@
 	url = https://github.com/polka777/LAGraph.git
 [submodule "graph-bench"]
 	url = https://github.com/polka777/graph-bench.git
+[submodule "deps/GraphBLAS"]
+	url = https://github.com/DrTimothyAldenDavis/GraphBLAS.git
