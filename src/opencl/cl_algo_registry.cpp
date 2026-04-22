@@ -41,6 +41,7 @@
 #include <opencl/cl_v_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
 
+
 namespace spla {
 
     void register_algo_cl(class Registry* g_registry) {
@@ -83,6 +84,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("mxv_masked", PAIR), std::make_shared<Algo_mxv_masked_cl<T_PAIR>>());
 
         // algorthm vxm_masked
         g_registry->add(MAKE_KEY_CL_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
@@ -93,6 +95,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cl<T_FLOAT>>());
+
     }
 
 }// namespace spla
