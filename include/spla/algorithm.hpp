@@ -33,6 +33,7 @@
 #include "matrix.hpp"
 #include "scalar.hpp"
 #include "vector.hpp"
+#include "schedule.hpp"
 
 namespace spla {
 
@@ -173,6 +174,25 @@ namespace spla {
             int&                                  ntrins,
             std::vector<std::vector<spla::uint>>& Ai,
             const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+/**
+     * @brief Boruvka's Minimum Spanning Tree algorithm
+     *
+     * Finds the Minimum Spanning Tree of a weighted undirected graph using
+     * Boruvka's algorithm with algebraic operations.
+     *
+     * @param T float matrix to store MST edges (result). Only upper triangle is used.
+     * @param S PAIR matrix adjacency matrix with edges (weight, vertex).
+     *          The vertex field stores the target vertex of the edge.
+     * @param descriptor optional descriptor for algorithm configuration
+     * @param task_hnd optional pointer to store task handle for async execution
+     *
+     * @return ok on success
+     */
+    SPLA_API Status mst(
+            const ref_ptr<Matrix>&     T,
+            ref_ptr<Matrix>&     S,
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make(),
+            ref_ptr<ScheduleTask>*     task_hnd   = nullptr);
 
     /**
      * @}
