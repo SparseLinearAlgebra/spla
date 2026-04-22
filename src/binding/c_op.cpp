@@ -30,6 +30,7 @@
 spla_OpUnary spla_OpUnary_IDENTITY_INT() { return as_ptr<spla_OpUnary_t>(spla::IDENTITY_INT.ref_and_get()); }
 spla_OpUnary spla_OpUnary_IDENTITY_UINT() { return as_ptr<spla_OpUnary_t>(spla::IDENTITY_UINT.ref_and_get()); }
 spla_OpUnary spla_OpUnary_IDENTITY_FLOAT() { return as_ptr<spla_OpUnary_t>(spla::IDENTITY_FLOAT.ref_and_get()); }
+spla_OpUnary spla_OpUnary_IDENTITY_PAIR() { return as_ptr<spla_OpUnary_t>(spla::IDENTITY_PAIR.ref_and_get()); }
 spla_OpUnary spla_OpUnary_AINV_INT() { return as_ptr<spla_OpUnary_t>(spla::AINV_INT.ref_and_get()); }
 spla_OpUnary spla_OpUnary_AINV_UINT() { return as_ptr<spla_OpUnary_t>(spla::AINV_UINT.ref_and_get()); }
 spla_OpUnary spla_OpUnary_AINV_FLOAT() { return as_ptr<spla_OpUnary_t>(spla::AINV_FLOAT.ref_and_get()); }
@@ -103,6 +104,8 @@ spla_OpBinary spla_OpBinary_BAND_INT() { return as_ptr<spla_OpBinary_t>(spla::BA
 spla_OpBinary spla_OpBinary_BAND_UINT() { return as_ptr<spla_OpBinary_t>(spla::BAND_UINT.ref_and_get()); }
 spla_OpBinary spla_OpBinary_BXOR_INT() { return as_ptr<spla_OpBinary_t>(spla::BXOR_INT.ref_and_get()); }
 spla_OpBinary spla_OpBinary_BXOR_UINT() { return as_ptr<spla_OpBinary_t>(spla::BXOR_UINT.ref_and_get()); }
+spla_OpBinary spla_OpBinary_MIN_PAIR() { return as_ptr<spla_OpBinary_t>(spla::MIN_PAIR.ref_and_get()); }
+spla_OpBinary spla_OpBinary_MUL_PAIR() { return as_ptr<spla_OpBinary_t>(spla::MUL_PAIR.ref_and_get()); }
 
 spla_OpSelect spla_OpSelect_EQZERO_INT() { return as_ptr<spla_OpSelect_t>(spla::EQZERO_INT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_EQZERO_UINT() { return as_ptr<spla_OpSelect_t>(spla::EQZERO_UINT.ref_and_get()); }
@@ -125,6 +128,7 @@ spla_OpSelect spla_OpSelect_LEZERO_FLOAT() { return as_ptr<spla_OpSelect_t>(spla
 spla_OpSelect spla_OpSelect_ALWAYS_INT() { return as_ptr<spla_OpSelect_t>(spla::ALWAYS_INT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_ALWAYS_UINT() { return as_ptr<spla_OpSelect_t>(spla::ALWAYS_UINT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_ALWAYS_FLOAT() { return as_ptr<spla_OpSelect_t>(spla::ALWAYS_FLOAT.ref_and_get()); }
+spla_OpSelect spla_OpSelect_ALWAYS_PAIR() { return as_ptr<spla_OpSelect_t>(spla::ALWAYS_PAIR.ref_and_get()); }
 spla_OpSelect spla_OpSelect_NEVER_INT() { return as_ptr<spla_OpSelect_t>(spla::NEVER_INT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_NEVER_UINT() { return as_ptr<spla_OpSelect_t>(spla::NEVER_UINT.ref_and_get()); }
 spla_OpSelect spla_OpSelect_NEVER_FLOAT() { return as_ptr<spla_OpSelect_t>(spla::NEVER_FLOAT.ref_and_get()); }

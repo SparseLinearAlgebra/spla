@@ -39,3 +39,6 @@ spla_Type spla_Type_UINT() {
 spla_Type spla_Type_FLOAT() {
     return as_ptr<spla_Type_t>(spla::FLOAT.get());
 }
+spla_Type spla_Type_PAIR() {
+    return as_ptr<spla_Type_t>(spla::PAIR.get());
+}

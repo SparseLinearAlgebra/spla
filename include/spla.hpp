@@ -45,5 +45,6 @@
 #include "spla/timer.hpp"
 #include "spla/type.hpp"
 #include "spla/vector.hpp"
+#include "spla/pair.hpp"
 
 #endif//SPLA_SPLA_HPP
