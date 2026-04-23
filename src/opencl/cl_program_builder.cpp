@@ -83,23 +83,30 @@ namespace spla {
         }
 
         std::stringstream builder;
-
+        bool needs_pair_override = false;
         for (const auto& define : m_defines) {
             builder << "#define " << define.first << " " << define.second << "\n";
+            if (define.first == "TYPE" && define.second.find("Pair") != std::string::npos) {
+                needs_pair_override = true;
+            }
         }
         
         builder << source_common_api;
 
+        if (needs_pair_override) {
+            builder << "#define OP_BINARY1(a, b) make_pair((a).weight, (b).vertex)\n\n";
+            builder << "#define OP_BINARY2(a, b) min_pair(a, b)\n\n";
+            builder << "#define OP_SELECT(a) pair_always(a)\n\n";
+        }
+
         for (const auto& function : m_functions) {
-            builder << "#define " << function.first << function.second->get_source_cl() << "\n";
+            builder << function.second->get_type_res()->get_cpp() << " "
+                    << function.first << function.second->get_source_cl() << "\n";
         }
         builder << m_source;
         
 
         m_program_code       = builder.str();
-        m_program            = std::make_shared<CLProgram>();
-        m_program->m_program = cl::Program(acc->get_context(), m_program_code);
-
         Timer t;
         t.start();
         auto status = m_program->m_program.build("-cl-std=CL1.2");
