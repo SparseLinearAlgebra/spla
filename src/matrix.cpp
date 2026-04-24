@@ -52,7 +52,7 @@ namespace spla {
             return ref_ptr<Matrix>(new TMatrix<float>(n_rows, n_cols));
         }
         if (type == PAIR) {
-            return ref_ptr<Matrix>(new TMatrix<T_PAIR>(n_rows, n_cols));
+          return ref_ptr<Matrix>(new TMatrix<T_PAIR>(n_rows, n_cols));
         }
 
         LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());

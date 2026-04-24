@@ -1,28 +1,35 @@
 /**********************************************************************************/
-/* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* This file is part of spla project */
+/* https://github.com/SparseLinearAlgebra/spla */
 /**********************************************************************************/
-/* MIT License                                                                    */
+/* MIT License */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2023 SparseLinearAlgebra */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
-/* of this software and associated documentation files (the "Software"), to deal  */
-/* in the Software without restriction, including without limitation the rights   */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
-/* copies of the Software, and to permit persons to whom the Software is          */
-/* furnished to do so, subject to the following conditions:                       */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy
+ */
+/* of this software and associated documentation files (the "Software"), to deal
+ */
+/* in the Software without restriction, including without limitation the rights
+ */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
+/* copies of the Software, and to permit persons to whom the Software is */
+/* furnished to do so, subject to the following conditions: */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in all */
-/* copies or substantial portions of the Software.                                */
+/* The above copyright notice and this permission notice shall be included in
+ * all */
+/* copies or substantial portions of the Software. */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
-/* SOFTWARE.                                                                      */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ */
+/* SOFTWARE. */
 /**********************************************************************************/
 
 #ifndef SPLA_TSCALAR_HPP
@@ -34,198 +41,151 @@
 
 namespace spla {
 
-    /**
-     * @addtogroup internal
-     * @{
-     */
+/**
+ * @addtogroup internal
+ * @{
+ */
 
-    /**
-     *
-     * @tparam T
-     */
-    template<typename T>
-    class TScalar final : public Scalar {
-    public:
-        TScalar() = default;
-        explicit TScalar(T value);
-        ~TScalar() override = default;
+/**
+ *
+ * @tparam T
+ */
+template <typename T> class TScalar final : public Scalar {
+public:
+  TScalar() = default;
+  explicit TScalar(T value);
+  ~TScalar() override = default;
 
-        ref_ptr<Type> get_type() override;
-        Status        set_int(std::int32_t value) override;
-        Status        set_uint(std::uint32_t value) override;
-        Status        set_float(float value) override;
-        Status        get_int(std::int32_t& value) override;
-        Status        get_uint(std::uint32_t& value) override;
-        Status        get_float(float& value) override;
-        T_INT         as_int() override { return static_cast<T_INT>(m_value); }
-        T_UINT        as_uint() override { return static_cast<T_UINT>(m_value); }
-        T_FLOAT       as_float() override { return static_cast<T_FLOAT>(m_value); }
-        T_PAIR        as_pair() override { return static_cast<T_PAIR>(m_value); }
+  ref_ptr<Type> get_type() override;
+  Status set_int(std::int32_t value) override;
+  Status set_uint(std::uint32_t value) override;
+  Status set_float(float value) override;
+  Status get_int(std::int32_t &value) override;
+  Status get_uint(std::uint32_t &value) override;
+  Status get_float(float &value) override;
+  T_INT as_int() override { return static_cast<T_INT>(m_value); }
+  T_UINT as_uint() override { return static_cast<T_UINT>(m_value); }
+  T_FLOAT as_float() override { return static_cast<T_FLOAT>(m_value); }
+  T_PAIR as_pair() override { return static_cast<T_PAIR>(m_value); }
 
+  void set_label(std::string label) override;
+  const std::string &get_label() const override;
 
-        void               set_label(std::string label) override;
-        const std::string& get_label() const override;
+  T &get_value();
+  T get_value() const;
 
-        T& get_value();
-        T  get_value() const;
+private:
+  std::string m_label;
+  T m_value = T();
+};
 
-    private:
-        std::string m_label;
-        T           m_value = T();
-    };
+template <typename T> TScalar<T>::TScalar(T value) : m_value(value) {}
 
-    template<typename T>
-    TScalar<T>::TScalar(T value) : m_value(value) {
-    }
+template <typename T> ref_ptr<Type> TScalar<T>::get_type() {
+  return get_ttype<T>().template as<Type>();
+}
 
-    template<typename T>
-    ref_ptr<Type> TScalar<T>::get_type() {
-        return get_ttype<T>().template as<Type>();
-    }
+template <typename T> Status TScalar<T>::set_int(std::int32_t value) {
+  m_value = static_cast<T>(value);
+  return Status::Ok;
+}
+template <typename T> Status TScalar<T>::set_uint(std::uint32_t value) {
+  m_value = static_cast<T>(value);
+  return Status::Ok;
+}
+template <typename T> Status TScalar<T>::set_float(float value) {
+  m_value = static_cast<T>(value);
+  return Status::Ok;
+}
 
-    template<typename T>
-    Status TScalar<T>::set_int(std::int32_t value) {
-        m_value = static_cast<T>(value);
-        return Status::Ok;
-    }
-    template<typename T>
-    Status TScalar<T>::set_uint(std::uint32_t value) {
-        m_value = static_cast<T>(value);
-        return Status::Ok;
-    }
-    template<typename T>
-    Status TScalar<T>::set_float(float value) {
-        m_value = static_cast<T>(value);
-        return Status::Ok;
-    }
+template <typename T> Status TScalar<T>::get_int(std::int32_t &value) {
+  value = static_cast<std::int32_t>(m_value);
+  return Status::Ok;
+}
+template <typename T> Status TScalar<T>::get_uint(std::uint32_t &value) {
+  value = static_cast<std::uint32_t>(m_value);
+  return Status::Ok;
+}
+template <typename T> Status TScalar<T>::get_float(float &value) {
+  value = static_cast<float>(m_value);
+  return Status::Ok;
+}
 
-    template<typename T>
-    Status TScalar<T>::get_int(std::int32_t& value) {
-        value = static_cast<std::int32_t>(m_value);
-        return Status::Ok;
-    }
-    template<typename T>
-    Status TScalar<T>::get_uint(std::uint32_t& value) {
-        value = static_cast<std::uint32_t>(m_value);
-        return Status::Ok;
-    }
-    template<typename T>
-    Status TScalar<T>::get_float(float& value) {
-        value = static_cast<float>(m_value);
-        return Status::Ok;
-    }
+template <typename T> void TScalar<T>::set_label(std::string label) {
+  m_label = std::move(label);
+}
 
-    template<typename T>
-    void TScalar<T>::set_label(std::string label) {
-        m_label = std::move(label);
-    }
+template <typename T> const std::string &TScalar<T>::get_label() const {
+  return m_label;
+}
 
-    template<typename T>
-    const std::string& TScalar<T>::get_label() const {
-        return m_label;
-    }
+template <typename T> T &TScalar<T>::get_value() { return m_value; }
+template <typename T> T TScalar<T>::get_value() const { return m_value; }
+template <> inline T_PAIR TScalar<std::int32_t>::as_pair() { return Pair(); }
+template <> inline T_PAIR TScalar<std::uint32_t>::as_pair() { return Pair(); }
+template <> inline T_PAIR TScalar<float>::as_pair() { return Pair(); }
 
-    template<typename T>
-    T& TScalar<T>::get_value() {
-        return m_value;
-    }
-    template<typename T>
-    T TScalar<T>::get_value() const {
-        return m_value;
-    }
-    template<>
-    inline T_PAIR TScalar<std::int32_t>::as_pair() { 
-        return Pair(); 
-    }
-    template<>
-    inline T_PAIR TScalar<std::uint32_t>::as_pair() { 
-        return Pair(); 
-    }
-    template<>
-    inline T_PAIR TScalar<float>::as_pair() { 
-        return Pair(); 
-    }
- 
-    template<>
-    class TScalar<Pair> final : public Scalar {
-    public:
-        TScalar() = default;
-        explicit TScalar(Pair value) : m_value(value) {}
-        ~TScalar() override = default;
+template <> class TScalar<Pair> final : public Scalar {
+public:
+  TScalar() = default;
+  explicit TScalar(Pair value) : m_value(value) {}
+  ~TScalar() override = default;
 
-        Status set_pair(Pair value) {
-            m_value = value;
-            return Status::Ok;
-        }
-        
-        Status get_pair(Pair& value) const {
-            value = m_value;
-            return Status::Ok;
-        }
+  Status set_pair(Pair value) {
+    m_value = value;
+    return Status::Ok;
+  }
 
-        ref_ptr<Type> get_type() override {
-            return PAIR;
-        }
+  Status get_pair(Pair &value) const {
+    value = m_value;
+    return Status::Ok;
+  }
 
-        Status set_int(std::int32_t) override {
-            return Status::InvalidArgument;
-        }
+  ref_ptr<Type> get_type() override { return PAIR; }
 
-        Status set_uint(std::uint32_t) override {
-            return Status::InvalidArgument;
-        }
+  Status set_int(std::int32_t) override { return Status::InvalidArgument; }
 
-        Status set_float(float) override {
-            return Status::InvalidArgument;
-        }
+  Status set_uint(std::uint32_t) override { return Status::InvalidArgument; }
 
-        Status get_int(std::int32_t& ) override {
-            return Status::InvalidArgument;
-        }
+  Status set_float(float) override { return Status::InvalidArgument; }
 
-        Status get_uint(std::uint32_t& ) override {
-            return Status::InvalidArgument;
-        }
+  Status get_int(std::int32_t &) override { return Status::InvalidArgument; }
 
-        Status get_float(float& ) override {
-            return Status::InvalidArgument;
-        }
+  Status get_uint(std::uint32_t &) override { return Status::InvalidArgument; }
 
-        T_INT as_int() override {
-            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to int");
-            return 0;
-        }
+  Status get_float(float &) override { return Status::InvalidArgument; }
 
-        T_UINT as_uint() override {
-            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to uint");
-            return 0;
-        }
+  T_INT as_int() override {
+    LOG_MSG(Status::InvalidArgument, "cannot convert Pair to int");
+    return 0;
+  }
 
-        T_FLOAT as_float() override {
-            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to float");
-            return 0.0f;
-        }
-        T_PAIR as_pair() override {
-            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to pair");
-            return Pair();
-        }
+  T_UINT as_uint() override {
+    LOG_MSG(Status::InvalidArgument, "cannot convert Pair to uint");
+    return 0;
+  }
 
-        void set_label(std::string label) override {
-            m_label = std::move(label);
-        }
+  T_FLOAT as_float() override {
+    LOG_MSG(Status::InvalidArgument, "cannot convert Pair to float");
+    return 0.0f;
+  }
+  T_PAIR as_pair() override {
+    LOG_MSG(Status::InvalidArgument, "cannot convert Pair to pair");
+    return Pair();
+  }
 
-        const std::string& get_label() const override {
-            return m_label;
-        }
+  void set_label(std::string label) override { m_label = std::move(label); }
 
-        Pair& get_value() { return m_value; }
-        Pair  get_value() const { return m_value; }
+  const std::string &get_label() const override { return m_label; }
 
-        private:
-            std::string m_label;
-            Pair        m_value = Pair();
-        };
+  Pair &get_value() { return m_value; }
+  Pair get_value() const { return m_value; }
 
-}// namespace spla
+private:
+  std::string m_label;
+  Pair m_value = Pair();
+};
 
-#endif//SPLA_TSCALAR_HPP
+} // namespace spla
+
+#endif // SPLA_TSCALAR_HPP

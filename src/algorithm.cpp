@@ -1,28 +1,35 @@
 /**********************************************************************************/
-/* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* This file is part of spla project */
+/* https://github.com/SparseLinearAlgebra/spla */
 /**********************************************************************************/
-/* MIT License                                                                    */
+/* MIT License */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2023 SparseLinearAlgebra */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
-/* of this software and associated documentation files (the "Software"), to deal  */
-/* in the Software without restriction, including without limitation the rights   */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
-/* copies of the Software, and to permit persons to whom the Software is          */
-/* furnished to do so, subject to the following conditions:                       */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy
+ */
+/* of this software and associated documentation files (the "Software"), to deal
+ */
+/* in the Software without restriction, including without limitation the rights
+ */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
+/* copies of the Software, and to permit persons to whom the Software is */
+/* furnished to do so, subject to the following conditions: */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in all */
-/* copies or substantial portions of the Software.                                */
+/* The above copyright notice and this permission notice shall be included in
+ * all */
+/* copies or substantial portions of the Software. */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
-/* SOFTWARE.                                                                      */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ */
+/* SOFTWARE. */
 /**********************************************************************************/
 
 #include <spla/algorithm.hpp>
@@ -37,8 +44,8 @@
 #include <iostream>
 #include <limits>
 #include <queue>
-#include <vector>
 #include <time.h>
+#include <vector>
 
 #define INF std::numeric_limits<float>::infinity()
 
@@ -46,713 +53,663 @@ namespace spla {
 
 #pragma region Bfs
 
-    Status bfs(const ref_ptr<Vector>&     v,
-               const ref_ptr<Matrix>&     A,
-               uint                       s,
-               const ref_ptr<Descriptor>& descriptor) {
-        assert(v);
-        assert(A);
+Status bfs(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
+           const ref_ptr<Descriptor> &descriptor) {
+  assert(v);
+  assert(A);
 
-        const auto N = v->get_n_rows();
+  const auto N = v->get_n_rows();
 
-        ref_ptr<Vector> frontier_prev  = Vector::make(N, INT);
-        ref_ptr<Vector> frontier_new   = Vector::make(N, INT);
-        ref_ptr<Scalar> frontier_size  = Scalar::make_int(1);
-        ref_ptr<Scalar> depth          = Scalar::make_int(1);
-        ref_ptr<Scalar> zero           = Scalar::make_int(0);
-        int             current_level  = 1;
-        int             discovered     = 1;
-        bool            frontier_empty = false;
+  ref_ptr<Vector> frontier_prev = Vector::make(N, INT);
+  ref_ptr<Vector> frontier_new = Vector::make(N, INT);
+  ref_ptr<Scalar> frontier_size = Scalar::make_int(1);
+  ref_ptr<Scalar> depth = Scalar::make_int(1);
+  ref_ptr<Scalar> zero = Scalar::make_int(0);
+  int current_level = 1;
+  int discovered = 1;
+  bool frontier_empty = false;
 
-        ref_ptr<Descriptor> desc = Descriptor::make();
-        desc->set_early_exit(true);
-        desc->set_struct_only(true);
+  ref_ptr<Descriptor> desc = Descriptor::make();
+  desc->set_early_exit(true);
+  desc->set_struct_only(true);
 
-        frontier_prev->set_int(s, 1);
+  frontier_prev->set_int(s, 1);
 
-        bool  push         = descriptor->get_push_only();
-        bool  pull         = descriptor->get_pull_only();
-        bool  push_pull    = descriptor->get_push_pull();
-        float front_factor = descriptor->get_front_factor();
+  bool push = descriptor->get_push_only();
+  bool pull = descriptor->get_pull_only();
+  bool push_pull = descriptor->get_push_pull();
+  float front_factor = descriptor->get_front_factor();
 
-        if (!(push || pull || push_pull)) push = true;
-
-#ifndef SPLA_RELEASE
-        std::string mode;
-        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
-        if (pull) mode = "(pull)";
-        if (push) mode = "(push)";
-
-        std::cout << "start bfs from " << s << " " << mode << std::endl;
-
-        Timer tight;
-#endif
-        while (!frontier_empty) {
-#ifndef SPLA_RELEASE
-            tight.start();
-#endif
-            depth->set_int(current_level);
-            exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
-
-            float front_density  = float(frontier_size->as_int()) / float(N);
-            bool  is_push_better = (front_density <= front_factor);
-
-            if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
-            } else {
-                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
-            }
-
-            exec_v_count_mf(frontier_size, frontier_new);
+  if (!(push || pull || push_pull))
+    push = true;
 
 #ifndef SPLA_RELEASE
-            tight.stop();
-            std::cout << " - iter " << current_level
-                      << " front " << frontier_size->as_int() << " discovered " << discovered << " "
-                      << tight.get_elapsed_ms() << " ms" << std::endl;
-            Library::get()->time_profile_dump();
-            Library::get()->time_profile_reset();
+  std::string mode;
+  if (push_pull)
+    mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
+  if (pull)
+    mode = "(pull)";
+  if (push)
+    mode = "(push)";
+
+  std::cout << "start bfs from " << s << " " << mode << std::endl;
+
+  Timer tight;
 #endif
-            frontier_empty = frontier_size->as_int() == 0;
-            discovered += frontier_size->as_int();
-            current_level += 1;
+  while (!frontier_empty) {
+#ifndef SPLA_RELEASE
+    tight.start();
+#endif
+    depth->set_int(current_level);
+    exec_v_assign_masked(v, frontier_prev, depth, SECOND_INT, NQZERO_INT);
 
-            std::swap(frontier_prev, frontier_new);
-        }
+    float front_density = float(frontier_size->as_int()) / float(N);
+    bool is_push_better = (front_density <= front_factor);
 
-        return Status::Ok;
+    if (push || (push_pull && is_push_better)) {
+      exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT,
+                      EQZERO_INT, zero, desc);
+    } else {
+      exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT,
+                      EQZERO_INT, zero, desc);
     }
 
-    Status bfs_naive(std::vector<int>&                     v,
-                     std::vector<std::vector<spla::uint>>& A,
-                     uint                                  s,
-                     const ref_ptr<Descriptor>&            descriptor) {
+    exec_v_count_mf(frontier_size, frontier_new);
 
-        const auto N = v.size();
+#ifndef SPLA_RELEASE
+    tight.stop();
+    std::cout << " - iter " << current_level << " front "
+              << frontier_size->as_int() << " discovered " << discovered << " "
+              << tight.get_elapsed_ms() << " ms" << std::endl;
+    Library::get()->time_profile_dump();
+    Library::get()->time_profile_reset();
+#endif
+    frontier_empty = frontier_size->as_int() == 0;
+    discovered += frontier_size->as_int();
+    current_level += 1;
 
-        std::queue<uint>  front;
-        std::vector<bool> visited(N, false);
+    std::swap(frontier_prev, frontier_new);
+  }
 
-        std::fill(v.begin(), v.end(), 0);
+  return Status::Ok;
+}
 
-        front.push(s);
-        visited[s] = true;
-        v[s]       = 1;
+Status bfs_naive(std::vector<int> &v, std::vector<std::vector<spla::uint>> &A,
+                 uint s, const ref_ptr<Descriptor> &descriptor) {
 
-        while (!front.empty()) {
-            auto i = front.front();
-            front.pop();
+  const auto N = v.size();
 
-            for (auto j : A[i]) {
-                if (!visited[j]) {
-                    visited[j] = true;
-                    v[j]       = v[i] + 1;
-                    front.push(j);
-                }
-            }
-        }
+  std::queue<uint> front;
+  std::vector<bool> visited(N, false);
 
-        return Status::Ok;
+  std::fill(v.begin(), v.end(), 0);
+
+  front.push(s);
+  visited[s] = true;
+  v[s] = 1;
+
+  while (!front.empty()) {
+    auto i = front.front();
+    front.pop();
+
+    for (auto j : A[i]) {
+      if (!visited[j]) {
+        visited[j] = true;
+        v[j] = v[i] + 1;
+        front.push(j);
+      }
     }
+  }
+
+  return Status::Ok;
+}
 
 #pragma endregion Bfs
 
 #pragma region Sssp
 
-    Status sssp(const ref_ptr<Vector>&     v,
-                const ref_ptr<Matrix>&     A,
-                uint                       s,
-                const ref_ptr<Descriptor>& descriptor) {
-        assert(v);
-        assert(A);
+Status sssp(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
+            const ref_ptr<Descriptor> &descriptor) {
+  assert(v);
+  assert(A);
 
-        const auto N   = v->get_n_rows();
-        const auto inf = std::numeric_limits<float>::max();
+  const auto N = v->get_n_rows();
+  const auto inf = std::numeric_limits<float>::max();
 
-        ref_ptr<Vector> dummy_mask     = Vector::make(N, FLOAT);
-        ref_ptr<Vector> frontier       = Vector::make(N, FLOAT);
-        ref_ptr<Vector> feedback       = Vector::make(N, FLOAT);
-        ref_ptr<Scalar> feedback_size  = Scalar::make_int(0);
-        ref_ptr<Scalar> inf_init       = Scalar::make_float(inf);
-        int             current_level  = 1;
-        bool            feedback_empty = false;
+  ref_ptr<Vector> dummy_mask = Vector::make(N, FLOAT);
+  ref_ptr<Vector> frontier = Vector::make(N, FLOAT);
+  ref_ptr<Vector> feedback = Vector::make(N, FLOAT);
+  ref_ptr<Scalar> feedback_size = Scalar::make_int(0);
+  ref_ptr<Scalar> inf_init = Scalar::make_float(inf);
+  int current_level = 1;
+  bool feedback_empty = false;
 
-        v->set_fill_value(inf_init);
-        feedback->set_fill_value(inf_init);
-        frontier->set_fill_value(inf_init);
+  v->set_fill_value(inf_init);
+  feedback->set_fill_value(inf_init);
+  frontier->set_fill_value(inf_init);
 
-        v->set_float(s, 0.0f);
-        feedback->set_float(s, 0.0f);
+  v->set_float(s, 0.0f);
+  feedback->set_float(s, 0.0f);
 
-        bool  push         = descriptor->get_push_only();
-        bool  pull         = descriptor->get_pull_only();
-        bool  push_pull    = descriptor->get_push_pull();
-        float front_factor = descriptor->get_front_factor();
+  bool push = descriptor->get_push_only();
+  bool pull = descriptor->get_pull_only();
+  bool push_pull = descriptor->get_push_pull();
+  float front_factor = descriptor->get_front_factor();
 
-        if (!(push || pull || push_pull)) push = true;
-
-#ifndef SPLA_RELEASE
-        std::string mode;
-        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
-        if (pull) mode = "(pull)";
-        if (push) mode = "(push)";
-
-        std::cout << "start sssp from " << s << " " << mode << std::endl;
-
-        Timer tight;
-#endif
-        while (!feedback_empty) {
-#ifndef SPLA_RELEASE
-            tight.start();
-#endif
-            float front_density  = float(feedback_size->as_int()) / float(N);
-            bool  is_push_better = (front_density <= front_factor);
-
-            if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            } else {
-                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
-            }
-
-            exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
-            exec_v_count_mf(feedback_size, feedback);
+  if (!(push || pull || push_pull))
+    push = true;
 
 #ifndef SPLA_RELEASE
-            tight.stop();
-            std::cout << " - iter " << current_level
-                      << " feed " << feedback_size->as_int()
-                      << " " << tight.get_elapsed_ms() << " ms" << std::endl;
-            Library::get()->time_profile_dump();
-            Library::get()->time_profile_reset();
-#endif
-            feedback_empty = feedback_size->as_int() == 0;
-            current_level += 1;
-        }
+  std::string mode;
+  if (push_pull)
+    mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
+  if (pull)
+    mode = "(pull)";
+  if (push)
+    mode = "(push)";
 
-        return Status::Ok;
+  std::cout << "start sssp from " << s << " " << mode << std::endl;
+
+  Timer tight;
+#endif
+  while (!feedback_empty) {
+#ifndef SPLA_RELEASE
+    tight.start();
+#endif
+    float front_density = float(feedback_size->as_int()) / float(N);
+    bool is_push_better = (front_density <= front_factor);
+
+    if (push || (push_pull && is_push_better)) {
+      exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT,
+                      ALWAYS_FLOAT, inf_init);
+    } else {
+      exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT,
+                      ALWAYS_FLOAT, inf_init);
     }
 
-    Status sssp_naive(std::vector<float>&              v,
-                      std::vector<std::vector<uint>>&  Ai,
-                      std::vector<std::vector<float>>& Ax,
-                      uint                             s,
-                      const ref_ptr<Descriptor>&       descriptor) {
+    exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
+    exec_v_count_mf(feedback_size, feedback);
 
-        const auto N   = v.size();
-        const auto inf = std::numeric_limits<float>::max();
+#ifndef SPLA_RELEASE
+    tight.stop();
+    std::cout << " - iter " << current_level << " feed "
+              << feedback_size->as_int() << " " << tight.get_elapsed_ms()
+              << " ms" << std::endl;
+    Library::get()->time_profile_dump();
+    Library::get()->time_profile_reset();
+#endif
+    feedback_empty = feedback_size->as_int() == 0;
+    current_level += 1;
+  }
 
-        std::queue<uint>  front;
-        std::vector<bool> in_queue(N, false);
-        std::fill(v.begin(), v.end(), inf);
+  return Status::Ok;
+}
 
-        front.push(s);
-        in_queue[s] = true;
-        v[s]        = 0.0f;
+Status sssp_naive(std::vector<float> &v, std::vector<std::vector<uint>> &Ai,
+                  std::vector<std::vector<float>> &Ax, uint s,
+                  const ref_ptr<Descriptor> &descriptor) {
 
-        while (!front.empty()) {
-            auto i = front.front();
-            front.pop();
-            in_queue[i] = false;
+  const auto N = v.size();
+  const auto inf = std::numeric_limits<float>::max();
 
-            const auto& col_ids  = Ai[i];
-            const auto& col_vals = Ax[i];
-            const auto  n_vals   = col_ids.size();
+  std::queue<uint> front;
+  std::vector<bool> in_queue(N, false);
+  std::fill(v.begin(), v.end(), inf);
 
-            for (std::size_t k = 0; k < n_vals; k += 1) {
-                const uint  j = col_ids[k];
-                const float w = col_vals[k];
+  front.push(s);
+  in_queue[s] = true;
+  v[s] = 0.0f;
 
-                if (v[j] == inf || v[i] + w < v[j]) {
-                    v[j] = v[i] + w;
-                    if (!in_queue[j]) {
-                        in_queue[j] = true;
-                        front.push(j);
-                    }
-                }
-            }
+  while (!front.empty()) {
+    auto i = front.front();
+    front.pop();
+    in_queue[i] = false;
+
+    const auto &col_ids = Ai[i];
+    const auto &col_vals = Ax[i];
+    const auto n_vals = col_ids.size();
+
+    for (std::size_t k = 0; k < n_vals; k += 1) {
+      const uint j = col_ids[k];
+      const float w = col_vals[k];
+
+      if (v[j] == inf || v[i] + w < v[j]) {
+        v[j] = v[i] + w;
+        if (!in_queue[j]) {
+          in_queue[j] = true;
+          front.push(j);
         }
-
-        return Status::Ok;
+      }
     }
+  }
+
+  return Status::Ok;
+}
 
 #pragma endregion Sssp
 
 #pragma region Pr
 
-    Status pr(ref_ptr<Vector>&           p,
-              const ref_ptr<Matrix>&     A,
-              float                      alpha,
-              float                      eps,
-              const ref_ptr<Descriptor>& descriptor) {
-        assert(p);
-        assert(A);
+Status pr(ref_ptr<Vector> &p, const ref_ptr<Matrix> &A, float alpha, float eps,
+          const ref_ptr<Descriptor> &descriptor) {
+  assert(p);
+  assert(A);
 
-        const auto N = p->get_n_rows();
+  const auto N = p->get_n_rows();
 
-        ref_ptr<Vector> dummy_mask = Vector::make(N, FLOAT);
-        ref_ptr<Vector> p_prev     = Vector::make(N, FLOAT);
-        ref_ptr<Vector> p_tmp      = Vector::make(N, FLOAT);
-        ref_ptr<Vector> addition   = Vector::make(N, FLOAT);
-        ref_ptr<Vector> errors     = Vector::make(N, FLOAT);
-        ref_ptr<Scalar> error2     = Scalar::make(FLOAT);
-        ref_ptr<Scalar> zero       = Scalar::make_float(0.0f);
+  ref_ptr<Vector> dummy_mask = Vector::make(N, FLOAT);
+  ref_ptr<Vector> p_prev = Vector::make(N, FLOAT);
+  ref_ptr<Vector> p_tmp = Vector::make(N, FLOAT);
+  ref_ptr<Vector> addition = Vector::make(N, FLOAT);
+  ref_ptr<Vector> errors = Vector::make(N, FLOAT);
+  ref_ptr<Scalar> error2 = Scalar::make(FLOAT);
+  ref_ptr<Scalar> zero = Scalar::make_float(0.0f);
 
-        addition->fill_with(Scalar::make_float((1.0f - alpha) / float(N)));
-        p_prev->fill_with(Scalar::make_float(1.0f / float(N)));
+  addition->fill_with(Scalar::make_float((1.0f - alpha) / float(N)));
+  p_prev->fill_with(Scalar::make_float(1.0f / float(N)));
 
-        float error = eps + 0.1f;
+  float error = eps + 0.1f;
 #ifndef SPLA_RELEASE
-        int iter = 0;
+  int iter = 0;
 
-        std::cout << "start pr alpha=" << alpha << " eps " << eps << std::endl;
+  std::cout << "start pr alpha=" << alpha << " eps " << eps << std::endl;
 
-        Timer tight;
+  Timer tight;
 #endif
-        while (error > eps) {
+  while (error > eps) {
 #ifndef SPLA_RELEASE
-            tight.start();
+    tight.start();
 #endif
-            // p = A*p + (1-alpha)/N
-            exec_mxv_masked(p_tmp, dummy_mask, A, p_prev, MULT_FLOAT, PLUS_FLOAT, ALWAYS_FLOAT, zero);
-            exec_v_eadd(p, p_tmp, addition, PLUS_FLOAT);
+    // p = A*p + (1-alpha)/N
+    exec_mxv_masked(p_tmp, dummy_mask, A, p_prev, MULT_FLOAT, PLUS_FLOAT,
+                    ALWAYS_FLOAT, zero);
+    exec_v_eadd(p, p_tmp, addition, PLUS_FLOAT);
 
-            // error = sqrt((p[01]-prev[0])^2 + ... + p[N-1]-prev[N-1])^2)
-            exec_v_eadd(errors, p, p_prev, MINUS_POW2_FLOAT);
-            exec_v_reduce(error2, zero, errors, PLUS_FLOAT);
+    // error = sqrt((p[01]-prev[0])^2 + ... + p[N-1]-prev[N-1])^2)
+    exec_v_eadd(errors, p, p_prev, MINUS_POW2_FLOAT);
+    exec_v_reduce(error2, zero, errors, PLUS_FLOAT);
 
-            error = std::sqrt(error2->as_float());
+    error = std::sqrt(error2->as_float());
 
-            std::swap(p, p_prev);
+    std::swap(p, p_prev);
 
 #ifndef SPLA_RELEASE
-            tight.stop();
-            std::cout << " - iter " << iter++
-                      << " error " << error
-                      << " " << tight.get_elapsed_ms() << " ms" << std::endl;
-            Library::get()->time_profile_dump();
-            Library::get()->time_profile_reset();
+    tight.stop();
+    std::cout << " - iter " << iter++ << " error " << error << " "
+              << tight.get_elapsed_ms() << " ms" << std::endl;
+    Library::get()->time_profile_dump();
+    Library::get()->time_profile_reset();
 #endif
-        }
+  }
 
-        std::swap(p, p_prev);
-        return Status::Ok;
+  std::swap(p, p_prev);
+  return Status::Ok;
+}
+
+Status pr_naive(std::vector<float> &p, std::vector<std::vector<uint>> &Ai,
+                std::vector<std::vector<float>> &Ax, float alpha, float eps,
+                const ref_ptr<Descriptor> &descriptor) {
+
+  const auto N = p.size();
+
+  std::vector<float> p_prev(N, 1.0f / float(N));
+
+  float error = eps + 0.1f;
+
+  while (error > eps) {
+    for (std::size_t i = 0; i < N; i++) {
+      p[i] = 0;
+
+      for (std::size_t k = 0; k < Ai[i].size(); k++) {
+        p[i] += Ax[i][k] * p_prev[Ai[i][k]];
+      }
+
+      p[i] += (1.0f - alpha) / float(N);
     }
 
-    Status pr_naive(std::vector<float>&              p,
-                    std::vector<std::vector<uint>>&  Ai,
-                    std::vector<std::vector<float>>& Ax,
-                    float                            alpha,
-                    float                            eps,
-                    const ref_ptr<Descriptor>&       descriptor) {
+    error = 0.0f;
 
-        const auto N = p.size();
-
-        std::vector<float> p_prev(N, 1.0f / float(N));
-
-        float error = eps + 0.1f;
-
-        while (error > eps) {
-            for (std::size_t i = 0; i < N; i++) {
-                p[i] = 0;
-
-                for (std::size_t k = 0; k < Ai[i].size(); k++) {
-                    p[i] += Ax[i][k] * p_prev[Ai[i][k]];
-                }
-
-                p[i] += (1.0f - alpha) / float(N);
-            }
-
-            error = 0.0f;
-
-            for (std::size_t i = 0; i < N; i++) {
-                error += (p[i] - p_prev[i]) * (p[i] - p_prev[i]);
-            }
-
-            error = std::sqrt(error);
-
-            std::swap(p, p_prev);
-        }
-
-        std::swap(p, p_prev);
-        return Status::Ok;
+    for (std::size_t i = 0; i < N; i++) {
+      error += (p[i] - p_prev[i]) * (p[i] - p_prev[i]);
     }
+
+    error = std::sqrt(error);
+
+    std::swap(p, p_prev);
+  }
+
+  std::swap(p, p_prev);
+  return Status::Ok;
+}
 
 #pragma endregion Pr
 
 #pragma region Tc
 
-    Status tc(
-            int&                       ntrins,
-            const ref_ptr<Matrix>&     A,
-            const ref_ptr<Matrix>&     B,
-            const ref_ptr<Descriptor>& descriptor) {
-        assert(A);
-        assert(B);
+Status tc(int &ntrins, const ref_ptr<Matrix> &A, const ref_ptr<Matrix> &B,
+          const ref_ptr<Descriptor> &descriptor) {
+  assert(A);
+  assert(B);
 
-        ref_ptr<Scalar> zero   = Scalar::make_int(0);
-        ref_ptr<Scalar> result = Scalar::make(INT);
+  ref_ptr<Scalar> zero = Scalar::make_int(0);
+  ref_ptr<Scalar> result = Scalar::make(INT);
 
 #ifndef SPLA_RELEASE
-        std::cout << "start tc" << std::endl;
+  std::cout << "start tc" << std::endl;
 
-        Timer tight;
-        tight.start();
+  Timer tight;
+  tight.start();
 #endif
 
-        spla::exec_mxmT_masked(B, A, A, A, MULT_INT, PLUS_INT, GTZERO_INT, zero);
-        spla::exec_m_reduce(result, zero, B, PLUS_INT);
+  spla::exec_mxmT_masked(B, A, A, A, MULT_INT, PLUS_INT, GTZERO_INT, zero);
+  spla::exec_m_reduce(result, zero, B, PLUS_INT);
 
-        ntrins = result->as_int();
+  ntrins = result->as_int();
 
 #ifndef SPLA_RELEASE
-        tight.stop();
+  tight.stop();
 
-        std::cout << " - ntrins " << ntrins
-                  << " " << tight.get_elapsed_ms() << " ms" << std::endl;
+  std::cout << " - ntrins " << ntrins << " " << tight.get_elapsed_ms() << " ms"
+            << std::endl;
 
-        Library::get()->time_profile_dump();
-        Library::get()->time_profile_reset();
+  Library::get()->time_profile_dump();
+  Library::get()->time_profile_reset();
 #endif
 
-        return Status::Ok;
-    }
+  return Status::Ok;
+}
 
-    Status tc_naive(
-            int&                                  ntrins,
-            std::vector<std::vector<spla::uint>>& Ai,
-            const ref_ptr<Descriptor>&            descriptor) {
+Status tc_naive(int &ntrins, std::vector<std::vector<spla::uint>> &Ai,
+                const ref_ptr<Descriptor> &descriptor) {
 
-        ntrins = 0;
+  ntrins = 0;
 
-        for (const auto& row_Ai : Ai) {
-            for (const auto neighbor : row_Ai) {
-                const auto& row_neighbor = Ai[neighbor];
+  for (const auto &row_Ai : Ai) {
+    for (const auto neighbor : row_Ai) {
+      const auto &row_neighbor = Ai[neighbor];
 
-                auto it1 = row_Ai.begin();
-                auto it2 = row_neighbor.begin();
+      auto it1 = row_Ai.begin();
+      auto it2 = row_neighbor.begin();
 
-                auto end1 = row_Ai.end();
-                auto end2 = row_neighbor.end();
+      auto end1 = row_Ai.end();
+      auto end2 = row_neighbor.end();
 
-                while (it1 != end1 && it2 != end2) {
-                    if (*it1 == *it2) {
-                        ++ntrins;
-                        ++it1;
-                        ++it2;
-                    } else if (*it1 < *it2) {
-                        ++it1;
-                    } else {
-                        ++it2;
-                    }
-                }
-            }
+      while (it1 != end1 && it2 != end2) {
+        if (*it1 == *it2) {
+          ++ntrins;
+          ++it1;
+          ++it2;
+        } else if (*it1 < *it2) {
+          ++it1;
+        } else {
+          ++it2;
         }
-
-        return Status::Ok;
+      }
     }
+  }
+
+  return Status::Ok;
+}
 
 #pragma endregion Pr
 #pragma region Mst
-Status mst(
-        const ref_ptr<Matrix>&     T,
-        ref_ptr<Matrix>&     S,
-        const ref_ptr<Descriptor>& descriptor,
-        ref_ptr<ScheduleTask>*     task_hnd) {
-    
-    assert(S);
-    assert(T);
-    
-    struct timespec step_start, step_end;
-    double step_time;
+Status mst(const ref_ptr<Matrix> &T, ref_ptr<Matrix> &S,
+           const ref_ptr<Descriptor> &descriptor,
+           ref_ptr<ScheduleTask> *task_hnd) {
 
-    const auto n = S->get_n_rows();
-    int comp = n;
+  assert(S);
+  assert(T);
 
-    auto parent = Vector::make(n, PAIR);
-    for (uint i = 0; i < n; i++) {
-        parent->set_pair(i, T_PAIR(0.0f, i));
-    }
-    auto edge = Vector::make(n, PAIR);
-    auto cedge = Vector::make(n, PAIR);
-    auto t_vec = Vector::make(n, PAIR);
-    auto mask = Vector::make(n, PAIR);
-    for (uint i = 0; i < n; i++) {
-        mask->set_pair(i, T_PAIR(1.0f, 0));
-    }
-    auto init_inf = Scalar::make(PAIR);
-    T_PAIR init_val;
-    init_inf->set_pair(init_val);
-    int iteration = 0;
-    auto new_S = S;
+  const auto n = S->get_n_rows();
+  int comp = n;
+
+  auto parent = Vector::make(n, PAIR);
+  for (uint i = 0; i < n; i++) {
+    parent->set_pair(i, T_PAIR(0.0f, i));
+  }
+  auto edge = Vector::make(n, PAIR);
+  auto cedge = Vector::make(n, PAIR);
+  auto t_vec = Vector::make(n, PAIR);
+  auto mask = Vector::make(n, PAIR);
+  for (uint i = 0; i < n; i++) {
+    mask->set_pair(i, T_PAIR(1.0f, 0));
+  }
+  auto init_inf = Scalar::make(PAIR);
+  T_PAIR init_val;
+  init_inf->set_pair(init_val);
+  int iteration = 0;
+  auto new_S = S;
 #ifdef SPLA_RELEASE
-    std::cout << "start Boruvka MST, vertices = " << n << "\n";
-    Timer tight;
+  std::cout << "start Boruvka MST, vertices = " << n << "\n";
+  Timer tight;
 #endif
 
-    while (comp > 1) {
+  while (comp > 1) {
 #ifdef SPLA_RELEASE
     tight.start();
 #endif
-        iteration++;
-        int edges_added_this_iteration = 0;
-        // step 1, min edges for each vertices
-        clock_gettime(CLOCK_MONOTONIC, &step_start);
-        spla::exec_mxv_masked(edge, mask, S, parent, spla::MUL_PAIR, spla::MIN_PAIR, spla::ALWAYS_PAIR, init_inf);
-        clock_gettime(CLOCK_MONOTONIC, &step_end);
-        step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                    (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-        std::cout << "---  Step 1 (min edges for each vertex, gpu): " << step_time * 1000 << " ms" << std::endl;
-        #ifdef SPLA_DEBUG
+    iteration++;
+    int edges_added_this_iteration = 0;
+    spla::exec_mxv_masked(edge, mask, S, parent, spla::MUL_PAIR, spla::MIN_PAIR,
+                          spla::ALWAYS_PAIR, init_inf);
+#ifdef SPLA_DEBUG
 
     std::cout << "edge = [";
     for (int32_t i = 0; i < n; i++) {
-        spla::T_PAIR p;
-        edge->get_pair(i, p);
-        std::cout << "(" << p.weight << ", " << p.vertex << "), ";
+      spla::T_PAIR p;
+      edge->get_pair(i, p);
+      std::cout << "(" << p.weight << ", " << p.vertex << "), ";
     }
     std::cout << "]\n";
 #endif
-    // step 2, min edges for each component
-        clock_gettime(CLOCK_MONOTONIC, &step_start);
 
-        for (int32_t i = 0; i < n; i++) {
-            cedge->set_pair(i, init_val);
-        }
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_PAIR p;
-            spla::T_PAIR p1;
-            spla::T_PAIR p2;
-            parent->get_pair(i, p); 
-            auto p_i = p.vertex; // p_i = parent[i]
-            cedge->get_pair(p_i, p1); // p1 = cedge[parent[i]]
-            edge->get_pair(i, p2); // p2 = edge[i]
-            auto min_for_comp = p1.weight <= p2.weight? p1 : p2; // min(cedge[parent[i]], edge[i])
-            cedge->set_pair(p_i, min_for_comp);
-        }
-        clock_gettime(CLOCK_MONOTONIC, &step_end);
-        step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                    (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-        std::cout << "---  Step 2 (min edges for each component): " << step_time * 1000 << " ms" << std::endl;
-        
+    for (int32_t i = 0; i < n; i++) {
+      cedge->set_pair(i, init_val);
+    }
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR p;
+      spla::T_PAIR p1;
+      spla::T_PAIR p2;
+      parent->get_pair(i, p);
+      auto p_i = p.vertex;
+      cedge->get_pair(p_i, p1);
+      edge->get_pair(i, p2);
+      auto min_for_comp = p1.weight <= p2.weight ? p1 : p2;
+      cedge->set_pair(p_i, min_for_comp);
+    }
+
 #ifdef SPLA_DEBUG
     std::cout << "cedge = [";
     for (int32_t i = 0; i < n; i++) {
-        spla::T_PAIR p;
-        cedge->get_pair(i, p);
-        std::cout << "(" << p.weight << ", " << p.vertex << "), ";
+      spla::T_PAIR p;
+      cedge->get_pair(i, p);
+      std::cout << "(" << p.weight << ", " << p.vertex << "), ";
     }
     std::cout << "]\n";
 #endif
-        // step 3, когда нашли лучшее ребро компоненты распространяем его на все вершины
-        clock_gettime(CLOCK_MONOTONIC, &step_start);
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_PAIR parent_v;
-            spla::T_PAIR cedge_v;
-            parent->get_pair(i, parent_v);
-            cedge->get_pair(parent_v.vertex, cedge_v);
-            t_vec->set_pair(i, cedge_v); //t[i] = cedge[parent[i]]
-        }
-        clock_gettime(CLOCK_MONOTONIC, &step_end);
-        step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                    (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-        std::cout << "---  Step 3: " << step_time * 1000 << " ms" << std::endl;
-        
-        //step 4 выбор представителя для каждой компоненты(когда лучшее ребро в edges совпадает с лучшим ребром компоненты t)
-        clock_gettime(CLOCK_MONOTONIC, &step_start);
-        auto index = spla::Vector::make(n, spla::INT);
-                
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_PAIR edge_v, t_v;
-            edge->get_pair(i, edge_v);
-            t_vec->get_pair(i, t_v);
-            if (edge_v == t_v) index->set_int(i, i);
-            else index->set_int(i, n);
-        }
-        auto temp = spla::Vector::make(n, spla::INT);
-        for (int32_t i = 0; i < n; i++) temp->set_int(i, n);
-        for (int32_t i = 0; i < n; i++) {
-                spla::T_PAIR parent_v;
-                parent->get_pair(i, parent_v);
-                auto p_i = parent_v.vertex;
-                spla::T_INT temp_v, ind_v;
-                temp->get_int(p_i, temp_v);
-                index->get_int(i, ind_v);
-                spla::T_INT min_v = temp_v < ind_v? temp_v : ind_v;
-                temp->set_int(p_i, min_v); //temp[parent[i]] = min(temp[parent[i]], index[i])
-        }
+
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR parent_v;
+      spla::T_PAIR cedge_v;
+      parent->get_pair(i, parent_v);
+      cedge->get_pair(parent_v.vertex, cedge_v);
+      t_vec->set_pair(i, cedge_v);
+    }
+
+    auto index = spla::Vector::make(n, spla::INT);
+
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR edge_v, t_v;
+      edge->get_pair(i, edge_v);
+      t_vec->get_pair(i, t_v);
+      if (edge_v == t_v)
+        index->set_int(i, i);
+      else
+        index->set_int(i, n);
+    }
+    auto temp = spla::Vector::make(n, spla::INT);
+    for (int32_t i = 0; i < n; i++)
+      temp->set_int(i, n);
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR parent_v;
+      parent->get_pair(i, parent_v);
+      auto p_i = parent_v.vertex;
+      spla::T_INT temp_v, ind_v;
+      temp->get_int(p_i, temp_v);
+      index->get_int(i, ind_v);
+      spla::T_INT min_v = temp_v < ind_v ? temp_v : ind_v;
+      temp->set_int(p_i, min_v);
+    }
 #ifdef SPLA_DEBUG
-                std::cout << "t = [";
-                for (int32_t i = 0; i < n; i++) {
-                        spla::T_INT p;
-                        temp->get_int(i, p);
-                        std::cout << p << ", ";
-                }
-                std::cout << "]\n";
+    std::cout << "t = [";
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_INT p;
+      temp->get_int(i, p);
+      std::cout << p << ", ";
+    }
+    std::cout << "]\n";
 #endif
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_PAIR parent_v;
-            parent->get_pair(i, parent_v);
-            auto p_i = parent_v.vertex;
-            spla::T_INT temp_v;
-            temp->get_int(p_i, temp_v);
-            index->set_int(i, temp_v);
-        }
-        clock_gettime(CLOCK_MONOTONIC, &step_end);
-        step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                    (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-        std::cout << "---  Step 4(выбор представителя для каждой компоненты): " << step_time * 1000 << " ms" << std::endl;
-        
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR parent_v;
+      parent->get_pair(i, parent_v);
+      auto p_i = parent_v.vertex;
+      spla::T_INT temp_v;
+      temp->get_int(p_i, temp_v);
+      index->set_int(i, temp_v);
+    }
+
 #ifdef SPLA_DEBUG
-                std::cout << "index = [";
-                for (int32_t i = 0; i < n; i++) {
-                        spla::T_INT p;
-                        index->get_int(i, p);
-                        std::cout << p << ", ";
-                }
-                std::cout << "]\n";
+    std::cout << "index = [";
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_INT p;
+      index->get_int(i, p);
+      std::cout << p << ", ";
+    }
+    std::cout << "]\n";
 #endif
-        //step 5 добавляем найденные ребра в MST
-        clock_gettime(CLOCK_MONOTONIC, &step_start);
-        auto new_parent = spla::Vector::make(n, spla::PAIR);
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_PAIR p;
-            parent->get_pair(i, p);
-            new_parent->set_pair(i, p);
-        }
-        for (int32_t i = 0; i < n; i++) {
-            spla::T_INT ind_v;
-            index->get_int(i, ind_v);
-            if (i == ind_v) {
-                auto row = spla::Vector::make(n, spla::PAIR);
-                spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
-                int min_vertex = -1;
-                float min_weight = INF;
+    auto new_parent = spla::Vector::make(n, spla::PAIR);
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR p;
+      parent->get_pair(i, p);
+      new_parent->set_pair(i, p);
+    }
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_INT ind_v;
+      index->get_int(i, ind_v);
+      if (i == ind_v) {
+        auto row = spla::Vector::make(n, spla::PAIR);
+        spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
+        int min_vertex = -1;
+        float min_weight = INF;
 
-                for (int32_t j = 0; j < n; j++) {
-                    spla::T_PAIR pair_row;
-                    row->get_pair(j, pair_row);
-                    auto pair_row_weight = pair_row.weight;
-                    auto pair_row_vertex = pair_row.vertex;
-                    if (pair_row_weight < INF) {
-                        spla::T_PAIR p1, p2;
-                        parent->get_pair(i, p1);
-                        parent->get_pair(pair_row_vertex, p2);
-                        if (p1.vertex != p2.vertex) { //разные компоненты
-                            if (pair_row_weight < min_weight) {
-                                    min_weight = pair_row_weight;
-                                    min_vertex = j;
-                            }
-
-                        }
-                    }
-                
-
-                }
-                if (min_vertex == -1) continue;
-                T->set_float(i, min_vertex, min_weight);
-                T->set_float(min_vertex, i, min_weight);
-                edges_added_this_iteration++;
-                if (i < min_vertex) {
-                    spla::T_PAIR p;
-                    spla::T_PAIR old_p;
-                    new_parent->get_pair(i, p);
-                    new_parent->get_pair(min_vertex, old_p);
-                    new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
-                    for (int k = 0; k < n; k++) {
-                        spla::T_PAIR p1;
-                        new_parent->get_pair(k, p1);
-                        if (p1.vertex == old_p.vertex) new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
-                    }
-                }
-                else {
-                    spla::T_PAIR p;
-                    spla::T_PAIR old_p;
-                    new_parent->get_pair(min_vertex, p);
-                    new_parent->get_pair(i, old_p);
-                    new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
-                    for (int k = 0; k < n; k++) {
-                        spla::T_PAIR p1;
-                        new_parent->get_pair(k, p1);
-                        if (p1.vertex == old_p.vertex) new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
-                    }
-                }
-                                
+        for (int32_t j = 0; j < n; j++) {
+          spla::T_PAIR pair_row;
+          row->get_pair(j, pair_row);
+          auto pair_row_weight = pair_row.weight;
+          auto pair_row_vertex = pair_row.vertex;
+          if (pair_row_weight < INF) {
+            spla::T_PAIR p1, p2;
+            parent->get_pair(i, p1);
+            parent->get_pair(pair_row_vertex, p2);
+            if (p1.vertex != p2.vertex) {
+              if (pair_row_weight < min_weight) {
+                min_weight = pair_row_weight;
+                min_vertex = j;
+              }
             }
+          }
         }
-        parent = new_parent;
-        std::vector<bool> seen(n, false);
-        for (uint i = 0; i < n; i++) {
-            T_PAIR p;
-            parent->get_pair(i, p);
-            seen[p.vertex] = true;
+        if (min_vertex == -1)
+          continue;
+        T->set_float(i, min_vertex, min_weight);
+        T->set_float(min_vertex, i, min_weight);
+        edges_added_this_iteration++;
+        if (i < min_vertex) {
+          spla::T_PAIR p;
+          spla::T_PAIR old_p;
+          new_parent->get_pair(i, p);
+          new_parent->get_pair(min_vertex, old_p);
+          new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
+          for (int k = 0; k < n; k++) {
+            spla::T_PAIR p1;
+            new_parent->get_pair(k, p1);
+            if (p1.vertex == old_p.vertex)
+              new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
+          }
+        } else {
+          spla::T_PAIR p;
+          spla::T_PAIR old_p;
+          new_parent->get_pair(min_vertex, p);
+          new_parent->get_pair(i, old_p);
+          new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
+          for (int k = 0; k < n; k++) {
+            spla::T_PAIR p1;
+            new_parent->get_pair(k, p1);
+            if (p1.vertex == old_p.vertex)
+              new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
+          }
         }
-        
-        comp = 0;
-        for (uint i = 0; i < n; i++) {
-            if (seen[i]) comp++;
-        }
-        clock_gettime(CLOCK_MONOTONIC, &step_end);
-        step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                    (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-        std::cout << "---  Step 5(добавляем найденные ребра в MST): " << step_time * 1000 << " ms" << std::endl;
-        
+      }
+    }
+    parent = new_parent;
+    std::vector<bool> seen(n, false);
+    for (uint i = 0; i < n; i++) {
+      T_PAIR p;
+      parent->get_pair(i, p);
+      seen[p.vertex] = true;
+    }
+
+    comp = 0;
+    for (uint i = 0; i < n; i++) {
+      if (seen[i])
+        comp++;
+    }
 
 #ifdef SPLA_DEBUG
-                std::cout << "parent = [";
-                for (int32_t i = 0; i < n; i++) {
-                        spla::T_PAIR p;
-                        parent->get_pair(i, p);
-                        std::cout << p.vertex << ", ";
-                }
-                std::cout << "]\n";
+    std::cout << "parent = [";
+    for (int32_t i = 0; i < n; i++) {
+      spla::T_PAIR p;
+      parent->get_pair(i, p);
+      std::cout << p.vertex << ", ";
+    }
+    std::cout << "]\n";
 #endif
 #ifdef SPLA_RELEASE
-        tight.stop();
-        std::cout << " - iteration " << iteration
-                  << " components " << comp
-                  << " " << tight.get_elapsed_ms() << " ms" << std::endl;
-        Library::get()->time_profile_dump();
-        Library::get()->time_profile_reset();
+    tight.stop();
+    std::cout << " - iteration " << iteration << " components " << comp << " "
+              << tight.get_elapsed_ms() << " ms" << std::endl;
+    Library::get()->time_profile_dump();
+    Library::get()->time_profile_reset();
 #endif
-                if (comp == 1) {
-                    std::cout << "MST complete after " << iteration << " iterations" << std::endl;
-                    return Status::Ok; 
-                }
-                //обновляем матрицу смежности
-                clock_gettime(CLOCK_MONOTONIC, &step_start);
-                auto filtered_S = spla::Matrix::make(n, n, spla::PAIR);
-                for (int32_t i = 0; i < n; i++) {
-                        for (int32_t j = 0; j < n; j++) {
-                                spla::T_PAIR val;
-                                S->get_pair(i, j, val);
-                                if (val.weight != std::numeric_limits<float>::infinity()) {
-                                        spla::T_PAIR parent_i, parent_j;
-                                        parent->get_pair(i, parent_i);
-                                        parent->get_pair(j, parent_j);
-                                        if ((parent_i.vertex != parent_j.vertex) && (val.weight != std::numeric_limits<float>::infinity())) {
-                                                filtered_S->set_pair(i, j, val);
-                                        }
-
-                                }
-                        }
-                }
-                S = filtered_S;
-                if (edges_added_this_iteration == 0) {
-                    return Status::Ok;  
-                }
-                clock_gettime(CLOCK_MONOTONIC, &step_end);
-                step_time = (step_end.tv_sec - step_start.tv_sec) + 
-                            (step_end.tv_nsec - step_start.tv_nsec) / 1e9;
-                std::cout << "---  Step 6(добавляем S): " << step_time * 1000 << " ms" << std::endl;
-                
-
-                
-
-        }
-        return Status::Ok;
+    if (comp == 1) {
+      std::cout << "MST complete after " << iteration << " iterations"
+                << std::endl;
+      return Status::Ok;
     }
+    auto filtered_S = spla::Matrix::make(n, n, spla::PAIR);
+    for (int32_t i = 0; i < n; i++) {
+      for (int32_t j = 0; j < n; j++) {
+        spla::T_PAIR val;
+        S->get_pair(i, j, val);
+        if (val.weight != std::numeric_limits<float>::infinity()) {
+          spla::T_PAIR parent_i, parent_j;
+          parent->get_pair(i, parent_i);
+          parent->get_pair(j, parent_j);
+          if ((parent_i.vertex != parent_j.vertex) &&
+              (val.weight != std::numeric_limits<float>::infinity())) {
+            filtered_S->set_pair(i, j, val);
+          }
+        }
+      }
+    }
+    S = filtered_S;
+    if (edges_added_this_iteration == 0) {
+      return Status::Ok;
+    }
+  }
+  return Status::Ok;
+}
 
 #pragma endregion Mst
 
-
-}// namespace spla
+} // namespace spla

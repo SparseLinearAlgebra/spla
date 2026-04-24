@@ -49,15 +49,19 @@ namespace spla {
         SPLA_API virtual Status        set_int(std::int32_t value)    = 0;
         SPLA_API virtual Status        set_uint(std::uint32_t value)  = 0;
         SPLA_API virtual Status        set_float(float value)         = 0;
-        SPLA_API virtual Status        set_pair(Pair value) {return Status::InvalidArgument;}
+        SPLA_API virtual Status set_pair(Pair value) {
+          return Status::InvalidArgument;
+        }
         SPLA_API virtual Status        get_int(std::int32_t& value)   = 0;
         SPLA_API virtual Status        get_uint(std::uint32_t& value) = 0;
         SPLA_API virtual Status        get_float(float& value)        = 0;
-        SPLA_API virtual Status        get_pair(Pair& value) {return Status::InvalidArgument;}
+        SPLA_API virtual Status get_pair(Pair &value) {
+          return Status::InvalidArgument;
+        }
         SPLA_API virtual T_INT         as_int()                       = 0;
         SPLA_API virtual T_UINT        as_uint()                      = 0;
         SPLA_API virtual T_FLOAT       as_float()                     = 0;
-        SPLA_API virtual T_PAIR        as_pair()                     = 0;
+        SPLA_API virtual T_PAIR as_pair() = 0;
 
         SPLA_API static ref_ptr<Scalar> make(const ref_ptr<Type>& type);
         SPLA_API static ref_ptr<Scalar> make_int(std::int32_t value);

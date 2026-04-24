@@ -39,12 +39,12 @@
 #include "spla/memview.hpp"
 #include "spla/object.hpp"
 #include "spla/op.hpp"
+#include "spla/pair.hpp"
 #include "spla/ref.hpp"
 #include "spla/scalar.hpp"
 #include "spla/schedule.hpp"
 #include "spla/timer.hpp"
 #include "spla/type.hpp"
 #include "spla/vector.hpp"
-#include "spla/pair.hpp"
 
 #endif//SPLA_SPLA_HPP

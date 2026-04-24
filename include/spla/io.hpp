@@ -80,7 +80,7 @@ namespace spla {
 
         [[nodiscard]] SPLA_API const std::vector<uint>& get_Ai() const;
         [[nodiscard]] SPLA_API const std::vector<uint>& get_Aj() const;
-        [[nodiscard]] SPLA_API const std::vector<float>& get_Aw() const;
+        [[nodiscard]] SPLA_API const std::vector<float> &get_Aw() const;
         [[nodiscard]] SPLA_API uint                     get_n_rows() const;
         [[nodiscard]] SPLA_API uint                     get_n_cols() const;
         [[nodiscard]] SPLA_API std::size_t get_n_values() const;
@@ -90,7 +90,7 @@ namespace spla {
         std::filesystem::path m_file_path;
         std::vector<uint>     m_Ai;
         std::vector<uint>     m_Aj;
-        std::vector<float>    m_Aw;
+        std::vector<float> m_Aw;
         bool                  m_base_is_zero = false;
         uint                  m_n_rows       = 0;
         uint                  m_n_cols       = 0;
