@@ -38,95 +38,95 @@
 #include <iostream>
 #include <spla.hpp>
 
-int main(int argc, const char *const *argv) {
-  auto options = make_options(
-      "mst", "Boruvka's Minimum Spanning Tree algorithm with spla library");
+int main(int argc, const char* const* argv) {
+    auto options = make_options(
+            "mst", "Boruvka's Minimum Spanning Tree algorithm with spla library");
 
-  cxxopts::ParseResult args;
-  int ret;
+    cxxopts::ParseResult args;
+    int                  ret;
 
-  if (parse_options(argc, argv, options, args, ret)) {
-    std::cerr << "failed to parse options" << std::endl;
-    return ret;
-  }
+    if (parse_options(argc, argv, options, args, ret)) {
+        std::cerr << "failed to parse options" << std::endl;
+        return ret;
+    }
 
-  spla::Timer timer_total;
-  spla::Timer timer_gpu;
-  spla::Timer timer_ref;
-  spla::MtxLoader loader;
+    spla::Timer     timer_total;
+    spla::Timer     timer_gpu;
+    spla::Timer     timer_ref;
+    spla::MtxLoader loader;
 
-  timer_total.start();
+    timer_total.start();
 
-  if (!loader.load(args["mtxpath"].as<std::string>())) {
-    std::cerr << "failed to load graph";
-    return 1;
-  }
+    if (!loader.load(args["mtxpath"].as<std::string>())) {
+        std::cerr << "failed to load graph";
+        return 1;
+    }
 
-  std::string acc_info;
-  spla::Library *library = spla::Library::get();
+    std::string    acc_info;
+    spla::Library* library = spla::Library::get();
 
-  library->set_platform(args["platform"].as<int>());
-  library->set_device(args["device"].as<int>());
-  library->set_queues_count(1);
-  library->get_accelerator_info(acc_info);
-  std::cout << "env: " << acc_info << std::endl;
+    library->set_platform(args["platform"].as<int>());
+    library->set_device(args["device"].as<int>());
+    library->set_queues_count(1);
+    library->get_accelerator_info(acc_info);
+    std::cout << "env: " << acc_info << std::endl;
 
-  const spla::uint N = loader.get_n_rows();
-  auto S = spla::Matrix::make(N, N, spla::PAIR);
+    const spla::uint N = loader.get_n_rows();
+    auto             S = spla::Matrix::make(N, N, spla::PAIR);
 
-  const auto &Ai = loader.get_Ai();
-  const auto &Aj = loader.get_Aj();
-  const auto &Aw = loader.get_Aw();
+    const auto& Ai = loader.get_Ai();
+    const auto& Aj = loader.get_Aj();
+    const auto& Aw = loader.get_Aw();
 
-  for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-    S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
-  }
-
-  auto T_gpu = spla::Matrix::make(N, N, spla::FLOAT);
-
-  auto desc = spla::Descriptor::make();
-
-  const int n_iters = args["niters"].as<int>();
-
-  double total_weight_gpu = 0.0;
-
-  if (args["run-gpu"].as<bool>()) {
-    library->set_force_no_acceleration(false);
-
-    for (int i = 0; i < n_iters; ++i) {
-      T_gpu->clear();
-      S = spla::Matrix::make(N, N, spla::PAIR);
-      for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+    for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
         S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
-      }
-      timer_gpu.lap_begin();
-      spla::mst(T_gpu, S, desc, nullptr);
-      timer_gpu.lap_end();
     }
 
-    total_weight_gpu = 0;
-    for (spla::uint i = 0; i < N; ++i) {
-      for (spla::uint j = i + 1; j < N; ++j) {
-        float w;
-        T_gpu->get_float(i, j, w);
-        if (w != 0.0) {
-          total_weight_gpu += w;
+    auto T_gpu = spla::Matrix::make(N, N, spla::FLOAT);
+
+    auto desc = spla::Descriptor::make();
+
+    const int n_iters = args["niters"].as<int>();
+
+    double total_weight_gpu = 0.0;
+
+    if (args["run-gpu"].as<bool>()) {
+        library->set_force_no_acceleration(false);
+
+        for (int i = 0; i < n_iters; ++i) {
+            T_gpu->clear();
+            S = spla::Matrix::make(N, N, spla::PAIR);
+            for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+                S->set_pair(Ai[k], Aj[k], spla::T_PAIR(Aw[k], Aj[k]));
+            }
+            timer_gpu.lap_begin();
+            spla::mst(T_gpu, S, desc, nullptr);
+            timer_gpu.lap_end();
         }
-      }
+
+        total_weight_gpu = 0;
+        for (spla::uint i = 0; i < N; ++i) {
+            for (spla::uint j = i + 1; j < N; ++j) {
+                float w;
+                T_gpu->get_float(i, j, w);
+                if (w != 0.0) {
+                    total_weight_gpu += w;
+                }
+            }
+        }
+
+        std::cout << "GPU MST total weight: " << total_weight_gpu << std::endl;
     }
 
-    std::cout << "GPU MST total weight: " << total_weight_gpu << std::endl;
-  }
+    spla::Library::get()->finalize();
 
-  spla::Library::get()->finalize();
+    timer_total.stop();
 
-  timer_total.stop();
+    std::cout << "\n=== Timing Results ===" << std::endl;
+    std::cout << "total(ms):" << timer_total.get_elapsed_ms() << std::endl;
+    std::cout << "gpu(ms): ";
+    timer_gpu.print();
+    std::cout << std::endl;
 
-  std::cout << "\n=== Timing Results ===" << std::endl;
-  std::cout << "total(ms):" << timer_total.get_elapsed_ms() << std::endl;
-  std::cout << "gpu(ms): ";
-  timer_gpu.print();
-  std::cout << std::endl;
-
-  return 0;
+    return 0;
 }
