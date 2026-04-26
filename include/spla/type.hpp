@@ -59,7 +59,7 @@ namespace spla {
     using T_INT   = std::int32_t;
     using T_UINT  = std::uint32_t;
     using T_FLOAT = float;
-    using T_PAIR = Pair;
+    using T_PAIR  = Pair;
 
     SPLA_API extern ref_ptr<Type> BOOL;
     SPLA_API extern ref_ptr<Type> INT;

@@ -44,12 +44,12 @@
 
 namespace spla {
 
-/**
+    /**
  * @addtogroup spla
  * @{
  */
 
-/**
+    /**
  * @brief Breadth-first search algorithm
  *
  * @param v int vector to store reached distances
@@ -59,11 +59,11 @@ namespace spla {
  *
  * @return ok on success
  */
-SPLA_API Status
-bfs(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
-    const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status
+    bfs(const ref_ptr<Vector>& v, const ref_ptr<Matrix>& A, uint s,
+        const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief Naive breadth-first search algorithm (reference cpu implementation)
  *
  * @param v int vector to store reached distances
@@ -73,11 +73,11 @@ bfs(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
  *
  * @return ok on success
  */
-SPLA_API Status
-bfs_naive(std::vector<int> &v, std::vector<std::vector<spla::uint>> &A, uint s,
-          const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status
+    bfs_naive(std::vector<int>& v, std::vector<std::vector<spla::uint>>& A, uint s,
+              const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief Single-source shortest path algorithm
  *
  * @param v float vector to store reached distances
@@ -88,11 +88,11 @@ bfs_naive(std::vector<int> &v, std::vector<std::vector<spla::uint>> &A, uint s,
  *
  * @return ok on success
  */
-SPLA_API Status
-sssp(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
-     const ref_ptr<Descriptor> &descriptor = ref_ptr<Descriptor>());
+    SPLA_API Status
+    sssp(const ref_ptr<Vector>& v, const ref_ptr<Matrix>& A, uint s,
+         const ref_ptr<Descriptor>& descriptor = ref_ptr<Descriptor>());
 
-/**
+    /**
  * @brief Naive single-source shortest path algorithm (reference cpu
  * implementation)
  *
@@ -105,12 +105,12 @@ sssp(const ref_ptr<Vector> &v, const ref_ptr<Matrix> &A, uint s,
  *
  * @return ok on success
  */
-SPLA_API Status
-sssp_naive(std::vector<float> &v, std::vector<std::vector<uint>> &Ai,
-           std::vector<std::vector<float>> &Ax, uint s,
-           const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status
+    sssp_naive(std::vector<float>& v, std::vector<std::vector<uint>>& Ai,
+               std::vector<std::vector<float>>& Ax, uint s,
+               const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief PageRank algorithm
  *
  * @param p float vector to store result vertices weights
@@ -121,12 +121,12 @@ sssp_naive(std::vector<float> &v, std::vector<std::vector<uint>> &Ai,
  *
  * @return ok on success
  */
-SPLA_API Status
-pr(ref_ptr<Vector> &p, const ref_ptr<Matrix> &A, float alpha = 0.85,
-   float eps = 1e-6,
-   const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status
+    pr(ref_ptr<Vector>& p, const ref_ptr<Matrix>& A, float alpha = 0.85,
+       float                      eps        = 1e-6,
+       const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief Naive PageRank algorithm (reference cpu implementation)
  *
  * @param p float vector to store result vertices weights
@@ -138,12 +138,12 @@ pr(ref_ptr<Vector> &p, const ref_ptr<Matrix> &A, float alpha = 0.85,
  *
  * @return ok on success
  */
-SPLA_API Status pr_naive(
-    std::vector<float> &p, std::vector<std::vector<uint>> &Ai,
-    std::vector<std::vector<float>> &Ax, float alpha = 0.85, float eps = 1e-6,
-    const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status pr_naive(
+            std::vector<float>& p, std::vector<std::vector<uint>>& Ai,
+            std::vector<std::vector<float>>& Ax, float alpha = 0.85, float eps = 1e-6,
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief Triangles counting algorithm
  *
  * @param ntrins Number of triangles counted
@@ -153,11 +153,11 @@ SPLA_API Status pr_naive(
  *
  * @return ok on success
  */
-SPLA_API Status
-tc(int &ntrins, const ref_ptr<Matrix> &A, const ref_ptr<Matrix> &B,
-   const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
+    SPLA_API Status
+    tc(int& ntrins, const ref_ptr<Matrix>& A, const ref_ptr<Matrix>& B,
+       const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
-/**
+    /**
  * @brief Naive triangles counting algorithm (reference cpu implementation)
  *
  * @param ntrins Number of triangles counted
@@ -166,10 +166,10 @@ tc(int &ntrins, const ref_ptr<Matrix> &A, const ref_ptr<Matrix> &B,
  *
  * @return ok on success
  */
-SPLA_API Status
-tc_naive(int &ntrins, std::vector<std::vector<spla::uint>> &Ai,
-         const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make());
-/**
+    SPLA_API Status
+    tc_naive(int& ntrins, std::vector<std::vector<spla::uint>>& Ai,
+             const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
+    /**
  * @brief Boruvka's Minimum Spanning Tree algorithm
  *
  * Finds the Minimum Spanning Tree of a weighted undirected graph using
@@ -184,15 +184,15 @@ tc_naive(int &ntrins, std::vector<std::vector<spla::uint>> &Ai,
  *
  * @return ok on success
  */
-SPLA_API Status
-mst(const ref_ptr<Matrix> &T, ref_ptr<Matrix> &S,
-    const ref_ptr<Descriptor> &descriptor = spla::Descriptor::make(),
-    ref_ptr<ScheduleTask> *task_hnd = nullptr);
+    SPLA_API Status
+    mst(const ref_ptr<Matrix>& T, ref_ptr<Matrix>& S,
+        const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make(),
+        ref_ptr<ScheduleTask>*     task_hnd   = nullptr);
 
-/**
+    /**
  * @}
  */
 
-} // namespace spla
+}// namespace spla
 
-#endif // SPLA_ALGORITHM_HPP
+#endif// SPLA_ALGORITHM_HPP

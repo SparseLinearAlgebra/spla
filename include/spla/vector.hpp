@@ -59,8 +59,8 @@ namespace spla {
         SPLA_API virtual Status        get_int(uint row_id, T_INT& value)                                  = 0;
         SPLA_API virtual Status        get_uint(uint row_id, T_UINT& value)                                = 0;
         SPLA_API virtual Status        get_float(uint row_id, float& value)                                = 0;
-        SPLA_API virtual Status get_pair(uint row_id, Pair &value) = 0;
-        SPLA_API virtual Status set_pair(uint row_id, Pair value) = 0;
+        SPLA_API virtual Status        get_pair(uint row_id, Pair& value)                                  = 0;
+        SPLA_API virtual Status        set_pair(uint row_id, Pair value)                                   = 0;
         SPLA_API virtual Status        fill_noize(uint seed)                                               = 0;
         SPLA_API virtual Status        fill_with(const ref_ptr<Scalar>& value)                             = 0;
         SPLA_API virtual Status        build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) = 0;
