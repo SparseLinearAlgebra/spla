@@ -37,33 +37,33 @@
 
 namespace spla {
 
-ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type> &type) {
-  if (n_rows <= 0) {
-    LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-    return ref_ptr<Vector>{};
-  }
-  if (!type) {
-    LOG_MSG(Status::InvalidArgument, "passed null type");
-    return ref_ptr<Vector>{};
-  }
+    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
+        if (n_rows <= 0) {
+            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
+            return ref_ptr<Vector>{};
+        }
+        if (!type) {
+            LOG_MSG(Status::InvalidArgument, "passed null type");
+            return ref_ptr<Vector>{};
+        }
 
-  Library::get();
+        Library::get();
 
-  if (type == INT) {
-    return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-  }
-  if (type == UINT) {
-    return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-  }
-  if (type == FLOAT) {
-    return ref_ptr<Vector>(new TVector<float>(n_rows));
-  }
-  if (type == spla::PAIR) {
-    return ref_ptr<Vector>(new TVector<Pair>(n_rows));
-  }
+        if (type == INT) {
+            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
+        }
+        if (type == UINT) {
+            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
+        }
+        if (type == FLOAT) {
+            return ref_ptr<Vector>(new TVector<float>(n_rows));
+        }
+        if (type == spla::PAIR) {
+            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
+        }
 
-  LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-  return ref_ptr<Vector>{};
-}
+        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
+        return ref_ptr<Vector>{};
+    }
 
-} // namespace spla
+}// namespace spla

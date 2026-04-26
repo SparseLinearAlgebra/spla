@@ -37,39 +37,39 @@
 
 namespace spla {
 
-ref_ptr<Scalar> Scalar::make(const ref_ptr<Type> &type) {
-  if (!type) {
-    LOG_MSG(Status::InvalidArgument, "passed null type");
-    return ref_ptr<Scalar>{};
-  }
+    ref_ptr<Scalar> Scalar::make(const ref_ptr<Type>& type) {
+        if (!type) {
+            LOG_MSG(Status::InvalidArgument, "passed null type");
+            return ref_ptr<Scalar>{};
+        }
 
-  Library::get();
+        Library::get();
 
-  if (type == INT) {
-    return ref_ptr<Scalar>(new TScalar<std::int32_t>());
-  }
-  if (type == UINT) {
-    return ref_ptr<Scalar>(new TScalar<std::uint32_t>());
-  }
-  if (type == FLOAT) {
-    return ref_ptr<Scalar>(new TScalar<float>());
-  }
-  if (type == PAIR) {
-    return ref_ptr<Scalar>(new TScalar<Pair>());
-  }
+        if (type == INT) {
+            return ref_ptr<Scalar>(new TScalar<std::int32_t>());
+        }
+        if (type == UINT) {
+            return ref_ptr<Scalar>(new TScalar<std::uint32_t>());
+        }
+        if (type == FLOAT) {
+            return ref_ptr<Scalar>(new TScalar<float>());
+        }
+        if (type == PAIR) {
+            return ref_ptr<Scalar>(new TScalar<Pair>());
+        }
 
-  LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-  return ref_ptr<Scalar>();
-}
+        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
+        return ref_ptr<Scalar>();
+    }
 
-ref_ptr<Scalar> Scalar::make_int(std::int32_t value) {
-  return ref_ptr<Scalar>(new TScalar<std::int32_t>(value));
-}
-ref_ptr<Scalar> Scalar::make_uint(std::uint32_t value) {
-  return ref_ptr<Scalar>(new TScalar<std::uint32_t>(value));
-}
-ref_ptr<Scalar> Scalar::Scalar::make_float(float value) {
-  return ref_ptr<Scalar>(new TScalar<float>(value));
-}
+    ref_ptr<Scalar> Scalar::make_int(std::int32_t value) {
+        return ref_ptr<Scalar>(new TScalar<std::int32_t>(value));
+    }
+    ref_ptr<Scalar> Scalar::make_uint(std::uint32_t value) {
+        return ref_ptr<Scalar>(new TScalar<std::uint32_t>(value));
+    }
+    ref_ptr<Scalar> Scalar::Scalar::make_float(float value) {
+        return ref_ptr<Scalar>(new TScalar<float>(value));
+    }
 
-} // namespace spla
+}// namespace spla
