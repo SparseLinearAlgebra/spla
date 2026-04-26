@@ -83,22 +83,22 @@ namespace spla {
         }
 
         std::stringstream builder;
-        bool needs_pair_override = false;
+        bool              needs_pair_override = false;
         for (const auto& define : m_defines) {
             builder << "#define " << define.first << " " << define.second << "\n";
             if (define.first == "TYPE" &&
                 define.second.find("Pair") != std::string::npos) {
-              needs_pair_override = true;
+                needs_pair_override = true;
             }
         }
 
         builder << source_common_api;
 
         if (needs_pair_override) {
-          builder << "#define OP_BINARY1(a, b) make_pair((a).weight, "
-                     "(b).vertex)\n\n";
-          builder << "#define OP_BINARY2(a, b) min_pair(a, b)\n\n";
-          builder << "#define OP_SELECT(a) pair_always(a)\n\n";
+            builder << "#define OP_BINARY1(a, b) make_pair((a).weight, "
+                       "(b).vertex)\n\n";
+            builder << "#define OP_BINARY2(a, b) min_pair(a, b)\n\n";
+            builder << "#define OP_SELECT(a) pair_always(a)\n\n";
         }
 
         for (const auto& function : m_functions) {
