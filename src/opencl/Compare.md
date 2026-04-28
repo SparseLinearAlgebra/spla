@@ -15,6 +15,7 @@
 | **Активность** | среднее число коммитов | коммитов/мес (за последний мес) |
 | **Issues** | open, closed/open | n, коэффициент |
 | **Сообщество** | GitHub Stars | n |
+| **Проходит ли CI** | CI | +/- |
 
 
 
@@ -49,6 +50,7 @@
 | &emsp;Issues всего | 506 | 307 | 
 | &emsp;Issues closed/open | 9 | 6 | 
 | &emsp;Stars | 4.3k | 4.7k | 
+| **Проходит ли CI** | CI | + | + |
 
 
 ## Парсеры файлов
@@ -82,6 +84,7 @@
 | &emsp;Issues всего | 3271 | 905 | 193 | 194
 | &emsp;Issues closed/open | 68 | 3 | 8 | 5
 | &emsp;Stars | 49.4k | 15k | 2k | 1.3k 
+| **Проходит ли CI** | CI | + | + | - | + |
 
 > ¹ Опционально.
 
@@ -89,7 +92,7 @@
 
 | Критерий | Boost.Program_options
 |:---|:---:|
-| Зависимости | + |
+| Зависимости | +¹ |
 | **Источники** | | |
 | &emsp;CLI (argv) | + | + |
 | &emsp;env | + | + |
@@ -106,7 +109,7 @@
 | &emsp;apt | + | 
 | &emsp;brew | + | 
 | &emsp;pacman | + | 
-| Способ распространения | статическая/динамическая¹ | 
+| Способ распространения | статическая/динамическая² | 
 | **ОС** | | |
 | &emsp;Linux | + (GCC 5+, Clang 3.6+) | 
 | &emsp;Windows | + (MSVC 2015 (vc140)+) |
@@ -116,8 +119,23 @@
 | &emsp;Issues всего | 400 | 
 | &emsp;Issues closed/open | 1 | 
 | &emsp;Stars | 9.4k |
+| **Проходит ли CI** | CI | + |
 
-> ¹ Опционально.
+> ¹ Список зависимостей: 
+1. Boost.Any
+2. Boost.Bind
+3. Boost.Config
+4. Boost.Core
+5. Boost.Detail
+6. Boost.Function
+7. Boost.Iterator
+8. Boost.Lexical Cast
+9. Boost.Smart Ptr
+10. Boost.ThrowException
+11. Boost.Tokenizer
+12. Boost.Type Traits 
+
+> ² Опционально.
 
 
 ## Итог:
