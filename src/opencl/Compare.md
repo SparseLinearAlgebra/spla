@@ -122,21 +122,21 @@
 | **Проходит ли CI** | + | + |
 
 > ¹ Список зависимостей: 
-1. Boost.Any
-2. Boost.Bind
-3. Boost.Config
-4. Boost.Core
-5. Boost.Detail
-6. Boost.Function
-7. Boost.Iterator
-8. Boost.Lexical Cast
-9. Boost.Smart Ptr
-10. Boost.ThrowException
-11. Boost.Tokenizer
-12. Boost.Type Traits 
+> 1. Boost.Any
+> 2. Boost.Bind
+> 3. Boost.Config
+> 4. Boost.Core
+> 5. Boost.Detail
+> 6. Boost.Function
+> 7. Boost.Iterator
+> 8. Boost.Lexical Cast
+> 9. Boost.Smart Ptr
+> 10. Boost.ThrowException
+> 11. Boost.Tokenizer
+> 12. Boost.Type Traits 
 
 > ² Опционально.
 
 
 ## Итог:
-По результатам сравнения, вероятно, лучшим вариантом будет использование `CLI11` и `nlohmann/json`, так как они, в отличие от Boost.program_options, не требуют зависимостей и являются header-only.
+По результатам сравнения, вероятно, лучшим вариантом будет использование `CLI11` и `nlohmann/json`, так как они, в отличие от `Boost.program_options`, не требуют зависимостей и являются header-only.
