@@ -204,10 +204,10 @@ config:
     "performance"
         "memory"
             "linear_allocator_size_mb": int         # DEFAULT_SIZE
-            "allocator_strategy": string            # "auto" | "linear" | "general" | "vendor"
+            "allocator_strategy":   "auto" | "linear" | "general" | "vendor"
             "vendor_strategy":
-                "nvidia": string                    # "linear" | "general"
-                "amd": string                       # "linear" | "general"
-                "intel": string                     # "linear" | "general"
-                "img": strings                      # "linear" | "general"
+                "nvidia":           "linear" | "general"
+                "amd":              "linear" | "general"
+                "intel":            "linear" | "general"
+                "img":              "linear" | "general"
 ```
