@@ -184,7 +184,7 @@ config:
         "priority": int
         "fallback": (???)                           # Нужен ли fallback
 
-    "device": {
+    "device":
         "selection": 
             "user_alias": string
             "official_name": string
@@ -200,4 +200,14 @@ config:
             "memory_banks": int                     # m_num_of_mem_banks
             "memory_alignment": int                 # m_addr_align
         "fallback": (???)                           # Нужен ли fallback
+
+    "performance"
+        "memory"
+            "linear_allocator_size_mb": int         # DEFAULT_SIZE
+            "allocator_strategy": string            # "auto" | "linear" | "general" | "vendor"
+            "vendor_strategy":
+                "nvidia": string                    # "linear" | "general"
+                "amd": string                       # "linear" | "general"
+                "intel": string                     # "linear" | "general"
+                "img": strings                      # "linear" | "general"
 ```
