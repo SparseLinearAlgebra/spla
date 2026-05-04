@@ -169,3 +169,35 @@
     `m_suffix `
 8. Тип устройства (чтобы можно было использовать CPU)
     `getDevices`
+
+# Структура конфига (JSON)
+
+```bash
+config:
+
+    "platform":
+        "selection":
+            "user_alias": string
+            "official_name": string
+            "vendor": "nvidia" | "amd" | "intel" | "img" | ""
+        "index": int
+        "priority": int
+        "fallback": (???)                           # Нужен ли fallback
+
+    "device": {
+        "selection": 
+            "user_alias": string
+            "official_name": string
+            "type": "gpu" | "cpu" | "accelerator" | "all"
+        "index": int
+        "priority": int
+        "naming": 
+            "accelerator_name"                      # m_name
+            "cache_suffix"                          # m_suffix
+        "tuning": 
+            "default_work_group_size": int          # m_default_wgs
+            "wave_size": int                        # m_wave_size
+            "memory_banks": int                     # m_num_of_mem_banks
+            "memory_alignment": int                 # m_addr_align
+        "fallback": (???)                           # Нужен ли fallback
+```
