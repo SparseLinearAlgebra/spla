@@ -188,7 +188,7 @@ config:
         "selection": 
             "user_alias": string
             "official_name": string
-            "type": "gpu" | "cpu" | "accelerator" | "all"
+            "type": "gpu" | "cpu" 
         "index": int
         "priority": int
         "naming": 
