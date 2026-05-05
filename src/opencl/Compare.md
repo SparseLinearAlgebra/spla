@@ -9,7 +9,6 @@
 | **Источники** | CLI (argv) / env / файлы | +/-, форматы |
 | **Стандарт C++** | минимальная версия | C++хх |
 | **Поддерживает стандарт иерархии** | Linux/Windows/MacOS | +/- |
-| **Пакетные менеджеры** | vcpkg / Conan / Conda / apt / brew / pacman | +/- |
 | **Способ распространения** | header-only / статическая / динамическая | — |
 | **ОС** | Linux / Windows / macOS | +/-, компиляторы |
 | **Активность** | среднее число коммитов | коммитов/мес (за последний мес) |
@@ -17,6 +16,7 @@
 | **Сообщество** | GitHub Stars | n |
 | **Проходит ли CI** | CI | +/- |
 
+> ? - не указано в README.
 
 
 ## Сравнение парсеров командной строки (CLI)
@@ -33,13 +33,6 @@
 | &emsp;Linux | + | + |
 | &emsp;Windows | + | + | 
 | &emsp;MacOS | + | + |  
-| **Пакетные менеджеры** | | |
-| &emsp;vcpkg | + | + | 
-| &emsp;Conan | + | + | 
-| &emsp;Conda | + | ? | 
-| &emsp;apt | ? | ? | 
-| &emsp;brew | ? | + | 
-| &emsp;pacman | ? | ? | 
 | Способ распространения | header-only | header-only 
 | **ОС** | | |
 | &emsp;Linux | + (GCC 4.8+, Clang 3.5+) | + (GCC ≥ 4.9, Clang ≥ 3.1) |
@@ -50,41 +43,34 @@
 | &emsp;Issues всего | 506 | 307 | 
 | &emsp;Issues closed/open | 9 | 6 | 
 | &emsp;Stars | 4.3k | 4.7k | 
-| **Проходит ли CI** | + | + | + |
+| Проходит ли CI | + | + | + |
 
 
 ## Парсеры файлов
 
-| Критерий | nlohmann/json  | yaml-cpp | toml++ | toml11 |
-|:---|:---:|:---:|:---:|:---:|
-| Зависимости | - | - | - | -
-| **Источники** | | |
-| &emsp;CLI (argv) | - | - | - | -
-| &emsp;env | - | - | - | -
-| &emsp;Файлы | JSON | YAML | TOML | TOML
-| Стандарт C++ | &ge; C++11 | &ge; C++11 | &ge; C++17 | &ge; C++11
-| **Поддерживает стандарт иерархии** | | |
-| &emsp;Linux | + | + | + | + |
-| &emsp;Windows | + | + | + | + |
-| &emsp;MacOS | + | + | + | + | 
-| **Пакетные менеджеры** | | |
-| &emsp;vcpkg | + | + | + | +
-| &emsp;Conan | + | + | + | ?
-| &emsp;Conda | + | + | ? | ?
-| &emsp;apt | + | + | ? | ?
-| &emsp;brew | + | + | ? | ?
-| &emsp;pacman | + | + | ? | ? |
-| Способ распространения | header-only | статическая/динамическая¹ | header-only/статическая/динамическая¹ | header-only/статическая/динамическая¹
+| Критерий | nlohmann/json  | yaml-cpp | toml++ | toml11 | config-cxx | taocpp/config
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Зависимости | - | - | - | - | - | - |
+| **Источники** |
+| &emsp;CLI (argv) | - | - | - | - | - | - |
+| &emsp;env | - | - | - | - | + | + |
+| &emsp;Файлы | JSON | YAML | TOML | TOML | JSON, YAML, XML | JSON, JAXN |
+| Стандарт C++ | &ge; C++11 | &ge; C++11 | &ge; C++17 | &ge; C++11 | &ge; C++20 | &ge; C++17 |
+| **Поддерживает стандарт иерархии** |
+| &emsp;Linux | + | + | + | + | + | + |
+| &emsp;Windows | + | + | + | + | + | + |
+| &emsp;MacOS | + | + | + | + | + | + |
+| Способ распространения | header-only | статическая/динамическая¹ | header-only/статическая/динамическая¹ | header-only/статическая/динамическая¹ | header-only | header-only |
 | **ОС** | | |
-| &emsp;Linux | + (GCC 4.8–14.2, Clang 3.4–21.0) | + (GCC, Clang) | + (Clang 8+, GCC 8+) | + (GCC, Clang)
-| &emsp;Windows | + (MSVC 2015–2022) | + (MSVC) | + (MSVC VS2019+) | + (MSVC, MinGW)
-| &emsp;macOS | + (AppleClang 9.1–16.0) | + (Xcode, AppleClang) | + (AppleClang) | + (AppleClang)
+| &emsp;Linux | + (GCC 4.8–14.2, Clang 3.4–21.0) | + (GCC, Clang) | + (Clang 8+, GCC 8+) | + (GCC, Clang) | + (GCC 13+, Clang 16+) | +
+| &emsp;Windows | + (MSVC 2015–2022) | + (MSVC) | + (MSVC VS2019+) | + (MSVC, MinGW) | + (MSVC 143+ (VS 2022)) | +
+| &emsp;macOS | + (AppleClang 9.1–16.0) | + (Xcode, AppleClang) | + (AppleClang) | + (AppleClang) | + (AppleClang 16+) | +
 | **Сообщество** | | | 
-| &emsp;Активность (коммитов/мес) | 2 | 9 | 2 | 4
-| &emsp;Issues всего | 3271 | 905 | 193 | 194
-| &emsp;Issues closed/open | 68 | 3 | 8 | 5
-| &emsp;Stars | 49.4k | 15k | 2k | 1.3k 
-| **Проходит ли CI** | + | + | + | - | + |
+| &emsp;Активность (коммитов/мес) | 2 | 9 | 2 | 4 | 2 | 13 |
+| &emsp;Issues всего | 3271 | 905 | 193 | 194 | 24 | 5 |
+| &emsp;Issues closed/open | 68 | 3 | 8 | 5 | 0 open | 0 open |
+| &emsp;Stars | 49.4k | 15k | 2k | 1.3k | 31 | 194 |
+| Проходит ли CI | + | + | + | - | + | ? |
 
 > ¹ Опционально.
 
@@ -102,13 +88,6 @@
 | &emsp;Linux | + | 
 | &emsp;Windows | + | 
 | &emsp;MacOS | + |
-| **Пакетные менеджеры** | | |
-| &emsp;vcpkg | + |  
-| &emsp;Conan | + |  
-| &emsp;Conda | + | 
-| &emsp;apt | + | 
-| &emsp;brew | + | 
-| &emsp;pacman | + | 
 | Способ распространения | статическая/динамическая² | 
 | **ОС** | | |
 | &emsp;Linux | + (GCC 5+, Clang 3.6+) | 
@@ -119,7 +98,7 @@
 | &emsp;Issues всего | 400 | 
 | &emsp;Issues closed/open | 1 | 
 | &emsp;Stars | 9.4k |
-| **Проходит ли CI** | + | + |
+| Проходит ли CI | + | + |
 
 > ¹ Список зависимостей: 
 > 1. Boost.Any
