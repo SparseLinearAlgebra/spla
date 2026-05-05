@@ -183,31 +183,29 @@ config:
         "index": int
         "priority": int
         "fallback": (???)                           # Нужен ли fallback
-
-    "device":
-        "selection": 
-            "user_alias": string
-            "official_name": string
-            "type": "gpu" | "cpu" 
-        "index": int
-        "priority": int
-        "naming": 
-            "accelerator_name"                      # m_name
-            "cache_suffix"                          # m_suffix
-        "tuning": 
-            "default_work_group_size": int          # m_default_wgs
-            "wave_size": int                        # m_wave_size
-            "memory_banks": int                     # m_num_of_mem_banks
-            "memory_alignment": int                 # m_addr_align
-        "fallback": (???)                           # Нужен ли fallback
-
-    "performance"
-        "memory"
-            "linear_allocator_size_mb": int         # DEFAULT_SIZE
-            "allocator_strategy":   "auto" | "linear" | "general" | "vendor"
-            "vendor_strategy":
-                "nvidia":           "linear" | "general"
-                "amd":              "linear" | "general"
-                "intel":            "linear" | "general"
-                "img":              "linear" | "general"
+        "device":
+            "selection": 
+                "user_alias": string
+                "official_name": string
+                "type": "gpu" | "cpu" 
+            "index": int
+            "priority": int
+            "naming": 
+                "accelerator_name"                      # m_name
+                "cache_suffix"                          # m_suffix
+            "tuning": 
+                "default_work_group_size": int          # m_default_wgs
+                "wave_size": int                        # m_wave_size
+                "memory_banks": int                     # m_num_of_mem_banks
+                "memory_alignment": int                 # m_addr_align
+            "fallback": (???)                           # Нужен ли fallback
+            "performance"
+                "memory"
+                    "linear_allocator_size_mb": int         # DEFAULT_SIZE
+                    "allocator_strategy":   "auto" | "linear" | "general" | "vendor"
+                    "vendor_strategy":
+                        "nvidia":           "linear" | "general"
+                        "amd":              "linear" | "general"
+                        "intel":            "linear" | "general"
+                        "img":              "linear" | "general"
 ```
