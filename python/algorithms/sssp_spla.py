@@ -1,30 +1,38 @@
-from pyspla import Matrix, Vector, FLOAT, Scalar
+from pyspla import *
 
-INF = 1e9
+INF = float(1e9)
 
-def sssp_broken(start: int, A: Matrix):
-    N = A.n_rows
-    v = Vector(N, FLOAT)
-    v.set(start, 0.0)
-    
-    frontier = Vector(N, FLOAT)
-    frontier.set(start, 0.0)
-    
-    dummy_mask = Vector.dense(N, FLOAT, 1.0)
+def sssp_spla(start: int, A: Matrix):
+    n = A.n_rows
+    initial_indices = list(range(n))
+    initial_values = [INF] * n
+    initial_values[start] = 0.0
+    dist = Vector.from_lists(initial_indices, initial_values, n, FLOAT)
+
+    mask = Vector.dense(n, FLOAT, 1.0)
     inf_scalar = Scalar(FLOAT, INF)
-    
-    step = 0
-    front_size = 1 
-    while front_size > 0 and step < N:
-        frontier = frontier.vxm(dummy_mask, A, op_mult=FLOAT.PLUS, op_add=FLOAT.MIN, op_select=FLOAT.ALWAYS, init=inf_scalar)
-        v = v.eadd(FLOAT.MIN, frontier)
-        idx, vals = v.to_lists()
-        print(f"Iteration {step} V: {sorted(list(zip(idx, vals)))}")
-        idx2, vals2 = frontier.to_lists()
-        print(f"Iteration {step} Frontier: {sorted(list(zip(idx2, vals2)))}")
-        front_size = frontier.reduce(FLOAT.PLUS).get()
-        print(f"Iteration {step} Frontier sum: {front_size}")
-        print('-' * 24)
-        step += 1
-    
-    return v
+
+    for iteration in range(n - 1):
+        new_dist = dist.vxm(mask, A,
+                            op_mult=FLOAT.PLUS,
+                            op_add=FLOAT.MIN,
+                            op_select=FLOAT.ALWAYS,
+                            init=inf_scalar)
+        relaxed = dist.eadd(FLOAT.MIN, new_dist)
+        indices, values = relaxed.to_lists()
+        if start not in indices:
+            indices.append(start)
+            values.append(0.0)
+        dist = Vector.from_lists(indices, values, n, FLOAT)
+
+    final_indices, final_values = dist.to_lists()
+    final_map = {i: INF for i in range(n)}
+    for k in range(len(final_indices)):
+        val = final_values[k]
+        if val == 0.0 and final_indices[k] != start:
+            val = INF
+        final_map[final_indices[k]] = val
+
+    all_indices = list(range(n))
+    all_values = [final_map[i] for i in all_indices]
+    return Vector.from_lists(all_indices, all_values, n, FLOAT)

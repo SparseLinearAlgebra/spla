@@ -1,164 +1,117 @@
 from pyspla import *
 
 def read_mtx_int(filename):
-    I, J, V = [], [], []
-    n_vertices = 0
-    
+    row_indices, col_indices, values = [], [], []
+    n = 0
     with open(filename, 'r') as f:
         for line in f:
             if line.startswith('%'):
                 continue
             parts = line.split()
-            if n_vertices == 0:
-                n_vertices = int(parts[0])
+            if n == 0:
+                n = int(parts[0])
                 continue
-                
             i = int(parts[0]) - 1
             j = int(parts[1]) - 1
-            
-            I.append(i)
-            J.append(j)
-            V.append(1)
-            
+            row_indices.append(i)
+            col_indices.append(j)
+            values.append(1)
             if i != j:
-                I.append(j)
-                J.append(i)
-                V.append(1)
-                
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=INT)
+                row_indices.append(j)
+                col_indices.append(i)
+                values.append(1)
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=INT)
 
 def read_vectors_int(filename):
     with open(filename, 'r') as f:
-        raw_I = list(map(int, f.readline().replace(',', ' ').split()))
-        raw_J = list(map(int, f.readline().replace(',', ' ').split()))
-        
-    n_vertices = max(max(raw_I), max(raw_J)) + 1
-    I, J, V = [], [], []
-    
-    for k in range(len(raw_I)):
-        i = raw_I[k]
-        j = raw_J[k]
-        
-        I.append(i)
-        J.append(j)
-        V.append(1)
-        
+        n_line = f.readline().strip()
+        if not n_line:
+            return Matrix.from_lists([], [], [], shape=(0,0), dtype=INT)
+        n = int(n_line)
+        rows = list(map(int, f.readline().split()))
+        cols = list(map(int, f.readline().split()))
+    row_indices, col_indices, values = [], [], []
+    for k in range(len(rows)):
+        i = rows[k]; j = cols[k]
+        row_indices.append(i); col_indices.append(j); values.append(1)
         if i != j:
-            I.append(j)
-            J.append(i)
-            V.append(1)
-            
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=INT)
+            row_indices.append(j); col_indices.append(i); values.append(1)
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=INT)
 
 def read_mtx_float(filename):
-    I, J, V = [], [], []
-    n_vertices = 0
-    
+    row_indices, col_indices, values = [], [], []
+    n = 0
     with open(filename, 'r') as f:
         for line in f:
             if line.startswith('%'):
                 continue
             parts = line.split()
-            if n_vertices == 0:
-                n_vertices = int(parts[0])
+            if n == 0:
+                n = int(parts[0])
                 continue
-                
             i = int(parts[0]) - 1
             j = int(parts[1]) - 1
-            weight = float(parts[2]) if len(parts) > 2 else 1.0
-            
-            I.append(i)
-            J.append(j)
-            V.append(weight)
-            
+            w = float(parts[2]) if len(parts) > 2 else 1.0
+            row_indices.append(i); col_indices.append(j); values.append(w)
             if i != j:
-                I.append(j)
-                J.append(i)
-                V.append(weight)
-                
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=FLOAT)
+                row_indices.append(j); col_indices.append(i); values.append(w)
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=FLOAT)
 
 def read_vectors_float(filename):
     with open(filename, 'r') as f:
-        raw_I = list(map(int, f.readline().replace(',', ' ').split()))
-        raw_J = list(map(int, f.readline().replace(',', ' ').split()))
-        raw_V = list(map(float, f.readline().replace(',', ' ').split()))
-        
-    n_vertices = max(max(raw_I), max(raw_J)) + 1
-    I, J, V = [], [], []
-    
-    for k in range(len(raw_I)):
-        i = raw_I[k]
-        j = raw_J[k]
-        weight = raw_V[k]
-        
-        I.append(i)
-        J.append(j)
-        V.append(weight)
-        
+        n_line = f.readline().strip()
+        if not n_line:
+            return Matrix.from_lists([], [], [], shape=(0,0), dtype=FLOAT)
+        n = int(n_line)
+        rows = list(map(int, f.readline().split()))
+        cols = list(map(int, f.readline().split()))
+        weights = list(map(float, f.readline().split()))
+    row_indices, col_indices, values = [], [], []
+    for k in range(len(rows)):
+        i = rows[k]; j = cols[k]; w = weights[k]
+        row_indices.append(i); col_indices.append(j); values.append(w)
         if i != j:
-            I.append(j)
-            J.append(i)
-            V.append(weight)
-            
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=FLOAT)
+            row_indices.append(j); col_indices.append(i); values.append(w)
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=FLOAT)
 
 def read_mtx_pr(filename, alpha):
-    I, J, V = [], [], []
-    n_vertices = 0
-    
+    row_indices, col_indices = [], []
+    n = 0
     with open(filename, 'r') as f:
         for line in f:
             if line.startswith('%'):
                 continue
             parts = line.split()
-            if n_vertices == 0:
-                n_vertices = int(parts[0])
-                out_degree = [0] * n_vertices
+            if n == 0:
+                n = int(parts[0])
+                out_degree = [0] * n
                 continue
-                
             i = int(parts[0]) - 1
             j = int(parts[1]) - 1
-            
-            I.append(i)
-            J.append(j)
+            row_indices.append(i); col_indices.append(j)
             out_degree[i] += 1
-            
             if i != j:
-                I.append(j)
-                J.append(i)
+                row_indices.append(j); col_indices.append(i)
                 out_degree[j] += 1
-                
-    for k in range(len(I)):
-        u = I[k]
-        V.append(alpha / out_degree[u])
-        
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=FLOAT)
+    values = [alpha / out_degree[u] for u in row_indices]
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=FLOAT)
 
 def read_vectors_pr(filename, alpha):
     with open(filename, 'r') as f:
-        raw_I = list(map(int, f.readline().replace(',', ' ').split()))
-        raw_J = list(map(int, f.readline().replace(',', ' ').split()))
-        
-    n_vertices = max(max(raw_I), max(raw_J)) + 1
-    out_degree = [0] * n_vertices
-    I, J, V = [], [], []
-    
-    for k in range(len(raw_I)):
-        i = raw_I[k]
-        j = raw_J[k]
-        
-        I.append(i)
-        J.append(j)
+        n_line = f.readline().strip()
+        if not n_line:
+            return Matrix.from_lists([], [], [], shape=(0,0), dtype=FLOAT)
+        n = int(n_line)
+        rows = list(map(int, f.readline().split()))
+        cols = list(map(int, f.readline().split()))
+    out_degree = [0] * n
+    row_indices, col_indices = [], []
+    for k in range(len(rows)):
+        i = rows[k]; j = cols[k]
+        row_indices.append(i); col_indices.append(j)
         out_degree[i] += 1
-        
         if i != j:
-            I.append(j)
-            J.append(i)
+            row_indices.append(j); col_indices.append(i)
             out_degree[j] += 1
-            
-    for k in range(len(I)):
-        u = I[k]
-        V.append(alpha / out_degree[u])
-            
-    return Matrix.from_lists(I, J, V, shape=(n_vertices, n_vertices), dtype=FLOAT)
+    values = [alpha / out_degree[u] for u in row_indices]
+    return Matrix.from_lists(row_indices, col_indices, values, shape=(n, n), dtype=FLOAT)

@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 
 from bfs_spla import bfs
-from sssp_spla import sssp, INF
+from sssp_spla import sssp_spla, INF
 from pr_spla import pagerank
 from tc_spla import cohen
 
@@ -44,7 +44,7 @@ def main():
             A = read_mtx_float(str(args.matrix))
         else:
             A = read_vectors_float(str(args.vectors))
-        v = sssp(args.start, A)
+        v = sssp_spla(args.start, A)
         with open(args.output, 'w') as f_out:
             idx, vals = v.to_lists()
             for k in range(len(idx)):
