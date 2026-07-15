@@ -1,12 +1,16 @@
 # Graph Algorithms with SPLA
 
-This project provides two implementations of graph algorithms:
+This project contains two implementations of graph algorithms:
 
-- **Classic (CPU)**: naive implementation in Python using adjacency lists.
-- **SPLA (GPU)**: implementation using sparse linear algebra primitives from the SPLA library, targeting GPU execution.
+- **Classic (CPU):** Python reference implementation
+- **SPLA (GPU):** implementation using sparse linear algebra primitives from SPLA
 
-Tests (`test_compare.py`) verify that both versions produce identical results.
+Tests (`test_compare.py`) checks that both implementations produce identical results.
 
+Run tests:
+```bash 
+python -m unittest test_compare.py -v
+```
 ---
 
 ## Supported Algorithms
@@ -21,58 +25,62 @@ Tests (`test_compare.py`) verify that both versions produce identical results.
 ---
 
 ## Installation
- Create and activate a virtual environment:
 
 ```bash
 cd python
 python -m venv venv
-source venv/bin/activate 
+source venv/bin/activate      
+pip install -e .
 cd algorithms
 ```
+
+---
+
 ## Usage
 
-Two entry points are provided:
+Two entry points are available:
 
-- `main_spla.py` – GPU-accelerated version (SPLA)
-- `main_classic.py` – CPU reference version
+- `main_spla.py` — GPU version (SPLA)
+- `main_classic.py` — CPU reference version
 
-Both scripts accept the same command-line arguments.
+Both scripts use the same CLI arguments.
 
-### Command Syntax
+```text
+usage: main_spla.py [-h] --algo {bfs,sssp,pr,tc} [-m MATRIX] [-v VECTORS] [-o OUTPUT] [-s START] [-a ALPHA] [-e EPS]
 
-```bash
-python main_spla.py --algo <bfs|sssp|pr|tc> (-m <file.mtx> | -v <file.txt>) [options]
+options:
+  -h, --help            show this help message and exit
+  --algo {bfs,sssp,pr,tc}
+                        Algorithm to run:
+                        bfs  - Breadth-First Search
+                        sssp - Single-Source Shortest Paths
+                        pr   - PageRank
+                        tc   - Triangle Counting
+  -m MATRIX, --matrix MATRIX
+                        Path to graph in Matrix Market format (.mtx)
+  -v VECTORS, --vectors VECTORS
+                        Path to graph in vectors format (.txt)
+  -o OUTPUT, --output OUTPUT
+                        Output file path (default: result.txt)
+  -s START, --start START
+                        Start vertex (used in bfs, sssp; default: 0)
+  -a ALPHA, --alpha ALPHA
+                        Damping factor (used in pr; default: 0.85)
+  -e EPS, --eps EPS
+                        Convergence tolerance (used in pr; default: 1e-4)
 ```
-
-### Required Arguments
-
-| Argument | Description |
-|----------|-------------|
-| `--algo` | Algorithm to run: `bfs`, `sssp`, `pr`, `tc` |
-| `-m` or `-v` | Input graph file. Use `-m` for Matrix Market (`.mtx`) or `-v` for vectors format (`.txt`). |
-
-### Optional Arguments
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `-o` | `result.txt` | Output file path |
-| `-s` | `0` | Start vertex (for BFS and SSSP) |
-| `-a` | `0.85` | Damping factor (for PageRank) |
-| `-e` | `1e-4` | Convergence tolerance (for PageRank) |
-| `-h`, `--help` | – | Show help message and exit |
-
 ---
 
 ## Examples
 
 ```bash
-# BFS on a Matrix Market file
+# BFS
 python main_spla.py --algo bfs -m graph.mtx -s 0 -o bfs_result.txt
 
-# SSSP on a vectors file (weighted graph)
-python main_spla.py --algo sssp -v weighted.txt -s 0 -o sssp_result.txt
+# SSSP
+python main_spla.py --algo sssp -v graph.txt -s 0 -o sssp_result.txt
 
-# PageRank with custom parameters
+# PageRank
 python main_spla.py --algo pr -v graph.txt -a 0.85 -e 1e-6 -o pr_result.txt
 
 # Triangle Counting
@@ -82,3 +90,34 @@ python main_spla.py --algo tc -m graph.mtx -o tc_result.txt
 python main_classic.py --algo bfs -v graph.txt -s 0 -o bfs_classic.txt
 ```
 
+---
+
+## Input format
+
+Two options:
+
+- `-v graph.txt` — Vectors format
+- `-m graph.mtx` — Matrix Market format (from https://sparse.tamu.edu/)
+
+
+### graph.txt
+
+Example 
+```text
+3          # number of vertices n 
+0 1 2      # I: source vertex indices
+1 2 0      # J: target vertex indices
+5 3 2      # V: edge weights 
+```
+
+### graph.mtx (Matrix Market)
+Example 
+```text
+%%MatrixMarket matrix coordinate real general
+% rows cols nnz
+4 4 4      #rows, cols, non-zero values
+1 2 1.0    #source vertex, target vertex, weight
+2 3 2.0
+3 4 3.0
+4 1 4.0
+```
