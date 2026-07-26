@@ -39,16 +39,16 @@ namespace spla {
     }
 
     std::string get_home_directory() {
-    #ifdef _WIN32
+#ifdef _WIN32
         const char* home = std::getenv("USERPROFILE");
         if (home) return std::string(home);
 
         const char* drive = std::getenv("HOMEDRIVE");
-        const char* path = std::getenv("HOMEPATH");
+        const char* path  = std::getenv("HOMEPATH");
         if (drive && path) return std::string(drive) + std::string(path);
         return "";
 
-    #elif defined(__APPLE__) || defined(__linux__) || defined(__unix__)
+#elif defined(__APPLE__) || defined(__linux__) || defined(__unix__)
         const char* home = std::getenv("HOME");
         if (home) return std::string(home);
 
@@ -56,28 +56,28 @@ namespace spla {
         if (pw) return std::string(pw->pw_dir);
         return "";
 
-    #else
-        #error "Unsupported operating system"
-    #endif
+#else
+    #error "Unsupported operating system"
+#endif
     }
 
     std::string get_default_system_config_path() {
-        #ifdef _WIN32
-            const char* program_data = std::getenv("PROGRAMDATA");
-            if (program_data) {
-                return std::string(program_data) + "\\spla\\";
-            }
-            return "C:\\ProgramData\\spla\\";
+#ifdef _WIN32
+        const char* program_data = std::getenv("PROGRAMDATA");
+        if (program_data) {
+            return std::string(program_data) + "\\spla\\";
+        }
+        return "C:\\ProgramData\\spla\\";
 
-        #elif defined(__APPLE__)
-            return "/Library/Application Support/spla/";
+#elif defined(__APPLE__)
+        return "/Library/Application Support/spla/";
 
-        #elif defined(__linux__) || defined(__unix__)
-            return "/etc/spla/";
+#elif defined(__linux__) || defined(__unix__)
+        return "/etc/spla/";
 
-        #else
-            #error "Unsupported operating system"
-        #endif
+#else
+    #error "Unsupported operating system"
+#endif
     }
 
     std::string get_default_user_config_path() {
@@ -86,20 +86,20 @@ namespace spla {
             return "";
         }
 
-    #ifdef _WIN32
+#ifdef _WIN32
         const char* app_data = std::getenv("APPDATA");
         if (app_data) return std::string(app_data) + "\\spla\\";
         return home + "\\AppData\\Roaming\\spla\\";
 
-    #elif defined(__APPLE__)
+#elif defined(__APPLE__)
         return home + "/Library/Application Support/spla/";
 
-    #elif defined(__linux__) || defined(__unix__)
+#elif defined(__linux__) || defined(__unix__)
         return home + "/.config/spla/";
 
-    #else
-        #error "Unsupported operating system"
-    #endif
+#else
+    #error "Unsupported operating system"
+#endif
     }
 
     std::string find_first_json_file(const std::string& directory) {
@@ -160,7 +160,7 @@ namespace spla {
     }
 
     ConfigStatus parse_system_and_user_conf() {
-        std::string sys_dir = config_cli_and_env.system_config_path.value_or(get_default_system_config_path());
+        std::string sys_dir  = config_cli_and_env.system_config_path.value_or(get_default_system_config_path());
         std::string user_dir = config_cli_and_env.user_config_path.value_or(get_default_user_config_path());
 
         bool file_loaded = false;
@@ -197,37 +197,37 @@ namespace spla {
         app.add_flag("-sv,--spla-version", config_cli_and_env.version, "Show version and exit");
 
         app.add_option("-ss,--spla-sconf", config_cli_and_env.system_config_path, "Path to system configuration file")
-            ->envname("SPLA_SYSTEM_CONFIG_PATH");
+                ->envname("SPLA_SYSTEM_CONFIG_PATH");
 
         app.add_option("-su,--spla-uconf", config_cli_and_env.user_config_path, "Path to user configuration file")
-            ->envname("SPLA_USER_CONFIG_PATH");
+                ->envname("SPLA_USER_CONFIG_PATH");
 
         app.add_option("-sp,--spla-platform", config_cli_and_env.platform, "OpenCL platform index")
-            ->envname("SPLA_OPENCL_PLATFORM")
-            ->check(CLI::PositiveNumber);
+                ->envname("SPLA_OPENCL_PLATFORM")
+                ->check(CLI::PositiveNumber);
 
         app.add_option("-sd,--spla-device", config_cli_and_env.device, "OpenCL device index")
-            ->envname("SPLA_OPENCL_DEVICE")
-            ->check(CLI::PositiveNumber);
+                ->envname("SPLA_OPENCL_DEVICE")
+                ->check(CLI::PositiveNumber);
 
         app.add_option("-sq,--spla-queues", config_cli_and_env.queues, "Number of command queues")
-            ->envname("SPLA_QUEUES")
-            ->check(CLI::PositiveNumber);
+                ->envname("SPLA_QUEUES")
+                ->check(CLI::PositiveNumber);
 
         app.add_flag("-pr,--spla-profiling", config_cli_and_env.profiling, "Enable profiling of command queues")
-            ->envname("SPLA_PROFILING");
+                ->envname("SPLA_PROFILING");
 
         app.add_option("-sa,--spla-allocator", config_cli_and_env.allocator, "Allocator type: linear or general")
-            ->envname("SPLA_ALLOCATOR")
-            ->check(CLI::IsMember({"linear", "general"}));
+                ->envname("SPLA_ALLOCATOR")
+                ->check(CLI::IsMember({"linear", "general"}));
 
         app.add_option("-sS,--spla-allocator-size", config_cli_and_env.allocator_size, "Linear allocator size in bytes")
-            ->envname("SPLA_ALLOCATOR_SIZE")
-            ->check(CLI::PositiveNumber);
+                ->envname("SPLA_ALLOCATOR_SIZE")
+                ->check(CLI::PositiveNumber);
 
         app.add_option("-sV,--spla-verbosity", config_cli_and_env.verbosity, "Verbosity level (0-3)")
-            ->envname("SPLA_VERBOSITY")
-            ->check(CLI::Range(0, 3));
+                ->envname("SPLA_VERBOSITY")
+                ->check(CLI::Range(0, 3));
 
         try {
             app.parse(argc, argv);
@@ -249,7 +249,7 @@ namespace spla {
         return ConfigStatus::Ok;
     }
 
-    ConfigStatus validate(){
+    ConfigStatus validate() {
 
         if (!config_final.has_all_required()) {
             std::cerr << "Error: Missing required configuration parameters" << std::endl;
@@ -259,7 +259,7 @@ namespace spla {
         return ConfigStatus::Ok;
     }
 
-    ConfigStatus apply(){
+    ConfigStatus apply() {
         return ConfigStatus::Ok;
     }
 
@@ -269,11 +269,11 @@ namespace spla {
         config_final.reset();
 
         ConfigStatus status = parse_cli_and_env(argc, argv);
-        
+
         if (status == ConfigStatus::HelpRequested || status == ConfigStatus::VersionRequested) {
             return status;
         }
-        
+
         if (status != ConfigStatus::Ok) {
             return status;
         }
@@ -298,4 +298,4 @@ namespace spla {
 
         return ConfigStatus::Ok;
     }
-}
+}// namespace spla
