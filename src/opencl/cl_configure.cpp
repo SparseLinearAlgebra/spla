@@ -1,4 +1,5 @@
 #include "cl_configure.hpp"
+#include "opencl.hpp"
 
 namespace spla {
 
@@ -7,35 +8,21 @@ namespace spla {
     Config config_final;
 
     void Config::merge(const Config& source) {
+        if (source.system_config_path.has_value()) system_config_path = source.system_config_path;
+        if (source.user_config_path.has_value()) user_config_path = source.user_config_path;
         if (source.platform.has_value()) platform = source.platform;
         if (source.device.has_value()) device = source.device;
         if (source.queues.has_value()) queues = source.queues;
-        if (source.verbosity.has_value()) verbosity = source.verbosity;
+        if (source.profiling.has_value()) profiling = source.profiling;
         if (source.allocator.has_value()) allocator = source.allocator;
         if (source.allocator_size.has_value()) allocator_size = source.allocator_size;
-        if (source.profiling.has_value()) profiling = source.profiling;
-        if (source.system_config_path.has_value()) system_config_path = source.system_config_path;
-        if (source.user_config_path.has_value()) user_config_path = source.user_config_path;
-        if (source.help.has_value()) help = source.help;
-        if (source.version.has_value()) version = source.version;
+        if (source.default_wgs.has_value()) default_wgs = source.default_wgs;
+        if (source.wave_size.has_value()) wave_size = source.wave_size;
+        if (source.verbosity.has_value()) verbosity = source.verbosity;
     }
 
     void Config::reset() {
         *this = Config{};
-    }
-
-    bool Config::has_all_required() const {
-        return platform.has_value() &&
-               device.has_value() &&
-               queues.has_value() &&
-               profiling.has_value() &&
-               allocator.has_value() &&
-               allocator_size.has_value() &&
-               verbosity.has_value();
-    }
-
-    std::string get_spla_version() {
-        return "SPLA version: 0.0.0";
     }
 
     std::string get_home_directory() {
@@ -119,129 +106,169 @@ namespace spla {
         return "";
     }
 
-    ConfigStatus load_from_file(const std::string& path) {
+    ConfigStatus load_from_file(const std::string& path, Config& cfg) {
         try {
             std::ifstream file(path);
             if (!file.is_open()) {
                 std::cerr << "Failed to open file: " << path << std::endl;
-                return ConfigStatus::FileError;
+                return ConfigStatus::OpenFileError;
             }
 
             nlohmann::json config_data = nlohmann::json::parse(file);
 
             if (config_data.contains("platform")) {
-                config_user_and_system.platform = config_data["platform"].get<int>();
+                cfg.platform = config_data["platform"].get<int>();
             }
             if (config_data.contains("device")) {
-                config_user_and_system.device = config_data["device"].get<int>();
+                cfg.device = config_data["device"].get<int>();
             }
             if (config_data.contains("queues")) {
-                config_user_and_system.queues = config_data["queues"].get<int>();
-            }
-            if (config_data.contains("verbosity")) {
-                config_user_and_system.verbosity = config_data["verbosity"].get<int>();
+                cfg.queues = config_data["queues"].get<int>();
             }
             if (config_data.contains("profiling")) {
-                config_user_and_system.profiling = config_data["profiling"].get<bool>();
+                cfg.profiling = config_data["profiling"].get<bool>();
             }
             if (config_data.contains("allocator")) {
-                config_user_and_system.allocator = config_data["allocator"].get<std::string>();
+                cfg.allocator = config_data["allocator"].get<std::string>();
             }
             if (config_data.contains("allocator_size")) {
-                config_user_and_system.allocator_size = config_data["allocator_size"].get<size_t>();
+                cfg.allocator_size = config_data["allocator_size"].get<size_t>();
+            }
+            if (config_data.contains("default_wgs")) {
+                cfg.default_wgs = config_data["default_wgs"].get<int>();
+            }
+            if (config_data.contains("wave_size")) {
+                cfg.wave_size = config_data["wave_size"].get<int>();
+            }
+            if (config_data.contains("verbosity")) {
+                cfg.verbosity = config_data["verbosity"].get<int>();
             }
 
             return ConfigStatus::Ok;
 
         } catch (const nlohmann::json::exception& e) {
+            std::cerr << "Failed to parse config files" << std::endl;
             std::cerr << "Error parsing JSON file '" << path << "': " << e.what() << std::endl;
             return ConfigStatus::UserOrSystemConfParseError;
         }
     }
 
-    ConfigStatus parse_system_and_user_conf() {
-        std::string sys_dir  = config_cli_and_env.system_config_path.value_or(get_default_system_config_path());
-        std::string user_dir = config_cli_and_env.user_config_path.value_or(get_default_user_config_path());
+    ConfigStatus parse_system_and_user_conf(const Config& cli_env_config, Config& file_config) {
+        std::string sys_dir  = cli_env_config.system_config_path.value_or(get_default_system_config_path());
+        std::string user_dir = cli_env_config.user_config_path.value_or(get_default_user_config_path());
 
-        bool file_loaded = false;
+        ConfigStatus status = ConfigStatus::Ok;
 
         if (sys_dir != "") {
             std::string sys_file = find_first_json_file(sys_dir);
             if (sys_file != "") {
                 std::cout << "Loading system config: " << sys_file << std::endl;
-                load_from_file(sys_file);
-                file_loaded = true;
-            }
-        }
+                status = load_from_file(sys_file, file_config);
+                if (status == ConfigStatus::UserOrSystemConfParseError) return status;
+            } else
+                std::cout << "No system config found in: " << sys_dir << std::endl;
+        } else
+            std::cout << "System config directory is not set. Skipping." << std::endl;
 
         if (user_dir != "") {
             std::string user_file = find_first_json_file(user_dir);
             if (user_file != "") {
                 std::cout << "Loading user config: " << user_file << std::endl;
-                load_from_file(user_file);
-                file_loaded = true;
-            }
-        }
+                status = load_from_file(user_file, file_config);
+                if (status == ConfigStatus::UserOrSystemConfParseError) return status;
+            } else
+                std::cout << "No user config found in: " << user_dir << std::endl;
+        } else
+            std::cout << "User config directory is not set. Skipping." << std::endl;
 
-        if (!file_loaded) {
-            std::cerr << "Warning: No JSON configuration files found." << std::endl;
-        }
+        if (status == ConfigStatus::OpenFileError) return status;
 
         return ConfigStatus::Ok;
     }
 
-    ConfigStatus parse_cli_and_env(int argc, char** argv) {
+    std::string get_spla_version() {
+        return "SPLA version: 0.0.0";
+    }
+
+    ConfigStatus parse_cli_and_env(int argc, char** argv, Config& cfg) {
         CLI::App app{"SPLA configuration"};
 
-        app.add_flag("-sh,--spla-help", config_cli_and_env.help, "Show help and exit");
-        app.add_flag("-sv,--spla-version", config_cli_and_env.version, "Show version and exit");
+        app.add_flag("-sh,--spla-help", cfg.help, "Show help and exit");
+        app.add_flag("-sv,--spla-version", cfg.version, "Show version and exit");
 
-        app.add_option("-ss,--spla-sconf", config_cli_and_env.system_config_path, "Path to system configuration file")
+        app.add_option("-ss,--spla-sconf", cfg.system_config_path,
+                       "Path to system configuration file\n"
+                       "Config key: (not used in config file)")
                 ->envname("SPLA_SYSTEM_CONFIG_PATH");
 
-        app.add_option("-su,--spla-uconf", config_cli_and_env.user_config_path, "Path to user configuration file")
+        app.add_option("-su,--spla-uconf", cfg.user_config_path,
+                       "Path to user configuration file\n"
+                       "Config key: (not used in config file)")
                 ->envname("SPLA_USER_CONFIG_PATH");
 
-        app.add_option("-sp,--spla-platform", config_cli_and_env.platform, "OpenCL platform index")
-                ->envname("SPLA_OPENCL_PLATFORM")
-                ->check(CLI::PositiveNumber);
+        app.add_option("-sp,--spla-platform", cfg.platform,
+                       "OpenCL platform index\n"
+                       "Config key: platform")
+                ->envname("SPLA_OPENCL_PLATFORM");
 
-        app.add_option("-sd,--spla-device", config_cli_and_env.device, "OpenCL device index")
-                ->envname("SPLA_OPENCL_DEVICE")
-                ->check(CLI::PositiveNumber);
+        app.add_option("-sd,--spla-device", cfg.device,
+                       "OpenCL device index\n"
+                       "Config key: device")
+                ->envname("SPLA_OPENCL_DEVICE");
 
-        app.add_option("-sq,--spla-queues", config_cli_and_env.queues, "Number of command queues")
-                ->envname("SPLA_QUEUES")
-                ->check(CLI::PositiveNumber);
+        app.add_option("-sq,--spla-queues", cfg.queues,
+                       "Number of command queues\n"
+                       "Config key: queues")
+                ->envname("SPLA_QUEUES");
 
-        app.add_flag("-pr,--spla-profiling", config_cli_and_env.profiling, "Enable profiling of command queues")
+        app.add_flag("-pr,--spla-profiling", cfg.profiling,
+                     "Enable profiling of command queues\n"
+                     "Config key: profiling\n")
                 ->envname("SPLA_PROFILING");
 
-        app.add_option("-sa,--spla-allocator", config_cli_and_env.allocator, "Allocator type: linear or general")
-                ->envname("SPLA_ALLOCATOR")
-                ->check(CLI::IsMember({"linear", "general"}));
+        app.add_option("-sa,--spla-allocator", cfg.allocator,
+                       "Allocator type: linear or general\n"
+                       "Config key: allocator")
+                ->envname("SPLA_ALLOCATOR");
 
-        app.add_option("-sS,--spla-allocator-size", config_cli_and_env.allocator_size, "Linear allocator size in bytes")
-                ->envname("SPLA_ALLOCATOR_SIZE")
-                ->check(CLI::PositiveNumber);
+        app.add_option("-as,--spla-allocator-size", cfg.allocator_size,
+                       "Linear allocator size in bytes\n"
+                       "Required for 'linear' allocator. Ignored for 'general'.\n"
+                       "Config key: allocator_size")
+                ->envname("SPLA_ALLOCATOR_SIZE");
 
-        app.add_option("-sV,--spla-verbosity", config_cli_and_env.verbosity, "Verbosity level (0-3)")
-                ->envname("SPLA_VERBOSITY")
-                ->check(CLI::Range(0, 3));
+        app.add_option("-dw,--spla-default-wgs", cfg.default_wgs,
+                       "Default work group size\n"
+                       "Config key: default_wgs")
+                ->envname("SPLA_DEFAULT_WGS");
+
+        app.add_option("ws,--spla-wave-size", cfg.wave_size,
+                       "Wave size for device\n"
+                       "Config key: wave_size")
+                ->envname("SPLA_WAVE_SIZE");
+
+        app.add_option("-sV,--spla-verbosity", cfg.verbosity,
+                       "Verbosity level:\n"
+                       "  0: No output\n"
+                       "  1: Errors only\n"
+                       "  2: Errors + warnings\n"
+                       "  3: All messages (info, warnings, errors)")
+                ->envname("SPLA_VERBOSITY");
 
         try {
             app.parse(argc, argv);
         } catch (const CLI::ParseError& e) {
+            std::cerr << "Failed to parse CLI/ENV" << std::endl;
             app.exit(e);
             return ConfigStatus::CliOrEnvParseError;
         }
 
-        if (config_cli_and_env.help) {
+        if (cfg.help) {
             std::cout << app.help() << std::endl;
             return ConfigStatus::HelpRequested;
         }
 
-        if (config_cli_and_env.version) {
+        if (cfg.version) {
             std::cout << get_spla_version() << std::endl;
             return ConfigStatus::VersionRequested;
         }
@@ -249,17 +276,126 @@ namespace spla {
         return ConfigStatus::Ok;
     }
 
-    ConfigStatus validate() {
 
-        if (!config_final.has_all_required()) {
-            std::cerr << "Error: Missing required configuration parameters" << std::endl;
-            std::exit(1);
+    ConfigStatus check_platform_and_device(int platform_index, int device_index) {
+        if (platform_index < 0) {
+            std::cerr << "Error: platform must be >= 0 (got " << platform_index << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+        std::vector<cl::Platform> platforms;
+        cl::Platform::get(&platforms);
+
+        if (static_cast<size_t>(platform_index) >= platforms.size()) {
+            std::cerr << "Error: Platform " << platform_index << " not found" << std::endl;
+            return ConfigStatus::PlatformNotFound;
+        }
+
+        if (device_index < 0) {
+            std::cerr << "Error: device must be >= 0 (got " << device_index << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+        std::vector<cl::Device> devices;
+        platforms[platform_index].getDevices(CL_DEVICE_TYPE_ALL, &devices);
+
+        if (static_cast<size_t>(device_index) >= devices.size()) {
+            std::cerr << "Error: Device " << device_index << " not found on platform " << platform_index;
+            std::cerr << ". Available devices: " << devices.size() << std::endl;
+            return ConfigStatus::DeviceNotFound;
         }
 
         return ConfigStatus::Ok;
     }
 
-    ConfigStatus apply() {
+
+    ConfigStatus validate(const Config& cfg) {
+
+        if (!cfg.platform.has_value()) {
+            std::cerr << "Error: platform is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.device.has_value()) {
+            std::cerr << "Error: device is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.queues.has_value()) {
+            std::cerr << "Error: queues is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.profiling.has_value()) {
+            std::cerr << "Error: profiling is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.allocator.has_value()) {
+            std::cerr << "Error: allocator is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (cfg.allocator.value() == "linear" && !cfg.allocator_size.has_value()) {
+            std::cerr << "Error: allocator_size is required for linear allocator" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.default_wgs.has_value()) {
+            std::cerr << "Error: default wgs is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.wave_size.has_value()) {
+            std::cerr << "Error: wave size is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.verbosity.has_value()) {
+            std::cerr << "Error: verbosity is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+
+
+        ConfigStatus status;
+
+        status = check_platform_and_device(*cfg.platform, *cfg.device);
+        if (status != ConfigStatus::Ok) {
+            return status;
+        }
+
+
+        if (*cfg.queues <= 0) {
+            std::cerr << "Error: queues must be > 0 (got " << *cfg.queues << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+
+        if (*cfg.allocator != "linear" && *cfg.allocator != "general") {
+            std::cerr << "Error: allocator must be 'linear' or 'general' (got '" << *cfg.allocator << "')" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+        if (*cfg.allocator == "linear") {
+            if (*cfg.allocator_size == 0) {
+                std::cerr << "Error: allocator_size must be > 0 for linear allocator" << std::endl;
+                return ConfigStatus::InvalidConfigParams;
+            }
+        }
+
+
+        if (*cfg.default_wgs <= 0) {
+            std::cerr << "Error: default_wgs must be > 0 (got " << *cfg.default_wgs << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+        if (*cfg.wave_size <= 0) {
+            std::cerr << "Error: wave_size must be > 0 (got " << *cfg.wave_size << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+
+        if (*cfg.verbosity < 0 || *cfg.verbosity > 3) {
+            std::cerr << "Error: verbosity must be between 0 and 3 (got " << *cfg.verbosity << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
+        return ConfigStatus::Ok;
+    }
+
+    ConfigStatus apply(const Config& cfg) {
         return ConfigStatus::Ok;
     }
 
@@ -268,33 +404,41 @@ namespace spla {
         config_cli_and_env.reset();
         config_final.reset();
 
-        ConfigStatus status = parse_cli_and_env(argc, argv);
+        ConfigStatus status;
 
-        if (status == ConfigStatus::HelpRequested || status == ConfigStatus::VersionRequested) {
-            return status;
+        status = parse_cli_and_env(argc, argv, config_cli_and_env);
+        if (status != ConfigStatus::CliOrEnvParseError) return status;
+        else {
+            std::exit(1);
         }
 
-        if (status != ConfigStatus::Ok) {
-            return status;
-        }
-
-        status = parse_system_and_user_conf();
-        if (status != ConfigStatus::Ok) {
-            return status;
+        status = parse_system_and_user_conf(config_cli_and_env, config_user_and_system);
+        if (status != ConfigStatus::UserOrSystemConfParseError) return status;
+        else {
+            std::exit(1);
         }
 
         config_final = config_user_and_system;
         config_final.merge(config_cli_and_env);
 
-        status = validate();
+        status = validate(config_final);
         if (status != ConfigStatus::Ok) {
-            return status;
+            std::exit(1);
         }
 
-        status = apply();
-        if (status != ConfigStatus::Ok) {
-            return status;
-        }
+        std::cout << "Configuration parametrs:" << std::endl;
+        std::cout << "OpenCL platform index: " << config_final.platform.value() << std::endl;
+        std::cout << "OpenCL device index: " << config_final.device.value() << std::endl;
+        std::cout << "Queues number: " << config_final.queues.value() << std::endl;
+        std::cout << "Profiling: " << config_final.profiling.value() << std::endl;
+        std::cout << "Allocator: " << config_final.allocator.value() << std::endl;
+        if (config_final.allocator == "linear") std::cout << "Linear allocator size: " << config_final.allocator_size.value() << std::endl;
+        std::cout << "Wave size: " << config_final.wave_size.value() << std::endl;
+        std::cout << "Default wgs: " << config_final.default_wgs.value() << std::endl;
+        std::cout << "Verbosity: " << config_final.verbosity.value() << std::endl;
+
+        status = apply(config_final);
+        if (status != ConfigStatus::Ok) std::exit(1);
 
         return ConfigStatus::Ok;
     }

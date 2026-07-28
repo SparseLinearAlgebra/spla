@@ -25,11 +25,12 @@ namespace spla {
         std::optional<bool>        profiling;
         std::optional<std::string> allocator;
         std::optional<size_t>      allocator_size;
+        std::optional<int>         default_wgs;
+        std::optional<int>         wave_size;
         std::optional<int>         verbosity;
 
         void merge(const Config& source);
         void reset();
-        bool has_all_required() const;
     };
 
     enum ConfigStatus {
@@ -39,26 +40,33 @@ namespace spla {
 
         CliOrEnvParseError,
         UserOrSystemConfParseError,
-        FileError
+        OpenFileError,
+
+        MissedParametrs,
+        PlatformNotFound,
+        DeviceNotFound,
+        InvalidConfigParams
     };
 
-    std::string get_spla_version();
+    extern Config config_user_and_system;
+    extern Config config_cli_and_env;
+    extern Config config_final;
 
     std::string  get_home_directory();
     std::string  get_default_system_config_path();
     std::string  get_default_user_config_path();
     std::string  find_first_json_file(const std::string& directory);
-    ConfigStatus load_from_file(const std::string& path);
-    ConfigStatus parse_cli_and_env(int argc, char** argv);
-    ConfigStatus parse_system_and_user_conf();
+    ConfigStatus load_from_file(const std::string& path, Config& cfg);
 
-    ConfigStatus validate();
-    ConfigStatus apply();
+    ConfigStatus parse_system_and_user_conf(const Config& cli_env_config, Config& file_config);
+
+    std::string  get_spla_version();
+    ConfigStatus parse_cli_and_env(int argc, char** argv, Config& cfg);
+
+    ConfigStatus check_platform_and_device(int platform_index, int device_index);
+    ConfigStatus validate(const Config& cfg);
+    ConfigStatus apply(const Config& cfg);
 
     ConfigStatus configure(int argc, char** argv);
-
-    extern Config config_user_and_system;
-    extern Config config_cli_and_env;
-    extern Config config_final;
 
 }// namespace spla
