@@ -1,5 +1,6 @@
 import math
 
+
 def pagerank_classic(adj_in, out_degree, n, alpha, eps):
     p = [1.0 / n] * n
     addition = (1.0 - alpha) / n

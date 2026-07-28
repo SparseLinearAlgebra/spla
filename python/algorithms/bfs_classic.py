@@ -2,6 +2,7 @@ from collections import deque
 
 INF = int(1e9)
 
+
 def bfs(start, graph, n):
     visited = [0] * n
     dist = [INF] * n
@@ -9,7 +10,7 @@ def bfs(start, graph, n):
     visited[start] = 1
     dist[start] = 0
     q.append(start)
-    
+
     while q:
         u = q.popleft()
         for v in graph[u]:

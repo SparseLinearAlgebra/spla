@@ -1,20 +1,21 @@
-import unittest
 import math
+import unittest
 from collections import defaultdict
-from pyspla import Matrix, INT, FLOAT
 
-from bfs_classic import bfs as bfs_c, INF as BFS_INF
-from sssp_classic import sssp as sssp_c, INF as SSSP_INF
-from pr_classic import pagerank_classic as pr_c
-from tc_classic import tc_simple as tc_c
-
+from bfs_classic import INF as BFS_INF
+from bfs_classic import bfs as bfs_c
 from bfs_spla import bfs as bfs_s
-from sssp_spla import sssp_spla as sssp_s
+from pr_classic import pagerank_classic as pr_c
 from pr_spla import pagerank as pr_s
+from sssp_classic import sssp as sssp_c
+from sssp_spla import sssp_spla as sssp_s
+from tc_classic import tc_simple as tc_c
 from tc_spla import cohen as tc_s
 
-class TestCompareAlgorithms(unittest.TestCase):
+from pyspla import FLOAT, INT, Matrix
 
+
+class TestCompareAlgorithms(unittest.TestCase):
     def build_bfs_graph(self, edges, n):
         graph_c = defaultdict(list)
         I, J, V = [], [], []
@@ -58,10 +59,14 @@ class TestCompareAlgorithms(unittest.TestCase):
                 out_degree[v] += 1
         for u, v in edges:
             adj_in[v].append(u)
-            I.append(u); J.append(v); V.append(alpha / out_degree[u])
+            I.append(u)
+            J.append(v)
+            V.append(alpha / out_degree[u])
             if u != v:
                 adj_in[u].append(v)
-                I.append(v); J.append(u); V.append(alpha / out_degree[v])
+                I.append(v)
+                J.append(u)
+                V.append(alpha / out_degree[v])
         return adj_in, out_degree, Matrix.from_lists(I, J, V, shape=(n, n), dtype=FLOAT)
 
     def check_lists_equal(self, list1, list2):
@@ -72,7 +77,10 @@ class TestCompareAlgorithms(unittest.TestCase):
     def check_lists_close(self, list1, list2, tol=1e-3):
         self.assertEqual(len(list1), len(list2))
         for k in range(len(list1)):
-            self.assertTrue(math.isclose(list1[k], list2[k], rel_tol=tol), f"Mismatch at index {k}: {list1[k]} != {list2[k]}")
+            self.assertTrue(
+                math.isclose(list1[k], list2[k], rel_tol=tol),
+                f"Mismatch at index {k}: {list1[k]} != {list2[k]}",
+            )
 
     def run_bfs_test(self, edges, n, start=0):
         graph_c, A_s = self.build_bfs_graph(edges, n)
@@ -97,7 +105,7 @@ class TestCompareAlgorithms(unittest.TestCase):
         self.run_bfs_test([(0, 1), (1, 2), (2, 3), (3, 0)], n=4)
 
     def test_bfs_fully_connected(self):
-        self.run_bfs_test([(0,1), (0,2), (0,3), (1,2), (1,3), (2,3)], n=4)
+        self.run_bfs_test([(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], n=4)
 
     def run_sssp_test(self, edges, n, start=0):
         graph_c, A_s = self.build_sssp_graph(edges, n)
@@ -132,19 +140,19 @@ class TestCompareAlgorithms(unittest.TestCase):
         self.assertEqual(tc_c(graph_c, n), tc_s(A_s))
 
     def test_tc_k4(self):
-        self.run_tc_test([(0,1), (0,2), (0,3), (1,2), (1,3), (2,3)], n=4)
+        self.run_tc_test([(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], n=4)
 
     def test_tc_bipartite(self):
-        self.run_tc_test([(0,1), (1,2), (2,3), (3,0)], n=4)
+        self.run_tc_test([(0, 1), (1, 2), (2, 3), (3, 0)], n=4)
 
     def test_tc_two_triangles(self):
-        self.run_tc_test([(0,1), (1,2), (2,0), (3,4), (4,5), (5,3)], n=6)
+        self.run_tc_test([(0, 1), (1, 2), (2, 0), (3, 4), (4, 5), (5, 3)], n=6)
 
     def test_tc_empty(self):
         self.run_tc_test([], n=3)
 
     def test_tc_one_edge(self):
-        self.run_tc_test([(0,1)], n=3)
+        self.run_tc_test([(0, 1)], n=3)
 
     def run_pr_test(self, edges, n, alpha=0.85, eps=1e-5):
         adj_in, out_degree, A_s = self.build_pr_graph(edges, n, alpha)
@@ -163,10 +171,11 @@ class TestCompareAlgorithms(unittest.TestCase):
         self.run_pr_test([(0, 1), (1, 2)], n=3)
 
     def test_pr_complete(self):
-        self.run_pr_test([(0,1), (0,2), (0,3), (1,2), (1,3), (2,3)], n=4)
+        self.run_pr_test([(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], n=4)
 
     def test_pr_disconnected(self):
         self.run_pr_test([(0, 1), (2, 3)], n=4)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

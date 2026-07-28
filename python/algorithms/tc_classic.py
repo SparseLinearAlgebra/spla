@@ -8,4 +8,3 @@ def tc_simple(graph, n):
                     triangles += 1
 
     return triangles // 6
-

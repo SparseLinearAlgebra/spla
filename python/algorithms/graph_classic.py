@@ -1,11 +1,12 @@
 from collections import defaultdict
 
+
 def read_mtx_unweighted(filename):
     n = 0
     graph = defaultdict(list)
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for line in f:
-            if line.startswith('%'):
+            if line.startswith("%"):
                 continue
             parts = line.split()
             if n == 0:
@@ -18,8 +19,9 @@ def read_mtx_unweighted(filename):
                 graph[j].append(i)
     return graph, n
 
+
 def read_vectors_unweighted(filename):
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         n_line = f.readline().strip()
         if not n_line:
             return defaultdict(list), 0
@@ -35,12 +37,13 @@ def read_vectors_unweighted(filename):
             graph[j].append(i)
     return graph, n
 
+
 def read_mtx_weighted(filename):
     n = 0
     graph = defaultdict(list)
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for line in f:
-            if line.startswith('%'):
+            if line.startswith("%"):
                 continue
             parts = line.split()
             if n == 0:
@@ -54,8 +57,9 @@ def read_mtx_weighted(filename):
                 graph[j].append((i, v))
     return graph, n
 
+
 def read_vectors_weighted(filename):
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         n_line = f.readline().strip()
         if not n_line:
             return defaultdict(list), 0
@@ -73,12 +77,13 @@ def read_vectors_weighted(filename):
             graph[j].append((i, v))
     return graph, n
 
+
 def read_mtx_pr_classic(filename):
     n = 0
     adj_in = defaultdict(list)
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for line in f:
-            if line.startswith('%'):
+            if line.startswith("%"):
                 continue
             parts = line.split()
             if n == 0:
@@ -94,8 +99,9 @@ def read_mtx_pr_classic(filename):
                 out_degree[j] += 1
     return adj_in, out_degree, n
 
+
 def read_vectors_pr_classic(filename):
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         n_line = f.readline().strip()
         if not n_line:
             return defaultdict(list), [], 0

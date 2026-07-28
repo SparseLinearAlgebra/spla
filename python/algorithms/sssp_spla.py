@@ -1,8 +1,13 @@
-from pyspla import *
+from pyspla import FLOAT, Matrix, Scalar, Vector
 
 INF = float(1e9)
 
+
 def sssp_spla(start: int, A: Matrix):
+    """
+    Relaxes distances via min-plus multiplication of the current vector by the adjacency matrix.
+    Addition acts as multiplication, minimum acts as addition.
+    """
     n = A.n_rows
     initial_indices = list(range(n))
     initial_values = [INF] * n
@@ -12,12 +17,10 @@ def sssp_spla(start: int, A: Matrix):
     mask = Vector.dense(n, FLOAT, 1.0)
     inf_scalar = Scalar(FLOAT, INF)
 
-    for iteration in range(n - 1):
-        new_dist = dist.vxm(mask, A,
-                            op_mult=FLOAT.PLUS,
-                            op_add=FLOAT.MIN,
-                            op_select=FLOAT.ALWAYS,
-                            init=inf_scalar)
+    for _ in range(n - 1):
+        new_dist = dist.vxm(
+            mask, A, op_mult=FLOAT.PLUS, op_add=FLOAT.MIN, op_select=FLOAT.ALWAYS, init=inf_scalar
+        )
         relaxed = dist.eadd(FLOAT.MIN, new_dist)
         indices, values = relaxed.to_lists()
         if start not in indices:

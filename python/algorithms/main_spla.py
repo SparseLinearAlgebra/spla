@@ -1,15 +1,20 @@
-import sys
 import argparse
+import sys
 from pathlib import Path
 
 from bfs_spla import bfs
-from sssp_spla import sssp_spla, INF
+from graph_spla import (
+    read_mtx_float,
+    read_mtx_int,
+    read_mtx_pr,
+    read_vectors_float,
+    read_vectors_int,
+    read_vectors_pr,
+)
 from pr_spla import pagerank
+from sssp_spla import INF, sssp_spla
 from tc_spla import cohen
 
-from graph_spla import read_mtx_int, read_vectors_int
-from graph_spla import read_mtx_float, read_vectors_float
-from graph_spla import read_mtx_pr, read_vectors_pr
 
 def main():
     parser = argparse.ArgumentParser()
@@ -31,7 +36,7 @@ def main():
         else:
             A = read_vectors_int(str(args.vectors))
         v, count, depth = bfs(args.start, A)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             f_out.write(f"Reached vertices: {count}\n")
             f_out.write(f"Max depth: {depth - 1}\n")
             idx, vals = v.to_lists()
@@ -45,7 +50,7 @@ def main():
         else:
             A = read_vectors_float(str(args.vectors))
         v = sssp_spla(args.start, A)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             idx, vals = v.to_lists()
             for k in range(len(idx)):
                 if vals[k] < INF:
@@ -58,7 +63,7 @@ def main():
         else:
             A = read_vectors_pr(str(args.vectors), args.alpha)
         p, iters = pagerank(A, args.alpha, args.eps)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             f_out.write(f"Iterations: {iters}\n")
             idx, vals = p.to_lists()
             for k in range(len(idx)):
@@ -71,9 +76,10 @@ def main():
         else:
             A = read_vectors_int(str(args.vectors))
         triangles = cohen(A)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             f_out.write(f"Triangles: {triangles}\n")
         print(f"Result saved to {args.output}")
+
 
 if __name__ == "__main__":
     main()

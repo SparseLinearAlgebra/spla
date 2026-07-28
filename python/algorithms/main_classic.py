@@ -1,15 +1,22 @@
-import sys
 import argparse
+import sys
 from pathlib import Path
 
-from bfs_classic import bfs, INF as BFS_INF
-from sssp_classic import sssp, INF as SSSP_INF
+from bfs_classic import INF as BFS_INF
+from bfs_classic import bfs
+from graph_classic import (
+    read_mtx_pr_classic,
+    read_mtx_unweighted,
+    read_mtx_weighted,
+    read_vectors_pr_classic,
+    read_vectors_unweighted,
+    read_vectors_weighted,
+)
 from pr_classic import pagerank_classic
+from sssp_classic import INF as SSSP_INF
+from sssp_classic import sssp
 from tc_classic import tc_simple
 
-from graph_classic import read_mtx_unweighted, read_vectors_unweighted
-from graph_classic import read_mtx_weighted, read_vectors_weighted
-from graph_classic import read_mtx_pr_classic, read_vectors_pr_classic
 
 def main():
     parser = argparse.ArgumentParser()
@@ -31,7 +38,7 @@ def main():
         else:
             graph, n = read_vectors_unweighted(str(args.vectors))
         distances = bfs(args.start, graph, n)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             for i in range(len(distances)):
                 if distances[i] != BFS_INF:
                     f_out.write(f"{i} {distances[i]}\n")
@@ -43,7 +50,7 @@ def main():
         else:
             graph, n = read_vectors_weighted(str(args.vectors))
         distances = sssp(args.start, graph, n)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             for i in range(len(distances)):
                 if distances[i] != SSSP_INF:
                     f_out.write(f"{i} {distances[i]}\n")
@@ -55,7 +62,7 @@ def main():
         else:
             adj_in, out_degree, n = read_vectors_pr_classic(str(args.vectors))
         p, iters = pagerank_classic(adj_in, out_degree, n, args.alpha, args.eps)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             f_out.write(f"Iterations: {iters}\n")
             for i in range(len(p)):
                 f_out.write(f"{i} {p[i]:.6f}\n")
@@ -69,9 +76,10 @@ def main():
         for i in range(n):
             graph[i].sort()
         triangles = tc_simple(graph, n)
-        with open(args.output, 'w') as f_out:
+        with open(args.output, "w") as f_out:
             f_out.write(f"Triangles: {triangles}\n")
         print(f"Result saved to {args.output}")
+
 
 if __name__ == "__main__":
     main()

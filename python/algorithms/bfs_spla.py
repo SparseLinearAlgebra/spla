@@ -1,6 +1,12 @@
-from pyspla import *
+from pyspla import INT, Matrix, Scalar, Vector
+
 
 def bfs(s: int, A: Matrix):
+    """
+    The following function implements single-source breadth-first search algoritm through masked matrix-vector product.
+    The algorithm accepts starting vertex and an adjacency matrix of a graph. It traverces graph using `vxm` and assigns depths to reached vertices.
+    Mask is used to update only unvisited vertices reducing number of required computations.
+    """
     v = Vector(A.n_rows, INT)
     front = Vector.from_lists([s], [1], A.n_rows, INT)
     front_size = 1
