@@ -31,8 +31,8 @@
 #include <core/accelerator.hpp>
 #include <core/common.hpp>
 #include <core/logger.hpp>
-#include <spla/library.hpp>
 #include <opencl/cl_configure.hpp>
+#include <spla/library.hpp>
 
 #include <string>
 #include <vector>
@@ -71,11 +71,11 @@ namespace spla {
         CLAccelerator();
         ~CLAccelerator() override;
 
-        Status             init(const Config& cfg) override;
-        Status             set_platform(int index) override;
-        Status             set_device(int index) override;
-        Status set_profiling(bool enabled);        
-        Status             set_queues_count(int count) override;
+        Status init(const Config& cfg) override;
+        Status set_platform(int index) override;
+        Status set_device(int index) override;
+        Status set_profiling(bool enabled);
+        Status set_queues_count(int count) override;
         Status set_linear_allocator(size_t size);
         Status set_general_allocator();
         Status set_default_wgs(int wgs);
@@ -128,20 +128,19 @@ namespace spla {
 
         std::string m_vendor_code;
         std::string m_vendor_name;
-        uint        m_vendor_id        = 0;
-        uint        m_max_cu           = 0;
-        uint        m_max_wgs          = 0;
-        uint        m_max_local_mem    = 0;
-        uint        m_addr_align       = 0;
-        bool        m_profiling_enabled = false; //
-        uint        m_default_wgs      = 0; //
-        uint        m_wave_size        = 0; //
-        uint        m_num_of_mem_banks = 0; //
-        bool        m_is_nvidia        = false;
-        bool        m_is_amd           = false;
-        bool        m_is_intel         = false;
-        bool        m_is_img           = false;
-
+        uint        m_vendor_id         = 0;
+        uint        m_max_cu            = 0;
+        uint        m_max_wgs           = 0;
+        uint        m_max_local_mem     = 0;
+        uint        m_addr_align        = 0;
+        bool        m_profiling_enabled = false;//
+        uint        m_default_wgs       = 0;    //
+        uint        m_wave_size         = 0;    //
+        uint        m_num_of_mem_banks  = 0;    //
+        bool        m_is_nvidia         = false;
+        bool        m_is_amd            = false;
+        bool        m_is_intel          = false;
+        bool        m_is_img            = false;
     };
 
     /**

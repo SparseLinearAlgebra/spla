@@ -252,8 +252,8 @@ namespace spla {
                 ->envname("SPLA_WAVE_SIZE");
 
         app.add_option("--spla-mem-banks", config_cli_and_env.num_of_mem_banks,
-                        "Number of memory banks (for optimization)\n"
-                        "Config key: num_of_mem_banks")
+                       "Number of memory banks (for optimization)\n"
+                       "Config key: num_of_mem_banks")
                 ->envname("SPLA_MEM_BANKS");
 
         app.add_option("-sV,--spla-verbosity", cfg.verbosity,
@@ -460,4 +460,3 @@ namespace spla {
         return ConfigStatus::Ok;
     }
 }// namespace spla
-

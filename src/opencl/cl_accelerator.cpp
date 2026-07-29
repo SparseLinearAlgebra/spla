@@ -246,7 +246,7 @@ namespace spla {
         m_alloc_tmp     = m_alloc_general.get();
 
         LOG_MSG(Status::Ok, "configure " << count << " queues for computations"
-                                     << " (profiling: " << (m_profiling_enabled ? "ON" : "OFF") << ")");
+                                         << " (profiling: " << (m_profiling_enabled ? "ON" : "OFF") << ")");
         return Status::Ok;
     }
 
