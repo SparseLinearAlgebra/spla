@@ -1,4 +1,5 @@
 #include "cl_configure.hpp"
+#include "cl_accelerator.hpp"
 #include "opencl.hpp"
 
 namespace spla {
@@ -140,6 +141,9 @@ namespace spla {
             if (config_data.contains("wave_size")) {
                 cfg.wave_size = config_data["wave_size"].get<int>();
             }
+            if (config_data.contains("num_of_mem_banks")) {
+                cfg.num_of_mem_banks = config_data["num_of_mem_banks"].get<int>();
+            }
             if (config_data.contains("verbosity")) {
                 cfg.verbosity = config_data["verbosity"].get<int>();
             }
@@ -247,6 +251,11 @@ namespace spla {
                        "Config key: wave_size")
                 ->envname("SPLA_WAVE_SIZE");
 
+        app.add_option("--spla-mem-banks", config_cli_and_env.num_of_mem_banks,
+                        "Number of memory banks (for optimization)\n"
+                        "Config key: num_of_mem_banks")
+                ->envname("SPLA_MEM_BANKS");
+
         app.add_option("-sV,--spla-verbosity", cfg.verbosity,
                        "Verbosity level:\n"
                        "  0: No output\n"
@@ -278,6 +287,7 @@ namespace spla {
 
 
     ConfigStatus check_platform_and_device(int platform_index, int device_index) {
+
         if (platform_index < 0) {
             std::cerr << "Error: platform must be >= 0 (got " << platform_index << ")" << std::endl;
             return ConfigStatus::InvalidConfigParams;
@@ -286,10 +296,16 @@ namespace spla {
         std::vector<cl::Platform> platforms;
         cl::Platform::get(&platforms);
 
-        if (static_cast<size_t>(platform_index) >= platforms.size()) {
-            std::cerr << "Error: Platform " << platform_index << " not found" << std::endl;
+        if (platforms.empty()) {
+            std::cerr << "Error: no platform to select for OpenCL acceleration" << std::endl;
             return ConfigStatus::PlatformNotFound;
         }
+
+        if (static_cast<size_t>(platform_index) >= platforms.size()) {
+            std::cerr << "Error: platform index out of range (got " << platform_index << ", max " << platforms.size() - 1 << ")" << std::endl;
+            return ConfigStatus::PlatformNotFound;
+        }
+
 
         if (device_index < 0) {
             std::cerr << "Error: device must be >= 0 (got " << device_index << ")" << std::endl;
@@ -299,9 +315,13 @@ namespace spla {
         std::vector<cl::Device> devices;
         platforms[platform_index].getDevices(CL_DEVICE_TYPE_ALL, &devices);
 
+        if (devices.empty()) {
+            std::cerr << "Error: no device to select for OpenCL acceleration" << std::endl;
+            return ConfigStatus::DeviceNotFound;
+        }
+
         if (static_cast<size_t>(device_index) >= devices.size()) {
-            std::cerr << "Error: Device " << device_index << " not found on platform " << platform_index;
-            std::cerr << ". Available devices: " << devices.size() << std::endl;
+            std::cerr << "Error: device index out of range (got " << device_index << ", max " << devices.size() - 1 << ")" << std::endl;
             return ConfigStatus::DeviceNotFound;
         }
 
@@ -336,11 +356,15 @@ namespace spla {
             return ConfigStatus::MissedParametrs;
         }
         if (!cfg.default_wgs.has_value()) {
-            std::cerr << "Error: default wgs is required" << std::endl;
+            std::cerr << "Error: default_wgs is required" << std::endl;
             return ConfigStatus::MissedParametrs;
         }
         if (!cfg.wave_size.has_value()) {
-            std::cerr << "Error: wave size is required" << std::endl;
+            std::cerr << "Error: wave_size is required" << std::endl;
+            return ConfigStatus::MissedParametrs;
+        }
+        if (!cfg.num_of_mem_banks.has_value()) {
+            std::cerr << "Error: num_of_mem_banks is required" << std::endl;
             return ConfigStatus::MissedParametrs;
         }
         if (!cfg.verbosity.has_value()) {
@@ -369,8 +393,8 @@ namespace spla {
         }
 
         if (*cfg.allocator == "linear") {
-            if (*cfg.allocator_size == 0) {
-                std::cerr << "Error: allocator_size must be > 0 for linear allocator" << std::endl;
+            if (*cfg.allocator_size <= 0) {
+                std::cerr << "Error: allocator_size must be > 0 for linear allocator (got " << *cfg.allocator_size << ")" << std::endl;
                 return ConfigStatus::InvalidConfigParams;
             }
         }
@@ -386,6 +410,11 @@ namespace spla {
             return ConfigStatus::InvalidConfigParams;
         }
 
+        if (*cfg.num_of_mem_banks <= 0) {
+            std::cerr << "Error: num_of_mem_banks must be > 0 (got " << *cfg.num_of_mem_banks << ")" << std::endl;
+            return ConfigStatus::InvalidConfigParams;
+        }
+
 
         if (*cfg.verbosity < 0 || *cfg.verbosity > 3) {
             std::cerr << "Error: verbosity must be between 0 and 3 (got " << *cfg.verbosity << ")" << std::endl;
@@ -395,9 +424,47 @@ namespace spla {
         return ConfigStatus::Ok;
     }
 
+
     ConfigStatus apply(const Config& cfg) {
+        auto* acc = get_acc_cl();
+            if (!acc) {
+                return ConfigStatus::AcceleratorError;
+            }
+
+            Status status = acc->set_platform(cfg.platform.value());
+            if (status != Status::Ok) {
+                return ConfigStatus::PlatformNotFound;
+            }
+
+            status = acc->set_device(cfg.device.value());
+            if (status != Status::Ok) {
+                return ConfigStatus::DeviceNotFound;
+            }
+
+            acc->set_profiling(cfg.profiling.value());
+
+            status = acc->set_queues_count(cfg.queues.value());
+            if (status != Status::Ok) {
+                return ConfigStatus::AcceleratorError;
+            }
+
+            if (cfg.allocator.value() == "linear") {
+                acc->set_linear_allocator(cfg.allocator_size.value());
+            } else {
+                acc->set_general_allocator();
+            }
+
+            acc->set_default_wgs(cfg.default_wgs.value());
+            acc->set_wave_size(cfg.wave_size.value());
+            acc->set_num_of_mem_banks(cfg.num_of_mem_banks.value());
+
+            status = acc->init();
+            if (status != Status::Ok) {
+                return ConfigStatus::AcceleratorError;
+            }
         return ConfigStatus::Ok;
     }
+
 
     ConfigStatus configure(int argc, char** argv) {
         config_user_and_system.reset();
@@ -435,6 +502,7 @@ namespace spla {
         if (config_final.allocator == "linear") std::cout << "Linear allocator size: " << config_final.allocator_size.value() << std::endl;
         std::cout << "Wave size: " << config_final.wave_size.value() << std::endl;
         std::cout << "Default wgs: " << config_final.default_wgs.value() << std::endl;
+        std::cout << "Num of mem banks: " << config_final.num_of_mem_banks.value() << std::endl;
         std::cout << "Verbosity: " << config_final.verbosity.value() << std::endl;
 
         status = apply(config_final);

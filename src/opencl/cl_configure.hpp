@@ -27,6 +27,7 @@ namespace spla {
         std::optional<size_t>      allocator_size;
         std::optional<int>         default_wgs;
         std::optional<int>         wave_size;
+        std::optional<int>         num_of_mem_banks;
         std::optional<int>         verbosity;
 
         void merge(const Config& source);
@@ -45,7 +46,9 @@ namespace spla {
         MissedParametrs,
         PlatformNotFound,
         DeviceNotFound,
-        InvalidConfigParams
+        InvalidConfigParams,
+
+        AcceleratorError
     };
 
     extern Config config_user_and_system;
