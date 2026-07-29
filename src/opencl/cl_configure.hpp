@@ -46,9 +46,7 @@ namespace spla {
         MissedParametrs,
         PlatformNotFound,
         DeviceNotFound,
-        InvalidConfigParams,
-
-        AcceleratorError
+        InvalidConfigParams
     };
 
     extern Config config_user_and_system;
@@ -68,7 +66,6 @@ namespace spla {
 
     ConfigStatus check_platform_and_device(int platform_index, int device_index);
     ConfigStatus validate(const Config& cfg);
-    ConfigStatus apply(const Config& cfg);
 
     ConfigStatus configure(int argc, char** argv);
 

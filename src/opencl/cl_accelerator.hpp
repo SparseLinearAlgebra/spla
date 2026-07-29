@@ -71,7 +71,7 @@ namespace spla {
         CLAccelerator();
         ~CLAccelerator() override;
 
-        Status             init() override;
+        Status             init(const Config& cfg) override;
         Status             set_platform(int index) override;
         Status             set_device(int index) override;
         Status set_profiling(bool enabled);        

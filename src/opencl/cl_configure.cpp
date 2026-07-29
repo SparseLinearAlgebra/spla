@@ -425,62 +425,21 @@ namespace spla {
     }
 
 
-    ConfigStatus apply(const Config& cfg) {
-        auto* acc = get_acc_cl();
-            if (!acc) {
-                return ConfigStatus::AcceleratorError;
-            }
-
-            Status status = acc->set_platform(cfg.platform.value());
-            if (status != Status::Ok) {
-                return ConfigStatus::PlatformNotFound;
-            }
-
-            status = acc->set_device(cfg.device.value());
-            if (status != Status::Ok) {
-                return ConfigStatus::DeviceNotFound;
-            }
-
-            acc->set_profiling(cfg.profiling.value());
-
-            status = acc->set_queues_count(cfg.queues.value());
-            if (status != Status::Ok) {
-                return ConfigStatus::AcceleratorError;
-            }
-
-            if (cfg.allocator.value() == "linear") {
-                acc->set_linear_allocator(cfg.allocator_size.value());
-            } else {
-                acc->set_general_allocator();
-            }
-
-            acc->set_default_wgs(cfg.default_wgs.value());
-            acc->set_wave_size(cfg.wave_size.value());
-            acc->set_num_of_mem_banks(cfg.num_of_mem_banks.value());
-
-            status = acc->init();
-            if (status != Status::Ok) {
-                return ConfigStatus::AcceleratorError;
-            }
-        return ConfigStatus::Ok;
-    }
-
-
     ConfigStatus configure(int argc, char** argv) {
         config_user_and_system.reset();
         config_cli_and_env.reset();
         config_final.reset();
 
-        ConfigStatus status;
+        ConfigStatus config_status;
 
-        status = parse_cli_and_env(argc, argv, config_cli_and_env);
-        if (status != ConfigStatus::CliOrEnvParseError) return status;
+        config_status = parse_cli_and_env(argc, argv, config_cli_and_env);
+        if (config_status != ConfigStatus::CliOrEnvParseError) return config_status;
         else {
             std::exit(1);
         }
 
-        status = parse_system_and_user_conf(config_cli_and_env, config_user_and_system);
-        if (status != ConfigStatus::UserOrSystemConfParseError) return status;
+        config_status = parse_system_and_user_conf(config_cli_and_env, config_user_and_system);
+        if (config_status != ConfigStatus::UserOrSystemConfParseError) return config_status;
         else {
             std::exit(1);
         }
@@ -488,26 +447,17 @@ namespace spla {
         config_final = config_user_and_system;
         config_final.merge(config_cli_and_env);
 
-        status = validate(config_final);
-        if (status != ConfigStatus::Ok) {
+        auto* acc = get_acc_cl();
+        if (!acc) {
             std::exit(1);
         }
 
-        std::cout << "Configuration parametrs:" << std::endl;
-        std::cout << "OpenCL platform index: " << config_final.platform.value() << std::endl;
-        std::cout << "OpenCL device index: " << config_final.device.value() << std::endl;
-        std::cout << "Queues number: " << config_final.queues.value() << std::endl;
-        std::cout << "Profiling: " << config_final.profiling.value() << std::endl;
-        std::cout << "Allocator: " << config_final.allocator.value() << std::endl;
-        if (config_final.allocator == "linear") std::cout << "Linear allocator size: " << config_final.allocator_size.value() << std::endl;
-        std::cout << "Wave size: " << config_final.wave_size.value() << std::endl;
-        std::cout << "Default wgs: " << config_final.default_wgs.value() << std::endl;
-        std::cout << "Num of mem banks: " << config_final.num_of_mem_banks.value() << std::endl;
-        std::cout << "Verbosity: " << config_final.verbosity.value() << std::endl;
-
-        status = apply(config_final);
-        if (status != ConfigStatus::Ok) std::exit(1);
+        Status status = acc->init(config_final);
+        if (status != Status::Ok) {
+            std::exit(1);
+        }
 
         return ConfigStatus::Ok;
     }
 }// namespace spla
+

@@ -39,12 +39,56 @@ namespace spla {
     CLAccelerator::CLAccelerator()  = default;
     CLAccelerator::~CLAccelerator() = default;
 
-    Status CLAccelerator::init() {
+    Status CLAccelerator::init(const Config& cfg) {
+
+        ConfigStatus config_status;
+        config_status = validate(cfg);
+        if (config_status != ConfigStatus::Ok) {
+            std::exit(1);
+        }
+
+        std::cout << "Configuration parametrs:" << std::endl;
+        std::cout << "OpenCL platform index: " << cfg.platform.value() << std::endl;
+        std::cout << "OpenCL device index: " << cfg.device.value() << std::endl;
+        std::cout << "Queues number: " << cfg.queues.value() << std::endl;
+        std::cout << "Profiling: " << cfg.profiling.value() << std::endl;
+        std::cout << "Allocator: " << cfg.allocator.value() << std::endl;
+        if (cfg.allocator == "linear") std::cout << "Linear allocator size: " << cfg.allocator_size.value() << std::endl;
+        std::cout << "Wave size: " << cfg.wave_size.value() << std::endl;
+        std::cout << "Default wgs: " << cfg.default_wgs.value() << std::endl;
+        std::cout << "Num of mem banks: " << cfg.num_of_mem_banks.value() << std::endl;
+        std::cout << "Verbosity: " << cfg.verbosity.value() << std::endl;
+
         m_description = "no platform or device";
 
-        
+        if (set_platform(cfg.platform.value()) != Status::Ok)
+            return Status::PlatformNotFound;
 
+        if (set_device(cfg.device.value()) != Status::Ok)
+            return Status::DeviceNotFound;
 
+        if (set_profiling(cfg.profiling.value()) != Status::Ok)
+            return Status::Error;
+
+        if (set_queues_count(cfg.queues.value()) != Status::Ok)
+            return Status::Error;
+
+        if (cfg.allocator.value() == "linear") {
+            if (set_linear_allocator(cfg.allocator_size.value()) != Status::Ok)
+                return Status::Error;
+        } else {
+            if (set_general_allocator() != Status::Ok)
+                return Status::Error;
+        }
+
+        if (set_default_wgs(cfg.default_wgs.value()) != Status::Ok)
+            return Status::Error;
+
+        if (set_wave_size(cfg.wave_size.value()) != Status::Ok)
+            return Status::Error;
+
+        if (set_num_of_mem_banks(cfg.num_of_mem_banks.value()) != Status::Ok)
+            return Status::Error;
 
         m_cache = std::make_unique<CLProgramCache>();
 
