@@ -211,6 +211,8 @@ namespace spla {
         t.lap_end();// parsing
 
         if (file_has_values) {
+            n_sort = Ai.size();
+
             struct Edge {
                 uint  i, j;
                 float w;
@@ -228,6 +230,7 @@ namespace spla {
             }
 
             std::sort(edges.begin(), edges.end());
+            t.lap_end();// sorting
 
             std::vector<uint>  reduced_Ai;
             std::vector<uint>  reduced_Aj;
@@ -244,12 +247,14 @@ namespace spla {
                     reduced_Av.push_back(edges[k].w);
                 }
             }
+            t.lap_end();// reducing
 
             m_n_values = reduced_Ai.size();
             m_Ai       = std::move(reduced_Ai);
             m_Aj       = std::move(reduced_Aj);
             m_Aw       = std::move(reduced_Av);
 
+            t.lap_end();// calc stats
         } else {
             std::vector<std::uint64_t> sorted;
             {
