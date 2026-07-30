@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_m_extract_row.hpp>
 #include <opencl/cl_m_reduce.hpp>
 #include <opencl/cl_mxmT_masked.hpp>
 #include <opencl/cl_mxv.hpp>
@@ -37,6 +38,7 @@
 #include <opencl/cl_v_count_mf.hpp>
 #include <opencl/cl_v_eadd.hpp>
 #include <opencl/cl_v_eadd_fdb.hpp>
+#include <opencl/cl_v_emult.hpp>
 #include <opencl/cl_v_map.hpp>
 #include <opencl/cl_v_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
@@ -95,6 +97,16 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cl<T_FLOAT>>());
+
+        // algorthm m_extract_row
+        g_registry->add(MAKE_KEY_CL_0("m_extract_row", INT), std::make_shared<Algo_m_extract_row_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_extract_row", UINT), std::make_shared<Algo_m_extract_row_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_extract_row", FLOAT), std::make_shared<Algo_m_extract_row_cl<T_FLOAT>>());
+
+        // algorthm v_emult
+        g_registry->add(MAKE_KEY_CL_0("v_emult", INT), std::make_shared<Algo_v_emult_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_emult", UINT), std::make_shared<Algo_v_emult_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_emult", FLOAT), std::make_shared<Algo_v_emult_cl<T_FLOAT>>());
     }
 
 }// namespace spla
