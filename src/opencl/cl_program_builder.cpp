@@ -107,7 +107,10 @@ namespace spla {
         }
         builder << m_source;
 
-        m_program_code = builder.str();
+        m_program_code       = builder.str();
+        m_program            = std::make_shared<CLProgram>();
+        m_program->m_program = cl::Program(acc->get_context(), m_program_code);
+
         Timer t;
         t.start();
         auto status = m_program->m_program.build("-cl-std=CL1.2");
