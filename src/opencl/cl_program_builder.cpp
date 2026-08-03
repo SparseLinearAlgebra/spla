@@ -111,15 +111,7 @@ namespace spla {
         }
         builder << m_source;
 
-        std::string final_src = builder.str();
-
-        size_t pos = final_src.find("struct Pair OP_APPLY(a) identity_pair(a)");
-        if (pos != std::string::npos) {
-            final_src.replace(pos, 40, "#define OP_APPLY(a) identity_pair(a)");
-        }
-
-        m_program_code = final_src;
-
+        m_program_code       = builder.str();
         m_program            = std::make_shared<CLProgram>();
         m_program->m_program = cl::Program(acc->get_context(), m_program_code);
 
