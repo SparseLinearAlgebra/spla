@@ -27,10 +27,6 @@
 
 #include "common_def.cl"
 
-#ifndef DEFAULT_VALUE
-    #define DEFAULT_VALUE 0
-#endif
-
 __kernel void extract_row(__global TYPE*       g_rx,
                           __global const uint* g_Ap,
                           __global const uint* g_Aj,

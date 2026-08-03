@@ -101,8 +101,14 @@ namespace spla {
             CLProgramBuilder program_builder;
             program_builder
                     .set_name("m_extract_row")
-                    .add_type("TYPE", get_ttype<T>().template as<Type>())
-                    .add_op("OP_APPLY", op_apply.template as<OpUnary>())
+                    .add_type("TYPE", get_ttype<T>().template as<Type>());
+
+            if constexpr (!std::is_same_v<T, Pair>) {
+                program_builder.add_define("DEFAULT_VALUE", 0);
+                program_builder.add_op("OP_APPLY", op_apply.template as<OpUnary>());
+            }
+
+            program_builder
                     .set_source(source_m_extract_row)
                     .acquire();
             program = program_builder.get_program();
