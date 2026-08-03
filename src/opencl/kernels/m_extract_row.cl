@@ -27,14 +27,30 @@
 
 #include "common_def.cl"
 
+#ifndef DEFAULT_VALUE
+    #define DEFAULT_VALUE 0
+#endif
+
 __kernel void extract_row(__global TYPE*       g_rx,
-                          __global const TYPE* g_Ax,
+                          __global const uint* g_Ap,
                           __global const uint* g_Aj,
+                          __global const TYPE* g_Ax,
+                          const uint           row_idx,
                           const uint           n) {
     const uint gid   = get_global_id(0);
     const uint gsize = get_global_size(0);
 
     for (uint i = gid; i < n; i += gsize) {
+        g_rx[i] = DEFAULT_VALUE;
+    }
+
+    barrier(CLK_GLOBAL_MEM_FENCE);
+
+    // calculate the boundaries of the matrix row.
+    const uint row_start = g_Ap[row_idx];
+    const uint row_end   = g_Ap[row_idx + 1];
+
+    for (uint i = row_start + gid; i < row_end; i += gsize) {
         g_rx[g_Aj[i]] = OP_APPLY(g_Ax[i]);
     }
 }

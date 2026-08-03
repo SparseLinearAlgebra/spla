@@ -74,30 +74,24 @@ namespace spla {
             auto* p_cl_acc = get_acc_cl();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            // get the row boundaries from M->Ap
-            uint       row_bounds[2];
-            cl::Buffer cl_row_bounds(p_cl_acc->get_context(),
-                                     CL_MEM_READ_ONLY | CL_MEM_HOST_READ_ONLY | CL_MEM_USE_HOST_PTR,
-                                     sizeof(row_bounds), row_bounds);
-
-            queue.enqueueCopyBuffer(p_cl_M->Ap, cl_row_bounds, t->index * sizeof(uint), 0, sizeof(row_bounds));
-            queue.finish();
+            const uint n       = r->get_n_rows();
+            const uint row_idx = t->index;
 
             std::shared_ptr<CLProgram> program;
             ensure_kernel(op_apply, program);
 
             auto kernel = program->make_kernel("extract_row");
-            kernel.setArg(0, p_cl_r->Ax);
-            kernel.setArg(1, p_cl_M->Ax);
-            kernel.setArg(2, p_cl_M->Aj);
-            kernel.setArg(3, row_bounds[1]);
 
-            // amount of elements in the row
-            const uint n = row_bounds[1] - row_bounds[0] - 1;
+            kernel.setArg(0, p_cl_r->Ax);
+            kernel.setArg(1, p_cl_M->Ap);
+            kernel.setArg(2, p_cl_M->Aj);
+            kernel.setArg(3, p_cl_M->Ax);
+            kernel.setArg(4, row_idx);
+            kernel.setArg(5, n);
 
             cl::NDRange global(p_cl_acc->get_default_wgs() * div_up_clamp(n, p_cl_acc->get_default_wgs(), 1u, 1024u));
             cl::NDRange local(p_cl_acc->get_default_wgs());
-            queue.enqueueNDRangeKernel(kernel, cl::NDRange(row_bounds[0]), global, local);
+            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
 
             return Status::Ok;
         }

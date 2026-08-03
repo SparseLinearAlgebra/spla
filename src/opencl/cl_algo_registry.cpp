@@ -102,6 +102,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("m_extract_row", INT), std::make_shared<Algo_m_extract_row_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("m_extract_row", UINT), std::make_shared<Algo_m_extract_row_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("m_extract_row", FLOAT), std::make_shared<Algo_m_extract_row_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_extract_row", PAIR), std::make_shared<Algo_m_extract_row_cl<T_PAIR>>());
 
         // algorthm v_emult
         g_registry->add(MAKE_KEY_CL_0("v_emult", INT), std::make_shared<Algo_v_emult_cl<T_INT>>());

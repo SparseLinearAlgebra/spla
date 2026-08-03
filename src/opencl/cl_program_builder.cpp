@@ -99,6 +99,7 @@ namespace spla {
                        "(b).vertex)\n\n";
             builder << "#define OP_BINARY2(a, b) min_pair(a, b)\n\n";
             builder << "#define OP_SELECT(a) pair_always(a)\n\n";
+            builder << "#define DEFAULT_VALUE make_pair(INFINITY, -1)\n\n";
         }
 
         for (const auto& function : m_functions) {
@@ -107,7 +108,15 @@ namespace spla {
         }
         builder << m_source;
 
-        m_program_code       = builder.str();
+        std::string final_src = builder.str();
+
+        size_t pos = final_src.find("struct Pair OP_APPLY(a) identity_pair(a)");
+        if (pos != std::string::npos) {
+            final_src.replace(pos, 40, "#define OP_APPLY(a) identity_pair(a)");
+        }
+
+        m_program_code = final_src;
+
         m_program            = std::make_shared<CLProgram>();
         m_program->m_program = cl::Program(acc->get_context(), m_program_code);
 
