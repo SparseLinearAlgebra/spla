@@ -95,13 +95,6 @@ namespace spla {
         builder << source_common_api;
 
         if (needs_pair_override) {
-            builder << "#define OP_BINARY1(a, b) make_pair((a).weight, "
-                       "(b).vertex)\n\n";
-            builder << "#define OP_BINARY2(a, b) min_pair(a, b)\n\n";
-            builder << "#define OP_SELECT(a) pair_always(a)\n\n";
-
-            // переделать надо как-то
-            builder << "#define OP_APPLY(a) identity_pair(a)\n\n";
             builder << "#define DEFAULT_VALUE make_pair(INFINITY, -1)\n\n";
         }
 

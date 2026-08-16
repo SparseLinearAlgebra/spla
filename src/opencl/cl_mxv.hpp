@@ -289,16 +289,16 @@ namespace spla {
                     .add_define("WARP_SIZE", get_acc_cl()->get_wave_size())
                     .add_define("BLOCK_SIZE", m_block_size)
                     .add_define("BLOCK_COUNT", m_block_count)
-                    .add_type("TYPE", get_ttype<T>().template as<Type>());
+                    .add_type("TYPE", get_ttype<T>().template as<Type>())
+                    .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
+                    .add_op("OP_BINARY2", op_add.template as<OpBinary>())
+                    .add_op("OP_SELECT", op_select.template as<OpSelect>());
 
             if constexpr (std::is_same_v<T, Pair>) {
                 program_builder.add_define("USE_PAIR_SEMANTICS", 1);
                 program_builder.add_define("USE_PAIR_COMPARISON", 1);
-            } else {
-                program_builder.add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
-                        .add_op("OP_BINARY2", op_add.template as<OpBinary>())
-                        .add_op("OP_SELECT", op_select.template as<OpSelect>());
             }
+
             program_builder.set_source(source_mxv).acquire();
             program = program_builder.get_program();
 
