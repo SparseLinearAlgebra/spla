@@ -205,8 +205,8 @@ namespace spla {
         DECL_OP_UNA_S(ROUND_FLOAT, ROUND, T_FLOAT, { return round(a); });
         DECL_OP_UNA_S(TRUNC_FLOAT, TRUNC, T_FLOAT, { return trunc(a); });
         IDENTITY_PAIR = spla::OpUnary::make_pair(
-                "IDENTITY_PAIR", "(a) identity_pair(a)", [](Pair a) { return a; });
-
+                "IDENTITY_PAIR", "(struct Pair a) { return identity_pair(a); }",
+                [](Pair a) { return a; });
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });
         DECL_OP_BIN_S(PLUS_FLOAT, PLUS, T_FLOAT, { return a + b; });
@@ -260,14 +260,16 @@ namespace spla {
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
 
         MUL_PAIR = OpBinary::make_pair(
-                "MUL_PAIR", "(a, b) make_pair(a.weight, b.vertex)",
+                "MUL_PAIR", "(struct Pair a, struct Pair b) { return make_pair(a.weight, b.vertex); }",
                 [](Pair a, Pair b) { return Pair(a.weight, b.vertex); });
-        MIN_PAIR = OpBinary::make_pair("MIN_PAIR", "(a, b) min_pair(a, b)",
-                                       [](Pair a, Pair b) {
-                                           if (a.weight == b.weight)
-                                               return a.vertex < b.vertex ? a : b;
-                                           return a.weight < b.weight ? a : b;
-                                       });
+
+        MIN_PAIR = OpBinary::make_pair(
+                "MIN_PAIR", "(struct Pair a, struct Pair b) { return min_pair(a, b); }",
+                [](Pair a, Pair b) {
+                    if (a.weight == b.weight)
+                        return a.vertex < b.vertex ? a : b;
+                    return a.weight < b.weight ? a : b;
+                });
 
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
@@ -290,8 +292,9 @@ namespace spla {
         DECL_OP_SELECT(ALWAYS_INT, ALWAYS, T_INT, { return 1; });
         DECL_OP_SELECT(ALWAYS_UINT, ALWAYS, T_UINT, { return 1; });
         DECL_OP_SELECT(ALWAYS_FLOAT, ALWAYS, T_FLOAT, { return 1; });
-        ALWAYS_PAIR = OpSelect::make_pair("ALWAYS_PAIR", "(a) pair_always(a)",
-                                          [](Pair a) { return 1; });
+        ALWAYS_PAIR = OpSelect::make_pair(
+                "ALWAYS_PAIR", "(struct Pair a) { return pair_always(a); }",
+                [](Pair a) { return 1; });
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
