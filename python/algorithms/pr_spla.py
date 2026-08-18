@@ -1,7 +1,7 @@
 import math
 from pyspla import FLOAT, Matrix, Scalar, Vector
 
-def pr(A: Matrix, alpha: float, eps: float):
+def pr_spla(A: Matrix, alpha: float, eps: float):
     N = A.n_rows
     dummy_mask = Vector(N, FLOAT)
     addition = Vector.dense(N, FLOAT, (1.0 - alpha) / N)

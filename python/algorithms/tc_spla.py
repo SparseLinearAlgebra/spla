@@ -1,4 +1,4 @@
-from pyspla import INT, Matrix
+from pyspla import INT, Matrix, Scalar
 
 def tc_spla(A: Matrix):
     zero = Scalar(INT, 0)
