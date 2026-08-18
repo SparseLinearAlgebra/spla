@@ -1,27 +1,21 @@
 import math
 
+def pagerank_naive(Ai, Ax, alpha,eps):
+    N=len(Ai)
+    p_prev=[1.0/N]*N
+    error=eps+1.0
+    while error>eps:
+        p=[0.0]*N
+        for i in range(N):
+            s=0.0
+            for k in range(len(Ai[i])):
+                s+=Ax[i][k]*p_prev[Ai[i][k]]
+            p[i]=s+(1.0-alpha)/N
+        error=0.0
+        for i in range(N):
+            diff=p[i]-p_prev[i]
+            error+=diff*diff
+        error=math.sqrt(error)
+        p_prev,p=p,p_prev
 
-def pagerank_classic(adj_in, out_degree, n, alpha, eps):
-    p = [1.0 / n] * n
-    addition = (1.0 - alpha) / n
-    error = eps + 1.0
-    iterations = 0
-
-    while error > eps:
-        p_next = [0.0] * n
-        for i in range(n):
-            sum_pr = 0.0
-            for j in adj_in[i]:
-                sum_pr += p[j] / out_degree[j]
-            p_next[i] = alpha * sum_pr + addition
-
-        error2 = 0.0
-        for i in range(n):
-            diff = p_next[i] - p[i]
-            error2 += diff * diff
-
-        error = math.sqrt(error2)
-        p = p_next
-        iterations += 1
-
-    return p, iterations
+    return p_prev

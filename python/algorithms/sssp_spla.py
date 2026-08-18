@@ -1,41 +1,37 @@
+import math
 from pyspla import FLOAT, Matrix, Scalar, Vector
 
-INF = float(1e9)
+INF = math.inf
+def clone_vector(v: Vector):
+    idx, vals = v.to_lists()
+    return Vector.from_lists(idx, vals, v.n_rows, v.dtype)
+
+def has_changed(prev: Vector, new: Vector):
+    prev_idx, prev_vals = prev.to_lists()
+    new_idx, new_vals = new.to_lists()
+    if prev_idx != new_idx or prev_vals != new_vals:
+        return True
+    return False
 
 
-def sssp_spla(start: int, A: Matrix):
-    """
-    Relaxes distances via min-plus multiplication of the current vector by the adjacency matrix.
-    Addition acts as multiplication, minimum acts as addition.
-    """
+def sssp(start: int, A: Matrix):
     n = A.n_rows
-    initial_indices = list(range(n))
-    initial_values = [INF] * n
-    initial_values[start] = 0.0
-    dist = Vector.from_lists(initial_indices, initial_values, n, FLOAT)
-
+    dist = Vector.dense(n, FLOAT, INF)
+    dist.set(start, 0.0)
     mask = Vector.dense(n, FLOAT, 1.0)
-    inf_scalar = Scalar(FLOAT, INF)
-
-    for _ in range(n - 1):
-        new_dist = dist.vxm(
-            mask, A, op_mult=FLOAT.PLUS, op_add=FLOAT.MIN, op_select=FLOAT.ALWAYS, init=inf_scalar
+    init_inf = Scalar(FLOAT, INF)
+    while True:
+        prev = clone_vector(dist)
+        new = A.mxv(
+            mask,
+            dist,
+            op_mult=FLOAT.PLUS,
+            op_add=FLOAT.MIN,
+            op_select=FLOAT.ALWAYS,
+            init=init_inf
         )
-        relaxed = dist.eadd(FLOAT.MIN, new_dist)
-        indices, values = relaxed.to_lists()
-        if start not in indices:
-            indices.append(start)
-            values.append(0.0)
-        dist = Vector.from_lists(indices, values, n, FLOAT)
+        dist = dist.eadd(FLOAT.MIN, new)
+        if not has_changed(prev, dist):
+            break
 
-    final_indices, final_values = dist.to_lists()
-    final_map = {i: INF for i in range(n)}
-    for k in range(len(final_indices)):
-        val = final_values[k]
-        if val == 0.0 and final_indices[k] != start:
-            val = INF
-        final_map[final_indices[k]] = val
-
-    all_indices = list(range(n))
-    all_values = [final_map[i] for i in all_indices]
-    return Vector.from_lists(all_indices, all_values, n, FLOAT)
+    return dist
