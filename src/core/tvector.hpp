@@ -155,6 +155,9 @@ namespace spla {
                 m_storage.set_fill_value(value->as_uint());
             if constexpr (std::is_same<T, T_FLOAT>::value)
                 m_storage.set_fill_value(value->as_float());
+            if constexpr (std::is_same<T, T_PAIR>::value) {
+                m_storage.set_fill_value(value->as_pair());
+            }
 
             return Status::Ok;
         }
@@ -311,6 +314,9 @@ namespace spla {
             t = value->as_uint();
         if constexpr (std::is_same<T, T_FLOAT>::value)
             t = value->as_float();
+        if constexpr (std::is_same<T, T_PAIR>::value) {
+            t = value->as_pair();
+        }
 
         validate_wd(FormatVector::CpuDense);
         auto& Ax = get<CpuDenseVec<T>>()->Ax;
