@@ -148,12 +148,12 @@ namespace spla {
         explicit TScalar(Pair value) : m_value(value) {}
         ~TScalar() override = default;
 
-        Status set_pair(Pair value) {
+        Status set_pair(Pair value) override {
             m_value = value;
             return Status::Ok;
         }
 
-        Status get_pair(Pair& value) const {
+        Status get_pair(Pair& value) override {
             value = m_value;
             return Status::Ok;
         }
@@ -187,8 +187,7 @@ namespace spla {
             return 0.0f;
         }
         T_PAIR as_pair() override {
-            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to pair");
-            return Pair();
+            return m_value;
         }
 
         void set_label(std::string label) override { m_label = std::move(label); }
