@@ -212,6 +212,7 @@ namespace spla {
 
     SPLA_API extern ref_ptr<OpBinary> MIN_PAIR;
     SPLA_API extern ref_ptr<OpBinary> MUL_PAIR;
+    SPLA_API extern ref_ptr<OpBinary> SECOND_PAIR;
 
     //////////////////////////////// Select ////////////////////////////////
 
@@ -240,6 +241,9 @@ namespace spla {
     SPLA_API extern ref_ptr<OpSelect> NEVER_INT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_UINT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_FLOAT;
+
+    SPLA_API extern ref_ptr<OpSelectBinary> EQ_PAIR;
+    SPLA_API extern ref_ptr<OpSelectBinary> EQVERTEX_PAIR;
 
     /**
      * @}

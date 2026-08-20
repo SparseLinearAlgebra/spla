@@ -61,6 +61,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_reduce", UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_reduce", FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_reduce", PAIR), std::make_shared<Algo_v_reduce_cl<T_PAIR>>());
 
         // algorthm v_eadd
         g_registry->add(MAKE_KEY_CL_0("v_eadd", INT), std::make_shared<Algo_v_eadd_cl<T_INT>>());

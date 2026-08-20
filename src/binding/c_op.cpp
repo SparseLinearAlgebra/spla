@@ -269,6 +269,9 @@ spla_OpBinary spla_OpBinary_MIN_PAIR() {
 spla_OpBinary spla_OpBinary_MUL_PAIR() {
     return as_ptr<spla_OpBinary_t>(spla::MUL_PAIR.ref_and_get());
 }
+spla_OpBinary spla_OpBinary_SECOND_PAIR() {
+    return as_ptr<spla_OpBinary_t>(spla::SECOND_PAIR.ref_and_get());
+}
 
 spla_OpSelect spla_OpSelect_EQZERO_INT() {
     return as_ptr<spla_OpSelect_t>(spla::EQZERO_INT.ref_and_get());

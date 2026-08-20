@@ -597,29 +597,25 @@ namespace spla {
                 spla::T_INT ind_v;
                 index->get_int(i, ind_v);
                 if (i == ind_v) {
+                    auto         parent_i = spla::Scalar::make(spla::PAIR);
+                    spla::T_PAIR p1;
+                    parent->get_pair(i, p1);
+                    parent_i->set_pair(p1);
+
                     auto row = spla::Vector::make(n, spla::PAIR);
                     spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
-                    int   min_vertex = -1;
-                    float min_weight = INF;
+                    spla::exec_v_assign_bslct_masked(row, parent, init_inf, parent_i, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
 
-                    for (int32_t j = 0; j < n; j++) {
-                        spla::T_PAIR pair_row;
-                        row->get_pair(j, pair_row);
-                        auto pair_row_weight = pair_row.weight;
-                        auto pair_row_vertex = pair_row.vertex;
-                        if (pair_row_weight < INF) {
-                            spla::T_PAIR p1, p2;
-                            parent->get_pair(i, p1);
-                            parent->get_pair(pair_row_vertex, p2);
-                            if (p1.vertex != p2.vertex) {
-                                if (pair_row_weight < min_weight) {
-                                    min_weight = pair_row_weight;
-                                    min_vertex = j;
-                                }
-                            }
-                        }
-                    }
-                    if (min_vertex == -1)
+                    auto         min_edge_scalar = spla::Scalar::make(spla::PAIR);
+                    spla::T_PAIR min_edge_pair;
+
+                    spla::exec_v_reduce(min_edge_scalar, init_inf, row, spla::MIN_PAIR);
+
+                    min_edge_scalar->get_pair(min_edge_pair);
+                    int   min_vertex = min_edge_pair.vertex;
+                    float min_weight = min_edge_pair.weight;
+
+                    if (min_vertex == -1 || min_weight >= INF)
                         continue;
                     T->set_float(i, min_vertex, min_weight);
                     T->set_float(min_vertex, i, min_weight);

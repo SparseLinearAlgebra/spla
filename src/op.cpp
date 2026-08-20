@@ -133,6 +133,7 @@ namespace spla {
 
     ref_ptr<OpBinary> MIN_PAIR;
     ref_ptr<OpBinary> MUL_PAIR;
+    ref_ptr<OpBinary> SECOND_PAIR;
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -161,6 +162,9 @@ namespace spla {
     ref_ptr<OpSelect> NEVER_INT;
     ref_ptr<OpSelect> NEVER_UINT;
     ref_ptr<OpSelect> NEVER_FLOAT;
+
+    ref_ptr<OpSelectBinary> EQ_PAIR;
+    ref_ptr<OpSelectBinary> EQVERTEX_PAIR;
 
     template<typename T>
     inline T min(T a, T b) { return std::min(a, b); }
@@ -271,6 +275,11 @@ namespace spla {
                     return a.weight < b.weight ? a : b;
                 });
 
+        SECOND_PAIR = OpBinary::make_pair(
+                "SECOND_PAIR", "(struct Pair a, struct Pair b) { return b; }",
+                [](Pair a, Pair b) { return b; });
+
+
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_FLOAT, EQZERO, T_FLOAT, { return a == 0; });
@@ -298,6 +307,14 @@ namespace spla {
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
+
+        EQVERTEX_PAIR = OpSelectBinary::make_pair(
+                "EQVERTEX_PAIR", "(struct Pair a, struct Pair b) { return a.vertex == b.vertex; }",
+                [](Pair a, Pair b) { return a.vertex == b.vertex; });
+
+        EQ_PAIR = OpSelectBinary::make_pair(
+                "EQ_PAIR", "(struct Pair a, struct Pair b) { return (a.vertex == b.vertex) && (a.weight == b.weight); }",
+                [](Pair a, Pair b) { return (a.vertex == b.vertex) && (a.weight == b.weight); });
     }
 
     ref_ptr<OpUnary> OpUnary::make_int(std::string name, std::string code,
