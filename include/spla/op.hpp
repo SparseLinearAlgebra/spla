@@ -103,6 +103,23 @@ namespace spla {
                   std::function<bool(T_PAIR)> function);
     };
 
+    /**
+     * @class OpSelectBinary
+     * @brief SelectBinary operation with 2-arity and bool return type
+     */
+    class OpSelectBinary : public Op {
+    public:
+        SPLA_API ~OpSelectBinary() override                      = default;
+        SPLA_API virtual ref_ptr<Type>          get_type_arg_0() = 0;
+        SPLA_API virtual ref_ptr<Type>          get_type_arg_1() = 0;
+        SPLA_API static ref_ptr<OpSelectBinary> make_int(std::string name, std::string code, std::function<bool(T_INT, T_INT)> function);
+        SPLA_API static ref_ptr<OpSelectBinary> make_uint(std::string name, std::string code, std::function<bool(T_UINT, T_UINT)> function);
+        SPLA_API static ref_ptr<OpSelectBinary> make_float(std::string name, std::string code, std::function<bool(T_FLOAT, T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpSelectBinary>
+        make_pair(std::string name, std::string code,
+                  std::function<bool(T_PAIR, T_PAIR)> function);
+    };
+
     //////////////////////////////// Unary ////////////////////////////////
 
     SPLA_API extern ref_ptr<OpUnary> IDENTITY_INT;

@@ -423,4 +423,41 @@ namespace spla {
         return op.as<OpSelect>();
     }
 
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_int(std::string name, std::string code,
+                                                     std::function<bool(T_INT, T_INT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_INT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_uint(std::string name, std::string code,
+                                                      std::function<bool(T_UINT, T_UINT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_UINT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_float(std::string name, std::string code,
+                                                       std::function<bool(T_FLOAT, T_FLOAT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_pair(std::string name, std::string code,
+                                                      std::function<bool(T_PAIR, T_PAIR)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_PAIR>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+
 }// namespace spla

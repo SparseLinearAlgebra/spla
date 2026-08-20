@@ -59,6 +59,10 @@ namespace spla {
         m_functions.emplace_back(name, op.as<Op>());
         return *this;
     }
+    CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpSelectBinary>& op) {
+        m_functions.emplace_back(name, op.as<Op>());
+        return *this;
+    }
     CLProgramBuilder& CLProgramBuilder::set_source(const char* source) {
         m_source = source;
         return *this;
