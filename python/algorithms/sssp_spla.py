@@ -33,5 +33,4 @@ def sssp(start: int, A: Matrix, eps=EPS):
         dist = dist.eadd(FLOAT.MIN, new)
         if is_converged(prev, dist, eps):
             break
-    idx, vals = dist.to_lists()
     return dist
