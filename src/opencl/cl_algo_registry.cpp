@@ -35,6 +35,7 @@
 #include <opencl/cl_mxmT_masked.hpp>
 #include <opencl/cl_mxv.hpp>
 #include <opencl/cl_v_assign.hpp>
+#include <opencl/cl_v_assign_bslct.hpp>
 #include <opencl/cl_v_count_mf.hpp>
 #include <opencl/cl_v_eadd.hpp>
 #include <opencl/cl_v_eadd_fdb.hpp>
@@ -75,6 +76,9 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
+
+        // algorthm v_assign_bslct_masked
+        g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", PAIR), std::make_shared<Algo_v_assign_bslct_masked_cl<T_PAIR>>());
 
         // algorthm m_reduce
         g_registry->add(MAKE_KEY_CL_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cl<T_INT>>());

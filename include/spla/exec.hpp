@@ -453,6 +453,33 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) masked scalar assignment to a vector
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Vector result to store assigned values
+     * @param mask Vector mask to chose where to assign
+     * @param value Scalar value to assign
+     * @param mask_value Scalar value to select
+     * @param op_assign Binary op to assign values
+     * @param op_select_bin Select op to chose values for assignment
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_assign_bslct_masked(
+            ref_ptr<Vector>         r,
+            ref_ptr<Vector>         mask,
+            ref_ptr<Scalar>         value,
+            ref_ptr<Scalar>         mask_value,
+            ref_ptr<OpBinary>       op_assign,
+            ref_ptr<OpSelectBinary> op_select_bin,
+            ref_ptr<Descriptor>     desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>*  task_hnd = nullptr);
+
+
+    /**
      * @brief Execute (schedule) by structure map of one vector to another using unary operation
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
