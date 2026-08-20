@@ -71,5 +71,8 @@ namespace spla {
     ref_ptr<Scalar> Scalar::Scalar::make_float(float value) {
         return ref_ptr<Scalar>(new TScalar<float>(value));
     }
+    ref_ptr<Scalar> Scalar::make_pair(Pair value) {
+        return ref_ptr<Scalar>(new TScalar<Pair>(value));
+    }
 
 }// namespace spla

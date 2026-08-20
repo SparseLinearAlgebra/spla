@@ -67,6 +67,7 @@ namespace spla {
         SPLA_API static ref_ptr<Scalar> make_int(std::int32_t value);
         SPLA_API static ref_ptr<Scalar> make_uint(std::uint32_t value);
         SPLA_API static ref_ptr<Scalar> make_float(float value);
+        SPLA_API static ref_ptr<Scalar> make_pair(Pair value);
     };
 
     /**
