@@ -324,7 +324,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_res()->get_code();
+                       op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
     ref_ptr<OpUnary> OpUnary::make_uint(std::string name, std::string code,
@@ -334,7 +334,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_res()->get_code();
+                       op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
     ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code,
@@ -344,7 +344,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_res()->get_code();
+                       op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
     ref_ptr<OpUnary> OpUnary::make_pair(std::string name, std::string code,
@@ -354,7 +354,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_res()->get_code();
+                       op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
 
@@ -366,7 +366,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
     ref_ptr<OpBinary>
@@ -377,7 +377,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
     ref_ptr<OpBinary>
@@ -388,7 +388,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
     ref_ptr<OpBinary>
@@ -399,7 +399,7 @@ namespace spla {
         op->function = std::move(function);
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                  op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
 
