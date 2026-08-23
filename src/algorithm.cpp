@@ -682,23 +682,7 @@ namespace spla {
                           << std::endl;
                 return Status::Ok;
             }
-            auto filtered_S = spla::Matrix::make(n, n, spla::PAIR);
-            for (int32_t i = 0; i < n; i++) {
-                for (int32_t j = 0; j < n; j++) {
-                    spla::T_PAIR val;
-                    S->get_pair(i, j, val);
-                    if (val.weight != std::numeric_limits<float>::infinity()) {
-                        spla::T_PAIR parent_i, parent_j;
-                        parent->get_pair(i, parent_i);
-                        parent->get_pair(j, parent_j);
-                        if ((parent_i.vertex != parent_j.vertex) &&
-                            (val.weight != std::numeric_limits<float>::infinity())) {
-                            filtered_S->set_pair(i, j, val);
-                        }
-                    }
-                }
-            }
-            S = filtered_S;
+            spla::exec_m_assign_bslct_masked(S, parent, init_inf, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
             if (edges_added_this_iteration == 0) {
                 return Status::Ok;
             }
