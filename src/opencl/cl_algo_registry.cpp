@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_m_assign_bslct.hpp>
 #include <opencl/cl_m_extract_row.hpp>
 #include <opencl/cl_m_reduce.hpp>
 #include <opencl/cl_mxmT_masked.hpp>
@@ -80,6 +81,9 @@ namespace spla {
 
         // algorthm v_assign_bslct_masked
         g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", PAIR), std::make_shared<Algo_v_assign_bslct_masked_cl<T_PAIR>>());
+
+        // algorthm m_assign_bslct_masked
+        g_registry->add(MAKE_KEY_CL_0("m_assign_bslct_masked", PAIR), std::make_shared<Algo_m_assign_bslct_masked_cl<T_PAIR>>());
 
         // algorthm m_reduce
         g_registry->add(MAKE_KEY_CL_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cl<T_INT>>());
