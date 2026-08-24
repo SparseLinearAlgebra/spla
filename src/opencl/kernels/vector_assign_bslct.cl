@@ -29,8 +29,8 @@
 
 __kernel void assign_bslct_dense_to_dense(__global TYPE*       g_r,
                                     __global const TYPE* g_mask,
-                                    const TYPE           init,
                                     const TYPE           mask_val,
+                                    const TYPE           init,
                                     const uint           n) {
     uint gid     = get_global_id(0);
     uint gstride = get_global_size(0);
@@ -45,8 +45,8 @@ __kernel void assign_bslct_dense_to_dense(__global TYPE*       g_r,
 __kernel void assign_bslct_sparse_to_dense(__global TYPE*       g_r,
                                            __global const uint* g_maski,
                                            __global const TYPE* g_maskx,
-                                           const TYPE           init,
                                            const TYPE           mask_val,
+                                           const TYPE           init,
                                            const uint           n) {
     uint gid     = get_global_id(0);
     uint gstride = get_global_size(0);

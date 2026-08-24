@@ -471,8 +471,8 @@ namespace spla {
     SPLA_API Status exec_v_assign_bslct_masked(
             ref_ptr<Vector>         r,
             ref_ptr<Vector>         mask,
-            ref_ptr<Scalar>         value,
             ref_ptr<Scalar>         mask_value,
+            ref_ptr<Scalar>         value,
             ref_ptr<OpBinary>       op_assign,
             ref_ptr<OpSelectBinary> op_select_bin,
             ref_ptr<Descriptor>     desc     = ref_ptr<Descriptor>(),

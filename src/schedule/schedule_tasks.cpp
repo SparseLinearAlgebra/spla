@@ -446,7 +446,7 @@ namespace spla {
         return key.str();
     }
     std::vector<ref_ptr<Object>> ScheduleTask_v_assign_bslct_masked::get_args() {
-        return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), mask_value.as<Object>(), op_assign.as<Object>(), op_select_bin.as<Object>()};
+        return {r.as<Object>(), mask.as<Object>(), mask_value.as<Object>(), value.as<Object>(), op_assign.as<Object>(), op_select_bin.as<Object>()};
     }
 
     std::string ScheduleTask_m_assign_bslct_masked::get_name() {

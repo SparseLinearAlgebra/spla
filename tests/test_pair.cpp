@@ -154,7 +154,7 @@ TEST(pair, v_assign_bslct) {
     auto mask_scalar = spla::Scalar::make(spla::PAIR);
     mask_scalar->set_pair(spla::T_PAIR(8.0f, 1));
 
-    spla::exec_v_assign_bslct_masked(vector, mask, init_scalar, mask_scalar, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
+    spla::exec_v_assign_bslct_masked(vector, mask, mask_scalar, init_scalar, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
 
     spla::T_PAIR expected[] = {spla::T_PAIR(7.0f, 1), spla::T_PAIR(),
                                spla::T_PAIR(7.0f, 0)};

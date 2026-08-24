@@ -81,8 +81,8 @@ namespace spla {
 
             auto r             = t->r.template cast_safe<TVector<T>>();
             auto mask          = t->mask.template cast_safe<TVector<T>>();
-            auto value         = t->value.template cast_safe<TScalar<T>>();
             auto mask_value    = t->mask_value.template cast_safe<TScalar<T>>();
+            auto value         = t->value.template cast_safe<TScalar<T>>();
             auto op_assign     = t->op_assign.template cast_safe<TOpBinary<T, T, T>>();
             auto op_select_bin = t->op_select_bin.template cast_safe<TOpSelectBinary<T>>();
 
@@ -100,8 +100,8 @@ namespace spla {
             auto kernel_dense_to_dense = program->make_kernel("assign_bslct_dense_to_dense");
             kernel_dense_to_dense.setArg(0, p_cl_r_dense->Ax);
             kernel_dense_to_dense.setArg(1, p_cl_mask_dense->Ax);
-            kernel_dense_to_dense.setArg(2, value->get_value());
-            kernel_dense_to_dense.setArg(3, mask_value->get_value());
+            kernel_dense_to_dense.setArg(2, mask_value->get_value());
+            kernel_dense_to_dense.setArg(3, value->get_value());
             kernel_dense_to_dense.setArg(4, r->get_n_rows());
 
             uint n_groups_to_dispatch = div_up_clamp(r->get_n_rows(), m_block_size, 1, 256);
@@ -120,8 +120,8 @@ namespace spla {
 
             auto r             = t->r.template cast_safe<TVector<T>>();
             auto mask          = t->mask.template cast_safe<TVector<T>>();
-            auto value         = t->value.template cast_safe<TScalar<T>>();
             auto mask_value    = t->mask_value.template cast_safe<TScalar<T>>();
+            auto value         = t->value.template cast_safe<TScalar<T>>();
             auto op_assign     = t->op_assign.template cast_safe<TOpBinary<T, T, T>>();
             auto op_select_bin = t->op_select_bin.template cast_safe<TOpSelectBinary<T>>();
 
@@ -145,8 +145,8 @@ namespace spla {
             kernel_sparse_to_dense.setArg(0, p_cl_r_dense->Ax);
             kernel_sparse_to_dense.setArg(1, p_cl_mask_coo->Ai);
             kernel_sparse_to_dense.setArg(2, p_cl_mask_coo->Ax);
-            kernel_sparse_to_dense.setArg(3, value->get_value());
-            kernel_sparse_to_dense.setArg(4, mask_value->get_value());
+            kernel_sparse_to_dense.setArg(3, mask_value->get_value());
+            kernel_sparse_to_dense.setArg(4, value->get_value());
             kernel_sparse_to_dense.setArg(5, p_cl_mask_coo->values);
 
             uint n_groups_to_dispatch = div_up_clamp(p_cl_mask_coo->values, m_block_size, 1, 256);
