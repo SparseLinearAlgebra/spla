@@ -620,30 +620,23 @@ namespace spla {
                     T->set_float(i, min_vertex, min_weight);
                     T->set_float(min_vertex, i, min_weight);
                     edges_added_this_iteration++;
+
+                    spla::T_PAIR p;
+                    spla::T_PAIR old_p;
                     if (i < min_vertex) {
-                        spla::T_PAIR p;
-                        spla::T_PAIR old_p;
                         new_parent->get_pair(i, p);
                         new_parent->get_pair(min_vertex, old_p);
                         new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
-                        for (int k = 0; k < n; k++) {
-                            spla::T_PAIR p1;
-                            new_parent->get_pair(k, p1);
-                            if (p1.vertex == old_p.vertex)
-                                new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
-                        }
                     } else {
-                        spla::T_PAIR p;
-                        spla::T_PAIR old_p;
                         new_parent->get_pair(min_vertex, p);
                         new_parent->get_pair(i, old_p);
                         new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
-                        for (int k = 0; k < n; k++) {
-                            spla::T_PAIR p1;
-                            new_parent->get_pair(k, p1);
-                            if (p1.vertex == old_p.vertex)
-                                new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
-                        }
+                    }
+                    for (int k = 0; k < n; k++) {
+                        spla::T_PAIR p1;
+                        new_parent->get_pair(k, p1);
+                        if (p1.vertex == old_p.vertex)
+                            new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
                     }
                 }
             }
