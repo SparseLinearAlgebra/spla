@@ -32,6 +32,7 @@
 
 #include <cpu/cpu_algo_callback.hpp>
 #include <cpu/cpu_kron.hpp>
+#include <cpu/cpu_m_assign_bslct.hpp>
 #include <cpu/cpu_m_eadd.hpp>
 #include <cpu/cpu_m_emult.hpp>
 #include <cpu/cpu_m_extract_column.hpp>
@@ -97,6 +98,9 @@ namespace spla {
 
         // algorthm v_assign_masked
         g_registry->add(MAKE_KEY_CPU_0("v_assign_bslct_masked", PAIR), std::make_shared<Algo_v_assign_bslct_masked_cpu<T_PAIR>>());
+
+        // algorthm m_assign_masked
+        g_registry->add(MAKE_KEY_CPU_0("m_assign_bslct_masked", PAIR), std::make_shared<Algo_m_assign_bslct_masked_cpu<T_PAIR>>());
 
         // algorthm m_reduce_by_row
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", INT), std::make_shared<Algo_m_reduce_by_row_cpu<T_INT>>());
