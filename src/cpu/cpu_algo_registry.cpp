@@ -139,6 +139,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", UINT), std::make_shared<Algo_mxv_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", FLOAT), std::make_shared<Algo_mxv_masked_cpu<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_0("mxv_masked", PAIR), std::make_shared<Algo_mxv_masked_cpu<T_PAIR>>());
 
         // algorthm vxm_masked
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
