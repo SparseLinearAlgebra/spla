@@ -57,6 +57,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_map", INT), std::make_shared<Algo_v_map_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_map", UINT), std::make_shared<Algo_v_map_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_map", FLOAT), std::make_shared<Algo_v_map_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_map", PAIR), std::make_shared<Algo_v_map_cl<T_PAIR>>());
 
         // algorthm v_reduce
         g_registry->add(MAKE_KEY_CL_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
@@ -80,9 +81,15 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
 
         // algorthm v_assign_bslct_masked
+        g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", INT), std::make_shared<Algo_v_assign_bslct_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", UINT), std::make_shared<Algo_v_assign_bslct_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", FLOAT), std::make_shared<Algo_v_assign_bslct_masked_cl<T_FLOAT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_bslct_masked", PAIR), std::make_shared<Algo_v_assign_bslct_masked_cl<T_PAIR>>());
 
         // algorthm m_assign_bslct_masked
+        g_registry->add(MAKE_KEY_CL_0("m_assign_bslct_masked", INT), std::make_shared<Algo_m_assign_bslct_masked_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_assign_bslct_masked", UINT), std::make_shared<Algo_m_assign_bslct_masked_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("m_assign_bslct_masked", FLOAT), std::make_shared<Algo_m_assign_bslct_masked_cl<T_FLOAT>>());
         g_registry->add(MAKE_KEY_CL_0("m_assign_bslct_masked", PAIR), std::make_shared<Algo_m_assign_bslct_masked_cl<T_PAIR>>());
 
         // algorthm m_reduce

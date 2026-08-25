@@ -97,9 +97,15 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cpu<T_FLOAT>>());
 
         // algorthm v_assign_masked
+        g_registry->add(MAKE_KEY_CPU_0("v_assign_bslct_masked", INT), std::make_shared<Algo_v_assign_bslct_masked_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_assign_bslct_masked", UINT), std::make_shared<Algo_v_assign_bslct_masked_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_assign_bslct_masked", FLOAT), std::make_shared<Algo_v_assign_bslct_masked_cpu<T_FLOAT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_assign_bslct_masked", PAIR), std::make_shared<Algo_v_assign_bslct_masked_cpu<T_PAIR>>());
 
         // algorthm m_assign_masked
+        g_registry->add(MAKE_KEY_CPU_0("m_assign_bslct_masked", INT), std::make_shared<Algo_m_assign_bslct_masked_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_assign_bslct_masked", UINT), std::make_shared<Algo_m_assign_bslct_masked_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_assign_bslct_masked", FLOAT), std::make_shared<Algo_m_assign_bslct_masked_cpu<T_FLOAT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_assign_bslct_masked", PAIR), std::make_shared<Algo_m_assign_bslct_masked_cpu<T_PAIR>>());
 
         // algorthm m_reduce_by_row
