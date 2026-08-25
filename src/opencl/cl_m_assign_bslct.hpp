@@ -95,7 +95,7 @@ namespace spla {
 
             cl::NDRange global(m_block_count * n_groups_to_dispatch, m_block_size);
             cl::NDRange local(m_block_count, m_block_size);
-            CL_DISPATCH_PROFILED("exec", queue, kernel, cl::NDRange(), global, local);
+            queue.enqueueNDRangeKernel(kernel, cl::NDRange(), global, local);
 
             return Status::Ok;
         }

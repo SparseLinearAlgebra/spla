@@ -60,6 +60,7 @@ namespace spla {
         }
 
         Status execute(const DispatchContext& ctx) override {
+            TIME_PROFILE_SCOPE("cl/m_extract_row");
             auto t = ctx.task.template cast_safe<ScheduleTask_m_extract_row>();
 
             ref_ptr<TVector<T>> r        = t->r.template cast_safe<TVector<T>>();
