@@ -163,6 +163,7 @@ namespace spla {
     ref_ptr<OpSelect> NEVER_UINT;
     ref_ptr<OpSelect> NEVER_FLOAT;
 
+    ref_ptr<OpSelectBinary> EQ_INT;
     ref_ptr<OpSelectBinary> EQ_PAIR;
     ref_ptr<OpSelectBinary> EQVERTEX_PAIR;
 
@@ -307,6 +308,10 @@ namespace spla {
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
+
+        EQ_INT = OpSelectBinary::make_int(
+                "EQ_INT", "(TYPE a, TYPE b) { return a == b; }",
+                [](int a, int b) { return a == b; });
 
         EQVERTEX_PAIR = OpSelectBinary::make_pair(
                 "EQVERTEX_PAIR", "(struct Pair a, struct Pair b) { return a.vertex == b.vertex; }",
