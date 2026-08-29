@@ -81,18 +81,23 @@ namespace spla {
             std::shared_ptr<CLProgram> program;
             ensure_kernel(op_apply, program);
 
-            auto kernel = program->make_kernel("extract_row");
+            auto kernel_clear = program->make_kernel("extract_row_clear");
+            auto kernel_fetch = program->make_kernel("extract_row_fetch");
 
-            kernel.setArg(0, p_cl_r->Ax);
-            kernel.setArg(1, p_cl_M->Ap);
-            kernel.setArg(2, p_cl_M->Aj);
-            kernel.setArg(3, p_cl_M->Ax);
-            kernel.setArg(4, row_idx);
-            kernel.setArg(5, n);
+            kernel_clear.setArg(0, p_cl_r->Ax);
+            kernel_clear.setArg(1, n);
+
+            kernel_fetch.setArg(0, p_cl_r->Ax);
+            kernel_fetch.setArg(1, p_cl_M->Ap);
+            kernel_fetch.setArg(2, p_cl_M->Aj);
+            kernel_fetch.setArg(3, p_cl_M->Ax);
+            kernel_fetch.setArg(4, row_idx);
+            kernel_fetch.setArg(5, n);
 
             cl::NDRange global(p_cl_acc->get_default_wgs() * div_up_clamp(n, p_cl_acc->get_default_wgs(), 1u, 1024u));
             cl::NDRange local(p_cl_acc->get_default_wgs());
-            queue.enqueueNDRangeKernel(kernel, cl::NullRange, global, local);
+            queue.enqueueNDRangeKernel(kernel_clear, cl::NullRange, global, local);
+            queue.enqueueNDRangeKernel(kernel_fetch, cl::NullRange, global, local);
 
             return Status::Ok;
         }
