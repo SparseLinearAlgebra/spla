@@ -329,7 +329,11 @@ namespace spla {
             return false;
         }
 
-        file << "%%MatrixMarket matrix coordinate pattern general\n";
+        bool has_weights = !m_Aw.empty();
+
+        file << "%%MatrixMarket matrix coordinate "
+             << (has_weights ? "real" : "pattern")
+             << " general\n";
         file << "%-------------------------------------------------------------------"
                 "------------\n";
         file << "%-------------------------------------------------------------------"
@@ -356,7 +360,11 @@ namespace spla {
         if (!stats_only) {
             const uint offset = m_base_is_zero ? 1 : 0;
             for (std::size_t k = 0; k < m_n_values; k++) {
-                file << m_Ai[k] + offset << " " << m_Aj[k] + offset << "\n";
+                file << m_Ai[k] + offset << " " << m_Aj[k] + offset;
+                if (has_weights) {
+                    file << " " << m_Aw[k];
+                }
+                file << "\n";
             }
         }
 
