@@ -17,8 +17,6 @@ namespace spla {
         if (source.profiling.has_value()) profiling = source.profiling;
         if (source.allocator.has_value()) allocator = source.allocator;
         if (source.allocator_size.has_value()) allocator_size = source.allocator_size;
-        if (source.default_wgs.has_value()) default_wgs = source.default_wgs;
-        if (source.wave_size.has_value()) wave_size = source.wave_size;
         if (source.verbosity.has_value()) verbosity = source.verbosity;
     }
 
@@ -135,15 +133,6 @@ namespace spla {
             if (config_data.contains("allocator_size")) {
                 cfg.allocator_size = config_data["allocator_size"].get<size_t>();
             }
-            if (config_data.contains("default_wgs")) {
-                cfg.default_wgs = config_data["default_wgs"].get<int>();
-            }
-            if (config_data.contains("wave_size")) {
-                cfg.wave_size = config_data["wave_size"].get<int>();
-            }
-            if (config_data.contains("num_of_mem_banks")) {
-                cfg.num_of_mem_banks = config_data["num_of_mem_banks"].get<int>();
-            }
             if (config_data.contains("verbosity")) {
                 cfg.verbosity = config_data["verbosity"].get<int>();
             }
@@ -240,21 +229,6 @@ namespace spla {
                        "Required for 'linear' allocator. Ignored for 'general'.\n"
                        "Config key: allocator_size")
                 ->envname("SPLA_ALLOCATOR_SIZE");
-
-        app.add_option("-dw,--spla-default-wgs", cfg.default_wgs,
-                       "Default work group size\n"
-                       "Config key: default_wgs")
-                ->envname("SPLA_DEFAULT_WGS");
-
-        app.add_option("ws,--spla-wave-size", cfg.wave_size,
-                       "Wave size for device\n"
-                       "Config key: wave_size")
-                ->envname("SPLA_WAVE_SIZE");
-
-        app.add_option("--spla-mem-banks", config_cli_and_env.num_of_mem_banks,
-                       "Number of memory banks (for optimization)\n"
-                       "Config key: num_of_mem_banks")
-                ->envname("SPLA_MEM_BANKS");
 
         app.add_option("-sV,--spla-verbosity", cfg.verbosity,
                        "Verbosity level:\n"
@@ -355,18 +329,6 @@ namespace spla {
             std::cerr << "Error: allocator_size is required for linear allocator" << std::endl;
             return ConfigStatus::MissedParametrs;
         }
-        if (!cfg.default_wgs.has_value()) {
-            std::cerr << "Error: default_wgs is required" << std::endl;
-            return ConfigStatus::MissedParametrs;
-        }
-        if (!cfg.wave_size.has_value()) {
-            std::cerr << "Error: wave_size is required" << std::endl;
-            return ConfigStatus::MissedParametrs;
-        }
-        if (!cfg.num_of_mem_banks.has_value()) {
-            std::cerr << "Error: num_of_mem_banks is required" << std::endl;
-            return ConfigStatus::MissedParametrs;
-        }
         if (!cfg.verbosity.has_value()) {
             std::cerr << "Error: verbosity is required" << std::endl;
             return ConfigStatus::MissedParametrs;
@@ -397,22 +359,6 @@ namespace spla {
                 std::cerr << "Error: allocator_size must be > 0 for linear allocator (got " << *cfg.allocator_size << ")" << std::endl;
                 return ConfigStatus::InvalidConfigParams;
             }
-        }
-
-
-        if (*cfg.default_wgs <= 0) {
-            std::cerr << "Error: default_wgs must be > 0 (got " << *cfg.default_wgs << ")" << std::endl;
-            return ConfigStatus::InvalidConfigParams;
-        }
-
-        if (*cfg.wave_size <= 0) {
-            std::cerr << "Error: wave_size must be > 0 (got " << *cfg.wave_size << ")" << std::endl;
-            return ConfigStatus::InvalidConfigParams;
-        }
-
-        if (*cfg.num_of_mem_banks <= 0) {
-            std::cerr << "Error: num_of_mem_banks must be > 0 (got " << *cfg.num_of_mem_banks << ")" << std::endl;
-            return ConfigStatus::InvalidConfigParams;
         }
 
 
@@ -452,7 +398,7 @@ namespace spla {
             std::exit(1);
         }
 
-        Status status = acc->init(config_final);
+        Status status = acc->init();
         if (status != Status::Ok) {
             std::exit(1);
         }

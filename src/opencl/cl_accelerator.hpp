@@ -31,7 +31,6 @@
 #include <core/accelerator.hpp>
 #include <core/common.hpp>
 #include <core/logger.hpp>
-#include <opencl/cl_configure.hpp>
 #include <spla/library.hpp>
 
 #include <string>
@@ -71,16 +70,13 @@ namespace spla {
         CLAccelerator();
         ~CLAccelerator() override;
 
-        Status init(const Config& cfg) override;
-        Status set_platform(int index) override;
-        Status set_device(int index) override;
-        Status set_profiling(bool enabled);
-        Status set_queues_count(int count) override;
-        Status set_linear_allocator(size_t size);
-        Status set_general_allocator();
-        Status set_default_wgs(int wgs);
-        Status set_wave_size(int size);
-        Status set_num_of_mem_banks(int banks);
+        Status             init() override;
+        Status             set_platform(int index) override;
+        Status             set_device(int index) override;
+        Status             set_queues_count(int count) override;
+        const std::string& get_name() override;
+        const std::string& get_description() override;
+        const std::string& get_suffix() override;
 
         cl::Platform&         get_platform() { return m_platform; }
         cl::Device&           get_device() { return m_device; }
@@ -91,18 +87,13 @@ namespace spla {
         class CLAllocGeneral* get_alloc_general() { return m_alloc_general.get(); }
         class CLAlloc*        get_alloc_tmp() { return m_alloc_tmp; }
 
-        const std::string& get_name() override;
-        const std::string& get_description() override;
-        const std::string& get_suffix() override;
-
-        [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
         [[nodiscard]] const std::string& get_vendor_name() const { return m_vendor_name; }
+        [[nodiscard]] const std::string& get_vendor_code() const { return m_vendor_code; }
         [[nodiscard]] uint               get_vendor_id() const { return m_vendor_id; }
         [[nodiscard]] uint               get_max_cu() const { return m_max_cu; }
         [[nodiscard]] uint               get_max_wgs() const { return m_max_wgs; }
         [[nodiscard]] uint               get_max_local_mem() const { return m_max_local_mem; }
         [[nodiscard]] uint               get_addr_align() const { return m_addr_align; }
-        [[nodiscard]] bool               get_profiling_enabled() const { return m_profiling_enabled; }
         [[nodiscard]] uint               get_default_wgs() const { return m_default_wgs; }
         [[nodiscard]] uint               get_wave_size() const { return m_wave_size; }
         [[nodiscard]] uint               get_num_of_mem_banks() const { return m_num_of_mem_banks; }
@@ -115,7 +106,6 @@ namespace spla {
         cl::Platform                          m_platform;
         cl::Device                            m_device;
         cl::Context                           m_context;
-        ankerl::svector<cl::CommandQueue, 2>  m_queues;
         std::unique_ptr<class CLProgramCache> m_cache;
         std::unique_ptr<class CLCounterPool>  m_counter_pool;
         std::unique_ptr<class CLAllocLinear>  m_alloc_linear;
@@ -125,22 +115,22 @@ namespace spla {
         std::string m_name = "OpenCL";
         std::string m_description;
         std::string m_suffix = "__cl";
-
-        std::string m_vendor_code;
         std::string m_vendor_name;
-        uint        m_vendor_id         = 0;
-        uint        m_max_cu            = 0;
-        uint        m_max_wgs           = 0;
-        uint        m_max_local_mem     = 0;
-        uint        m_addr_align        = 0;
-        bool        m_profiling_enabled = false;//
-        uint        m_default_wgs       = 0;    //
-        uint        m_wave_size         = 0;    //
-        uint        m_num_of_mem_banks  = 0;    //
-        bool        m_is_nvidia         = false;
-        bool        m_is_amd            = false;
-        bool        m_is_intel          = false;
-        bool        m_is_img            = false;
+        std::string m_vendor_code;
+        uint        m_vendor_id        = 0;
+        uint        m_max_cu           = 0;
+        uint        m_max_wgs          = 0;
+        uint        m_max_local_mem    = 0;
+        uint        m_addr_align       = 128;
+        uint        m_default_wgs      = 64;
+        uint        m_wave_size        = 32;
+        uint        m_num_of_mem_banks = 32;
+        bool        m_is_nvidia        = false;
+        bool        m_is_amd           = false;
+        bool        m_is_intel         = false;
+        bool        m_is_img           = false;
+
+        ankerl::svector<cl::CommandQueue, 2> m_queues;
     };
 
     /**
