@@ -29,6 +29,7 @@
 #define SPLA_OP_HPP
 
 #include "object.hpp"
+#include "spla/pair.hpp"
 #include "type.hpp"
 
 #include <string>
@@ -64,6 +65,9 @@ namespace spla {
         SPLA_API static ref_ptr<OpUnary> make_int(std::string name, std::string code, std::function<T_INT(T_INT)> function);
         SPLA_API static ref_ptr<OpUnary> make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT)> function);
         SPLA_API static ref_ptr<OpUnary> make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpUnary>
+        make_pair(std::string name, std::string code,
+                  std::function<T_PAIR(T_PAIR)> function);
     };
 
     /**
@@ -78,6 +82,9 @@ namespace spla {
         SPLA_API static ref_ptr<OpBinary> make_int(std::string name, std::string code, std::function<T_INT(T_INT, T_INT)> function);
         SPLA_API static ref_ptr<OpBinary> make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT, T_UINT)> function);
         SPLA_API static ref_ptr<OpBinary> make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpBinary>
+        make_pair(std::string name, std::string code,
+                  std::function<T_PAIR(T_PAIR, T_PAIR)> function);
     };
 
     /**
@@ -91,6 +98,9 @@ namespace spla {
         SPLA_API static ref_ptr<OpSelect> make_int(std::string name, std::string code, std::function<bool(T_INT)> function);
         SPLA_API static ref_ptr<OpSelect> make_uint(std::string name, std::string code, std::function<bool(T_UINT)> function);
         SPLA_API static ref_ptr<OpSelect> make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function);
+        SPLA_API static ref_ptr<OpSelect>
+        make_pair(std::string name, std::string code,
+                  std::function<bool(T_PAIR)> function);
     };
 
     //////////////////////////////// Unary ////////////////////////////////
@@ -130,6 +140,7 @@ namespace spla {
     SPLA_API extern ref_ptr<OpUnary> FLOOR_FLOAT;
     SPLA_API extern ref_ptr<OpUnary> ROUND_FLOAT;
     SPLA_API extern ref_ptr<OpUnary> TRUNC_FLOAT;
+    SPLA_API extern ref_ptr<OpUnary> IDENTITY_PAIR;
 
     //////////////////////////////// Binary ////////////////////////////////
 
@@ -182,6 +193,9 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
+    SPLA_API extern ref_ptr<OpBinary> MIN_PAIR;
+    SPLA_API extern ref_ptr<OpBinary> MUL_PAIR;
+
     //////////////////////////////// Select ////////////////////////////////
 
     SPLA_API extern ref_ptr<OpSelect> EQZERO_INT;
@@ -205,6 +219,7 @@ namespace spla {
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_INT;
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_UINT;
     SPLA_API extern ref_ptr<OpSelect> ALWAYS_FLOAT;
+    SPLA_API extern ref_ptr<OpSelect> ALWAYS_PAIR;
     SPLA_API extern ref_ptr<OpSelect> NEVER_INT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_UINT;
     SPLA_API extern ref_ptr<OpSelect> NEVER_FLOAT;

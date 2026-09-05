@@ -25,38 +25,26 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tvector.hpp>
+#ifndef SPLA_PAIR_HPP
+#define SPLA_PAIR_HPP
+#include <limits>
 
 namespace spla {
+    struct Pair {
+        float weight;
+        int   vertex;
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
-        }
+        Pair() : weight(std::numeric_limits<float>::infinity()), vertex(-1) {}
+        Pair(float w, int v) : weight(w), vertex(v) {}
 
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-        }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
+        bool operator<(const Pair& other) const { return weight < other.weight; }
+        bool operator==(const Pair& other) const {
+            return weight == other.weight && vertex == other.vertex;
         }
 
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
-    }
+        bool operator!=(const Pair& other) const { return !(*this == other); }
 
+        Pair& operator=(const Pair& other) = default;
+    };
 }// namespace spla
+#endif
