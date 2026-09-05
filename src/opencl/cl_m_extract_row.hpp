@@ -92,7 +92,6 @@ namespace spla {
             kernel_fetch.setArg(2, p_cl_M->Aj);
             kernel_fetch.setArg(3, p_cl_M->Ax);
             kernel_fetch.setArg(4, row_idx);
-            kernel_fetch.setArg(5, n);
 
             cl::NDRange global(p_cl_acc->get_default_wgs() * div_up_clamp(n, p_cl_acc->get_default_wgs(), 1u, 1024u));
             cl::NDRange local(p_cl_acc->get_default_wgs());
