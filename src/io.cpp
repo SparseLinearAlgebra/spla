@@ -1,35 +1,28 @@
 /**********************************************************************************/
-/* This file is part of spla project */
-/* https://github.com/SparseLinearAlgebra/spla */
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
 /**********************************************************************************/
-/* MIT License */
+/* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy
- */
-/* of this software and associated documentation files (the "Software"), to deal
- */
-/* in the Software without restriction, including without limitation the rights
- */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
-/* copies of the Software, and to permit persons to whom the Software is */
-/* furnished to do so, subject to the following conditions: */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and to permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in
- * all */
-/* copies or substantial portions of the Software. */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- */
-/* SOFTWARE. */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
 #include <spla/io.hpp>
@@ -51,10 +44,10 @@
 
 namespace spla {
 
-    MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {}
+    MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {
+    }
 
-    bool MtxLoader::load(std::filesystem::path file_path, bool offset_indices,
-                         bool make_undirected, bool remove_loops) {
+    bool MtxLoader::load(std::filesystem::path file_path, bool offset_indices, bool make_undirected, bool remove_loops) {
         m_file_path    = std::move(file_path);
         m_base_is_zero = offset_indices;
 
@@ -72,8 +65,7 @@ namespace spla {
 
         std::string line;
         while (std::getline(file, line)) {
-            if (line[0] != '%')
-                break;
+            if (line[0] != '%') break;
             n_lines++;
         }
 
@@ -89,15 +81,11 @@ namespace spla {
 
         std::cout << "Loading matrix-market coordinate format data... " << std::endl;
         std::cout << " Reading from " << m_file_path << std::endl;
-        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols"
-                  << std::endl;
+        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols" << std::endl;
         std::cout << " Data: " << nnz << " directed edges" << std::endl;
-        if (remove_loops)
-            std::cout << " Opt: remove self-loops" << std::endl;
-        if (offset_indices)
-            std::cout << " Opt: offset indices by -1" << std::endl;
-        if (make_undirected)
-            std::cout << " Opt: double edges" << std::endl;
+        if (remove_loops) std::cout << " Opt: remove self-loops" << std::endl;
+        if (offset_indices) std::cout << " Opt: offset indices by -1" << std::endl;
+        if (make_undirected) std::cout << " Opt: double edges" << std::endl;
         std::cout << " Reading data: ";
 
         // optimized reading by sliding window
@@ -155,8 +143,7 @@ namespace spla {
 
                     if (buffer_offset > 0) {
                         if (buffer_offset < BUFFER_CAPACITY) {
-                            std::memcpy(buffer, buffer + buffer_offset,
-                                        BUFFER_CAPACITY - buffer_offset);
+                            std::memcpy(buffer, buffer + buffer_offset, BUFFER_CAPACITY - buffer_offset);
                         }
                         buffer_offset = BUFFER_CAPACITY - buffer_offset;
                     }
@@ -189,8 +176,7 @@ namespace spla {
             assert(i > 0 && j > 0);
 
             if (remove_loops) {
-                if (i == j)
-                    continue;
+                if (i == j) continue;
             }
             if (offset_indices) {
                 i -= 1;
@@ -303,18 +289,12 @@ namespace spla {
         t.stop();
 
         std::cout << " 100%" << std::endl;
-        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec " << n_lines
-                  << " lines"
-                  << " speed " << float(n_lines) / (t.get_laps_ms()[0] * 1e-3)
-                  << " lines/sec" << std::endl;
-        std::cout << " Sorted in " << t.get_laps_ms()[1] * 1e-3 << " sec " << n_sort
-                  << " lines" << std::endl;
-        std::cout << " Reduced in " << t.get_laps_ms()[2] * 1e-3 << " sec "
-                  << m_n_values << " lines" << std::endl;
-        std::cout << " Calc stats in " << t.get_laps_ms()[3] * 1e-3 << " sec"
-                  << std::endl;
-        std::cout << " Loaded in " << t.get_elapsed_ms() * 1e-3 << " sec, "
-                  << m_n_values << " edges total" << std::endl;
+        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec " << n_lines << " lines"
+                  << " speed " << float(n_lines) / (t.get_laps_ms()[0] * 1e-3) << " lines/sec" << std::endl;
+        std::cout << " Sorted in " << t.get_laps_ms()[1] * 1e-3 << " sec " << n_sort << " lines" << std::endl;
+        std::cout << " Reduced in " << t.get_laps_ms()[2] * 1e-3 << " sec " << m_n_values << " lines" << std::endl;
+        std::cout << " Calc stats in " << t.get_laps_ms()[3] * 1e-3 << " sec" << std::endl;
+        std::cout << " Loaded in " << t.get_elapsed_ms() * 1e-3 << " sec, " << m_n_values << " edges total" << std::endl;
 
         output_stats();
 
@@ -349,12 +329,10 @@ namespace spla {
         file << "% deg-distribution: \n";
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
-            file << "%  " << m_deg_ranges[i] << " " << m_deg_ranges[i + 1] << " "
-                 << m_deg_distribution[i] << "\n";
+            file << "%  " << m_deg_ranges[i] << " " << m_deg_ranges[i + 1] << " " << m_deg_distribution[i] << "\n";
         }
 
-        file << "%-------------------------------------------------------------------"
-                "------------\n";
+        file << "%-------------------------------------------------------------------------------\n";
         file << m_n_rows << " " << m_n_cols << " " << m_n_values << "\n";
 
         if (!stats_only) {
@@ -393,11 +371,9 @@ namespace spla {
         auto n = static_cast<double>(m_n_rows);
 
         m_deg_avg = m_deg_avg / n;
-        m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) /
-                              (n > 1.0 ? n - 1.0 : 1.0));
+        m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) / (n > 1.0 ? n - 1.0 : 1.0));
 
-        const uint GROUPS_COUNT_MAX =
-                std::max(uint(10), uint(std::log2(double(m_n_rows) * 0.77)));
+        const uint GROUPS_COUNT_MAX = std::max(uint(10), uint(std::log2(double(m_n_rows) * 0.77)));
 
         std::vector<uint> count_per_deg(static_cast<uint>(m_deg_max) + 2, 0);
         std::vector<uint> count_per_deg_offsets(static_cast<uint>(m_deg_max) + 2, 0);
@@ -406,27 +382,23 @@ namespace spla {
             count_per_deg[std::min(deg_pre_vertex[i], uint(m_deg_max))] += 1;
         }
 
-        std::exclusive_scan(count_per_deg.begin(), count_per_deg.end(),
-                            count_per_deg_offsets.begin(), 0);
+        std::exclusive_scan(count_per_deg.begin(), count_per_deg.end(), count_per_deg_offsets.begin(), 0);
         count_per_deg_offsets.back() += 1;
 
         std::vector<double> distributions;
         std::vector<uint>   ranges;
 
-        auto range = m_deg_max - m_deg_min;
-        auto groups_count =
-                std::max(std::min(GROUPS_COUNT_MAX, static_cast<uint>(range)), 1u);
-        auto g = static_cast<double>(groups_count);
+        auto range        = m_deg_max - m_deg_min;
+        auto groups_count = std::max(std::min(GROUPS_COUNT_MAX, static_cast<uint>(range)), 1u);
+        auto g            = static_cast<double>(groups_count);
 
         auto total = static_cast<double>(count_per_deg_offsets.back());
         auto from  = count_per_deg_offsets.begin();
 
         ranges.push_back(static_cast<uint>(m_deg_min));
         for (uint i = 0; i < groups_count; ++i) {
-            auto next = (from + 1 == count_per_deg_offsets.end()) ? from : from + 1;
-            auto to   = std::lower_bound(
-                    next, count_per_deg_offsets.end(),
-                    static_cast<uint>(total / g * static_cast<double>(i + 1)));
+            auto next      = (from + 1 == count_per_deg_offsets.end()) ? from : from + 1;
+            auto to        = std::lower_bound(next, count_per_deg_offsets.end(), static_cast<uint>(total / g * static_cast<double>(i + 1)));
             auto to_offset = std::distance(count_per_deg_offsets.begin(), to);
 
             assert(to != count_per_deg_offsets.end());
@@ -453,8 +425,7 @@ namespace spla {
         const auto default_precision{std::cout.precision()};
         const auto n_digits = static_cast<uint>(std::log10(n) + 1.0);
 
-        const double DISPLAY_DENSITY =
-                std::max(double(100), double(m_deg_distribution.size()));
+        const double DISPLAY_DENSITY = std::max(double(100), double(m_deg_distribution.size()));
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
             auto deg     = m_deg_distribution[i] >= 0.01 ? m_deg_distribution[i] : 0.0;
@@ -462,13 +433,9 @@ namespace spla {
             auto k_end   = m_deg_ranges[i + 1];
             auto k_count = std::round(static_cast<uint>(deg * DISPLAY_DENSITY));
 
-            std::cout << "  [" << std::setw(n_digits) << k_start << " - "
-                      << std::setw(n_digits) << k_end << "): ";
-            std::cout << std::setw(6) << std::setprecision(2) << deg * 100.0
-                      << std::setprecision(default_precision) << "% ";
-            for (uint s = 0; s < k_count; ++s) {
-                std::cout << "*";
-            }
+            std::cout << "  [" << std::setw(n_digits) << k_start << " - " << std::setw(n_digits) << k_end << "): ";
+            std::cout << std::setw(6) << std::setprecision(2) << deg * 100.0 << std::setprecision(default_precision) << "% ";
+            for (uint s = 0; s < k_count; ++s) { std::cout << "*"; }
             std::cout << std::endl;
         }
     }
@@ -477,8 +444,14 @@ namespace spla {
     const std::vector<uint>&  MtxLoader::get_Aj() const { return m_Aj; }
     const std::vector<float>& MtxLoader::get_Aw() const { return m_Aw; }
 
-    uint        MtxLoader::get_n_rows() const { return m_n_rows; }
-    uint        MtxLoader::get_n_cols() const { return m_n_cols; }
-    std::size_t MtxLoader::get_n_values() const { return m_n_values; }
+    uint MtxLoader::get_n_rows() const {
+        return m_n_rows;
+    }
+    uint MtxLoader::get_n_cols() const {
+        return m_n_cols;
+    }
+    std::size_t MtxLoader::get_n_values() const {
+        return m_n_values;
+    }
 
 }// namespace spla

@@ -1,35 +1,28 @@
 /**********************************************************************************/
-/* This file is part of spla project */
-/* https://github.com/SparseLinearAlgebra/spla */
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
 /**********************************************************************************/
-/* MIT License */
+/* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy
- */
-/* of this software and associated documentation files (the "Software"), to deal
- */
-/* in the Software without restriction, including without limitation the rights
- */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
-/* copies of the Software, and to permit persons to whom the Software is */
-/* furnished to do so, subject to the following conditions: */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and to permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in
- * all */
-/* copies or substantial portions of the Software. */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- */
-/* SOFTWARE. */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
 #ifndef SPLA_TVECTOR_HPP
@@ -54,16 +47,16 @@
 namespace spla {
 
     /**
- * @addtogroup internal
- * @{
- */
+     * @addtogroup internal
+     * @{
+     */
 
     /**
- * @class TVector
- * @brief Vector interface implementation with type information bound
- *
- * @tparam T Type of stored elements
- */
+     * @class TVector
+     * @brief Vector interface implementation with type information bound
+     *
+     * @tparam T Type of stored elements
+     */
     template<typename T>
     class TVector final : public Vector {
     public:
@@ -91,15 +84,12 @@ namespace spla {
         }
         Status fill_noize(uint seed) override;
         Status fill_with(const ref_ptr<Scalar>& value) override;
-        Status build(const ref_ptr<MemView>& keys,
-                     const ref_ptr<MemView>& values) override;
+        Status build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
         Status read(ref_ptr<MemView>& keys, ref_ptr<MemView>& values) override;
         Status clear() override;
 
         template<typename Decorator>
-        Decorator* get() {
-            return m_storage.template get<Decorator>();
-        }
+        Decorator* get() { return m_storage.template get<Decorator>(); }
 
         void validate_rw(FormatVector format);
         void validate_rwd(FormatVector format);
@@ -149,15 +139,10 @@ namespace spla {
         if (value) {
             m_storage.invalidate();
 
-            if constexpr (std::is_same<T, T_INT>::value)
-                m_storage.set_fill_value(value->as_int());
-            if constexpr (std::is_same<T, T_UINT>::value)
-                m_storage.set_fill_value(value->as_uint());
-            if constexpr (std::is_same<T, T_FLOAT>::value)
-                m_storage.set_fill_value(value->as_float());
-            if constexpr (std::is_same<T, T_PAIR>::value) {
-                m_storage.set_fill_value(value->as_pair());
-            }
+            if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
+            if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
+            if constexpr (std::is_same<T, T_FLOAT>::value) m_storage.set_fill_value(value->as_float());
+            if constexpr (std::is_same<T, T_PAIR>::value) m_storage.set_fill_value(value->as_pair());
 
             return Status::Ok;
         }
@@ -291,13 +276,11 @@ namespace spla {
 
         if constexpr (std::is_integral_v<T>) {
             std::uniform_int_distribution<T> dist;
-            for (auto& x : Ax)
-                x = dist(engine);
+            for (auto& x : Ax) x = dist(engine);
         }
         if constexpr (std::is_floating_point_v<T>) {
             std::uniform_real_distribution<T> dist;
-            for (auto& x : Ax)
-                x = dist(engine);
+            for (auto& x : Ax) x = dist(engine);
         }
 
         return Status::Ok;
@@ -308,15 +291,10 @@ namespace spla {
 
         T t = T();
 
-        if constexpr (std::is_same<T, T_INT>::value)
-            t = value->as_int();
-        if constexpr (std::is_same<T, T_UINT>::value)
-            t = value->as_uint();
-        if constexpr (std::is_same<T, T_FLOAT>::value)
-            t = value->as_float();
-        if constexpr (std::is_same<T, T_PAIR>::value) {
-            t = value->as_pair();
-        }
+        if constexpr (std::is_same<T, T_INT>::value) t = value->as_int();
+        if constexpr (std::is_same<T, T_UINT>::value) t = value->as_uint();
+        if constexpr (std::is_same<T, T_FLOAT>::value) t = value->as_float();
+        if constexpr (std::is_same<T, T_PAIR>::value) t = value->as_pair();
 
         validate_wd(FormatVector::CpuDense);
         auto& Ax = get<CpuDenseVec<T>>()->Ax;
@@ -326,8 +304,7 @@ namespace spla {
     }
 
     template<typename T>
-    Status TVector<T>::build(const ref_ptr<MemView>& keys,
-                             const ref_ptr<MemView>& values) {
+    Status TVector<T>::build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) {
         assert(keys);
         assert(values);
 
@@ -453,9 +430,9 @@ namespace spla {
     }
 
     /**
- * @}
- */
+     * @}
+     */
 
 }// namespace spla
 
-#endif// SPLA_TVECTOR_HPP
+#endif//SPLA_TVECTOR_HPP

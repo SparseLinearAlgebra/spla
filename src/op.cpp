@@ -1,35 +1,28 @@
 /**********************************************************************************/
-/* This file is part of spla project */
-/* https://github.com/SparseLinearAlgebra/spla */
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
 /**********************************************************************************/
-/* MIT License */
+/* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy
- */
-/* of this software and associated documentation files (the "Software"), to deal
- */
-/* in the Software without restriction, including without limitation the rights
- */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
-/* copies of the Software, and to permit persons to whom the Software is */
-/* furnished to do so, subject to the following conditions: */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and to permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in
- * all */
-/* copies or substantial portions of the Software. */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- */
-/* SOFTWARE. */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
 #include <core/top.hpp>
@@ -39,7 +32,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 
 namespace spla {
 
@@ -225,12 +217,9 @@ namespace spla {
         DECL_OP_BIN_S(DIV_UINT, DIV, T_UINT, { return a / b; });
         DECL_OP_BIN_S(DIV_FLOAT, DIV, T_FLOAT, { return a / b; });
 
-        DECL_OP_BIN_S(MINUS_POW2_INT, MINUS_POW2, T_INT,
-                      { return (a - b) * (a - b); });
-        DECL_OP_BIN_S(MINUS_POW2_UINT, MINUS_POW2, T_UINT,
-                      { return (a - b) * (a - b); });
-        DECL_OP_BIN_S(MINUS_POW2_FLOAT, MINUS_POW2, T_FLOAT,
-                      { return (a - b) * (a - b); });
+        DECL_OP_BIN_S(MINUS_POW2_INT, MINUS_POW2, T_INT, { return (a - b) * (a - b); });
+        DECL_OP_BIN_S(MINUS_POW2_UINT, MINUS_POW2, T_UINT, { return (a - b) * (a - b); });
+        DECL_OP_BIN_S(MINUS_POW2_FLOAT, MINUS_POW2, T_FLOAT, { return (a - b) * (a - b); });
 
         DECL_OP_BIN_S(FIRST_INT, FIRST, T_INT, { return a; });
         DECL_OP_BIN_S(FIRST_UINT, FIRST, T_UINT, { return a; });
@@ -322,34 +311,28 @@ namespace spla {
                 [](Pair a, Pair b) { return (a.vertex == b.vertex) && (a.weight == b.weight); });
     }
 
-    ref_ptr<OpUnary> OpUnary::make_int(std::string name, std::string code,
-                                       std::function<T_INT(T_INT)> function) {
+    ref_ptr<OpUnary> OpUnary::make_int(std::string name, std::string code, std::function<T_INT(T_INT)> function) {
         auto op      = make_ref<TOpUnary<T_INT, T_INT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
-    ref_ptr<OpUnary> OpUnary::make_uint(std::string name, std::string code,
-                                        std::function<T_UINT(T_UINT)> function) {
+    ref_ptr<OpUnary> OpUnary::make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT)> function) {
         auto op      = make_ref<TOpUnary<T_UINT, T_UINT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
-    ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code,
-                                         std::function<T_FLOAT(T_FLOAT)> function) {
+    ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function) {
         auto op      = make_ref<TOpUnary<T_FLOAT, T_FLOAT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
     ref_ptr<OpUnary> OpUnary::make_pair(std::string name, std::string code,
@@ -358,58 +341,44 @@ namespace spla {
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
         return op.as<OpUnary>();
     }
 
-    ref_ptr<OpBinary>
-    OpBinary::make_int(std::string name, std::string code,
-                       std::function<T_INT(T_INT, T_INT)> function) {
+    ref_ptr<OpBinary> OpBinary::make_int(std::string name, std::string code, std::function<T_INT(T_INT, T_INT)> function) {
         auto op      = make_ref<TOpBinary<T_INT, T_INT, T_INT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
-    ref_ptr<OpBinary>
-    OpBinary::make_uint(std::string name, std::string code,
-                        std::function<T_UINT(T_UINT, T_UINT)> function) {
+    ref_ptr<OpBinary> OpBinary::make_uint(std::string name, std::string code, std::function<T_UINT(T_UINT, T_UINT)> function) {
         auto op      = make_ref<TOpBinary<T_UINT, T_UINT, T_UINT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
-    ref_ptr<OpBinary>
-    OpBinary::make_float(std::string name, std::string code,
-                         std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function) {
+    ref_ptr<OpBinary> OpBinary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT, T_FLOAT)> function) {
         auto op      = make_ref<TOpBinary<T_FLOAT, T_FLOAT, T_FLOAT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
-    ref_ptr<OpBinary>
-    OpBinary::make_pair(std::string name, std::string code,
-                        std::function<T_PAIR(T_PAIR, T_PAIR)> function) {
+    ref_ptr<OpBinary> OpBinary::make_pair(std::string name, std::string code, std::function<T_PAIR(T_PAIR, T_PAIR)> function) {
         auto op      = make_ref<TOpBinary<T_PAIR, T_PAIR, T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
-        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() +
-                       op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
 
-    ref_ptr<OpSelect> OpSelect::make_int(std::string name, std::string code,
-                                         std::function<bool(T_INT)> function) {
+    ref_ptr<OpSelect> OpSelect::make_int(std::string name, std::string code, std::function<bool(T_INT)> function) {
         auto op      = make_ref<TOpSelect<T_INT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
@@ -417,8 +386,7 @@ namespace spla {
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
         return op.as<OpSelect>();
     }
-    ref_ptr<OpSelect> OpSelect::make_uint(std::string name, std::string code,
-                                          std::function<bool(T_UINT)> function) {
+    ref_ptr<OpSelect> OpSelect::make_uint(std::string name, std::string code, std::function<bool(T_UINT)> function) {
         auto op      = make_ref<TOpSelect<T_UINT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
@@ -426,8 +394,7 @@ namespace spla {
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
         return op.as<OpSelect>();
     }
-    ref_ptr<OpSelect> OpSelect::make_float(std::string name, std::string code,
-                                           std::function<bool(T_FLOAT)> function) {
+    ref_ptr<OpSelect> OpSelect::make_float(std::string name, std::string code, std::function<bool(T_FLOAT)> function) {
         auto op      = make_ref<TOpSelect<T_FLOAT>>();
         op->name     = std::move(name);
         op->function = std::move(function);
@@ -435,8 +402,7 @@ namespace spla {
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
         return op.as<OpSelect>();
     }
-    ref_ptr<OpSelect> OpSelect::make_pair(std::string name, std::string code,
-                                          std::function<bool(T_PAIR)> function) {
+    ref_ptr<OpSelect> OpSelect::make_pair(std::string name, std::string code, std::function<bool(T_PAIR)> function) {
         auto op      = make_ref<TOpSelect<T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);

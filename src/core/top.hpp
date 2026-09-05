@@ -43,7 +43,7 @@ namespace spla {
     {                                                       \
         auto func = make_ref<TOpUnary<A0, R>>();            \
                                                             \
-        func->function = [](A0 a)->R __VA_ARGS__;           \
+        func->function = [](A0 a) -> R __VA_ARGS__;         \
         func->name     = #fname;                            \
                                                             \
         std::stringstream source_builder;                   \
@@ -69,7 +69,7 @@ namespace spla {
     {                                                       \
         auto func = make_ref<TOpBinary<A0, A1, R>>();       \
                                                             \
-        func->function = [](A0 a, A1 b)->R __VA_ARGS__;     \
+        func->function = [](A0 a, A1 b) -> R __VA_ARGS__;   \
         func->name     = #fname;                            \
                                                             \
         std::stringstream source_builder;                   \
@@ -98,7 +98,7 @@ namespace spla {
     {                                                       \
         auto func = make_ref<TOpSelect<A0>>();              \
                                                             \
-        func->function = [](A0 a)->bool __VA_ARGS__;        \
+        func->function = [](A0 a) -> bool __VA_ARGS__;      \
         func->name     = #fname;                            \
                                                             \
         std::stringstream source_builder;                   \

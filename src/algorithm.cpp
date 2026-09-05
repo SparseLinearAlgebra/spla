@@ -1,35 +1,28 @@
 /**********************************************************************************/
-/* This file is part of spla project */
-/* https://github.com/SparseLinearAlgebra/spla */
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
 /**********************************************************************************/
-/* MIT License */
+/* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
 /*                                                                                */
-/* Permission is hereby granted, free of charge, to any person obtaining a copy
- */
-/* of this software and associated documentation files (the "Software"), to deal
- */
-/* in the Software without restriction, including without limitation the rights
- */
-/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell */
-/* copies of the Software, and to permit persons to whom the Software is */
-/* furnished to do so, subject to the following conditions: */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and to permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
 /*                                                                                */
-/* The above copyright notice and this permission notice shall be included in
- * all */
-/* copies or substantial portions of the Software. */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
 /*                                                                                */
-/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR */
-/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, */
-/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- */
-/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER */
-/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- */
-/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- */
-/* SOFTWARE. */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
 #include <spla/algorithm.hpp>
@@ -53,7 +46,9 @@ namespace spla {
 
 #pragma region Bfs
 
-    Status bfs(const ref_ptr<Vector>& v, const ref_ptr<Matrix>& A, uint s,
+    Status bfs(const ref_ptr<Vector>&     v,
+               const ref_ptr<Matrix>&     A,
+               uint                       s,
                const ref_ptr<Descriptor>& descriptor) {
         assert(v);
         assert(A);
@@ -80,17 +75,13 @@ namespace spla {
         bool  push_pull    = descriptor->get_push_pull();
         float front_factor = descriptor->get_front_factor();
 
-        if (!(push || pull || push_pull))
-            push = true;
+        if (!(push || pull || push_pull)) push = true;
 
 #ifndef SPLA_RELEASE
         std::string mode;
-        if (push_pull)
-            mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
-        if (pull)
-            mode = "(pull)";
-        if (push)
-            mode = "(push)";
+        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
+        if (pull) mode = "(pull)";
+        if (push) mode = "(push)";
 
         std::cout << "start bfs from " << s << " " << mode << std::endl;
 
@@ -107,19 +98,17 @@ namespace spla {
             bool  is_push_better = (front_density <= front_factor);
 
             if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT,
-                                EQZERO_INT, zero, desc);
+                exec_vxm_masked(frontier_new, v, frontier_prev, A, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             } else {
-                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT,
-                                EQZERO_INT, zero, desc);
+                exec_mxv_masked(frontier_new, v, A, frontier_prev, BAND_INT, BOR_INT, EQZERO_INT, zero, desc);
             }
 
             exec_v_count_mf(frontier_size, frontier_new);
 
 #ifndef SPLA_RELEASE
             tight.stop();
-            std::cout << " - iter " << current_level << " front "
-                      << frontier_size->as_int() << " discovered " << discovered << " "
+            std::cout << " - iter " << current_level
+                      << " front " << frontier_size->as_int() << " discovered " << discovered << " "
                       << tight.get_elapsed_ms() << " ms" << std::endl;
             Library::get()->time_profile_dump();
             Library::get()->time_profile_reset();
@@ -134,8 +123,10 @@ namespace spla {
         return Status::Ok;
     }
 
-    Status bfs_naive(std::vector<int>& v, std::vector<std::vector<spla::uint>>& A,
-                     uint s, const ref_ptr<Descriptor>& descriptor) {
+    Status bfs_naive(std::vector<int>&                     v,
+                     std::vector<std::vector<spla::uint>>& A,
+                     uint                                  s,
+                     const ref_ptr<Descriptor>&            descriptor) {
 
         const auto N = v.size();
 
@@ -168,7 +159,9 @@ namespace spla {
 
 #pragma region Sssp
 
-    Status sssp(const ref_ptr<Vector>& v, const ref_ptr<Matrix>& A, uint s,
+    Status sssp(const ref_ptr<Vector>&     v,
+                const ref_ptr<Matrix>&     A,
+                uint                       s,
                 const ref_ptr<Descriptor>& descriptor) {
         assert(v);
         assert(A);
@@ -196,17 +189,13 @@ namespace spla {
         bool  push_pull    = descriptor->get_push_pull();
         float front_factor = descriptor->get_front_factor();
 
-        if (!(push || pull || push_pull))
-            push = true;
+        if (!(push || pull || push_pull)) push = true;
 
 #ifndef SPLA_RELEASE
         std::string mode;
-        if (push_pull)
-            mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
-        if (pull)
-            mode = "(pull)";
-        if (push)
-            mode = "(push)";
+        if (push_pull) mode = "(push_pull " + std::to_string(front_factor * 100.0f) + "%)";
+        if (pull) mode = "(pull)";
+        if (push) mode = "(push)";
 
         std::cout << "start sssp from " << s << " " << mode << std::endl;
 
@@ -220,11 +209,9 @@ namespace spla {
             bool  is_push_better = (front_density <= front_factor);
 
             if (push || (push_pull && is_push_better)) {
-                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT,
-                                ALWAYS_FLOAT, inf_init);
+                exec_vxm_masked(frontier, dummy_mask, feedback, A, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
             } else {
-                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT,
-                                ALWAYS_FLOAT, inf_init);
+                exec_mxv_masked(frontier, dummy_mask, A, feedback, PLUS_FLOAT, MIN_FLOAT, ALWAYS_FLOAT, inf_init);
             }
 
             exec_v_eadd_fdb(v, frontier, feedback, MIN_FLOAT);
@@ -232,9 +219,9 @@ namespace spla {
 
 #ifndef SPLA_RELEASE
             tight.stop();
-            std::cout << " - iter " << current_level << " feed "
-                      << feedback_size->as_int() << " " << tight.get_elapsed_ms()
-                      << " ms" << std::endl;
+            std::cout << " - iter " << current_level
+                      << " feed " << feedback_size->as_int()
+                      << " " << tight.get_elapsed_ms() << " ms" << std::endl;
             Library::get()->time_profile_dump();
             Library::get()->time_profile_reset();
 #endif
@@ -245,9 +232,11 @@ namespace spla {
         return Status::Ok;
     }
 
-    Status sssp_naive(std::vector<float>& v, std::vector<std::vector<uint>>& Ai,
-                      std::vector<std::vector<float>>& Ax, uint s,
-                      const ref_ptr<Descriptor>& descriptor) {
+    Status sssp_naive(std::vector<float>&              v,
+                      std::vector<std::vector<uint>>&  Ai,
+                      std::vector<std::vector<float>>& Ax,
+                      uint                             s,
+                      const ref_ptr<Descriptor>&       descriptor) {
 
         const auto N   = v.size();
         const auto inf = std::numeric_limits<float>::max();
@@ -290,7 +279,10 @@ namespace spla {
 
 #pragma region Pr
 
-    Status pr(ref_ptr<Vector>& p, const ref_ptr<Matrix>& A, float alpha, float eps,
+    Status pr(ref_ptr<Vector>&           p,
+              const ref_ptr<Matrix>&     A,
+              float                      alpha,
+              float                      eps,
               const ref_ptr<Descriptor>& descriptor) {
         assert(p);
         assert(A);
@@ -321,8 +313,7 @@ namespace spla {
             tight.start();
 #endif
             // p = A*p + (1-alpha)/N
-            exec_mxv_masked(p_tmp, dummy_mask, A, p_prev, MULT_FLOAT, PLUS_FLOAT,
-                            ALWAYS_FLOAT, zero);
+            exec_mxv_masked(p_tmp, dummy_mask, A, p_prev, MULT_FLOAT, PLUS_FLOAT, ALWAYS_FLOAT, zero);
             exec_v_eadd(p, p_tmp, addition, PLUS_FLOAT);
 
             // error = sqrt((p[01]-prev[0])^2 + ... + p[N-1]-prev[N-1])^2)
@@ -335,8 +326,9 @@ namespace spla {
 
 #ifndef SPLA_RELEASE
             tight.stop();
-            std::cout << " - iter " << iter++ << " error " << error << " "
-                      << tight.get_elapsed_ms() << " ms" << std::endl;
+            std::cout << " - iter " << iter++
+                      << " error " << error
+                      << " " << tight.get_elapsed_ms() << " ms" << std::endl;
             Library::get()->time_profile_dump();
             Library::get()->time_profile_reset();
 #endif
@@ -346,9 +338,12 @@ namespace spla {
         return Status::Ok;
     }
 
-    Status pr_naive(std::vector<float>& p, std::vector<std::vector<uint>>& Ai,
-                    std::vector<std::vector<float>>& Ax, float alpha, float eps,
-                    const ref_ptr<Descriptor>& descriptor) {
+    Status pr_naive(std::vector<float>&              p,
+                    std::vector<std::vector<uint>>&  Ai,
+                    std::vector<std::vector<float>>& Ax,
+                    float                            alpha,
+                    float                            eps,
+                    const ref_ptr<Descriptor>&       descriptor) {
 
         const auto N = p.size();
 
@@ -386,8 +381,11 @@ namespace spla {
 
 #pragma region Tc
 
-    Status tc(int& ntrins, const ref_ptr<Matrix>& A, const ref_ptr<Matrix>& B,
-              const ref_ptr<Descriptor>& descriptor) {
+    Status tc(
+            int&                       ntrins,
+            const ref_ptr<Matrix>&     A,
+            const ref_ptr<Matrix>&     B,
+            const ref_ptr<Descriptor>& descriptor) {
         assert(A);
         assert(B);
 
@@ -409,8 +407,8 @@ namespace spla {
 #ifndef SPLA_RELEASE
         tight.stop();
 
-        std::cout << " - ntrins " << ntrins << " " << tight.get_elapsed_ms() << " ms"
-                  << std::endl;
+        std::cout << " - ntrins " << ntrins
+                  << " " << tight.get_elapsed_ms() << " ms" << std::endl;
 
         Library::get()->time_profile_dump();
         Library::get()->time_profile_reset();
@@ -419,8 +417,10 @@ namespace spla {
         return Status::Ok;
     }
 
-    Status tc_naive(int& ntrins, std::vector<std::vector<spla::uint>>& Ai,
-                    const ref_ptr<Descriptor>& descriptor) {
+    Status tc_naive(
+            int&                                  ntrins,
+            std::vector<std::vector<spla::uint>>& Ai,
+            const ref_ptr<Descriptor>&            descriptor) {
 
         ntrins = 0;
 
