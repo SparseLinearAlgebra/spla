@@ -140,14 +140,10 @@ namespace spla {
         if (value) {
             m_storage.invalidate();
 
-            if constexpr (std::is_same<T, T_INT>::value)
-                m_storage.set_fill_value(value->as_int());
-            if constexpr (std::is_same<T, T_UINT>::value)
-                m_storage.set_fill_value(value->as_uint());
-            if constexpr (std::is_same<T, T_FLOAT>::value)
-                m_storage.set_fill_value(value->as_float());
-            if constexpr (std::is_same<T, T_PAIR>::value)
-                m_storage.set_fill_value(value->as_pair());
+            if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
+            if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
+            if constexpr (std::is_same<T, T_FLOAT>::value) m_storage.set_fill_value(value->as_float());
+            if constexpr (std::is_same<T, T_PAIR>::value) m_storage.set_fill_value(value->as_pair());
 
             return Status::Ok;
         }
@@ -259,9 +255,7 @@ namespace spla {
     }
 
     template<typename T>
-    Status TMatrix<T>::build(const ref_ptr<MemView>& keys1,
-                             const ref_ptr<MemView>& keys2,
-                             const ref_ptr<MemView>& values) {
+    Status TMatrix<T>::build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) {
         assert(keys1);
         assert(keys2);
         assert(values);
