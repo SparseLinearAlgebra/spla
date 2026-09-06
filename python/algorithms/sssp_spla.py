@@ -2,19 +2,20 @@ import math
 from pyspla import FLOAT, Matrix, Scalar, Vector
 
 INF = math.inf
-EPS = 1e-12
+def has_changed(prev: Vector, new: Vector):
+    _prev_idx, prev_vals = prev.to_lists()
+    _new_idx, new_vals = new.to_lists()
+    if prev_vals != new_vals:
+        return True
+    return False
 
 def clone_vector(v: Vector):
     idx, vals = v.to_lists()
     return Vector.from_lists(idx, vals, v.n_rows, v.dtype)
 
-def is_converged(old, new, eps=EPS):
-    diff = old.eadd(FLOAT.MINUS_POW2, new)
-    error2 = diff.reduce(FLOAT.PLUS)
-    error = math.sqrt(error2.get())
-    return error < eps
 
-def sssp(start: int, A: Matrix, eps=EPS):
+
+def sssp(start: int, A: Matrix):
     n = A.n_rows
     dist = Vector.dense(n, FLOAT, INF)
     dist.set(start, 0.0)
@@ -31,6 +32,6 @@ def sssp(start: int, A: Matrix, eps=EPS):
             init=init_inf
         )
         dist = dist.eadd(FLOAT.MIN, new)
-        if is_converged(prev, dist, eps):
+        if not has_changed(prev, dist):
             break
     return dist
