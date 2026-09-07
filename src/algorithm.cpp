@@ -617,6 +617,19 @@ namespace spla {
 
                     if (min_vertex == -1 || min_weight >= INF)
                         continue;
+
+                    spla::T_PAIR target_comp;
+                    parent->get_pair(min_vertex, target_comp);
+                    int comp_j = target_comp.vertex;
+
+                    spla::T_PAIR my_comp;
+                    parent->get_pair(i, my_comp);
+                    int comp_i = my_comp.vertex;
+
+                    if (comp_j >= comp_i) {
+                        continue;
+                    }
+
                     T->set_float(i, min_vertex, min_weight);
                     T->set_float(min_vertex, i, min_weight);
                     edges_added_this_iteration++;
