@@ -453,16 +453,16 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) masked scalar assignment to a vector
+     * @brief Execute (schedule) masked scalar assignment to a vector using binary selection
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param r Vector result to store assigned values
-     * @param mask Vector mask to chose where to assign
+     * @param mask Vector mask to choose where to assign
+     * @param mask_value Scalar value to compare with mask elements
      * @param value Scalar value to assign
-     * @param mask_value Scalar value to select
-     * @param op_assign Binary op to assign values
-     * @param op_select_bin Select op to chose values for assignment
+     * @param op_assign Binary operator to assign values
+     * @param op_select_bin Binary select operator to choose values for assignment
      * @param desc Scheduled task descriptor; default is null
      * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
@@ -479,15 +479,15 @@ namespace spla {
             ref_ptr<ScheduleTask>*  task_hnd = nullptr);
 
     /**
-     * @brief Execute (schedule) masked scalar assignment to a matrix
+     * @brief Execute (schedule) masked scalar assignment to a matrix using binary selection
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
      *
      * @param r Matrix result to store assigned values
-     * @param mask Vector mask to chose where to assign
+     * @param mask Vector mask rows to choose where to assign
      * @param value Scalar value to assign
-     * @param op_assign Binary op to assign values
-     * @param op_select_bin Select op to chose values for assignment
+     * @param op_assign Binary operator to assign values
+     * @param op_select_bin Binary select operator to choose values for assignment
      * @param desc Scheduled task descriptor; default is null
      * @param task_hnd Optional task hnd; pass not-null pointer to store task
      *
