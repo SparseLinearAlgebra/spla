@@ -17,7 +17,7 @@
 
 ### Решение
 
-Используйте следующую конфигурацию прямо в коде. Скорее всего эти параметры вам подойдут.
+Используйте следующую конфигурацию в коде. Скорее всего эти параметры вам подойдут.
 
 ```cpp
 #include <spla.hpp>
@@ -27,8 +27,9 @@ int main(int argc, char* argv[]) {
   cfg.platform = 0;
   cfg.device = 0;
   cfg.queues = 1;
-  cfg.verbosity = 1;
+  cfg.prifiling = false;
   cfg.allocator = "general";
+  cfg.verbosity = 1;
     
   init();
     
@@ -49,7 +50,7 @@ int main(int argc, char* argv[]) {
 export SPLA_PLATFORM=0
 export SPLA_DEVICE=0
 export SPLA_QUEUES=1
-export SPLA_PROFILING=true
+export SPLA_PROFILING=false
 export SPLA_ALLOCATOR=general
 export SPLA_VERBOSITY=1
 ```
@@ -76,7 +77,7 @@ export SPLA_VERBOSITY=1
 export SPLA_PLATFORM=0
 export SPLA_DEVICE=0
 export SPLA_QUEUES=2
-export SPLA_PROFILING=true
+export SPLA_PROFILING=false
 export SPLA_ALLOCATOR=general
 export SPLA_VERBOSITY=1
 ```
@@ -90,7 +91,7 @@ export SPLA_VERBOSITY=1
   "platform": 0,
   "device": 0,
   "queues": 2,
-  "profiling": true,
+  "profiling": false,
   "allocator": "general",
   "verbosity": 1
 }
@@ -100,7 +101,7 @@ export SPLA_VERBOSITY=1
 
 ## <a id="scenario4"></a> Сравнение производительности на различных устройствах
 
-Вы хотите выбрать лучшее устройство для вашей задачи, сравнить производительность CPU vs GPU, разных GPU, разных аллокаторов.
+Вы хотите выбрать лучшее устройство для вашей задачи, сравнить производительность CPU, GPU, разных GPU, разных аллокаторов.
 
 ### РЕШЕНИЕ
 
