@@ -477,8 +477,7 @@ namespace spla {
         auto   init_inf = Scalar::make(PAIR);
         T_PAIR init_val;
         init_inf->set_pair(init_val);
-        int  iteration = 0;
-        auto new_S     = S;
+        int iteration = 0;
 #ifdef SPLA_RELEASE
         std::cout << "start Boruvka MST, vertices = " << n << "\n";
         Timer tight;
