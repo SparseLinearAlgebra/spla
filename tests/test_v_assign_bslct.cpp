@@ -92,4 +92,95 @@ TEST(v_assign_bslct, assign_int) {
     }
 }
 
+TEST(v_assign_bslct, all_match) {
+    int32_t n      = 3;
+    auto    vector = spla::Vector::make(n, spla::INT);
+    vector->set_int(0, 10);
+    vector->set_int(1, 20);
+    vector->set_int(2, 30);
+
+    auto mask = spla::Vector::make(n, spla::INT);
+    mask->set_int(0, 5);
+    mask->set_int(1, 5);
+    mask->set_int(2, 5);
+
+    auto assign_scalar = spla::Scalar::make(spla::INT);
+    assign_scalar->set_int(777);
+    auto mask_scalar = spla::Scalar::make(spla::INT);
+    mask_scalar->set_int(5);
+
+    spla::exec_v_assign_bslct_masked(vector, mask, mask_scalar, assign_scalar, spla::SECOND_INT, spla::EQ_INT);
+
+    spla::T_INT expected[] = {spla::T_INT(777), spla::T_INT(777), spla::T_INT(777)};
+    for (int32_t i = 0; i < n; i++) {
+        spla::T_INT num;
+        vector->get_int(i, num);
+        EXPECT_EQ(num, expected[i]);
+    }
+}
+
+TEST(v_assign_bslct, assign_int_empty_mask) {
+    int32_t n = 4;
+
+    auto vector = spla::Vector::make(n, spla::INT);
+    vector->set_int(0, spla::T_INT(1));
+    vector->set_int(1, spla::T_INT(4));
+    vector->set_int(2, spla::T_INT(5));
+    vector->set_int(3, spla::T_INT(9));
+
+    auto mask = spla::Vector::make(n, spla::INT);
+
+    auto assign_scalar = spla::Scalar::make(spla::INT);
+    assign_scalar->set_int(spla::T_INT(100));
+    auto mask_scalar = spla::Scalar::make(spla::INT);
+    mask_scalar->set_int(spla::T_INT(3));
+
+    spla::exec_v_assign_bslct_masked(vector, mask, mask_scalar, assign_scalar, spla::SECOND_INT, spla::EQ_INT);
+
+    spla::T_INT expected[] = {spla::T_INT(1), spla::T_INT(4),
+                              spla::T_INT(5), spla::T_INT(9)};
+    for (int32_t i = 0; i < n; i++) {
+        spla::T_INT num;
+        vector->get_int(i, num);
+        EXPECT_EQ(num, expected[i]);
+    }
+}
+
+TEST(v_assign_bslct, assign_int_sparse_mask_our) {
+    int32_t n = 5;
+
+    auto vector = spla::Vector::make(n, spla::INT);
+    vector->set_int(0, spla::T_INT(10));
+    vector->set_int(1, spla::T_INT(20));
+    vector->set_int(2, spla::T_INT(30));
+    vector->set_int(3, spla::T_INT(40));
+    vector->set_int(4, spla::T_INT(50));
+
+
+    auto mask = spla::Vector::make(n, spla::INT);
+    mask->set_int(1, spla::T_INT(3));
+    mask->set_int(3, spla::T_INT(3));
+
+    auto assign_scalar = spla::Scalar::make(spla::INT);
+    assign_scalar->set_int(spla::T_INT(999));
+
+    auto mask_scalar = spla::Scalar::make(spla::INT);
+    mask_scalar->set_int(spla::T_INT(3));
+
+    spla::exec_v_assign_bslct_masked(vector, mask, mask_scalar, assign_scalar, spla::SECOND_INT, spla::EQ_INT);
+
+    spla::T_INT expected[] = {
+            spla::T_INT(10),
+            spla::T_INT(999),
+            spla::T_INT(30),
+            spla::T_INT(999),
+            spla::T_INT(50)};
+
+    for (int32_t i = 0; i < n; i++) {
+        spla::T_INT num;
+        vector->get_int(i, num);
+        EXPECT_EQ(num, expected[i]);
+    }
+}
+
 SPLA_GTEST_MAIN
