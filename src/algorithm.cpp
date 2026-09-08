@@ -604,7 +604,7 @@ namespace spla {
 
                     auto row = spla::Vector::make(n, spla::PAIR);
                     spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
-                    spla::exec_v_assign_bslct_masked(row, parent, init_inf, parent_i, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
+                    spla::exec_v_assign_bslct_masked(row, parent, parent_i, init_inf, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
 
                     auto         min_edge_scalar = spla::Scalar::make(spla::PAIR);
                     spla::T_PAIR min_edge_pair;
