@@ -634,11 +634,9 @@ namespace spla {
                 if (i < min_vertex) {
                     new_parent->get_pair(i, p);
                     new_parent->get_pair(min_vertex, old_p);
-                    new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
                 } else {
                     new_parent->get_pair(min_vertex, p);
                     new_parent->get_pair(i, old_p);
-                    new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
                 }
                 for (int k = 0; k < n; k++) {
                     spla::T_PAIR p1;
