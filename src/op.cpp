@@ -125,6 +125,7 @@ namespace spla {
 
     ref_ptr<OpBinary> MIN_PAIR;
     ref_ptr<OpBinary> MUL_PAIR;
+    ref_ptr<OpBinary> FIRST_PAIR;
     ref_ptr<OpBinary> SECOND_PAIR;
 
     //////////////////////////////////////////////////////////////////////////////
@@ -133,6 +134,7 @@ namespace spla {
     ref_ptr<OpSelect> EQZERO_UINT;
     ref_ptr<OpSelect> EQZERO_FLOAT;
     ref_ptr<OpSelect> NQZERO_INT;
+    ref_ptr<OpSelect> NQZERO_PAIR;
     ref_ptr<OpSelect> NQZERO_UINT;
     ref_ptr<OpSelect> NQZERO_FLOAT;
     ref_ptr<OpSelect> GTZERO_INT;
@@ -265,10 +267,13 @@ namespace spla {
                     return a.weight < b.weight ? a : b;
                 });
 
+        FIRST_PAIR = OpBinary::make_pair(
+                "FIRST_PAIR", "(TYPE a, TYPE b) { return a; }",
+                [](Pair a, Pair b) { return a; });
+
         SECOND_PAIR = OpBinary::make_pair(
                 "SECOND_PAIR", "(struct Pair a, struct Pair b) { return b; }",
                 [](Pair a, Pair b) { return b; });
-
 
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
@@ -294,6 +299,11 @@ namespace spla {
         ALWAYS_PAIR = OpSelect::make_pair(
                 "ALWAYS_PAIR", "(struct Pair a) { return pair_always(a); }",
                 [](Pair a) { return 1; });
+
+        NQZERO_PAIR = OpSelect::make_pair(
+                "NQZERO_PAIR", "(struct Pair a) { return a.vertex != 0; }",
+                [](Pair a) { return a.vertex != 0; });
+
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });

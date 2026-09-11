@@ -592,64 +592,59 @@ namespace spla {
                 parent->get_pair(i, p);
                 new_parent->set_pair(i, p);
             }
+
+            auto roots_mask = spla::Vector::make(n, spla::PAIR);
             for (int32_t i = 0; i < n; i++) {
                 spla::T_INT ind_v;
                 index->get_int(i, ind_v);
-                if (i == ind_v) {
-                    auto         parent_i = spla::Scalar::make(spla::PAIR);
+                roots_mask->set_pair(i, spla::T_PAIR(0.0f, (i == ind_v) ? 1 : 0));
+            }
+
+            auto row = spla::Vector::make(n, spla::PAIR);
+            spla::exec_mxv_masked(row, roots_mask, S, parent, spla::FIRST_PAIR, spla::MIN_PAIR,
+                                  spla::NQZERO_PAIR, init_inf);
+
+            for (int32_t i = 0; i < n; i++) {
+                spla::T_INT ind_v;
+                index->get_int(i, ind_v);
+                if (i != ind_v) continue;
+
+                spla::T_PAIR min_edge_pair;
+                row->get_pair(i, min_edge_pair);
+                int   min_vertex = min_edge_pair.vertex;
+                float min_weight = min_edge_pair.weight;
+
+                if (min_vertex == -1 || min_weight >= INF) continue;
+
+                spla::T_PAIR target_comp;
+                parent->get_pair(min_vertex, target_comp);
+                int comp_j = target_comp.vertex;
+
+                spla::T_PAIR my_comp;
+                parent->get_pair(i, my_comp);
+                int comp_i = my_comp.vertex;
+
+                if (comp_j >= comp_i) continue;
+
+                T->set_float(i, min_vertex, min_weight);
+                T->set_float(min_vertex, i, min_weight);
+                edges_added_this_iteration++;
+
+                spla::T_PAIR p, old_p;
+                if (i < min_vertex) {
+                    new_parent->get_pair(i, p);
+                    new_parent->get_pair(min_vertex, old_p);
+                    new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
+                } else {
+                    new_parent->get_pair(min_vertex, p);
+                    new_parent->get_pair(i, old_p);
+                    new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
+                }
+                for (int k = 0; k < n; k++) {
                     spla::T_PAIR p1;
-                    parent->get_pair(i, p1);
-                    parent_i->set_pair(p1);
-
-                    auto row = spla::Vector::make(n, spla::PAIR);
-                    spla::exec_m_extract_row(row, S, i, spla::IDENTITY_PAIR);
-                    spla::exec_v_assign_bslct_masked(row, parent, parent_i, init_inf, spla::SECOND_PAIR, spla::EQVERTEX_PAIR);
-
-                    auto         min_edge_scalar = spla::Scalar::make(spla::PAIR);
-                    spla::T_PAIR min_edge_pair;
-
-                    spla::exec_v_reduce(min_edge_scalar, init_inf, row, spla::MIN_PAIR);
-
-                    min_edge_scalar->get_pair(min_edge_pair);
-                    int   min_vertex = min_edge_pair.vertex;
-                    float min_weight = min_edge_pair.weight;
-
-                    if (min_vertex == -1 || min_weight >= INF)
-                        continue;
-
-                    spla::T_PAIR target_comp;
-                    parent->get_pair(min_vertex, target_comp);
-                    int comp_j = target_comp.vertex;
-
-                    spla::T_PAIR my_comp;
-                    parent->get_pair(i, my_comp);
-                    int comp_i = my_comp.vertex;
-
-                    if (comp_j >= comp_i) {
-                        continue;
-                    }
-
-                    T->set_float(i, min_vertex, min_weight);
-                    T->set_float(min_vertex, i, min_weight);
-                    edges_added_this_iteration++;
-
-                    spla::T_PAIR p;
-                    spla::T_PAIR old_p;
-                    if (i < min_vertex) {
-                        new_parent->get_pair(i, p);
-                        new_parent->get_pair(min_vertex, old_p);
-                        new_parent->set_pair(min_vertex, spla::T_PAIR(0.0f, p.vertex));
-                    } else {
-                        new_parent->get_pair(min_vertex, p);
-                        new_parent->get_pair(i, old_p);
-                        new_parent->set_pair(i, spla::T_PAIR(0.0f, p.vertex));
-                    }
-                    for (int k = 0; k < n; k++) {
-                        spla::T_PAIR p1;
-                        new_parent->get_pair(k, p1);
-                        if (p1.vertex == old_p.vertex)
-                            new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
-                    }
+                    new_parent->get_pair(k, p1);
+                    if (p1.vertex == old_p.vertex)
+                        new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
                 }
             }
             parent = new_parent;
