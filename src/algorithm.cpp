@@ -593,15 +593,15 @@ namespace spla {
                 new_parent->set_pair(i, p);
             }
 
-            auto roots_mask = spla::Vector::make(n, spla::PAIR);
+            auto index_mask = spla::Vector::make(n, spla::PAIR);
             for (int32_t i = 0; i < n; i++) {
                 spla::T_INT ind_v;
                 index->get_int(i, ind_v);
-                roots_mask->set_pair(i, spla::T_PAIR(0.0f, (i == ind_v) ? 1 : 0));
+                index_mask->set_pair(i, spla::T_PAIR(0.0f, (i == ind_v) ? 1 : 0));
             }
 
             auto row = spla::Vector::make(n, spla::PAIR);
-            spla::exec_mxv_masked(row, roots_mask, S, parent, spla::FIRST_PAIR, spla::MIN_PAIR,
+            spla::exec_mxv_masked(row, index_mask, S, parent, spla::FIRST_PAIR, spla::MIN_PAIR,
                                   spla::NQZERO_PAIR, init_inf);
 
             for (int32_t i = 0; i < n; i++) {
