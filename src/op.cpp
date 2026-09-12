@@ -28,6 +28,7 @@
 #include <core/top.hpp>
 
 #include "spla/op.hpp"
+#include "spla/pair.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -69,6 +70,7 @@ namespace spla {
     ref_ptr<OpUnary> FLOOR_FLOAT;
     ref_ptr<OpUnary> ROUND_FLOAT;
     ref_ptr<OpUnary> TRUNC_FLOAT;
+    ref_ptr<OpUnary> IDENTITY_PAIR;
 
     //////////////////////////////////////////////////////////////////////////////
 
@@ -121,12 +123,18 @@ namespace spla {
     ref_ptr<OpBinary> BXOR_INT;
     ref_ptr<OpBinary> BXOR_UINT;
 
+    ref_ptr<OpBinary> MIN_PAIR;
+    ref_ptr<OpBinary> MUL_PAIR;
+    ref_ptr<OpBinary> FIRST_PAIR;
+    ref_ptr<OpBinary> SECOND_PAIR;
+
     //////////////////////////////////////////////////////////////////////////////
 
     ref_ptr<OpSelect> EQZERO_INT;
     ref_ptr<OpSelect> EQZERO_UINT;
     ref_ptr<OpSelect> EQZERO_FLOAT;
     ref_ptr<OpSelect> NQZERO_INT;
+    ref_ptr<OpSelect> NQZERO_PAIR;
     ref_ptr<OpSelect> NQZERO_UINT;
     ref_ptr<OpSelect> NQZERO_FLOAT;
     ref_ptr<OpSelect> GTZERO_INT;
@@ -144,9 +152,14 @@ namespace spla {
     ref_ptr<OpSelect> ALWAYS_INT;
     ref_ptr<OpSelect> ALWAYS_UINT;
     ref_ptr<OpSelect> ALWAYS_FLOAT;
+    ref_ptr<OpSelect> ALWAYS_PAIR;
     ref_ptr<OpSelect> NEVER_INT;
     ref_ptr<OpSelect> NEVER_UINT;
     ref_ptr<OpSelect> NEVER_FLOAT;
+
+    ref_ptr<OpSelectBinary> EQ_INT;
+    ref_ptr<OpSelectBinary> EQ_PAIR;
+    ref_ptr<OpSelectBinary> EQVERTEX_PAIR;
 
     template<typename T>
     inline T min(T a, T b) { return std::min(a, b); }
@@ -190,7 +203,9 @@ namespace spla {
         DECL_OP_UNA_S(FLOOR_FLOAT, FLOOR, T_FLOAT, { return floor(a); });
         DECL_OP_UNA_S(ROUND_FLOAT, ROUND, T_FLOAT, { return round(a); });
         DECL_OP_UNA_S(TRUNC_FLOAT, TRUNC, T_FLOAT, { return trunc(a); });
-
+        IDENTITY_PAIR = spla::OpUnary::make_pair(
+                "IDENTITY_PAIR", "(struct Pair a) { return identity_pair(a); }",
+                [](Pair a) { return a; });
         DECL_OP_BIN_S(PLUS_INT, PLUS, T_INT, { return a + b; });
         DECL_OP_BIN_S(PLUS_UINT, PLUS, T_UINT, { return a + b; });
         DECL_OP_BIN_S(PLUS_FLOAT, PLUS, T_FLOAT, { return a + b; });
@@ -240,6 +255,26 @@ namespace spla {
         DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
 
+        MUL_PAIR = OpBinary::make_pair(
+                "MUL_PAIR", "(struct Pair a, struct Pair b) { return make_pair(a.weight, b.vertex); }",
+                [](Pair a, Pair b) { return Pair(a.weight, b.vertex); });
+
+        MIN_PAIR = OpBinary::make_pair(
+                "MIN_PAIR", "(struct Pair a, struct Pair b) { return min_pair(a, b); }",
+                [](Pair a, Pair b) {
+                    if (a.weight == b.weight)
+                        return a.vertex < b.vertex ? a : b;
+                    return a.weight < b.weight ? a : b;
+                });
+
+        FIRST_PAIR = OpBinary::make_pair(
+                "FIRST_PAIR", "(TYPE a, TYPE b) { return a; }",
+                [](Pair a, Pair b) { return a; });
+
+        SECOND_PAIR = OpBinary::make_pair(
+                "SECOND_PAIR", "(struct Pair a, struct Pair b) { return b; }",
+                [](Pair a, Pair b) { return b; });
+
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_FLOAT, EQZERO, T_FLOAT, { return a == 0; });
@@ -261,9 +296,29 @@ namespace spla {
         DECL_OP_SELECT(ALWAYS_INT, ALWAYS, T_INT, { return 1; });
         DECL_OP_SELECT(ALWAYS_UINT, ALWAYS, T_UINT, { return 1; });
         DECL_OP_SELECT(ALWAYS_FLOAT, ALWAYS, T_FLOAT, { return 1; });
+        ALWAYS_PAIR = OpSelect::make_pair(
+                "ALWAYS_PAIR", "(struct Pair a) { return pair_always(a); }",
+                [](Pair a) { return 1; });
+
+        NQZERO_PAIR = OpSelect::make_pair(
+                "NQZERO_PAIR", "(struct Pair a) { return a.vertex != 0; }",
+                [](Pair a) { return a.vertex != 0; });
+
         DECL_OP_SELECT(NEVER_INT, NEVER, T_INT, { return 0; });
         DECL_OP_SELECT(NEVER_UINT, NEVER, T_UINT, { return 0; });
         DECL_OP_SELECT(NEVER_FLOAT, NEVER, T_FLOAT, { return 0; });
+
+        EQ_INT = OpSelectBinary::make_int(
+                "EQ_INT", "(TYPE a, TYPE b) { return a == b; }",
+                [](int a, int b) { return a == b; });
+
+        EQVERTEX_PAIR = OpSelectBinary::make_pair(
+                "EQVERTEX_PAIR", "(struct Pair a, struct Pair b) { return a.vertex == b.vertex; }",
+                [](Pair a, Pair b) { return a.vertex == b.vertex; });
+
+        EQ_PAIR = OpSelectBinary::make_pair(
+                "EQ_PAIR", "(struct Pair a, struct Pair b) { return (a.vertex == b.vertex) && (a.weight == b.weight); }",
+                [](Pair a, Pair b) { return (a.vertex == b.vertex) && (a.weight == b.weight); });
     }
 
     ref_ptr<OpUnary> OpUnary::make_int(std::string name, std::string code, std::function<T_INT(T_INT)> function) {
@@ -284,6 +339,15 @@ namespace spla {
     }
     ref_ptr<OpUnary> OpUnary::make_float(std::string name, std::string code, std::function<T_FLOAT(T_FLOAT)> function) {
         auto op      = make_ref<TOpUnary<T_FLOAT, T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpUnary>();
+    }
+    ref_ptr<OpUnary> OpUnary::make_pair(std::string name, std::string code,
+                                        std::function<T_PAIR(T_PAIR)> function) {
+        auto op      = make_ref<TOpUnary<T_PAIR, T_PAIR>>();
         op->name     = std::move(name);
         op->function = std::move(function);
         op->source   = std::move(code);
@@ -315,6 +379,14 @@ namespace spla {
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
         return op.as<OpBinary>();
     }
+    ref_ptr<OpBinary> OpBinary::make_pair(std::string name, std::string code, std::function<T_PAIR(T_PAIR, T_PAIR)> function) {
+        auto op      = make_ref<TOpBinary<T_PAIR, T_PAIR, T_PAIR>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code() + op->get_type_arg_1()->get_code() + op->get_type_res()->get_code();
+        return op.as<OpBinary>();
+    }
 
     ref_ptr<OpSelect> OpSelect::make_int(std::string name, std::string code, std::function<bool(T_INT)> function) {
         auto op      = make_ref<TOpSelect<T_INT>>();
@@ -339,6 +411,51 @@ namespace spla {
         op->source   = std::move(code);
         op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
         return op.as<OpSelect>();
+    }
+    ref_ptr<OpSelect> OpSelect::make_pair(std::string name, std::string code, std::function<bool(T_PAIR)> function) {
+        auto op      = make_ref<TOpSelect<T_PAIR>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelect>();
+    }
+
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_int(std::string name, std::string code,
+                                                     std::function<bool(T_INT, T_INT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_INT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_uint(std::string name, std::string code,
+                                                      std::function<bool(T_UINT, T_UINT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_UINT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_float(std::string name, std::string code,
+                                                       std::function<bool(T_FLOAT, T_FLOAT)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_FLOAT>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
+    }
+    ref_ptr<OpSelectBinary> OpSelectBinary::make_pair(std::string name, std::string code,
+                                                      std::function<bool(T_PAIR, T_PAIR)> function) {
+        auto op      = make_ref<TOpSelectBinary<T_PAIR>>();
+        op->name     = std::move(name);
+        op->function = std::move(function);
+        op->source   = std::move(code);
+        op->key      = op->name + "_" + op->get_type_arg_0()->get_code();
+        return op.as<OpSelectBinary>();
     }
 
 }// namespace spla

@@ -25,38 +25,38 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tvector.hpp>
+#include "common_def.cl"
 
-namespace spla {
+__kernel void assign_bslct_dense_to_dense(__global TYPE*       g_r,
+                                    __global const TYPE* g_mask,
+                                    const TYPE           mask_val,
+                                    const TYPE           init,
+                                    const uint           n) {
+    uint gid     = get_global_id(0);
+    uint gstride = get_global_size(0);
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
+    for (uint i = gid; i < n; i += gstride) {
+        if (OP_SELECT_BIN(g_mask[i], mask_val)) {
+            g_r[i] = OP_BINARY(g_r[i], init);
         }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
-        }
-
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-        }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
     }
+}
 
-}// namespace spla
+__kernel void assign_bslct_sparse_to_dense(__global TYPE*       g_r,
+                                           __global const uint* g_maski,
+                                           __global const TYPE* g_maskx,
+                                           const TYPE           mask_val,
+                                           const TYPE           init,
+                                           const uint           n) {
+    uint gid     = get_global_id(0);
+    uint gstride = get_global_size(0);
+
+    for (uint idx = gid; idx < n; idx += gstride) {
+        const TYPE mx = g_maskx[idx];
+        const uint mi = g_maski[idx];
+        
+        if (OP_SELECT_BIN(mx, mask_val)) {
+            g_r[mi] = OP_BINARY(g_r[mi], init);
+        }
+    }
+}

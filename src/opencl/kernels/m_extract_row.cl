@@ -4,7 +4,7 @@
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
-/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/* Copyright (c) 2025 SparseLinearAlgebra                                         */
 /*                                                                                */
 /* Permission is hereby granted, free of charge, to any person obtaining a copy   */
 /* of this software and associated documentation files (the "Software"), to deal  */
@@ -25,38 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tvector.hpp>
+#include "common_def.cl"
 
-namespace spla {
+__kernel void extract_row_clear(__global TYPE* g_rx, const uint n) {
+    const uint gid   = get_global_id(0);
+    const uint gsize = get_global_size(0);
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
-        }
-
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-        }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
+    for (uint i = gid; i < n; i += gsize) {
+        g_rx[i] = DEFAULT_VALUE;
     }
+}
 
-}// namespace spla
+__kernel void extract_row_fetch(__global TYPE*       g_rx,
+                                __global const uint* g_Ap,
+                                __global const uint* g_Aj,
+                                __global const TYPE* g_Ax,
+                                const uint           row_idx) {
+    const uint gid   = get_global_id(0);
+    const uint gsize = get_global_size(0);
+
+    const uint row_start = g_Ap[row_idx];
+    const uint row_end   = g_Ap[row_idx + 1];
+
+    for (uint i = row_start + gid; i < row_end; i += gsize) {
+        g_rx[g_Aj[i]] = OP_APPLY(g_Ax[i]);
+    }
+}

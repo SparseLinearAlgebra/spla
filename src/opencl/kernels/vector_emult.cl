@@ -1,3 +1,4 @@
+
 /**********************************************************************************/
 /* This file is part of spla project                                              */
 /* https://github.com/SparseLinearAlgebra/spla                                    */
@@ -25,38 +26,19 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tvector.hpp>
+#include "common_def.cl"
 
-namespace spla {
+__kernel void dense_to_dense(__global TYPE*       g_rx,
+                             __global const TYPE* g_ux,
+                             __global const TYPE* g_vx,
+                             const uint           n,
+                             const TYPE           fill_value) {
+    const uint gid   = get_global_id(0);
+    const uint gsize = get_global_size(0);
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
-        }
-
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-        }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
+    for (uint i = gid; i < n; i += gsize) {
+        TYPE u  = g_ux[i];
+        TYPE v  = g_vx[i];
+        g_rx[i] = u != fill_value && v != fill_value ? OP_BINARY(u, v) : fill_value;
     }
-
-}// namespace spla
+}

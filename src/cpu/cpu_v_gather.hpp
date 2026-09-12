@@ -1,6 +1,6 @@
 /**********************************************************************************/
 /* This file is part of spla project                                              */
-/* https://github.com/SparseLinearAlgebra/spla                                    */
+/* https://github.com/JetBrains-Research/spla                                     */
 /**********************************************************************************/
 /* MIT License                                                                    */
 /*                                                                                */
@@ -25,38 +25,61 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
+#ifndef SPLA_CPU_V_GATHER_HPP
+#define SPLA_CPU_V_GATHER_HPP
+
+#include <iostream>
+#include <schedule/schedule_tasks.hpp>
+
+#include <core/dispatcher.hpp>
+#include <core/registry.hpp>
+#include <core/top.hpp>
+#include <core/tscalar.hpp>
+#include <core/ttype.hpp>
 #include <core/tvector.hpp>
 
 namespace spla {
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
+    template<typename T>
+    class Algo_v_gather_cpu final : public RegistryAlgo {
+    public:
+        ~Algo_v_gather_cpu() override = default;
+
+        std::string get_name() override {
+            return "v_gather";
         }
 
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
-        }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
+        std::string get_description() override {
+            return "sequential vector gather operation";
         }
 
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
-    }
+        Status execute(const DispatchContext& ctx) override {
+            TIME_PROFILE_SCOPE("cpu/v_gather");
+
+            auto                     t       = ctx.task.template cast_safe<ScheduleTask_v_gather>();
+            ref_ptr<TVector<T>>      r       = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>      source  = t->source.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T_UINT>> indices = t->indices.template cast_safe<TVector<T_UINT>>();
+
+            r->validate_wd(FormatVector::CpuDense);
+            source->validate_rw(FormatVector::CpuDense);
+            indices->validate_rw(FormatVector::CpuDense);
+
+            auto* p_r       = r->template get<CpuDenseVec<T>>();
+            auto* p_source  = source->template get<CpuDenseVec<T>>();
+            auto* p_indices = indices->template get<CpuDenseVec<T_UINT>>();
+
+            const uint N = r->get_n_rows();
+
+            for (uint k = 0; k < N; ++k) {
+                const uint idx = p_indices->Ax[k];
+                p_r->Ax[k]     = p_source->Ax[idx];
+            }
+
+            return Status::Ok;
+        }
+    };
 
 }// namespace spla
+
+#endif//SPLA_CPU_V_GATHER_HPP

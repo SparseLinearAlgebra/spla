@@ -25,38 +25,29 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
-#include <core/logger.hpp>
-#include <core/tvector.hpp>
+#include "common_def.cl"
 
-namespace spla {
+__kernel void assign_bslct_csr(__global const uint* g_Ap,
+                                     __global const uint* g_Aj,
+                                     __global const TYPE* g_mask,
+                                     __global TYPE*       g_Rx,
+                                    const TYPE           init,
+                                    const uint           n) {
+    uint gid     = get_global_id(0);
+    uint gstride = get_global_size(0);
+    const uint lid     = get_local_id(1);
+    const uint lsize   = get_local_size(1);
 
-    ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
-        if (n_rows <= 0) {
-            LOG_MSG(Status::InvalidArgument, "passed 0 dim");
-            return ref_ptr<Vector>{};
-        }
-        if (!type) {
-            LOG_MSG(Status::InvalidArgument, "passed null type");
-            return ref_ptr<Vector>{};
-        }
+    for (uint row = gid; row < n; row += gstride) {
+        TYPE mask_row = g_mask[row];
+        uint start = g_Ap[row];
+        uint end   = g_Ap[row + 1];
 
-        Library::get();
-
-        if (type == INT) {
-            return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));
+       for (uint idx = start + lid; idx < end; idx += lsize) {
+            const uint col = g_Aj[idx];
+            if (OP_SELECT_BIN(mask_row, g_mask[col])) {
+                g_Rx[idx] = OP_BINARY(g_Rx[idx], init);
+            }
         }
-        if (type == UINT) {
-            return ref_ptr<Vector>(new TVector<std::uint32_t>(n_rows));
-        }
-        if (type == FLOAT) {
-            return ref_ptr<Vector>(new TVector<float>(n_rows));
-        }
-        if (type == spla::PAIR) {
-            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
-        }
-
-        LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
-        return ref_ptr<Vector>{};
     }
-
-}// namespace spla
+}

@@ -402,6 +402,7 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(tc)
     spla_example_application(pi)
     spla_example_application(convert)
+    spla_example_application(mst)
 endif ()
 
 ######################################################################

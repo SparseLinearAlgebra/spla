@@ -37,6 +37,12 @@
 #define OP_BINARY(a, b)  a + b
 #define OP_BINARY1(a, b) a + b
 #define OP_BINARY2(a, b) a + b
+#define OP_SELECT(a) a
+#else
+#define OP_BINARY1(a, b) make_pair((a).weight, (b).vertex)
+#define OP_BINARY2(a, b) min_pair(a, b)
+#define OP_SELECT(a) pair_always(a)
+#endif
 
 #define __kernel
 #define __global
