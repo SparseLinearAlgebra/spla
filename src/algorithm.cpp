@@ -604,6 +604,11 @@ namespace spla {
             spla::exec_mxv_masked(row, index_mask, S, parent, spla::FIRST_PAIR, spla::MIN_PAIR,
                                   spla::NQZERO_PAIR, init_inf);
 
+            auto replacements = spla::Vector::make(n, spla::UINT);
+            for (uint i = 0; i < n; i++) {
+                replacements->set_uint(i, i);
+            }
+
             for (int32_t i = 0; i < n; i++) {
                 spla::T_INT ind_v;
                 index->get_int(i, ind_v);
@@ -617,32 +622,46 @@ namespace spla {
                 if (min_vertex == -1 || min_weight >= INF) continue;
 
                 spla::T_PAIR target_comp;
-                parent->get_pair(min_vertex, target_comp);
-                int comp_j = target_comp.vertex;
-
                 spla::T_PAIR my_comp;
+                parent->get_pair(min_vertex, target_comp);
                 parent->get_pair(i, my_comp);
+                int comp_j = target_comp.vertex;
                 int comp_i = my_comp.vertex;
 
                 if (comp_j >= comp_i) continue;
 
+                replacements->set_uint(comp_i, comp_j);
+
                 T->set_float(i, min_vertex, min_weight);
                 T->set_float(min_vertex, i, min_weight);
                 edges_added_this_iteration++;
+            }
+            auto temp_v = spla::Vector::make(n, spla::UINT);
+            bool diff   = true;
+            while (diff) {
+                spla::exec_v_gather(temp_v, replacements, replacements);
 
-                spla::T_PAIR p, old_p;
-                if (i < min_vertex) {
-                    new_parent->get_pair(i, p);
-                    new_parent->get_pair(min_vertex, old_p);
-                } else {
-                    new_parent->get_pair(min_vertex, p);
-                    new_parent->get_pair(i, old_p);
+                diff = false;
+                for (int32_t i = 0; i < n; i++) {
+                    spla::T_UINT a, b;
+                    replacements->get_uint(i, a);
+                    temp_v->get_uint(i, b);
+                    if (a != b) {
+                        diff = true;
+                        break;
+                    }
                 }
-                for (int k = 0; k < n; k++) {
-                    spla::T_PAIR p1;
-                    new_parent->get_pair(k, p1);
-                    if (p1.vertex == old_p.vertex)
-                        new_parent->set_pair(k, spla::T_PAIR(0.0f, p.vertex));
+                std::swap(replacements, temp_v);
+            }
+            for (uint i = 0; i < n; i++) {
+                spla::T_PAIR p;
+                new_parent->get_pair(i, p);
+
+                spla::T_UINT final_p;
+                replacements->get_uint(p.vertex, final_p);
+
+                if ((int) final_p != p.vertex) {
+                    new_parent->set_pair(i, spla::T_PAIR(0.0f, (int) final_p));
                 }
             }
             parent = new_parent;
