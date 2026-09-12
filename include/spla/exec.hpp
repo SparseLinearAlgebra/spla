@@ -503,6 +503,26 @@ namespace spla {
             ref_ptr<ScheduleTask>*  task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) vector gather operation: r[k] = source[indices[k]]
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Vector result to store gathered values
+     * @param source Vector to gather values from
+     * @param indices Vector of indices to gather by
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_gather(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        source,
+            ref_ptr<Vector>        indices,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) by structure map of one vector to another using unary operation
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.

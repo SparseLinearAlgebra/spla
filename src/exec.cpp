@@ -401,6 +401,20 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_gather(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        source,
+            ref_ptr<Vector>        indices,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task     = make_ref<ScheduleTask_v_gather>();
+        task->r       = std::move(r);
+        task->source  = std::move(source);
+        task->indices = std::move(indices);
+        task->desc    = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_map(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        v,

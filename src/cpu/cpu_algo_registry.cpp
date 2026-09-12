@@ -50,6 +50,7 @@
 #include <cpu/cpu_v_eadd.hpp>
 #include <cpu/cpu_v_eadd_fdb.hpp>
 #include <cpu/cpu_v_emult.hpp>
+#include <cpu/cpu_v_gather.hpp>
 #include <cpu/cpu_v_map.hpp>
 #include <cpu/cpu_v_reduce.hpp>
 #include <cpu/cpu_vxm.hpp>
@@ -175,6 +176,12 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("mxm", INT), std::make_shared<Algo_mxm_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxm", UINT), std::make_shared<Algo_mxm_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxm", FLOAT), std::make_shared<Algo_mxm_cpu<T_FLOAT>>());
+
+        // algorthm v_gather
+        g_registry->add(MAKE_KEY_CPU_0("v_gather", INT), std::make_shared<Algo_v_gather_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_gather", UINT), std::make_shared<Algo_v_gather_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_gather", FLOAT), std::make_shared<Algo_v_gather_cpu<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_0("v_gather", PAIR), std::make_shared<Algo_v_gather_cpu<T_PAIR>>());
     }
 
 }// namespace spla

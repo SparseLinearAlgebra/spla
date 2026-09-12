@@ -471,6 +471,29 @@ namespace spla {
         return {r.as<Object>(), mask.as<Object>(), value.as<Object>(), op_assign.as<Object>(), op_select_bin.as<Object>()};
     }
 
+    std::string ScheduleTask_v_gather::get_name() {
+        return "v_gather";
+    }
+
+    std::string ScheduleTask_v_gather::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r->get_type());
+
+        return key.str();
+    }
+
+    std::string ScheduleTask_v_gather::get_key_full() {
+        std::stringstream key;
+        key << get_name();
+
+        return key.str();
+    }
+
+    std::vector<ref_ptr<Object>> ScheduleTask_v_gather::get_args() {
+        return {r.as<Object>(), source.as<Object>(), indices.as<Object>()};
+    }
+
     std::string ScheduleTask_v_map::get_name() {
         return "v_map";
     }

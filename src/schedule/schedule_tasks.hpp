@@ -452,6 +452,24 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_v_gather
+     * @brief Vector gather operation: r[k] = source[indices[k]]
+     */
+    class ScheduleTask_v_gather final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_gather() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector> r;
+        ref_ptr<Vector> source;
+        ref_ptr<Vector> indices;
+    };
+
+    /**
      * @class ScheduleTask_v_map
      * @brief Vector map to vector
      */
