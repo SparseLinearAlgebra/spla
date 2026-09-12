@@ -56,9 +56,9 @@ namespace spla {
         Status execute(const DispatchContext& ctx) override {
             TIME_PROFILE_SCOPE("cpu/v_gather");
 
-            auto t = ctx.task.template cast_safe<ScheduleTask_v_gather>();
-            ref_ptr<TVector<T>> r = t->r.template cast_safe<TVector<T>>();
-            ref_ptr<TVector<T>> source = t->source.template cast_safe<TVector<T>>();
+            auto                     t       = ctx.task.template cast_safe<ScheduleTask_v_gather>();
+            ref_ptr<TVector<T>>      r       = t->r.template cast_safe<TVector<T>>();
+            ref_ptr<TVector<T>>      source  = t->source.template cast_safe<TVector<T>>();
             ref_ptr<TVector<T_UINT>> indices = t->indices.template cast_safe<TVector<T_UINT>>();
 
             r->validate_wd(FormatVector::CpuDense);
