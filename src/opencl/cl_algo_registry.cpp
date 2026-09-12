@@ -41,6 +41,7 @@
 #include <opencl/cl_v_eadd.hpp>
 #include <opencl/cl_v_eadd_fdb.hpp>
 #include <opencl/cl_v_emult.hpp>
+#include <opencl/cl_v_gather.hpp>
 #include <opencl/cl_v_map.hpp>
 #include <opencl/cl_v_reduce.hpp>
 #include <opencl/cl_vxm.hpp>
@@ -124,6 +125,12 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("v_emult", INT), std::make_shared<Algo_v_emult_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_emult", UINT), std::make_shared<Algo_v_emult_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_emult", FLOAT), std::make_shared<Algo_v_emult_cl<T_FLOAT>>());
+
+        // algorthm v_gather
+        g_registry->add(MAKE_KEY_CL_0("v_gather", INT), std::make_shared<Algo_v_gather_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_gather", UINT), std::make_shared<Algo_v_gather_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_gather", FLOAT), std::make_shared<Algo_v_gather_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("v_gather", PAIR), std::make_shared<Algo_v_gather_cl<T_PAIR>>());
     }
 
 }// namespace spla
