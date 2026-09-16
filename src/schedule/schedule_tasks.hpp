@@ -411,6 +411,65 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_v_assign_bslct_masked
+     * @brief Masked vector assignment with binary selector
+     */
+    class ScheduleTask_v_assign_bslct_masked final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_assign_bslct_masked() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>         r;
+        ref_ptr<Vector>         mask;
+        ref_ptr<Scalar>         mask_value;
+        ref_ptr<Scalar>         value;
+        ref_ptr<OpBinary>       op_assign;
+        ref_ptr<OpSelectBinary> op_select_bin;
+    };
+
+    /**
+     * @class ScheduleTask_m_assign_bslct_masked
+     * @brief Masked matrix assignment with binary selector
+     */
+    class ScheduleTask_m_assign_bslct_masked final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_m_assign_bslct_masked() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Matrix>         r;
+        ref_ptr<Vector>         mask;
+        ref_ptr<Scalar>         value;
+        ref_ptr<OpBinary>       op_assign;
+        ref_ptr<OpSelectBinary> op_select_bin;
+    };
+
+    /**
+     * @class ScheduleTask_v_gather
+     * @brief Vector gather operation: r[k] = source[indices[k]]
+     */
+    class ScheduleTask_v_gather final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_v_gather() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector> r;
+        ref_ptr<Vector> source;
+        ref_ptr<Vector> indices;
+    };
+
+    /**
      * @class ScheduleTask_v_map
      * @brief Vector map to vector
      */

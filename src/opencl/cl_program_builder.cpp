@@ -30,6 +30,7 @@
 #include <opencl/generated/auto_common_api.hpp>
 #include <spla/timer.hpp>
 
+#include <fstream>
 #include <stdexcept>
 
 namespace spla {
@@ -58,11 +59,16 @@ namespace spla {
         m_functions.emplace_back(name, op.as<Op>());
         return *this;
     }
+    CLProgramBuilder& CLProgramBuilder::add_op(const char* name, const ref_ptr<OpSelectBinary>& op) {
+        m_functions.emplace_back(name, op.as<Op>());
+        return *this;
+    }
     CLProgramBuilder& CLProgramBuilder::set_source(const char* source) {
         m_source = source;
         return *this;
     }
     void CLProgramBuilder::acquire() {
+
         CLAccelerator*  acc   = get_acc_cl();
         CLProgramCache* cache = acc->get_cache();
 
@@ -81,11 +87,20 @@ namespace spla {
         }
 
         std::stringstream builder;
-
+        bool              needs_pair_override = false;
         for (const auto& define : m_defines) {
             builder << "#define " << define.first << " " << define.second << "\n";
+            if (define.first == "TYPE" &&
+                define.second.find("Pair") != std::string::npos) {
+                needs_pair_override = true;
+            }
         }
+
         builder << source_common_api;
+
+        if (needs_pair_override) {
+            builder << "#define DEFAULT_VALUE make_pair(INFINITY, -1)\n\n";
+        }
 
         for (const auto& function : m_functions) {
             builder << function.second->get_type_res()->get_cpp() << " "

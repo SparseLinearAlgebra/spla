@@ -129,6 +129,10 @@ namespace spla {
     ref_ptr<TType<T_FLOAT>> get_ttype() {
         return FLOAT.cast_safe<TType<T_FLOAT>>();
     }
+    template<>
+    ref_ptr<TType<T_PAIR>> get_ttype() {
+        return PAIR.cast_safe<TType<T_PAIR>>();
+    }
 
     /**
      * @}

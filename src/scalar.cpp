@@ -47,6 +47,9 @@ namespace spla {
         if (type == FLOAT) {
             return ref_ptr<Scalar>(new TScalar<float>());
         }
+        if (type == PAIR) {
+            return ref_ptr<Scalar>(new TScalar<Pair>());
+        }
 
         LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
         return ref_ptr<Scalar>();
@@ -60,6 +63,9 @@ namespace spla {
     }
     ref_ptr<Scalar> Scalar::Scalar::make_float(float value) {
         return ref_ptr<Scalar>(new TScalar<float>(value));
+    }
+    ref_ptr<Scalar> Scalar::make_pair(Pair value) {
+        return ref_ptr<Scalar>(new TScalar<Pair>(value));
     }
 
 }// namespace spla

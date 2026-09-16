@@ -48,6 +48,7 @@ TEST(op_binary, info_built_in) {
 
     display_op_info(spla::MIN_FLOAT);
     display_op_info(spla::BONE_FLOAT);
+    display_op_info(spla::MIN_PAIR);
 }
 
 TEST(op_binary, custom) {

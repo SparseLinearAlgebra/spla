@@ -363,6 +363,58 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_v_assign_bslct_masked(
+            ref_ptr<Vector>         r,
+            ref_ptr<Vector>         mask,
+            ref_ptr<Scalar>         mask_value,
+            ref_ptr<Scalar>         value,
+            ref_ptr<OpBinary>       op_assign,
+            ref_ptr<OpSelectBinary> op_select_bin,
+            ref_ptr<Descriptor>     desc,
+            ref_ptr<ScheduleTask>*  task_hnd) {
+        auto task           = make_ref<ScheduleTask_v_assign_bslct_masked>();
+        task->r             = std::move(r);
+        task->mask          = std::move(mask);
+        task->mask_value    = std::move(mask_value);
+        task->value         = std::move(value);
+        task->op_assign     = std::move(op_assign);
+        task->op_select_bin = std::move(op_select_bin);
+        task->desc          = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
+    Status exec_m_assign_bslct_masked(
+            ref_ptr<Matrix>         r,
+            ref_ptr<Vector>         mask,
+            ref_ptr<Scalar>         value,
+            ref_ptr<OpBinary>       op_assign,
+            ref_ptr<OpSelectBinary> op_select_bin,
+            ref_ptr<Descriptor>     desc,
+            ref_ptr<ScheduleTask>*  task_hnd) {
+        auto task           = make_ref<ScheduleTask_m_assign_bslct_masked>();
+        task->r             = std::move(r);
+        task->mask          = std::move(mask);
+        task->value         = std::move(value);
+        task->op_assign     = std::move(op_assign);
+        task->op_select_bin = std::move(op_select_bin);
+        task->desc          = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
+    Status exec_v_gather(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        source,
+            ref_ptr<Vector>        indices,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task     = make_ref<ScheduleTask_v_gather>();
+        task->r       = std::move(r);
+        task->source  = std::move(source);
+        task->indices = std::move(indices);
+        task->desc    = std::move(desc);
+        EXEC_OR_MAKE_TASK
+    }
+
     Status exec_v_map(
             ref_ptr<Vector>        r,
             ref_ptr<Vector>        v,
