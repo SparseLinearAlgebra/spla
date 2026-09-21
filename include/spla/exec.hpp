@@ -518,6 +518,36 @@ namespace spla {
             ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
+    /**
+     * @brief Execute (schedule) set intersection of two sorted key-value arrays
+     *
+     * Finds intersection of keys from two arrays and applies binary operation
+     * to corresponding values.
+     *
+     * @param a_keys Keys of first array (sorted, unique)
+     * @param a_vals Values of first array
+     * @param b_keys Keys of second array (sorted, unique)
+     * @param b_vals Values of second array
+     * @param r_keys Result keys (intersection)
+     * @param r_vals Result values (f(a_val, b_val))
+     * @param op Binary operation f(a_val, b_val) -> T
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+
+    SPLA_API Status exec_intersect(
+            ref_ptr<Vector>        a_keys,
+            ref_ptr<Vector>        a_vals,
+            ref_ptr<Vector>        b_keys,
+            ref_ptr<Vector>        b_vals,
+            ref_ptr<Vector>        r_keys,
+            ref_ptr<Vector>        r_vals,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
 }// namespace spla
 
 #endif//SPLA_EXEC_HPP

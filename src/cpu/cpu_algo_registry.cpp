@@ -31,6 +31,7 @@
 #include <core/top.hpp>
 
 #include <cpu/cpu_algo_callback.hpp>
+#include <cpu/cpu_intersect.hpp>
 #include <cpu/cpu_kron.hpp>
 #include <cpu/cpu_m_eadd.hpp>
 #include <cpu/cpu_m_emult.hpp>
@@ -55,108 +56,113 @@
 namespace spla {
 
     void register_algo_cpu(Registry* g_registry) {
-        // algorthm callback
+        // algorithm callback
         g_registry->add("callback" CPU_SUFFIX, std::make_shared<Algo_callback_cpu>());
 
-        // algorthm v_count_mf
+        // algorithm v_count_mf
         g_registry->add(MAKE_KEY_CPU_0("v_count_mf", INT), std::make_shared<Algo_v_count_mf_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_count_mf", UINT), std::make_shared<Algo_v_count_mf_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_count_mf", FLOAT), std::make_shared<Algo_v_count_mf_cpu<T_FLOAT>>());
 
-        // algorthm v_map
+        // algorithm v_map
         g_registry->add(MAKE_KEY_CPU_0("v_map", INT), std::make_shared<Algo_v_map_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_map", UINT), std::make_shared<Algo_v_map_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_map", FLOAT), std::make_shared<Algo_v_map_cpu<T_FLOAT>>());
 
-        // algorthm v_reduce
+        // algorithm v_reduce
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", UINT), std::make_shared<Algo_v_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_reduce", FLOAT), std::make_shared<Algo_v_reduce_cpu<T_FLOAT>>());
 
-        // algorthm v_eadd
+        // algorithm v_eadd
         g_registry->add(MAKE_KEY_CPU_0("v_eadd", INT), std::make_shared<Algo_v_eadd_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_eadd", UINT), std::make_shared<Algo_v_eadd_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_eadd", FLOAT), std::make_shared<Algo_v_eadd_cpu<T_FLOAT>>());
 
-        // algorthm v_emult
+        // algorithm v_emult
         g_registry->add(MAKE_KEY_CPU_0("v_emult", INT), std::make_shared<Algo_v_emult_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_emult", UINT), std::make_shared<Algo_v_emult_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_emult", FLOAT), std::make_shared<Algo_v_emult_cpu<T_FLOAT>>());
 
-        // algorthm v_eadd_fdb
+        // algorithm v_eadd_fdb
         g_registry->add(MAKE_KEY_CPU_0("v_eadd_fdb", INT), std::make_shared<Algo_v_eadd_fdb_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_eadd_fdb", UINT), std::make_shared<Algo_v_eadd_fdb_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_eadd_fdb", FLOAT), std::make_shared<Algo_v_eadd_fdb_cpu<T_FLOAT>>());
 
-        // algorthm v_assign_masked
+        // algorithm v_assign_masked
         g_registry->add(MAKE_KEY_CPU_0("v_assign_masked", INT), std::make_shared<Algo_v_assign_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_assign_masked", UINT), std::make_shared<Algo_v_assign_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cpu<T_FLOAT>>());
 
-        // algorthm m_reduce_by_row
+        // algorithm m_reduce_by_row
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", INT), std::make_shared<Algo_m_reduce_by_row_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", UINT), std::make_shared<Algo_m_reduce_by_row_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_row", FLOAT), std::make_shared<Algo_m_reduce_by_row_cpu<T_FLOAT>>());
 
-        // algorthm m_reduce_by_column
+        // algorithm m_reduce_by_column
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", INT), std::make_shared<Algo_m_reduce_by_column_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", UINT), std::make_shared<Algo_m_reduce_by_column_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce_by_column", FLOAT), std::make_shared<Algo_m_reduce_by_column_cpu<T_FLOAT>>());
 
-        // algorthm m_reduce
+        // algorithm m_reduce
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", UINT), std::make_shared<Algo_m_reduce_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_reduce", FLOAT), std::make_shared<Algo_m_reduce_cpu<T_FLOAT>>());
 
-        // algorthm m_eadd
+        // algorithm m_eadd
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", INT), std::make_shared<Algo_m_eadd_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", UINT), std::make_shared<Algo_m_eadd_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", FLOAT), std::make_shared<Algo_m_eadd_cpu<T_FLOAT>>());
 
-        // algorthm m_emult
+        // algorithm m_emult
         g_registry->add(MAKE_KEY_CPU_0("m_emult", INT), std::make_shared<Algo_m_emult_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_emult", UINT), std::make_shared<Algo_m_emult_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_emult", FLOAT), std::make_shared<Algo_m_emult_cpu<T_FLOAT>>());
 
-        // algorthm m_transpose
+        // algorithm m_transpose
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", INT), std::make_shared<Algo_m_transpose_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", UINT), std::make_shared<Algo_m_transpose_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_transpose", FLOAT), std::make_shared<Algo_m_transpose_cpu<T_FLOAT>>());
 
-        // algorthm m_extract_row
+        // algorithm m_extract_row
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", INT), std::make_shared<Algo_m_extract_row_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", UINT), std::make_shared<Algo_m_extract_row_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_row", FLOAT), std::make_shared<Algo_m_extract_row_cpu<T_FLOAT>>());
 
-        // algorthm m_extract_column
+        // algorithm m_extract_column
         g_registry->add(MAKE_KEY_CPU_0("m_extract_column", INT), std::make_shared<Algo_m_extract_column_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_column", UINT), std::make_shared<Algo_m_extract_column_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_extract_column", FLOAT), std::make_shared<Algo_m_extract_column_cpu<T_FLOAT>>());
 
-        // algorthm mxv_masked
+        // algorithm mxv_masked
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", UINT), std::make_shared<Algo_mxv_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxv_masked", FLOAT), std::make_shared<Algo_mxv_masked_cpu<T_FLOAT>>());
 
-        // algorthm vxm_masked
+        // algorithm vxm_masked
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", UINT), std::make_shared<Algo_vxm_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("vxm_masked", FLOAT), std::make_shared<Algo_vxm_masked_cpu<T_FLOAT>>());
 
-        // algorthm kron
+        // algorithm kron
         g_registry->add(MAKE_KEY_CPU_0("kron", INT), std::make_shared<Algo_kron_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("kron", UINT), std::make_shared<Algo_kron_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("kron", FLOAT), std::make_shared<Algo_kron_cpu<T_FLOAT>>());
 
-        // algorthm mxmT_masked
+        // algorithm mxmT_masked
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cpu<T_FLOAT>>());
 
-        // algorthm mxm
+        // algorithm mxm
         g_registry->add(MAKE_KEY_CPU_0("mxm", INT), std::make_shared<Algo_mxm_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxm", UINT), std::make_shared<Algo_mxm_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("mxm", FLOAT), std::make_shared<Algo_mxm_cpu<T_FLOAT>>());
+
+        // algorithm intersect
+        g_registry->add(MAKE_KEY_CPU_0("intersect", INT), std::make_shared<Algo_intersect_cpu<T_INT>>());
+        g_registry->add(MAKE_KEY_CPU_0("intersect", UINT), std::make_shared<Algo_intersect_cpu<T_UINT>>());
+        g_registry->add(MAKE_KEY_CPU_0("intersect", FLOAT), std::make_shared<Algo_intersect_cpu<T_FLOAT>>());
     }
 
 }// namespace spla

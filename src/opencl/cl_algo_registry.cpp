@@ -30,6 +30,7 @@
 #include <core/registry.hpp>
 #include <core/top.hpp>
 
+#include <opencl/cl_intersect.hpp>
 #include <opencl/cl_m_reduce.hpp>
 #include <opencl/cl_mxmT_masked.hpp>
 #include <opencl/cl_mxv.hpp>
@@ -44,55 +45,60 @@
 namespace spla {
 
     void register_algo_cl(class Registry* g_registry) {
-        // algorthm v_count_mf
+        // algorithm v_count_mf
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", INT), std::make_shared<Algo_v_count_mf_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", UINT), std::make_shared<Algo_v_count_mf_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_count_mf", FLOAT), std::make_shared<Algo_v_count_mf_cl<T_FLOAT>>());
 
-        // algorthm v_map
+        // algorithm v_map
         g_registry->add(MAKE_KEY_CL_0("v_map", INT), std::make_shared<Algo_v_map_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_map", UINT), std::make_shared<Algo_v_map_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_map", FLOAT), std::make_shared<Algo_v_map_cl<T_FLOAT>>());
 
-        // algorthm v_reduce
+        // algorithm v_reduce
         g_registry->add(MAKE_KEY_CL_0("v_reduce", INT), std::make_shared<Algo_v_reduce_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_reduce", UINT), std::make_shared<Algo_v_reduce_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_reduce", FLOAT), std::make_shared<Algo_v_reduce_cl<T_FLOAT>>());
 
-        // algorthm v_eadd
+        // algorithm v_eadd
         g_registry->add(MAKE_KEY_CL_0("v_eadd", INT), std::make_shared<Algo_v_eadd_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_eadd", UINT), std::make_shared<Algo_v_eadd_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_eadd", FLOAT), std::make_shared<Algo_v_eadd_cl<T_FLOAT>>());
 
-        // algorthm v_eadd_fdb
+        // algorithm v_eadd_fdb
         g_registry->add(MAKE_KEY_CL_0("v_eadd_fdb", INT), std::make_shared<Algo_v_eadd_fdb_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_eadd_fdb", UINT), std::make_shared<Algo_v_eadd_fdb_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_eadd_fdb", FLOAT), std::make_shared<Algo_v_eadd_fdb_cl<T_FLOAT>>());
 
-        // algorthm v_assign_masked
+        // algorithm v_assign_masked
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", INT), std::make_shared<Algo_v_assign_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", UINT), std::make_shared<Algo_v_assign_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("v_assign_masked", FLOAT), std::make_shared<Algo_v_assign_masked_cl<T_FLOAT>>());
 
-        // algorthm m_reduce
+        // algorithm m_reduce
         g_registry->add(MAKE_KEY_CL_0("m_reduce", INT), std::make_shared<Algo_m_reduce_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("m_reduce", UINT), std::make_shared<Algo_m_reduce_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("m_reduce", FLOAT), std::make_shared<Algo_m_reduce_cl<T_FLOAT>>());
 
-        // algorthm mxv_masked
+        // algorithm mxv_masked
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", INT), std::make_shared<Algo_mxv_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", UINT), std::make_shared<Algo_mxv_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxv_masked", FLOAT), std::make_shared<Algo_mxv_masked_cl<T_FLOAT>>());
 
-        // algorthm vxm_masked
+        // algorithm vxm_masked
         g_registry->add(MAKE_KEY_CL_0("vxm_masked", INT), std::make_shared<Algo_vxm_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("vxm_masked", UINT), std::make_shared<Algo_vxm_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("vxm_masked", FLOAT), std::make_shared<Algo_vxm_masked_cl<T_FLOAT>>());
 
-        // algorthm mxmT_masked
+        // algorithm mxmT_masked
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", INT), std::make_shared<Algo_mxmT_masked_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", UINT), std::make_shared<Algo_mxmT_masked_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxmT_masked", FLOAT), std::make_shared<Algo_mxmT_masked_cl<T_FLOAT>>());
+
+        // algorithm intersect
+        g_registry->add(MAKE_KEY_CL_0("intersect", INT), std::make_shared<Algo_intersect_cl<T_INT>>());
+        g_registry->add(MAKE_KEY_CL_0("intersect", UINT), std::make_shared<Algo_intersect_cl<T_UINT>>());
+        g_registry->add(MAKE_KEY_CL_0("intersect", FLOAT), std::make_shared<Algo_intersect_cl<T_FLOAT>>());
     }
 
 }// namespace spla
