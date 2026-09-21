@@ -334,6 +334,7 @@ SPLA_API spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, floa
 SPLA_API spla_Status spla_Vector_build(spla_Vector v, spla_MemView keys, spla_MemView values);
 SPLA_API spla_Status spla_Vector_read(spla_Vector v, spla_MemView* keys, spla_MemView* values);
 SPLA_API spla_Status spla_Vector_clear(spla_Vector v);
+SPLA_API spla_Status spla_Vector_fill_with(spla_Vector v, spla_Scalar value);
 
 //////////////////////////////////////////////////////////////////////////////////////
 

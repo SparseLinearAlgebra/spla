@@ -494,6 +494,7 @@ def load_library(lib_path):
     _spla.spla_Vector_build.restype = _status_t
     _spla.spla_Vector_read.restype = _status_t
     _spla.spla_Vector_clear.restype = _status_t
+    _spla.spla_Vector_fill_with.restype = _status_t
 
     _spla.spla_Vector_make.argtypes = [_p_object_t, _uint, _object_t]
     _spla.spla_Vector_set_format.argtypes = [_object_t, ctypes.c_int]
@@ -508,6 +509,7 @@ def load_library(lib_path):
     _spla.spla_Vector_build.argtypes = [_object_t, _object_t, _object_t]
     _spla.spla_Vector_read.argtypes = [_object_t, _p_object_t, _p_object_t]
     _spla.spla_Vector_clear.argtypes = [_object_t]
+    _spla.spla_Vector_fill_with.argtypes = [_object_t, _object_t]
 
     _spla.spla_Matrix_make.restype = _status_t
     _spla.spla_Matrix_set_format.restype = _status_t
