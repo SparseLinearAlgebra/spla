@@ -63,11 +63,19 @@ namespace spla {
         std::size_t n_lines = 0;
         std::size_t n_sort  = 0;
 
+        std::string first_line;
         std::string line;
         while (std::getline(file, line)) {
+            if (first_line.empty() && line.rfind("%%MatrixMarket", 0) == 0) {
+                first_line = line;
+            }
             if (line[0] != '%') break;
             n_lines++;
         }
+
+        bool file_is_symmetric    = first_line.find("symmetric") != std::string::npos;
+        bool file_is_pattern      = first_line.find("pattern") != std::string::npos;
+        bool effective_undirected = make_undirected || file_is_symmetric;
 
         std::size_t       nnz;
         std::stringstream header(line);
@@ -79,7 +87,11 @@ namespace spla {
         std::cout << " Data: " << nnz << " directed edges" << std::endl;
         if (remove_loops) std::cout << " Opt: remove self-loops" << std::endl;
         if (offset_indices) std::cout << " Opt: offset indices by -1" << std::endl;
-        if (make_undirected) std::cout << " Opt: double edges" << std::endl;
+        if (effective_undirected) {
+            std::cout << " Opt: double edges";
+            if (file_is_symmetric) std::cout << " (auto from header)";
+            std::cout << std::endl;
+        }
         std::cout << " Reading data: ";
 
         // optimized reading by sliding window
@@ -89,16 +101,16 @@ namespace spla {
         char              buffer[BUFFER_CAPACITY + 1];
 
         // read data
-        std::size_t       to_count       = 0;
-        std::size_t       to_read        = nnz;
-        std::size_t       to_preallocate = to_read * (make_undirected ? 2 : 1);
-        std::vector<uint> Ai;
-        std::vector<uint> Aj;
-
+        std::size_t        to_count       = 0;
+        std::size_t        to_read        = nnz;
+        std::size_t        to_preallocate = to_read * (effective_undirected ? 2 : 1);
+        std::vector<uint>  Ai;
+        std::vector<uint>  Aj;
+        std::vector<float> Aw;
         // preallocate to avoid copy
         Ai.reserve(to_preallocate);
         Aj.reserve(to_preallocate);
-
+        Aw.reserve(to_preallocate);
         float job_done  = 0.0f;
         float job_total = 35.0f;
 
@@ -149,9 +161,15 @@ namespace spla {
                 }
             }
 
-            char* end     = nullptr;
-            auto  i       = uint(std::strtoll(buffer + buffer_offset, &end, 10));
-            auto  j       = uint(std::strtoll(end, &end, 10));
+            char* end = nullptr;
+            auto  i   = uint(std::strtoll(buffer + buffer_offset, &end, 10));
+            auto  j   = uint(std::strtoll(end, &end, 10));
+            float w   = 1.0f;
+            if (!file_is_pattern && end < buffer + line_end) {
+                char* val_end = nullptr;
+                float parsed  = std::strtof(end, &val_end);
+                if (val_end != end && val_end <= buffer + line_end) w = parsed;
+            }
             buffer_offset = line_end + 1;
 
             assert(i > 0 && j > 0);
@@ -163,54 +181,65 @@ namespace spla {
                 i -= 1;
                 j -= 1;
             }
-            if (make_undirected) {
+            if (effective_undirected) {
                 Ai.push_back(j);
                 Aj.push_back(i);
+                Aw.push_back(w);
             }
 
             Ai.push_back(i);
             Aj.push_back(j);
+            Aw.push_back(w);
         }
         t.lap_end();// parsing
 
-        std::vector<std::uint64_t> sorted;
+        struct Entry {
+            uint  i;
+            uint  j;
+            float w;
+        };
+
+        std::vector<Entry> sorted;
         {
             sorted.reserve(Ai.size());
             n_sort = Ai.size();
 
             for (std::size_t k = 0; k < Ai.size(); k++) {
-                std::uint64_t entry = 0;
-                entry |= std::uint64_t(Ai[k]) << 32u;
-                entry |= std::uint64_t(Aj[k]) << 0u;
-                sorted.push_back(entry);
+                sorted.push_back({Ai[k], Aj[k], Aw[k]});
             }
             Ai.clear();
             Aj.clear();
+            Aw.clear();
 
-            std::sort(sorted.begin(), sorted.end());
+            std::sort(sorted.begin(), sorted.end(),
+                      [](const Entry& a, const Entry& b) {
+                          return std::tie(a.i, a.j) < std::tie(b.i, b.j);
+                      });
         }
         t.lap_end();// sorting
 
-        std::vector<uint> reduced_Ai;
-        std::vector<uint> reduced_Aj;
+        std::vector<uint>  reduced_Ai;
+        std::vector<uint>  reduced_Aj;
+        std::vector<float> reduced_Aw;
         {
             reduced_Ai.reserve(sorted.size());
             reduced_Aj.reserve(sorted.size());
+            reduced_Aw.reserve(sorted.size());
 
-            std::uint64_t entry_prev = 0xffffffffffffffff;
-            for (std::uint64_t entry : sorted) {
-                if (entry_prev != entry) {
-                    uint i = uint((entry >> 32u) & 0xffffffff);
-                    uint j = uint((entry >> 0u) & 0xffffffff);
-                    reduced_Ai.push_back(i);
-                    reduced_Aj.push_back(j);
+            Entry prev{0xffffffffu, 0xffffffffu, 0.0f};
+            for (const auto& e : sorted) {
+                if (e.i != prev.i || e.j != prev.j) {
+                    reduced_Ai.push_back(e.i);
+                    reduced_Aj.push_back(e.j);
+                    reduced_Aw.push_back(e.w);
                 }
-                entry_prev = entry;
+                prev = e;
             }
 
             m_n_values = reduced_Ai.size();
             m_Ai       = std::move(reduced_Ai);
             m_Aj       = std::move(reduced_Aj);
+            m_Aw       = std::move(reduced_Aw);
         }
         t.lap_end();// reducing
 
@@ -367,7 +396,9 @@ namespace spla {
     const std::vector<uint>& MtxLoader::get_Aj() const {
         return m_Aj;
     }
-
+    const std::vector<float>& MtxLoader::get_Aw() const {
+        return m_Aw;
+    }
     uint MtxLoader::get_n_rows() const {
         return m_n_rows;
     }
