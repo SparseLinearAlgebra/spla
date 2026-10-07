@@ -62,6 +62,14 @@ namespace spla {
         m_source = source;
         return *this;
     }
+
+    size_t kernel_group_limit(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name) {
+        size_t     limit  = 0;
+        cl::Kernel kernel = builder.make_kernel(kernel_name);
+        clGetKernelWorkGroupInfo(kernel(), acc->get_device()(), CL_KERNEL_WORK_GROUP_SIZE, sizeof(limit), &limit, nullptr);
+        return limit;
+    }
+
     void CLProgramBuilder::acquire() {
         CLAccelerator*  acc   = get_acc_cl();
         CLProgramCache* cache = acc->get_cache();

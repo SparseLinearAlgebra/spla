@@ -41,10 +41,10 @@
 namespace spla {
 
     template<typename T>
-    void cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+    bool cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
         if (size <= 1) {
             LOG_MSG(Status::Ok, "nothing to do");
-            return;
+            return true;
         }
 
         auto* acc = get_acc_cl();
@@ -71,14 +71,20 @@ namespace spla {
             const uint wave_size = acc->get_wave_size();
             const uint n_threads = align(std::min(size, max_treads_per_block), wave_size);
 
+            if (n_threads > kernel_group_limit(builder, acc, "bitonic_sort_local")) {
+                return false;
+            }
             cl::NDRange global(n_threads);
             cl::NDRange local(n_threads);
             queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
-            return;
+            return true;
         }
 
         const uint n_groups = div_up(size, local_size);
 
+        if (max_treads_per_block > kernel_group_limit(builder, acc, "bitonic_sort_local")) {
+            return false;
+        }
         cl::NDRange step_pre_sort_global(max_treads_per_block * n_groups);
         cl::NDRange step_pre_sort_local(max_treads_per_block);
         queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), step_pre_sort_global, step_pre_sort_local);
@@ -89,9 +95,13 @@ namespace spla {
         kernel_global.setArg(2, size);
         kernel_global.setArg(3, uint(local_size * 2));
 
+        if (acc->get_max_wgs() > kernel_group_limit(builder, acc, "bitonic_sort_global")) {
+            return false;
+        }
         cl::NDRange step_final_global(acc->get_max_wgs());
         cl::NDRange step_final_local(acc->get_max_wgs());
         queue.enqueueNDRangeKernel(kernel_global, cl::NDRange(), step_final_global, step_final_local);
+        return true;
     }
 
     template<typename T>
@@ -180,11 +190,10 @@ namespace spla {
 
         const uint sort_switch = 2u << 14u;
 
-        if (n <= sort_switch) {
-            cl_sort_by_key_bitonic<T>(queue, keys, values, n);
-        } else {
-            cl_sort_by_key_radix<T>(queue, keys, values, n, tmp_alloc, max_key);
+        if (n <= sort_switch && cl_sort_by_key_bitonic<T>(queue, keys, values, n)) {
+            return;
         }
+        cl_sort_by_key_radix<T>(queue, keys, values, n, tmp_alloc, max_key);
     }
 
 }// namespace spla
