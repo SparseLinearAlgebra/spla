@@ -214,6 +214,12 @@ def load_library(lib_path):
     _spla.spla_Type_UINT.argtypes = []
     _spla.spla_Type_FLOAT.restype = _object_t
     _spla.spla_Type_FLOAT.argtypes = []
+    _spla.spla_Descriptor_make.restype = _status_t
+    _spla.spla_Descriptor_make.argtypes = [_p_object_t]
+    _spla.spla_Descriptor_set_struct_only.restype = _status_t
+    _spla.spla_Descriptor_set_struct_only.argtypes = [_object_t, _int]
+    _spla.spla_Descriptor_set_early_exit.restype = _status_t
+    _spla.spla_Descriptor_set_early_exit.argtypes = [_object_t, _int]
 
     _spla.spla_OpUnary_IDENTITY_INT.restype = _object_t
     _spla.spla_OpUnary_IDENTITY_UINT.restype = _object_t

@@ -390,6 +390,13 @@ SPLA_API spla_Status spla_Exec_v_count_mf(spla_Scalar r, spla_Vector v, spla_Des
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+/* Descriptor object methods */
+
+SPLA_API spla_Status spla_Descriptor_make(spla_Descriptor* descriptor);
+SPLA_API spla_Status spla_Descriptor_set_struct_only(spla_Descriptor descriptor, spla_bool value);
+SPLA_API spla_Status spla_Descriptor_set_early_exit(spla_Descriptor descriptor, spla_bool value);
+
+//////////////////////////////////////////////////////////////////////////////////////
 #if defined(__cplusplus)
 }
 #endif

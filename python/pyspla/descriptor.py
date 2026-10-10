@@ -48,4 +48,16 @@ class Descriptor(Object):
             MemView native void* handle to a C counterpart.
         """
 
+        if hnd is None:
+            hnd = ctypes.c_void_p(0)
+            check(backend().spla_Descriptor_make(ctypes.byref(hnd)))
+
         super().__init__(label, hnd)
+
+    def set_struct_only(self, value: bool):
+        check(backend().spla_Descriptor_set_struct_only(self.hnd, ctypes.c_int(int(value))))
+        return self
+
+    def set_early_exit(self, value: bool):
+        check(backend().spla_Descriptor_set_early_exit(self.hnd, ctypes.c_int(int(value))))
+        return self
