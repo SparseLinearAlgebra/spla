@@ -83,14 +83,14 @@ namespace spla {
             if (status != ConfigStatus::Ok) return Status::Error;
         }
 
-        std::string backend = config_final.backend.value();
+        std::string backend = config_final.backend.value_or("gpu");
         int         platform_index;
         int         device_index;
-        int         queues_count      = config_final.queues_count.value();
-        bool        profiling         = config_final.profiling.value();
-        std::string allocator_type    = config_final.allocator_type.value();
+        int         queues_count      = config_final.queues_count.value_or(1);
+        bool        profiling         = config_final.profiling.value_or(false);
+        std::string allocator_type    = config_final.allocator_type.value_or("general");
         size_t      linear_alloc_size = config_final.linear_alloc_size.value_or(0);
-        int         verbosity         = config_final.verbosity.value();
+        int         verbosity         = config_final.verbosity.value_or(2);
 
         Library::get()->set_verbosity(verbosity);
 
