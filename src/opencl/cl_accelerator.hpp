@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 
-#include <core/cl_config_status.hpp>
+#include <core/config_status.hpp>
 #include <svector.hpp>
 
 #ifndef SPLA_RELEASE

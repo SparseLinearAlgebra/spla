@@ -28,7 +28,7 @@
 #ifndef SPLA_C_CONFIG_HPP
 #define SPLA_C_CONFIG_HPP
 
-#include <core/cl_config_status.hpp>
+#include <core/config_status.hpp>
 #include <spla.h>
 #include <spla.hpp>
 

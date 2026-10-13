@@ -34,7 +34,7 @@
 #include <vector>
 
 #include "CLI/CLI.hpp"
-#include "cl_config_status.hpp"
+#include "config_status.hpp"
 #include <nlohmann/json.hpp>
 
 #ifdef _WIN32

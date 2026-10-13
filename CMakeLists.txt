@@ -329,7 +329,7 @@ add_library(spla SHARED
         include/spla/vector.hpp
         src/core/accelerator.hpp
         src/core/common.hpp
-        src/core/cl_config_status.hpp
+        src/core/config_status.hpp
         src/core/configure.cpp
         src/core/configure.hpp
         src/core/dispatcher.cpp
