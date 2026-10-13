@@ -1,33 +1,33 @@
 # User Guide
 
-Руководство пользователя библиотеки spla. Содержит сценарии использования механизма конфигурирования: от быстрого запуска без настройки до запуска тестов в CI. Полный справочник всех параметров, флагов и переменных окружения приведён в [User Manual](UserManual.md).
+The user guide for the spla library. Contains usage scenarios for the configuration mechanism: from a quick start without configuration to running tests in CI. The complete reference of all parameters, flags and environment variables is given in the [User Manual](UserManual.md).
 
-## Содержание
+## Contents
 
-1. [Проверка окружения](#проверка-окружения)
-2. [Сценарий 1. Быстрый запуск без настройки](#сценарий-1-быстрый-запуск-без-настройки)
-3. [Сценарий 2. Выбор между CPU и GPU без указания индексов](#сценарий-2-выбор-между-cpu-и-gpu-без-указания-индексов)
-4. [Сценарий 3. Несколько устройств и режимов в одном файле](#сценарий-3-несколько-устройств-и-режимов-в-одном-файле)
-5. [Сценарий 4. Запуск в CI с файлом из репозитория](#сценарий-4-запуск-в-ci-с-файлом-из-репозитория)
-6. [Приоритет источников конфигурации](#приоритет-источников-конфигурации)
-7. [Где лежат файлы конфигурации](#где-лежат-файлы-конфигурации)
+1. [Environment check](#environment-check)
+2. [Scenario 1. Quick start without configuration](#scenario-1-quick-start-without-configuration)
+3. [Scenario 2. Choosing between CPU and GPU without specifying indexes](#scenario-2-choosing-between-cpu-and-gpu-without-specifying-indexes)
+4. [Scenario 3. Multiple devices and modes in one file](#scenario-3-multiple-devices-and-modes-in-one-file)
+5. [Scenario 4. Running in CI with a file from the repository](#scenario-4-running-in-ci-with-a-file-from-the-repository)
+6. [Priority of configuration sources](#priority-of-configuration-sources)
+7. [Where the configuration files are located](#where-the-configuration-files-are-located)
 
-## Проверка окружения
+## Environment check
 
-После установки выполните команду, которая подтверждает, что библиотека готова к использованию:
+After installation, run the command that confirms the library is ready to use:
 
 ```bash
 spla --softcheck
 ```
 
-Команда:
+The command:
 
-1. Читает конфигурационный файл, поставляемый библиотекой.
-2. Инициализирует OpenCL, выбирает платформу и устройство.
-3. Запускает простое тестовое задание `2 + 3`.
-4. Сообщает статус.
+1. Reads the configuration file shipped with the library.
+2. Initializes OpenCL, selects the platform and device.
+3. Runs a simple test task `2 + 3`.
+4. Reports the status.
 
-Пример успешного вывода:
+Example of successful output:
 
 ```bash
 $ spla --softcheck
@@ -39,23 +39,23 @@ $ spla --softcheck
 [spla:check] SUCCESS - spla works correctly
 ```
 
-## Сценарий 1. Быстрый запуск без настройки
+## Scenario 1. Quick start without configuration
 
-Вы хотите получить работоспособное приложение без настройки - ничего настраивать не нужно. Библиотека использует параметры по умолчанию из конфигурационного файла, поставляемого вместе с библиотекой.
+You want a working application without configuration - nothing needs to be configured. The library uses the default parameters from the configuration file shipped with the library.
 
 ```bash
 ./program
 ```
 
-Сценарий работает одинаково на Linux, macOS и Windows. Если GPU недоступен, библиотека по умолчанию автоматически переключится на CPU (параметр `if_gpu_unavailable: "use_cpu"`), сообщив об этом.
+The scenario works the same on Linux, macOS and Windows. If GPU is unavailable, the library will automatically switch to CPU by default (the `if_gpu_unavailable: "use_cpu"` parameter), reporting it.
 
-Перед первым запуском рекомендуется выполнить [`spla --softcheck`](#проверка-окружения), чтобы убедиться, что всё необходимое для работы spla установлено.
+Before the first run it is recommended to run [`spla --softcheck`](#environment-check) to make sure that everything required for spla is installed.
 
-## Сценарий 2. Выбор между CPU и GPU без указания индексов
+## Scenario 2. Choosing between CPU and GPU without specifying indexes
 
-Вы хотите управлять типом устройства, но не указывать конкретные индексы OpenCL-платформ и устройств.
+You want to control the device type, but not specify concrete OpenCL platform and device indexes.
 
-Тип устройства задаётся параметром `backend` в конфигурационном файле:
+The device type is set by the `backend` parameter in the configuration file:
 
 ```json
 {
@@ -65,15 +65,15 @@ $ spla --softcheck
 }
 ```
 
-- `"gpu"` - использовать первое доступное GPU,
-- `"cpu"` - использовать CPU,
-- `"any"` - использовать первое доступное устройство любого типа.
+- `"gpu"` - use the first available GPU,
+- `"cpu"` - use the CPU,
+- `"any"` - use the first available device of any type.
 
-Индексы `platform_index` и `device_index` при этих значениях игнорируются.
+The `platform_index` and `device_index` indexes are ignored with these values.
 
-### Поведение при отсутствии GPU
+### Behavior when GPU is unavailable
 
-Если выбран `backend: "gpu"`, но GPU недоступен, поведение определяется параметром `if_gpu_unavailable`:
+If `backend: "gpu"` is selected, but GPU is unavailable, the behavior is defined by the `if_gpu_unavailable` parameter:
 
 ```json
 {
@@ -88,22 +88,22 @@ $ spla --softcheck
 }
 ```
 
-- `"use_cpu"` - библиотека переключается на CPU и продолжает работу,
+- `"use_cpu"` - the library switches to CPU and continues working,
 - `"abort"` -
- библиотека возвращает ошибку и не продолжает работу.
+ the library returns an error and does not continue.
 
-Запуск нужной конфигурации:
+Running the required configuration:
 
 ```bash
 ./program --spla-config=gpu_or_cpu
 ./program --spla-config=gpu_only
 ```
 
-`if_gpu_unavailable` применяется при `backend: "gpu"`, `"any"` и `"by_index"`. При `backend: "cpu"` параметр игнорируется.
+`if_gpu_unavailable` is applied with `backend: "gpu"`, `"any"` and `"by_index"`. With `backend: "cpu"` the parameter is ignored.
 
-## Сценарий 3. Несколько устройств и режимов в одном файле
+## Scenario 3. Multiple devices and modes in one file
 
-Вы регулярно запускаете одну и ту же программу на разных GPU и в разных режимах - например, на GPU 0 и 1, в режиме отладки и в режиме измерения производительности. Вместо нескольких файлов конфигурации вы описываете всё в одном.
+You regularly run the same program on different GPUs and in different modes - for example, on GPU 0 and 1, in debug mode and in performance measurement mode. Instead of several configuration files, you describe everything in one.
 
 ```json
 {
@@ -137,7 +137,7 @@ $ spla --softcheck
 }
 ```
 
-Запуск:
+Running:
 
 ```bash
 ./program --spla-config=gpu1
@@ -146,13 +146,13 @@ $ spla --softcheck
 ./program --spla-config=bench_gpu0
 ```
 
-Конфигурации, наследуемые через `extends`, применяются по порядку: каждый следующий родитель переопределяет предыдущего, а параметры самой конфигурации переопределяют всех родителей. Циклическое наследование обнаруживается и приводит к ошибке.
+Configurations inherited through `extends` are applied in order: each next parent overrides the previous one, and the parameters of the configuration itself override all parents. Circular inheritance is detected and results in an error.
 
-## Сценарий 4. Запуск в CI с файлом из репозитория
+## Scenario 4. Running in CI with a file from the repository
 
-Вам нужно запустить тесты в CI с отдельным файлом конфигурации.
+You need to run tests in CI with a separate configuration file.
 
-В среде CI неудобно и нежелательно трогать системный и пользовательский файлы конфигурации, а конфигурации тестов должны лежать в репозитории. Поэтому конфигурации описывают в отдельном файле внутри репозитория и указывают путь к нему при запуске вместе с именем конфигурации - это аргументы командной строки `--spla-config-file` и `--spla-config`.
+In a CI environment it is inconvenient and undesirable to touch the system and user configuration files, and the test configurations must live in the repository. Therefore the configurations are described in a separate file inside the repository and its path is given at launch together with the configuration name - these are the command line arguments `--spla-config-file` and `--spla-config`.
 
 ```
 my_project/
@@ -234,28 +234,28 @@ jobs:
         run: python src/my_app.py --spla-config-file=.github/workflows/ci_spla_conf.json --spla-config=${{ matrix.config }}
 ```
 
-Путь к файлу и имя конфигурации передаются при запуске как аргументы команды, а не через переменные окружения - в CI это делает команду запуска самодостаточной и воспроизводимой.
+The file path and the configuration name are passed at launch as command arguments, not through environment variables - in CI this makes the launch command self-contained and reproducible.
 
-## Приоритет источников конфигурации
+## Priority of configuration sources
 
-Источники применяются в порядке убывания приоритета: параметры из более приоритетного источника переопределяют менее приоритетные. Это важно для сценариев: любой флаг или переменная окружения перебивает значения из файлов.
+Sources are applied in descending priority order: parameters from a higher-priority source override lower-priority ones. This matters for the scenarios: any flag or environment variable overrides values from files.
 
-| # | Источник |
+| # | Source |
 |---:|:---|
-| 1 | Аргументы командной строки (`--spla-*`) |
-| 2 | Переменные окружения (`SPLA_*`) |
-| 3 | Файл с явно указанным путём (`--spla-config-file`) |
-| 4 | Пользовательский конфигурационный файл |
-| 5 | Системный конфигурационный файл |
-| 6 | Конфигурационный файл, поставляемый библиотекой |
+| 1 | Command line arguments (`--spla-*`) |
+| 2 | Environment variables (`SPLA_*`) |
+| 3 | File with an explicitly specified path (`--spla-config-file`) |
+| 4 | User configuration file |
+| 5 | System configuration file |
+| 6 | Configuration file shipped with the library |
 
-Если имя конфигурации не указано, используется конфигурация `"default"` из файла, поставляемого библиотекой. Подробно о порядке сбора и слиянии источников - в [User Manual](UserManual.md#обзор-механизма-конфигурирования).
+If the configuration name is not specified, the `"default"` configuration from the file shipped with the library is used. For details on the collection order and merging of sources, see the [User Manual](UserManual.md#configuration-mechanism-overview).
 
-## Где лежат файлы конфигурации
+## Where the configuration files are located
 
-- **Поставляемый библиотекой** - рядом с файлом библиотеки (в пакете pyspla - внутри установленного пакета).
-- **Системный** - Linux: `/etc/spla/spla_conf.json`.
-- **Пользовательский** - Linux: `~/.config/spla/spla_conf.json`.
-- **Явный** - любой путь через `--spla-config-file`.
+- **Shipped with the library** - next to the library file (in the pyspla package - inside the installed package).
+- **System** - Linux: `/etc/spla/spla_conf.json`.
+- **User** - Linux: `~/.config/spla/spla_conf.json`.
+- **Explicit** - any path via `--spla-config-file`.
 
-Пути для macOS и Windows и правила «файла нет / файл не открывается» - в [User Manual](UserManual.md#конфигурационные-файлы).
+Paths for macOS and Windows and the rules for "file missing / file cannot be opened" are in the [User Manual](UserManual.md#configuration-files).

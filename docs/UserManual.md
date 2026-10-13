@@ -1,77 +1,77 @@
 # User Manual
 
-Мануал по механизму конфигурирования библиотеки spla. Это справочник: полное описание параметров, источников конфигурации, правил валидации и статусов. Практические сценарии использования приведены в [User Guide](UserGuide.md).
+A manual for the spla library configuration mechanism. This is a reference: a complete description of the parameters, configuration sources, validation rules and statuses. Practical usage scenarios are given in the [User Guide](UserGuide.md).
 
-## Содержание
+## Contents
 
-1. [НАЗВАНИЕ](#название)
-2. [ОБЗОР МЕХАНИЗМА КОНФИГУРИРОВАНИЯ](#обзор-механизма-конфигурирования)
-3. [ПАРАМЕТРЫ КОМАНДНОЙ СТРОКИ](#параметры-командной-строки)
-4. [ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ](#переменные-окружения)
-5. [КОНФИГУРАЦИОННЫЕ ФАЙЛЫ](#конфигурационные-файлы)
-6. [КОНФИГУРАЦИИ И НАСЛЕДОВАНИЕ](#конфигурации-и-наследование)
-7. [ВАЛИДАЦИЯ ПАРАМЕТРОВ](#валидация-параметров)
-8. [СТАТУСЫ И ПОВЕДЕНИЕ ПРИ ОШИБКАХ](#статусы-и-поведение-при-ошибках)
+1. [NAME](#name)
+2. [CONFIGURATION MECHANISM OVERVIEW](#configuration-mechanism-overview)
+3. [COMMAND LINE PARAMETERS](#command-line-parameters)
+4. [ENVIRONMENT VARIABLES](#environment-variables)
+5. [CONFIGURATION FILES](#configuration-files)
+6. [CONFIGURATIONS AND INHERITANCE](#configurations-and-inheritance)
+7. [PARAMETER VALIDATION](#parameter-validation)
+8. [STATUSES AND ERROR BEHAVIOR](#statuses-and-error-behavior)
 
-## НАЗВАНИЕ
+## NAME
 
-spla - фреймворк для математических вычислений с ускорением на GPU. Библиотека предоставляет примитивы разреженной линейной алгебры (матрицы, векторы, скаляры) и широкий спектр операций.
+spla - a framework for GPU-accelerated mathematical computations. The library provides sparse linear algebra primitives (matrices, vectors, scalars) and a wide range of operations.
 
-Для большинства пользователей важно, на каком устройстве будет запускаться их проект, поэтому библиотека предоставляет механизм конфигурирования: явное указание GPU, OpenCL-платформы, количества очередей команд и других параметров, влияющих на производительность и удобство пользователя.
+For most users it matters on which device their project runs, so the library provides a configuration mechanism: explicit GPU selection, OpenCL platform, number of command queues and other parameters that affect performance and user convenience.
 
-## ОБЗОР МЕХАНИЗМА КОНФИГУРИРОВАНИЯ
+## CONFIGURATION MECHANISM OVERVIEW
 
-Конфигурация spla собирается из шести источников, применяемых в порядке убывания приоритета.
+The spla configuration is assembled from six sources, applied in descending order of priority.
 
-| # | Источник | Как задаётся |
+| # | Source | How it is set |
 |---:|:---|:---|
-| 1 | Аргументы командной строки | флаги `--spla-*` |
-| 2 | Переменные окружения | переменные `SPLA_*` |
-| 3 | Файл с явно указанным путём | флаг `--spla-config-file` или `SPLA_CONFIG_FILE` |
-| 4 | Пользовательский файл | `~/.config/spla/spla_conf.json` (Linux) и аналоги |
-| 5 | Системный файл | `/etc/spla/spla_conf.json` (Linux) и аналоги |
-| 6 | Файл библиотеки | `spla_conf.json` рядом с файлом библиотеки |
+| 1 | Command line arguments | `--spla-*` flags |
+| 2 | Environment variables | `SPLA_*` variables |
+| 3 | File with an explicitly specified path | the `--spla-config-file` flag or `SPLA_CONFIG_FILE` |
+| 4 | User file | `~/.config/spla/spla_conf.json` (Linux) and equivalents |
+| 5 | System file | `/etc/spla/spla_conf.json` (Linux) and equivalents |
+| 6 | Library file | `spla_conf.json` next to the library file |
 
-Порядок сбора:
+Collection order:
 
-1. Читаются конфигурационные файлы (6 → 5 → 4 → 3) и **сливаются по именам конфигураций**: одноимённые конфигурации из разных файлов объединяются по параметрам, уникальные добавляются.
-2. Выбирается активная конфигурация: имя из `--spla-config` / `SPLA_CONFIG`, по умолчанию - `"default"`.
-3. Применяется выбранная конфигурация вместе с родителями из `extends`.
-4. Поверх применяются переменные окружения, затем аргументы командной строки (наивысший приоритет).
+1. Configuration files are read (6 → 5 → 4 → 3) and **merged by configuration name**: configurations with the same name from different files are merged parameter by parameter, unique ones are added.
+2. The active configuration is selected: the name from `--spla-config` / `SPLA_CONFIG`, `"default"` by default.
+3. The selected configuration is applied together with the parents from `extends`.
+4. Environment variables are applied on top, then command line arguments (highest priority).
 
-Результат попадает в итоговую конфигурацию, которая используется при инициализации ускорителя (выбор платформы и устройства, создание очередей команд, аллокатора, уровня логирования).
+The result goes into the final configuration, which is used when initializing the accelerator (platform and device selection, creation of command queues, allocator, verbosity level).
 
-## ПАРАМЕТРЫ КОМАНДНОЙ СТРОКИ
+## COMMAND LINE PARAMETERS
 
-Все флаги spla начинаются с `--spla-`. Флаги, не начинающиеся с `--spla-`, принадлежат программе, использующей библиотеку, и игнорируются механизмом конфигурирования.
+All spla flags start with `--spla-`. Flags that do not start with `--spla-` belong to the program using the library and are ignored by the configuration mechanism.
 
-| Флаг | Тип | Описание |
+| Flag | Type | Description |
 |:---|:---|:---|
-| `--spla-help` | - | Вывести справку и завершиться |
-| `--spla-version` | - | Вывести версию библиотеки и завершиться |
-| `--spla-config` | string | Имя конфигурации для применения. По умолчанию используется конфигурация `"default"` |
-| `--spla-config-file` | path | Путь к конфигурационному файлу. |
-| `--spla-backend` | string | Тип устройства: `gpu`, `cpu`, `any`, `by_index` |
-| `--spla-platform-index` | int | Индекс OpenCL-платформы. Только при `backend=by_index` |
-| `--spla-device-index` | int | Индекс OpenCL-устройства внутри платформы. Только при `backend=by_index` |
-| `--spla-if-gpu-unavailable` | string | Поведение при недоступности GPU: `use_cpu` - переключиться на CPU, `abort` - вернуть ошибку |
-| `--spla-queues-count` | int | Количество командных очередей OpenCL |
-| `--spla-profiling` | bool | Профилирование командных очередей: `true`, `false` |
-| `--spla-allocator-type` | string | Тип аллокатора: `general`, `linear` |
-| `--spla-linear-alloc-size` | int | Размер линейного аллокатора в байтах. Требуется при `allocator_type=linear`, игнорируется при `general` |
-| `--spla-verbosity` | int | Уровень логирования: `0` - нет вывода, `1` - только ошибки, `2` - ошибки и предупреждения, `3` - все сообщения |
+| `--spla-help` | - | Show help and exit |
+| `--spla-version` | - | Show the library version and exit |
+| `--spla-config` | string | Name of the configuration to apply. By default the `"default"` configuration is used |
+| `--spla-config-file` | path | Path to a configuration file. |
+| `--spla-backend` | string | Device type: `gpu`, `cpu`, `any`, `by_index` |
+| `--spla-platform-index` | int | OpenCL platform index. Only when `backend=by_index` |
+| `--spla-device-index` | int | Index of the OpenCL device within the platform. Only when `backend=by_index` |
+| `--spla-if-gpu-unavailable` | string | Behavior when GPU is unavailable: `use_cpu` - switch to CPU, `abort` - return an error |
+| `--spla-queues-count` | int | Number of OpenCL command queues |
+| `--spla-profiling` | bool | Profiling of command queues: `true`, `false` |
+| `--spla-allocator-type` | string | Allocator type: `general`, `linear` |
+| `--spla-linear-alloc-size` | int | Linear allocator size in bytes. Required when `allocator_type=linear`, ignored when `general` |
+| `--spla-verbosity` | int | Verbosity level: `0` - no output, `1` - errors only, `2` - errors and warnings, `3` - all messages |
 
-### Пример
+### Example
 
 ```bash
 ./my_program --spla-config-file=/etc/spla/spla_conf.json --spla-config=bench --spla-verbosity=0
 ```
 
-## ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
+## ENVIRONMENT VARIABLES
 
-Для каждого параметра командной строки (кроме `--spla-help` и `--spla-version`) существует аналог в виде переменной окружения.
+For each command line parameter (except `--spla-help` and `--spla-version`) there is an environment variable equivalent.
 
-| Переменная | Аналог флага |
+| Variable | Flag equivalent |
 |:---|:---|
 | `SPLA_CONFIG` | `--spla-config` |
 | `SPLA_CONFIG_FILE` | `--spla-config-file` |
@@ -85,36 +85,36 @@ spla - фреймворк для математических вычислени
 | `SPLA_LINEAR_ALLOC_SIZE` | `--spla-linear-alloc-size` |
 | `SPLA_VERBOSITY` | `--spla-verbosity` |
 
-### Пример
+### Example
 
 ```bash
 SPLA_CONFIG=bench SPLA_VERBOSITY=1 ./my_program
 ```
 
-## КОНФИГУРАЦИОННЫЕ ФАЙЛЫ
+## CONFIGURATION FILES
 
-Формат файла - JSON. Файл состоит из набора именованных конфигураций,каждая конфигурация - это набор параметров библиотеки.
+The file format is JSON. A file consists of a set of named configurations; each configuration is a set of library parameters.
 
-### Ключи конфигурации
+### Configuration keys
 
-| Ключ | Тип | Описание | Требования |
+| Key | Type | Description | Requirements |
 |:---|:---|:---|:---|
-| `extends` | array of string | Список конфигураций-родителей | Имена конфигураций со всех уровней файлов |
-| `backend` | string | Тип устройства: `gpu`, `cpu`, `any`, `by_index` | Обязателен |
-| `platform_index` | int | Индекс OpenCL-платформы | Обязателен при `backend=by_index`, иначе игнорируется |
-| `device_index` | int | Индекс OpenCL-устройства | Обязателен при `backend=by_index`, иначе игнорируется |
-| `if_gpu_unavailable` | string | Поведение при недоступности GPU: `use_cpu`, `abort` | Обязателен при `backend != cpu`, при `backend=cpu` игнорируется |
-| `queues_count` | int | Количество командных очередей | Обязателен, ≥ 1 |
-| `profiling` | bool | Профилирование очередей | Обязателен |
-| `allocator_type` | string | Тип аллокатора: `general`, `linear` | Обязателен |
-| `linear_alloc_size` | int | Размер линейного аллокатора (байт) | Обязателен при `allocator_type=linear`, при `general` игнорируется |
-| `verbosity` | int | Уровень логирования 0..3 | Обязателен |
+| `extends` | array of string | List of parent configurations | Names of configurations from all file levels |
+| `backend` | string | Device type: `gpu`, `cpu`, `any`, `by_index` | Required |
+| `platform_index` | int | OpenCL platform index | Required when `backend=by_index`, otherwise ignored |
+| `device_index` | int | OpenCL device index | Required when `backend=by_index`, otherwise ignored |
+| `if_gpu_unavailable` | string | Behavior when GPU is unavailable: `use_cpu`, `abort` | Required when `backend != cpu`, ignored when `backend=cpu` |
+| `queues_count` | int | Number of command queues | Required, &ge; 1 |
+| `profiling` | bool | Queue profiling | Required |
+| `allocator_type` | string | Allocator type: `general`, `linear` | Required |
+| `linear_alloc_size` | int | Linear allocator size (bytes) | Required when `allocator_type=linear`, ignored when `general` |
+| `verbosity` | int | Verbosity level 0..3 | Required |
 
-### Файл, поставляемый библиотекой
+### File shipped with the library
 
-Имя конфигурации `"default"` может быть определено **только** в файле, поставляемом библиотекой. Определение конфигурации с именем `"default"` в любом другом файле - ошибка парсинга.
+The configuration name `"default"` can be defined **only** in the file shipped with the library. Defining a configuration named `"default"` in any other file is a parsing error.
 
-Поставляемый файл имеет следующую структуру:
+The shipped file has the following structure:
 
 ```json
 {
@@ -131,59 +131,59 @@ SPLA_CONFIG=bench SPLA_VERBOSITY=1 ./my_program
 }
 ```
 
-### Расположение файлов
+### File locations
 
-**Файл библиотеки** - рядом с файлом библиотеки: Windows - рядом с DLL, Linux/macOS - рядом с `.so`/`.dylib` (путь определяется через адрес загруженной библиотеки). В составе пакета pyspla - внутри директории установленного Python-пакета.
+**Library file** - next to the library file: Windows - next to the DLL, Linux/macOS - next to the `.so`/`.dylib` (the path is determined via the address of the loaded library). Within the pyspla package - inside the installed Python package directory.
 
-**Системный файл:**
+**System file:**
 
 > Linux: `/etc/spla/spla_conf.json` \
 > macOS: `/Library/Application Support/spla/spla_conf.json` \
 > Windows: `%ProgramData%\spla\spla_conf.json`
 
-**Пользовательский файл:**
+**User file:**
 
 > Linux: `~/.config/spla/spla_conf.json` \
 > macOS: `~/Library/Application Support/spla/spla_conf.json` \
 > Windows: `%APPDATA%\spla\spla_conf.json`
 
-**Файл, заданный явно** - любой путь, заданный через `--spla-config-file` / `SPLA_CONFIG_FILE`.
+**Explicitly set file** - any path given via `--spla-config-file` / `SPLA_CONFIG_FILE`.
 
-### Семантика отсутствующих и неоткрывающихся файлов
+### Semantics of missing and unopenable files
 
-| Файл | Отсутствует | Существует, но не открывается |
+| File | Missing | Exists but cannot be opened |
 |:---|:---|:---|
-| Файл библиотеки | ошибка `FileNotExists` (обязателен) | ошибка `OpenFileError` |
-| Системный | пропуск | ошибка `OpenFileError` |
-| Пользовательский | пропуск | ошибка `OpenFileError` |
-| Явный (если указан) | ошибка `FileNotExists` | ошибка `OpenFileError` |
+| Library file | error `FileNotExists` (required) | error `OpenFileError` |
+| System | skipped | error `OpenFileError` |
+| User | skipped | error `OpenFileError` |
+| Explicit (if specified) | error `FileNotExists` | error `OpenFileError` |
 
-## КОНФИГУРАЦИИ И НАСЛЕДОВАНИЕ
+## CONFIGURATIONS AND INHERITANCE
 
-### Выбор активной конфигурации
+### Choosing the active configuration
 
 ```bash
-./program --spla-config=gpu1     # флаг
-SPLA_CONFIG=gpu1 ./program       # или переменная окружения
+./program --spla-config=gpu1     # flag
+SPLA_CONFIG=gpu1 ./program       # or environment variable
 ```
 
-Если имя не указано, используется конфигурация `"default"` из файла, поставляемого библиотекой.
+If the name is not specified, the `"default"` configuration from the file shipped with the library is used.
 
-### Слияние файлов
+### Merging files
 
-Конфигурации из файлов библиотеки, системного, пользовательского и явного сливаются по именам: одноимённые конфигурации объединяются по параметрам, уникальные добавляются. Параметры конфигурации из файла с более высоким приоритетом переопределяют параметры одноимённой конфигурации из файла с более низким приоритетом.
+Configurations from the library, system, user and explicit files are merged by name: configurations with the same name are merged parameter by parameter, unique ones are added. Parameters of a configuration from a file with higher priority override the parameters of the same-named configuration from a file with lower priority.
 
-### Наследование `extends`
+### Inheritance via `extends`
 
-Если конфигурация содержит поле `extends`, библиотека сначала применяет указанные в нём конфигурации по порядку: последняя в списке переопределяет предыдущие. Параметры самой конфигурации применяются последними и переопределяют всех родителей.
+If a configuration contains an `extends` field, the library first applies the configurations listed in it in order: the last one in the list overrides the previous ones. The parameters of the configuration itself are applied last and override all parents.
 
-Если конфигурация не содержит `extends`, применяются только её собственные параметры.
+If a configuration does not contain `extends`, only its own parameters are applied.
 
-Имена в `extends` берутся из всех конфигураций, определённых во всех файлах. Это позволяет наследовать конфигурации, определённые на другом уровне, например пользовательская конфигурация может наследовать `"default"` из файла библиотеки.
+Names in `extends` are taken from all configurations defined in all files. This allows inheriting configurations defined at another level, for example, a user configuration can inherit `"default"` from the library file.
 
-Циклическое наследование обнаруживается и приводит к статусу `ConfigurationCycle`.
+Circular inheritance is detected and results in the `ConfigurationCycle` status.
 
-Пример цикла - конфигурации наследуют друг друга напрямую:
+Example of a cycle - configurations inherit each other directly:
 
 ```json
 {
@@ -192,11 +192,11 @@ SPLA_CONFIG=gpu1 ./program       # или переменная окружени�
 }
 ```
 
-Такая конфигурация отклоняется при загрузке (`ConfigurationCycle`). Циклом является и самоссылка (`"extends": ["a"]` внутри конфигурации `a`). Ромбовидное наследование (`a` → `b`, `a` → `c`, где `b` и `c` оба наследуют `d`) циклом не является.
+Such a configuration is rejected when loading (`ConfigurationCycle`). A self-reference is also a cycle (`"extends": ["a"]` inside configuration `a`). Diamond inheritance (`a` → `b`, `a` → `c`, where `b` and `c` both inherit `d`) is not a cycle.
 
-### Пример
+### Example
 
-Файл, поставляемый библиотекой:
+File shipped with the library:
 
 ```json
 {
@@ -211,7 +211,7 @@ SPLA_CONFIG=gpu1 ./program       # или переменная окружени�
 }
 ```
 
-Пользовательский файл:
+User file:
 
 ```json
 {
@@ -227,79 +227,79 @@ SPLA_CONFIG=gpu1 ./program       # или переменная окружени�
 }
 ```
 
-Итоговый набор параметров конфигурации `gpu0`:
+Final set of parameters of the `gpu0` configuration:
 
-| Параметр | Значение | Источник |
+| Parameter | Value | Source |
 |:---|:---|:---|
-| backend | `by_index` | конфигурация `gpu0` |
-| platform_index | `0` | конфигурация `gpu0` |
-| device_index | `0` | конфигурация `gpu0` |
-| if_gpu_unavailable | `abort` | конфигурация `gpu0` |
-| queues_count | `1` | файл библиотеки (`default`) |
-| profiling | `true` | конфигурация `gpu0` |
-| allocator_type | `general` | файл библиотеки (`default`) |
-| verbosity | `2` | файл библиотеки (`default`) |
+| backend | `by_index` | configuration `gpu0` |
+| platform_index | `0` | configuration `gpu0` |
+| device_index | `0` | configuration `gpu0` |
+| if_gpu_unavailable | `abort` | configuration `gpu0` |
+| queues_count | `1` | library file (`default`) |
+| profiling | `true` | configuration `gpu0` |
+| allocator_type | `general` | library file (`default`) |
+| verbosity | `2` | library file (`default`) |
 
-## ВАЛИДАЦИЯ ПАРАМЕТРОВ
+## PARAMETER VALIDATION
 
-После сборки конфигурация из всех источников проходит валидацию.
+After assembly, the configuration from all sources is validated.
 
-### Ошибки (конфигурация недействительна)
+### Errors (the configuration is invalid)
 
-| Параметр | Требование |
+| Parameter | Requirement |
 |:---|:---|
-| `backend` | Обязателен, одно из: `gpu`, `cpu`, `any`, `by_index` |
-| `platform_index`, `device_index` | Обязательны при `backend=by_index`, должны быть ≥ 0 |
-| `if_gpu_unavailable` | Обязателен при `backend != cpu`, одно из: `use_cpu`, `abort` |
-| `queues_count` | Обязателен, ≥ 1 |
-| `profiling` | Обязателен |
-| `allocator_type` | Обязателен, одно из: `general`, `linear` |
-| `linear_alloc_size` | Обязателен при `allocator_type=linear` |
-| `verbosity` | Обязателен, 0..3 |
+| `backend` | Required, one of: `gpu`, `cpu`, `any`, `by_index` |
+| `platform_index`, `device_index` | Required when `backend=by_index`, must be &ge; 0 |
+| `if_gpu_unavailable` | Required when `backend != cpu`, one of: `use_cpu`, `abort` |
+| `queues_count` | Required, &ge; 1 |
+| `profiling` | Required |
+| `allocator_type` | Required, one of: `general`, `linear` |
+| `linear_alloc_size` | Required when `allocator_type=linear` |
+| `verbosity` | Required, 0..3 |
 
-### Предупреждения (параметр игнорируется, но конфигурация действительна)
+### Warnings (the parameter is ignored, but the configuration is valid)
 
-| Ситуация | Сообщение |
+| Situation | Message |
 |:---|:---|
-| `platform_index`/`device_index` заданы при `backend != by_index` | параметр игнорируется |
-| `if_gpu_unavailable` задан при `backend=cpu` | параметр игнорируется |
-| `linear_alloc_size` задан при `allocator_type=general` | параметр игнорируется |
+| `platform_index`/`device_index` set when `backend != by_index` | the parameter is ignored |
+| `if_gpu_unavailable` set when `backend=cpu` | the parameter is ignored |
+| `linear_alloc_size` set when `allocator_type=general` | the parameter is ignored |
 
-### Поведение при недоступности устройства
+### Behavior when the device is unavailable
 
-Реализовано в инициализации ускорителя:
+Implemented in accelerator initialization:
 
-| Конфигурация | GPU доступен | GPU недоступен |
+| Configuration | GPU available | GPU unavailable |
 |:---|:---|:---|
-| `backend=gpu`, `if_gpu_unavailable=use_cpu` | используется GPU | ищется OpenCL-устройство CPU, нет - `DeviceNotFound` |
-| `backend=gpu` / `any`, `if_gpu_unavailable=abort` | используется GPU | ошибка `DeviceNotFound`, при запуске через `pyspla` поднимается `SplaFailedInitialize` |
-| `backend=cpu` | - | ищется OpenCL-устройство CPU, нет - `DeviceNotFound` |
-| `backend=by_index` | - | выбирается платформа/устройство по индексам, устройство недоступно - `DeviceNotFound` |
+| `backend=gpu`, `if_gpu_unavailable=use_cpu` | GPU is used | an OpenCL CPU device is searched for, if none - `DeviceNotFound` |
+| `backend=gpu` / `any`, `if_gpu_unavailable=abort` | GPU is used | error `DeviceNotFound`; when run through `pyspla`, `SplaFailedInitialize` is raised |
+| `backend=cpu` | - | an OpenCL CPU device is searched for, if none - `DeviceNotFound` |
+| `backend=by_index` | - | the platform/device is selected by indexes; if the device is unavailable - `DeviceNotFound` |
 
-## СТАТУСЫ И ПОВЕДЕНИЕ ПРИ ОШИБКАХ
+## STATUSES AND ERROR BEHAVIOR
 
-Механизм конфигурирования возвращает один из следующих статусов.
+The configuration mechanism returns one of the following statuses.
 
-| Статус | Значение |
+| Status | Meaning |
 |:---|:---|
-| `Ok` | Конфигурация собрана и валидна |
-| `HelpRequested` | Запрошена справка (`--spla-help`) - текст уже выведен |
-| `VersionRequested` | Запрошена версия (`--spla-version`) - уже выведена |
-| `CliOrEnvParseError` | Ошибка разбора аргументов командной строки или переменных окружения |
-| `FileNotExists` | Отсутствует обязательный файл (файл библиотеки или явно указанный) |
-| `OpenFileError` | Файл существует, но не может быть открыт |
-| `ParseConfError` | Ошибка разбора JSON, неверный тип значения или `"default"` в не-библиотечном файле |
-| `ConfigurationNotFound` | Указанное имя конфигурации не найдено ни в одном файле |
-| `ConfigurationCycle` | Обнаружен цикл в `extends` |
-| `MissedParameters` | Отсутствуют обязательные параметры |
-| `PlatformNotFound` / `DeviceNotFound` | Устройство по конфигурации недоступно |
-| `InvalidConfigParams` | Недопустимое значение параметра |
+| `Ok` | The configuration is assembled and valid |
+| `HelpRequested` | Help requested (`--spla-help`) - the text has already been printed |
+| `VersionRequested` | Version requested (`--spla-version`) - already printed |
+| `CliOrEnvParseError` | Error parsing command line arguments or environment variables |
+| `FileNotExists` | A required file is missing (the library file or an explicitly specified one) |
+| `OpenFileError` | The file exists but cannot be opened |
+| `ParseConfError` | JSON parsing error, invalid value type, or `"default"` in a non-library file |
+| `ConfigurationNotFound` | The specified configuration name was not found in any file |
+| `ConfigurationCycle` | A cycle in `extends` was detected |
+| `MissedParameters` | Required parameters are missing |
+| `PlatformNotFound` / `DeviceNotFound` | The device required by the configuration is unavailable |
+| `InvalidConfigParams` | Invalid parameter value |
 
-### Поведение в CLI
+### CLI behavior
 
-Инструмент командной строки `spla`:
+The `spla` command line tool:
 
-- `spla --softcheck` - проверка работоспособности окружения (конфигурирование, инициализация OpenCL, задание 2 + 3),
-- `spla --spla-help` - справка, код возврата 0,
-- `spla --spla-version` - версия библиотеки (например, `SPLA version: 0.0.5`), код возврата 0,
-- при ошибке конфигурирования - сообщение об ошибке и код возврата 1.
+- `spla --softcheck` - environment sanity check (configuration, OpenCL initialization, task 2 + 3),
+- `spla --spla-help` - help, exit code 0,
+- `spla --spla-version` - library version (for example, `SPLA version: 0.0.5`), exit code 0,
+- on a configuration error - an error message and exit code 1.
