@@ -91,11 +91,11 @@ namespace spla {
 
     std::string get_default_config_path() {
 #ifdef _WIN32
-        HMODULE hModule;
-        GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-                          (LPCTSTR) &get_default_config_path, &hModule);
+        HMODULE hModule = nullptr;
+        GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
+                           reinterpret_cast<LPCSTR>(&get_default_config_path), &hModule);
         char path[MAX_PATH];
-        GetModuleFileName(hModule, path, MAX_PATH);
+        GetModuleFileNameA(hModule, path, MAX_PATH);
         std::string dir = path;
         dir             = dir.substr(0, dir.find_last_of("\\/"));
         return dir + "\\spla_conf.json";
