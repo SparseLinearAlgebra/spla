@@ -35,6 +35,7 @@ __all__ = [
 ]
 
 import os
+import sys
 import ctypes
 import pathlib
 import platform
@@ -63,6 +64,10 @@ class SplaError(Exception):
 
 
 class SplaFailedInitialize(SplaError):
+    pass
+
+
+class SplaFailedConfigure(SplaError):
     pass
 
 
@@ -191,6 +196,8 @@ def load_library(lib_path):
     _spla.spla_Library_finalize.argtypes = []
     _spla.spla_Library_initialize.restype = _status_t
     _spla.spla_Library_initialize.argtypes = []
+    _spla.spla_Configure.restype = _status_t
+    _spla.spla_Configure.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
     _spla.spla_Library_set_accelerator.restype = _status_t
     _spla.spla_Library_set_accelerator.argtypes = [_enum_t]
     _spla.spla_Library_set_platform.restype = _status_t
@@ -616,6 +623,36 @@ def default_callback(status, msg, file, function, line, user_data):
     print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
 
+def filter_spla_args(argv):
+    """Filter sys.argv, keeping only spla options (starting with --spla-)"""
+    result = []
+    skip_next = False
+    for i, arg in enumerate(argv):
+        if skip_next:
+            skip_next = False
+            continue
+        if arg.startswith("--spla-"):
+            result.append(arg)
+            if i + 1 < len(argv) and not argv[i + 1].startswith("-"):
+                result.append(argv[i + 1])
+                skip_next = True
+    return result
+
+
+def configure():
+    """Configure spla from command line arguments"""
+    if _spla:
+        args = filter_spla_args(sys.argv[1:])
+        argc = len(args)
+        argv = (ctypes.c_char_p * argc)(*[arg.encode("utf-8") for arg in args])
+        status = _spla.spla_Configure(argc, argv)
+
+        if status not in (0, 1, 2):
+            raise SplaFailedConfigure(
+                f"spla configuration failed with status {status}"
+            )
+
+
 def init_library():
     if _spla:
         if _spla.spla_Library_initialize() != 0:
@@ -656,6 +693,7 @@ def initialize():
         raise Exception(f"no compiled spla file {TARGET} to load")
 
     load_library(_spla_path)
+    configure()
     init_library()
 
     _default_callback = _callback_t(default_callback)

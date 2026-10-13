@@ -26,12 +26,25 @@
 /**********************************************************************************/
 
 #include "c_config.hpp"
+#include <core/configure.hpp>
 
 void spla_Library_finalize() {
     spla::Library::get()->finalize();
 }
 spla_Status spla_Library_initialize() {
-    return spla::Library::get() ? SPLA_STATUS_OK : SPLA_STATUS_ERROR;
+    auto* lib = spla::Library::get();
+    if (!lib) return SPLA_STATUS_ERROR;
+
+    if (spla::config_final.backend.has_value() &&
+        lib->get_accelerator() == nullptr &&
+        spla::config_final.if_gpu_unavailable.value_or("") != "use_cpu") {
+        return SPLA_STATUS_ERROR;
+    }
+
+    return SPLA_STATUS_OK;
+}
+spla_Status spla_Configure(int argc, char** argv) {
+    return to_c_status(spla::configure(argc, argv));
 }
 spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator) {
     return to_c_status(spla::Library::get()->set_accelerator(from_c_accelerator_type(accelerator)));

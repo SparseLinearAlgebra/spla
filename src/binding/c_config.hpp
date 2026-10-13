@@ -28,6 +28,7 @@
 #ifndef SPLA_C_CONFIG_HPP
 #define SPLA_C_CONFIG_HPP
 
+#include <core/cl_config_status.hpp>
 #include <spla.h>
 #include <spla.hpp>
 
@@ -45,6 +46,10 @@ static spla::ref_ptr<T> as_ref(S* s) {
 }
 
 static spla_Status to_c_status(spla::Status status) {
+    return static_cast<spla_Status>(status);
+}
+
+static spla_Status to_c_status(spla::ConfigStatus status) {
     return static_cast<spla_Status>(status);
 }
 

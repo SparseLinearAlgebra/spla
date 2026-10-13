@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 
-#include "cl_config_status.hpp"
+#include <core/cl_config_status.hpp>
 #include <svector.hpp>
 
 #ifndef SPLA_RELEASE
@@ -56,11 +56,6 @@
 #define SPLA_OPENCL_DEVICE   "SPLA_OPENCL_DEVICE"
 
 namespace spla {
-    struct InitResult {
-        Status       status;
-        ConfigStatus config_status;
-    };
-    InitResult init_with_configure(int argc, char** argv);
 
     /**
      * @addtogroup internal

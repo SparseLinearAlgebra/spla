@@ -27,9 +27,9 @@
 
 #include "cl_accelerator.hpp"
 
+#include <core/configure.hpp>
 #include <opencl/cl_alloc_general.hpp>
 #include <opencl/cl_alloc_linear.hpp>
-#include <opencl/cl_configure.hpp>
 #include <opencl/cl_counter.hpp>
 #include <opencl/cl_program_cache.hpp>
 
@@ -37,61 +37,100 @@
 
 namespace spla {
 
+    std::optional<std::pair<int, int>> find_first_device(cl_device_type type) {
+        std::vector<cl::Platform> platforms;
+#if defined(CL_HPP_ENABLE_EXCEPTIONS)
+        try {
+            cl::Platform::get(&platforms);
+        } catch (const cl::Error& e) {
+            LOG_MSG(Status::PlatformNotFound, "failed to query OpenCL platforms: " << e.what());
+            return std::nullopt;
+        }
+#else
+        cl::Platform::get(&platforms);
+#endif
+        if (platforms.empty()) {
+            LOG_MSG(Status::PlatformNotFound, "no OpenCL platforms available");
+            return std::nullopt;
+        }
+
+        for (size_t p = 0; p < platforms.size(); p++) {
+            std::vector<cl::Device> devices;
+#if defined(CL_HPP_ENABLE_EXCEPTIONS)
+            try {
+                platforms[p].getDevices(type, &devices);
+            } catch (const cl::Error& e) {
+                LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
+                continue;
+            }
+#else
+            platforms[p].getDevices(type, &devices);
+#endif
+            if (!devices.empty()) {
+                return std::make_pair(static_cast<int>(p), 0);
+            }
+        }
+
+        return std::nullopt;
+    }
+
     CLAccelerator::CLAccelerator()  = default;
     CLAccelerator::~CLAccelerator() = default;
 
-    InitResult init_with_configure(int argc, char** argv) {
-        InitResult result;
-        result.config_status = configure(argc, argv);
-
-        if (result.config_status == ConfigStatus::VersionRequested) {
-            result.status = Status::Ok;
-            return result;
-        }
-
-        if (result.config_status != ConfigStatus::Ok) {
-            result.status = Status::Error;
-            return result;
-        }
-
-        auto* acc = get_acc_cl();
-        if (!acc) {
-            result.status = Status::NoAcceleration;
-            return result;
-        }
-
-        result.status = acc->init();
-        return result;
-    }
-
-
     Status CLAccelerator::init() {
+        if (!config_final.backend.has_value()) {
+            ConfigStatus status = configure(0, nullptr);
+            if (status != ConfigStatus::Ok) return Status::Error;
+        }
 
         std::string backend = config_final.backend.value();
         int         platform_index;
         int         device_index;
-        if (backend == "by_index") {
-            platform_index = config_final.platform_index.value();
-            device_index   = config_final.device_index.value();
-        }
-        std::string if_gpu_unavailable;
-        if (backend != "cpu") {
-            if_gpu_unavailable = config_final.if_gpu_unavailable.value();
-        }
-        int         queues_count   = config_final.queues_count.value();
-        bool        profiling      = config_final.profiling.value();
-        std::string allocator_type = config_final.allocator_type.value();
-        size_t      linear_alloc_size;
-        if (allocator_type == "linear") {
-            linear_alloc_size = config_final.linear_alloc_size.value();
-        }
-        int verbosity = config_final.verbosity.value();
+        int         queues_count      = config_final.queues_count.value();
+        bool        profiling         = config_final.profiling.value();
+        std::string allocator_type    = config_final.allocator_type.value();
+        size_t      linear_alloc_size = config_final.linear_alloc_size.value_or(0);
+        int         verbosity         = config_final.verbosity.value();
 
         Library::get()->set_verbosity(verbosity);
+
+        if (backend == "cpu") {
+            auto found = find_first_device(CL_DEVICE_TYPE_CPU);
+            if (!found) {
+                LOG_MSG(Status::DeviceNotFound, "no OpenCL CPU device found (backend='cpu')");
+                return Status::DeviceNotFound;
+            }
+            platform_index = found->first;
+            device_index   = found->second;
+
+        } else if (backend == "gpu" || backend == "any") {
+            auto found = find_first_device(CL_DEVICE_TYPE_GPU);
+
+            if (!found && config_final.if_gpu_unavailable == "use_cpu") {
+                LOG_MSG(Status::Ok, "no OpenCL GPU device found, fallback to CPU (if_gpu_unavailable='use_cpu')");
+                found = find_first_device(CL_DEVICE_TYPE_CPU);
+            }
+
+            if (!found) {
+                LOG_MSG(Status::DeviceNotFound, "no OpenCL device found for backend='" << backend << "'");
+                return Status::DeviceNotFound;
+            }
+
+            platform_index = found->first;
+            device_index   = found->second;
+
+        } else if (backend == "by_index") {
+            platform_index = config_final.platform_index.value();
+            device_index   = config_final.device_index.value();
+        } else {
+            LOG_MSG(Status::InvalidArgument, "unknown backend: " << backend);
+            return Status::InvalidArgument;
+        }
 
         LOG_MSG(Status::Ok, "Initializing accelerator...");
 
         LOG_MSG(Status::Ok, "Configuration parameters:");
+        LOG_MSG(Status::Ok, "  backend   = " << backend);
         LOG_MSG(Status::Ok, "  platform  = " << platform_index);
         LOG_MSG(Status::Ok, "  device    = " << device_index);
         LOG_MSG(Status::Ok, "  queues    = " << queues_count);
@@ -102,16 +141,24 @@ namespace spla {
         }
         LOG_MSG(Status::Ok, "  verbosity = " << verbosity);
 
-        set_platform(platform_index);
-        set_device(device_index);
-        set_profiling(profiling);
-        set_queues_count(queues_count);
+        Status status = set_platform(platform_index);
+        if (status != Status::Ok) return status;
+
+        status = set_device(device_index);
+        if (status != Status::Ok) return status;
+
+        status = set_profiling(profiling);
+        if (status != Status::Ok) return status;
+
+        status = set_queues_count(queues_count);
+        if (status != Status::Ok) return status;
 
         if (allocator_type == "linear") {
-            set_linear_allocator(linear_alloc_size);
+            status = set_linear_allocator(linear_alloc_size);
         } else {
-            set_general_allocator();
+            status = set_general_allocator();
         }
+        if (status != Status::Ok) return status;
 
         m_cache = std::make_unique<CLProgramCache>();
         LOG_MSG(Status::Ok, "program cache created");

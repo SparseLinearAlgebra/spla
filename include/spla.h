@@ -135,6 +135,7 @@ typedef void(spla_MessageCallback)(spla_Status, const char* message, const char*
 
 SPLA_API void        spla_Library_finalize();
 SPLA_API spla_Status spla_Library_initialize();
+SPLA_API spla_Status spla_Configure(int argc, char** argv);
 SPLA_API spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator);
 SPLA_API spla_Status spla_Library_set_platform(int index);
 SPLA_API spla_Status spla_Library_set_device(int index);
