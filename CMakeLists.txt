@@ -233,7 +233,6 @@ if (SPLA_BUILD_OPENCL)
         set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
         add_subdirectory(deps/opencl-icd-loader)
 
-        # HPP bindings — из deps (только для Linux/Windows)
         message(STATUS "Add Khronos OpenCL HPP bindings")
         add_library(HeadersCpp INTERFACE)
         add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
