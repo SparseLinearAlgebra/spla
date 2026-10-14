@@ -41,10 +41,10 @@
 namespace spla {
 
     template<typename T>
-    void cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
+    bool cl_sort_by_key_bitonic(cl::CommandQueue& queue, cl::Buffer& keys, cl::Buffer& values, uint size) {
         if (size <= 1) {
             LOG_MSG(Status::Ok, "nothing to do");
-            return;
+            return true;
         }
 
         auto* acc = get_acc_cl();
@@ -62,6 +62,12 @@ namespace spla {
                 .set_source(source_sort_bitonic)
                 .acquire();
 
+        const uint local_limit  = capped_group_size(builder, acc, "bitonic_sort_local");
+        const uint global_limit = capped_group_size(builder, acc, "bitonic_sort_global");
+        if (local_limit == 0 || global_limit == 0) {
+            return false;
+        }
+
         auto kernel_local = builder.make_kernel("bitonic_sort_local");
         kernel_local.setArg(0, keys);
         kernel_local.setArg(1, values);
@@ -69,18 +75,19 @@ namespace spla {
 
         if (size <= local_size) {
             const uint wave_size = acc->get_wave_size();
-            const uint n_threads = align(std::min(size, max_treads_per_block), wave_size);
+            const uint n_threads = std::min(align(std::min(size, max_treads_per_block), wave_size), local_limit);
 
             cl::NDRange global(n_threads);
             cl::NDRange local(n_threads);
             queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), global, local);
-            return;
+            return true;
         }
 
-        const uint n_groups = div_up(size, local_size);
+        const uint n_groups      = div_up(size, local_size);
+        const uint block_threads = std::min(max_treads_per_block, local_limit);
 
-        cl::NDRange step_pre_sort_global(max_treads_per_block * n_groups);
-        cl::NDRange step_pre_sort_local(max_treads_per_block);
+        cl::NDRange step_pre_sort_global(block_threads * n_groups);
+        cl::NDRange step_pre_sort_local(block_threads);
         queue.enqueueNDRangeKernel(kernel_local, cl::NDRange(), step_pre_sort_global, step_pre_sort_local);
 
         auto kernel_global = builder.make_kernel("bitonic_sort_global");
@@ -89,9 +96,10 @@ namespace spla {
         kernel_global.setArg(2, size);
         kernel_global.setArg(3, uint(local_size * 2));
 
-        cl::NDRange step_final_global(acc->get_max_wgs());
-        cl::NDRange step_final_local(acc->get_max_wgs());
+        cl::NDRange step_final_global(global_limit);
+        cl::NDRange step_final_local(global_limit);
         queue.enqueueNDRangeKernel(kernel_global, cl::NDRange(), step_final_global, step_final_local);
+        return true;
     }
 
     template<typename T>
@@ -180,11 +188,10 @@ namespace spla {
 
         const uint sort_switch = 2u << 14u;
 
-        if (n <= sort_switch) {
-            cl_sort_by_key_bitonic<T>(queue, keys, values, n);
-        } else {
-            cl_sort_by_key_radix<T>(queue, keys, values, n, tmp_alloc, max_key);
+        if (n <= sort_switch && cl_sort_by_key_bitonic<T>(queue, keys, values, n)) {
+            return;
         }
+        cl_sort_by_key_radix<T>(queue, keys, values, n, tmp_alloc, max_key);
     }
 
 }// namespace spla

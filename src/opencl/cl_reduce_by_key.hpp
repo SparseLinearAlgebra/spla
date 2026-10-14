@@ -59,7 +59,7 @@ namespace spla {
 
         const uint block_size        = cl_acc->get_default_wgs();
         const uint sequential_switch = 32;
-        const uint small_switch      = cl_acc->get_max_wgs();
+        const uint small_switch      = capped_group_size(builder, cl_acc, "reduce_by_key_small");
 
         if (size == 0) {
             reduced_size = 0;
