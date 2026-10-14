@@ -63,22 +63,11 @@ namespace spla {
 
 }// namespace spla
 
-#ifndef SPLA_RELEASE
-    #define LOG_MSG(status, msg)                                                                                           \
-        do {                                                                                                               \
-            std::stringstream __ss;                                                                                        \
-            __ss << msg;                                                                                                   \
-            Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-        } while (false);
-#else
-    #define LOG_MSG(status, msg)                                                                                               \
-        do {                                                                                                                   \
-            if ((status) != Status::Ok) {                                                                                      \
-                std::stringstream __ss;                                                                                        \
-                __ss << msg;                                                                                                   \
-                Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-            }                                                                                                                  \
-        } while (false);
-#endif
+#define LOG_MSG(status, msg)                                                                                           \
+    do {                                                                                                               \
+        std::stringstream __ss;                                                                                        \
+        __ss << msg;                                                                                                   \
+        Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
+    } while (false);
 
 #endif//SPLA_LOGGER_HPP

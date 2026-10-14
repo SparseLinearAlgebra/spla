@@ -139,7 +139,6 @@ namespace spla {
 
     Status Library::set_message_callback(MessageCallback callback) {
         m_logger->set_msg_callback(std::move(callback));
-        LOG_MSG(Status::Ok, "set new message callback");
         return Status::Ok;
     }
 
@@ -150,20 +149,13 @@ namespace spla {
     }
 
     Status Library::set_default_callback() {
-        auto callback = [](spla::Status       status,
-                           const std::string& msg,
-                           const std::string& file,
-                           const std::string& function,
-                           int                line) {
-            std::stringstream to_output;
-
-            to_output << "[" << file << ":" << line << "] "
-                      << to_string(status) << ": " << msg << std::endl;
-
-            if (status == Status::Ok)
-                std::cout << to_output.str();
-            else
-                std::cerr << to_output.str();
+        auto callback = [](spla::Status                        status,
+                           const std::string&                  msg,
+                           [[maybe_unused]] const std::string& file,
+                           [[maybe_unused]] const std::string& function,
+                           [[maybe_unused]] int                line) {
+            std::ostream& out = (status == Status::Ok) ? std::cout : std::cerr;
+            out << to_string(status) << ": " << msg << std::endl;
         };
         return set_message_callback(callback);
     }
@@ -227,11 +219,7 @@ namespace spla {
         if (!g_library) {
             g_library = std::make_unique<Library>();
 
-#ifndef SPLA_RELEASE
-            // In debug mode we automatically set default callback
-            // to get log (error) messages from library start-up
             g_library->set_default_callback();
-#endif
 
 #ifdef SPLA_BUILD_OPENCL
             // On init we by default attempt to set up OpenCL runtime

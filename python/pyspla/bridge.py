@@ -619,8 +619,8 @@ def load_library(lib_path):
 
 def default_callback(status, msg, file, function, line, user_data):
     decoded_msg = msg.decode("utf-8")
-    decoded_file = file.decode("utf-8")
-    print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
+    status_name = "OK" if status == 0 else str(_status_mapping.get(status, SplaError))
+    print(f"pyspla: {status_name}: {decoded_msg}")
 
 
 def filter_spla_args(argv):
