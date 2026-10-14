@@ -666,4 +666,158 @@ TEST(opencl_intersect, random_large_float) {
     expect_result(got, expected);
 }
 
+TEST(opencl_intersect, single_element_match_float) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    auto a_keys_vec = make_dense_uint({5u});
+    auto a_vals_vec = make_dense_float({2.0f});
+    auto b_keys_vec = make_dense_uint({5u});
+    auto b_vals_vec = make_dense_float({3.0f});
+
+    auto r_keys = spla::Vector::make(1, spla::UINT);
+    auto r_vals = spla::Vector::make(1, spla::FLOAT);
+    auto op     = spla::PLUS_FLOAT.template cast_safe<spla::OpBinary>();
+
+    auto status = spla::exec_intersect(a_keys_vec, a_vals_vec, b_keys_vec, b_vals_vec, r_keys, r_vals, op);
+    ASSERT_EQ(status, spla::Status::Ok);
+
+    expect_result(collect_sorted<float>(r_keys, r_vals),
+                  std::vector<std::pair<uint, float>>{{5, 5}});
+}
+
+TEST(opencl_intersect, exact_tile_multiple_float) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    const uint N = 512;
+
+    std::vector<uint>  a_keys(N);
+    std::vector<uint>  b_keys(N);
+    std::vector<float> a_vals(N, 1.0f);
+    std::vector<float> b_vals(N, 2.0f);
+    for (uint i = 0; i < N; ++i) {
+        a_keys[i] = i;
+        b_keys[i] = i;
+    }
+
+    auto a_keys_vec = make_dense_uint(a_keys);
+    auto a_vals_vec = make_dense_float(a_vals);
+    auto b_keys_vec = make_dense_uint(b_keys);
+    auto b_vals_vec = make_dense_float(b_vals);
+
+    auto r_keys = spla::Vector::make(N, spla::UINT);
+    auto r_vals = spla::Vector::make(N, spla::FLOAT);
+    auto op     = spla::PLUS_FLOAT.template cast_safe<spla::OpBinary>();
+
+    auto status = spla::exec_intersect(a_keys_vec, a_vals_vec, b_keys_vec, b_vals_vec, r_keys, r_vals, op);
+    ASSERT_EQ(status, spla::Status::Ok);
+
+    EXPECT_EQ(count_keys(r_keys), static_cast<int>(N));
+
+    auto got = collect_sorted<float>(r_keys, r_vals);
+    ASSERT_EQ(got.size(), N);
+    for (uint i = 0; i < N; ++i) {
+        EXPECT_EQ(got[i].first, i);
+        EXPECT_FLOAT_EQ(got[i].second, 3.0f);
+    }
+}
+
+TEST(opencl_intersect, tile_boundary_matches_float) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    std::vector<uint>  a_keys(256);
+    std::vector<float> a_vals(256);
+    for (uint i = 0; i < 256; ++i) {
+        a_keys[i] = i;
+        a_vals[i] = static_cast<float>(i);
+    }
+
+    std::vector<uint>  b_keys = {0, 127, 128, 129, 255};
+    std::vector<float> b_vals(5, 10.0f);
+
+    auto a_keys_vec = make_dense_uint(a_keys);
+    auto a_vals_vec = make_dense_float(a_vals);
+    auto b_keys_vec = make_dense_uint(b_keys);
+    auto b_vals_vec = make_dense_float(b_vals);
+
+    auto r_keys = spla::Vector::make(5, spla::UINT);
+    auto r_vals = spla::Vector::make(5, spla::FLOAT);
+    auto op     = spla::PLUS_FLOAT.template cast_safe<spla::OpBinary>();
+
+    auto status = spla::exec_intersect(a_keys_vec, a_vals_vec, b_keys_vec, b_vals_vec, r_keys, r_vals, op);
+    ASSERT_EQ(status, spla::Status::Ok);
+
+    expect_result(collect_sorted<float>(r_keys, r_vals),
+                  std::vector<std::pair<uint, float>>{{0, 10}, {127, 137}, {128, 138}, {129, 139}, {255, 265}});
+}
+
+TEST(opencl_intersect, reversed_asymmetry_large_float) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    const uint N = 500000;
+
+    std::vector<uint>  a_keys(N);
+    std::vector<float> a_vals(N, 1.0f);
+    for (uint i = 0; i < N; ++i) {
+        a_keys[i] = i;
+    }
+
+    std::vector<uint>  b_keys = {5, 500, N - 1};
+    std::vector<float> b_vals = {2.0f, 3.0f, 4.0f};
+
+    auto a_keys_vec = make_dense_uint(a_keys);
+    auto a_vals_vec = make_dense_float(a_vals);
+    auto b_keys_vec = make_dense_uint(b_keys);
+    auto b_vals_vec = make_dense_float(b_vals);
+
+    auto r_keys = spla::Vector::make(b_keys.size(), spla::UINT);
+    auto r_vals = spla::Vector::make(b_vals.size(), spla::FLOAT);
+    auto op     = spla::PLUS_FLOAT.template cast_safe<spla::OpBinary>();
+
+    auto status = spla::exec_intersect(a_keys_vec, a_vals_vec, b_keys_vec, b_vals_vec, r_keys, r_vals, op);
+    ASSERT_EQ(status, spla::Status::Ok);
+
+    EXPECT_EQ(count_keys(r_keys), 3);
+    expect_result(collect_sorted<float>(r_keys, r_vals),
+                  std::vector<std::pair<uint, float>>{{5, 3}, {500, 4}, {N - 1, 5}});
+}
+
+TEST(opencl_intersect, ordered_output_float) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    const uint N = 2000;
+
+    std::vector<uint>  a_keys(N);
+    std::vector<float> a_vals(N, 1.0f);
+    for (uint i = 0; i < N; ++i) {
+        a_keys[i] = i;
+    }
+
+    std::vector<uint>  b_keys(N / 2);
+    std::vector<float> b_vals(N / 2, 1.0f);
+    for (uint i = 0; i < N / 2; ++i) {
+        b_keys[i] = 2 * i + 1;
+    }
+
+    auto a_keys_vec = make_dense_uint(a_keys);
+    auto a_vals_vec = make_dense_float(a_vals);
+    auto b_keys_vec = make_dense_uint(b_keys);
+    auto b_vals_vec = make_dense_float(b_vals);
+
+    auto r_keys = spla::Vector::make(N, spla::UINT);
+    auto r_vals = spla::Vector::make(N, spla::FLOAT);
+    auto op     = spla::PLUS_FLOAT.template cast_safe<spla::OpBinary>();
+
+    auto status = spla::exec_intersect(a_keys_vec, a_vals_vec, b_keys_vec, b_vals_vec, r_keys, r_vals, op);
+    ASSERT_EQ(status, spla::Status::Ok);
+
+    const int count = count_keys(r_keys);
+    ASSERT_EQ(count, static_cast<int>(N / 2));
+
+    for (int i = 0; i < count; ++i) {
+        uint key;
+        r_keys->get_uint(static_cast<uint>(i), key);
+        EXPECT_EQ(key, 2u * static_cast<uint>(i) + 1u);
+    }
+}
+
 SPLA_GTEST_MAIN_WITH_FINALIZE
