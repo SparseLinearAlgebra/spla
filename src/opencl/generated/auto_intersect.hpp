@@ -67,36 +67,37 @@ uint lower_bound_local(const uint          x,
     }
     return first;
 }
-__kernel void intersect(
-        __global const uint* a_keys,
-        __global const TYPE* a_vals,
-        const uint           a_size,
-        __global const uint* b_keys,
-        __global const TYPE* b_vals,
-        const uint           b_size,
+__kernel void intersect_naive(
+        __global const uint* x_keys,
+        __global const TYPE* x_vals,
+        const uint           x_size,
+        __global const uint* y_keys,
+        __global const TYPE* y_vals,
+        const uint           y_size,
         __global uint*       r_keys_ai,
         __global uint*       r_keys_ax,
         __global uint*       r_vals_ai,
         __global TYPE*       r_vals_ax,
-        __global uint*       r_size) {
+        __global uint*       r_size,
+        const uint           swapped) {
 
     const uint gid   = get_global_id(0);
     const uint gsize = get_global_size(0);
 
-    for (uint i = gid; i < a_size; i += gsize) {
-        const uint key   = a_keys[i];
-        const TYPE val_a = a_vals[i];
+    for (uint i = gid; i < x_size; i += gsize) {
+        const uint key   = x_keys[i];
+        const TYPE val_x = x_vals[i];
 
-        // Binary search for matching key in B
-        const uint pos = lower_bound(key, 0, b_size, b_keys);
+        const uint pos = lower_bound(key, 0, y_size, y_keys);
 
-        if (pos < b_size && b_keys[pos] == key) {
+        if (pos < y_size && y_keys[pos] == key) {
             const uint idx = atomic_add(r_size, 1);
             r_keys_ai[idx] = idx;
             r_keys_ax[idx] = key;
             r_vals_ai[idx] = idx;
-            r_vals_ax[idx] = OP_BINARY(val_a, b_vals[pos]);
+            r_vals_ax[idx] = swapped ? OP_BINARY(y_vals[pos], val_x) : OP_BINARY(val_x, y_vals[pos]);
         }
     }
 }
+
 )";
