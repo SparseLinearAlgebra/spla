@@ -78,19 +78,21 @@ documentation conventions hook.
 Map-first and improve-as-you-go rules; map location via README + project
 structure hook.
 
-### S14: reusing skill to hooks [in progress]
+### S14: reusing skill to hooks [done a53f248e]
 
 Reuse-over-duplicate principle and record-reuse rule; directory checklist via
 the project structure hook.
 
-### S15: code-review skill to hooks [pending]
+### S15: code-review skill to hooks [in progress]
 
 Hook reference for the integration branch; doc conventions via the
 documentation skill; keep review loop and checklist.
 
-### S16: user-guidance-transfer skill to hooks [pending]
+### S16: user-guidance-transfer skill to hooks [cancelled]
 
-Already process-only; neutral example.
+No adaptation needed: the skill is already process-only (issue comment +
+verbatim recording in Design Notes) and contains no project-specific facts;
+its example uses generic CS terms. Nothing to commit.
 
 ## Out-of-scope findings (reported, not fixed)
 
