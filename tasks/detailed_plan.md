@@ -42,13 +42,13 @@ working loop, batch/hub issue machinery, plan files, integration modes.
 Neutral examples; hook references for commit format and docs mapping; keep
 global/detailed plan formats, subtask format, design notes, task authoring.
 
-### S7: subtask-loop skill to hooks [in progress]
+### S7: subtask-loop skill to hooks [done c3407243]
 
 Generalize the docs-only rule (no source files); hook reference for the
 integration branch; keep cycle, outcomes, tracking, blocked protocol,
 completion verification.
 
-### S8: git-workflow skill to hooks [pending]
+### S8: git-workflow skill to hooks [in progress]
 
 Hook references for config key, commit format, PR flow; third-party content
 rule generalized with paths resolved via the project structure hook; keep
