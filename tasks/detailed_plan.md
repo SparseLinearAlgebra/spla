@@ -13,20 +13,20 @@ Branching model (integration branch, `spla.integrationBranch` config key,
 stacked/direct modes), per-subtask commit format with closing keywords, pull
 request rules (template, rebase-and-merge).
 
-### S2: DEVELOPMENT.md — fill stub sections + Quality checks [in progress]
+### S2: DEVELOPMENT.md — fill stub sections + Quality checks [done ef59f3fb]
 
 Building from sources (`build.py` options), unit-tests execution
 (`run_tests.py`, CPU/GPU), release management (`bump_version.py`, deploy
 workflows), new Quality checks section (local gate commands, CI workflow
 mapping, tool requirements).
 
-### S3: README.md — fix deps row, extend structure table, add Documentation section
+### S3: README.md — fix deps row, extend structure table, add Documentation section [in progress]
 
 `deps/` is vendored source, not submodules; structure table gains `tasks/` and
 `AGENTS.md`; new Documentation section (Doxygen/pdoc/root-`.md` systems,
 publish locations, source-change to doc-action mapping).
 
-### S4: AGENTS.md — declare hook contract, update skills table
+### S4: AGENTS.md — declare hook contract, update skills table [pending]
 
 Hook-to-location contract (contribution guidelines, quality checks, project
 structure, documentation conventions); skills table descriptions aligned with
@@ -91,6 +91,11 @@ documentation skill; keep review loop and checklist.
 ### S16: user-guidance-transfer skill to hooks [pending]
 
 Already process-only; neutral example.
+
+## Out-of-scope findings (reported, not fixed)
+
+- `Doxyfile` INPUT references `include/spla_c/`, which does not exist in the repository; Doxygen warns about the
+  missing input. Fixing the Doxyfile is out of scope for this task.
 
 ## Verification (docs-only task)
 
