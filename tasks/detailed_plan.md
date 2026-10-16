@@ -68,12 +68,12 @@ the doc first, 0 failures, never weaken tests).
 
 Thin pointer to the quality checks hook; process rule (no commit before clean).
 
-### S12: documentation skill to hooks [in progress]
+### S12: documentation skill to hooks [done e8edee6a]
 
 Keep principles and completeness checklist; mapping table moves to the
 documentation conventions hook.
 
-### S13: project-navigation skill to hooks [pending]
+### S13: project-navigation skill to hooks [in progress]
 
 Map-first and improve-as-you-go rules; map location via README + project
 structure hook.
