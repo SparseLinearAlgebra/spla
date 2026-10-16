@@ -54,12 +54,12 @@ Hook references for config key, commit format, PR flow; third-party content
 rule generalized with paths resolved via the project structure hook; keep
 operational procedures.
 
-### S9: quality-gates skill to hooks [in progress]
+### S9: quality-gates skill to hooks [done e31b10a9]
 
 Keep PASS/BLOCKED semantics and no-exceptions rule; gate contents referenced
 via the quality checks hook.
 
-### S10: run-tests skill to hooks [pending]
+### S10: run-tests skill to hooks [in progress]
 
 Thin pointer to the quality checks hook + CI workflows; process rules (read
 the doc first, 0 failures, never weaken tests).
