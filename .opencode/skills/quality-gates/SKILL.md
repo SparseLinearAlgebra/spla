@@ -12,16 +12,16 @@ immediately before the final pull request to `main`.
 
 ## What the gate is
 
-The gate is the combination of the checks defined in the *quality checks* hook
-(see the project facts contract of `AGENTS.md`): the test suite, the
-style/lint checks, and the docs build. The CI workflows are the source of truth
+The gate is **every** check defined in the *quality checks* hook (see the
+project facts contract of `AGENTS.md`) — including compilation and test
+execution, not only style and docs. The CI workflows are the source of truth
 for the exact commands they run; this skill only defines the gate semantics.
 
 ## Procedure
 
 1. Run every check from the *quality checks* hook that applies to the areas the
-   change touches. Tests: 0 failures, 0 skipped. Style: no errors. Docs build:
-   exit 0.
+   change touches. Build: exit 0. Tests: 0 failures, 0 skipped. Style: no
+   errors. Docs build: exit 0.
 2. Interpret the result:
    - All clean → **PASS**. Proceed to merge (see `git-workflow`).
    - Any failure → **BLOCKED**.
