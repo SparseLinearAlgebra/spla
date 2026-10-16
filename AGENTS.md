@@ -17,7 +17,7 @@ repository for all.
 ## Main Principles
 
 * This file is a short entry point for fast cold errors-free start.
-* Only one source of truth. No duplicates. Each thing (in both code and documentation) described exactly once. Use generalization (especially for code), cross-references, links, other similar techniques to avoid duplicates and reuse staff.
+* Only one source of truth. No duplicates. Each thing (anywhere in code, issues, pull request descriptions, and documentation) described exactly once. Use generalization (especially for code), cross-references, links, other similar techniques to avoid duplicates and reuse stuff. Find what you can to reuse before creating a new one.
 * Source-of-truth hierarchy: code, scripts, CI configs > docs. If a fact can
   be extracted from code or scripts (e.g., CI configs), it is not duplicated
   in docs. Docs hold only what cannot be unambiguously reconstructed from
@@ -25,7 +25,12 @@ repository for all.
   to docs, code, or CI — they never re-describe them.
 * Tools, not instructions. If you can do something with existing tool --- do it. No thinking, no long instructions, no manual analysis. You want to analyze code coverage? Just run coverage tool and analyze report. No workaround for regular tasks. If there is a tool for regular task it must be installed and configured appropriately.
 * Never stay silent about problems. Any problem discovered or detected must be addressed. If it is in current scope or the fix is easy (e.g. a misprint), fix it — even if pre-existing. If it is significantly out of scope, report it to the user and propose creating an issue.
-* Always learn, never forget — encode patterns before session ends
+* Always learn, never forget — encode patterns before session ends.
+* Issues, pull requests, and their comments are a knowledge base of technical
+  details. Log task-related findings and inspirations in the descriptions or
+  comments of the respective issues/PRs. When faced with a problem, check
+  whether a similar problem was solved or described previously — look for the
+  solution in existing issues, PRs, and their comments first.
 
 ## Project facts contract
 
