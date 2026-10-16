@@ -48,13 +48,13 @@ Generalize the docs-only rule (no source files); hook reference for the
 integration branch; keep cycle, outcomes, tracking, blocked protocol,
 completion verification.
 
-### S8: git-workflow skill to hooks [in progress]
+### S8: git-workflow skill to hooks [done 3e70c99d]
 
 Hook references for config key, commit format, PR flow; third-party content
 rule generalized with paths resolved via the project structure hook; keep
 operational procedures.
 
-### S9: quality-gates skill to hooks [pending]
+### S9: quality-gates skill to hooks [in progress]
 
 Keep PASS/BLOCKED semantics and no-exceptions rule; gate contents referenced
 via the quality checks hook.
