@@ -83,16 +83,17 @@ structure hook.
 Reuse-over-duplicate principle and record-reuse rule; directory checklist via
 the project structure hook.
 
-### S15: code-review skill to hooks [in progress]
+### S15: code-review skill to hooks [done 0b328aef]
 
 Hook reference for the integration branch; doc conventions via the
 documentation skill; keep review loop and checklist.
 
-### S16: user-guidance-transfer skill to hooks [cancelled]
+### S16: user-guidance-transfer skill — track in git [in progress]
 
-No adaptation needed: the skill is already process-only (issue comment +
-verbatim recording in Design Notes) and contains no project-specific facts;
-its example uses generic CS terms. Nothing to commit.
+No content adaptation needed: the skill is already process-only (issue comment
++ verbatim recording in Design Notes) and contains no project-specific facts;
+its example uses generic CS terms. The file itself was still untracked, so it
+is added to git as part of the adapted skill set.
 
 ## Out-of-scope findings (reported, not fixed)
 
@@ -101,11 +102,13 @@ its example uses generic CS terms. Nothing to commit.
 
 ## Verification (docs-only task)
 
-- [ ] Zero project facts in `.opencode/skills/` (no config keys, commands,
+- [x] Zero project facts in `.opencode/skills/` (no config keys, commands,
       paths, workflow filenames, PySymGym residue)
-- [ ] Every hook used by a skill exists in the AGENTS.md contract and resolves
+- [x] Every hook used by a skill exists in the AGENTS.md contract and resolves
       to an existing doc section with that exact heading
 - [ ] Every command/path in CONTRIBUTING.md, DEVELOPMENT.md, README.md verified
-      against reality
-- [ ] No fact duplicated across docs; skill frontmatter valid (name = folder,
+      against reality — build.py/run_tests.py/bump_version.py options checked
+      against `--help`/source, all doc links resolve, doxygen build tested
+      (exit 0); clang-format and pdoc commands pending the global tool install
+- [x] No fact duplicated across docs; skill frontmatter valid (name = folder,
       neutral description)
