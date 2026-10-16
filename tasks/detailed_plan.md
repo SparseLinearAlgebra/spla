@@ -20,13 +20,13 @@ Building from sources (`build.py` options), unit-tests execution
 workflows), new Quality checks section (local gate commands, CI workflow
 mapping, tool requirements).
 
-### S3: README.md — fix deps row, extend structure table, add Documentation section [in progress]
+### S3: README.md — fix deps row, extend structure table, add Documentation section [done 148b451e]
 
 `deps/` is vendored source, not submodules; structure table gains `tasks/` and
 `AGENTS.md`; new Documentation section (Doxygen/pdoc/root-`.md` systems,
 publish locations, source-change to doc-action mapping).
 
-### S4: AGENTS.md — declare hook contract, update skills table [pending]
+### S4: AGENTS.md — declare hook contract, update skills table [in progress]
 
 Hook-to-location contract (contribution guidelines, quality checks, project
 structure, documentation conventions); skills table descriptions aligned with
