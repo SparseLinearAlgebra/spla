@@ -73,12 +73,12 @@ Thin pointer to the quality checks hook; process rule (no commit before clean).
 Keep principles and completeness checklist; mapping table moves to the
 documentation conventions hook.
 
-### S13: project-navigation skill to hooks [in progress]
+### S13: project-navigation skill to hooks [done fe1522e3]
 
 Map-first and improve-as-you-go rules; map location via README + project
 structure hook.
 
-### S14: reusing skill to hooks [pending]
+### S14: reusing skill to hooks [in progress]
 
 Reuse-over-duplicate principle and record-reuse rule; directory checklist via
 the project structure hook.
