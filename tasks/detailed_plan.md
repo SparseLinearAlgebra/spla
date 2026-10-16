@@ -95,7 +95,7 @@ No content adaptation needed: the skill is already process-only (issue comment
 its example uses generic CS terms. The file itself was still untracked, so it
 is added to git as part of the adapted skill set.
 
-### S17: standardize clang-format on v21 [in progress]
+### S17: standardize clang-format on v21 [done d21ae7f1]
 
 The locally installed clang-format is 21.1.8; the gate requires local and CI
 versions to match. Bump CI (clang-format.yml: action pin v4.15.0 -> v4.18.0,
