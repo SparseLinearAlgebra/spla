@@ -26,13 +26,13 @@ mapping, tool requirements).
 `AGENTS.md`; new Documentation section (Doxygen/pdoc/root-`.md` systems,
 publish locations, source-change to doc-action mapping).
 
-### S4: AGENTS.md — declare hook contract, update skills table [in progress]
+### S4: AGENTS.md — declare hook contract, update skills table [done 472137d3]
 
 Hook-to-location contract (contribution guidelines, quality checks, project
 structure, documentation conventions); skills table descriptions aligned with
 the new skill frontmatter; PySymGym residue removed.
 
-### S5: workflow-management skill to hooks [pending]
+### S5: workflow-management skill to hooks [in progress]
 
 Strip project facts (config key, doc paths) to hook references; keep the
 working loop, batch/hub issue machinery, plan files, integration modes.
