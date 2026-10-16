@@ -59,12 +59,12 @@ operational procedures.
 Keep PASS/BLOCKED semantics and no-exceptions rule; gate contents referenced
 via the quality checks hook.
 
-### S10: run-tests skill to hooks [in progress]
+### S10: run-tests skill to hooks [done d3c1c969]
 
 Thin pointer to the quality checks hook + CI workflows; process rules (read
 the doc first, 0 failures, never weaken tests).
 
-### S11: code-style skill to hooks [pending]
+### S11: code-style skill to hooks [in progress]
 
 Thin pointer to the quality checks hook; process rule (no commit before clean).
 
