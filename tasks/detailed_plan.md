@@ -32,12 +32,12 @@ Hook-to-location contract (contribution guidelines, quality checks, project
 structure, documentation conventions); skills table descriptions aligned with
 the new skill frontmatter; PySymGym residue removed.
 
-### S5: workflow-management skill to hooks [in progress]
+### S5: workflow-management skill to hooks [done 143c4b98]
 
 Strip project facts (config key, doc paths) to hook references; keep the
 working loop, batch/hub issue machinery, plan files, integration modes.
 
-### S6: planning skill to hooks [pending]
+### S6: planning skill to hooks [in progress]
 
 Neutral examples; hook references for commit format and docs mapping; keep
 global/detailed plan formats, subtask format, design notes, task authoring.
