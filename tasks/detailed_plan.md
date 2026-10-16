@@ -37,12 +37,12 @@ the new skill frontmatter; PySymGym residue removed.
 Strip project facts (config key, doc paths) to hook references; keep the
 working loop, batch/hub issue machinery, plan files, integration modes.
 
-### S6: planning skill to hooks [in progress]
+### S6: planning skill to hooks [done 49ebce4b]
 
 Neutral examples; hook references for commit format and docs mapping; keep
 global/detailed plan formats, subtask format, design notes, task authoring.
 
-### S7: subtask-loop skill to hooks [pending]
+### S7: subtask-loop skill to hooks [in progress]
 
 Generalize the docs-only rule (no source files); hook reference for the
 integration branch; keep cycle, outcomes, tracking, blocked protocol,
