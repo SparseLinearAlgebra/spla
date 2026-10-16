@@ -95,6 +95,14 @@ No content adaptation needed: the skill is already process-only (issue comment
 its example uses generic CS terms. The file itself was still untracked, so it
 is added to git as part of the adapted skill set.
 
+### S17: standardize clang-format on v21 [in progress]
+
+The locally installed clang-format is 21.1.8; the gate requires local and CI
+versions to match. Bump CI (clang-format.yml: action pin v4.15.0 -> v4.18.0,
+version 20 -> 21) and DEVELOPMENT.md (v20 -> v21), and reformat the single
+file that diverges under v21 (src/core/top.hpp, lambda return types in three
+macro lines). Verified: full check passes with exit 0.
+
 ## Out-of-scope findings (reported, not fixed)
 
 - `Doxyfile` INPUT references `include/spla_c/`, which does not exist in the repository; Doxygen warns about the
@@ -106,9 +114,10 @@ is added to git as part of the adapted skill set.
       paths, workflow filenames, PySymGym residue)
 - [x] Every hook used by a skill exists in the AGENTS.md contract and resolves
       to an existing doc section with that exact heading
-- [ ] Every command/path in CONTRIBUTING.md, DEVELOPMENT.md, README.md verified
+- [x] Every command/path in CONTRIBUTING.md, DEVELOPMENT.md, README.md verified
       against reality — build.py/run_tests.py/bump_version.py options checked
       against `--help`/source, all doc links resolve, doxygen build tested
-      (exit 0); clang-format and pdoc commands pending the global tool install
+      (exit 0), pdoc build tested (exit 0), clang-format check tested (exit 0
+      after the v21 standardization in S17)
 - [x] No fact duplicated across docs; skill frontmatter valid (name = folder,
       neutral description)

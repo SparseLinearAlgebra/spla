@@ -65,7 +65,7 @@ The local quality gate a change must pass before integration. All commands are e
 1. **Build** — `python ./build.py --build-dir=build --build-type=Release --tests=YES`
 2. **Unit tests** — `python ./run_tests.py --build-dir=build`; success is no `FAILED` in the output (GPU runs only on
    self-hosted CI, the local gate is CPU)
-3. **Style** — clang-format **v20** (the version must match CI's) over the C/C++ sources of `include/`, `src/`,
+3. **Style** — clang-format **v21** (the version must match CI's) over the C/C++ sources of `include/`, `src/`,
    `tests/` and `examples/` with the repository `.clang-format`:
 
    ```shell
@@ -87,8 +87,8 @@ CI runs the same checks; the workflows are the source of truth for what CI execu
 | `.github/workflows/build.yml` | library build on Windows and macOS |
 | `.github/workflows/ubuntu.yml` | build + CPU unit tests on Ubuntu |
 | `.github/workflows/self-hosted.yml` | build + GPU unit tests (NVIDIA, AMD) on self-hosted runners |
-| `.github/workflows/clang-format.yml` | clang-format v20 check over `include/`, `src/`, `tests/`, `examples/` |
+| `.github/workflows/clang-format.yml` | clang-format v21 check over `include/`, `src/`, `tests/`, `examples/` |
 | `.github/workflows/docs-cpp.yml` | Doxygen build and publish (push to `main`) |
 | `.github/workflows/docs-python.yml` | pdoc build and publish (push to `main`) |
 
-Local tool requirements: clang-format 20, doxygen (with graphviz `dot` for diagrams), pdoc.
+Local tool requirements: clang-format 21, doxygen (with graphviz `dot` for diagrams), pdoc.
