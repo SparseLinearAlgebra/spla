@@ -64,11 +64,11 @@ via the quality checks hook.
 Thin pointer to the quality checks hook + CI workflows; process rules (read
 the doc first, 0 failures, never weaken tests).
 
-### S11: code-style skill to hooks [in progress]
+### S11: code-style skill to hooks [done 981e2e7f]
 
 Thin pointer to the quality checks hook; process rule (no commit before clean).
 
-### S12: documentation skill to hooks [pending]
+### S12: documentation skill to hooks [in progress]
 
 Keep principles and completeness checklist; mapping table moves to the
 documentation conventions hook.
