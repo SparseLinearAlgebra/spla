@@ -31,8 +31,30 @@
 #include <spla.hpp>
 
 #include <cmath>
+#include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
+
+void write_bench_entry(const std::string& path, const char* algo, const spla::Timer& gpu) {
+    const auto& laps = gpu.get_laps_ms();
+    if (laps.empty()) return;
+
+    // the first lap includes one-time OpenCL warmup costs, skip it when possible
+    const std::size_t begin = laps.size() > 1 ? 1 : 0;
+    const double      count = static_cast<double>(laps.size() - begin);
+
+    double mean = 0.0;
+    for (std::size_t i = begin; i < laps.size(); ++i) mean += laps[i];
+    mean /= count;
+
+    double var = 0.0;
+    for (std::size_t i = begin; i < laps.size(); ++i) var += (laps[i] - mean) * (laps[i] - mean);
+    const double stdev = std::sqrt(var / count);
+
+    std::ofstream out(path);
+    out << "{\"name\": \"" << algo << "\", \"unit\": \"ms\", \"value\": " << mean << ", \"range\": \"" << stdev << "\"}" << std::endl;
+}
 
 void verify_exact(const char* where, int a, int b) {
     std::cout << "CHECK " << where << "\n";

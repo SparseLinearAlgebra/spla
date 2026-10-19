@@ -32,6 +32,7 @@
 #include <iostream>
 
 #define OPT_MTXPATH      "mtxpath"
+#define OPT_BENCH        "bench"
 #define OPT_NITERS       "niters"
 #define OPT_SOURCE       "source"
 #define OPT_RUN_REF      "run-ref"
@@ -48,6 +49,7 @@ std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const st
     std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
     options->add_option("", cxxopts::Option("h,help", "display help info", cxxopts::value<bool>()->default_value("false")));
     options->add_option("", cxxopts::Option(OPT_MTXPATH, "path to matrix file", cxxopts::value<std::string>()));
+    options->add_option("", cxxopts::Option(OPT_BENCH, "path to json file to write benchmark result (disabled if empty)", cxxopts::value<std::string>()->default_value("")));
     options->add_option("", cxxopts::Option(OPT_NITERS, "number of iterations to run", cxxopts::value<int>()->default_value("4")));
     options->add_option("", cxxopts::Option(OPT_SOURCE, "source vertex to run", cxxopts::value<int>()->default_value("0")));
     options->add_option("", cxxopts::Option(OPT_RUN_REF, "check validity running naive version", cxxopts::value<bool>()->default_value("true")));

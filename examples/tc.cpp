@@ -111,6 +111,11 @@ int main(int argc, const char* const* argv) {
         }
     }
 
+    const std::string bench_path = args[OPT_BENCH].as<std::string>();
+    if (!bench_path.empty()) {
+        write_bench_entry(bench_path, "TC", timer_gpu);
+    }
+
     if (args[OPT_RUN_REF].as<bool>()) {
         std::vector<int>                            ref_v(N);
         std::vector<std::vector<spla::uint>>        ref_A(N, std::vector<spla::uint>());
