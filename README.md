@@ -108,6 +108,9 @@ get good speedup, what is much faster than `scipy` or `networkx`.
 
 More details with performance study given down bellow.
 
+Continuous performance tracking of the algorithm examples on the project's self-hosted GPUs (NVIDIA and AMD) is
+published at [the benchmark dashboard](https://sparselinearalgebra.github.io/spla/dev/bench/).
+
 ### Comparison on a Nvidia GPU
 
 | ![stats](./docs/stats/rq1_rel.png)                                                                                                            |

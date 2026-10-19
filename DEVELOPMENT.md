@@ -87,8 +87,36 @@ CI runs the same checks; the workflows are the source of truth for what CI execu
 | `.github/workflows/build.yml` | library build on Windows and macOS |
 | `.github/workflows/ubuntu.yml` | build + CPU unit tests on Ubuntu |
 | `.github/workflows/self-hosted.yml` | build + GPU unit tests (NVIDIA, AMD) on self-hosted runners |
+| `.github/workflows/benchmark.yml` | continuous GPU benchmarks (NVIDIA, AMD) on self-hosted runners, published to the GitHub Pages dashboard |
 | `.github/workflows/clang-format.yml` | clang-format v21 check over `include/`, `src/`, `tests/`, `examples/` |
 | `.github/workflows/docs-cpp.yml` | Doxygen build and publish (push to `main`) |
 | `.github/workflows/docs-python.yml` | pdoc build and publish (push to `main`) |
 
 Local tool requirements: clang-format 21, doxygen (with graphviz `dot` for diagrams), pdoc.
+
+## Performance tracking
+
+Continuous benchmarking of the algorithm examples (BFS, SSSP, PageRank, triangle count) on both self-hosted GPUs is
+run by `.github/workflows/benchmark.yml` and published to the GitHub Pages dashboard:
+<https://sparselinearalgebra.github.io/spla/dev/bench/>. One chart per algorithm shows one line per GPU; the plotted
+value is the total time across all tracked datasets in ms, with the per-dataset breakdown in the point tooltip.
+
+Design decisions that are not visible from the code:
+
+- **Datasets are real-world graphs from the SuiteSparse Matrix Collection**, listed in `bench/matrices.json`. Their
+  sizes are capped by the 2 GB VRAM of the NVIDIA GeForce GT 1030 on the self-hosted runner.
+- **Matrices are cached locally on the runner** (`~/spla-bench-data`, override with `SPLA_BENCH_DATA`) because the
+  collection's hosts are intermittently unreachable — the herokuapp mirror 301-redirects to an S3 file host, and
+  either can fail name resolution or connections. Each manifest entry lists several source URLs tried in order; once
+  a matrix is cached, runs need no network at all.
+- **The first timing lap is discarded as warmup** (one-time OpenCL kernel compile / context init), see
+  `write_bench_entry` in `examples/common.hpp`.
+
+Routine changes:
+
+- Add or replace a dataset: edit `bench/matrices.json` only — the workflow reads the manifest, nothing else needs to
+  change. The matrix is downloaded on the next run.
+- Change the dashboard page: edit `bench/dashboard/index.html` (the source of truth) and re-commit it to
+  `gh-pages:dev/bench/index.html`; the benchmark action keeps an existing `index.html` and only updates `data.js`.
+
+Regression alerts (commit comment plus workflow failure at a 150% threshold) are configured in the workflow itself.

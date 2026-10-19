@@ -149,7 +149,7 @@ errors.
 - The page must tolerate a missing or empty `data.js` (first run) without JS
   errors.
 
-### S5: benchmark workflow
+### S5: benchmark workflow [done 3ce1fd56]
 
 **Code:** `.github/workflows/benchmark.yml`. Trigger: push to
 `main`/`release`/`pre-release` with a code paths filter plus
