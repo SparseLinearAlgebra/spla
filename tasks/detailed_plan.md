@@ -204,3 +204,9 @@ section.
 - The DEVELOPMENT.md section states facts that cannot be read from code (why
   sparse.tamu.edu, why local cache, VRAM constraint) and points to the manifest
   and workflow for everything else — no duplication of their content.
+
+## Review fixes (post code review)
+
+- Dashboard JS: removed an unused `gi` parameter in the per-algorithm chart
+  callback; re-verified with node and re-deployed to
+  `gh-pages:dev/bench/index.html`.
