@@ -186,7 +186,7 @@ dashboard); tracked as a post-integration check.
   `benchmark-data-dir-path: dev/bench`, `comment-on-alert: true`,
   `fail-on-alert: true`, `alert-threshold: 150%`.
 
-### S6: documentation
+### S6: documentation [done ac59c3ac]
 
 **Code:** none (documentation-only subtask; code gates skipped, docs build is
 the relevant gate).
