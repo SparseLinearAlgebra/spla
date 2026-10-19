@@ -1,0 +1,23 @@
+[
+  {
+    "name": "coAuthorsCiteseer",
+    "urls": [
+      "https://sparse.tamu.edu/MM/DIMACS10/coAuthorsCiteseer.tar.gz",
+      "https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/coAuthorsCiteseer.tar.gz"
+    ]
+  },
+  {
+    "name": "roadNet-CA",
+    "urls": [
+      "https://sparse.tamu.edu/MM/SNAP/roadNet-CA.tar.gz",
+      "https://suitesparse-collection-website.herokuapp.com/MM/SNAP/roadNet-CA.tar.gz"
+    ]
+  },
+  {
+    "name": "cit-Patents",
+    "urls": [
+      "https://sparse.tamu.edu/MM/SNAP/cit-Patents.tar.gz",
+      "https://suitesparse-collection-website.herokuapp.com/MM/SNAP/cit-Patents.tar.gz"
+    ]
+  }
+]
