@@ -120,7 +120,7 @@ breakdown in `extra`; unreadable input exits 1.
   dataset in input order.
 - No `range` on aggregated entries (the action treats it as optional).
 
-### S4: custom dashboard page on gh-pages
+### S4: custom dashboard page on gh-pages [done a0a855bf]
 
 **Code:** `bench/dashboard/index.html` — static Chart.js page (CDN script,
 same approach as the action's default template) that loads `data.js`
@@ -152,14 +152,15 @@ errors.
 ### S5: benchmark workflow
 
 **Code:** `.github/workflows/benchmark.yml`. Trigger: push to
-`main`/`release`/`pre-release` with a code paths filter (`.github/**`,
-`examples/**`, `include/**`, `src/**`, `bench/**`, `CMakeLists.txt`); no
-pull_request trigger (action security caveat). Top-level permissions:
-`contents: write`, `deployments: write`.
+`main`/`release`/`pre-release` with a code paths filter plus
+`workflow_dispatch` for manual runs; no pull_request trigger (action security
+caveat). Top-level permissions: `contents: write`, `deployments: write`.
 
-**Tests:** YAML parse check (`python3 -c "import yaml,sys; yaml.safe_load(...)"`).
-End-to-end verification happens on the first CI run after integration (seeds
-`data.js` and the dashboard); the plan tracks that as a post-integration check.
+**Tests:** YAML parse check; the dataset-list extraction one-liner and the
+store-job merge snippet were simulated locally against synthetic per-GPU
+artifacts (8 merged entries, one per algorithm x GPU). End-to-end verification
+happens on the first CI run after integration (seeds `data.js` and the
+dashboard); tracked as a post-integration check.
 
 **Docs:** the CI mapping table row is added in S6 (single source of truth).
 
@@ -167,9 +168,11 @@ End-to-end verification happens on the first CI run after integration (seeds
 - Job `build` (self-hosted): checkout with submodules, CMake configure + build
   exactly like the build job of `self-hosted.yml` (examples are ON by default).
 - Job `bench` (needs build, self-hosted, matrix over the two GPUs reusing the
-  platform/device IDs from `self-hosted.yml`): run
-  `python3 bench/download_data.py`; for each algorithm in bfs sssp pr tc and
-  each dataset in the manifest run
+  platform/device IDs from `self-hosted.yml`; no checkout — it reuses the
+  build job's workspace like the test job of `self-hosted.yml`): run
+  `python3 bench/download_data.py --data-dir <runner.home>/spla-bench-data`;
+  read the dataset list from `bench/matrices.json` (single source of truth,
+  not hardcoded); for each algorithm in bfs sssp pr tc and each dataset run
   `./build/<algo> --mtxpath <data-dir>/<ds>.mtx --platform <p> --device 0
   --run-cpu=false --run-ref=false --bench <out.json>` (binaries land at the
   build dir root, not in a subdirectory); then
