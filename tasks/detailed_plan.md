@@ -25,7 +25,7 @@ the shared example option/CLI infrastructure in `examples/options.hpp` and
 stdlib only); the job structure, GPU matrix entries and platform/device IDs of
 `.github/workflows/self-hosted.yml`; existing doc sections (DEVELOPMENT.md CI
 table, README Performance section) instead of new pages. No new dependencies:
-C++ JSON is hand-written for a fixed 4-field schema; Python scripts use the
+C++ JSON is hand-written for a fixed small schema; Python scripts use the
 standard library only.
 
 ### S1: bench mode in the four algorithm examples [done f44de140]
@@ -33,9 +33,12 @@ standard library only.
 **Code:** `examples/options.hpp` — new `OPT_BENCH "bench"` option (string, path
 to a JSON file, default empty = disabled). `examples/common.hpp` — new helper
 `write_bench_entry(const std::string& path, const char* algo, const
-spla::Timer& gpu)` computing mean and stdev of `gpu.get_laps_ms()` (reuses the
-existing `Timer`) and writing one JSON object
-`{"name": "<algo>", "unit": "ms", "value": <mean>, "range": "<stdev>"}`.
+std::string& dataset, const spla::Timer& gpu)` computing mean and stdev of
+`gpu.get_laps_ms()` (reuses the existing `Timer`) and writing one JSON object
+`{"name": "<algo>", "dataset": "<dataset>", "unit": "ms", "value": <mean>,
+"range": "<stdev>"}`. The `dataset` field (stem of `--mtxpath`) was added in
+S3 so the aggregator can build per-dataset breakdowns without coupling to
+file naming.
 `examples/bfs.cpp`, `examples/sssp.cpp`, `examples/pr.cpp`, `examples/tc.cpp` —
 after the GPU loop, call the helper with display names `BFS`, `SSSP`, `PR`, `TC`
 when the option is set.
@@ -60,7 +63,7 @@ usage only); workflow-level docs land in S6.
 - The vendored cxxopts has no `--no-<bool>` negation; booleans are disabled
   with the explicit `--<opt>=false` form (verified in S1 tests).
 
-### S2: benchmark data tooling with local cache
+### S2: benchmark data tooling with local cache [done f5e2e044]
 
 **Code:** new `bench/` directory. `bench/matrices.json` — manifest array of
 `{name, urls}` for coAuthorsCiteseer, roadNet-CA and cit-Patents; each entry
@@ -97,20 +100,24 @@ herokuapp 301 `Location` headers.
 
 **Code:** `bench/aggregate.py` (stdlib only) — args `--gpu <label>`,
 `--out <path>` and one or more per-run JSON file paths (S1 output, one per
-algorithm x dataset).
+algorithm x dataset). Also extends the S1 per-run schema with the `dataset`
+field (helper signature gains a `dataset` parameter; the four examples pass
+the stem of `--mtxpath`).
 
-**Tests:** run with synthetic per-run files covering all four algorithms and
-three datasets; validate the output JSON: 4 entries, correct names, values equal
-the sums of the per-dataset means.
+**Tests:** real runs of `bfs` on two differently-named copies of a small
+`.mtx` (verifies the dataset field end-to-end) plus synthetic per-run files
+for all four algorithms x three datasets; validate the output JSON: 4
+entries, correct names, values equal the sums of the per-dataset means,
+breakdown in `extra`; unreadable input exits 1.
 
 **Docs:** none — covered by S6.
 
 **Spec:**
-- Group per-run entries by their `name` (algorithm). Output is a JSON array
-  with one entry per algorithm:
+- Group per-run entries by their `name` (algorithm), preserving first-seen
+  order. Output is a JSON array with one entry per algorithm:
   `{"name": "<ALGO> - <GPU>", "unit": "ms", "value": <sum of values>,
   "extra": "<dataset>: <value> ms; ..."}` where the breakdown lists each
-  dataset in manifest order.
+  dataset in input order.
 - No `range` on aggregated entries (the action treats it as optional).
 
 ### S4: custom dashboard page on gh-pages

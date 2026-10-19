@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 
-void write_bench_entry(const std::string& path, const char* algo, const spla::Timer& gpu) {
+void write_bench_entry(const std::string& path, const char* algo, const std::string& dataset, const spla::Timer& gpu) {
     const auto& laps = gpu.get_laps_ms();
     if (laps.empty()) return;
 
@@ -53,7 +53,8 @@ void write_bench_entry(const std::string& path, const char* algo, const spla::Ti
     const double stdev = std::sqrt(var / count);
 
     std::ofstream out(path);
-    out << "{\"name\": \"" << algo << "\", \"unit\": \"ms\", \"value\": " << mean << ", \"range\": \"" << stdev << "\"}" << std::endl;
+    out << "{\"name\": \"" << algo << "\", \"dataset\": \"" << dataset << "\", \"unit\": \"ms\", \"value\": " << mean
+        << ", \"range\": \"" << stdev << "\"}" << std::endl;
 }
 
 void verify_exact(const char* where, int a, int b) {
