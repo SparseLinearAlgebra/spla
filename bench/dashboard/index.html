@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>spla GPU benchmarks</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 2rem auto; max-width: 960px; padding: 0 1rem; color: #222; }
+    h1 { font-size: 1.5rem; }
+    .meta { color: #666; font-size: 0.9rem; }
+    .chart-box { margin: 2rem 0; padding: 1rem; border: 1px solid #e1e4e8; border-radius: 6px; }
+    .chart-box h2 { font-size: 1.1rem; margin-top: 0; }
+    canvas { max-height: 320px; }
+    #empty { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>spla GPU benchmarks</h1>
+  <p class="meta">
+    One chart per algorithm, one line per GPU. Value is the total time across all tracked datasets (ms);
+    hover a point for the per-dataset breakdown. <a href="data.js">Download raw data</a>.
+  </p>
+  <div id="empty" style="display:none">No benchmark data yet &mdash; it will appear after the first CI run.</div>
+  <div id="charts"></div>
+
+  <script src="data.js"></script>
+  <script>
+    (function () {
+      var data = window.BENCHMARK_DATA || {};
+      var names = Object.keys(data);
+      if (names.length === 0) {
+        document.getElementById("empty").style.display = "block";
+        return;
+      }
+
+      // group series by algorithm prefix: "<ALGO> - <GPU>" -> { algo, gpu }
+      var groups = {};
+      names.forEach(function (name) {
+        var idx = name.indexOf(" - ");
+        var algo = idx === -1 ? name : name.slice(0, idx);
+        var gpu = idx === -1 ? "unknown" : name.slice(idx + 3);
+        if (!groups[algo]) groups[algo] = {};
+        groups[algo][gpu] = data[name];
+      });
+
+      var palette = ["#1f77b4", "#d62728", "#2ca02c", "#ff7f0e", "#9467bd", "#8c564b"];
+
+      Object.keys(groups).forEach(function (algo, gi) {
+        var gpus = groups[algo];
+
+        // union of commits across all GPUs of this algorithm, sorted by date
+        var commitsMap = {};
+        Object.keys(gpus).forEach(function (gpu) {
+          gpus[gpu].forEach(function (p) {
+            if (!commitsMap[p.commit]) commitsMap[p.commit] = p;
+          });
+        });
+        var commits = Object.keys(commitsMap).map(function (c) { return commitsMap[c]; })
+          .sort(function (a, b) { return new Date(a.commitDate) - new Date(b.commitDate); });
+
+        // per-GPU lookup by commit for aligned series
+        var byGpu = {};
+        Object.keys(gpus).forEach(function (gpu) {
+          byGpu[gpu] = {};
+          gpus[gpu].forEach(function (p) { byGpu[gpu][p.commit] = p; });
+        });
+
+        var box = document.createElement("div");
+        box.className = "chart-box";
+        var title = document.createElement("h2");
+        title.textContent = algo;
+        box.appendChild(title);
+        var canvas = document.createElement("canvas");
+        box.appendChild(canvas);
+        document.getElementById("charts").appendChild(box);
+
+        new Chart(canvas, {
+          type: "line",
+          data: {
+            labels: commits.map(function (c) { return c.commitDate.slice(0, 10); }),
+            datasets: Object.keys(gpus).map(function (gpu, di) {
+              return {
+                label: gpu,
+                data: commits.map(function (c) {
+                  var p = byGpu[gpu][c.commit];
+                  return p ? p.value : null;
+                }),
+                spanGaps: true,
+                borderColor: palette[di % palette.length],
+                backgroundColor: palette[di % palette.length],
+                pointRadius: 3
+              };
+            })
+          },
+          options: {
+            scales: { y: { title: { display: true, text: "ms" } } },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  title: function (items) {
+                    var c = commits[items[0].dataIndex];
+                    return c.commitDate + " (" + c.commit.slice(0, 7) + ")";
+                  },
+                  label: function (item) {
+                    var c = commits[item.dataIndex];
+                    var p = byGpu[item.dataset.label][c.commit];
+                    var lines = [item.dataset.label + ": " + item.formattedValue + " ms"];
+                    if (p && p.extra) lines.push(p.extra);
+                    if (c && c.commitMsg) lines.push(c.commitMsg);
+                    return lines;
+                  },
+                  afterBody: function (items) {
+                    var c = commits[items[0].dataIndex];
+                    return c && c.commitUrl ? "commit: " + c.commitUrl : "";
+                  }
+                }
+              }
+            }
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

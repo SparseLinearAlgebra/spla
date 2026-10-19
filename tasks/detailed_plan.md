@@ -96,7 +96,7 @@ herokuapp 301 `Location` headers.
 - No local copy and every URL failed: print an error naming the dataset and
   exit 1 (the workflow must not silently benchmark on missing data).
 
-### S3: per-GPU aggregation script
+### S3: per-GPU aggregation script [done e5ab186d]
 
 **Code:** `bench/aggregate.py` (stdlib only) — args `--gpu <label>`,
 `--out <path>` and one or more per-run JSON file paths (S1 output, one per
@@ -122,26 +122,32 @@ breakdown in `extra`; unreadable input exits 1.
 
 ### S4: custom dashboard page on gh-pages
 
-**Code:** `dev/bench/index.html` — static Chart.js page (CDN script, same
-approach as the action's default template) that loads `data.js`
+**Code:** `bench/dashboard/index.html` — static Chart.js page (CDN script,
+same approach as the action's default template) that loads `data.js`
 (`window.BENCHMARK_DATA`) and renders one canvas per algorithm: series are
 grouped by the algorithm prefix of each benchmark name (text before the first
 ` - `), one dataset line per GPU suffix. X axis is commit date, tooltip shows
-value, the `extra` breakdown and a link to the commit.
+value, the `extra` breakdown and a link to the commit. A deployed copy is
+pushed to the existing `gh-pages` branch under `dev/bench/`.
 
-**Tests:** serve the directory locally with a hand-written `data.js` containing
-two commits x 4 algorithms x 2 GPUs; verify in a browser that exactly 4 charts
-render, each with 2 lines; check JS syntax with `node --check` if available.
+**Tests:** `node --check` on the extracted inline script; functional run of
+the page script in node with DOM/Chart stubs against a hand-written data set
+(2 commits x 4 algorithms x 2 GPUs): exactly 4 charts, each with both GPUs and
+aligned commits; empty-data path shows the "no data yet" message without JS
+errors.
 
 **Docs:** none — the dashboard URL is documented in S6.
 
 **Spec:**
-- Committed directly to the existing `gh-pages` branch under `dev/bench/`
-  (separate from the feature branch; the action keeps an existing
-  `index.html` and only updates `data.js`). No conflict with the `docs-cpp/`
-  and `docs-python/` dirs published by the docs workflows.
-- The page must tolerate a missing or single-commit `data.js` (first run)
-  without JS errors.
+- The repo copy (`bench/dashboard/index.html`) is the source of truth; the
+  `gh-pages` copy is a deployment artifact (like the docs published by the
+  docs workflows). To change the page: edit the repo copy, re-commit it to
+  `gh-pages:dev/bench/index.html`. The action keeps an existing `index.html`
+  and only updates `data.js`, so no workflow step is needed.
+- No conflict with the `docs-cpp/` and `docs-python/` dirs published by the
+  docs workflows.
+- The page must tolerate a missing or empty `data.js` (first run) without JS
+  errors.
 
 ### S5: benchmark workflow
 
