@@ -9,7 +9,7 @@ project root (`html/` and `latex/` from `doxygen Doxyfile`, `pydocs/` from
 them, so they pollute `git status` after every local docs build and risk
 accidental commits.
 
-### S1: add root-anchored ignore patterns for the docs build outputs
+### S1: add root-anchored ignore patterns for the docs build outputs [done aac38c34]
 
 **Code:** `.gitignore` — new "Docs build output" section with `/html/`,
 `/latex/` and `/pydocs/` (root-anchored so directories with these names in
