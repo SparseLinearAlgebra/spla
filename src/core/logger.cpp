@@ -55,10 +55,13 @@ namespace spla {
     void Logger::log_msg(Status status, const std::string& msg,
                          const std::string& file, const std::string& function, int line) {
 
-        int level = status_to_level(status);
-        if (level > m_verbosity) return;
+        std::lock_guard guard(m_mutex);
 
-        std::lock_guard       guard(m_mutex);
+        if (!m_verbosity.has_value()) return;
+
+        int level = status_to_level(status);
+        if (level > *m_verbosity) return;
+
         std::filesystem::path file_path(file);
         if (m_callback) {
             m_callback(status, msg, file_path.filename().string(), function, line);

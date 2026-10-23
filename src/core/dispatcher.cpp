@@ -45,6 +45,17 @@ namespace spla {
         Accelerator* g_acc        = g_lib->get_accelerator();
         bool         force_no_acc = g_lib->is_set_force_no_acceleration();
 
+        static const bool warned_about_lazy_config = [g_lib]() {
+            if (!g_lib->is_configured()) {
+                LOG_MSG(Status::InvalidState,
+                        "WARNING: computations started without an explicit configuration: only files and "
+                        "environment variables were used. Command line parameters (--spla-*) are not "
+                        "applied; call spla::Library::get()->configure(argc, argv) to use them");
+            }
+            return true;
+        }();
+        (void) warned_about_lazy_config;
+
         std::shared_ptr<RegistryAlgo> algo;
         std::string                   key = ctx.task->get_key();
 

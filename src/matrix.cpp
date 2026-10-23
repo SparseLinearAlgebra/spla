@@ -31,6 +31,8 @@
 namespace spla {
 
     ref_ptr<Matrix> Matrix::make(uint n_rows, uint n_cols, const ref_ptr<Type>& type) {
+        Library::get();
+
         if (n_rows <= 0 || n_cols <= 0) {
             LOG_MSG(Status::InvalidArgument, "passed 0 dim");
             return ref_ptr<Matrix>{};
@@ -39,8 +41,6 @@ namespace spla {
             LOG_MSG(Status::InvalidArgument, "passed null type");
             return ref_ptr<Matrix>{};
         }
-
-        Library::get();
 
         if (type == INT) {
             return ref_ptr<Matrix>(new TMatrix<std::int32_t>(n_rows, n_cols));

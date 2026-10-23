@@ -32,6 +32,7 @@
 
 #include <functional>
 #include <mutex>
+#include <optional>
 #include <sstream>
 
 namespace spla {
@@ -53,7 +54,7 @@ namespace spla {
 
     private:
         MessageCallback    m_callback;
-        int                m_verbosity = 3;
+        std::optional<int> m_verbosity;
         mutable std::mutex m_mutex;
     };
 

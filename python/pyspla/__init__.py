@@ -269,6 +269,20 @@ from .version import *
 __version__ = VERSIONS[-1]
 
 __all__ = [
+    "SplaError",
+    "SplaFailedInitialize",
+    "SplaFailedConfigure",
+    "SplaNoAcceleration",
+    "SplaPlatformNotFound",
+    "SplaDeviceNotFound",
+    "SplaInvalidState",
+    "SplaInvalidArgument",
+    "SplaNoValue",
+    "SplaCompilationError",
+    "SplaConfigError",
+    "SplaNotImplemented",
+    "acceleration_status",
+    "has_acceleration",
     "Type",
     "BOOL",
     "INT",

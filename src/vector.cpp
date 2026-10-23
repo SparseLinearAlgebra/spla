@@ -31,6 +31,8 @@
 namespace spla {
 
     ref_ptr<Vector> Vector::make(uint n_rows, const ref_ptr<Type>& type) {
+        Library::get();
+
         if (n_rows <= 0) {
             LOG_MSG(Status::InvalidArgument, "passed 0 dim");
             return ref_ptr<Vector>{};
@@ -39,8 +41,6 @@ namespace spla {
             LOG_MSG(Status::InvalidArgument, "passed null type");
             return ref_ptr<Vector>{};
         }
-
-        Library::get();
 
         if (type == INT) {
             return ref_ptr<Vector>(new TVector<std::int32_t>(n_rows));

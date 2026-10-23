@@ -51,7 +51,7 @@ namespace spla {
         std::optional<std::string> backend;
         std::optional<int>         platform_index;
         std::optional<int>         device_index;
-        std::optional<std::string> if_gpu_unavailable;
+        std::optional<std::string> if_opencl_unavailable;
 
         std::optional<int>         queues_count;
         std::optional<bool>        profiling;
@@ -74,6 +74,7 @@ namespace spla {
         std::optional<bool>        version;
         std::optional<std::string> configuration;
         std::optional<std::string> path_to_conf;
+        void                       reset();
     };
 
     extern ConfigFile    config_default;
@@ -83,6 +84,8 @@ namespace spla {
     extern CliMeta       config_cli_meta;
     extern Configuration config_cli_and_env;
     extern Configuration config_final;
+    extern bool          config_initialized;
+    extern bool          config_explicitly_configured;
 
     std::string get_spla_version();
 
@@ -92,7 +95,7 @@ namespace spla {
     std::string get_user_config_path();
 
     ConfigStatus parse_cli_and_env(int argc, char** argv, CliMeta& meta, Configuration& cfg);
-    ConfigStatus parse_file(const std::string& path, ConfigFile& cfg, bool allow_default);
+    ConfigStatus parse_file(const std::string& path, ConfigFile& cfg, bool allow_default = false);
 
     Configuration apply_extends(const std::map<std::string, Configuration>& configs,
                                 const std::string&                          name,
@@ -101,6 +104,6 @@ namespace spla {
 
     ConfigStatus validation(const Configuration& cfg);
 
-    ConfigStatus configure(int argc, char** argv);
+    ConfigStatus configure(int argc, char** argv, bool explicit_request = true);
 
 }// namespace spla

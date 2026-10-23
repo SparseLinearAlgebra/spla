@@ -50,7 +50,28 @@ static spla_Status to_c_status(spla::Status status) {
 }
 
 static spla_Status to_c_status(spla::ConfigStatus status) {
-    return static_cast<spla_Status>(status);
+    switch (status) {
+        case spla::ConfigStatus::Ok:
+        case spla::ConfigStatus::HelpRequested:
+        case spla::ConfigStatus::VersionRequested:
+            return SPLA_STATUS_OK;
+        case spla::ConfigStatus::CliOrEnvParseError:
+        case spla::ConfigStatus::ConfigurationNotFound:
+        case spla::ConfigStatus::ConfigurationCycle:
+        case spla::ConfigStatus::MissedParameters:
+        case spla::ConfigStatus::InvalidConfigParams:
+            return SPLA_STATUS_INVALID_ARGUMENT;
+        case spla::ConfigStatus::FileNotExists:
+        case spla::ConfigStatus::OpenFileError:
+        case spla::ConfigStatus::ParseConfError:
+            return SPLA_STATUS_ERROR;
+        case spla::ConfigStatus::PlatformNotFound:
+            return SPLA_STATUS_PLATFORM_NOT_FOUND;
+        case spla::ConfigStatus::DeviceNotFound:
+            return SPLA_STATUS_DEVICE_NOT_FOUND;
+        default:
+            return SPLA_STATUS_ERROR;
+    }
 }
 
 static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {

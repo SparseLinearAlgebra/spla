@@ -25,73 +25,33 @@
 /* SOFTWARE.                                                                      */
 /**********************************************************************************/
 
+#include <CLI/CLI.hpp>
 #include <spla.h>
 #include <spla.hpp>
 
-#include <cstring>
 #include <iostream>
 #include <string>
-#include <vector>
 
 namespace {
 
-    constexpr const char* CHECK_TAG = "[spla:check]";
-
-    bool has_flag(int argc, char** argv, const char* flag) {
-        for (int i = 1; i < argc; ++i) {
-            if (std::strcmp(argv[i], flag) == 0) return true;
-        }
-        return false;
-    }
-
-    spla_Status configure_without(int argc, char** argv, const char* flag) {
-        std::vector<char*> args;
-        args.reserve(static_cast<size_t>(argc));
-
-        for (int i = 0; i < argc; ++i) {
-            if (i > 0 && std::strcmp(argv[i], flag) == 0) continue;
-            args.push_back(argv[i]);
-        }
-
-        return spla_Configure(static_cast<int>(args.size()), args.data());
-    }
-
-    void print_usage() {
-        std::cout << "spla - sparse linear algebra library\n\n"
-                  << "Usage:\n"
-                  << "  spla --softcheck              check that the environment is ready to work\n"
-                  << "  spla [options]                apply configuration and exit\n\n"
-                  << "Configuration options:\n"
-                  << "  --spla-config <name>          configuration to apply (default: \"default\")\n"
-                  << "  --spla-config-file <path>     explicitly specified configuration file\n"
-                  << "  --spla-backend <type>         gpu | cpu | any | by_index\n"
-                  << "  --spla-help                   show configuration help\n"
-                  << "  --spla-version                show library version\n";
-    }
+    const char* CHECK_TAG = "[spla:check]";
 
     /**
-     * Runs a sanity check of the installed environment:
-     *   1. applies configuration (default config file, system/user files, env, cli);
-     *   2. initializes OpenCL and selects a platform and device;
-     *   3. runs a simple test task (2 + 3) and verifies the result.
+     * Runs a sanity check of the already configured environment:
+     *   1. verifies the accelerator initialization status;
+     *   2. runs a simple test task (2 + 3);
+     *   3. verifies the result.
      *
      * @return Exit code: 0 if everything is ready, 1 otherwise.
      */
-    int softcheck(int argc, char** argv) {
+    int softcheck() {
         using namespace spla;
 
-        std::cout << CHECK_TAG << " Starting sanity check..." << std::endl;
-
-        if (configure_without(argc, argv, "--softcheck") != SPLA_STATUS_OK) {
-            std::cout << CHECK_TAG << " FAILED - invalid configuration" << std::endl;
-            return 1;
-        }
-
-        std::cout << CHECK_TAG << " Initializing OpenCL..." << std::endl;
+        std::cout << CHECK_TAG << " Initializing..." << std::endl;
 
         Library::get()->set_default_callback();
 
-        if (Library::get()->set_accelerator(AcceleratorType::OpenCL) != Status::Ok) {
+        if (spla_Library_initialize() != SPLA_STATUS_OK) {
             std::cout << CHECK_TAG << " FAILED - no OpenCL platform/device available" << std::endl;
             return 1;
         }
@@ -121,15 +81,13 @@ namespace {
 
         T_INT result = 0;
         c->get_int(0, result);
-
         std::cout << CHECK_TAG << " Result: " << result << " (expected 5)" << std::endl;
 
         if (result != 5) {
-            std::cout << CHECK_TAG << " FAILED - unexpected result" << std::endl;
+            std::cout << CHECK_TAG << " FAILED - wrong result" << std::endl;
             return 1;
         }
 
-        Library::get()->finalize();
         std::cout << CHECK_TAG << " SUCCESS - spla works correctly" << std::endl;
         return 0;
     }
@@ -137,18 +95,38 @@ namespace {
 }// namespace
 
 int main(int argc, char** argv) {
-    if (has_flag(argc, argv, "--softcheck")) {
-        return softcheck(argc, argv);
+
+    bool do_softcheck      = false;
+
+    CLI::App app{"spla - sparse linear algebra library"};
+    app.description("Command-line tool for SPLA configuration and environment checks.");
+    app.add_flag("--softcheck", do_softcheck, "Run environment sanity check");
+
+    try {
+        app.parse(argc, argv);
+    } catch (const CLI::CallForHelp& e) {
+        std::cout << app.help() << std::endl;
+        return 0;
+    } catch (const CLI::ParseError& e) {
+        std::cerr << "[spla] ERROR: " << e.what() << std::endl
+                  << std::endl;
+        std::cout << app.help() << std::endl;
+        return 1;
     }
 
-    const bool wants_help    = has_flag(argc, argv, "--spla-help");
-    const bool wants_version = has_flag(argc, argv, "--spla-version");
+    if (do_softcheck) {
+        std::cout << CHECK_TAG << " Starting sanity check..." << std::endl;
+    }
 
-    const spla_Status status = spla_Configure(argc, argv);
+    if (spla_Configure(0, nullptr) != SPLA_STATUS_OK) {
+        std::cout << CHECK_TAG << " FAILED - invalid configuration" << std::endl;
+        return 1;
+    }
 
-    if (wants_help || wants_version) return 0;
-    if (status != SPLA_STATUS_OK) return 1;
+    if (do_softcheck) {
+        return softcheck();
+    }
 
-    print_usage();
+    std::cout << CHECK_TAG << " Configuration applied successfully" << std::endl;
     return 0;
 }

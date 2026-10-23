@@ -27,6 +27,7 @@
 
 #include "configure.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
@@ -47,6 +48,8 @@ namespace spla {
     CliMeta       config_cli_meta;
     Configuration config_cli_and_env;
     Configuration config_final;
+    bool          config_initialized           = false;
+    bool          config_explicitly_configured = false;
 
 
     void Configuration::merge(const Configuration& source) {
@@ -54,7 +57,7 @@ namespace spla {
         if (source.backend.has_value()) backend = source.backend;
         if (source.platform_index.has_value()) platform_index = source.platform_index;
         if (source.device_index.has_value()) device_index = source.device_index;
-        if (source.if_gpu_unavailable.has_value()) if_gpu_unavailable = source.if_gpu_unavailable;
+        if (source.if_opencl_unavailable.has_value()) if_opencl_unavailable = source.if_opencl_unavailable;
         if (source.queues_count.has_value()) queues_count = source.queues_count;
         if (source.profiling.has_value()) profiling = source.profiling;
         if (source.allocator_type.has_value()) allocator_type = source.allocator_type;
@@ -80,12 +83,17 @@ namespace spla {
         configs.reset();
     }
 
+    void CliMeta::reset() {
+        *this = CliMeta{};
+    }
+
 
     std::string get_spla_version() {
-#ifndef SPLA_VERSION
-    #define SPLA_VERSION "0.0.0"
-#endif
+#ifdef SPLA_VERSION
         return "SPLA version: " SPLA_VERSION;
+#else
+        return "SPLA version: unknown (SPLA_VERSION not defined at build time)";
+#endif
     }
 
 
@@ -198,10 +206,9 @@ namespace spla {
 
         app.add_option("--spla-backend", cfg.backend,
                        "Device type to use:\n"
-                       "  gpu       - only GPU\n"
-                       "  cpu       - only CPU\n"
-                       "  any       - any available device\n"
-                       "  by_index  - select by platform_index and device_index\n"
+                       "  cpu           - pure native CPU (no OpenCL)\n"
+                       "  opencl_gpu    - only GPU devices via OpenCL\n"
+                       "  by_index      - select by platform_index and device_index\n"
                        "Config key: backend")
                 ->envname("SPLA_BACKEND");
 
@@ -217,12 +224,12 @@ namespace spla {
                        "Config key: device_index")
                 ->envname("SPLA_DEVICE_INDEX");
 
-        app.add_option("--spla-if-gpu-unavailable", cfg.if_gpu_unavailable,
-                       "Behavior when GPU is unavailable:\n"
-                       "  use_cpu - switch to CPU\n"
+        app.add_option("--spla-if-opencl-unavailable", cfg.if_opencl_unavailable,
+                       "Behavior when OpenCL acceleration is unavailable:\n"
+                       "  use_cpu - fall back to pure CPU\n"
                        "  abort   - return error\n"
-                       "Config key: if_gpu_unavailable")
-                ->envname("SPLA_IF_GPU_UNAVAILABLE");
+                       "Config key: if_opencl_unavailable")
+                ->envname("SPLA_IF_OPENCL_UNAVAILABLE");
 
         app.add_option("--spla-queues-count", cfg.queues_count,
                        "Number of command queues\n"
@@ -307,11 +314,19 @@ namespace spla {
                 if (value.contains("backend")) config.backend = value["backend"].get<std::string>();
                 if (value.contains("platform_index")) config.platform_index = value["platform_index"].get<int>();
                 if (value.contains("device_index")) config.device_index = value["device_index"].get<int>();
-                if (value.contains("if_gpu_unavailable")) config.if_gpu_unavailable = value["if_gpu_unavailable"].get<std::string>();
+                if (value.contains("if_opencl_unavailable")) config.if_opencl_unavailable = value["if_opencl_unavailable"].get<std::string>();
                 if (value.contains("queues_count")) config.queues_count = value["queues_count"].get<int>();
                 if (value.contains("profiling")) config.profiling = value["profiling"].get<bool>();
                 if (value.contains("allocator_type")) config.allocator_type = value["allocator_type"].get<std::string>();
-                if (value.contains("linear_alloc_size")) config.linear_alloc_size = value["linear_alloc_size"].get<std::int64_t>();
+                if (value.contains("linear_alloc_size")) {
+                    const std::int64_t size = value["linear_alloc_size"].get<std::int64_t>();
+                    if (size <= 0) {
+                        std::cerr << "[spla:config] ERROR: '" << path << "': "
+                                  << "linear_alloc_size must be > 0 (got " << size << ")" << std::endl;
+                        return ConfigStatus::InvalidConfigParams;
+                    }
+                    config.linear_alloc_size = static_cast<size_t>(size);
+                }
                 if (value.contains("verbosity")) config.verbosity = value["verbosity"].get<int>();
 
                 (*cfg.configs)[name].merge(config);
@@ -380,10 +395,9 @@ namespace spla {
         }
 
         const std::string& backend = *cfg.backend;
-        if (backend != "gpu" && backend != "cpu" &&
-            backend != "any" && backend != "by_index") {
+        if (backend != "opencl_gpu" && backend != "cpu" && backend != "by_index") {
             std::cerr << "[spla:validation] ERROR: backend must be "
-                      << "'gpu', 'cpu', 'any' or 'by_index' (got '" << backend << "')" << std::endl;
+                      << "'opencl_gpu', 'cpu' or 'by_index' (got '" << backend << "')" << std::endl;
             return ConfigStatus::InvalidConfigParams;
         }
 
@@ -419,20 +433,20 @@ namespace spla {
         }
 
 
-        if (backend != "cpu" && !cfg.if_gpu_unavailable.has_value()) {
+        if (backend != "cpu" && !cfg.if_opencl_unavailable.has_value()) {
             std::cerr << "[spla:validation] ERROR: if_gpu_unavailable is required "
                       << "when backend=" << backend << std::endl;
             return ConfigStatus::MissedParameters;
         }
-        if (cfg.if_gpu_unavailable.has_value()) {
-            const std::string& behavior = *cfg.if_gpu_unavailable;
+        if (cfg.if_opencl_unavailable.has_value()) {
+            const std::string& behavior = *cfg.if_opencl_unavailable;
             if (behavior != "use_cpu" && behavior != "abort") {
-                std::cerr << "[spla:validation] ERROR: if_gpu_unavailable must be "
+                std::cerr << "[spla:validation] ERROR: if_opencl_unavailable must be "
                           << "'use_cpu' or 'abort' (got '" << behavior << "')" << std::endl;
                 return ConfigStatus::InvalidConfigParams;
             }
             if (backend == "cpu") {
-                std::cerr << "[spla:validation] WARNING: if_gpu_unavailable "
+                std::cerr << "[spla:validation] WARNING: if_opencl_unavailable "
                           << "ignored for backend='cpu'" << std::endl;
             }
         }
@@ -471,6 +485,10 @@ namespace spla {
                           << "when allocator_type='linear'" << std::endl;
                 return ConfigStatus::MissedParameters;
             }
+            if (*cfg.linear_alloc_size == 0) {
+                std::cerr << "[spla:validation] ERROR: linear_alloc_size must be > 0" << std::endl;
+                return ConfigStatus::InvalidConfigParams;
+            }
         } else if (cfg.linear_alloc_size.has_value()) {
             std::cerr << "[spla:validation] WARNING: linear_alloc_size "
                       << "ignored for allocator_type='" << *cfg.allocator_type << "'" << std::endl;
@@ -491,14 +509,16 @@ namespace spla {
     }
 
 
-    ConfigStatus configure(int argc, char** argv) {
+    ConfigStatus configure(int argc, char** argv, bool explicit_request) {
         config_default.reset();
         config_system.reset();
         config_user.reset();
         config_explicit.reset();
-        config_cli_meta = CliMeta{};
+        config_cli_meta.reset();
         config_cli_and_env.reset();
         config_final.reset();
+        config_initialized           = false;
+        config_explicitly_configured = false;
 
         ConfigStatus status;
 
@@ -513,32 +533,29 @@ namespace spla {
             return ConfigStatus::FileNotExists;
         }
         status = parse_file(path, config_default, true);
-        if (status == ConfigStatus::OpenFileError) {
-            std::cerr << "[spla:configure] ERROR: cannot open default configuration file: " << path << std::endl;
+        if (status != ConfigStatus::Ok) {
+            std::cerr << "[spla:configure] ERROR: failed to load default configuration file: " << path << std::endl;
             return status;
         }
-        if (status == ConfigStatus::ParseConfError) return status;
 
 
         path = get_system_config_path();
         if (std::filesystem::exists(path)) {
             status = parse_file(path, config_system, false);
-            if (status == ConfigStatus::OpenFileError) {
-                std::cerr << "[spla:configure] ERROR: cannot open system configuration file: " << path << std::endl;
+            if (status != ConfigStatus::Ok) {
+                std::cerr << "[spla:configure] ERROR: failed to load system configuration file: " << path << std::endl;
                 return status;
             }
-            if (status == ConfigStatus::ParseConfError) return status;
         }
 
 
         path = get_user_config_path();
         if (std::filesystem::exists(path)) {
             status = parse_file(path, config_user, false);
-            if (status == ConfigStatus::OpenFileError) {
-                std::cerr << "[spla:configure] ERROR: cannot open user configuration file: " << path << std::endl;
+            if (status != ConfigStatus::Ok) {
+                std::cerr << "[spla:configure] ERROR: failed to load user configuration file: " << path << std::endl;
                 return status;
             }
-            if (status == ConfigStatus::ParseConfError) return status;
         }
 
 
@@ -549,11 +566,10 @@ namespace spla {
                 return ConfigStatus::FileNotExists;
             }
             status = parse_file(path, config_explicit, false);
-            if (status == ConfigStatus::OpenFileError) {
-                std::cerr << "[spla:configure] ERROR: cannot open configuration file: " << path << std::endl;
+            if (status != ConfigStatus::Ok) {
+                std::cerr << "[spla:configure] ERROR: failed to load configuration file: " << path << std::endl;
                 return status;
             }
-            if (status == ConfigStatus::ParseConfError) return status;
         }
 
         ConfigFile merged;
@@ -572,6 +588,8 @@ namespace spla {
         status = validation(config_final);
         if (status != ConfigStatus::Ok) return status;
 
+        config_initialized           = true;
+        config_explicitly_configured = explicit_request;
         return ConfigStatus::Ok;
     }
 
