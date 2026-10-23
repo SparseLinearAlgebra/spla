@@ -62,6 +62,9 @@ spla_Status spla_Vector_get_float(spla_Vector v, spla_uint row_id, float* value)
 spla_Status spla_Vector_build(spla_Vector v, spla_MemView keys, spla_MemView values) {
     return to_c_status(as_ptr<spla::Vector>(v)->build(as_ref<spla::MemView>(keys), as_ref<spla::MemView>(values)));
 }
+spla_Status spla_Vector_fill_with(spla_Vector v, spla_Scalar value) {
+    return to_c_status(as_ptr<spla::Vector>(v)->fill_with(as_ref<spla::Scalar>(value)));
+}
 spla_Status spla_Vector_read(spla_Vector v, spla_MemView* keys, spla_MemView* values) {
     spla::ref_ptr<spla::MemView> out_keys;
     spla::ref_ptr<spla::MemView> out_values;

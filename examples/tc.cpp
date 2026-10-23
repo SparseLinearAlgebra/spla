@@ -80,7 +80,7 @@ int main(int argc, const char* const* argv) {
     const auto& Aj = loader.get_Aj();
 
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        if (Ai[k] > Aj[k]) {
+        if (Ai[k] < Aj[k]) {
             A->set_int(Ai[k], Aj[k], 1);
         }
     }
@@ -118,7 +118,7 @@ int main(int argc, const char* const* argv) {
 
         // for tc it is important to have no duplicates
         for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-            if (Ai[k] > Aj[k]) {
+            if (Ai[k] < Aj[k]) {
                 ref_A_set[Ai[k]].insert(Aj[k]);
             }
         }
