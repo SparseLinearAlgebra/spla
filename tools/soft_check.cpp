@@ -60,9 +60,9 @@ namespace {
         Library::get()->get_accelerator_info(info);
         std::cout << CHECK_TAG << " Selected accelerator: " << info << std::endl;
 
-        auto a = Vector::make(1, INT);
-        auto b = Vector::make(1, INT);
-        auto c = Vector::make(1, INT);
+        auto a = Vector::make(1, spla::INT);
+        auto b = Vector::make(1, spla::INT);
+        auto c = Vector::make(1, spla::INT);
 
         if (!a || !b || !c) {
             std::cout << CHECK_TAG << " FAILED - cannot allocate test vectors" << std::endl;
@@ -79,7 +79,7 @@ namespace {
             return 1;
         }
 
-        T_INT result = 0;
+        spla::T_INT result = 0;
         c->get_int(0, result);
         std::cout << CHECK_TAG << " Result: " << result << " (expected 5)" << std::endl;
 
