@@ -461,6 +461,7 @@ if (SPLA_BUILD_TOOLS)
 
     add_executable(spla_cli tools/soft_check.cpp)
     target_link_libraries(spla_cli PRIVATE spla)
+    target_link_libraries(spla_cli PRIVATE CLI11::CLI11)
     set_target_properties(spla_cli PROPERTIES OUTPUT_NAME spla)
 endif ()
 
