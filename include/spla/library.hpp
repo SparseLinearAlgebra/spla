@@ -174,12 +174,6 @@ namespace spla {
         SPLA_API Status configure(int argc, char** argv);
 
         /**
-         * @brief Returns true if the library was explicitly configured via configure()
-         * @return True if the user explicitly configured the library
-         */
-        SPLA_API bool is_configured();
-
-        /**
          * @brief Get status of accelerator initialization
          * @return Function call status
          */

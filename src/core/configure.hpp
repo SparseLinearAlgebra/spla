@@ -85,7 +85,6 @@ namespace spla {
     extern Configuration config_cli_and_env;
     extern Configuration config_final;
     extern bool          config_initialized;
-    extern bool          config_explicitly_configured;
 
     std::string get_spla_version();
 
@@ -104,6 +103,6 @@ namespace spla {
 
     ConfigStatus validation(const Configuration& cfg);
 
-    ConfigStatus configure(int argc, char** argv, bool explicit_request = true);
+    ConfigStatus make_config_final(int argc, char** argv);
 
 }// namespace spla

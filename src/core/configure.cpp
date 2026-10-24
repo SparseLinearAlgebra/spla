@@ -48,8 +48,7 @@ namespace spla {
     CliMeta       config_cli_meta;
     Configuration config_cli_and_env;
     Configuration config_final;
-    bool          config_initialized           = false;
-    bool          config_explicitly_configured = false;
+    bool          config_initialized = false;
 
 
     void Configuration::merge(const Configuration& source) {
@@ -509,7 +508,7 @@ namespace spla {
     }
 
 
-    ConfigStatus configure(int argc, char** argv, bool explicit_request) {
+    ConfigStatus make_config_final(int argc, char** argv) {
         config_default.reset();
         config_system.reset();
         config_user.reset();
@@ -518,7 +517,6 @@ namespace spla {
         config_cli_and_env.reset();
         config_final.reset();
         config_initialized           = false;
-        config_explicitly_configured = false;
 
         ConfigStatus status;
 
@@ -588,8 +586,7 @@ namespace spla {
         status = validation(config_final);
         if (status != ConfigStatus::Ok) return status;
 
-        config_initialized           = true;
-        config_explicitly_configured = explicit_request;
+        config_initialized = true;
         return ConfigStatus::Ok;
     }
 

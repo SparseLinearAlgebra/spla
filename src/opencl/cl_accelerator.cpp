@@ -80,7 +80,7 @@ namespace spla {
 
     Status CLAccelerator::init() {
         if (!config_initialized) {
-            ConfigStatus status = configure(0, nullptr, false);
+            ConfigStatus status = make_config_final(0, nullptr);
             if (status != ConfigStatus::Ok) return Status::Error;
         }
 
@@ -154,6 +154,7 @@ namespace spla {
         m_cache = std::make_unique<CLProgramCache>();
         LOG_MSG(Status::Ok, "program cache created");
 
+        // Output handy info
         LOG_MSG(Status::Ok, "accelerator initialized: " << get_description());
 
         return Status::Ok;
@@ -205,7 +206,7 @@ namespace spla {
         m_max_cu        = m_device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>();
         m_max_wgs       = m_device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>();
         m_max_local_mem = m_device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>();
-        m_addr_align    = m_device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() / 8;
+        m_addr_align    = m_device.getInfo<CL_DEVICE_MEM_BASE_ADDR_ALIGN>() / 8;// from bits to bytes
 
         m_is_nvidia = false;
         m_is_amd    = false;
@@ -241,6 +242,7 @@ namespace spla {
             m_wave_size   = 64;
             m_is_amd      = true;
 
+            // Likely, it is an integrated amd device
             if (m_max_wgs <= 256 || m_max_cu == 1) m_wave_size = 16;
         }
         if (m_vendor_name.find("Imagination Technologies") != std::string::npos ||
@@ -271,6 +273,7 @@ namespace spla {
 
         m_description = desc.str();
 
+        LOG_MSG(Status::Ok, m_description);
         return Status::Ok;
     }
 

@@ -47,7 +47,7 @@ You want a working application without configuration - nothing needs to be confi
 ./program
 ```
 
-The scenario works the same on Linux, macOS and Windows. If GPU is unavailable, the library will automatically switch to CPU by default (the `if_gpu_unavailable: "use_cpu"` parameter), reporting it.
+The scenario works the same on Linux, macOS and Windows. If OpenCL acceleration is unavailable, the library automatically switches to the pure native CPU by default (the `if_opencl_unavailable: "use_cpu"` parameter), reporting it.
 
 Before the first run it is recommended to run [`spla --softcheck`](#environment-check) to make sure that everything required for spla is installed.
 
@@ -59,38 +59,35 @@ The device type is set by the `backend` parameter in the configuration file:
 
 ```json
 {
-    "gpu_only": { "backend": "gpu" },
-    "cpu_only": { "backend": "cpu" },
-    "any":      { "backend": "any" }
+    "gpu_only": { "backend": "opencl_gpu" },
+    "cpu_only": { "backend": "cpu" }
 }
 ```
 
-- `"gpu"` - use the first available GPU,
-- `"cpu"` - use the CPU,
-- `"any"` - use the first available device of any type.
+- `"opencl_gpu"` - use the first available OpenCL GPU,
+- `"cpu"` - use the pure native CPU without touching OpenCL.
 
 The `platform_index` and `device_index` indexes are ignored with these values.
 
-### Behavior when GPU is unavailable
+### Behavior when OpenCL is unavailable
 
-If `backend: "gpu"` is selected, but GPU is unavailable, the behavior is defined by the `if_gpu_unavailable` parameter:
+If `backend: "opencl_gpu"` is selected, but no OpenCL GPU is available, the behavior is defined by the `if_opencl_unavailable` parameter:
 
 ```json
 {
     "gpu_or_cpu": {
-        "backend": "gpu",
-        "if_gpu_unavailable": "use_cpu"
+        "backend": "opencl_gpu",
+        "if_opencl_unavailable": "use_cpu"
     },
     "gpu_only": {
-        "backend": "gpu",
-        "if_gpu_unavailable": "abort"
+        "backend": "opencl_gpu",
+        "if_opencl_unavailable": "abort"
     }
 }
 ```
 
-- `"use_cpu"` - the library switches to CPU and continues working,
-- `"abort"` -
- the library returns an error and does not continue.
+- `"use_cpu"` - the library switches to the pure native CPU and continues working,
+- `"abort"` - the library fails initialization and the process exits with the error status.
 
 Running the required configuration:
 
@@ -99,7 +96,7 @@ Running the required configuration:
 ./program --spla-config=gpu_only
 ```
 
-`if_gpu_unavailable` is applied with `backend: "gpu"`, `"any"` and `"by_index"`. With `backend: "cpu"` the parameter is ignored.
+`if_opencl_unavailable` is applied with `backend: "opencl_gpu"` and `"by_index"`. With `backend: "cpu"` the parameter is ignored.
 
 ## Scenario 3. Multiple devices and modes in one file
 
@@ -107,7 +104,7 @@ You regularly run the same program on different GPUs and in different modes - fo
 
 ```json
 {
-    "default": { "backend": "gpu", "verbosity": 2 },
+    "default": { "backend": "opencl_gpu", "verbosity": 2 },
 
     "gpu0": {
         "extends": ["default"],
@@ -179,7 +176,7 @@ my_project/
         "backend": "by_index",
         "platform_index": 0,
         "device_index": 0,
-        "if_gpu_unavailable": "abort",
+        "if_opencl_unavailable": "abort",
         "queues_count": 2,
         "profiling": false,
         "allocator_type": "general",
@@ -189,7 +186,7 @@ my_project/
         "backend": "by_index",
         "platform_index": 0,
         "device_index": 1,
-        "if_gpu_unavailable": "abort",
+        "if_opencl_unavailable": "abort",
         "queues_count": 2,
         "profiling": false,
         "allocator_type": "linear",

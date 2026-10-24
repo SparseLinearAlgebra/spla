@@ -96,7 +96,7 @@ namespace {
 
 int main(int argc, char** argv) {
 
-    bool do_softcheck      = false;
+    bool do_softcheck = false;
 
     CLI::App app{"spla - sparse linear algebra library"};
     app.description("Command-line tool for SPLA configuration and environment checks.");

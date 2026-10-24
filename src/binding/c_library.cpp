@@ -50,7 +50,7 @@ spla_Status spla_Library_get_acceleration_status() {
 }
 
 spla_Status spla_Configure(int argc, char** argv) {
-    const spla::ConfigStatus config_status = spla::configure(argc, argv, true);
+    const spla::ConfigStatus config_status = spla::make_config_final(argc, argv);
 
     if (config_status == spla::ConfigStatus::HelpRequested ||
         config_status == spla::ConfigStatus::VersionRequested)
@@ -66,7 +66,7 @@ void spla_Config_help() {
     char  arg0[] = "spla";
     char  arg1[] = "--spla-help";
     char* argv[] = {arg0, arg1, nullptr};
-    spla::configure(2, argv, false);
+    spla::make_config_final(2, argv);
 }
 
 void spla_Config_version() {

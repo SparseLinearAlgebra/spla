@@ -51,10 +51,10 @@ All spla flags start with `--spla-`. Flags that do not start with `--spla-` belo
 | `--spla-version` | - | Show the library version and exit |
 | `--spla-config` | string | Name of the configuration to apply. By default the `"default"` configuration is used |
 | `--spla-config-file` | path | Path to a configuration file. |
-| `--spla-backend` | string | Device type: `gpu`, `cpu`, `any`, `by_index` |
+| `--spla-backend` | string | Backend: `opencl_gpu`, `cpu`, `by_index` |
 | `--spla-platform-index` | int | OpenCL platform index. Only when `backend=by_index` |
 | `--spla-device-index` | int | Index of the OpenCL device within the platform. Only when `backend=by_index` |
-| `--spla-if-gpu-unavailable` | string | Behavior when GPU is unavailable: `use_cpu` - switch to CPU, `abort` - return an error |
+| `--spla-if-opencl-unavailable` | string | Behavior when OpenCL acceleration is unavailable: `use_cpu` - switch to pure native CPU, `abort` - return an error |
 | `--spla-queues-count` | int | Number of OpenCL command queues |
 | `--spla-profiling` | bool | Profiling of command queues: `true`, `false` |
 | `--spla-allocator-type` | string | Allocator type: `general`, `linear` |
@@ -67,6 +67,8 @@ All spla flags start with `--spla-`. Flags that do not start with `--spla-` belo
 ./my_program --spla-config-file=/etc/spla/spla_conf.json --spla-config=bench --spla-verbosity=0
 ```
 
+> **Logging.** Library diagnostics are printed to `stdout` (informational messages) and `stderr` (errors and warnings). `--spla-verbosity` controls the amount of output: `0` disables it completely, `3` prints the full configuration used to initialize the accelerator (backend, platform, device, queues, allocator). This works in release builds too.
+
 ## ENVIRONMENT VARIABLES
 
 For each command line parameter (except `--spla-help` and `--spla-version`) there is an environment variable equivalent.
@@ -78,7 +80,7 @@ For each command line parameter (except `--spla-help` and `--spla-version`) ther
 | `SPLA_BACKEND` | `--spla-backend` |
 | `SPLA_PLATFORM_INDEX` | `--spla-platform-index` |
 | `SPLA_DEVICE_INDEX` | `--spla-device-index` |
-| `SPLA_IF_GPU_UNAVAILABLE` | `--spla-if-gpu-unavailable` |
+| `SPLA_IF_OPENCL_UNAVAILABLE` | `--spla-if-opencl-unavailable` |
 | `SPLA_QUEUES_COUNT` | `--spla-queues-count` |
 | `SPLA_PROFILING` | `--spla-profiling` |
 | `SPLA_ALLOCATOR_TYPE` | `--spla-allocator-type` |
@@ -100,10 +102,10 @@ The file format is JSON. A file consists of a set of named configurations; each 
 | Key | Type | Description | Requirements |
 |:---|:---|:---|:---|
 | `extends` | array of string | List of parent configurations | Names of configurations from all file levels |
-| `backend` | string | Device type: `gpu`, `cpu`, `any`, `by_index` | Required |
+| `backend` | string | Backend: `opencl_gpu`, `cpu`, `by_index` | Required |
 | `platform_index` | int | OpenCL platform index | Required when `backend=by_index`, otherwise ignored |
 | `device_index` | int | OpenCL device index | Required when `backend=by_index`, otherwise ignored |
-| `if_gpu_unavailable` | string | Behavior when GPU is unavailable: `use_cpu`, `abort` | Required when `backend != cpu`, ignored when `backend=cpu` |
+| `if_opencl_unavailable` | string | Behavior when OpenCL acceleration is unavailable: `use_cpu`, `abort` | Required when `backend != cpu`, ignored when `backend=cpu` |
 | `queues_count` | int | Number of command queues | Required, &ge; 1 |
 | `profiling` | bool | Queue profiling | Required |
 | `allocator_type` | string | Allocator type: `general`, `linear` | Required |
@@ -119,8 +121,8 @@ The shipped file has the following structure:
 ```json
 {
     "default": {
-        "backend": "gpu",
-        "if_gpu_unavailable": "use_cpu",
+        "backend": "opencl_gpu",
+        "if_opencl_unavailable": "use_cpu",
 
         "queues_count": 1,
         "profiling": false,
@@ -187,7 +189,7 @@ Example of a cycle - configurations inherit each other directly:
 
 ```json
 {
-    "a": { "extends": ["b"], "backend": "gpu" },
+    "a": { "extends": ["b"], "backend": "opencl_gpu" },
     "b": { "extends": ["a"], "backend": "cpu" }
 }
 ```
@@ -201,8 +203,8 @@ File shipped with the library:
 ```json
 {
     "default": {
-        "backend": "gpu",
-        "if_gpu_unavailable": "use_cpu",
+        "backend": "opencl_gpu",
+        "if_opencl_unavailable": "use_cpu",
         "queues_count": 1,
         "profiling": false,
         "allocator_type": "general",
@@ -220,7 +222,7 @@ User file:
         "backend": "by_index",
         "platform_index": 0,
         "device_index": 0,
-        "if_gpu_unavailable": "abort",
+        "if_opencl_unavailable": "abort",
         "queues_count": 1,
         "profiling": true
     }
@@ -234,7 +236,7 @@ Final set of parameters of the `gpu0` configuration:
 | backend | `by_index` | configuration `gpu0` |
 | platform_index | `0` | configuration `gpu0` |
 | device_index | `0` | configuration `gpu0` |
-| if_gpu_unavailable | `abort` | configuration `gpu0` |
+| if_opencl_unavailable | `abort` | configuration `gpu0` |
 | queues_count | `1` | library file (`default`) |
 | profiling | `true` | configuration `gpu0` |
 | allocator_type | `general` | library file (`default`) |
@@ -248,9 +250,9 @@ After assembly, the configuration from all sources is validated.
 
 | Parameter | Requirement |
 |:---|:---|
-| `backend` | Required, one of: `gpu`, `cpu`, `any`, `by_index` |
+| `backend` | Required, one of: `opencl_gpu`, `cpu`, `by_index` |
 | `platform_index`, `device_index` | Required when `backend=by_index`, must be &ge; 0 |
-| `if_gpu_unavailable` | Required when `backend != cpu`, one of: `use_cpu`, `abort` |
+| `if_opencl_unavailable` | Required when `backend != cpu`, one of: `use_cpu`, `abort` |
 | `queues_count` | Required, &ge; 1 |
 | `profiling` | Required |
 | `allocator_type` | Required, one of: `general`, `linear` |
@@ -262,19 +264,19 @@ After assembly, the configuration from all sources is validated.
 | Situation | Message |
 |:---|:---|
 | `platform_index`/`device_index` set when `backend != by_index` | the parameter is ignored |
-| `if_gpu_unavailable` set when `backend=cpu` | the parameter is ignored |
+| `if_opencl_unavailable` set when `backend=cpu` | the parameter is ignored |
 | `linear_alloc_size` set when `allocator_type=general` | the parameter is ignored |
 
 ### Behavior when the device is unavailable
 
 Implemented in accelerator initialization:
 
-| Configuration | GPU available | GPU unavailable |
+| Configuration | OpenCL available | OpenCL unavailable |
 |:---|:---|:---|
-| `backend=gpu`, `if_gpu_unavailable=use_cpu` | GPU is used | an OpenCL CPU device is searched for, if none - `DeviceNotFound` |
-| `backend=gpu` / `any`, `if_gpu_unavailable=abort` | GPU is used | error `DeviceNotFound`; when run through `pyspla`, `SplaFailedInitialize` is raised |
-| `backend=cpu` | - | an OpenCL CPU device is searched for, if none - `DeviceNotFound` |
-| `backend=by_index` | - | the platform/device is selected by indexes; if the device is unavailable - `DeviceNotFound` |
+| `backend=opencl_gpu`, `if_opencl_unavailable=use_cpu` | the GPU is used | computations fall back to the pure native CPU; OpenCL is not used |
+| `backend=opencl_gpu`, `if_opencl_unavailable=abort` | the GPU is used | error `DeviceNotFound`; the process exits with that status (through `pyspla`, `SplaDeviceNotFound` is raised) |
+| `backend=by_index` | the device with the given indexes is used | the platform/device is selected by indexes; if it is unavailable, `if_opencl_unavailable` decides |
+| `backend=cpu` | - | pure native CPU is used; OpenCL is never initialized |
 
 ## STATUSES AND ERROR BEHAVIOR
 
@@ -294,6 +296,18 @@ The configuration mechanism returns one of the following statuses.
 | `MissedParameters` | Required parameters are missing |
 | `PlatformNotFound` / `DeviceNotFound` | The device required by the configuration is unavailable |
 | `InvalidConfigParams` | Invalid parameter value |
+
+### Python (`pyspla`)
+
+The same statuses are propagated to Python:
+
+- `configure()` and `init_library()` raise the matching `Spla*` exception
+  (`SplaInvalidArgument`, `SplaPlatformNotFound`, `SplaDeviceNotFound`, ...)
+  or `SplaFailedConfigure` / `SplaFailedInitialize` for generic errors;
+- every raised exception keeps the numeric status in the `status` attribute;
+- `acceleration_status()` returns the current accelerator status
+  (`0` - accelerator is used, `2` - pure CPU, other values - initialization error);
+- `has_acceleration()` returns `True` when an accelerated backend is active.
 
 ### CLI behavior
 

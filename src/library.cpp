@@ -131,7 +131,7 @@ namespace spla {
     }
 
     Status Library::configure(int argc, char** argv) {
-        ConfigStatus config_status = spla::configure(argc, argv, true);
+        ConfigStatus config_status = spla::make_config_final(argc, argv);
 
         if (config_status == ConfigStatus::HelpRequested || config_status == ConfigStatus::VersionRequested) {
             return Status::Ok;
@@ -143,17 +143,13 @@ namespace spla {
         return apply_configuration();
     }
 
-    bool Library::is_configured() {
-        return spla::config_explicitly_configured;
-    }
-
     Status Library::get_acceleration_status() {
         return m_acceleration_status;
     }
 
     Status Library::apply_configuration() {
         if (!spla::config_initialized) {
-            ConfigStatus config_status = spla::configure(0, nullptr, false);
+            ConfigStatus config_status = spla::make_config_final(0, nullptr);
             if (config_status != ConfigStatus::Ok) {
                 return to_status(config_status);
             }
@@ -323,7 +319,7 @@ namespace spla {
             g_library = std::make_unique<Library>();
 
             if (!spla::config_initialized) {
-                ConfigStatus status = spla::configure(0, nullptr, false);
+                ConfigStatus status = spla::make_config_final(0, nullptr);
 
                 if (status == ConfigStatus::Ok) {
                     g_library->apply_configuration();
