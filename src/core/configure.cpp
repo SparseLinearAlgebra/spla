@@ -516,7 +516,7 @@ namespace spla {
         config_cli_meta.reset();
         config_cli_and_env.reset();
         config_final.reset();
-        config_initialized           = false;
+        config_initialized = false;
 
         ConfigStatus status;
 
