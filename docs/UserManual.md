@@ -67,8 +67,6 @@ All spla flags start with `--spla-`. Flags that do not start with `--spla-` belo
 ./my_program --spla-config-file=/etc/spla/spla_conf.json --spla-config=bench --spla-verbosity=0
 ```
 
-> **Logging.** Library diagnostics are printed to `stdout` (informational messages) and `stderr` (errors and warnings). `--spla-verbosity` controls the amount of output: `0` disables it completely, `3` prints the full configuration used to initialize the accelerator (backend, platform, device, queues, allocator). This works in release builds too.
-
 ## ENVIRONMENT VARIABLES
 
 For each command line parameter (except `--spla-help` and `--spla-version`) there is an environment variable equivalent.

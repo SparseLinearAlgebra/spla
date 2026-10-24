@@ -17,7 +17,7 @@ The user guide for the spla library. Contains usage scenarios for the configurat
 After installation, run the command that confirms the library is ready to use:
 
 ```bash
-spla --softcheck
+./program spla --softcheck
 ```
 
 The command:
@@ -30,7 +30,7 @@ The command:
 Example of successful output:
 
 ```bash
-$ spla --softcheck
+$ s./program spla --softcheck
 [spla:check] Starting sanity check...
 [spla:check] Initializing OpenCL...
 [spla:check] Selected accelerator: OpenCL NVIDIA CUDA | device: NVIDIA GeForce RTX 3070 Laptop GPU | vendor: nvidia | mcu: 40 | wave: 32 | mwgs: 1024
