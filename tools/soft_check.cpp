@@ -101,6 +101,7 @@ int main(int argc, char** argv) {
     CLI::App app{"spla - sparse linear algebra library"};
     app.description("Command-line tool for SPLA configuration and environment checks.");
     app.add_flag("--softcheck", do_softcheck, "Run environment sanity check");
+    app.allow_extras();
 
     try {
         app.parse(argc, argv);
@@ -108,17 +109,26 @@ int main(int argc, char** argv) {
         std::cout << app.help() << std::endl;
         return 0;
     } catch (const CLI::ParseError& e) {
-        std::cerr << "[spla] ERROR: " << e.what() << std::endl
-                  << std::endl;
+        std::cerr << "[spla] ERROR: " << e.what() << std::endl << std::endl;
         std::cout << app.help() << std::endl;
         return 1;
+    }
+
+    std::vector<char*> filtered_argv;
+    filtered_argv.reserve(static_cast<size_t>(argc));
+    filtered_argv.push_back(argv[0]);
+    for (int i = 1; i < argc; ++i) {
+        if (std::string(argv[i]) == "--softcheck") {
+            continue;
+        }
+        filtered_argv.push_back(argv[i]);
     }
 
     if (do_softcheck) {
         std::cout << CHECK_TAG << " Starting sanity check..." << std::endl;
     }
 
-    if (spla_Configure(0, nullptr) != SPLA_STATUS_OK) {
+    if (spla_Configure(static_cast<int>(filtered_argv.size()), filtered_argv.data()) != SPLA_STATUS_OK) {
         std::cout << CHECK_TAG << " FAILED - invalid configuration" << std::endl;
         return 1;
     }
@@ -127,6 +137,6 @@ int main(int argc, char** argv) {
         return softcheck();
     }
 
-    std::cout << CHECK_TAG << " Configuration applied successfully" << std::endl;
+    std::cout << "[spla:check] Configuration applied successfully" << std::endl;
     return 0;
 }
