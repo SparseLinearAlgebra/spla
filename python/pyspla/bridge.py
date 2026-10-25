@@ -28,6 +28,7 @@ SOFTWARE.
 
 __all__ = [
     "SplaError",
+    "describe_status",
     "SplaFailedInitialize",
     "SplaFailedConfigure",
     "SplaNoAcceleration",
@@ -183,9 +184,28 @@ _status_mapping = {
     1024: SplaNotImplemented,
 }
 
+_status_description = {
+    0: "success",
+    1: "generic error",
+    2: "no accelerator available (running on CPU)",
+    3: "OpenCL platform not found",
+    4: "OpenCL device not found",
+    5: "library is in invalid state",
+    6: "invalid argument passed",
+    7: "no value",
+    8: "GPU program compilation failed",
+    9: "configuration error (check spla_conf.json or CLI args)",
+    1024: "operation not implemented",
+}
+
 
 def _status_name(status):
-    return "OK" if status == 0 else _status_mapping.get(status, SplaError).__name__
+    return _status_description.get(status, f"unknown status {status})")
+
+
+def describe_status(status):
+    """Return a human-readable description of a numeric spla status code."""
+    return _status_description.get(status, f"unknown status {status}")
 
 
 def _raise_status(status, message, fallback=SplaError):
@@ -202,7 +222,7 @@ def _raise_status(status, message, fallback=SplaError):
     exc_type = _status_mapping.get(status, fallback)
     if exc_type is SplaError:
         exc_type = fallback
-    exc = exc_type(f"{message} (status {status})")
+    exc = exc_type(f"{message}: {describe_status(status)} (status {status})")
     exc.status = status
     raise exc
 
