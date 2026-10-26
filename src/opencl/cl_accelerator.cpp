@@ -38,7 +38,7 @@
 
 namespace spla {
 
-    std::optional<std::pair<int, int>> find_first_device() {
+    std::optional<std::pair<int, int>> find_first_device(cl_device_type type) {
         std::vector<cl::Platform> platforms;
 #if defined(CL_HPP_ENABLE_EXCEPTIONS)
         try {
@@ -58,17 +58,17 @@ namespace spla {
         for (size_t p = 0; p < platforms.size(); p++) {
             std::vector<cl::Device> devices;
 #if defined(CL_HPP_ENABLE_EXCEPTIONS)
-            try {
-                platforms[p].getDevices(CL_DEVICE_TYPE_GPU, &devices);
-            } catch (const cl::Error& e) {
-                LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
-                continue;
-            }
+        try {
+            platforms[p].getDevices(type, &devices);
+        } catch (const cl::Error& e) {
+            LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
+            continue;
+        }
 #else
-            platforms[p].getDevices(CL_DEVICE_TYPE_GPU, &devices);
+        platforms[p].getDevices(type, &devices);
 #endif
-            if (!devices.empty()) {
-                return std::make_pair(static_cast<int>(p), 0);
+        if (!devices.empty()) {
+            return std::make_pair(static_cast<int>(p), 0);
             }
         }
 
@@ -91,8 +91,8 @@ namespace spla {
         std::string allocator_type    = config_final.allocator_type.value_or("general");
         size_t      linear_alloc_size = config_final.linear_alloc_size.value_or(0);
 
-        if (backend == "opencl_gpu") {
-            auto found = find_first_device();
+        if (backend == "opencl_cpu") {
+            auto found = find_first_device(CL_DEVICE_TYPE_CPU);
 
             if (!found) {
                 LOG_MSG(Status::DeviceNotFound, "no OpenCL device found for backend='" << backend << "'");
@@ -101,6 +101,18 @@ namespace spla {
 
             platform_index = found->first;
             device_index   = found->second;
+
+        } else if (backend == "opencl_gpu") {
+            auto found = find_first_device(CL_DEVICE_TYPE_GPU);
+
+            if (!found) {
+                LOG_MSG(Status::DeviceNotFound, "no OpenCL device found for backend='" << backend << "'");
+                return Status::DeviceNotFound;
+            }
+
+            platform_index = found->first;
+            device_index   = found->second;
+            
         } else if (backend == "by_index") {
             if (!config_final.platform_index.has_value() || !config_final.device_index.has_value()) {
                 LOG_MSG(Status::InvalidArgument, "platform_index and device_index are required for backend='by_index'");
@@ -183,7 +195,7 @@ namespace spla {
 
     Status CLAccelerator::set_device(int index) {
         std::vector<cl::Device> available_devices;
-        m_platform.getDevices(CL_DEVICE_TYPE_GPU, &available_devices);
+        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);  
 
         if (index < 0 || static_cast<size_t>(index) >= available_devices.size()) {
             LOG_MSG(Status::DeviceNotFound, "no OpenCL device with index " << index

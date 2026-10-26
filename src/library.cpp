@@ -143,7 +143,7 @@ namespace spla {
         set_default_callback();
 
         const std::string backend = spla::config_final.backend.value_or("opencl_gpu");
-
+         
         if (backend == "cpu") {
             return set_accelerator(AcceleratorType::None);
         }

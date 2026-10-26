@@ -206,7 +206,8 @@ namespace spla {
         app.add_option("--spla-backend", cfg.backend,
                        "Device type to use:\n"
                        "  cpu           - pure native CPU (no OpenCL)\n"
-                       "  opencl_gpu    - only GPU devices via OpenCL\n"
+                       "  opencl_gpu    - first available GPU via OpenCL\n"
+                       "  opencl_cpu    - first available CPU device via OpenCL\n"
                        "  by_index      - select by platform_index and device_index\n"
                        "Config key: backend")
                 ->envname("SPLA_BACKEND");
@@ -394,9 +395,9 @@ namespace spla {
         }
 
         const std::string& backend = *cfg.backend;
-        if (backend != "opencl_gpu" && backend != "cpu" && backend != "by_index") {
+        if (backend != "opencl_gpu" && backend != "opencl_cpu" && backend != "cpu" && backend != "by_index") {
             std::cerr << "[spla:validation] ERROR: backend must be "
-                      << "'opencl_gpu', 'cpu' or 'by_index' (got '" << backend << "')" << std::endl;
+                      << "'opencl_gpu', 'opencl_cpu', 'cpu' or 'by_index' (got '" << backend << "')" << std::endl;
             return ConfigStatus::InvalidConfigParams;
         }
 
