@@ -28,7 +28,6 @@
 #ifndef SPLA_C_CONFIG_HPP
 #define SPLA_C_CONFIG_HPP
 
-#include <core/config_status.hpp>
 #include <spla.h>
 #include <spla.hpp>
 
@@ -36,45 +35,20 @@
 #include <cstring>
 
 template<typename T, typename S>
-static T* as_ptr(S* s) {
+inline static T* as_ptr(S* s) {
     return (T*) s;
 }
 
 template<typename T, typename S>
-static spla::ref_ptr<T> as_ref(S* s) {
+inline static spla::ref_ptr<T> as_ref(S* s) {
     return spla::ref_ptr<T>((T*) s);
 }
 
-static spla_Status to_c_status(spla::Status status) {
+inline static spla_Status to_c_status(spla::Status status) {
     return static_cast<spla_Status>(status);
 }
 
-static spla_Status to_c_status(spla::ConfigStatus status) {
-    switch (status) {
-        case spla::ConfigStatus::Ok:
-        case spla::ConfigStatus::HelpRequested:
-        case spla::ConfigStatus::VersionRequested:
-            return SPLA_STATUS_OK;
-        case spla::ConfigStatus::CliOrEnvParseError:
-        case spla::ConfigStatus::ConfigurationNotFound:
-        case spla::ConfigStatus::ConfigurationCycle:
-        case spla::ConfigStatus::MissedParameters:
-        case spla::ConfigStatus::InvalidConfigParams:
-            return SPLA_STATUS_INVALID_ARGUMENT;
-        case spla::ConfigStatus::FileNotExists:
-        case spla::ConfigStatus::OpenFileError:
-        case spla::ConfigStatus::ParseConfError:
-            return SPLA_STATUS_ERROR;
-        case spla::ConfigStatus::PlatformNotFound:
-            return SPLA_STATUS_PLATFORM_NOT_FOUND;
-        case spla::ConfigStatus::DeviceNotFound:
-            return SPLA_STATUS_DEVICE_NOT_FOUND;
-        default:
-            return SPLA_STATUS_ERROR;
-    }
-}
-
-static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
+inline static spla::AcceleratorType from_c_accelerator_type(spla_AcceleratorType accelerator) {
     return static_cast<spla::AcceleratorType>(accelerator);
 }
 

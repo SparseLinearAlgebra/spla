@@ -180,12 +180,6 @@ namespace spla {
         SPLA_API Status get_acceleration_status();
 
         /**
-         * @brief Apply configuration using already parsed config_final
-         * @return Function call status
-         */
-        SPLA_API Status apply_configuration();
-
-        /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
@@ -223,9 +217,11 @@ namespace spla {
 
          * @note Only single global instance of the library allowed.
          *
+         * @param argc Number of command line arguments (0 for default config)
+         * @param argv Array of command line arguments (may be nullptr when argc is 0)
          * @return Global library instance
          */
-        SPLA_API static Library* get();
+        SPLA_API static Library* get(int argc = 0, char** argv = nullptr);
 
     private:
         std::unordered_map<std::string, std::string> m_env;

@@ -79,11 +79,6 @@ namespace spla {
     CLAccelerator::~CLAccelerator() = default;
 
     Status CLAccelerator::init() {
-        if (!config_initialized) {
-            ConfigStatus status = make_config_final(0, nullptr);
-            if (status != ConfigStatus::Ok) return Status::Error;
-        }
-
         std::string backend = config_final.backend.value_or("opencl_gpu");
         if (backend == "cpu") {
             return Status::NoAcceleration;

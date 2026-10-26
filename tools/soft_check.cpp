@@ -51,7 +51,7 @@ namespace {
 
         Library::get()->set_default_callback();
 
-        if (spla_Library_initialize() != SPLA_STATUS_OK) {
+        if (spla_Library_get_acceleration_status() != SPLA_STATUS_OK) {
             std::cout << CHECK_TAG << " FAILED - no OpenCL platform/device available" << std::endl;
             return 1;
         }
@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
         std::cout << CHECK_TAG << " Starting sanity check..." << std::endl;
     }
 
-    if (spla_Configure(static_cast<int>(filtered_argv.size()), filtered_argv.data()) != SPLA_STATUS_OK) {
+    if (spla_Configure_and_init(static_cast<int>(filtered_argv.size()), filtered_argv.data()) != SPLA_STATUS_OK) {
         std::cout << CHECK_TAG << " FAILED - invalid configuration" << std::endl;
         return 1;
     }

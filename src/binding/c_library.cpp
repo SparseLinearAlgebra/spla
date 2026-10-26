@@ -33,33 +33,16 @@
 void spla_Library_finalize() {
     spla::Library::get()->finalize();
 }
-spla_Status spla_Library_initialize() {
-    auto* lib = spla::Library::get();
-    if (!lib || !spla::config_initialized) return SPLA_STATUS_ERROR;
-
-    const spla::Status accel_status = lib->get_acceleration_status();
-    if (accel_status != spla::Status::Ok && accel_status != spla::Status::NoAcceleration) {
-        return to_c_status(accel_status);
-    }
-
-    return SPLA_STATUS_OK;
-}
-
 spla_Status spla_Library_get_acceleration_status() {
     return to_c_status(spla::Library::get()->get_acceleration_status());
 }
 
-spla_Status spla_Configure(int argc, char** argv) {
-    const spla::ConfigStatus config_status = spla::make_config_final(argc, argv);
+spla_Status spla_Configure_and_init(int argc, char** argv) {
+    auto* lib = spla::Library::get(argc, argv);
 
-    if (config_status == spla::ConfigStatus::HelpRequested ||
-        config_status == spla::ConfigStatus::VersionRequested)
-        return SPLA_STATUS_OK;
+    if (!lib) return SPLA_STATUS_ERROR;
 
-    if (config_status != spla::ConfigStatus::Ok)
-        return to_c_status(config_status);
-
-    return to_c_status(spla::Library::get()->apply_configuration());
+    return SPLA_STATUS_OK;
 }
 
 void spla_Config_help() {

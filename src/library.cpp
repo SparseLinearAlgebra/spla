@@ -140,21 +140,6 @@ namespace spla {
             return to_status(config_status);
         }
 
-        return apply_configuration();
-    }
-
-    Status Library::get_acceleration_status() {
-        return m_acceleration_status;
-    }
-
-    Status Library::apply_configuration() {
-        if (!spla::config_initialized) {
-            ConfigStatus config_status = spla::make_config_final(0, nullptr);
-            if (config_status != ConfigStatus::Ok) {
-                return to_status(config_status);
-            }
-        }
-
         set_verbosity(spla::config_final.verbosity.value_or(2));
         set_default_callback();
 
@@ -194,6 +179,10 @@ namespace spla {
                 "OpenCL support not built, but OpenCL backend requested");
         return Status::Error;
 #endif
+    }
+
+    Status Library::get_acceleration_status() {
+        return m_acceleration_status;
     }
 
     Status Library::set_accelerator(AcceleratorType accelerator) {
@@ -312,22 +301,14 @@ namespace spla {
         return m_time_profiler.get();
     }
 
-    Library* Library::get() {
+    Library* Library::get(int argc, char** argv) {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {
             g_library = std::make_unique<Library>();
 
-            if (!spla::config_initialized) {
-                ConfigStatus status = spla::make_config_final(0, nullptr);
-
-                if (status == ConfigStatus::Ok) {
-                    g_library->apply_configuration();
-                } else {
-                    std::cerr << "failed to apply SPLA configuration (status: "
-                              << static_cast<int>(status)
-                              << "); continuing with pure CPU computations" << std::endl;
-                }
+            if (g_library->configure(argc, argv) != Status::Ok) {
+                std::cerr << "failed to apply SPLA configuration; continuing with pure CPU computations" << std::endl;
             }
         }
 

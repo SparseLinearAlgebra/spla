@@ -257,10 +257,8 @@ def load_library(lib_path):
 
     _spla.spla_Library_finalize.restype = None
     _spla.spla_Library_finalize.argtypes = []
-    _spla.spla_Library_initialize.restype = _status_t
-    _spla.spla_Library_initialize.argtypes = []
-    _spla.spla_Configure.restype = _status_t
-    _spla.spla_Configure.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
+    _spla.spla_Configure_and_init.restype = _status_t
+    _spla.spla_Configure_and_init.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
     _spla.spla_Config_help.restype = None
     _spla.spla_Config_help.argtypes = []
     _spla.spla_Config_version.restype = None
@@ -277,8 +275,6 @@ def load_library(lib_path):
     _spla.spla_Library_set_message_callback.argtypes = [_callback_t, ctypes.c_void_p]
     _spla.spla_Library_set_default_callback.restype = _status_t
     _spla.spla_Library_set_default_callback.argtypes = []
-    _spla.spla_Library_initialize.restype = _status_t
-    _spla.spla_Library_initialize.argtypes = []
     _spla.spla_Library_get_acceleration_status.restype = _status_t
     _spla.spla_Library_get_acceleration_status.argtypes = []
     _spla.spla_Library_get_accelerator_info.restype = _status_t
@@ -693,23 +689,16 @@ def default_callback(status, msg, file, function, line, user_data):
     print(f"pyspla: {_status_name(status)}: {decoded_msg}")
 
 
-def configure():
-    """Configure spla from command line arguments"""
+def configure_and_init():
+    """Configure spla from command line arguments and initialize the library"""
     if _spla:
         args = sys.argv[1:]
         argc = len(args)
         argv = (ctypes.c_char_p * argc)(*[arg.encode("utf-8") for arg in args])
-        status = _spla.spla_Configure(argc, argv)
+        status = _spla.spla_Configure_and_init(argc, argv)
 
         if status != 0:
             _raise_status(status, "spla configuration failed", SplaFailedConfigure)
-
-
-def init_library():
-    if _spla:
-        status = _spla.spla_Library_initialize()
-        if status != 0:
-            _raise_status(status, "spla initialization failed", SplaFailedInitialize)
 
 
 def acceleration_status():
@@ -778,8 +767,7 @@ def initialize():
         _spla.spla_Config_version()
         sys.exit(0)
 
-    configure()
-    init_library()
+    configure_and_init()
 
     _default_callback = _callback_t(default_callback)
 
