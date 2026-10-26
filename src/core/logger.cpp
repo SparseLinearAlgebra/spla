@@ -63,9 +63,7 @@ namespace spla {
         if (level > *m_verbosity) return;
 
         std::filesystem::path file_path(file);
-        if (m_callback) {
-            m_callback(status, msg, file_path.filename().string(), function, line);
-        }
+        if (m_callback) m_callback(status, msg, file_path.filename().string(), function, line);
     }
 
     void Logger::set_msg_callback(MessageCallback callback) {

@@ -35,7 +35,6 @@ def main():
     parser.add_argument("--build-type", default="Release", help="type of build: `Debug`, `Release` or `RelWithDebInfo`")
     parser.add_argument("--tests", default="YES", help="build tests")
     parser.add_argument("--examples", default="YES", help="build example applications")
-    parser.add_argument("--tools", default="YES", help="build command line tools")
     parser.add_argument("--opencl", default="YES", help="build opencl acceleration backend")
     parser.add_argument("--target", default="all", help="which target to build")
     parser.add_argument("--nt", default="4", help="number of os threads for build")
@@ -45,7 +44,6 @@ def main():
 
     build_config_args = ["cmake", ".", "-B", args.build_dir, "-G", "Ninja", f"-DCMAKE_BUILD_TYPE={args.build_type}",
                          f"-DSPLA_BUILD_TESTS={args.tests}", f"-DSPLA_BUILD_EXAMPLES={args.examples}",
-                         f"-DSPLA_BUILD_TOOLS={args.tools}",
                          f"-DSPLA_BUILD_OPENCL={args.opencl}"]
 
     if args.arch:
