@@ -16,7 +16,7 @@ message(STATUS "SPLA package version: ${SPLA_VERSION}")
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
-option(SPLA_BUILD_TOOLS "Build command line tools (spla)" YES)
+set(SPLA_BUILD_TOOLS YES)
 option(SPLA_BUILD_OPENCL "Build library with opencl backend" YES)
 
 ######################################################################
@@ -203,26 +203,20 @@ FetchContent_Declare(nlohmann_json
     GIT_REPOSITORY https://github.com/nlohmann/json.git
     GIT_TAG        v3.11.3
 )
-FetchContent_MakeAvailable(nlohmann_json)
+FetchContent_MakeAvailable(nlohmann_json)   
 
 if (SPLA_BUILD_OPENCL)
     if (SPLA_TARGET_MACOSX)
-        message(STATUS "Use Apple OpenCL framework for linking, headers from deps")
-        find_library(OPENCL_FRAMEWORK OpenCL REQUIRED)
+        message(STATUS "Add standard Apple OpenCL package")
+        find_package(OpenCL REQUIRED)
 
         add_library(OpenCLHeaders INTERFACE)
         add_library(OpenCL::Headers ALIAS OpenCLHeaders)
-        target_include_directories(OpenCLHeaders INTERFACE
-            ${CMAKE_CURRENT_SOURCE_DIR}/deps/opencl-headers)
-
-        add_library(HeadersCpp INTERFACE)
-        add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
-        target_include_directories(HeadersCpp INTERFACE
-            ${CMAKE_CURRENT_SOURCE_DIR}/deps/opencl-headers-hpp/include)
-        target_link_libraries(HeadersCpp INTERFACE OpenCL::Headers)
+        target_include_directories(OpenCLHeaders INTERFACE ${OpenCL_INCLUDE_DIRS})
 
         add_library(OpenCL INTERFACE)
-        target_link_libraries(OpenCL INTERFACE ${OPENCL_FRAMEWORK})
+        target_include_directories(OpenCL INTERFACE ${OpenCL_INCLUDE_DIRS})
+        target_link_libraries(OpenCL INTERFACE ${OpenCL_LIBRARIES})
     else ()
         message(STATUS "Add Khronos OpenCL C API header files")
         add_subdirectory(deps/opencl-headers)
@@ -232,13 +226,12 @@ if (SPLA_BUILD_OPENCL)
         set(OPENCL_ICD_LOADER_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
         set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
         add_subdirectory(deps/opencl-icd-loader)
-
-        message(STATUS "Add Khronos OpenCL HPP bindings")
-        add_library(HeadersCpp INTERFACE)
-        add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
-        target_include_directories(HeadersCpp INTERFACE deps/opencl-headers-hpp/include)
-        target_link_libraries(HeadersCpp INTERFACE OpenCL::Headers)
     endif ()
+    message(STATUS "Add Khronos OpenCL HPP bindings")
+    add_library(HeadersCpp INTERFACE)
+    add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
+    target_include_directories(HeadersCpp INTERFACE deps/opencl-headers-hpp/include)
+    target_link_libraries(HeadersCpp INTERFACE OpenCL::Headers)
 endif ()
 
 if (SPLA_BUILD_EXAMPLES)
@@ -414,10 +407,7 @@ target_link_libraries(spla PRIVATE ${CMAKE_DL_LIBS})
 if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)
     target_link_libraries(spla PUBLIC OpenCL::HeadersCpp)
-    target_compile_definitions(spla PUBLIC
-        CL_TARGET_OPENCL_VERSION=120
-        CL_HPP_TARGET_OPENCL_VERSION=120
-        CL_HPP_MINIMUM_OPENCL_VERSION=120)
+    target_compile_definitions(spla PUBLIC CL_TARGET_OPENCL_VERSION=120)
     list(APPEND SPLA_DEFINES SPLA_BUILD_OPENCL)
 endif ()
 
