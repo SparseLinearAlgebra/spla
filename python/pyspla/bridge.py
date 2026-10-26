@@ -95,6 +95,10 @@ class SplaNoValue(SplaError):
     pass
 
 
+class SplaCompilationError(SplaError):
+    pass
+
+
 class SplaNotImplemented(SplaError):
     pass
 
@@ -161,41 +165,22 @@ _status_mapping = {
 
 _status_description = {
     0: "success",
-    1: "generic error",
     2: "no accelerator available (running on CPU)",
     3: "OpenCL platform not found",
     4: "OpenCL device not found",
     5: "library is in invalid state",
     6: "invalid argument passed",
     7: "no value",
-    8: "GPU program compilation failed",
     1024: "operation not implemented",
 }
 
 
-def _status_name(status):
-    return _status_description.get(status, f"unknown status {status})")
-
-
 def describe_status(status):
-    """Return a human-readable description of a numeric spla status code."""
     return _status_description.get(status, f"unknown status {status}")
 
 
 def _raise_status(status, message, fallback=SplaError):
-    """
-    Raise the exception matching a C status code and keep the numeric status on it.
-
-    :param status:
-        Status returned by the C library.
-    :param message:
-        Human-readable operation description.
-    :param fallback:
-        Exception type used for generic or unknown statuses.
-    """
     exc_type = _status_mapping.get(status, fallback)
-    if exc_type is SplaError:
-        exc_type = fallback
     exc = exc_type(f"{message}: {describe_status(status)} (status {status})")
     exc.status = status
     raise exc
@@ -662,7 +647,6 @@ def default_callback(status, msg, file, function, line, user_data):
     print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
 def configure_and_init():
-    """Configure spla from command line arguments and initialize the library"""
     if _spla:
         args = sys.argv[1:]
         argc = len(args)
