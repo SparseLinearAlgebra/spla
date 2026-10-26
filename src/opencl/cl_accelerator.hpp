@@ -36,6 +36,7 @@
 #include <string>
 #include <vector>
 
+#include <core/config_status.hpp>
 #include <svector.hpp>
 
 #ifndef SPLA_RELEASE
@@ -65,15 +66,20 @@ namespace spla {
      * @class CLAccelerator
      * @brief Single-device OpenCL acceleration implementation
      */
+
     class CLAccelerator final : public Accelerator {
     public:
         CLAccelerator();
         ~CLAccelerator() override;
 
-        Status             init() override;
-        Status             set_platform(int index) override;
-        Status             set_device(int index) override;
-        Status             set_queues_count(int count) override;
+        Status init() override;
+        Status set_platform(int index) override;
+        Status set_device(int index) override;
+        Status set_profiling(bool enabled);
+        Status set_queues_count(int count) override;
+        Status set_linear_allocator(size_t size);
+        Status set_general_allocator();
+
         const std::string& get_name() override;
         const std::string& get_description() override;
         const std::string& get_suffix() override;
@@ -106,6 +112,7 @@ namespace spla {
         cl::Platform                          m_platform;
         cl::Device                            m_device;
         cl::Context                           m_context;
+        ankerl::svector<cl::CommandQueue, 2>  m_queues;
         std::unique_ptr<class CLProgramCache> m_cache;
         std::unique_ptr<class CLCounterPool>  m_counter_pool;
         std::unique_ptr<class CLAllocLinear>  m_alloc_linear;
@@ -130,7 +137,7 @@ namespace spla {
         bool        m_is_intel         = false;
         bool        m_is_img           = false;
 
-        ankerl::svector<cl::CommandQueue, 2> m_queues;
+        bool m_profiling_enabled = false;
     };
 
     /**

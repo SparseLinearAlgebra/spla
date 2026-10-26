@@ -32,6 +32,7 @@
 
 #include <functional>
 #include <mutex>
+#include <optional>
 #include <sstream>
 
 namespace spla {
@@ -49,10 +50,11 @@ namespace spla {
     public:
         void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
         void set_msg_callback(MessageCallback callback);
+        void set_verbosity(int verbosity);
 
     private:
-        MessageCallback m_callback;
-
+        MessageCallback    m_callback;
+        std::optional<int> m_verbosity;
         mutable std::mutex m_mutex;
     };
 
@@ -62,22 +64,11 @@ namespace spla {
 
 }// namespace spla
 
-#ifndef SPLA_RELEASE
-    #define LOG_MSG(status, msg)                                                                                           \
-        do {                                                                                                               \
-            std::stringstream __ss;                                                                                        \
-            __ss << msg;                                                                                                   \
-            Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-        } while (false);
-#else
-    #define LOG_MSG(status, msg)                                                                                               \
-        do {                                                                                                                   \
-            if ((status) != Status::Ok) {                                                                                      \
-                std::stringstream __ss;                                                                                        \
-                __ss << msg;                                                                                                   \
-                Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
-            }                                                                                                                  \
-        } while (false);
-#endif
+#define LOG_MSG(status, msg)                                                                                           \
+    do {                                                                                                               \
+        std::stringstream __ss;                                                                                        \
+        __ss << msg;                                                                                                   \
+        Library::get()->get_logger()->log_msg(status, __ss.str(), __FILE__, __FUNCTION__, static_cast<int>(__LINE__)); \
+    } while (false);
 
 #endif//SPLA_LOGGER_HPP

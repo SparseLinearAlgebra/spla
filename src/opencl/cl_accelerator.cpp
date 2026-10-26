@@ -27,6 +27,8 @@
 
 #include "cl_accelerator.hpp"
 
+#include <core/configure.hpp>
+#include <core/logger.hpp>
 #include <opencl/cl_alloc_general.hpp>
 #include <opencl/cl_alloc_linear.hpp>
 #include <opencl/cl_counter.hpp>
@@ -36,71 +38,174 @@
 
 namespace spla {
 
+    std::optional<std::pair<int, int>> find_first_device(cl_device_type type) {
+        std::vector<cl::Platform> platforms;
+#if defined(CL_HPP_ENABLE_EXCEPTIONS)
+        try {
+            cl::Platform::get(&platforms);
+        } catch (const cl::Error& e) {
+            LOG_MSG(Status::PlatformNotFound, "failed to query OpenCL platforms: " << e.what());
+            return std::nullopt;
+        }
+#else
+        cl::Platform::get(&platforms);
+#endif
+        if (platforms.empty()) {
+            LOG_MSG(Status::PlatformNotFound, "no OpenCL platforms available");
+            return std::nullopt;
+        }
+
+        for (size_t p = 0; p < platforms.size(); p++) {
+            std::vector<cl::Device> devices;
+#if defined(CL_HPP_ENABLE_EXCEPTIONS)
+        try {
+            platforms[p].getDevices(type, &devices);
+        } catch (const cl::Error& e) {
+            LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
+            continue;
+        }
+#else
+        platforms[p].getDevices(type, &devices);
+#endif
+        if (!devices.empty()) {
+            return std::make_pair(static_cast<int>(p), 0);
+            }
+        }
+
+        return std::nullopt;
+    }
+
     CLAccelerator::CLAccelerator()  = default;
     CLAccelerator::~CLAccelerator() = default;
 
     Status CLAccelerator::init() {
-        m_description = "no platform or device";
+        std::string backend = config_final.backend.value_or("opencl_gpu");
+        if (backend == "cpu") {
+            return Status::NoAcceleration;
+        }
 
-        const char* spla_opencl_platform = std::getenv(SPLA_OPENCL_PLATFORM);
-        const char* spla_opencl_device   = std::getenv(SPLA_OPENCL_DEVICE);
-        int         platform_index       = (spla_opencl_platform ? std::atoi(spla_opencl_platform) : 0);
-        int         device_index         = (spla_opencl_device ? std::atoi(spla_opencl_device) : 0);
+        int         platform_index    = 0;
+        int         device_index      = 0;
+        int         queues_count      = config_final.queues_count.value_or(1);
+        bool        profiling         = config_final.profiling.value_or(false);
+        std::string allocator_type    = config_final.allocator_type.value_or("general");
+        size_t      linear_alloc_size = config_final.linear_alloc_size.value_or(0);
 
-        if (set_platform(platform_index) != Status::Ok)
-            return Status::PlatformNotFound;
+        if (backend == "opencl_cpu") {
+            auto found = find_first_device(CL_DEVICE_TYPE_CPU);
 
-        if (set_device(device_index) != Status::Ok)
-            return Status::DeviceNotFound;
+            if (!found) {
+                LOG_MSG(Status::DeviceNotFound, "no OpenCL device found for backend='" << backend << "'");
+                return Status::DeviceNotFound;
+            }
 
-        if (set_queues_count(1) != Status::Ok)
-            return Status::Error;
+            platform_index = found->first;
+            device_index   = found->second;
+
+        } else if (backend == "opencl_gpu") {
+            auto found = find_first_device(CL_DEVICE_TYPE_GPU);
+
+            if (!found) {
+                LOG_MSG(Status::DeviceNotFound, "no OpenCL device found for backend='" << backend << "'");
+                return Status::DeviceNotFound;
+            }
+
+            platform_index = found->first;
+            device_index   = found->second;
+            
+        } else if (backend == "by_index") {
+            if (!config_final.platform_index.has_value() || !config_final.device_index.has_value()) {
+                LOG_MSG(Status::InvalidArgument, "platform_index and device_index are required for backend='by_index'");
+                return Status::InvalidArgument;
+            }
+            platform_index = *config_final.platform_index;
+            device_index   = *config_final.device_index;
+        } else {
+            LOG_MSG(Status::InvalidArgument, "unknown backend: '" << backend << "'");
+            return Status::InvalidArgument;
+        }
+
+        LOG_MSG(Status::Ok, "Initializing accelerator...");
+
+        LOG_MSG(Status::Ok, "Configuration parameters:");
+        LOG_MSG(Status::Ok, "  backend   = " << backend);
+        LOG_MSG(Status::Ok, "  platform  = " << platform_index);
+        LOG_MSG(Status::Ok, "  device    = " << device_index);
+        LOG_MSG(Status::Ok, "  queues    = " << queues_count);
+        LOG_MSG(Status::Ok, "  profiling = " << (profiling ? "true" : "false"));
+        LOG_MSG(Status::Ok, "  allocator = " << allocator_type);
+        if (allocator_type == "linear") {
+            LOG_MSG(Status::Ok, "  alloc_size= " << linear_alloc_size);
+        }
+        LOG_MSG(Status::Ok, "  verbosity = " << config_final.verbosity.value());
+
+        Status status = set_platform(platform_index);
+        if (status != Status::Ok) return status;
+
+        status = set_device(device_index);
+        if (status != Status::Ok) return status;
+
+        status = set_profiling(profiling);
+        if (status != Status::Ok) return status;
+
+        status = set_queues_count(queues_count);
+        if (status != Status::Ok) return status;
+
+        if (allocator_type == "linear") {
+            status = set_linear_allocator(linear_alloc_size);
+        } else {
+            status = set_general_allocator();
+        }
+        if (status != Status::Ok) return status;
 
         m_cache = std::make_unique<CLProgramCache>();
+        LOG_MSG(Status::Ok, "program cache created");
 
         // Output handy info
-        LOG_MSG(Status::Ok, "Initialize accelerator: " << get_description());
+        LOG_MSG(Status::Ok, "accelerator initialized: " << get_description());
 
         return Status::Ok;
     }
+
+
     Status CLAccelerator::set_platform(int index) {
         std::vector<cl::Platform> available_platforms;
         cl::Platform::get(&available_platforms);
 
-        if (available_platforms.empty()) {
-            LOG_MSG(Status::PlatformNotFound, "no platform to select for OpenCL acceleration, check your system runtime");
+        if (index < 0 || static_cast<size_t>(index) >= available_platforms.size()) {
+            LOG_MSG(Status::PlatformNotFound, "no OpenCL platform with index " << index
+                                                                               << " (available: " << available_platforms.size() << ")");
             return Status::PlatformNotFound;
-        }
-        if (available_platforms.size() <= index) {
-            LOG_MSG(Status::InvalidArgument, "index out of list of available platforms");
-            return Status::InvalidArgument;
         }
 
         m_counter_pool.reset();
         m_alloc_general.reset();
         m_alloc_linear.reset();
-        m_alloc_tmp = nullptr;
-        m_device    = cl::Device();
-        m_platform  = available_platforms[index];
-        LOG_MSG(Status::Ok, "select OpenCL platform " << m_platform.getInfo<CL_PLATFORM_NAME>());
+        m_alloc_tmp         = nullptr;
+        m_device            = cl::Device();
+        m_profiling_enabled = false;
+
+        m_platform = available_platforms[index];
+        LOG_MSG(Status::Ok, "select OpenCL platform: "
+                                    << m_platform.getInfo<CL_PLATFORM_NAME>());
 
         return Status::Ok;
     }
+
+
     Status CLAccelerator::set_device(int index) {
         std::vector<cl::Device> available_devices;
-        m_platform.getDevices(CL_DEVICE_TYPE_GPU, &available_devices);
+        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);  
 
-        if (available_devices.empty()) {
-            LOG_MSG(Status::DeviceNotFound, "no device in selected platform, check your OpenCL runtime");
-            return Status::DeviceNotFound;
-        }
-        if (available_devices.size() <= index) {
-            LOG_MSG(Status::DeviceNotFound, "index out of list of available devices");
+        if (index < 0 || static_cast<size_t>(index) >= available_devices.size()) {
+            LOG_MSG(Status::DeviceNotFound, "no OpenCL device with index " << index
+                                                                           << " (available: " << available_devices.size() << ")");
             return Status::DeviceNotFound;
         }
 
         m_device = available_devices[index];
-        LOG_MSG(Status::Ok, "select OpenCL device " << m_device.getInfo<CL_DEVICE_NAME>());
+        LOG_MSG(Status::Ok, "select OpenCL device: "
+                                    << m_device.getInfo<CL_DEVICE_NAME>());
 
         m_vendor_code.clear();
         m_vendor_name   = m_device.getInfo<CL_DEVICE_VENDOR>();
@@ -158,60 +263,84 @@ namespace spla {
         }
 
         if (m_vendor_code.empty()) {
-            LOG_MSG(Status::Error, "failed to match one of the pre-defined vendors");
+            LOG_MSG(Status::InvalidArgument, "unknown vendor: " << m_vendor_name
+                                                                << ", using default parameters");
             m_default_wgs = 64;
             m_wave_size   = 8;
         }
 
-
         std::stringstream desc;
-        desc << "OpenCL Acc " << m_platform.getInfo<CL_PLATFORM_NAME>()
-             << " device: " << m_device.getInfo<CL_DEVICE_NAME>()
-             << " vendor:" << m_vendor_code
-             << " mcu:" << m_max_cu
-             << " wave:" << m_wave_size
-             << " mwgs:" << m_max_wgs;
+        desc << "OpenCL Acc "
+             << m_platform.getInfo<CL_PLATFORM_NAME>()
+             << " | device: " << m_device.getInfo<CL_DEVICE_NAME>()
+             << " | vendor: " << m_vendor_code
+             << " | mcu: " << m_max_cu
+             << " | wave: " << m_wave_size
+             << " | mwgs: " << m_max_wgs;
 
         m_description = desc.str();
 
         LOG_MSG(Status::Ok, m_description);
-
         return Status::Ok;
     }
+
+
+    Status CLAccelerator::set_profiling(bool enabled) {
+        m_profiling_enabled = enabled;
+        LOG_MSG(Status::Ok, "set profiling: " << (enabled ? "enabled" : "disabled"));
+        return Status::Ok;
+    }
+
+
     Status CLAccelerator::set_queues_count(int count) {
+        if (count < 1) {
+            LOG_MSG(Status::InvalidArgument, "queues count must be >= 1 (got " << count << ")");
+            return Status::InvalidArgument;
+        }
+
         m_context = cl::Context(m_device);
         m_queues.clear();
         m_queues.reserve(count);
 
         for (int i = 0; i < count; i++) {
             cl_command_queue_properties properties = 0;
-#ifndef SPLA_RELEASE
-            properties = CL_QUEUE_PROFILING_ENABLE;
-#endif
+            if (m_profiling_enabled) {
+                properties |= CL_QUEUE_PROFILING_ENABLE;
+            }
             cl::CommandQueue queue(m_context, properties);
             m_queues.emplace_back(std::move(queue));
         }
 
-        m_counter_pool  = std::make_unique<CLCounterPool>();
-        m_alloc_general = std::make_unique<CLAllocGeneral>();
-        m_alloc_tmp     = m_alloc_general.get();
+        m_counter_pool = std::make_unique<CLCounterPool>();
 
-        if (!is_nvidia()) {
-            m_alloc_linear = std::make_unique<CLAllocLinear>(CLAllocLinear::DEFAULT_SIZE, m_addr_align);
-            m_alloc_tmp    = m_alloc_linear.get();
-        }
-
-        LOG_MSG(Status::Ok, "configure " << count << " queues for computations");
+        LOG_MSG(Status::Ok, "configure " << count << " queues"
+                                         << " (profiling: " << (m_profiling_enabled ? "ON" : "OFF") << ")");
         return Status::Ok;
     }
-    const std::string& CLAccelerator::get_name() {
-        return m_name;
+
+
+    Status CLAccelerator::set_linear_allocator(size_t size) {
+        if (size == 0) {
+            LOG_MSG(Status::InvalidArgument, "linear allocator size must be > 0 (got " << size << ")");
+            return Status::InvalidArgument;
+        }
+
+        m_alloc_linear = std::make_unique<CLAllocLinear>(size, m_addr_align);
+        m_alloc_tmp    = m_alloc_linear.get();
+        LOG_MSG(Status::Ok, "set linear allocator (size: " << size << " bytes)");
+        return Status::Ok;
     }
-    const std::string& CLAccelerator::get_description() {
-        return m_description;
+
+
+    Status CLAccelerator::set_general_allocator() {
+        m_alloc_general = std::make_unique<CLAllocGeneral>();
+        m_alloc_tmp     = m_alloc_general.get();
+        LOG_MSG(Status::Ok, "set general allocator");
+        return Status::Ok;
     }
-    const std::string& CLAccelerator::get_suffix() {
-        return m_suffix;
-    }
+
+    const std::string& CLAccelerator::get_name() { return m_name; }
+    const std::string& CLAccelerator::get_description() { return m_description; }
+    const std::string& CLAccelerator::get_suffix() { return m_suffix; }
 
 }// namespace spla

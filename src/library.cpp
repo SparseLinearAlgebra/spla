@@ -28,6 +28,7 @@
 #include <spla/library.hpp>
 
 #include <core/accelerator.hpp>
+#include <core/configure.hpp>
 #include <core/dispatcher.hpp>
 #include <core/logger.hpp>
 #include <core/registry.hpp>
@@ -35,6 +36,7 @@
 
 #include <cpu/cpu_algo_registry.hpp>
 
+#include <cstdlib>
 #include <iostream>
 
 #if defined(SPLA_BUILD_OPENCL)
@@ -45,6 +47,30 @@
 #include <profiling/time_profiler.hpp>
 
 namespace spla {
+
+    static Status to_status(ConfigStatus status) {
+        switch (status) {
+            case ConfigStatus::Ok:
+            case ConfigStatus::HelpRequested:
+            case ConfigStatus::VersionRequested:
+                return Status::Ok;
+            case ConfigStatus::CliOrEnvParseError:
+            case ConfigStatus::ConfigurationNotFound:
+            case ConfigStatus::ConfigurationCycle:
+            case ConfigStatus::MissedParameters:
+            case ConfigStatus::InvalidConfigParams:
+                return Status::InvalidArgument;
+            case ConfigStatus::PlatformNotFound:
+                return Status::PlatformNotFound;
+            case ConfigStatus::DeviceNotFound:
+                return Status::DeviceNotFound;
+            case ConfigStatus::FileNotExists:
+            case ConfigStatus::OpenFileError:
+            case ConfigStatus::ParseConfError:
+            default:
+                return Status::Error;
+        }
+    }
 
     static const char* to_string(Status status) {
 #define STATUS_MAP(value) \
@@ -103,14 +129,66 @@ namespace spla {
         }
     }
 
+    Status Library::configure(int argc, char** argv) {
+        ConfigStatus config_status = spla::make_config_final(argc, argv);
+
+        if (config_status == ConfigStatus::HelpRequested || config_status == ConfigStatus::VersionRequested) {
+            return Status::Ok;
+        }
+        if (config_status != ConfigStatus::Ok) {
+            return to_status(config_status);
+        }
+
+        set_verbosity(spla::config_final.verbosity.value_or(2));
+        set_default_callback();
+
+        const std::string backend = spla::config_final.backend.value_or("opencl_gpu");
+         
+        if (backend == "cpu") {
+            return set_accelerator(AcceleratorType::None);
+        }
+
+#if defined(SPLA_BUILD_OPENCL)
+        Status status = set_accelerator(AcceleratorType::OpenCL);
+
+        if (status != Status::Ok) {
+            const std::string if_unavail = spla::config_final.if_opencl_unavailable.value_or("abort");
+            if (if_unavail == "use_cpu") {
+                LOG_MSG(Status::NoAcceleration,
+                        "OpenCL acceleration is unavailable (status: "
+                                << static_cast<int>(status)
+                                << "), falling back to pure CPU computations");
+                set_accelerator(AcceleratorType::None);
+                return Status::Ok;
+            }
+            LOG_MSG(status,
+                    "OpenCL acceleration is unavailable (status: "
+                            << static_cast<int>(status)
+                            << "), configuration requested abort");
+            return status;
+        }
+        return Status::Ok;
+#else
+        const std::string if_unavail = spla::config_final.if_opencl_unavailable.value_or("abort");
+        if (if_unavail == "use_cpu") {
+            set_accelerator(AcceleratorType::None);
+            return Status::Ok;
+        }
+        LOG_MSG(Status::Error,
+                "OpenCL support not built, but OpenCL backend requested");
+        return Status::Error;
+#endif
+    }
+
     Status Library::set_accelerator(AcceleratorType accelerator) {
 #if defined(SPLA_BUILD_OPENCL)
         if (accelerator == AcceleratorType::OpenCL) {
             m_accelerator = std::make_unique<CLAccelerator>();
 
-            if (m_accelerator->init() != Status::Ok) {
+            Status status = m_accelerator->init();
+            if (status != Status::Ok) {
                 m_accelerator.reset();
-                return Status::NoAcceleration;
+                return status;
             }
 
             return Status::Ok;
@@ -143,21 +221,20 @@ namespace spla {
         return Status::Ok;
     }
 
+    Status Library::set_verbosity(int verbosity) {
+        m_logger->set_verbosity(verbosity);
+        LOG_MSG(Status::Ok, "set verbosity: " << verbosity);
+        return Status::Ok;
+    }
+
     Status Library::set_default_callback() {
-        auto callback = [](spla::Status       status,
-                           const std::string& msg,
-                           const std::string& file,
-                           const std::string& function,
-                           int                line) {
-            std::stringstream to_output;
-
-            to_output << "[" << file << ":" << line << "] "
-                      << to_string(status) << ": " << msg << std::endl;
-
-            if (status == Status::Ok)
-                std::cout << to_output.str();
-            else
-                std::cerr << to_output.str();
+        auto callback = [](spla::Status                        status,
+                           const std::string&                  msg,
+                           [[maybe_unused]] const std::string& file,
+                           [[maybe_unused]] const std::string& function,
+                           [[maybe_unused]] int                line) {
+            std::ostream& out = (status == Status::Ok) ? std::cout : std::cerr;
+            out << to_string(status) << ": " << msg << std::endl;
         };
         return set_message_callback(callback);
     }
@@ -215,23 +292,15 @@ namespace spla {
         return m_time_profiler.get();
     }
 
-    Library* Library::get() {
+    Library* Library::get(int argc, char** argv) {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {
             g_library = std::make_unique<Library>();
 
-#ifndef SPLA_RELEASE
-            // In debug mode we automatically set default callback
-            // to get log (error) messages from library start-up
-            g_library->set_default_callback();
-#endif
-
-#ifdef SPLA_BUILD_OPENCL
-            // On init we by default attempt to set up OpenCL runtime
-            // If setup is failed error is ignored and library fallbacks to CPU computations only
-            g_library->set_accelerator(AcceleratorType::OpenCL);
-#endif
+            if (g_library->configure(argc, argv) != Status::Ok) {
+                std::cerr << "failed to apply SPLA configuration; continuing with pure CPU computations" << std::endl;
+            }
         }
 
         return g_library.get();

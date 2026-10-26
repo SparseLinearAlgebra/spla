@@ -1,0 +1,12 @@
+{
+    "default": {
+        "backend": "opencl_gpu",
+        "if_opencl_unavailable": "use_cpu",
+
+        "queues_count": 1,
+        "profiling": false,
+        "allocator_type": "general",
+
+        "verbosity": 2
+    }
+}

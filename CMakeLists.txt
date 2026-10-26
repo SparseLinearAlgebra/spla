@@ -2,10 +2,21 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(spla LANGUAGES CXX)
 
 ######################################################################
+## Package version
+## python/VERSION.md is the single source of truth for the version:
+## python/setup.py reads it for the PyPI package and the C++ library
+## gets it as the SPLA_VERSION compile definition.
+
+file(READ "${CMAKE_CURRENT_LIST_DIR}/python/VERSION.md" SPLA_VERSION_RAW)
+string(STRIP "${SPLA_VERSION_RAW}" SPLA_VERSION)
+message(STATUS "SPLA package version: ${SPLA_VERSION}")
+
+######################################################################
 ## public options
 
 option(SPLA_BUILD_TESTS "Build test folder with modules tests" YES)
 option(SPLA_BUILD_EXAMPLES "Build library example applications with algorithms" YES)
+set(SPLA_BUILD_TOOLS YES)
 option(SPLA_BUILD_OPENCL "Build library with opencl backend" YES)
 
 ######################################################################
@@ -178,6 +189,22 @@ endfunction()
 add_subdirectory(deps/robin_hood)
 add_subdirectory(deps/svector)
 
+message(STATUS "Add CLI11 as CLI/ENV parser")
+include(FetchContent)
+
+FetchContent_Declare(CLI11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+    GIT_TAG        v2.4.2
+)
+FetchContent_MakeAvailable(CLI11)
+
+message(STATUS "Add nlohmann/json as JSON parser")
+FetchContent_Declare(nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG        v3.11.3
+)
+FetchContent_MakeAvailable(nlohmann_json)   
+
 if (SPLA_BUILD_OPENCL)
     if (SPLA_TARGET_MACOSX)
         message(STATUS "Add standard Apple OpenCL package")
@@ -200,8 +227,6 @@ if (SPLA_BUILD_OPENCL)
         set(OPENCL_ICD_LOADER_BUILD_TESTING OFF CACHE BOOL "" FORCE)
         add_subdirectory(deps/opencl-icd-loader)
     endif ()
-
-
     message(STATUS "Add Khronos OpenCL HPP bindings")
     add_library(HeadersCpp INTERFACE)
     add_library(OpenCL::HeadersCpp ALIAS HeadersCpp)
@@ -297,6 +322,9 @@ add_library(spla SHARED
         include/spla/vector.hpp
         src/core/accelerator.hpp
         src/core/common.hpp
+        src/core/config_status.hpp
+        src/core/configure.cpp
+        src/core/configure.hpp
         src/core/dispatcher.cpp
         src/core/dispatcher.hpp
         src/core/logger.cpp
@@ -368,9 +396,13 @@ target_include_directories(spla PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
 
 set_target_properties(spla PROPERTIES OUTPUT_NAME "spla_${SPLA_ARCH}")
 target_compile_definitions(spla PRIVATE SPLA_EXPORTS)
+target_compile_definitions(spla PRIVATE SPLA_VERSION="${SPLA_VERSION}")
 
 target_link_libraries(spla PRIVATE robin_hood)
 target_link_libraries(spla PRIVATE svector)
+target_link_libraries(spla PRIVATE CLI11::CLI11)
+target_link_libraries(spla PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(spla PRIVATE ${CMAKE_DL_LIBS})
 
 if (SPLA_BUILD_OPENCL)
     target_link_libraries(spla PUBLIC OpenCL)
@@ -382,6 +414,13 @@ endif ()
 spla_target_compile_definitions(spla)
 spla_target_compile_options(spla)
 spla_target_link_options(spla)
+
+set(SPLA_CONF_SRC "${CMAKE_CURRENT_LIST_DIR}/python/pyspla/spla_conf.json")
+set(SPLA_CONF_DST "${CMAKE_BINARY_DIR}/spla_conf.json")
+add_custom_command(TARGET spla POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+                "${SPLA_CONF_SRC}" "${SPLA_CONF_DST}"
+        COMMENT "Copying shipped configuration file spla_conf.json next to the library")
 
 ######################################################################
 ## Add examples directory
@@ -402,6 +441,18 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(tc)
     spla_example_application(pi)
     spla_example_application(convert)
+endif ()
+
+######################################################################
+## Add command line tools
+
+if (SPLA_BUILD_TOOLS)
+    message(STATUS "Add command line tools to build")
+
+    add_executable(spla_cli tools/soft_check.cpp)
+    target_link_libraries(spla_cli PRIVATE spla)
+    target_link_libraries(spla_cli PRIVATE CLI11::CLI11)
+    set_target_properties(spla_cli PROPERTIES OUTPUT_NAME spla)
 endif ()
 
 ######################################################################
