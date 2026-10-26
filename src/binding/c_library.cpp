@@ -35,9 +35,7 @@ void spla_Library_finalize() {
 }
 spla_Status spla_Configure_and_init(int argc, char** argv) {
     auto* lib = spla::Library::get(argc, argv);
-
     if (!lib) return SPLA_STATUS_ERROR;
-
     return SPLA_STATUS_OK;
 }
 

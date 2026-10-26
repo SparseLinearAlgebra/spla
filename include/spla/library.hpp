@@ -224,7 +224,7 @@ namespace spla {
         std::unique_ptr<class Dispatcher>            m_dispatcher;
         std::unique_ptr<class Logger>                m_logger;
         std::unique_ptr<class TimeProfiler>          m_time_profiler;
-        bool                                         m_force_no_acc        = false;
+        bool                                         m_force_no_acc = false;
     };
     /**
      * @}

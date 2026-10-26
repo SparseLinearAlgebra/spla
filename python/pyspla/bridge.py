@@ -27,17 +27,6 @@ SOFTWARE.
 """
 
 __all__ = [
-    "SplaError",
-    "SplaFailedInitialize",
-    "SplaFailedConfigure",
-    "SplaNoAcceleration",
-    "SplaPlatformNotFound",
-    "SplaDeviceNotFound",
-    "SplaInvalidState",
-    "SplaInvalidArgument",
-    "SplaNoValue",
-    "SplaCompilationError",
-    "SplaNotImplemented",
     "backend",
     "check",
     "is_docs",
@@ -106,10 +95,6 @@ class SplaNoValue(SplaError):
     pass
 
 
-class SplaCompilationError(SplaError):
-    pass
-
-
 class SplaNotImplemented(SplaError):
     pass
 
@@ -171,7 +156,6 @@ _status_mapping = {
     5: SplaInvalidState,
     6: SplaInvalidArgument,
     7: SplaNoValue,
-    8: SplaCompilationError,
     1024: SplaNotImplemented,
 }
 
@@ -674,8 +658,8 @@ def load_library(lib_path):
 
 def default_callback(status, msg, file, function, line, user_data):
     decoded_msg = msg.decode("utf-8")
-    print(f"pyspla: {_status_name(status)}: {decoded_msg}")
-
+    decoded_file = file.decode("utf-8")
+    print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
 def configure_and_init():
     """Configure spla from command line arguments and initialize the library"""
