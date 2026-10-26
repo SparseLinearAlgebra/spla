@@ -33,10 +33,6 @@
 void spla_Library_finalize() {
     spla::Library::get()->finalize();
 }
-spla_Status spla_Library_get_acceleration_status() {
-    return to_c_status(spla::Library::get()->get_acceleration_status());
-}
-
 spla_Status spla_Configure_and_init(int argc, char** argv) {
     auto* lib = spla::Library::get(argc, argv);
 

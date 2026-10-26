@@ -174,12 +174,6 @@ namespace spla {
         SPLA_API Status configure(int argc, char** argv);
 
         /**
-         * @brief Get status of accelerator initialization
-         * @return Function call status
-         */
-        SPLA_API Status get_acceleration_status();
-
-        /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
@@ -231,7 +225,6 @@ namespace spla {
         std::unique_ptr<class Logger>                m_logger;
         std::unique_ptr<class TimeProfiler>          m_time_profiler;
         bool                                         m_force_no_acc        = false;
-        Status                                       m_acceleration_status = Status::NoAcceleration;
     };
     /**
      * @}

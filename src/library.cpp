@@ -127,7 +127,6 @@ namespace spla {
             LOG_MSG(Status::Ok, "release accelerator: " << m_accelerator->get_name());
             m_accelerator.reset();
         }
-        m_acceleration_status = Status::NoAcceleration;
     }
 
     Status Library::configure(int argc, char** argv) {
@@ -181,10 +180,6 @@ namespace spla {
 #endif
     }
 
-    Status Library::get_acceleration_status() {
-        return m_acceleration_status;
-    }
-
     Status Library::set_accelerator(AcceleratorType accelerator) {
 #if defined(SPLA_BUILD_OPENCL)
         if (accelerator == AcceleratorType::OpenCL) {
@@ -193,22 +188,18 @@ namespace spla {
             Status status = m_accelerator->init();
             if (status != Status::Ok) {
                 m_accelerator.reset();
-                m_acceleration_status = status;
                 return status;
             }
 
-            m_acceleration_status = Status::Ok;
             return Status::Ok;
         }
 #endif
         if (accelerator == AcceleratorType::None) {
             LOG_MSG(Status::Ok, "disable acceleration");
             m_accelerator.reset();
-            m_acceleration_status = Status::NoAcceleration;
             return Status::Ok;
         }
 
-        m_acceleration_status = Status::NoAcceleration;
         return Status::NoAcceleration;
     }
 

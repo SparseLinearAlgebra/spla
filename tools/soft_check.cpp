@@ -51,11 +51,6 @@ namespace {
 
         Library::get()->set_default_callback();
 
-        if (spla_Library_get_acceleration_status() != SPLA_STATUS_OK) {
-            std::cout << CHECK_TAG << " FAILED - no OpenCL platform/device available" << std::endl;
-            return 1;
-        }
-
         std::string info;
         Library::get()->get_accelerator_info(info);
         std::cout << CHECK_TAG << " Selected accelerator: " << info << std::endl;

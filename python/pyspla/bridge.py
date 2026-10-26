@@ -28,7 +28,6 @@ SOFTWARE.
 
 __all__ = [
     "SplaError",
-    "describe_status",
     "SplaFailedInitialize",
     "SplaFailedConfigure",
     "SplaNoAcceleration",
@@ -38,10 +37,7 @@ __all__ = [
     "SplaInvalidArgument",
     "SplaNoValue",
     "SplaCompilationError",
-    "SplaConfigError",
     "SplaNotImplemented",
-    "acceleration_status",
-    "has_acceleration",
     "backend",
     "check",
     "is_docs",
@@ -114,10 +110,6 @@ class SplaCompilationError(SplaError):
     pass
 
 
-class SplaConfigError(SplaError):
-    pass
-
-
 class SplaNotImplemented(SplaError):
     pass
 
@@ -180,7 +172,6 @@ _status_mapping = {
     6: SplaInvalidArgument,
     7: SplaNoValue,
     8: SplaCompilationError,
-    9: SplaConfigError,
     1024: SplaNotImplemented,
 }
 
@@ -194,7 +185,6 @@ _status_description = {
     6: "invalid argument passed",
     7: "no value",
     8: "GPU program compilation failed",
-    9: "configuration error (check spla_conf.json or CLI args)",
     1024: "operation not implemented",
 }
 
@@ -275,8 +265,6 @@ def load_library(lib_path):
     _spla.spla_Library_set_message_callback.argtypes = [_callback_t, ctypes.c_void_p]
     _spla.spla_Library_set_default_callback.restype = _status_t
     _spla.spla_Library_set_default_callback.argtypes = []
-    _spla.spla_Library_get_acceleration_status.restype = _status_t
-    _spla.spla_Library_get_acceleration_status.argtypes = []
     _spla.spla_Library_get_accelerator_info.restype = _status_t
     _spla.spla_Library_get_accelerator_info.argtypes = [ctypes.c_char_p, _int]
 
@@ -700,29 +688,6 @@ def configure_and_init():
         if status != 0:
             _raise_status(status, "spla configuration failed", SplaFailedConfigure)
 
-
-def acceleration_status():
-    """
-    Return the current accelerator initialization status.
-
-    Status 0 means that an accelerated backend was initialized successfully,
-    status 2 means that the library works on pure CPU, and other values are
-    initialization errors (see the corresponding Spla* exceptions).
-
-    :return: Status code returned by the C library or None if it is not loaded.
-    """
-    if _spla:
-        return int(_spla.spla_Library_get_acceleration_status())
-    return None
-
-
-def has_acceleration():
-    """
-    Check whether an accelerated backend is currently used.
-
-    :return: True if an accelerator was initialized successfully.
-    """
-    return acceleration_status() == 0
 
 
 def finalize():
