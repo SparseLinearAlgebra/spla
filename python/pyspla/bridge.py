@@ -671,47 +671,51 @@ def initialize():
     global _default_callback
 
     try:
-        # If generating docs, no lib init required
-        if os.environ["SPLA_DOCS"]:
-            _is_docs = True
-            return
-    except KeyError:
-        pass
+        try:
+            # If generating docs, no lib init required
+            if os.environ["SPLA_DOCS"]:
+                _is_docs = True
+                return
+        except KeyError:
+            pass
 
-    _spla_path = pathlib.Path(__file__).resolve().parent / TARGET
+        _spla_path = pathlib.Path(__file__).resolve().parent / TARGET
 
-    try:
-        # Override library path from ENV variable (for debug & custom build)
-        if os.environ["SPLA_PATH"]:
-            _spla_path = pathlib.Path(os.environ["SPLA_PATH"])
-    except KeyError:
-        pass
+        try:
+            # Override library path from ENV variable (for debug & custom build)
+            if os.environ["SPLA_PATH"]:
+                _spla_path = pathlib.Path(os.environ["SPLA_PATH"])
+        except KeyError:
+            pass
 
-    if not _spla_path.is_file():
-        # Validate file before loading
-        raise Exception(f"no compiled spla file {TARGET} to load")
+        if not _spla_path.is_file():
+            # Validate file before loading
+            raise SplaError(f"no compiled spla file {TARGET} to load")
 
-    load_library(_spla_path)
+        load_library(_spla_path)
 
-    if "--spla-help" in sys.argv[1:]:
-        _spla.spla_Config_help()
-        sys.exit(0)
-    if "--spla-version" in sys.argv[1:]:
-        _spla.spla_Config_version()
-        sys.exit(0)
+        if "--spla-help" in sys.argv[1:]:
+            _spla.spla_Config_help()
+            sys.exit(0)
+        if "--spla-version" in sys.argv[1:]:
+            _spla.spla_Config_version()
+            sys.exit(0)
 
-    configure_and_init()
+        configure_and_init()
 
-    _default_callback = _callback_t(default_callback)
+        _default_callback = _callback_t(default_callback)
 
-    try:
-        # If debug enable in ENV, setup default callback for messages on init
-        if int(os.environ["SPLA_DEBUG"]):
-            _spla.spla_Library_set_message_callback(_default_callback, ctypes.c_void_p(0))
-    except KeyError:
-        pass
+        try:
+            # If debug enable in ENV, setup default callback for messages on init
+            if int(os.environ["SPLA_DEBUG"]):
+                _spla.spla_Library_set_message_callback(_default_callback, ctypes.c_void_p(0))
+        except KeyError:
+            pass
 
-    atexit.register(finalize)
+        atexit.register(finalize)
+
+    except SplaError as e:
+        sys.exit(f"FAILED: {e}")
 
 
 def check(status):
