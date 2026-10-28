@@ -405,4 +405,27 @@ namespace spla {
         EXEC_OR_MAKE_TASK
     }
 
+    Status exec_intersect(
+            ref_ptr<Vector>        a_keys,
+            ref_ptr<Vector>        a_vals,
+            ref_ptr<Vector>        b_keys,
+            ref_ptr<Vector>        b_vals,
+            ref_ptr<Vector>        r_keys,
+            ref_ptr<Vector>        r_vals,
+            ref_ptr<OpBinary>      op,
+            ref_ptr<Descriptor>    desc,
+            ref_ptr<ScheduleTask>* task_hnd) {
+        auto task    = make_ref<ScheduleTask_intersect>();
+        task->a_keys = std::move(a_keys);
+        task->a_vals = std::move(a_vals);
+        task->b_keys = std::move(b_keys);
+        task->b_vals = std::move(b_vals);
+        task->r_keys = std::move(r_keys);
+        task->r_vals = std::move(r_vals);
+        task->op     = std::move(op);
+        task->desc   = std::move(desc);
+
+        EXEC_OR_MAKE_TASK
+    }
+
 }// namespace spla
