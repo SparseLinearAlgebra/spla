@@ -151,11 +151,11 @@ namespace spla {
             auto* p_tmp_alloc = p_cl_acc->get_alloc_tmp();
 
             const uint result_count = cl_merge_intersect<T>(queue,
-                                                            p_cl_a_keys->Ax, p_cl_a_vals->Ax, a_size,
-                                                            p_cl_b_keys->Ax, p_cl_b_vals->Ax, b_size,
+                                                            p_cl_a_keys->Ax, p_cl_a_vals->Ax, 0, a_size,
+                                                            p_cl_b_keys->Ax, p_cl_b_vals->Ax, 0, b_size,
                                                             p_cl_r_keys->Ai, p_cl_r_keys->Ax,
                                                             p_cl_r_vals->Ai, p_cl_r_vals->Ax,
-                                                            op, p_tmp_alloc);
+                                                            0, op, p_tmp_alloc);
 
             p_tmp_alloc->free_all();
 
