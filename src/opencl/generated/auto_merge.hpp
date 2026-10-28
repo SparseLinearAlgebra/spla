@@ -86,8 +86,10 @@ uint upper_bound(const uint           x,
 
 __kernel void merge_intersect_count(
         __global const uint* a_keys,
+        const uint           a_offset,
         const uint           a_size,
         __global const uint* b_keys,
+        const uint           b_offset,
         const uint           b_size,
         __global uint*       tile_counts,
         const uint           tile_size) {
@@ -98,16 +100,16 @@ __kernel void merge_intersect_count(
 
     const uint i1 = min(i0 + tile_size, a_size);
 
-    const uint j0 = lower_bound(a_keys[i0], 0, b_size, b_keys);
-    const uint j1 = upper_bound(a_keys[i1 - 1], 0, b_size, b_keys);
+    const uint j0 = lower_bound(a_keys[a_offset + i0], 0, b_size, b_keys + b_offset);
+    const uint j1 = upper_bound(a_keys[a_offset + i1 - 1], 0, b_size, b_keys + b_offset);
 
     uint i     = i0;
     uint j     = j0;
     uint count = 0;
 
     while (i < i1 && j < j1) {
-        const uint ka = a_keys[i];
-        const uint kb = b_keys[j];
+        const uint ka = a_keys[a_offset + i];
+        const uint kb = b_keys[b_offset + j];
 
         if (ka < kb) {
             ++i;
@@ -126,15 +128,18 @@ __kernel void merge_intersect_count(
 __kernel void merge_intersect_scatter(
         __global const uint* a_keys,
         __global const TYPE* a_vals,
+        const uint           a_offset,
         const uint           a_size,
         __global const uint* b_keys,
         __global const TYPE* b_vals,
+        const uint           b_offset,
         const uint           b_size,
         __global const uint* tile_offsets,
         __global uint*       r_keys_ai,
         __global uint*       r_keys_ax,
         __global uint*       r_vals_ai,
         __global TYPE*       r_vals_ax,
+        const uint           r_offset,
         const uint           tile_size) {
 
     const uint t  = get_global_id(0);
@@ -143,26 +148,26 @@ __kernel void merge_intersect_scatter(
 
     const uint i1 = min(i0 + tile_size, a_size);
 
-    const uint j0 = lower_bound(a_keys[i0], 0, b_size, b_keys);
-    const uint j1 = upper_bound(a_keys[i1 - 1], 0, b_size, b_keys);
+    const uint j0 = lower_bound(a_keys[a_offset + i0], 0, b_size, b_keys + b_offset);
+    const uint j1 = upper_bound(a_keys[a_offset + i1 - 1], 0, b_size, b_keys + b_offset);
 
     uint i = i0;
     uint j = j0;
     uint k = tile_offsets[t];
 
     while (i < i1 && j < j1) {
-        const uint ka = a_keys[i];
-        const uint kb = b_keys[j];
+        const uint ka = a_keys[a_offset + i];
+        const uint kb = b_keys[b_offset + j];
 
         if (ka < kb) {
             ++i;
         } else if (kb < ka) {
             ++j;
         } else {
-            r_keys_ai[k] = k;
-            r_keys_ax[k] = ka;
-            r_vals_ai[k] = k;
-            r_vals_ax[k] = OP_BINARY(a_vals[i], b_vals[j]);
+            r_keys_ai[r_offset + k] = r_offset + k;
+            r_keys_ax[r_offset + k] = ka;
+            r_vals_ai[r_offset + k] = r_offset + k;
+            r_vals_ax[r_offset + k] = OP_BINARY(a_vals[a_offset + i], b_vals[b_offset + j]);
             ++k;
             ++i;
             ++j;
