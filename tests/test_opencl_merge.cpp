@@ -618,4 +618,4 @@ TEST(opencl_merge, merge_path_v2) {
     std::cout << "Time taken for Merge Cpu: " << (result_time_cpu / N_RUNS).count() << " ms\n";
 }
 
-SPLA_GTEST_MAIN
+SPLA_GTEST_MAIN_NO_SPLA

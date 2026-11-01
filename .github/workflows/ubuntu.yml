@@ -96,7 +96,10 @@ jobs:
 
       - name: Run tests
         run: |
-          python3 ./run_tests.py --build-dir=${{ env.build-dir }} | tee ${{ env.test-file }}
+          python3 ./run_tests.py --build-dir=${{ env.build-dir }} \
+                                 --config-file=.github/workflows/ci_spla_conf.json \
+                                 --config=ci_cpu \
+                                 | tee ${{ env.test-file }}
 
       - name: Upload tests resutls
         uses: actions/upload-artifact@v4

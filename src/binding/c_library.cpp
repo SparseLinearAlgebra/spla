@@ -36,7 +36,9 @@ void spla_Library_finalize() {
 spla_Status spla_Configure_and_init(int argc, char** argv) {
     auto* lib = spla::Library::get(argc, argv);
     if (!lib) return SPLA_STATUS_ERROR;
-    return SPLA_STATUS_OK;
+    // Report the real configuration status: on failure the library continues
+    // with pure CPU computations, but the caller must be able to detect it.
+    return to_c_status(lib->configure_status());
 }
 
 void spla_Config_help() {

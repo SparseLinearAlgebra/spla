@@ -57,29 +57,35 @@ jobs:
                 -j ${{ env.nt }}
 
   test:
-    name: Test GPU ${{ matrix.gpu }}
+    name: Test ${{ matrix.config }}
     needs: build
     runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - gpu: NVIDIA-GeForce-GT-1030
-            platform: 2
-            device: 0
-          - gpu: AMD-Radeon-RX-6750-XT
-            platform: 1
-            device: 0
+        config:
+          - ci_cpu
+          - ci_opencl_cpu
+          - ci_amd_gfx1031
+          - ci_nvidia_gt1030
+          - ci_amd_rusticl
 
     env:
-      test-file: ${{ matrix.gpu }}_tests.log
+      config-file: .github/workflows/ci_spla_conf.json
+      test-file: ${{ matrix.config }}_tests.log
 
     steps:
+      - name: Verify environment
+        run: |
+          ./${{ env.build-dir }}/spla --softcheck \
+                                     --spla-config-file=${{ env.config-file }} \
+                                     --spla-config=${{ matrix.config }}
+
       - name: Run tests
         run: |
           python3 ./run_tests.py --build-dir=${{ env.build-dir }} \
-                                 --platform=${{ matrix.platform }} \
-                                 --device=${{ matrix.device }} \
+                                 --config-file=${{ env.config-file }} \
+                                 --config=${{ matrix.config }} \
                                  | tee ${{ env.test-file }}
 
       - name: Upload tests resutls

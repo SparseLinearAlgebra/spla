@@ -174,6 +174,17 @@ namespace spla {
         SPLA_API Status configure(int argc, char** argv);
 
         /**
+         * @brief Get status of the last library configuration attempt
+         *
+         * Returns `Status::Ok` when the configuration was applied successfully,
+         * or the error status when it failed (in which case the library
+         * continues with pure CPU computations).
+         *
+         * @return Status of the last `configure` call
+         */
+        SPLA_API Status configure_status() const;
+
+        /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
          */
@@ -225,6 +236,7 @@ namespace spla {
         std::unique_ptr<class Logger>                m_logger;
         std::unique_ptr<class TimeProfiler>          m_time_profiler;
         bool                                         m_force_no_acc = false;
+        Status                                       m_configure_status = Status::Ok;
     };
     /**
      * @}

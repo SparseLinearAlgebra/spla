@@ -1,0 +1,40 @@
+{
+    "ci_base": {
+        "queues_count": 1,
+        "profiling": false,
+        "allocator_type": "general",
+        "verbosity": 1
+    },
+    "ci_device": {
+        "extends": ["ci_base"],
+        "if_opencl_unavailable": "abort"
+    },
+    "ci_cpu": {
+        "extends": ["ci_base"],
+        "backend": "cpu"
+    },
+    "ci_opencl_cpu": {
+        "extends": ["ci_device"],
+        "backend": "by_index",
+        "platform_index": 0,
+        "device_index": 0
+    },
+    "ci_amd_gfx1031": {
+        "extends": ["ci_device"],
+        "backend": "by_index",
+        "platform_index": 1,
+        "device_index": 0
+    },
+    "ci_nvidia_gt1030": {
+        "extends": ["ci_device"],
+        "backend": "by_index",
+        "platform_index": 2,
+        "device_index": 0
+    },
+    "ci_amd_rusticl": {
+        "extends": ["ci_device"],
+        "backend": "by_index",
+        "platform_index": 3,
+        "device_index": 0
+    }
+}

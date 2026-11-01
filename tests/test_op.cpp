@@ -61,4 +61,4 @@ TEST(op_binary, custom) {
     display_op_info(custom_plus);
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+SPLA_GTEST_MAIN

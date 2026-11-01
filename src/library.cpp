@@ -292,13 +292,18 @@ namespace spla {
         return m_time_profiler.get();
     }
 
+    Status Library::configure_status() const {
+        return m_configure_status;
+    }
+
     Library* Library::get(int argc, char** argv) {
         static std::unique_ptr<Library> g_library;
 
         if (!g_library) {
             g_library = std::make_unique<Library>();
 
-            if (g_library->configure(argc, argv) != Status::Ok) {
+            g_library->m_configure_status = g_library->configure(argc, argv);
+            if (g_library->m_configure_status != Status::Ok) {
                 std::cerr << "failed to apply SPLA configuration; continuing with pure CPU computations" << std::endl;
             }
         }

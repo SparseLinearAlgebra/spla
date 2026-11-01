@@ -271,4 +271,4 @@ TEST(matrix, emult) {
     }
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+SPLA_GTEST_MAIN

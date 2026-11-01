@@ -435,4 +435,4 @@ TEST(opencl, reduce_by_key_small) {
     }
 }
 
-SPLA_GTEST_MAIN
+SPLA_GTEST_MAIN_NO_SPLA

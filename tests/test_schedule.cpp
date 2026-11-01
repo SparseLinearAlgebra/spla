@@ -37,4 +37,4 @@ TEST(schedule, task_callback) {
     schedule->submit();
 }
 
-SPLA_GTEST_MAIN_WITH_FINALIZE
+SPLA_GTEST_MAIN
