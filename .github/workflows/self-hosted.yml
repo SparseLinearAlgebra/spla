@@ -20,6 +20,8 @@ on:
   pull_request:
     branches: [ main ]
 
+  workflow_dispatch:
+
 env:
   build-dir: "build"
 
