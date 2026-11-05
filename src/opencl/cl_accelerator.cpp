@@ -58,17 +58,17 @@ namespace spla {
         for (size_t p = 0; p < platforms.size(); p++) {
             std::vector<cl::Device> devices;
 #if defined(CL_HPP_ENABLE_EXCEPTIONS)
-        try {
-            platforms[p].getDevices(type, &devices);
-        } catch (const cl::Error& e) {
-            LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
-            continue;
-        }
+            try {
+                platforms[p].getDevices(type, &devices);
+            } catch (const cl::Error& e) {
+                LOG_MSG(Status::DeviceNotFound, "failed to query devices of platform " << p << ": " << e.what());
+                continue;
+            }
 #else
-        platforms[p].getDevices(type, &devices);
+            platforms[p].getDevices(type, &devices);
 #endif
-        if (!devices.empty()) {
-            return std::make_pair(static_cast<int>(p), 0);
+            if (!devices.empty()) {
+                return std::make_pair(static_cast<int>(p), 0);
             }
         }
 
@@ -112,7 +112,7 @@ namespace spla {
 
             platform_index = found->first;
             device_index   = found->second;
-            
+
         } else if (backend == "by_index") {
             if (!config_final.platform_index.has_value() || !config_final.device_index.has_value()) {
                 LOG_MSG(Status::InvalidArgument, "platform_index and device_index are required for backend='by_index'");
@@ -195,7 +195,7 @@ namespace spla {
 
     Status CLAccelerator::set_device(int index) {
         std::vector<cl::Device> available_devices;
-        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);  
+        m_platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);
 
         if (index < 0 || static_cast<size_t>(index) >= available_devices.size()) {
             LOG_MSG(Status::DeviceNotFound, "no OpenCL device with index " << index
