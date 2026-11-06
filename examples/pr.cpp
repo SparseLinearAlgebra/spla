@@ -84,7 +84,7 @@ int main(int argc, const char* const* argv) {
         A_degrees[Ai[k]] += 1.0f;
     }
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        A->set_float(Ai[k], Aj[k], alpha / A_degrees[Aj[k]];
+        A->set_float(Ai[k], Aj[k], alpha / A_degrees[Aj[k]]);
     }
 
     const int n_iters = args[OPT_NITERS].as<int>();
