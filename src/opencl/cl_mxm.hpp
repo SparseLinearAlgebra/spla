@@ -50,9 +50,58 @@
 #include <opencl/generated/auto_mxm.hpp>
 
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 
 namespace spla {
+
+    namespace mxm_detail {
+
+        constexpr uint   THREADS                    = 256;
+        constexpr uint   INPUT_ELEMENTS_PER_THREAD  = 4;
+        constexpr uint   RETAIN_ELEMENTS_PER_THREAD = 4;
+        constexpr uint   ACCUMULATION_CAPACITY      = 2048;
+        constexpr uint   FLUSH_THRESHOLD            = 1024;
+        constexpr uint   DIRECT_ROW_THRESHOLD       = 1024;
+        constexpr uint   HEAVY_DIRECT_THRESHOLD     = 4096;
+        constexpr uint   MAX_CHUNKS_TO_MERGE        = 16;
+        constexpr uint   POOL_RETRIES               = 3;
+        constexpr double POOL_OVERALLOC             = 1.1;
+        constexpr double MIN_EXPECTED_NNZ           = 10000000.0;
+        constexpr double MAX_EXPECTED_NNZ           = 500000000.0;
+
+        /**
+         * Statistical estimate of the number of chunk (col, value) entries that
+         * the multiplication will produce, including intermediate chunks and the
+         * final output. Follows the GALATIC pool estimate from
+         * `GALATIC/source/device/Multiply.cuh`.
+         */
+        inline std::size_t estimate_pool_elements(uint a_rows, uint a_nnz, uint b_rows, uint b_nnz, uint b_cols) {
+            const double a_avg   = static_cast<double>(a_nnz) / static_cast<double>(a_rows);
+            const double b_avg   = static_cast<double>(b_nnz) / static_cast<double>(b_rows);
+            const double overlap = b_avg / static_cast<double>(b_cols);
+
+            const double output_estimate =
+                    POOL_OVERALLOC * a_rows * b_avg * (1.0 - std::pow(1.0 - overlap, a_avg)) / overlap;
+
+            double single_chunk = b_avg;
+            double cur_overlap  = overlap;
+            double merges       = 1.0;
+            for (; merges < a_avg + 1.0; merges += 1.0) {
+                if (single_chunk >= static_cast<double>(RETAIN_ELEMENTS_PER_THREAD * THREADS)) break;
+                single_chunk += (1.0 - cur_overlap) * b_avg;
+                cur_overlap = cur_overlap + (1.0 - cur_overlap) * overlap;
+            }
+            const double intermediate_estimate =
+                    POOL_OVERALLOC * a_avg / std::min(merges, a_avg) * single_chunk * a_rows;
+
+            const double expected =
+                    std::max(MIN_EXPECTED_NNZ, std::min(MAX_EXPECTED_NNZ, std::max(intermediate_estimate, output_estimate)));
+
+            return static_cast<std::size_t>(expected);
+        }
+
+    }// namespace mxm_detail
 
     template<typename T>
     class Algo_mxm_cl final : public RegistryAlgo {

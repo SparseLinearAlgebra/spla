@@ -29,6 +29,8 @@
 
 #include <spla.hpp>
 
+#include <opencl/cl_mxm.hpp>
+
 using uint = spla::uint;
 
 inline bool ensure_opencl() {
@@ -38,6 +40,42 @@ inline bool ensure_opencl() {
     }
     return lib->set_accelerator(spla::AcceleratorType::OpenCL) == spla::Status::Ok &&
            lib->get_accelerator() != nullptr;
+}
+
+TEST(opencl_mxm, pool_estimate) {
+    const uint a_rows = 3, a_nnz = 6, b_rows = 3, b_nnz = 6, b_cols = 3;
+
+    // CPU reference of the GALATIC formula (GALATIC/source/device/Multiply.cuh).
+    const double overalloc = 1.1;
+    const uint   retain    = 4;
+    const uint   threads   = 256;
+
+    const double a_avg   = static_cast<double>(a_nnz) / static_cast<double>(a_rows);
+    const double b_avg   = static_cast<double>(b_nnz) / static_cast<double>(b_rows);
+    const double overlap = b_avg / static_cast<double>(b_cols);
+
+    const double output_estimate =
+            overalloc * a_rows * b_avg * (1.0 - std::pow(1.0 - overlap, a_avg)) / overlap;
+
+    double single_chunk = b_avg;
+    double cur_overlap  = overlap;
+    double merges       = 1.0;
+    for (; merges < a_avg + 1.0; merges += 1.0) {
+        if (single_chunk >= static_cast<double>(retain * threads)) break;
+        single_chunk += (1.0 - cur_overlap) * b_avg;
+        cur_overlap = cur_overlap + (1.0 - cur_overlap) * overlap;
+    }
+    const double intermediate_estimate =
+            overalloc * a_avg / std::min(merges, a_avg) * single_chunk * a_rows;
+
+    const double expected =
+            std::max(10000000.0, std::min(500000000.0, std::max(intermediate_estimate, output_estimate)));
+
+    const std::size_t got = spla::mxm_detail::estimate_pool_elements(a_rows, a_nnz, b_rows, b_nnz, b_cols);
+
+    EXPECT_EQ(got, static_cast<std::size_t>(expected));
+    EXPECT_GE(got, static_cast<std::size_t>(10000000));
+    EXPECT_LE(got, static_cast<std::size_t>(500000000));
 }
 
 TEST(opencl_mxm, empty) {
