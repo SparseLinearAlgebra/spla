@@ -54,6 +54,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <sstream>
+#include <type_traits>
 #include <vector>
 
 namespace spla {
@@ -459,10 +460,15 @@ namespace spla {
             program_builder
                     .set_name("mxm")
                     .add_define("BLOCK_SIZE", m_block_size)
-                    .add_type("TYPE", get_ttype<T>().template as<Type>())
-                    .add_op("OP_BINARY1", op_multiply.template as<OpBinary>())
-                    .set_source(source_mxm)
-                    .acquire();
+                    .add_type("TYPE", get_ttype<T>().template as<Type>());
+
+            if constexpr (std::is_same_v<T, PathIndex>) {
+                program_builder.add_define("USE_PATH_INDEX_SEMANTICS", 1);
+            } else {
+                program_builder.add_op("OP_BINARY1", op_multiply.template as<OpBinary>());
+            }
+
+            program_builder.set_source(source_mxm).acquire();
 
             program = program_builder.get_program();
 

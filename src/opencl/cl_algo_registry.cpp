@@ -100,6 +100,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CL_0("mxm", INT), std::make_shared<Algo_mxm_cl<T_INT>>());
         g_registry->add(MAKE_KEY_CL_0("mxm", UINT), std::make_shared<Algo_mxm_cl<T_UINT>>());
         g_registry->add(MAKE_KEY_CL_0("mxm", FLOAT), std::make_shared<Algo_mxm_cl<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CL_0("mxm", PATH_INDEX), std::make_shared<Algo_mxm_cl<T_PATH_INDEX>>());
 
         // algorithm intersect
         g_registry->add(MAKE_KEY_CL_0("intersect", INT), std::make_shared<Algo_intersect_cl<T_INT>>());

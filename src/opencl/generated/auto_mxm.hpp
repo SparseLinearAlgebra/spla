@@ -54,7 +54,7 @@ __kernel void mxm_collect(__global const uint* g_Ap,
 
                 for (uint b = bs; b < be; ++b) {
                     g_nkeys[off] = i * K + g_Bj[b];
-                    g_nvals[off] = OP_BINARY1(av, g_Bx[b]);
+                    g_nvals[off] = OP_BINARY1_INDEX(av, k, g_Bx[b]);
                     off += 1;
                 }
             } else {
@@ -79,7 +79,7 @@ __kernel void mxm_collect(__global const uint* g_Ap,
 
                 for (uint b = bs; b < be; ++b) {
                     g_dkeys[off] = i * K + g_Bj[b];
-                    g_dvals[off] = OP_BINARY1(av, g_Bx[b]);
+                    g_dvals[off] = OP_BINARY1_INDEX(av, k, g_Bx[b]);
                     off += 1;
                 }
             }
@@ -94,7 +94,7 @@ __kernel void mxm_identity_flag(__global const TYPE* g_vals,
                                 const uint           n) {
     const uint gid = get_global_id(0);
     if (gid < n) {
-        const uint keep = (g_vals[gid] != init) ? 1u : 0u;
+        const uint keep = OP_IS_INIT(g_vals[gid], init) ? 0u : 1u;
         g_flags[gid]    = keep;
         atomic_add(g_count, keep);
     }

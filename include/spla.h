@@ -152,6 +152,7 @@ SPLA_API spla_Type spla_Type_BOOL();
 SPLA_API spla_Type spla_Type_INT();
 SPLA_API spla_Type spla_Type_UINT();
 SPLA_API spla_Type spla_Type_FLOAT();
+SPLA_API spla_Type spla_Type_PATH_INDEX();
 
 //////////////////////////////////////////////////////////////////////////////////////
 

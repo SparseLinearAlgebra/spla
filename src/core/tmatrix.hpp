@@ -70,12 +70,18 @@ namespace spla {
         Status             set_int(uint row_id, uint col_id, std::int32_t value) override;
         Status             set_uint(uint row_id, uint col_id, std::uint32_t value) override;
         Status             set_float(uint row_id, uint col_id, float value) override;
-        Status             get_int(uint row_id, uint col_id, int32_t& value) override;
-        Status             get_uint(uint row_id, uint col_id, uint32_t& value) override;
-        Status             get_float(uint row_id, uint col_id, float& value) override;
-        Status             build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) override;
-        Status             read(ref_ptr<MemView>& keys1, ref_ptr<MemView>& keys2, ref_ptr<MemView>& values) override;
-        Status             clear() override;
+        Status             set_path_index(uint row_id, uint col_id, PathIndex value) override {
+            return Status::InvalidArgument;
+        }
+        Status get_int(uint row_id, uint col_id, int32_t& value) override;
+        Status get_uint(uint row_id, uint col_id, uint32_t& value) override;
+        Status get_float(uint row_id, uint col_id, float& value) override;
+        Status get_path_index(uint row_id, uint col_id, PathIndex& value) override {
+            return Status::InvalidArgument;
+        }
+        Status build(const ref_ptr<MemView>& keys1, const ref_ptr<MemView>& keys2, const ref_ptr<MemView>& values) override;
+        Status read(ref_ptr<MemView>& keys1, ref_ptr<MemView>& keys2, ref_ptr<MemView>& values) override;
+        Status clear() override;
 
         template<typename Decorator>
         Decorator* get() { return m_storage.template get<Decorator>(); }
@@ -318,6 +324,49 @@ namespace spla {
     /**
      * @}
      */
+
+    template<>
+    inline Status TMatrix<PathIndex>::set_int(uint, uint, std::int32_t) { return Status::InvalidArgument; }
+    template<>
+    inline Status TMatrix<PathIndex>::set_uint(uint, uint, std::uint32_t) { return Status::InvalidArgument; }
+    template<>
+    inline Status TMatrix<PathIndex>::set_float(uint, uint, float) { return Status::InvalidArgument; }
+    template<>
+    inline Status TMatrix<PathIndex>::get_int(uint, uint, int32_t&) { return Status::InvalidArgument; }
+    template<>
+    inline Status TMatrix<PathIndex>::get_uint(uint, uint, uint32_t&) { return Status::InvalidArgument; }
+    template<>
+    inline Status TMatrix<PathIndex>::get_float(uint, uint, float&) { return Status::InvalidArgument; }
+
+    template<>
+    inline Status TMatrix<PathIndex>::set_path_index(uint row_id, uint col_id, PathIndex value) {
+        if (get_type() != PATH_INDEX) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rwd(FormatMatrix::CpuLil);
+        cpu_lil_add_element(row_id, col_id, value, *get<CpuLil<PathIndex>>());
+        return Status::Ok;
+    }
+
+    template<>
+    inline Status TMatrix<PathIndex>::get_path_index(uint row_id, uint col_id, PathIndex& value) {
+        if (get_type() != PATH_INDEX) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rw(FormatMatrix::CpuDok);
+
+        auto& Ax    = get<CpuDok<PathIndex>>()->Ax;
+        auto  entry = Ax.find(typename CpuDok<PathIndex>::Key(row_id, col_id));
+        value       = m_storage.get_fill_value();
+
+        if (entry != Ax.end()) {
+            value = static_cast<PathIndex>(entry->second);
+        }
+
+        return Status::Ok;
+    }
 
 }// namespace spla
 

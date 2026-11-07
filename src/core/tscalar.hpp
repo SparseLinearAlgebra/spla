@@ -54,12 +54,19 @@ namespace spla {
         Status        set_int(std::int32_t value) override;
         Status        set_uint(std::uint32_t value) override;
         Status        set_float(float value) override;
-        Status        get_int(std::int32_t& value) override;
-        Status        get_uint(std::uint32_t& value) override;
-        Status        get_float(float& value) override;
-        T_INT         as_int() override { return static_cast<T_INT>(m_value); }
-        T_UINT        as_uint() override { return static_cast<T_UINT>(m_value); }
-        T_FLOAT       as_float() override { return static_cast<T_FLOAT>(m_value); }
+        Status        set_path_index(PathIndex value) override {
+            return Status::InvalidArgument;
+        }
+        Status get_int(std::int32_t& value) override;
+        Status get_uint(std::uint32_t& value) override;
+        Status get_float(float& value) override;
+        Status get_path_index(PathIndex& value) override {
+            return Status::InvalidArgument;
+        }
+        T_INT        as_int() override { return static_cast<T_INT>(m_value); }
+        T_UINT       as_uint() override { return static_cast<T_UINT>(m_value); }
+        T_FLOAT      as_float() override { return static_cast<T_FLOAT>(m_value); }
+        T_PATH_INDEX as_path_index() override { return PathIndex(); }
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -135,6 +142,48 @@ namespace spla {
     /**
      * @}
      */
+
+    template<>
+    class TScalar<PathIndex> final : public Scalar {
+    public:
+        TScalar() = default;
+        explicit TScalar(PathIndex value) : m_value(value) {}
+        ~TScalar() override = default;
+
+        ref_ptr<Type> get_type() override { return PATH_INDEX; }
+
+        Status set_path_index(PathIndex value) override {
+            m_value = value;
+            return Status::Ok;
+        }
+        Status get_path_index(PathIndex& value) override {
+            value = m_value;
+            return Status::Ok;
+        }
+
+        Status set_int(std::int32_t) override { return Status::InvalidArgument; }
+        Status set_uint(std::uint32_t) override { return Status::InvalidArgument; }
+        Status set_float(float) override { return Status::InvalidArgument; }
+
+        Status get_int(std::int32_t&) override { return Status::InvalidArgument; }
+        Status get_uint(std::uint32_t&) override { return Status::InvalidArgument; }
+        Status get_float(float&) override { return Status::InvalidArgument; }
+
+        T_INT        as_int() override { return 0; }
+        T_UINT       as_uint() override { return 0; }
+        T_FLOAT      as_float() override { return 0.0f; }
+        T_PATH_INDEX as_path_index() override { return m_value; }
+
+        void               set_label(std::string label) override { m_label = std::move(label); }
+        const std::string& get_label() const override { return m_label; }
+
+        PathIndex& get_value() { return m_value; }
+        PathIndex  get_value() const { return m_value; }
+
+    private:
+        std::string m_label;
+        PathIndex   m_value = PathIndex();
+    };
 
 }// namespace spla
 
