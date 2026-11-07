@@ -78,6 +78,8 @@ namespace spla {
         NoValue = 7,
         /** Failed to compile GPU/ACC kernel */
         CompilationError = 8,
+        /** Not enough memory to complete operation */
+        OutOfMemory = 9,
         /** Some library feature is not implemented */
         NotImplemented = 1024
     };

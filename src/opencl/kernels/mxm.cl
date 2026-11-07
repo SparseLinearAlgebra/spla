@@ -27,32 +27,6 @@
 
 #include "common_def.cl"
 
-__kernel void mxm_count(__global const uint* g_Ap,
-                        __global const uint* g_Aj,
-                        __global const uint* g_Bp,
-                        __global uint*       g_normal,
-                        __global uint*       g_direct,
-                        __global uint*       g_direct_chunks,
-                        const uint           direct_thresh,
-                        const uint           n_rows) {
-    const uint gid     = get_global_id(0);
-    const uint gstride = get_global_size(0);
-
-    for (uint i = gid; i < n_rows; i += gstride) {
-        for (uint a = g_Ap[i]; a < g_Ap[i + 1]; ++a) {
-            const uint k   = g_Aj[a];
-            const uint len = g_Bp[k + 1] - g_Bp[k];
-
-            if (len <= direct_thresh) {
-                atomic_add(g_normal, len);
-            } else {
-                atomic_add(g_direct, len);
-                atomic_add(g_direct_chunks, 1);
-            }
-        }
-    }
-}
-
 __kernel void mxm_collect(__global const uint* g_Ap,
                           __global const uint* g_Aj,
                           __global const TYPE* g_Ax,
@@ -62,13 +36,18 @@ __kernel void mxm_collect(__global const uint* g_Ap,
                           __global uint*       g_nkeys,
                           __global TYPE*       g_nvals,
                           __global uint*       g_noff,
+                          const uint           normal_cap,
                           __global uint*       g_dkeys,
                           __global TYPE*       g_dvals,
                           __global uint*       g_doff,
+                          const uint           direct_cap,
                           __global uint*       g_chunk_row,
                           __global uint*       g_chunk_offset,
                           __global uint*       g_chunk_size,
                           __global uint*       g_chunk_cnt,
+                          const uint           chunk_cap,
+                          __global uint*       g_overflow,
+                          __global uint*       g_need,
                           const uint           K,
                           const uint           direct_thresh,
                           const uint           n_rows) {
@@ -86,6 +65,12 @@ __kernel void mxm_collect(__global const uint* g_Ap,
             if (len <= direct_thresh) {
                 uint off = atomic_add(g_noff, len);
 
+                if (off + len > normal_cap) {
+                    atomic_max(g_need, off + len);
+                    g_overflow[0] = 1;
+                    continue;
+                }
+
                 for (uint b = bs; b < be; ++b) {
                     g_nkeys[off] = i * K + g_Bj[b];
                     g_nvals[off] = OP_BINARY1(av, g_Bx[b]);
@@ -93,7 +78,19 @@ __kernel void mxm_collect(__global const uint* g_Ap,
                 }
             } else {
                 uint off = atomic_add(g_doff, len);
-                uint ci  = atomic_add(g_chunk_cnt, 1);
+
+                if (off + len > direct_cap) {
+                    atomic_max(g_need, off + len);
+                    g_overflow[0] = 1;
+                    continue;
+                }
+
+                uint ci = atomic_add(g_chunk_cnt, 1);
+
+                if (ci >= chunk_cap) {
+                    g_overflow[0] = 1;
+                    continue;
+                }
 
                 g_chunk_row[ci]    = i;
                 g_chunk_offset[ci] = off;

@@ -31,6 +31,7 @@
 
 #include <opencl/cl_mxm.hpp>
 
+#include <cstdlib>
 #include <limits>
 
 using uint = spla::uint;
@@ -71,12 +72,12 @@ TEST(opencl_mxm, pool_estimate) {
             overalloc * a_avg / std::min(merges, a_avg) * single_chunk * a_rows;
 
     const double expected =
-            std::max(10000000.0, std::min(500000000.0, std::max(intermediate_estimate, output_estimate)));
+            std::max(1.0, std::min(500000000.0, std::max(intermediate_estimate, output_estimate)));
 
     const std::size_t got = spla::mxm_detail::estimate_pool_elements(a_rows, a_nnz, b_rows, b_nnz, b_cols);
 
     EXPECT_EQ(got, static_cast<std::size_t>(expected));
-    EXPECT_GE(got, static_cast<std::size_t>(10000000));
+    EXPECT_GE(got, static_cast<std::size_t>(1));
     EXPECT_LE(got, static_cast<std::size_t>(500000000));
 }
 
@@ -270,6 +271,94 @@ TEST(opencl_mxm, direct) {
     EXPECT_FLOAT_EQ(v, 4.0f);
     R->get_float(0, K - 1, v);
     EXPECT_FLOAT_EQ(v, 2.0f * static_cast<float>(K));
+}
+
+static void build_naive(spla::ref_ptr<spla::Matrix>& A,
+                        spla::ref_ptr<spla::Matrix>& B) {
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 2, 2.0f);
+    A->set_float(1, 1, 3.0f);
+    A->set_float(1, 3, 4.0f);
+    A->set_float(2, 0, 5.0f);
+    A->set_float(2, 2, 6.0f);
+
+    B->set_float(0, 0, 7.0f);
+    B->set_float(0, 1, 1.0f);
+    B->set_float(1, 1, 1.0f);
+    B->set_float(2, 1, 1.0f);
+    B->set_float(3, 1, 1.0f);
+}
+
+TEST(opencl_mxm, memory_underestimate) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    setenv("SPLA_MXM_POOL", "2", 1);
+
+    auto A    = spla::Matrix::make(3, 4, spla::FLOAT);
+    auto B    = spla::Matrix::make(4, 2, spla::FLOAT);
+    auto R    = spla::Matrix::make(3, 2, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    build_naive(A, B);
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    R->get_float(0, 0, v);
+    EXPECT_FLOAT_EQ(v, 7.0f);
+    R->get_float(2, 0, v);
+    EXPECT_FLOAT_EQ(v, 35.0f);
+    R->get_float(2, 1, v);
+    EXPECT_FLOAT_EQ(v, 11.0f);
+
+    unsetenv("SPLA_MXM_POOL");
+}
+
+TEST(opencl_mxm, pool_chunk_over) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    setenv("SPLA_MXM_POOL", "1", 1);
+
+    const uint K = 1500;
+
+    auto A    = spla::Matrix::make(1, 1, spla::FLOAT);
+    auto B    = spla::Matrix::make(1, K, spla::FLOAT);
+    auto R    = spla::Matrix::make(1, K, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    A->set_float(0, 0, 2.0f);
+    for (uint j = 0; j < K; ++j) {
+        B->set_float(0, j, static_cast<float>(j + 1));
+    }
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    R->get_float(0, 0, v);
+    EXPECT_FLOAT_EQ(v, 2.0f);
+    R->get_float(0, K - 1, v);
+    EXPECT_FLOAT_EQ(v, 2.0f * static_cast<float>(K));
+
+    unsetenv("SPLA_MXM_POOL");
+}
+
+TEST(opencl_mxm, memory_oom) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    setenv("SPLA_MXM_POOL", "2", 1);
+    setenv("SPLA_MXM_RETRIES", "1", 1);
+
+    auto A    = spla::Matrix::make(3, 4, spla::FLOAT);
+    auto B    = spla::Matrix::make(4, 2, spla::FLOAT);
+    auto R    = spla::Matrix::make(3, 2, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    build_naive(A, B);
+
+    EXPECT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::OutOfMemory);
+
+    unsetenv("SPLA_MXM_POOL");
+    unsetenv("SPLA_MXM_RETRIES");
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

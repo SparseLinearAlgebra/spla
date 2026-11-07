@@ -122,7 +122,7 @@ Contract from `algorithms/merge-path/merge_union_usage.md`. GALATIC uses its own
 **Spec:**
 - Identity removed after each merge, and for SIMPLE after chunk creation; Ap from final row lengths; empty result: values=0, empty Aj/Ax, zero Ap.
 
-### S7: Pool recovery and out-of-memory
+### S7: Pool recovery and out-of-memory [done]
 
 **Code:** pool growth, overflow flag, restart point, repeat unfinished rows, growth of pointer array and T0/T1/D;
 `Status::OutOfMemory = 9` in `config.hpp`; `SPLA_STATUS_OUT_OF_MEMORY = 9` in `spla.h`. As `source/device/Multiply.cuh`

@@ -52,6 +52,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <sstream>
 #include <vector>
 
@@ -69,7 +70,7 @@ namespace spla {
         constexpr uint   MAX_CHUNKS_TO_MERGE        = 16;
         constexpr uint   POOL_RETRIES               = 3;
         constexpr double POOL_OVERALLOC             = 1.1;
-        constexpr double MIN_EXPECTED_NNZ           = 10000000.0;
+        constexpr double MIN_EXPECTED_NNZ           = 1.0;
         constexpr double MAX_EXPECTED_NNZ           = 500000000.0;
 
         /**
@@ -159,69 +160,94 @@ namespace spla {
             const T    init_val      = init->get_value();
             const uint direct_thresh = mxm_detail::DIRECT_ROW_THRESHOLD;
 
-            // 1. count normal and direct products
-            CLCounterWrapper cl_normal, cl_direct, cl_chunks;
-            CL_COUNTER_SET("init-normal", queue, cl_normal, 0);
-            CL_COUNTER_SET("init-direct", queue, cl_direct, 0);
-            CL_COUNTER_SET("init-chunks", queue, cl_chunks, 0);
+            // pool size and retry count (overridable via env for pool-recovery tests)
+            uint retries  = mxm_detail::POOL_RETRIES;
+            uint pool_est = static_cast<uint>(mxm_detail::estimate_pool_elements(M, p_cl_A->values, B->get_n_rows(), p_cl_B->values, K));
+            if (const char* v = std::getenv("SPLA_MXM_POOL")) {
+                pool_est = std::max<uint>(static_cast<uint>(std::atoi(v)), 1);
+            }
+            if (const char* v = std::getenv("SPLA_MXM_RETRIES")) {
+                retries = std::max<uint>(static_cast<uint>(std::atoi(v)), 1);
+            }
 
-            auto kernel_count = program->make_kernel("mxm_count");
-            kernel_count.setArg(0, p_cl_A->Ap);
-            kernel_count.setArg(1, p_cl_A->Aj);
-            kernel_count.setArg(2, p_cl_B->Ap);
-            kernel_count.setArg(3, cl_normal.buffer());
-            kernel_count.setArg(4, cl_direct.buffer());
-            kernel_count.setArg(5, cl_chunks.buffer());
-            kernel_count.setArg(6, direct_thresh);
-            kernel_count.setArg(7, M);
-            dispatch_grid(queue, kernel_count, M);
+            const uint chunk_cap = std::max<uint>(p_cl_A->values, 1);
+
+            auto kernel_collect = program->make_kernel("mxm_collect");
+
+            CLCounterWrapper cl_noff, cl_doff, cl_chunk_cnt, cl_overflow, cl_need;
+
+            cl::Buffer cl_nkeys, cl_nvals, cl_dkeys, cl_dvals;
+            cl::Buffer cl_chunk_row, cl_chunk_offset, cl_chunk_size;
+
+            bool overflow = true;
+            uint need     = 0;
+            for (uint attempt = 0; attempt < retries && overflow; ++attempt) {
+                const uint cap = std::max<uint>(pool_est, 1);
+
+                cl_nkeys        = p_tmp->alloc(static_cast<std::size_t>(cap) * sizeof(uint));
+                cl_nvals        = p_tmp->alloc(static_cast<std::size_t>(cap) * sizeof(T));
+                cl_dkeys        = p_tmp->alloc(static_cast<std::size_t>(cap) * sizeof(uint));
+                cl_dvals        = p_tmp->alloc(static_cast<std::size_t>(cap) * sizeof(T));
+                cl_chunk_row    = p_tmp->alloc(static_cast<std::size_t>(chunk_cap) * sizeof(uint));
+                cl_chunk_offset = p_tmp->alloc(static_cast<std::size_t>(chunk_cap) * sizeof(uint));
+                cl_chunk_size   = p_tmp->alloc(static_cast<std::size_t>(chunk_cap) * sizeof(uint));
+
+                CL_COUNTER_SET("init-noff", queue, cl_noff, 0);
+                CL_COUNTER_SET("init-doff", queue, cl_doff, 0);
+                CL_COUNTER_SET("init-chunkcnt", queue, cl_chunk_cnt, 0);
+                CL_COUNTER_SET("init-overflow", queue, cl_overflow, 0);
+                CL_COUNTER_SET("init-need", queue, cl_need, 0);
+
+                kernel_collect.setArg(0, p_cl_A->Ap);
+                kernel_collect.setArg(1, p_cl_A->Aj);
+                kernel_collect.setArg(2, p_cl_A->Ax);
+                kernel_collect.setArg(3, p_cl_B->Ap);
+                kernel_collect.setArg(4, p_cl_B->Aj);
+                kernel_collect.setArg(5, p_cl_B->Ax);
+                kernel_collect.setArg(6, cl_nkeys);
+                kernel_collect.setArg(7, cl_nvals);
+                kernel_collect.setArg(8, cl_noff.buffer());
+                kernel_collect.setArg(9, cap);
+                kernel_collect.setArg(10, cl_dkeys);
+                kernel_collect.setArg(11, cl_dvals);
+                kernel_collect.setArg(12, cl_doff.buffer());
+                kernel_collect.setArg(13, cap);
+                kernel_collect.setArg(14, cl_chunk_row);
+                kernel_collect.setArg(15, cl_chunk_offset);
+                kernel_collect.setArg(16, cl_chunk_size);
+                kernel_collect.setArg(17, cl_chunk_cnt.buffer());
+                kernel_collect.setArg(18, chunk_cap);
+                kernel_collect.setArg(19, cl_overflow.buffer());
+                kernel_collect.setArg(20, cl_need.buffer());
+                kernel_collect.setArg(21, K);
+                kernel_collect.setArg(22, direct_thresh);
+                kernel_collect.setArg(23, M);
+                dispatch_grid(queue, kernel_collect, M);
+
+                uint overflow_flag;
+                CL_COUNTER_GET("get-overflow", queue, cl_overflow, overflow_flag);
+                CL_COUNTER_GET("get-need", queue, cl_need, need);
+
+                overflow = overflow_flag != 0;
+                if (overflow) {
+                    pool_est = std::max<uint>(static_cast<uint>(pool_est * 2), need);
+                }
+            }
+
+            if (overflow) {
+                p_tmp->free_all();
+                return Status::OutOfMemory;
+            }
 
             uint normal_total, direct_total, chunk_count;
-            CL_COUNTER_GET("get-normal", queue, cl_normal, normal_total);
-            CL_COUNTER_GET("get-direct", queue, cl_direct, direct_total);
-            CL_COUNTER_GET("get-chunks", queue, cl_chunks, chunk_count);
+            CL_COUNTER_GET("get-normal", queue, cl_noff, normal_total);
+            CL_COUNTER_GET("get-direct", queue, cl_doff, direct_total);
+            CL_COUNTER_GET("get-chunks", queue, cl_chunk_cnt, chunk_count);
 
             if (normal_total == 0 && direct_total == 0) {
                 p_tmp->free_all();
                 return produce_empty(M, *p_cl_R);
             }
-
-            // 2. collect normal products (into composite-key scratch) and direct chunks (into D)
-            cl::Buffer cl_nkeys = p_tmp->alloc(std::max<std::size_t>(normal_total, 1) * sizeof(uint));
-            cl::Buffer cl_nvals = p_tmp->alloc(std::max<std::size_t>(normal_total, 1) * sizeof(T));
-            cl::Buffer cl_dkeys = p_tmp->alloc(std::max<std::size_t>(direct_total, 1) * sizeof(uint));
-            cl::Buffer cl_dvals = p_tmp->alloc(std::max<std::size_t>(direct_total, 1) * sizeof(T));
-
-            cl::Buffer cl_chunk_row    = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
-            cl::Buffer cl_chunk_offset = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
-            cl::Buffer cl_chunk_size   = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
-
-            CLCounterWrapper cl_noff, cl_doff, cl_chunk_cnt;
-            CL_COUNTER_SET("init-noff", queue, cl_noff, 0);
-            CL_COUNTER_SET("init-doff", queue, cl_doff, 0);
-            CL_COUNTER_SET("init-chunkcnt", queue, cl_chunk_cnt, 0);
-
-            auto kernel_collect = program->make_kernel("mxm_collect");
-            kernel_collect.setArg(0, p_cl_A->Ap);
-            kernel_collect.setArg(1, p_cl_A->Aj);
-            kernel_collect.setArg(2, p_cl_A->Ax);
-            kernel_collect.setArg(3, p_cl_B->Ap);
-            kernel_collect.setArg(4, p_cl_B->Aj);
-            kernel_collect.setArg(5, p_cl_B->Ax);
-            kernel_collect.setArg(6, cl_nkeys);
-            kernel_collect.setArg(7, cl_nvals);
-            kernel_collect.setArg(8, cl_noff.buffer());
-            kernel_collect.setArg(9, cl_dkeys);
-            kernel_collect.setArg(10, cl_dvals);
-            kernel_collect.setArg(11, cl_doff.buffer());
-            kernel_collect.setArg(12, cl_chunk_row);
-            kernel_collect.setArg(13, cl_chunk_offset);
-            kernel_collect.setArg(14, cl_chunk_size);
-            kernel_collect.setArg(15, cl_chunk_cnt.buffer());
-            kernel_collect.setArg(16, K);
-            kernel_collect.setArg(17, direct_thresh);
-            kernel_collect.setArg(18, M);
-            dispatch_grid(queue, kernel_collect, M);
 
             // 3. combine normal products: sort + reduce by key (NormalChunk)
             uint       usize = 0;

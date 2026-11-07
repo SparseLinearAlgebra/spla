@@ -77,6 +77,7 @@ typedef enum spla_Status {
     SPLA_STATUS_INVALID_STATE      = 5,
     SPLA_STATUS_INVALID_ARGUMENT   = 6,
     SPLA_STATUS_NO_VALUE           = 7,
+    SPLA_STATUS_OUT_OF_MEMORY      = 9,
     SPLA_STATUS_NOT_IMPLEMENTED    = 1024
 } spla_Status;
 
