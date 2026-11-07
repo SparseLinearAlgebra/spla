@@ -258,6 +258,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_format_csr.hpp
             src/opencl/cl_formats.hpp
             src/opencl/cl_m_reduce.hpp
+            src/opencl/cl_mxm.hpp
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
             src/opencl/cl_v_assign.hpp
