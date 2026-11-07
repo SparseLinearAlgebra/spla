@@ -31,6 +31,8 @@
 
 #include <opencl/cl_mxm.hpp>
 
+#include <limits>
+
 using uint = spla::uint;
 
 inline bool ensure_opencl() {
@@ -136,6 +138,138 @@ TEST(opencl_mxm, incompatible) {
     auto init = spla::Scalar::make_float(0.0f);
 
     EXPECT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::InvalidArgument);
+}
+
+TEST(opencl_mxm, semiring_minplus) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    auto A    = spla::Matrix::make(2, 2, spla::FLOAT);
+    auto B    = spla::Matrix::make(2, 2, spla::FLOAT);
+    auto R    = spla::Matrix::make(2, 2, spla::FLOAT);
+    auto init = spla::Scalar::make_float(std::numeric_limits<float>::infinity());
+
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 1, 3.0f);
+    A->set_float(1, 0, 2.0f);
+    A->set_float(1, 1, 1.0f);
+
+    B->set_float(0, 0, 1.0f);
+    B->set_float(0, 1, 2.0f);
+    B->set_float(1, 0, 4.0f);
+    B->set_float(1, 1, 1.0f);
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::PLUS_FLOAT, spla::MIN_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    R->get_float(0, 0, v);
+    EXPECT_FLOAT_EQ(v, 2.0f);
+    R->get_float(0, 1, v);
+    EXPECT_FLOAT_EQ(v, 3.0f);
+    R->get_float(1, 0, v);
+    EXPECT_FLOAT_EQ(v, 3.0f);
+    R->get_float(1, 1, v);
+    EXPECT_FLOAT_EQ(v, 2.0f);
+}
+
+TEST(opencl_mxm, semiring_bool) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    auto A    = spla::Matrix::make(2, 2, spla::INT);
+    auto B    = spla::Matrix::make(2, 2, spla::INT);
+    auto R    = spla::Matrix::make(2, 2, spla::INT);
+    auto init = spla::Scalar::make_int(0);
+
+    A->set_int(0, 1, 1);
+    B->set_int(1, 0, 1);
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::LAND_INT, spla::LOR_INT, init), spla::Status::Ok);
+
+    int v;
+    R->get_int(0, 0, v);
+    EXPECT_EQ(v, 1);
+    R->get_int(0, 1, v);
+    EXPECT_EQ(v, 0);
+    R->get_int(1, 0, v);
+    EXPECT_EQ(v, 0);
+    R->get_int(1, 1, v);
+    EXPECT_EQ(v, 0);
+}
+
+TEST(opencl_mxm, rectangular) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    auto A    = spla::Matrix::make(2, 3, spla::FLOAT);
+    auto B    = spla::Matrix::make(3, 4, spla::FLOAT);
+    auto R    = spla::Matrix::make(2, 4, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 2, 2.0f);
+
+    B->set_float(0, 0, 1.0f);
+    B->set_float(0, 3, 2.0f);
+    B->set_float(2, 1, 3.0f);
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    R->get_float(0, 0, v);
+    EXPECT_FLOAT_EQ(v, 1.0f);
+    R->get_float(0, 1, v);
+    EXPECT_FLOAT_EQ(v, 6.0f);
+    R->get_float(0, 2, v);
+    EXPECT_FLOAT_EQ(v, 0.0f);
+    R->get_float(0, 3, v);
+    EXPECT_FLOAT_EQ(v, 2.0f);
+}
+
+TEST(opencl_mxm, path_zero_drop) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    auto A    = spla::Matrix::make(1, 2, spla::FLOAT);
+    auto B    = spla::Matrix::make(2, 2, spla::FLOAT);
+    auto R    = spla::Matrix::make(1, 2, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 1, -1.0f);
+
+    B->set_float(0, 0, 1.0f);
+    B->set_float(1, 0, 1.0f);
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    EXPECT_EQ(R->get_float(0, 0, v), spla::Status::Ok);
+    EXPECT_FLOAT_EQ(v, 0.0f);
+    EXPECT_EQ(R->get_float(0, 1, v), spla::Status::Ok);
+    EXPECT_FLOAT_EQ(v, 0.0f);
+}
+
+TEST(opencl_mxm, direct) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    const uint K = 1500;
+
+    auto A    = spla::Matrix::make(1, 1, spla::FLOAT);
+    auto B    = spla::Matrix::make(1, K, spla::FLOAT);
+    auto R    = spla::Matrix::make(1, K, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    A->set_float(0, 0, 2.0f);
+    for (uint j = 0; j < K; ++j) {
+        B->set_float(0, j, static_cast<float>(j + 1));
+    }
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    float v;
+    R->get_float(0, 0, v);
+    EXPECT_FLOAT_EQ(v, 2.0f);
+    R->get_float(0, 1, v);
+    EXPECT_FLOAT_EQ(v, 4.0f);
+    R->get_float(0, K - 1, v);
+    EXPECT_FLOAT_EQ(v, 2.0f * static_cast<float>(K));
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

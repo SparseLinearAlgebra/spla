@@ -43,6 +43,7 @@
 #include <opencl/cl_fill.hpp>
 #include <opencl/cl_format_csr.hpp>
 #include <opencl/cl_formats.hpp>
+#include <opencl/cl_merge.hpp>
 #include <opencl/cl_prefix_sum.hpp>
 #include <opencl/cl_program_builder.hpp>
 #include <opencl/cl_reduce_by_key.hpp>
@@ -52,6 +53,7 @@
 #include <algorithm>
 #include <cmath>
 #include <sstream>
+#include <vector>
 
 namespace spla {
 
@@ -154,34 +156,50 @@ namespace spla {
             auto* p_tmp    = p_cl_acc->get_alloc_tmp();
             auto& queue    = p_cl_acc->get_queue_default();
 
-            const T init_val = init->get_value();
+            const T    init_val      = init->get_value();
+            const uint direct_thresh = mxm_detail::DIRECT_ROW_THRESHOLD;
 
-            // 1. count total number of symbols
-            CLCounterWrapper cl_total;
-            CL_COUNTER_SET("init-total", queue, cl_total, 0);
+            // 1. count normal and direct products
+            CLCounterWrapper cl_normal, cl_direct, cl_chunks;
+            CL_COUNTER_SET("init-normal", queue, cl_normal, 0);
+            CL_COUNTER_SET("init-direct", queue, cl_direct, 0);
+            CL_COUNTER_SET("init-chunks", queue, cl_chunks, 0);
 
             auto kernel_count = program->make_kernel("mxm_count");
             kernel_count.setArg(0, p_cl_A->Ap);
             kernel_count.setArg(1, p_cl_A->Aj);
             kernel_count.setArg(2, p_cl_B->Ap);
-            kernel_count.setArg(3, cl_total.buffer());
-            kernel_count.setArg(4, M);
-            dispatch_grid(program, queue, kernel_count, M);
+            kernel_count.setArg(3, cl_normal.buffer());
+            kernel_count.setArg(4, cl_direct.buffer());
+            kernel_count.setArg(5, cl_chunks.buffer());
+            kernel_count.setArg(6, direct_thresh);
+            kernel_count.setArg(7, M);
+            dispatch_grid(queue, kernel_count, M);
 
-            uint total;
-            CL_COUNTER_GET("get-total", queue, cl_total, total);
+            uint normal_total, direct_total, chunk_count;
+            CL_COUNTER_GET("get-normal", queue, cl_normal, normal_total);
+            CL_COUNTER_GET("get-direct", queue, cl_direct, direct_total);
+            CL_COUNTER_GET("get-chunks", queue, cl_chunks, chunk_count);
 
-            if (total == 0) {
+            if (normal_total == 0 && direct_total == 0) {
                 p_tmp->free_all();
                 return produce_empty(M, *p_cl_R);
             }
 
-            // 2. collect symbols: composite key = i * K + j, value = op_multiply
-            cl::Buffer cl_keys = p_tmp->alloc(total * sizeof(uint));
-            cl::Buffer cl_vals = p_tmp->alloc(total * sizeof(T));
+            // 2. collect normal products (into composite-key scratch) and direct chunks (into D)
+            cl::Buffer cl_nkeys = p_tmp->alloc(std::max<std::size_t>(normal_total, 1) * sizeof(uint));
+            cl::Buffer cl_nvals = p_tmp->alloc(std::max<std::size_t>(normal_total, 1) * sizeof(T));
+            cl::Buffer cl_dkeys = p_tmp->alloc(std::max<std::size_t>(direct_total, 1) * sizeof(uint));
+            cl::Buffer cl_dvals = p_tmp->alloc(std::max<std::size_t>(direct_total, 1) * sizeof(T));
 
-            CLCounterWrapper cl_offset;
-            CL_COUNTER_SET("init-offset", queue, cl_offset, 0);
+            cl::Buffer cl_chunk_row    = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
+            cl::Buffer cl_chunk_offset = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
+            cl::Buffer cl_chunk_size   = p_tmp->alloc(std::max<std::size_t>(chunk_count, 1) * sizeof(uint));
+
+            CLCounterWrapper cl_noff, cl_doff, cl_chunk_cnt;
+            CL_COUNTER_SET("init-noff", queue, cl_noff, 0);
+            CL_COUNTER_SET("init-doff", queue, cl_doff, 0);
+            CL_COUNTER_SET("init-chunkcnt", queue, cl_chunk_cnt, 0);
 
             auto kernel_collect = program->make_kernel("mxm_collect");
             kernel_collect.setArg(0, p_cl_A->Ap);
@@ -190,41 +208,174 @@ namespace spla {
             kernel_collect.setArg(3, p_cl_B->Ap);
             kernel_collect.setArg(4, p_cl_B->Aj);
             kernel_collect.setArg(5, p_cl_B->Ax);
-            kernel_collect.setArg(6, cl_keys);
-            kernel_collect.setArg(7, cl_vals);
-            kernel_collect.setArg(8, cl_offset.buffer());
-            kernel_collect.setArg(9, K);
-            kernel_collect.setArg(10, M);
-            dispatch_grid(program, queue, kernel_collect, M);
+            kernel_collect.setArg(6, cl_nkeys);
+            kernel_collect.setArg(7, cl_nvals);
+            kernel_collect.setArg(8, cl_noff.buffer());
+            kernel_collect.setArg(9, cl_dkeys);
+            kernel_collect.setArg(10, cl_dvals);
+            kernel_collect.setArg(11, cl_doff.buffer());
+            kernel_collect.setArg(12, cl_chunk_row);
+            kernel_collect.setArg(13, cl_chunk_offset);
+            kernel_collect.setArg(14, cl_chunk_size);
+            kernel_collect.setArg(15, cl_chunk_cnt.buffer());
+            kernel_collect.setArg(16, K);
+            kernel_collect.setArg(17, direct_thresh);
+            kernel_collect.setArg(18, M);
+            dispatch_grid(queue, kernel_collect, M);
 
-            // 3. sort by composite key
-            const uint max_key = M * K - 1;
-            cl_sort_by_key<T>(queue, cl_keys, cl_vals, total, p_tmp, max_key);
-
-            // 4. reduce duplicate (row, col) entries with op_add
-            uint       usize;
+            // 3. combine normal products: sort + reduce by key (NormalChunk)
+            uint       usize = 0;
             cl::Buffer cl_ukeys;
             cl::Buffer cl_uvals;
-            cl_reduce_by_key(queue, cl_keys, cl_vals, total, cl_ukeys, cl_uvals, usize, op_add, p_tmp);
 
-            if (usize == 0) {
+            if (normal_total > 0) {
+                const uint max_key = M * K - 1;
+                cl_sort_by_key<T>(queue, cl_nkeys, cl_nvals, normal_total, p_tmp, max_key);
+                cl_reduce_by_key(queue, cl_nkeys, cl_nvals, normal_total, cl_ukeys, cl_uvals, usize, op_add, p_tmp);
+            }
+
+            // 4. read back normal row boundaries and direct chunk descriptors
+            std::vector<uint> normal_bound(M + 1, 0);
+            if (usize > 0) {
+                std::vector<uint> ukeys_host(usize);
+                queue.enqueueReadBuffer(cl_ukeys, true, 0, usize * sizeof(uint), ukeys_host.data());
+
+                uint idx = 0;
+                for (uint i = 0; i < M; ++i) {
+                    normal_bound[i] = idx;
+                    const uint next = (i + 1) * K;
+                    while (idx < usize && ukeys_host[idx] < next) ++idx;
+                }
+                normal_bound[M] = usize;
+            }
+
+            struct DirectChunkDesc {
+                uint row;
+                uint offset;
+                uint size;
+            };
+            std::vector<DirectChunkDesc> chunks;
+            if (chunk_count > 0) {
+                std::vector<uint> crow(chunk_count), coff(chunk_count), csize(chunk_count);
+
+                auto read_dev_uints = [&](const cl::Buffer& src, std::vector<uint>& dst) {
+                    cl::Buffer staging(get_acc_cl()->get_context(),
+                                       CL_MEM_READ_WRITE | CL_MEM_HOST_READ_ONLY | CL_MEM_ALLOC_HOST_PTR,
+                                       dst.size() * sizeof(uint));
+                    queue.enqueueCopyBuffer(src, staging, 0, 0, dst.size() * sizeof(uint));
+                    queue.enqueueReadBuffer(staging, true, 0, dst.size() * sizeof(uint), dst.data());
+                };
+
+                read_dev_uints(cl_chunk_row, crow);
+                read_dev_uints(cl_chunk_offset, coff);
+                read_dev_uints(cl_chunk_size, csize);
+
+                chunks.reserve(chunk_count);
+                for (uint c = 0; c < chunk_count; ++c) {
+                    chunks.push_back({crow[c], coff[c], csize[c]});
+                }
+                std::sort(chunks.begin(), chunks.end(),
+                          [](const DirectChunkDesc& a, const DirectChunkDesc& b) { return a.row < b.row; });
+            }
+
+            // 5. merge chunks per row into a single pool (composite keys + values)
+            const uint pool_cap  = normal_total + direct_total;
+            cl::Buffer pool_keys = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(uint));
+            cl::Buffer pool_vals = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(T));
+
+            cl::Buffer t0_keys = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(uint));
+            cl::Buffer t0_vals = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(T));
+            cl::Buffer t1_keys = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(uint));
+            cl::Buffer t1_vals = p_tmp->alloc(static_cast<std::size_t>(pool_cap) * sizeof(T));
+
+            uint chunk_it = 0;
+            uint pool_off = 0;
+
+            for (uint i = 0; i < M; ++i) {
+                const uint ns = normal_bound[i];
+                const uint ne = normal_bound[i + 1];
+
+                std::vector<DirectChunkDesc> row_chunks;
+                while (chunk_it < chunk_count && chunks[chunk_it].row == i) {
+                    row_chunks.push_back(chunks[chunk_it]);
+                    ++chunk_it;
+                }
+
+                // assemble sources: normal slice + direct chunks
+                struct Source {
+                    const cl::Buffer* keys;
+                    const cl::Buffer* vals;
+                    uint              offset;
+                    uint              size;
+                };
+                std::vector<Source> sources;
+                if (ne > ns) {
+                    sources.push_back({&cl_ukeys, &cl_uvals, ns, ne - ns});
+                }
+                for (const auto& dc : row_chunks) {
+                    sources.push_back({&cl_dkeys, &cl_dvals, dc.offset, dc.size});
+                }
+
+                uint row_size = 0;
+
+                if (sources.size() == 1) {
+                    row_size = sources[0].size;
+                    if (row_size > 0) {
+                        queue.enqueueCopyBuffer(*sources[0].keys, pool_keys, sources[0].offset * sizeof(uint), pool_off * sizeof(uint), row_size * sizeof(uint));
+                        queue.enqueueCopyBuffer(*sources[0].vals, pool_vals, sources[0].offset * sizeof(T), pool_off * sizeof(T), row_size * sizeof(T));
+                    }
+                } else if (sources.size() > 1) {
+                    // pairwise merge via cl_merge_union, alternating T0/T1
+                    queue.enqueueCopyBuffer(*sources[0].keys, t0_keys, sources[0].offset * sizeof(uint), 0, sources[0].size * sizeof(uint));
+                    queue.enqueueCopyBuffer(*sources[0].vals, t0_vals, sources[0].offset * sizeof(T), 0, sources[0].size * sizeof(T));
+
+                    uint cur_size  = sources[0].size;
+                    bool cur_in_t0 = true;
+
+                    for (std::size_t s = 1; s < sources.size(); ++s) {
+                        const Source& src = sources[s];
+                        if (cur_in_t0) {
+                            cur_size  = cl_merge_union<T>(queue, t0_keys, t0_vals, 0, cur_size,
+                                                          *src.keys, *src.vals, src.offset, src.size,
+                                                          t1_keys, t1_vals, 0, op_add, p_tmp);
+                            cur_in_t0 = false;
+                        } else {
+                            cur_size  = cl_merge_union<T>(queue, t1_keys, t1_vals, 0, cur_size,
+                                                          *src.keys, *src.vals, src.offset, src.size,
+                                                          t0_keys, t0_vals, 0, op_add, p_tmp);
+                            cur_in_t0 = true;
+                        }
+                    }
+
+                    row_size = cur_size;
+                    if (row_size > 0) {
+                        const cl::Buffer& src_keys = cur_in_t0 ? t0_keys : t1_keys;
+                        const cl::Buffer& src_vals = cur_in_t0 ? t0_vals : t1_vals;
+                        queue.enqueueCopyBuffer(src_keys, pool_keys, 0, pool_off * sizeof(uint), row_size * sizeof(uint));
+                        queue.enqueueCopyBuffer(src_vals, pool_vals, 0, pool_off * sizeof(T), row_size * sizeof(T));
+                    }
+                }
+
+                pool_off += row_size;
+            }
+
+            if (pool_off == 0) {
                 p_tmp->free_all();
                 return produce_empty(M, *p_cl_R);
             }
 
-            // 5. flag identity entries (value == init) for removal
-            cl::Buffer cl_flags = p_tmp->alloc(usize * sizeof(uint));
-
+            // 6. drop identity entries
+            cl::Buffer       cl_flags = p_tmp->alloc(static_cast<std::size_t>(pool_off) * sizeof(uint));
             CLCounterWrapper cl_keep;
             CL_COUNTER_SET("init-keep", queue, cl_keep, 0);
 
             auto kernel_flag = program->make_kernel("mxm_identity_flag");
-            kernel_flag.setArg(0, cl_uvals);
+            kernel_flag.setArg(0, pool_vals);
             kernel_flag.setArg(1, cl_flags);
             kernel_flag.setArg(2, cl_keep.buffer());
             kernel_flag.setArg(3, init_val);
-            kernel_flag.setArg(4, usize);
-            dispatch_grid(program, queue, kernel_flag, usize);
+            kernel_flag.setArg(4, pool_off);
+            dispatch_grid(queue, kernel_flag, pool_off);
 
             uint keep_count;
             CL_COUNTER_GET("get-keep", queue, cl_keep, keep_count);
@@ -234,27 +385,25 @@ namespace spla {
                 return produce_empty(M, *p_cl_R);
             }
 
-            // 6. exclusive scan of flags -> compaction offsets
-            cl::Buffer cl_offsets = p_tmp->alloc(usize * sizeof(uint));
-            queue.enqueueCopyBuffer(cl_flags, cl_offsets, 0, 0, usize * sizeof(uint));
-            cl_exclusive_scan<uint>(queue, cl_offsets, usize,
+            cl::Buffer cl_offsets = p_tmp->alloc(static_cast<std::size_t>(pool_off) * sizeof(uint));
+            queue.enqueueCopyBuffer(cl_flags, cl_offsets, 0, 0, static_cast<std::size_t>(pool_off) * sizeof(uint));
+            cl_exclusive_scan<uint>(queue, cl_offsets, pool_off,
                                     PLUS_UINT.template cast_safe<TOpBinary<uint, uint, uint>>(), p_tmp);
 
-            // 7. scatter non-identity entries to compact arrays
-            cl::Buffer cl_okeys = p_tmp->alloc(keep_count * sizeof(uint));
-            cl::Buffer cl_ovals = p_tmp->alloc(keep_count * sizeof(T));
+            cl::Buffer cl_okeys = p_tmp->alloc(static_cast<std::size_t>(keep_count) * sizeof(uint));
+            cl::Buffer cl_ovals = p_tmp->alloc(static_cast<std::size_t>(keep_count) * sizeof(T));
 
             auto kernel_scatter = program->make_kernel("mxm_identity_scatter");
-            kernel_scatter.setArg(0, cl_ukeys);
-            kernel_scatter.setArg(1, cl_uvals);
+            kernel_scatter.setArg(0, pool_keys);
+            kernel_scatter.setArg(1, pool_vals);
             kernel_scatter.setArg(2, cl_offsets);
             kernel_scatter.setArg(3, cl_flags);
             kernel_scatter.setArg(4, cl_okeys);
             kernel_scatter.setArg(5, cl_ovals);
-            kernel_scatter.setArg(6, usize);
-            dispatch_grid(program, queue, kernel_scatter, usize);
+            kernel_scatter.setArg(6, pool_off);
+            dispatch_grid(queue, kernel_scatter, pool_off);
 
-            // 8. write compacted entries into CSR and build row histogram
+            // 7. write compacted entries into CSR and build row histogram
             cl_csr_resize<T>(M, keep_count, *p_cl_R);
             cl_fill_zero<uint>(queue, p_cl_R->Ap, M + 1);
 
@@ -266,9 +415,8 @@ namespace spla {
             kernel_write.setArg(4, p_cl_R->Ap);
             kernel_write.setArg(5, K);
             kernel_write.setArg(6, keep_count);
-            dispatch_grid(program, queue, kernel_write, keep_count);
+            dispatch_grid(queue, kernel_write, keep_count);
 
-            // 9. exclusive scan of row histogram -> Ap
             cl_exclusive_scan<uint>(queue, p_cl_R->Ap, M + 1,
                                     PLUS_UINT.template cast_safe<TOpBinary<uint, uint, uint>>(), p_tmp);
 
@@ -295,10 +443,7 @@ namespace spla {
             return true;
         }
 
-        void dispatch_grid(const std::shared_ptr<CLProgram>& program,
-                           cl::CommandQueue&                 queue,
-                           cl::Kernel&                       kernel,
-                           uint                              n) {
+        void dispatch_grid(cl::CommandQueue& queue, cl::Kernel& kernel, uint n) {
             uint n_groups = std::max(std::min((n + m_block_size - 1) / m_block_size, uint(1024)), uint(1));
 
             cl::NDRange exec_global(m_block_size * n_groups);
