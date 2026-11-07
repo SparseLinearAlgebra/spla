@@ -33,6 +33,7 @@
 
 #include <cstdlib>
 #include <limits>
+#include <random>
 
 using uint = spla::uint;
 
@@ -359,6 +360,131 @@ TEST(opencl_mxm, memory_oom) {
 
     unsetenv("SPLA_MXM_POOL");
     unsetenv("SPLA_MXM_RETRIES");
+}
+
+TEST(opencl_mxm, types) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    // INT
+    {
+        auto A    = spla::Matrix::make(3, 4, spla::INT);
+        auto B    = spla::Matrix::make(4, 2, spla::INT);
+        auto R    = spla::Matrix::make(3, 2, spla::INT);
+        auto init = spla::Scalar::make_int(0);
+
+        A->set_int(0, 0, 1);
+        A->set_int(0, 2, 2);
+        A->set_int(1, 1, 3);
+        A->set_int(1, 3, 4);
+        A->set_int(2, 0, 5);
+        A->set_int(2, 2, 6);
+
+        B->set_int(0, 0, 7);
+        B->set_int(0, 1, 1);
+        B->set_int(1, 1, 1);
+        B->set_int(2, 1, 1);
+        B->set_int(3, 1, 1);
+
+        ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_INT, spla::PLUS_INT, init), spla::Status::Ok);
+
+        int v;
+        R->get_int(0, 0, v);
+        EXPECT_EQ(v, 7);
+        R->get_int(0, 1, v);
+        EXPECT_EQ(v, 3);
+        R->get_int(1, 1, v);
+        EXPECT_EQ(v, 7);
+        R->get_int(2, 0, v);
+        EXPECT_EQ(v, 35);
+        R->get_int(2, 1, v);
+        EXPECT_EQ(v, 11);
+    }
+
+    // UINT
+    {
+        auto A    = spla::Matrix::make(3, 4, spla::UINT);
+        auto B    = spla::Matrix::make(4, 2, spla::UINT);
+        auto R    = spla::Matrix::make(3, 2, spla::UINT);
+        auto init = spla::Scalar::make_uint(0);
+
+        A->set_uint(0, 0, 1);
+        A->set_uint(0, 2, 2);
+        A->set_uint(1, 1, 3);
+        A->set_uint(1, 3, 4);
+        A->set_uint(2, 0, 5);
+        A->set_uint(2, 2, 6);
+
+        B->set_uint(0, 0, 7);
+        B->set_uint(0, 1, 1);
+        B->set_uint(1, 1, 1);
+        B->set_uint(2, 1, 1);
+        B->set_uint(3, 1, 1);
+
+        ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_UINT, spla::PLUS_UINT, init), spla::Status::Ok);
+
+        uint v;
+        R->get_uint(0, 0, v);
+        EXPECT_EQ(v, 7u);
+        R->get_uint(0, 1, v);
+        EXPECT_EQ(v, 3u);
+        R->get_uint(1, 1, v);
+        EXPECT_EQ(v, 7u);
+        R->get_uint(2, 0, v);
+        EXPECT_EQ(v, 35u);
+        R->get_uint(2, 1, v);
+        EXPECT_EQ(v, 11u);
+    }
+}
+
+TEST(opencl_mxm, scale) {
+    if (!ensure_opencl()) GTEST_SKIP() << "OpenCL accelerator is not available";
+
+    const uint M = 24, N = 24, K = 24;
+
+    auto A    = spla::Matrix::make(M, N, spla::FLOAT);
+    auto B    = spla::Matrix::make(N, K, spla::FLOAT);
+    auto R    = spla::Matrix::make(M, K, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0f);
+
+    std::mt19937                          gen(42);
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+
+    std::vector<std::vector<float>> A_ref(M, std::vector<float>(N, 0.0f));
+    std::vector<std::vector<float>> B_ref(N, std::vector<float>(K, 0.0f));
+
+    for (uint i = 0; i < M; ++i) {
+        for (uint k = 0; k < N; ++k) {
+            if (dist(gen) < 0.2f) {
+                const float v = dist(gen);
+                A->set_float(i, k, v);
+                A_ref[i][k] = v;
+            }
+        }
+    }
+    for (uint k = 0; k < N; ++k) {
+        for (uint j = 0; j < K; ++j) {
+            if (dist(gen) < 0.2f) {
+                const float v = dist(gen);
+                B->set_float(k, j, v);
+                B_ref[k][j] = v;
+            }
+        }
+    }
+
+    ASSERT_EQ(spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init), spla::Status::Ok);
+
+    for (uint i = 0; i < M; ++i) {
+        for (uint j = 0; j < K; ++j) {
+            float expected = 0.0f;
+            for (uint k = 0; k < N; ++k) {
+                expected += A_ref[i][k] * B_ref[k][j];
+            }
+
+            float v;
+            EXPECT_EQ(R->get_float(i, j, v), spla::Status::Ok);
+            EXPECT_NEAR(v, expected, 1e-3f);
+        }
+    }
 }
 
 SPLA_GTEST_MAIN_WITH_FINALIZE

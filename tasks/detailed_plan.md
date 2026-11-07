@@ -139,7 +139,7 @@ Contract from `algorithms/merge-path/merge_union_usage.md`. GALATIC uses its own
 **Spec:**
 - Completed chunks not recomputed; pool offsets valid; new buffer not smaller than the chunk that did not fit.
 
-### S8: End-to-end tests and semirings
+### S8: End-to-end tests and semirings [done]
 
 **Code:** tests in `tests/test_opencl_mxm.cpp`: (+,×) and (min,+), INT/UINT/FLOAT, rectangular, all classification
 paths, chunk > FLUSH_THRESHOLD and ≤ ACCUMULATION_CAPACITY, chunk > initial pool. Reference: `Algo_mxm_cpu`.
