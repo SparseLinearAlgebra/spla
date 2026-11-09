@@ -11,9 +11,9 @@ Specification sources of truth: `Algorithm Semantics.md` (mxm algorithm), `plan_
 
 | ID | Issue | Description | Status |
 |----|-------|-------------|--------|
-| T1 | #252 | OpenCL `mxm` (SpGEMM) kernel (Part 1, S1–S8) | [ ] |
-| T2 | #253 | `PathIndex` type (Part 2) | [ ] |
-| T3 | #254 | Graph algorithms: reach-rpq, single-path-cfpq, msp-bfs, msl-bfs (Part 3) | [ ] |
+| T1 | #252 | OpenCL `mxm` (SpGEMM) kernel (Part 1, S1–S8) | [done #252] |
+| T2 | #253 | `PathIndex` type (Part 2) | [done #253] |
+| T3 | #254 | Graph algorithms: reach-rpq, single-path-cfpq, msp-bfs, msl-bfs (Part 3) | [done #254] |
 
 ## Dependencies
 
