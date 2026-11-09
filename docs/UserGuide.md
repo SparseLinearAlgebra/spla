@@ -32,8 +32,8 @@ Example of successful output:
 ```bash
 $ s./program spla --softcheck
 [spla:check] Starting sanity check...
-[spla:check] Initializing OpenCL...
-[spla:check] Selected accelerator: OpenCL NVIDIA CUDA | device: NVIDIA GeForce RTX 3070 Laptop GPU | vendor: nvidia | mcu: 40 | wave: 32 | mwgs: 1024
+[spla:check] Initializing...
+[spla:check] Selected accelerator: OpenCL Acc NVIDIA CUDA | device: NVIDIA GeForce RTX 3070 Laptop GPU | vendor: nvidia | mcu: 40 | wave: 32 | mwgs: 1024
 [spla:check] Running test task: 2 + 3 = ...
 [spla:check] Result: 5 (expected 5)
 [spla:check] SUCCESS - spla works correctly
@@ -59,27 +59,31 @@ The device type is set by the `backend` parameter in the configuration file:
 
 ```json
 {
-    "gpu_only": { "backend": "opencl_gpu" },
-    "cpu_only": { "backend": "cpu" }
+    "gpu_only": { "extends": ["default"], "backend": "opencl_gpu" },
+    "opencl_cpu": { "extends": ["default"], "backend": "opencl_cpu" },
+    "cpu_only": { "extends": ["default"], "backend": "cpu" }
 }
 ```
 
-- `"opencl_gpu"` - use the first available OpenCL GPU,
+- `"opencl_gpu"` - use the first available GPU via OpenCL,
+- `"opencl_cpu"` - use the first available CPU device via OpenCL,
 - `"cpu"` - use the pure native CPU without touching OpenCL.
 
 The `platform_index` and `device_index` indexes are ignored with these values.
 
 ### Behavior when OpenCL is unavailable
 
-If `backend: "opencl_gpu"` is selected, but no OpenCL GPU is available, the behavior is defined by the `if_opencl_unavailable` parameter:
+If an OpenCL backend (`"opencl_gpu"`, `"opencl_cpu"`, or `"by_index"`) is selected, but the OpenCL device is unavailable, the behavior is defined by the `if_opencl_unavailable` parameter:
 
 ```json
 {
     "gpu_or_cpu": {
+        "extends": ["default"],
         "backend": "opencl_gpu",
         "if_opencl_unavailable": "use_cpu"
     },
     "gpu_only": {
+        "extends": ["default"],
         "backend": "opencl_gpu",
         "if_opencl_unavailable": "abort"
     }
@@ -96,7 +100,7 @@ Running the required configuration:
 ./program --spla-config=gpu_only
 ```
 
-`if_opencl_unavailable` is applied with `backend: "opencl_gpu"` and `"by_index"`. With `backend: "cpu"` the parameter is ignored.
+`if_opencl_unavailable` is applied with any OpenCL backend (`"opencl_gpu"`, `"opencl_cpu"`, `"by_index"`). With `backend: "cpu"` the parameter is ignored.
 
 ## Scenario 3. Multiple devices and modes in one file
 
@@ -104,28 +108,28 @@ You regularly run the same program on different GPUs and in different modes - fo
 
 ```json
 {
-    "default": { "backend": "opencl_gpu", "verbosity": 2 },
+    "base": { "extends": ["default"], "backend": "opencl_gpu", "verbosity": 2 },
 
     "gpu0": {
-        "extends": ["default"],
+        "extends": ["base"],
         "backend": "by_index",
         "platform_index": 0,
         "device_index": 0
     },
     "gpu1": {
-        "extends": ["default"],
+        "extends": ["base"],
         "backend": "by_index",
         "platform_index": 0,
         "device_index": 1
     },
 
     "debug": {
-        "extends": ["default"],
+        "extends": ["base"],
         "verbosity": 3,
         "profiling": true
     },
     "bench": {
-        "extends": ["default"],
+        "extends": ["base"],
         "verbosity": 0
     },
 

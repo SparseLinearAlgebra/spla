@@ -7,6 +7,6 @@
         "profiling": false,
         "allocator_type": "general",
 
-        "verbosity": 2
+        "verbosity": 3
     }
 }

@@ -4,22 +4,22 @@ A manual for the spla library configuration mechanism. This is a reference: a co
 
 ## Contents
 
-1. [NAME](#name)
-2. [CONFIGURATION MECHANISM OVERVIEW](#configuration-mechanism-overview)
-3. [COMMAND LINE PARAMETERS](#command-line-parameters)
-4. [ENVIRONMENT VARIABLES](#environment-variables)
-5. [CONFIGURATION FILES](#configuration-files)
-6. [CONFIGURATIONS AND INHERITANCE](#configurations-and-inheritance)
-7. [PARAMETER VALIDATION](#parameter-validation)
-8. [STATUSES AND ERROR BEHAVIOR](#statuses-and-error-behavior)
+1. [Name](#name)
+2. [Configuration mechanism overview](#configuration-mechanism-overview)
+3. [Command line parameters](#command-line-parameters)
+4. [Environment variables](#environment-variables)
+5. [Configuration files](#configuration-files)
+6. [Configurations and inheritance](#configurations-and-inheritance)
+7. [Parameter validation](#parameter-validation)
+8. [Statuses and error behavior](#statuses-and-error-behavior)
 
-## NAME
+## Name
 
 spla - a framework for GPU-accelerated mathematical computations. The library provides sparse linear algebra primitives (matrices, vectors, scalars) and a wide range of operations.
 
 For most users it matters on which device their project runs, so the library provides a configuration mechanism: explicit GPU selection, OpenCL platform, number of command queues and other parameters that affect performance and user convenience.
 
-## CONFIGURATION MECHANISM OVERVIEW
+## Configuration mechanism overview
 
 The spla configuration is assembled from six sources, applied in descending order of priority.
 
@@ -41,7 +41,7 @@ Collection order:
 
 The result goes into the final configuration, which is used when initializing the accelerator (platform and device selection, creation of command queues, allocator, verbosity level).
 
-## COMMAND LINE PARAMETERS
+## Command line parameters
 
 All spla flags start with `--spla-`. Flags that do not start with `--spla-` belong to the program using the library and are ignored by the configuration mechanism.
 
@@ -51,15 +51,15 @@ All spla flags start with `--spla-`. Flags that do not start with `--spla-` belo
 | `--spla-version` | - | Show the library version and exit |
 | `--spla-config` | string | Name of the configuration to apply. By default the `"default"` configuration is used |
 | `--spla-config-file` | path | Path to a configuration file. |
-| `--spla-backend` | string | Backend: `opencl_gpu`, `cpu`, `by_index` |
+| `--spla-backend` | string | Backend: `opencl_gpu` - first available GPU via OpenCL, `opencl_cpu` - first available CPU device via OpenCL, `cpu` - pure native CPU (no OpenCL), `by_index` - select by platform and device indexes |
 | `--spla-platform-index` | int | OpenCL platform index. Only when `backend=by_index` |
 | `--spla-device-index` | int | Index of the OpenCL device within the platform. Only when `backend=by_index` |
-| `--spla-if-opencl-unavailable` | string | Behavior when OpenCL acceleration is unavailable: `use_cpu` - switch to pure native CPU, `abort` - return an error |
+| `--spla-if-opencl-unavailable` | string | Behavior when OpenCL acceleration is unavailable: `use_cpu` - switch to pure native CPU, `abort` - return an error. Applies with any OpenCL backend |
 | `--spla-queues-count` | int | Number of OpenCL command queues |
 | `--spla-profiling` | bool | Profiling of command queues: `true`, `false` |
 | `--spla-allocator-type` | string | Allocator type: `general`, `linear` |
 | `--spla-linear-alloc-size` | int | Linear allocator size in bytes. Required when `allocator_type=linear`, ignored when `general` |
-| `--spla-verbosity` | int | Verbosity level: `0` - no output, `1` - errors only, `2` - errors and warnings, `3` - all messages |
+| `--spla-verbosity` | int | Verbosity level: `0` - no output, `1` - errors only, `2` - errors and warnings, `3` - all messages (in release builds informational messages are suppressed at compile time) |
 
 ### Example
 
@@ -67,7 +67,7 @@ All spla flags start with `--spla-`. Flags that do not start with `--spla-` belo
 ./my_program --spla-config-file=/etc/spla/spla_conf.json --spla-config=bench --spla-verbosity=0
 ```
 
-## ENVIRONMENT VARIABLES
+## Environment variables
 
 For each command line parameter (except `--spla-help` and `--spla-version`) there is an environment variable equivalent.
 
@@ -91,16 +91,16 @@ For each command line parameter (except `--spla-help` and `--spla-version`) ther
 SPLA_CONFIG=bench SPLA_VERBOSITY=1 ./my_program
 ```
 
-## CONFIGURATION FILES
+## Configuration files
 
-The file format is JSON. A file consists of a set of named configurations; each configuration is a set of library parameters.
+The file format is JSON. A file consists of a set of named configurations, each configuration is a set of library parameters.
 
 ### Configuration keys
 
 | Key | Type | Description | Requirements |
 |:---|:---|:---|:---|
 | `extends` | array of string | List of parent configurations | Names of configurations from all file levels |
-| `backend` | string | Backend: `opencl_gpu`, `cpu`, `by_index` | Required |
+| `backend` | string | Backend: `opencl_gpu`, `opencl_cpu`, `cpu`, `by_index` | Required |
 | `platform_index` | int | OpenCL platform index | Required when `backend=by_index`, otherwise ignored |
 | `device_index` | int | OpenCL device index | Required when `backend=by_index`, otherwise ignored |
 | `if_opencl_unavailable` | string | Behavior when OpenCL acceleration is unavailable: `use_cpu`, `abort` | Required when `backend != cpu`, ignored when `backend=cpu` |
@@ -126,7 +126,7 @@ The shipped file has the following structure:
         "profiling": false,
         "allocator_type": "general",
 
-        "verbosity": 2
+        "verbosity": 3
     }
 }
 ```
@@ -158,7 +158,7 @@ The shipped file has the following structure:
 | User | skipped | error `OpenFileError` |
 | Explicit (if specified) | error `FileNotExists` | error `OpenFileError` |
 
-## CONFIGURATIONS AND INHERITANCE
+## Configurations and inheritance
 
 ### Choosing the active configuration
 
@@ -206,7 +206,7 @@ File shipped with the library:
         "queues_count": 1,
         "profiling": false,
         "allocator_type": "general",
-        "verbosity": 2
+        "verbosity": 3
     }
 }
 ```
@@ -238,9 +238,9 @@ Final set of parameters of the `gpu0` configuration:
 | queues_count | `1` | library file (`default`) |
 | profiling | `true` | configuration `gpu0` |
 | allocator_type | `general` | library file (`default`) |
-| verbosity | `2` | library file (`default`) |
+| verbosity | `3` | library file (`default`) |
 
-## PARAMETER VALIDATION
+## Parameter validation
 
 After assembly, the configuration from all sources is validated.
 
@@ -248,9 +248,9 @@ After assembly, the configuration from all sources is validated.
 
 | Parameter | Requirement |
 |:---|:---|
-| `backend` | Required, one of: `opencl_gpu`, `cpu`, `by_index` |
+| `backend` | Required, one of: `opencl_gpu`, `opencl_cpu`, `cpu`, `by_index` |
 | `platform_index`, `device_index` | Required when `backend=by_index`, must be &ge; 0 |
-| `if_opencl_unavailable` | Required when `backend != cpu`, one of: `use_cpu`, `abort` |
+| `if_opencl_unavailable` | Required when `backend` is `opencl_gpu`, `opencl_cpu` or `by_index`; one of: `use_cpu`, `abort`; ignored when `backend=cpu` |
 | `queues_count` | Required, &ge; 1 |
 | `profiling` | Required |
 | `allocator_type` | Required, one of: `general`, `linear` |
@@ -262,7 +262,7 @@ After assembly, the configuration from all sources is validated.
 | Situation | Message |
 |:---|:---|
 | `platform_index`/`device_index` set when `backend != by_index` | the parameter is ignored |
-| `if_opencl_unavailable` set when `backend=cpu` | the parameter is ignored |
+| `if_opencl_unavailable` set when `backend=cpu` | the parameter is ignored (pure CPU does not use OpenCL) |
 | `linear_alloc_size` set when `allocator_type=general` | the parameter is ignored |
 
 ### Behavior when the device is unavailable
@@ -271,12 +271,14 @@ Implemented in accelerator initialization:
 
 | Configuration | OpenCL available | OpenCL unavailable |
 |:---|:---|:---|
-| `backend=opencl_gpu`, `if_opencl_unavailable=use_cpu` | the GPU is used | computations fall back to the pure native CPU; OpenCL is not used |
-| `backend=opencl_gpu`, `if_opencl_unavailable=abort` | the GPU is used | error `DeviceNotFound`; the process exits with that status (through `pyspla`, `SplaDeviceNotFound` is raised) |
+| `backend=opencl_gpu`, `if_opencl_unavailable=use_cpu` | the first available GPU is used | computations fall back to the pure native CPU; OpenCL is not used |
+| `backend=opencl_gpu`, `if_opencl_unavailable=abort` | the first available GPU is used | error `DeviceNotFound`; the process exits with that status (through `pyspla`, `SplaDeviceNotFound` is raised) |
+| `backend=opencl_cpu`, `if_opencl_unavailable=use_cpu` | the first available OpenCL CPU device is used | computations fall back to the pure native CPU; OpenCL is not used |
+| `backend=opencl_cpu`, `if_opencl_unavailable=abort` | the first available OpenCL CPU device is used | error `DeviceNotFound`; the process exits with that status (through `pyspla`, `SplaDeviceNotFound` is raised) |
 | `backend=by_index` | the device with the given indexes is used | the platform/device is selected by indexes; if it is unavailable, `if_opencl_unavailable` decides |
 | `backend=cpu` | - | pure native CPU is used; OpenCL is never initialized |
 
-## STATUSES AND ERROR BEHAVIOR
+## Statuses and error behavior
 
 The configuration mechanism returns one of the following statuses.
 
@@ -294,24 +296,3 @@ The configuration mechanism returns one of the following statuses.
 | `MissedParameters` | Required parameters are missing |
 | `PlatformNotFound` / `DeviceNotFound` | The device required by the configuration is unavailable |
 | `InvalidConfigParams` | Invalid parameter value |
-
-### Python (`pyspla`)
-
-The same statuses are propagated to Python:
-
-- `configure()` and `init_library()` raise the matching `Spla*` exception
-  (`SplaInvalidArgument`, `SplaPlatformNotFound`, `SplaDeviceNotFound`, ...)
-  or `SplaFailedConfigure` / `SplaFailedInitialize` for generic errors;
-- every raised exception keeps the numeric status in the `status` attribute;
-- `acceleration_status()` returns the current accelerator status
-  (`0` - accelerator is used, `2` - pure CPU, other values - initialization error);
-- `has_acceleration()` returns `True` when an accelerated backend is active.
-
-### CLI behavior
-
-The `spla` command line tool:
-
-- `spla --softcheck` - environment sanity check (configuration, OpenCL initialization, task 2 + 3),
-- `spla --spla-help` - help, exit code 0,
-- `spla --spla-version` - library version (for example, `SPLA version: 0.0.5`), exit code 0,
-- on a configuration error - an error message and exit code 1.
