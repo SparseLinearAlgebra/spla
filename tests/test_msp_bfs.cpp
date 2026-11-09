@@ -1,0 +1,85 @@
+/**********************************************************************************/
+/* This file is part of spla project                                              */
+/* https://github.com/SparseLinearAlgebra/spla                                    */
+/**********************************************************************************/
+/* MIT License                                                                    */
+/*                                                                                */
+/* Copyright (c) 2023 SparseLinearAlgebra                                         */
+/*                                                                                */
+/* Permission is hereby granted, free of charge, to any person obtaining a copy   */
+/* of this software and associated documentation files (the "Software"), to deal  */
+/* in the Software without restriction, including without limitation the rights   */
+/* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell      */
+/* copies of the Software, and to permit persons to whom the Software is          */
+/* furnished to do so, subject to the following conditions:                       */
+/*                                                                                */
+/* The above copyright notice and this permission notice shall be included in all */
+/* copies or substantial portions of the Software.                                */
+/*                                                                                */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR     */
+/* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,       */
+/* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE    */
+/* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER         */
+/* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  */
+/* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  */
+/* SOFTWARE.                                                                      */
+/**********************************************************************************/
+
+#include "test_common.hpp"
+
+#include <spla.hpp>
+
+static void build_graph(spla::ref_ptr<spla::Matrix>& A) {
+    A = spla::Matrix::make(4, 4, spla::INT);
+    A->set_int(0, 1, 1);
+    A->set_int(0, 2, 1);
+    A->set_int(1, 3, 1);
+    A->set_int(2, 3, 1);
+}
+
+TEST(msp_bfs, one_source) {
+    spla::ref_ptr<spla::Matrix> A;
+    build_graph(A);
+
+    auto P = spla::Matrix::make(1, 4, spla::INT);
+    spla::msp_bfs(P, A, {0});
+
+    int v;
+    P->get_int(0, 0, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 1, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 2, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 3, v);
+    EXPECT_EQ(v, 1);
+}
+
+TEST(msp_bfs, two_sources) {
+    spla::ref_ptr<spla::Matrix> A;
+    build_graph(A);
+
+    auto P = spla::Matrix::make(2, 4, spla::INT);
+    spla::msp_bfs(P, A, {0, 1});
+
+    int v;
+    P->get_int(0, 0, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 1, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 2, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(0, 3, v);
+    EXPECT_EQ(v, 1);
+
+    P->get_int(1, 0, v);
+    EXPECT_EQ(v, -1);
+    P->get_int(1, 1, v);
+    EXPECT_EQ(v, 0);
+    P->get_int(1, 2, v);
+    EXPECT_EQ(v, -1);
+    P->get_int(1, 3, v);
+    EXPECT_EQ(v, 1);
+}
+
+SPLA_GTEST_MAIN

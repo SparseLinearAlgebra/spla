@@ -403,6 +403,10 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(tc)
     spla_example_application(pi)
     spla_example_application(convert)
+    spla_example_application(msp_bfs)
+    spla_example_application(msl_bfs)
+    spla_example_application(rpq)
+    spla_example_application(cfpq)
 endif ()
 
 ######################################################################

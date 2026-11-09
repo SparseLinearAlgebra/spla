@@ -113,6 +113,7 @@ namespace spla {
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", INT), std::make_shared<Algo_m_eadd_cpu<T_INT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", UINT), std::make_shared<Algo_m_eadd_cpu<T_UINT>>());
         g_registry->add(MAKE_KEY_CPU_0("m_eadd", FLOAT), std::make_shared<Algo_m_eadd_cpu<T_FLOAT>>());
+        g_registry->add(MAKE_KEY_CPU_0("m_eadd", PATH_INDEX), std::make_shared<Algo_m_eadd_cpu<T_PATH_INDEX>>());
 
         // algorithm m_emult
         g_registry->add(MAKE_KEY_CPU_0("m_emult", INT), std::make_shared<Algo_m_emult_cpu<T_INT>>());
