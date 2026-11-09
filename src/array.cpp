@@ -31,12 +31,12 @@
 namespace spla {
 
     ref_ptr<Array> Array::make(uint n_values, const ref_ptr<Type>& type) {
+        Library::get();
+
         if (!type) {
             LOG_MSG(Status::InvalidArgument, "passed null type");
             return ref_ptr<Array>{};
         }
-
-        Library::get();
 
         if (type == INT) {
             return ref_ptr<Array>(new TArray<std::int32_t>(n_values));

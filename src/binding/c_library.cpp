@@ -26,12 +26,28 @@
 /**********************************************************************************/
 
 #include "c_config.hpp"
+#include <core/configure.hpp>
+
+#include <iostream>
 
 void spla_Library_finalize() {
     spla::Library::get()->finalize();
 }
-spla_Status spla_Library_initialize() {
-    return spla::Library::get() ? SPLA_STATUS_OK : SPLA_STATUS_ERROR;
+spla_Status spla_Configure_and_init(int argc, char** argv) {
+    auto* lib = spla::Library::get(argc, argv);
+    if (!lib) return SPLA_STATUS_ERROR;
+    return SPLA_STATUS_OK;
+}
+
+void spla_Config_help() {
+    char  arg0[] = "spla";
+    char  arg1[] = "--spla-help";
+    char* argv[] = {arg0, arg1, nullptr};
+    spla::make_config_final(2, argv);
+}
+
+void spla_Config_version() {
+    std::cout << spla::get_spla_version() << std::endl;
 }
 spla_Status spla_Library_set_accelerator(spla_AcceleratorType accelerator) {
     return to_c_status(spla::Library::get()->set_accelerator(from_c_accelerator_type(accelerator)));

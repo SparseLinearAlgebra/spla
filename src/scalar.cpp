@@ -31,12 +31,12 @@
 namespace spla {
 
     ref_ptr<Scalar> Scalar::make(const ref_ptr<Type>& type) {
+        Library::get();
+
         if (!type) {
             LOG_MSG(Status::InvalidArgument, "passed null type");
             return ref_ptr<Scalar>{};
         }
-
-        Library::get();
 
         if (type == INT) {
             return ref_ptr<Scalar>(new TScalar<std::int32_t>());

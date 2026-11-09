@@ -35,6 +35,7 @@ __all__ = [
 ]
 
 import os
+import sys
 import ctypes
 import pathlib
 import platform
@@ -63,6 +64,10 @@ class SplaError(Exception):
 
 
 class SplaFailedInitialize(SplaError):
+    pass
+
+
+class SplaFailedConfigure(SplaError):
     pass
 
 
@@ -158,6 +163,28 @@ _status_mapping = {
     1024: SplaNotImplemented,
 }
 
+_status_description = {
+    0: "success",
+    2: "no accelerator available (running on CPU)",
+    3: "OpenCL platform not found",
+    4: "OpenCL device not found",
+    5: "library is in invalid state",
+    6: "invalid argument passed",
+    7: "no value",
+    1024: "operation not implemented",
+}
+
+
+def describe_status(status):
+    return _status_description.get(status, f"unknown status {status}")
+
+
+def _raise_status(status, message, fallback=SplaError):
+    exc_type = _status_mapping.get(status, fallback)
+    exc = exc_type(f"{message}: {describe_status(status)} (status {status})")
+    exc.status = status
+    raise exc
+
 
 def load_library(lib_path):
     global _spla
@@ -189,8 +216,12 @@ def load_library(lib_path):
 
     _spla.spla_Library_finalize.restype = None
     _spla.spla_Library_finalize.argtypes = []
-    _spla.spla_Library_initialize.restype = _status_t
-    _spla.spla_Library_initialize.argtypes = []
+    _spla.spla_Configure_and_init.restype = _status_t
+    _spla.spla_Configure_and_init.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
+    _spla.spla_Config_help.restype = None
+    _spla.spla_Config_help.argtypes = []
+    _spla.spla_Config_version.restype = None
+    _spla.spla_Config_version.argtypes = []
     _spla.spla_Library_set_accelerator.restype = _status_t
     _spla.spla_Library_set_accelerator.argtypes = [_enum_t]
     _spla.spla_Library_set_platform.restype = _status_t
@@ -615,11 +646,16 @@ def default_callback(status, msg, file, function, line, user_data):
     decoded_file = file.decode("utf-8")
     print(f"pyspla: [{decoded_file}:{line}] {_status_mapping[status]}: {decoded_msg}")
 
-
-def init_library():
+def configure_and_init():
     if _spla:
-        if _spla.spla_Library_initialize() != 0:
-            raise SplaFailedInitialize
+        args = sys.argv[1:]
+        argc = len(args)
+        argv = (ctypes.c_char_p * argc)(*[arg.encode("utf-8") for arg in args])
+        status = _spla.spla_Configure_and_init(argc, argv)
+
+        if status != 0:
+            _raise_status(status, "spla configuration failed", SplaFailedConfigure)
+
 
 
 def finalize():
@@ -635,39 +671,51 @@ def initialize():
     global _default_callback
 
     try:
-        # If generating docs, no lib init required
-        if os.environ["SPLA_DOCS"]:
-            _is_docs = True
-            return
-    except KeyError:
-        pass
+        try:
+            # If generating docs, no lib init required
+            if os.environ["SPLA_DOCS"]:
+                _is_docs = True
+                return
+        except KeyError:
+            pass
 
-    _spla_path = pathlib.Path(__file__).resolve().parent / TARGET
+        _spla_path = pathlib.Path(__file__).resolve().parent / TARGET
 
-    try:
-        # Override library path from ENV variable (for debug & custom build)
-        if os.environ["SPLA_PATH"]:
-            _spla_path = pathlib.Path(os.environ["SPLA_PATH"])
-    except KeyError:
-        pass
+        try:
+            # Override library path from ENV variable (for debug & custom build)
+            if os.environ["SPLA_PATH"]:
+                _spla_path = pathlib.Path(os.environ["SPLA_PATH"])
+        except KeyError:
+            pass
 
-    if not _spla_path.is_file():
-        # Validate file before loading
-        raise Exception(f"no compiled spla file {TARGET} to load")
+        if not _spla_path.is_file():
+            # Validate file before loading
+            raise SplaError(f"no compiled spla file {TARGET} to load")
 
-    load_library(_spla_path)
-    init_library()
+        load_library(_spla_path)
 
-    _default_callback = _callback_t(default_callback)
+        if "--spla-help" in sys.argv[1:]:
+            _spla.spla_Config_help()
+            sys.exit(0)
+        if "--spla-version" in sys.argv[1:]:
+            _spla.spla_Config_version()
+            sys.exit(0)
 
-    try:
-        # If debug enable in ENV, setup default callback for messages on init
-        if int(os.environ["SPLA_DEBUG"]):
-            _spla.spla_Library_set_message_callback(_default_callback, ctypes.c_void_p(0))
-    except KeyError:
-        pass
+        configure_and_init()
 
-    atexit.register(finalize)
+        _default_callback = _callback_t(default_callback)
+
+        try:
+            # If debug enable in ENV, setup default callback for messages on init
+            if int(os.environ["SPLA_DEBUG"]):
+                _spla.spla_Library_set_message_callback(_default_callback, ctypes.c_void_p(0))
+        except KeyError:
+            pass
+
+        atexit.register(finalize)
+
+    except SplaError as e:
+        sys.exit(f"FAILED: {e}")
 
 
 def check(status):
@@ -678,7 +726,7 @@ def check(status):
         Status to check.
     """
     if status != 0:
-        raise _status_mapping[status]
+        _raise_status(status, "spla call failed")
 
 
 def is_docs():

@@ -73,7 +73,7 @@ setuptools.setup(
     ],
     packages=["pyspla"],
     package_dir={'': '.'},
-    package_data={'': get_lib_names()},
+    package_data={'': get_lib_names() + ["spla_conf.json"]},
     python_requires=">=3.0",
     include_package_data=True
 )
