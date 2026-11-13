@@ -182,6 +182,9 @@ namespace spla {
     SPLA_API extern ref_ptr<OpBinary> BXOR_INT;
     SPLA_API extern ref_ptr<OpBinary> BXOR_UINT;
 
+    SPLA_API extern ref_ptr<OpBinary> MIN_PATH_INDEX;
+    SPLA_API extern ref_ptr<OpBinary> MUL_PATH_INDEX;
+
     //////////////////////////////// Select ////////////////////////////////
 
     SPLA_API extern ref_ptr<OpSelect> EQZERO_INT;

@@ -29,6 +29,7 @@
 #define SPLA_TYPE_HPP
 
 #include "object.hpp"
+#include "path_index.hpp"
 
 #include <string>
 
@@ -54,15 +55,17 @@ namespace spla {
         SPLA_API virtual int                get_id()          = 0;
     };
 
-    using T_BOOL  = bool;
-    using T_INT   = std::int32_t;
-    using T_UINT  = std::uint32_t;
-    using T_FLOAT = float;
+    using T_BOOL       = bool;
+    using T_INT        = std::int32_t;
+    using T_UINT       = std::uint32_t;
+    using T_FLOAT      = float;
+    using T_PATH_INDEX = PathIndex;
 
     SPLA_API extern ref_ptr<Type> BOOL;
     SPLA_API extern ref_ptr<Type> INT;
     SPLA_API extern ref_ptr<Type> UINT;
     SPLA_API extern ref_ptr<Type> FLOAT;
+    SPLA_API extern ref_ptr<Type> PATH_INDEX;
 
     /**
      * @}

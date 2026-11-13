@@ -51,6 +51,9 @@ namespace spla {
         if (type == FLOAT) {
             return ref_ptr<Matrix>(new TMatrix<float>(n_rows, n_cols));
         }
+        if (type == PATH_INDEX) {
+            return ref_ptr<Matrix>(new TMatrix<PathIndex>(n_rows, n_cols));
+        }
 
         LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
         return ref_ptr<Matrix>();

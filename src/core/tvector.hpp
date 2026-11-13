@@ -72,14 +72,20 @@ namespace spla {
         Status             set_int(uint row_id, std::int32_t value) override;
         Status             set_uint(uint row_id, std::uint32_t value) override;
         Status             set_float(uint row_id, float value) override;
-        Status             get_int(uint row_id, int32_t& value) override;
-        Status             get_uint(uint row_id, uint32_t& value) override;
-        Status             get_float(uint row_id, float& value) override;
-        Status             fill_noize(uint seed) override;
-        Status             fill_with(const ref_ptr<Scalar>& value) override;
-        Status             build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
-        Status             read(ref_ptr<MemView>& keys, ref_ptr<MemView>& values) override;
-        Status             clear() override;
+        Status             set_path_index(uint row_id, PathIndex value) override {
+            return Status::InvalidArgument;
+        }
+        Status get_int(uint row_id, int32_t& value) override;
+        Status get_uint(uint row_id, uint32_t& value) override;
+        Status get_float(uint row_id, float& value) override;
+        Status get_path_index(uint row_id, PathIndex& value) override {
+            return Status::InvalidArgument;
+        }
+        Status fill_noize(uint seed) override;
+        Status fill_with(const ref_ptr<Scalar>& value) override;
+        Status build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
+        Status read(ref_ptr<MemView>& keys, ref_ptr<MemView>& values) override;
+        Status clear() override;
 
         template<typename Decorator>
         Decorator* get() { return m_storage.template get<Decorator>(); }
@@ -363,6 +369,55 @@ namespace spla {
     /**
      * @}
      */
+
+    template<>
+    inline Status TVector<PathIndex>::set_int(uint, std::int32_t) { return Status::InvalidArgument; }
+    template<>
+    inline Status TVector<PathIndex>::set_uint(uint, std::uint32_t) { return Status::InvalidArgument; }
+    template<>
+    inline Status TVector<PathIndex>::set_float(uint, float) { return Status::InvalidArgument; }
+    template<>
+    inline Status TVector<PathIndex>::get_int(uint, int32_t&) { return Status::InvalidArgument; }
+    template<>
+    inline Status TVector<PathIndex>::get_uint(uint, uint32_t&) { return Status::InvalidArgument; }
+    template<>
+    inline Status TVector<PathIndex>::get_float(uint, float&) { return Status::InvalidArgument; }
+
+    template<>
+    inline Status TVector<PathIndex>::set_path_index(uint row_id, PathIndex value) {
+        if (get_type() != PATH_INDEX) {
+            return Status::InvalidArgument;
+        }
+
+        if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
+            get<CpuDenseVec<PathIndex>>()->Ax[row_id] = value;
+            return Status::Ok;
+        }
+
+        validate_rwd(FormatVector::CpuDok);
+        cpu_dok_vec_add_element(row_id, value, *get<CpuDokVec<PathIndex>>());
+        return Status::Ok;
+    }
+
+    template<>
+    inline Status TVector<PathIndex>::get_path_index(uint row_id, PathIndex& value) {
+        if (get_type() != PATH_INDEX) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rw(FormatVector::CpuDok);
+
+        const auto& Ax    = get<CpuDokVec<PathIndex>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+        value             = m_storage.get_fill_value();
+
+        if (entry != Ax.end()) {
+            value = static_cast<PathIndex>(entry->second);
+        }
+
+        return Status::Ok;
+    }
 
 }// namespace spla
 

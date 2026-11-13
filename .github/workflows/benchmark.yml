@@ -1,0 +1,141 @@
+name: Benchmark
+
+on:
+  push:
+    branches:
+      - main
+      - release
+      - pre-release
+    paths:
+      - '.github/**'
+      - 'bench/**'
+      - 'deps/**'
+      - 'examples/**'
+      - 'include/**'
+      - 'src/**'
+      - '.gitmodules'
+      - 'CMakeLists.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  deployments: write
+
+env:
+  build-dir: "build"
+  data-dir: ${{ runner.home }}/spla-bench-data
+
+jobs:
+  build:
+    name: Build
+    runs-on: self-hosted
+    env:
+      config: "Release"
+      nt: "4"
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Configure CMake
+        run: |
+          cmake . -G Ninja                             \
+                  -B ${{ env.build-dir }}              \
+                  -DCMAKE_BUILD_TYPE=${{ env.config }} \
+                  -DSPLA_BUILD_TESTS=ON
+
+      - name: Build library sources
+        run: |
+          cmake --build ${{ env.build-dir }} \
+                --target all \
+                --verbose \
+                -j ${{ env.nt }}
+
+  bench:
+    name: Bench ${{ matrix.gpu }}
+    needs: build
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - gpu: NVIDIA-GeForce-GT-1030
+            platform: 2
+            device: 0
+          - gpu: AMD-Radeon-RX-6750-XT
+            platform: 1
+            device: 0
+
+    env:
+      bench-dir: ${{ github.workspace }}/bench-results/${{ matrix.gpu }}
+
+    steps:
+      - name: Download benchmark matrices
+        run: python3 bench/download_data.py --data-dir ${{ env.data-dir }}
+
+      - name: Run benchmarks
+        run: |
+          mkdir -p ${{ env.bench-dir }}
+          datasets=$(python3 -c "import json; print(' '.join(e['name'] for e in json.load(open('bench/matrices.json'))))")
+          for algo in bfs sssp pr tc; do
+            for ds in $datasets; do
+              ./${{ env.build-dir }}/$algo \
+                --mtxpath ${{ env.data-dir }}/$ds.mtx \
+                --platform ${{ matrix.platform }} \
+                --device ${{ matrix.device }} \
+                --run-cpu=false --run-ref=false \
+                --bench ${{ env.bench-dir }}/${algo}_${ds}.json
+            done
+          done
+
+      - name: Aggregate results
+        run: |
+          python3 bench/aggregate.py --gpu ${{ matrix.gpu }} \
+            --out ${{ env.bench-dir }}/aggregated.json \
+            ${{ env.bench-dir }}/bfs_*.json ${{ env.bench-dir }}/sssp_*.json \
+            ${{ env.bench-dir }}/pr_*.json ${{ env.bench-dir }}/tc_*.json
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-${{ matrix.gpu }}
+          path: ${{ env.bench-dir }}/aggregated.json
+
+  store:
+    name: Store results
+    needs: bench
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download per-GPU results
+        uses: actions/download-artifact@v4
+        with:
+          path: bench-results
+
+      - name: Merge results
+        run: |
+          python3 -c "
+          import json, glob
+          entries = []
+          for path in sorted(glob.glob('bench-results/*/aggregated.json')):
+              entries.extend(json.load(open(path)))
+          json.dump(entries, open('bench-results.json', 'w'), indent=2)
+          "
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: spla
+          tool: customSmallerIsBetter
+          output-file-path: bench-results.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: dev/bench
+          comment-on-alert: true
+          fail-on-alert: true
+          alert-threshold: 150%

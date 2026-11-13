@@ -77,6 +77,7 @@ typedef enum spla_Status {
     SPLA_STATUS_INVALID_STATE      = 5,
     SPLA_STATUS_INVALID_ARGUMENT   = 6,
     SPLA_STATUS_NO_VALUE           = 7,
+    SPLA_STATUS_OUT_OF_MEMORY      = 9,
     SPLA_STATUS_NOT_IMPLEMENTED    = 1024
 } spla_Status;
 
@@ -151,6 +152,7 @@ SPLA_API spla_Type spla_Type_BOOL();
 SPLA_API spla_Type spla_Type_INT();
 SPLA_API spla_Type spla_Type_UINT();
 SPLA_API spla_Type spla_Type_FLOAT();
+SPLA_API spla_Type spla_Type_PATH_INDEX();
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -386,6 +388,7 @@ SPLA_API spla_Status spla_Exec_v_assign_masked(spla_Vector r, spla_Vector mask, 
 SPLA_API spla_Status spla_Exec_v_map(spla_Vector r, spla_Vector v, spla_OpUnary op, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_v_reduce(spla_Scalar r, spla_Scalar s, spla_Vector v, spla_OpBinary op_reduce, spla_Descriptor desc, spla_ScheduleTask* task);
 SPLA_API spla_Status spla_Exec_v_count_mf(spla_Scalar r, spla_Vector v, spla_Descriptor desc, spla_ScheduleTask* task);
+SPLA_API spla_Status spla_Exec_intersect(spla_Vector a_keys, spla_Vector a_vals, spla_Vector b_keys, spla_Vector b_vals, spla_Vector r_keys, spla_Vector r_vals, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task);
 
 //////////////////////////////////////////////////////////////////////////////////////
 

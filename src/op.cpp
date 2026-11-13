@@ -121,6 +121,9 @@ namespace spla {
     ref_ptr<OpBinary> BXOR_INT;
     ref_ptr<OpBinary> BXOR_UINT;
 
+    ref_ptr<OpBinary> MIN_PATH_INDEX;
+    ref_ptr<OpBinary> MUL_PATH_INDEX;
+
     //////////////////////////////////////////////////////////////////////////////
 
     ref_ptr<OpSelect> EQZERO_INT;
@@ -239,6 +242,9 @@ namespace spla {
         DECL_OP_BIN_S(BAND_UINT, BAND, T_UINT, { return a & b; });
         DECL_OP_BIN_S(BXOR_INT, BXOR, T_INT, { return a ^ b; });
         DECL_OP_BIN_S(BXOR_UINT, BXOR, T_UINT, { return a ^ b; });
+
+        DECL_OP_BIN(MIN_PATH_INDEX, MIN_PATH_INDEX, T_PATH_INDEX, T_PATH_INDEX, T_PATH_INDEX, { return path_index_add(a, b); });
+        DECL_OP_BIN(MUL_PATH_INDEX, MUL_PATH_INDEX, T_PATH_INDEX, T_PATH_INDEX, T_PATH_INDEX, { return path_index_multiply(a, 0, b); });
 
         DECL_OP_SELECT(EQZERO_INT, EQZERO, T_INT, { return a == 0; });
         DECL_OP_SELECT(EQZERO_UINT, EQZERO, T_UINT, { return a == 0; });

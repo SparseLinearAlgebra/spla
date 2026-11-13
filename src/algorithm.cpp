@@ -36,6 +36,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <queue>
 
 namespace spla {
@@ -448,5 +449,349 @@ namespace spla {
     }
 
 #pragma endregion Pr
+
+#pragma region Multi-source BFS
+
+    Status msl_bfs(const ref_ptr<Matrix>& S, const ref_ptr<Matrix>& A, const std::vector<uint>& sources, const ref_ptr<Descriptor>& descriptor) {
+        assert(S);
+        assert(A);
+
+        const uint n = A->get_n_rows();
+        const uint k = static_cast<uint>(sources.size());
+
+        ref_ptr<Scalar> zero = Scalar::make_int(0);
+
+        std::vector<std::vector<uint>> F(k, std::vector<uint>(n, 0));
+        for (uint t = 0; t < k; ++t) {
+            F[t][sources[t]] = 1;
+        }
+
+        uint level = 1;
+        while (true) {
+            bool any = false;
+            for (uint t = 0; t < k; ++t) {
+                for (uint j = 0; j < n; ++j) {
+                    if (F[t][j]) {
+                        S->set_int(t, j, static_cast<int>(level));
+                        any = true;
+                    }
+                }
+            }
+            if (!any) break;
+
+            ref_ptr<Matrix> F_mat = Matrix::make(k, n, INT);
+            for (uint t = 0; t < k; ++t) {
+                for (uint j = 0; j < n; ++j) {
+                    if (F[t][j]) F_mat->set_int(t, j, 1);
+                }
+            }
+
+            ref_ptr<Matrix> F_new = Matrix::make(k, n, INT);
+            exec_mxm(F_new, F_mat, A, LAND_INT, LOR_INT, zero);
+
+            for (uint t = 0; t < k; ++t) {
+                for (uint j = 0; j < n; ++j) {
+                    int fv;
+                    int sv;
+                    F_new->get_int(t, j, fv);
+                    S->get_int(t, j, sv);
+                    F[t][j] = (fv != 0 && sv == 0) ? 1 : 0;
+                }
+            }
+
+            level += 1;
+        }
+
+        return Status::Ok;
+    }
+
+    Status msp_bfs(const ref_ptr<Matrix>& P, const ref_ptr<Matrix>& A, const std::vector<uint>& sources, const ref_ptr<Descriptor>& descriptor) {
+        assert(P);
+        assert(A);
+
+        const uint n = A->get_n_rows();
+        const uint k = static_cast<uint>(sources.size());
+
+        ref_ptr<Scalar> inf = Scalar::make_int(std::numeric_limits<int>::max());
+
+        std::vector<std::vector<int>>  P_host(k, std::vector<int>(n, -1));
+        std::vector<std::vector<uint>> F(k, std::vector<uint>(n, 0));
+        for (uint t = 0; t < k; ++t) {
+            F[t][sources[t]]      = 1;
+            P_host[t][sources[t]] = 0;
+        }
+
+        bool any = true;
+        while (any) {
+            ref_ptr<Matrix> F_mat = Matrix::make(k, n, INT);
+            for (uint t = 0; t < k; ++t) {
+                for (uint i = 0; i < n; ++i) {
+                    if (F[t][i]) F_mat->set_int(t, i, static_cast<int>(i) + 1);
+                }
+            }
+
+            ref_ptr<Matrix> F_new = Matrix::make(k, n, INT);
+            exec_mxm(F_new, F_mat, A, FIRST_INT, MIN_INT, inf);
+
+            any = false;
+            for (uint t = 0; t < k; ++t) {
+                for (uint j = 0; j < n; ++j) {
+                    F[t][j] = 0;
+                }
+            }
+
+            for (uint t = 0; t < k; ++t) {
+                for (uint j = 0; j < n; ++j) {
+                    int fv;
+                    F_new->get_int(t, j, fv);
+                    if (fv != 0 && P_host[t][j] == -1) {
+                        P_host[t][j] = fv - 1;
+                        F[t][j]      = 1;
+                        any          = true;
+                    }
+                }
+            }
+        }
+
+        for (uint t = 0; t < k; ++t) {
+            for (uint j = 0; j < n; ++j) {
+                P->set_int(t, j, P_host[t][j]);
+            }
+        }
+
+        return Status::Ok;
+    }
+
+    Status msp_bfs_naive(std::vector<std::vector<int>>&        P,
+                         const std::vector<std::vector<uint>>& A,
+                         const std::vector<uint>&              sources,
+                         const ref_ptr<Descriptor>&            descriptor) {
+        const uint n = static_cast<uint>(A.size());
+        const uint k = static_cast<uint>(sources.size());
+
+        P.assign(k, std::vector<int>(n, -1));
+
+        for (uint t = 0; t < k; ++t) {
+            std::vector<int>  parent(n, -1);
+            std::vector<uint> frontier = {sources[t]};
+            parent[sources[t]]         = 0;
+
+            while (!frontier.empty()) {
+                std::map<uint, uint> next;
+                for (uint u : frontier) {
+                    for (uint v : A[u]) {
+                        if (parent[v] == -1) {
+                            auto it = next.find(v);
+                            if (it == next.end() || u < it->second) next[v] = u;
+                        }
+                    }
+                }
+
+                std::vector<uint> next_frontier;
+                next_frontier.reserve(next.size());
+                for (const auto& [v, p] : next) {
+                    parent[v] = static_cast<int>(p);
+                    next_frontier.push_back(v);
+                }
+                frontier = std::move(next_frontier);
+            }
+
+            P[t] = std::move(parent);
+        }
+
+        return Status::Ok;
+    }
+
+    Status msl_bfs_naive(std::vector<std::vector<int>>&        S,
+                         const std::vector<std::vector<uint>>& A,
+                         const std::vector<uint>&              sources,
+                         const ref_ptr<Descriptor>&            descriptor) {
+        const uint n = static_cast<uint>(A.size());
+        const uint k = static_cast<uint>(sources.size());
+
+        S.assign(k, std::vector<int>(n, 0));
+
+        for (uint t = 0; t < k; ++t) {
+            std::vector<int> level(n, 0);
+            std::queue<uint> q;
+            q.push(sources[t]);
+            level[sources[t]] = 1;
+
+            while (!q.empty()) {
+                const uint u = q.front();
+                q.pop();
+                for (uint v : A[u]) {
+                    if (level[v] == 0) {
+                        level[v] = level[u] + 1;
+                        q.push(v);
+                    }
+                }
+            }
+
+            S[t] = std::move(level);
+        }
+
+        return Status::Ok;
+    }
+
+#pragma endregion Multi - source BFS
+
+#pragma region Reach RPQ
+
+    Status reach_rpq(const ref_ptr<Vector>&              v,
+                     const std::vector<ref_ptr<Matrix>>& A,
+                     const std::vector<ref_ptr<Matrix>>& R,
+                     uint                                source,
+                     const std::vector<uint>&            start_states,
+                     const std::vector<uint>&            final_states,
+                     const ref_ptr<Descriptor>&          descriptor) {
+        assert(v);
+        assert(A.size() == R.size());
+
+        const uint nl      = static_cast<uint>(A.size());
+        const uint n       = v->get_n_rows();
+        const uint nstates = R[0]->get_n_rows();
+
+        ref_ptr<Scalar> zero = Scalar::make_int(0);
+
+        std::vector<std::vector<uint>> visited(nstates, std::vector<uint>(n, 0));
+        std::vector<std::vector<uint>> frontier(nstates, std::vector<uint>(n, 0));
+        for (uint p : start_states) {
+            frontier[p][source] = 1;
+            visited[p][source]  = 1;
+        }
+
+        for (;;) {
+            bool empty = true;
+            for (uint p = 0; p < nstates && empty; ++p) {
+                for (uint j = 0; j < n && empty; ++j) {
+                    if (frontier[p][j]) empty = false;
+                }
+            }
+            if (empty) break;
+
+            ref_ptr<Matrix> F = Matrix::make(nstates, n, INT);
+            for (uint p = 0; p < nstates; ++p) {
+                for (uint j = 0; j < n; ++j) {
+                    if (frontier[p][j]) F->set_int(p, j, 1);
+                }
+            }
+
+            ref_ptr<Matrix> next = Matrix::make(nstates, n, INT);
+
+            for (uint i = 0; i < nl; ++i) {
+                ref_ptr<Matrix> Rt = Matrix::make(nstates, nstates, INT);
+                exec_m_transpose(Rt, R[i], IDENTITY_INT);
+
+                ref_ptr<Matrix> symbol = Matrix::make(nstates, n, INT);
+                exec_mxm(symbol, Rt, F, LAND_INT, LOR_INT, zero);
+
+                ref_ptr<Matrix> tmp = Matrix::make(nstates, n, INT);
+                exec_mxm(tmp, symbol, A[i], LAND_INT, LOR_INT, zero);
+
+                ref_ptr<Matrix> merged = Matrix::make(nstates, n, INT);
+                exec_m_eadd(merged, next, tmp, LOR_INT);
+                next = merged;
+            }
+
+            // mask by not-visited and rebuild the frontier
+            for (uint p = 0; p < nstates; ++p) {
+                for (uint j = 0; j < n; ++j) {
+                    int nv;
+                    next->get_int(p, j, nv);
+                    frontier[p][j] = (nv != 0 && !visited[p][j]) ? 1 : 0;
+                    if (frontier[p][j]) visited[p][j] = 1;
+                }
+            }
+        }
+
+        for (uint p : final_states) {
+            for (uint j = 0; j < n; ++j) {
+                if (visited[p][j]) {
+                    v->set_int(j, 1);
+                }
+            }
+        }
+
+        return Status::Ok;
+    }
+#pragma endregion Reach RPQ
+
+#pragma region Single-path CFPQ
+
+    Status single_path_cfpq(std::vector<ref_ptr<Matrix>>&             T,
+                            const std::vector<ref_ptr<Matrix>>&       adj_matrices,
+                            const std::vector<std::array<uint, 3>>&   binary_rules,
+                            const std::vector<std::pair<uint, uint>>& terminal_rules,
+                            const std::vector<uint>&                  epsilon_nonterms,
+                            uint                                      nonterms,
+                            const ref_ptr<Descriptor>&                descriptor) {
+        const uint n = adj_matrices[0]->get_n_rows();
+
+        T.clear();
+        T.resize(nonterms);
+        for (uint k = 0; k < nonterms; ++k) {
+            T[k] = Matrix::make(n, n, PATH_INDEX);
+        }
+
+        ref_ptr<Scalar> bottom = Scalar::make(PATH_INDEX);
+        bottom->set_path_index(PathIndex(0, 0));
+
+        // terminal rules: A -> term
+        for (const auto& [nt, term] : terminal_rules) {
+            const auto& M = adj_matrices[term];
+            for (uint i = 0; i < n; ++i) {
+                for (uint j = 0; j < n; ++j) {
+                    int mv;
+                    M->get_int(i, j, mv);
+                    if (mv != 0) {
+                        T[nt]->set_path_index(i, j, PathIndex(i, 1));
+                    }
+                }
+            }
+        }
+
+        // epsilon rules: A -> eps
+        for (uint nt : epsilon_nonterms) {
+            for (uint i = 0; i < n; ++i) {
+                T[nt]->set_path_index(i, i, PathIndex(i, 1));
+            }
+        }
+
+        // fixed point: iterate until a full pass over the binary rules adds no
+        // new (i, j) entry to any nonterminal matrix (nnz-based change detection,
+        // as in the LAGraph reference). The matrices only grow, and each entry
+        // first appears with its minimal derivation height, so the fixed point
+        // is reached when the nnz stops growing.
+        auto nnz = [](const ref_ptr<Matrix>& M) {
+            ref_ptr<MemView> k1, k2, v;
+            M->read(k1, k2, v);
+            return static_cast<uint>(k1->get_size() / sizeof(uint));
+        };
+
+        for (;;) {
+            bool changed = false;
+
+            for (const auto& [lhs, rhs1, rhs2] : binary_rules) {
+                const uint before = nnz(T[lhs]);
+
+                ref_ptr<Matrix> prod = Matrix::make(n, n, PATH_INDEX);
+                exec_mxm(prod, T[rhs1], T[rhs2], MUL_PATH_INDEX, MIN_PATH_INDEX, bottom);
+
+                ref_ptr<Matrix> merged = Matrix::make(n, n, PATH_INDEX);
+                exec_m_eadd(merged, T[lhs], prod, MIN_PATH_INDEX);
+                T[lhs] = merged;
+
+                const uint after = nnz(T[lhs]);
+                changed          = changed || (before != after);
+            }
+
+            if (!changed) break;
+        }
+
+        return Status::Ok;
+    }
+
+#pragma endregion Single - path CFPQ
 
 }// namespace spla

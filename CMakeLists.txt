@@ -258,6 +258,7 @@ if (SPLA_BUILD_OPENCL)
             src/opencl/cl_format_csr.hpp
             src/opencl/cl_formats.hpp
             src/opencl/cl_m_reduce.hpp
+            src/opencl/cl_mxm.hpp
             src/opencl/cl_mxv.hpp
             src/opencl/cl_vxm.hpp
             src/opencl/cl_v_assign.hpp
@@ -402,6 +403,10 @@ if (SPLA_BUILD_EXAMPLES)
     spla_example_application(tc)
     spla_example_application(pi)
     spla_example_application(convert)
+    spla_example_application(msp_bfs)
+    spla_example_application(msl_bfs)
+    spla_example_application(rpq)
+    spla_example_application(cfpq)
 endif ()
 
 ######################################################################

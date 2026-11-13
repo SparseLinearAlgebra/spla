@@ -34,6 +34,9 @@
 #include "scalar.hpp"
 #include "vector.hpp"
 
+#include <array>
+#include <vector>
+
 namespace spla {
 
     /**
@@ -173,6 +176,128 @@ namespace spla {
             int&                                  ntrins,
             std::vector<std::vector<spla::uint>>& Ai,
             const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Multi-source breadth-first search: parents
+     *
+     * For each source, computes the parent of every reachable vertex in the BFS
+     * tree (the smallest parent id on ties). The parent of a source is 0 and an
+     * unreachable vertex has no parent (0).
+     *
+     * @param P int matrix (k x n) to store parents, row t = parents for source t
+     * @param A int adjacency matrix (n x n) with 1 where an edge exists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msp_bfs(
+            const ref_ptr<Matrix>&     P,
+            const ref_ptr<Matrix>&     A,
+            const std::vector<uint>&   sources,
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Multi-source breadth-first search: levels
+     *
+     * For each source, computes the BFS level (1-based) of every reachable
+     * vertex; an unreachable vertex has level 0.
+     *
+     * @param S int matrix (k x n) to store levels, row t = levels for source t
+     * @param A int adjacency matrix (n x n) with 1 where an edge exists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msl_bfs(
+            const ref_ptr<Matrix>&     S,
+            const ref_ptr<Matrix>&     A,
+            const std::vector<uint>&   sources,
+            const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Naive multi-source breadth-first search: parents (reference cpu implementation)
+     *
+     * @param P int matrix rows of parents, row t = parents for source t (-1 = unreachable)
+     * @param A graph adjacency lists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msp_bfs_naive(
+            std::vector<std::vector<int>>&        P,
+            const std::vector<std::vector<uint>>& A,
+            const std::vector<uint>&              sources,
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Naive multi-source breadth-first search: levels (reference cpu implementation)
+     *
+     * @param S int matrix rows of levels, row t = levels for source t (0 = unreachable)
+     * @param A graph adjacency lists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msl_bfs_naive(
+            std::vector<std::vector<int>>&        S,
+            const std::vector<std::vector<uint>>& A,
+            const std::vector<uint>&              sources,
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Single-source regular path query (2-RPQ) reachability
+     *
+     * Computes the vertices reachable from `source` by paths accepted by the
+     * automaton, via BFS over the direct product (graph x NFA).
+     *
+     * @param v int vector (n) to store 1 for reachable vertices
+     * @param A label-decomposed adjacency matrices A[0..labels)
+     * @param R label-decomposed NFA transition matrices R[0..labels) (R[l][p][q] = 1)
+     * @param source source vertex id
+     * @param start_states NFA start states
+     * @param final_states NFA final states
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status reach_rpq(
+            const ref_ptr<Vector>&              v,
+            const std::vector<ref_ptr<Matrix>>& A,
+            const std::vector<ref_ptr<Matrix>>& R,
+            uint                                source,
+            const std::vector<uint>&            start_states,
+            const std::vector<uint>&            final_states,
+            const ref_ptr<Descriptor>&          descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Single-path context-free path querying
+     *
+     * Computes, for a graph and a grammar in weak Chomsky normal form, the
+     * minimal-derivation-height path index between every pair of vertices for
+     * every nonterminal.
+     *
+     * @param T output PathIndex matrices per nonterminal (n x n)
+     * @param adj_matrices label-decomposed adjacency matrices (n x n) per terminal
+     * @param binary_rules productions A -> BC (nonterminal ids)
+     * @param terminal_rules productions A -> terminal (nonterminal id, terminal id)
+     * @param epsilon_nonterms nonterminals with an A -> eps production
+     * @param nonterms number of nonterminals
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status single_path_cfpq(
+            std::vector<ref_ptr<Matrix>>&             T,
+            const std::vector<ref_ptr<Matrix>>&       adj_matrices,
+            const std::vector<std::array<uint, 3>>&   binary_rules,
+            const std::vector<std::pair<uint, uint>>& terminal_rules,
+            const std::vector<uint>&                  epsilon_nonterms,
+            uint                                      nonterms,
+            const ref_ptr<Descriptor>&                descriptor = spla::Descriptor::make());
 
     /**
      * @}

@@ -7,6 +7,11 @@
 graph-dataset.zip
 dataset*
 
+# Docs build output
+/html/
+/latex/
+/pydocs/
+
 # Auto gen registry
 registry.txt
 
