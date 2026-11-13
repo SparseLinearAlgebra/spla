@@ -31,23 +31,25 @@
 #include <cxxopts.hpp>
 #include <iostream>
 
-#define OPT_MTXPATH      "mtxpath"
-#define OPT_GRAPH        "graph"
-#define OPT_GRAMMAR      "grammar"
-#define OPT_QUERY        "query"
-#define OPT_BENCH        "bench"
-#define OPT_NITERS       "niters"
-#define OPT_SOURCE       "source"
-#define OPT_SOURCES      "sources"
-#define OPT_RUN_REF      "run-ref"
-#define OPT_RUN_CPU      "run-cpu"
-#define OPT_RUN_GPU      "run-gpu"
-#define OPT_PLATFORM     "platform"
-#define OPT_DEVICE       "device"
-#define OPT_PUSH_PULL    "push-pull"
-#define OPT_FRONT_FACTOR "front-factor"
-#define OPT_ALPHA        "alpha"
-#define OPT_EPS          "eps"
+#define OPT_MTXPATH       "mtxpath"
+#define OPT_GRAPH         "graph"
+#define OPT_GRAMMAR       "grammar"
+#define OPT_QUERY         "query"
+#define OPT_QUERY_META    "query-meta"
+#define OPT_QUERY_SOURCES "query-sources"
+#define OPT_BENCH         "bench"
+#define OPT_NITERS        "niters"
+#define OPT_SOURCE        "source"
+#define OPT_SOURCES       "sources"
+#define OPT_RUN_REF       "run-ref"
+#define OPT_RUN_CPU       "run-cpu"
+#define OPT_RUN_GPU       "run-gpu"
+#define OPT_PLATFORM      "platform"
+#define OPT_DEVICE        "device"
+#define OPT_PUSH_PULL     "push-pull"
+#define OPT_FRONT_FACTOR  "front-factor"
+#define OPT_ALPHA         "alpha"
+#define OPT_EPS           "eps"
 
 std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const std::string& desc) {
     std::shared_ptr<cxxopts::Options> options = std::make_shared<cxxopts::Options>(name, desc);
@@ -56,6 +58,8 @@ std::shared_ptr<cxxopts::Options> make_options(const std::string& name, const st
     options->add_option("", cxxopts::Option(OPT_GRAPH, "path to graph file/directory (labeled graph)", cxxopts::value<std::string>()));
     options->add_option("", cxxopts::Option(OPT_GRAMMAR, "path to grammar file (CNF)", cxxopts::value<std::string>()));
     options->add_option("", cxxopts::Option(OPT_QUERY, "path to query/automaton directory", cxxopts::value<std::string>()));
+    options->add_option("", cxxopts::Option(OPT_QUERY_META, "path to query meta file (start/final states)", cxxopts::value<std::string>()));
+    options->add_option("", cxxopts::Option(OPT_QUERY_SOURCES, "path to query sources file (source vertices)", cxxopts::value<std::string>()));
     options->add_option("", cxxopts::Option(OPT_BENCH, "path to json file to write benchmark result (disabled if empty)", cxxopts::value<std::string>()->default_value("")));
     options->add_option("", cxxopts::Option(OPT_NITERS, "number of iterations to run", cxxopts::value<int>()->default_value("4")));
     options->add_option("", cxxopts::Option(OPT_SOURCE, "source vertex to run", cxxopts::value<int>()->default_value("0")));

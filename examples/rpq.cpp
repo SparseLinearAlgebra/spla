@@ -30,87 +30,73 @@
 
 #include <spla.hpp>
 
+#include <filesystem>
 #include <fstream>
-#include <map>
 #include <set>
-#include <sstream>
 
 namespace {
 
-    // Loads a Matrix-Market "coordinate pattern general" file into a square INT matrix.
-    spla::ref_ptr<spla::Matrix> load_mtx(const std::string& path) {
-        std::ifstream in(path);
-        if (!in) {
-            std::cerr << "failed to open " << path << std::endl;
+    // Sorted list of .mtx files in a directory.
+    std::vector<std::string> list_mtx(const std::string& dir) {
+        std::vector<std::string> files;
+        for (const auto& entry : std::filesystem::directory_iterator(dir)) {
+            if (entry.path().extension() == ".mtx") {
+                files.push_back(entry.path().filename().string());
+            }
+        }
+        std::sort(files.begin(), files.end());
+        return files;
+    }
+
+    // Load a Matrix-Market adjacency matrix (1-based -> 0-based, directed) into an INT matrix.
+    spla::ref_ptr<spla::Matrix> load_adjacency(const std::string& path) {
+        spla::MtxLoader loader;
+        if (!loader.load(path, true, false, false)) {
+            std::cerr << "failed to load " << path << std::endl;
             exit(1);
         }
 
-        std::string line;
-        while (std::getline(in, line)) {
-            if (line.empty() || line[0] == '%') continue;
-            break;
+        const spla::uint n = loader.get_n_rows();
+        auto             M = spla::Matrix::make(n, n, spla::INT);
+        for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
+            M->set_int(loader.get_Ai()[k], loader.get_Aj()[k], 1);
         }
-
-        std::stringstream ss(line);
-        std::size_t       rows, cols, nnz;
-        ss >> rows >> cols >> nnz;
-
-        const spla::uint size = static_cast<spla::uint>(std::max(rows, cols));
-
-        spla::ref_ptr<spla::Matrix> M = spla::Matrix::make(size, size, spla::INT);
-
-        for (std::size_t k = 0; k < nnz; ++k) {
-            std::size_t src, dst;
-            in >> src >> dst;
-            // la-rpq matrices are 1-based
-            M->set_int(static_cast<spla::uint>(src - 1), static_cast<spla::uint>(dst - 1), 1);
-        }
-
         return M;
     }
 
-    // Parses a meta.txt file: "source target", start states, final states, labels.
-    void load_query(const std::string&       path,
-                    spla::uint&              source,
-                    std::vector<spla::uint>& start_states,
-                    std::vector<spla::uint>& final_states,
-                    std::vector<int>&        labels) {
+    // Parse the NFA meta file: "nqs QS.. nqf QF.." (1-based states).
+    void load_meta(const std::string& path, std::vector<spla::uint>& start_states, std::vector<spla::uint>& final_states) {
         std::ifstream in(path);
         if (!in) {
             std::cerr << "failed to open " << path << std::endl;
             exit(1);
         }
 
-        std::string line;
+        std::size_t nqs, nqf;
+        in >> nqs;
+        start_states.resize(nqs);
+        for (std::size_t i = 0; i < nqs; ++i) in >> start_states[i];
 
-        std::getline(in, line);
-        std::stringstream ss(line);
-        spla::uint        source_n, target_n;
-        ss >> source_n >> target_n;
-        source = source_n - 1;
+        in >> nqf;
+        final_states.resize(nqf);
+        for (std::size_t i = 0; i < nqf; ++i) in >> final_states[i];
 
-        auto read_list = [&](std::vector<spla::uint>& out) {
-            std::getline(in, line);
-            std::stringstream s(line);
-            std::size_t       count;
-            s >> count;
-            out.resize(count);
-            for (std::size_t i = 0; i < count; ++i) s >> out[i];
-        };
-
-        read_list(start_states);
-        read_list(final_states);
-
-        std::getline(in, line);
-        std::stringstream sl(line);
-        std::size_t       label_count;
-        sl >> label_count;
-        labels.resize(label_count);
-        for (std::size_t i = 0; i < label_count; ++i) sl >> labels[i];
-
-        // NFA states in la-rpq are 1-based
         for (auto& s : start_states) --s;
         for (auto& f : final_states) --f;
+    }
+
+    // Parse the sources file: whitespace-separated 1-based source vertex ids.
+    std::vector<spla::uint> load_sources(const std::string& path) {
+        std::ifstream in(path);
+        if (!in) {
+            std::cerr << "failed to open " << path << std::endl;
+            exit(1);
+        }
+
+        std::vector<spla::uint> sources;
+        spla::uint              s;
+        while (in >> s) sources.push_back(s - 1);
+        return sources;
     }
 
 }// namespace
@@ -125,55 +111,39 @@ int main(int argc, const char* const* argv) {
         return ret;
     }
 
-    const std::string graph_dir = args[OPT_GRAPH].as<std::string>();
-    const std::string query_dir = args[OPT_QUERY].as<std::string>();
+    const std::string graph_dir    = args[OPT_GRAPH].as<std::string>();
+    const std::string query_dir    = args[OPT_QUERY].as<std::string>();
+    const std::string meta_path    = args[OPT_QUERY_META].as<std::string>();
+    const std::string sources_path = args[OPT_QUERY_SOURCES].as<std::string>();
 
-    if (graph_dir.empty() || query_dir.empty()) {
-        std::cerr << "provide --graph and --query" << std::endl;
+    if (graph_dir.empty() || query_dir.empty() || meta_path.empty() || sources_path.empty()) {
+        std::cerr << "provide --graph, --query, --query-meta and --query-sources" << std::endl;
         return 1;
     }
 
     spla::Timer timer;
     timer.start();
 
-    // number of graph vertices = max vertex number in vertices.txt
-    spla::uint n = 0;
-    {
-        std::ifstream in(graph_dir + "/vertices.txt");
-        if (!in) {
-            std::cerr << "failed to open " << graph_dir << "/vertices.txt" << std::endl;
-            return 1;
-        }
-        std::string name;
-        spla::uint  num;
-        while (in >> name >> num) n = std::max(n, num);
-    }
+    const std::vector<std::string> graph_files = list_mtx(graph_dir);
+    const std::vector<std::string> nfa_files   = list_mtx(query_dir);
 
-    spla::uint              source;
-    std::vector<spla::uint> start_states, final_states;
-    std::vector<int>        labels;
-    load_query(query_dir + "/meta.txt", source, start_states, final_states, labels);
+    if (graph_files != nfa_files) {
+        std::cerr << "graph and NFA decompositions must have the same labels" << std::endl;
+        return 1;
+    }
 
     std::vector<spla::ref_ptr<spla::Matrix>> A;
     std::vector<spla::ref_ptr<spla::Matrix>> R;
+    A.reserve(graph_files.size());
+    R.reserve(nfa_files.size());
 
-    for (int label : labels) {
-        const int abs_label = std::abs(label);
+    for (const auto& f : graph_files) A.push_back(load_adjacency(graph_dir + "/" + f));
+    for (const auto& f : nfa_files) R.push_back(load_adjacency(query_dir + "/" + f));
 
-        spla::ref_ptr<spla::Matrix> graph_mat = load_mtx(graph_dir + "/" + std::to_string(abs_label) + ".txt");
+    std::vector<spla::uint> start_states, final_states;
+    load_meta(meta_path, start_states, final_states);
 
-        if (label < 0) {
-            // inverse label: use the transposed graph adjacency
-            spla::ref_ptr<spla::Matrix> T = spla::Matrix::make(graph_mat->get_n_rows(), graph_mat->get_n_cols(), spla::INT);
-            spla::exec_m_transpose(T, graph_mat, spla::IDENTITY_INT);
-            graph_mat = T;
-        }
-
-        spla::ref_ptr<spla::Matrix> nfa_mat = load_mtx(query_dir + "/" + std::to_string(label) + ".txt");
-
-        A.push_back(graph_mat);
-        R.push_back(nfa_mat);
-    }
+    const std::vector<spla::uint> sources = load_sources(sources_path);
 
     std::string acc_info;
 
@@ -183,28 +153,36 @@ int main(int argc, const char* const* argv) {
     library->set_queues_count(1);
     library->get_accelerator_info(acc_info);
     std::cout << "env: " << acc_info << std::endl;
-    std::cout << "graph: " << n << " vertices, " << A.size() << " labels" << std::endl;
-    std::cout << "query: source " << source << ", " << start_states.size() << " start states, " << final_states.size() << " final states" << std::endl;
+    std::cout << "labels: " << A.size() << ", sources: " << sources.size() << std::endl;
+
+    const spla::uint ng = A[0]->get_n_rows();
 
     const int n_iters = args[OPT_NITERS].as<int>();
 
-    spla::ref_ptr<spla::Vector> v = spla::Vector::make(n, spla::INT);
-    spla::Timer                 timer_gpu;
+    spla::Timer          timer_gpu;
+    std::set<spla::uint> reachable;
 
     for (int i = 0; i < n_iters; ++i) {
-        v->clear();
+        reachable.clear();
         timer_gpu.lap_begin();
-        spla::reach_rpq(v, A, R, source, start_states, final_states);
+
+        for (spla::uint source : sources) {
+            spla::ref_ptr<spla::Vector> v = spla::Vector::make(ng, spla::INT);
+            spla::reach_rpq(v, A, R, source, start_states, final_states);
+
+            int x;
+            for (spla::uint j = 0; j < ng; ++j) {
+                v->get_int(j, x);
+                if (x != 0) reachable.insert(j);
+            }
+        }
+
         timer_gpu.lap_end();
     }
 
-    std::size_t reachable = 0;
-    for (spla::uint i = 0; i < n; ++i) {
-        int x;
-        v->get_int(i, x);
-        if (x != 0) ++reachable;
-    }
-    std::cout << "reachable vertices: " << reachable << std::endl;
+    std::cout << "reachable vertices (" << reachable.size() << "):";
+    for (spla::uint v : reachable) std::cout << " " << v;
+    std::cout << std::endl;
 
     const std::string bench_path = args[OPT_BENCH].as<std::string>();
     if (!bench_path.empty()) {
