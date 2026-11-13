@@ -36,6 +36,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <queue>
 
 namespace spla {
@@ -561,6 +562,78 @@ namespace spla {
         return Status::Ok;
     }
 
+    Status msp_bfs_naive(std::vector<std::vector<int>>&        P,
+                         const std::vector<std::vector<uint>>& A,
+                         const std::vector<uint>&              sources,
+                         const ref_ptr<Descriptor>&            descriptor) {
+        const uint n = static_cast<uint>(A.size());
+        const uint k = static_cast<uint>(sources.size());
+
+        P.assign(k, std::vector<int>(n, -1));
+
+        for (uint t = 0; t < k; ++t) {
+            std::vector<int>  parent(n, -1);
+            std::vector<uint> frontier = {sources[t]};
+            parent[sources[t]]         = 0;
+
+            while (!frontier.empty()) {
+                std::map<uint, uint> next;
+                for (uint u : frontier) {
+                    for (uint v : A[u]) {
+                        if (parent[v] == -1) {
+                            auto it = next.find(v);
+                            if (it == next.end() || u < it->second) next[v] = u;
+                        }
+                    }
+                }
+
+                std::vector<uint> next_frontier;
+                next_frontier.reserve(next.size());
+                for (const auto& [v, p] : next) {
+                    parent[v] = static_cast<int>(p);
+                    next_frontier.push_back(v);
+                }
+                frontier = std::move(next_frontier);
+            }
+
+            P[t] = std::move(parent);
+        }
+
+        return Status::Ok;
+    }
+
+    Status msl_bfs_naive(std::vector<std::vector<int>>&        S,
+                         const std::vector<std::vector<uint>>& A,
+                         const std::vector<uint>&              sources,
+                         const ref_ptr<Descriptor>&            descriptor) {
+        const uint n = static_cast<uint>(A.size());
+        const uint k = static_cast<uint>(sources.size());
+
+        S.assign(k, std::vector<int>(n, 0));
+
+        for (uint t = 0; t < k; ++t) {
+            std::vector<int> level(n, 0);
+            std::queue<uint> q;
+            q.push(sources[t]);
+            level[sources[t]] = 1;
+
+            while (!q.empty()) {
+                const uint u = q.front();
+                q.pop();
+                for (uint v : A[u]) {
+                    if (level[v] == 0) {
+                        level[v] = level[u] + 1;
+                        q.push(v);
+                    }
+                }
+            }
+
+            S[t] = std::move(level);
+        }
+
+        return Status::Ok;
+    }
+
 #pragma endregion Multi - source BFS
 
 #pragma region Reach RPQ
@@ -685,20 +758,35 @@ namespace spla {
             }
         }
 
-        // fixed point: iterate until a full pass introduces no new path; the
-        // additive operation is idempotent, so extra passes are harmless. The
-        // number of passes is bounded by the number of distinct (i, j) entries
-        // times the number of nonterminals.
-        const uint max_iter = nonterms * n * n;
-        for (uint it = 0; it < max_iter; ++it) {
+        // fixed point: iterate until a full pass over the binary rules adds no
+        // new (i, j) entry to any nonterminal matrix (nnz-based change detection,
+        // as in the LAGraph reference). The matrices only grow, and each entry
+        // first appears with its minimal derivation height, so the fixed point
+        // is reached when the nnz stops growing.
+        auto nnz = [](const ref_ptr<Matrix>& M) {
+            ref_ptr<MemView> k1, k2, v;
+            M->read(k1, k2, v);
+            return static_cast<uint>(k1->get_size() / sizeof(uint));
+        };
+
+        for (;;) {
+            bool changed = false;
+
             for (const auto& [lhs, rhs1, rhs2] : binary_rules) {
+                const uint before = nnz(T[lhs]);
+
                 ref_ptr<Matrix> prod = Matrix::make(n, n, PATH_INDEX);
                 exec_mxm(prod, T[rhs1], T[rhs2], MUL_PATH_INDEX, MIN_PATH_INDEX, bottom);
 
                 ref_ptr<Matrix> merged = Matrix::make(n, n, PATH_INDEX);
                 exec_m_eadd(merged, T[lhs], prod, MIN_PATH_INDEX);
                 T[lhs] = merged;
+
+                const uint after = nnz(T[lhs]);
+                changed          = changed || (before != after);
             }
+
+            if (!changed) break;
         }
 
         return Status::Ok;

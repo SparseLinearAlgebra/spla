@@ -217,6 +217,38 @@ namespace spla {
             const ref_ptr<Descriptor>& descriptor = spla::Descriptor::make());
 
     /**
+     * @brief Naive multi-source breadth-first search: parents (reference cpu implementation)
+     *
+     * @param P int matrix rows of parents, row t = parents for source t (-1 = unreachable)
+     * @param A graph adjacency lists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msp_bfs_naive(
+            std::vector<std::vector<int>>&        P,
+            const std::vector<std::vector<uint>>& A,
+            const std::vector<uint>&              sources,
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+
+    /**
+     * @brief Naive multi-source breadth-first search: levels (reference cpu implementation)
+     *
+     * @param S int matrix rows of levels, row t = levels for source t (0 = unreachable)
+     * @param A graph adjacency lists
+     * @param sources source vertex ids
+     * @param descriptor optional descriptor
+     *
+     * @return ok on success
+     */
+    SPLA_API Status msl_bfs_naive(
+            std::vector<std::vector<int>>&        S,
+            const std::vector<std::vector<uint>>& A,
+            const std::vector<uint>&              sources,
+            const ref_ptr<Descriptor>&            descriptor = spla::Descriptor::make());
+
+    /**
      * @brief Single-source regular path query (2-RPQ) reachability
      *
      * Computes the vertices reachable from `source` by paths accepted by the
