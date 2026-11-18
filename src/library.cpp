@@ -94,6 +94,9 @@ namespace spla {
     }
 
     Library::Library() {
+
+        m_config = std::make_unique<Configuration>();
+
         // Setup logger (always present in the system)
         m_logger = std::make_unique<Logger>();
         // Setup registry (always available)
@@ -130,19 +133,21 @@ namespace spla {
     }
 
     Status Library::configure(int argc, char** argv) {
-        ConfigStatus config_status = spla::make_config_final(argc, argv);
+        ConfigResult result = spla::make_config(argc, argv);
 
-        if (config_status == ConfigStatus::HelpRequested || config_status == ConfigStatus::VersionRequested) {
+        if (result.status == ConfigStatus::HelpRequested || result.status == ConfigStatus::VersionRequested) {
             return Status::Ok;
         }
-        if (config_status != ConfigStatus::Ok) {
-            return to_status(config_status);
+        if (result.status != ConfigStatus::Ok) {
+            return to_status(result.status);
         }
 
-        set_verbosity(spla::config_final.verbosity.value_or(2));
+        m_config = std::make_unique<Configuration>(std::move(result.config));
+
+        set_verbosity(m_config->verbosity.value_or(2));
         set_default_callback();
 
-        const std::string backend = spla::config_final.backend.value_or("opencl_gpu");
+        const std::string backend = m_config->backend.value_or("opencl_gpu");
 
         if (backend == "cpu") {
             return set_accelerator(AcceleratorType::None);
@@ -152,7 +157,7 @@ namespace spla {
         Status status = set_accelerator(AcceleratorType::OpenCL);
 
         if (status != Status::Ok) {
-            const std::string if_unavail = spla::config_final.if_opencl_unavailable.value_or("abort");
+            const std::string if_unavail = m_config->if_opencl_unavailable.value_or("abort");
             if (if_unavail == "use_cpu") {
                 LOG_MSG(Status::NoAcceleration,
                         "OpenCL acceleration is unavailable (status: "
@@ -169,7 +174,7 @@ namespace spla {
         }
         return Status::Ok;
 #else
-        const std::string if_unavail = spla::config_final.if_opencl_unavailable.value_or("abort");
+        const std::string if_unavail = m_config->if_opencl_unavailable.value_or("abort");
         if (if_unavail == "use_cpu") {
             set_accelerator(AcceleratorType::None);
             return Status::Ok;
@@ -183,7 +188,7 @@ namespace spla {
     Status Library::set_accelerator(AcceleratorType accelerator) {
 #if defined(SPLA_BUILD_OPENCL)
         if (accelerator == AcceleratorType::OpenCL) {
-            m_accelerator = std::make_unique<CLAccelerator>();
+            m_accelerator = std::make_unique<CLAccelerator>(*m_config);
 
             Status status = m_accelerator->init();
             if (status != Status::Ok) {
@@ -297,9 +302,8 @@ namespace spla {
 
         if (!g_library) {
             g_library = std::make_unique<Library>();
-
             if (g_library->configure(argc, argv) != Status::Ok) {
-                std::cerr << "failed to apply SPLA configuration; continuing with pure CPU computations" << std::endl;
+                std::cerr << "failed to apply SPLA configuration, continuing with pure CPU computations" << std::endl;
             }
         }
 

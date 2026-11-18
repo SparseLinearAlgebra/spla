@@ -40,10 +40,7 @@ spla_Status spla_Configure_and_init(int argc, char** argv) {
 }
 
 void spla_Config_help() {
-    char  arg0[] = "spla";
-    char  arg1[] = "--spla-help";
-    char* argv[] = {arg0, arg1, nullptr};
-    spla::make_config_final(2, argv);
+    spla::print_config_help();
 }
 
 void spla_Config_version() {

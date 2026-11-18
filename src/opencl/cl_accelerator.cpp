@@ -75,21 +75,21 @@ namespace spla {
         return std::nullopt;
     }
 
-    CLAccelerator::CLAccelerator()  = default;
+    CLAccelerator::CLAccelerator(Configuration cfg) : m_config(std::move(cfg)) {}
     CLAccelerator::~CLAccelerator() = default;
 
     Status CLAccelerator::init() {
-        std::string backend = config_final.backend.value_or("opencl_gpu");
+        std::string backend = m_config.backend.value_or("opencl_gpu");
         if (backend == "cpu") {
             return Status::NoAcceleration;
         }
 
         int         platform_index    = 0;
         int         device_index      = 0;
-        int         queues_count      = config_final.queues_count.value_or(1);
-        bool        profiling         = config_final.profiling.value_or(false);
-        std::string allocator_type    = config_final.allocator_type.value_or("general");
-        size_t      linear_alloc_size = config_final.linear_alloc_size.value_or(0);
+        int         queues_count      = m_config.queues_count.value_or(1);
+        bool        profiling         = m_config.profiling.value_or(false);
+        std::string allocator_type    = m_config.allocator_type.value_or("general");
+        size_t      linear_alloc_size = m_config.linear_alloc_size.value_or(0);
 
         if (backend == "opencl_cpu") {
             auto found = find_first_device(CL_DEVICE_TYPE_CPU);
@@ -114,12 +114,12 @@ namespace spla {
             device_index   = found->second;
 
         } else if (backend == "by_index") {
-            if (!config_final.platform_index.has_value() || !config_final.device_index.has_value()) {
+            if (!m_config.platform_index.has_value() || !m_config.device_index.has_value()) {
                 LOG_MSG(Status::InvalidArgument, "platform_index and device_index are required for backend='by_index'");
                 return Status::InvalidArgument;
             }
-            platform_index = *config_final.platform_index;
-            device_index   = *config_final.device_index;
+            platform_index = *m_config.platform_index;
+            device_index   = *m_config.device_index;
         } else {
             LOG_MSG(Status::InvalidArgument, "unknown backend: '" << backend << "'");
             return Status::InvalidArgument;
@@ -137,7 +137,7 @@ namespace spla {
         if (allocator_type == "linear") {
             LOG_MSG(Status::Ok, "  alloc_size= " << linear_alloc_size);
         }
-        LOG_MSG(Status::Ok, "  verbosity = " << config_final.verbosity.value());
+        LOG_MSG(Status::Ok, "  verbosity = " << m_config.verbosity.value_or(2));
 
         Status status = set_platform(platform_index);
         if (status != Status::Ok) return status;

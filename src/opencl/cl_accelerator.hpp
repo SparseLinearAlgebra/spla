@@ -30,6 +30,7 @@
 
 #include <core/accelerator.hpp>
 #include <core/common.hpp>
+#include <core/configure.hpp>
 #include <core/logger.hpp>
 #include <spla/library.hpp>
 
@@ -69,7 +70,7 @@ namespace spla {
 
     class CLAccelerator final : public Accelerator {
     public:
-        CLAccelerator();
+        CLAccelerator(Configuration cfg);
         ~CLAccelerator() override;
 
         Status init() override;
@@ -109,6 +110,7 @@ namespace spla {
         [[nodiscard]] bool               is_img() const { return m_is_img; }
 
     private:
+        Configuration                         m_config;
         cl::Platform                          m_platform;
         cl::Device                            m_device;
         cl::Context                           m_context;

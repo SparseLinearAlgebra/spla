@@ -41,16 +41,6 @@
 
 namespace spla {
 
-    ConfigFile    config_default;
-    ConfigFile    config_system;
-    ConfigFile    config_user;
-    ConfigFile    config_explicit;
-    CliMeta       config_cli_meta;
-    Configuration config_cli_and_env;
-    Configuration config_final;
-    bool          config_initialized = false;
-
-
     void Configuration::merge(const Configuration& source) {
         if (source.extends.has_value()) extends = source.extends;
         if (source.backend.has_value()) backend = source.backend;
@@ -64,10 +54,6 @@ namespace spla {
         if (source.verbosity.has_value()) verbosity = source.verbosity;
     }
 
-    void Configuration::reset() {
-        *this = Configuration{};
-    }
-
 
     void ConfigFile::merge(const ConfigFile& source) {
         if (!source.configs.has_value()) return;
@@ -76,14 +62,6 @@ namespace spla {
         for (const auto& [name, source_config] : *source.configs) {
             (*configs)[name].merge(source_config);
         }
-    }
-
-    void ConfigFile::reset() {
-        configs.reset();
-    }
-
-    void CliMeta::reset() {
-        *this = CliMeta{};
     }
 
 
@@ -95,6 +73,12 @@ namespace spla {
 #endif
     }
 
+    ConfigStatus print_config_help() {
+        char  arg0[] = "spla";
+        char  arg1[] = "--spla-help";
+        char* argv[] = {arg0, arg1, nullptr};
+        return make_config(2, argv).status;
+    }
 
     std::string get_default_config_path() {
 #ifdef _WIN32
@@ -509,86 +493,99 @@ namespace spla {
     }
 
 
-    ConfigStatus make_config_final(int argc, char** argv) {
-        config_default.reset();
-        config_system.reset();
-        config_user.reset();
-        config_explicit.reset();
-        config_cli_meta.reset();
-        config_cli_and_env.reset();
-        config_final.reset();
-        config_initialized = false;
+    ConfigResult make_config(int argc, char** argv) {
+        ConfigResult  result;
+        CliMeta       meta;
+        Configuration cliAndEnv;
 
-        ConfigStatus status;
+        ConfigStatus status = parse_cli_and_env(argc, argv, meta, cliAndEnv);
+        result.meta         = meta;
+        if (status != ConfigStatus::Ok) {
+            result.status = status;
+            return result;
+        }
 
-        status = parse_cli_and_env(argc, argv, config_cli_meta, config_cli_and_env);
-        if (status != ConfigStatus::Ok) return status;
+        ConfigFile configDefault;
+        ConfigFile configSystem;
+        ConfigFile configUser;
+        ConfigFile configExplicit;
 
         std::string path;
 
         path = get_default_config_path();
         if (!std::filesystem::exists(path)) {
             std::cerr << "[spla:configure] ERROR: default configuration file not found: " << path << std::endl;
-            return ConfigStatus::FileNotExists;
+            result.status = ConfigStatus::FileNotExists;
+            return result;
         }
-        status = parse_file(path, config_default, true);
+        status = parse_file(path, configDefault, true);
         if (status != ConfigStatus::Ok) {
             std::cerr << "[spla:configure] ERROR: failed to load default configuration file: " << path << std::endl;
-            return status;
+            result.status = status;
+            return result;
         }
 
 
         path = get_system_config_path();
         if (std::filesystem::exists(path)) {
-            status = parse_file(path, config_system, false);
+            status = parse_file(path, configSystem, false);
             if (status != ConfigStatus::Ok) {
                 std::cerr << "[spla:configure] ERROR: failed to load system configuration file: " << path << std::endl;
-                return status;
+                result.status = status;
+                return result;
             }
         }
 
 
         path = get_user_config_path();
         if (std::filesystem::exists(path)) {
-            status = parse_file(path, config_user, false);
+            status = parse_file(path, configUser, false);
             if (status != ConfigStatus::Ok) {
                 std::cerr << "[spla:configure] ERROR: failed to load user configuration file: " << path << std::endl;
-                return status;
+                result.status = status;
+                return result;
             }
         }
 
 
-        if (config_cli_meta.path_to_conf.has_value()) {
-            path = *config_cli_meta.path_to_conf;
+        if (meta.path_to_conf.has_value()) {
+            path = *meta.path_to_conf;
             if (!std::filesystem::exists(path)) {
                 std::cerr << "[spla:configure] ERROR: configuration file not found: " << path << std::endl;
-                return ConfigStatus::FileNotExists;
+                result.status = ConfigStatus::FileNotExists;
+                return result;
             }
-            status = parse_file(path, config_explicit, false);
+            status = parse_file(path, configExplicit, false);
             if (status != ConfigStatus::Ok) {
                 std::cerr << "[spla:configure] ERROR: failed to load configuration file: " << path << std::endl;
-                return status;
+                result.status = status;
+                return result;
             }
         }
 
         ConfigFile merged;
-        merged.merge(config_default);
-        merged.merge(config_system);
-        merged.merge(config_user);
-        merged.merge(config_explicit);
+        merged.merge(configDefault);
+        merged.merge(configSystem);
+        merged.merge(configUser);
+        merged.merge(configExplicit);
 
-        const std::string active = config_cli_meta.configuration.value_or("default");
+        const std::string active = meta.configuration.value_or("default");
 
-        status = apply_configuration(merged, active, config_final);
-        if (status != ConfigStatus::Ok) return status;
+        status = apply_configuration(merged, active, result.config);
+        if (status != ConfigStatus::Ok) {
+            result.status = status;
+            return result;
+        }
 
-        config_final.merge(config_cli_and_env);
+        result.config.merge(cliAndEnv);
 
-        status = validation(config_final);
-        if (status != ConfigStatus::Ok) return status;
+        status = validation(result.config);
+        if (status != ConfigStatus::Ok) {
+            result.status = status;
+            return result;
+        }
 
-        config_initialized = true;
-        return ConfigStatus::Ok;
+        return result;
     }
 
 }// namespace spla

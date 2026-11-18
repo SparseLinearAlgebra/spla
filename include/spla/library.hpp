@@ -36,6 +36,8 @@
 
 namespace spla {
 
+    struct Configuration;
+
     /**
      * @addtogroup spla
      * @{
@@ -172,7 +174,6 @@ namespace spla {
          * @return Function call status
          */
         SPLA_API Status configure(int argc, char** argv);
-
         /**
          * @warning Internal usage only!
          * @return Library computations accelerator if presented
@@ -206,9 +207,6 @@ namespace spla {
         /**
          * @brief Access global library instance
          *
-         * Global library state instantiate once on first request to the library.
-         * Call this function to access library and configure it first before any computations.
-
          * @note Only single global instance of the library allowed.
          *
          * @param argc Number of command line arguments (0 for default config)
@@ -219,6 +217,7 @@ namespace spla {
 
     private:
         std::unordered_map<std::string, std::string> m_env;
+        std::unique_ptr<Configuration>               m_config;
         std::unique_ptr<class Accelerator>           m_accelerator;
         std::unique_ptr<class Registry>              m_registry;
         std::unique_ptr<class Dispatcher>            m_dispatcher;

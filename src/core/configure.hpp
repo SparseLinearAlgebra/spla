@@ -45,6 +45,12 @@
 
 namespace spla {
 
+    struct CliMeta {
+        std::optional<bool>        version;
+        std::optional<std::string> configuration;
+        std::optional<std::string> path_to_conf;
+    };
+
     struct Configuration {
         std::optional<std::vector<std::string>> extends;
 
@@ -60,33 +66,21 @@ namespace spla {
         std::optional<int>         verbosity;
 
         void merge(const Configuration& source);
-        void reset();
     };
 
     struct ConfigFile {
         std::optional<std::map<std::string, Configuration>> configs;
-
-        void merge(const ConfigFile& source);
-        void reset();
+        void                                                merge(const ConfigFile& source);
     };
 
-    struct CliMeta {
-        std::optional<bool>        version;
-        std::optional<std::string> configuration;
-        std::optional<std::string> path_to_conf;
-        void                       reset();
+    struct ConfigResult {
+        ConfigStatus  status = ConfigStatus::Ok;
+        Configuration config;
+        CliMeta       meta;
     };
 
-    extern ConfigFile    config_default;
-    extern ConfigFile    config_system;
-    extern ConfigFile    config_user;
-    extern ConfigFile    config_explicit;
-    extern CliMeta       config_cli_meta;
-    extern Configuration config_cli_and_env;
-    extern Configuration config_final;
-    extern bool          config_initialized;
-
-    std::string get_spla_version();
+    ConfigStatus print_config_help();
+    std::string  get_spla_version();
 
     std::string get_default_config_path();
     std::string get_system_config_path();
@@ -103,6 +97,6 @@ namespace spla {
 
     ConfigStatus validation(const Configuration& cfg);
 
-    ConfigStatus make_config_final(int argc, char** argv);
+    ConfigResult make_config(int argc, char** argv);
 
 }// namespace spla
