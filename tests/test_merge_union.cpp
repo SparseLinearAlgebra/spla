@@ -218,8 +218,8 @@ static std::vector<uint> random_unique_keys(uint count, uint range) {
 
 int main() {
     if (!ensure_opencl()) {
-        std::printf("OpenCL accelerator is not available\n");
-        return 1;
+        std::printf("OpenCL accelerator is not available, skipping\n");
+        return 0;
     }
 
     bool ok = true;
