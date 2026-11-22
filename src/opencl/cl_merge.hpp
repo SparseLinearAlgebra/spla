@@ -59,7 +59,7 @@ namespace spla {
                             const uint                         r_offset,
                             const ref_ptr<TOpBinary<T, T, T>>& op,
                             CLAlloc*                           tmp_alloc) {
-        const uint tile_size = 128;
+        const uint tile_size = 8;
 
         CLProgramBuilder builder;
         builder.set_name("merge")
@@ -134,7 +134,7 @@ namespace spla {
                         const ref_ptr<TOpBinary<T, T, T>>& op,
                         CLAlloc*                           tmp_alloc) {
         const uint total      = a_size + b_size;
-        const uint tile_size  = 128;
+        const uint tile_size  = 8;
         const uint count_tile = div_up(total, tile_size);
 
         CLProgramBuilder builder;
