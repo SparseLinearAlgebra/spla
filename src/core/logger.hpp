@@ -32,6 +32,7 @@
 
 #include <functional>
 #include <mutex>
+#include <optional>
 #include <sstream>
 
 namespace spla {
@@ -49,10 +50,11 @@ namespace spla {
     public:
         void log_msg(Status status, const std::string& msg, const std::string& file, const std::string& function, int line);
         void set_msg_callback(MessageCallback callback);
+        void set_verbosity(int verbosity);
 
     private:
-        MessageCallback m_callback;
-
+        MessageCallback    m_callback;
+        std::optional<int> m_verbosity;
         mutable std::mutex m_mutex;
     };
 
