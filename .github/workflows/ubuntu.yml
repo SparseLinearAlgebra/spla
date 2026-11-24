@@ -85,7 +85,7 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: ${{ env.artifact }}
 
