@@ -1,0 +1,24 @@
+# Dependabot version-updates configuration.
+# Docs: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# Ecosystems enabled here:
+#   - github-actions: keeps the `uses:` actions in .github/workflows/* current.
+#
+# Not enabled (nothing to track yet):
+#   - gitsubmodule: deps/ are vendored copies, not git submodules (.gitmodules is
+#     empty). To let Dependabot track cxxopts/gtest/opencl-headers/etc., they would
+#     first need to be converted to submodules.
+#   - pip: python/setup.py declares no install_requires (pure bindings).
+#   - docker: no Dockerfiles in the repo.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "chore(ci)"
+    open-pull-requests-limit: 10
