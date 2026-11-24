@@ -60,7 +60,7 @@ jobs:
           tar cfz ${{ env.artifact }} ${{ env.build-dir }}
 
       - name: Upload binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{env.artifact}}
           path: ${{env.artifact}}
@@ -99,7 +99,7 @@ jobs:
           python3 ./run_tests.py --build-dir=${{ env.build-dir }} | tee ${{ env.test-file }}
 
       - name: Upload tests resutls
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.test-file }}
           path: ${{ env.test-file }}
