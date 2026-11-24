@@ -55,7 +55,7 @@ jobs:
           path: ${{env.build-dir}}/spla_x64.dll
 
   macos:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v5
         with:
@@ -65,7 +65,7 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Configure CMake x64
-        run: cmake . -G Ninja -B ${{ env.build-dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=x86_64
+        run: cmake . -G Ninja -B ${{ env.build-dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCMAKE_OSX_ARCHITECTURES=x86_64 -DSPLA_BUILD_OPENCL=OFF
 
       - name: Build library sources x64
         run: cmake --build ${{ env.build-dir }}
@@ -77,8 +77,6 @@ jobs:
                   -DCMAKE_BUILD_TYPE=${{ env.config }} \
                   -DCMAKE_OSX_ARCHITECTURES=arm64 \
                   -DSPLA_BUILD_OPENCL=OFF
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
       - name: Build library sources arm64
         run: cmake --build ${{ env.build-dir }} --verbose -j ${{ env.nt }}
