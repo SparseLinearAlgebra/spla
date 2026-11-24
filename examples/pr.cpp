@@ -81,7 +81,7 @@ int main(int argc, const char* const* argv) {
     std::vector<float> A_degrees(N, 0.0f);
 
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
-        A_degrees[Ai[k]] += 1.0f;
+        A_degrees[Aj[k]] += 1.0f;
     }
     for (std::size_t k = 0; k < loader.get_n_values(); ++k) {
         A->set_float(Ai[k], Aj[k], alpha / A_degrees[Aj[k]]);
