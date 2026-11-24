@@ -22,3 +22,12 @@ updates:
     commit-message:
       prefix: "chore(ci)"
     open-pull-requests-limit: 10
+    # Batch the official `actions/*` updates into a single PR per cycle instead
+    # of one PR per action, to cut review/merge noise. For github-actions the
+    # dependency name is the `owner/repo` action reference, so `actions/*`
+    # matches only the official org. Third-party actions (dawidd6/…, jidicula/…,
+    # ilammy/…, etc.) do not match and keep their own separate PRs.
+    groups:
+      github-actions:
+        patterns:
+          - "actions/*"
