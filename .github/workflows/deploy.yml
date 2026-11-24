@@ -27,7 +27,7 @@ jobs:
           pip install setuptools wheel twine
 
       - name: Download artifact
-        uses: dawidd6/action-download-artifact@v5
+        uses: dawidd6/action-download-artifact@v28
         with:
           workflow: build.yml
           workflow_conclusion: success
