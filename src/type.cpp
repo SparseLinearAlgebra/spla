@@ -33,5 +33,6 @@ namespace spla {
     ref_ptr<Type> INT   = TType<T_INT>::make_type("INT", "I", "int", "signed 4 byte integral type", 2);
     ref_ptr<Type> UINT  = TType<T_UINT>::make_type("UINT", "U", "uint", "unsigned 4 byte integral type", 3);
     ref_ptr<Type> FLOAT = TType<T_FLOAT>::make_type("FLOAT", "F", "float", "4 byte floating point type", 4);
+    ref_ptr<Type> PAIR  = TType<T_PAIR>::make_type("PAIR", "P", "struct Pair", "weight-vertex pair float-int", 5);
 
 }// namespace spla

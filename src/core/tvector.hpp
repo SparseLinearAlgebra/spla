@@ -40,6 +40,7 @@
 #include <storage/storage_manager.hpp>
 #include <storage/storage_manager_vector.hpp>
 
+#include "spla/pair.hpp"
 #include <algorithm>
 #include <random>
 
@@ -72,14 +73,20 @@ namespace spla {
         Status             set_int(uint row_id, std::int32_t value) override;
         Status             set_uint(uint row_id, std::uint32_t value) override;
         Status             set_float(uint row_id, float value) override;
-        Status             get_int(uint row_id, int32_t& value) override;
-        Status             get_uint(uint row_id, uint32_t& value) override;
-        Status             get_float(uint row_id, float& value) override;
-        Status             fill_noize(uint seed) override;
-        Status             fill_with(const ref_ptr<Scalar>& value) override;
-        Status             build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
-        Status             read(ref_ptr<MemView>& keys, ref_ptr<MemView>& values) override;
-        Status             clear() override;
+        Status             set_pair(uint row_id, Pair value) override {
+            return Status::InvalidArgument;
+        }
+        Status get_int(uint row_id, int32_t& value) override;
+        Status get_uint(uint row_id, uint32_t& value) override;
+        Status get_float(uint row_id, float& value) override;
+        Status get_pair(uint row_id, Pair& value) override {
+            return Status::InvalidArgument;
+        }
+        Status fill_noize(uint seed) override;
+        Status fill_with(const ref_ptr<Scalar>& value) override;
+        Status build(const ref_ptr<MemView>& keys, const ref_ptr<MemView>& values) override;
+        Status read(ref_ptr<MemView>& keys, ref_ptr<MemView>& values) override;
+        Status clear() override;
 
         template<typename Decorator>
         Decorator* get() { return m_storage.template get<Decorator>(); }
@@ -135,6 +142,7 @@ namespace spla {
             if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
             if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
             if constexpr (std::is_same<T, T_FLOAT>::value) m_storage.set_fill_value(value->as_float());
+            if constexpr (std::is_same<T, T_PAIR>::value) m_storage.set_fill_value(value->as_pair());
 
             return Status::Ok;
         }
@@ -167,6 +175,11 @@ namespace spla {
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::set_int(uint row_id, std::int32_t value) {
+        return Status::InvalidArgument;
+    }
+
     template<typename T>
     Status TVector<T>::set_uint(uint row_id, std::uint32_t value) {
         if (is_valid(FormatVector::CpuDense)) {
@@ -179,6 +192,10 @@ namespace spla {
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::set_uint(uint row_id, std::uint32_t value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::set_float(uint row_id, float value) {
         if (is_valid(FormatVector::CpuDense)) {
@@ -190,6 +207,10 @@ namespace spla {
         validate_rwd(FormatVector::CpuDok);
         cpu_dok_vec_add_element(row_id, static_cast<T>(value), *get<CpuDokVec<T>>());
         return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::set_float(uint row_id, float value) {
+        return Status::InvalidArgument;
     }
 
     template<typename T>
@@ -206,6 +227,10 @@ namespace spla {
 
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::get_int(uint row_id, int32_t& value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::get_uint(uint row_id, uint32_t& value) {
         validate_rw(FormatVector::CpuDok);
@@ -220,6 +245,10 @@ namespace spla {
 
         return Status::Ok;
     }
+    template<>
+    inline Status TVector<Pair>::get_uint(uint row_id, uint32_t& value) {
+        return Status::InvalidArgument;
+    }
     template<typename T>
     Status TVector<T>::get_float(uint row_id, float& value) {
         validate_rw(FormatVector::CpuDok);
@@ -233,6 +262,10 @@ namespace spla {
         }
 
         return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::get_float(uint row_id, float& value) {
+        return Status::InvalidArgument;
     }
 
     template<typename T>
@@ -261,6 +294,7 @@ namespace spla {
         if constexpr (std::is_same<T, T_INT>::value) t = value->as_int();
         if constexpr (std::is_same<T, T_UINT>::value) t = value->as_uint();
         if constexpr (std::is_same<T, T_FLOAT>::value) t = value->as_float();
+        if constexpr (std::is_same<T, T_PAIR>::value) t = value->as_pair();
 
         validate_wd(FormatVector::CpuDense);
         auto& Ax = get<CpuDenseVec<T>>()->Ax;
@@ -358,6 +392,41 @@ namespace spla {
         }
 
         return storage_manager.get();
+    }
+    template<>
+    inline Status TVector<Pair>::set_pair(uint row_id, Pair value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+
+        if (is_valid(FormatVector::CpuDense)) {
+            validate_rwd(FormatVector::CpuDense);
+            get<CpuDenseVec<Pair>>()->Ax[row_id] = value;
+            return Status::Ok;
+        }
+
+        validate_rwd(FormatVector::CpuDok);
+        cpu_dok_vec_add_element(row_id, value, *get<CpuDokVec<Pair>>());
+        return Status::Ok;
+    }
+    template<>
+    inline Status TVector<Pair>::get_pair(uint row_id, Pair& value) {
+        if (get_type() != PAIR) {
+            return Status::InvalidArgument;
+        }
+
+        validate_rw(FormatVector::CpuDok);
+
+        const auto& Ax    = get<CpuDokVec<Pair>>()->Ax;
+        const auto  entry = Ax.find(row_id);
+
+        if (entry != Ax.end()) {
+            value = entry->second;
+        } else {
+            value = m_storage.get_fill_value();
+        }
+
+        return Status::Ok;
     }
 
     /**

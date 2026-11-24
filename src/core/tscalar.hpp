@@ -60,6 +60,7 @@ namespace spla {
         T_INT         as_int() override { return static_cast<T_INT>(m_value); }
         T_UINT        as_uint() override { return static_cast<T_UINT>(m_value); }
         T_FLOAT       as_float() override { return static_cast<T_FLOAT>(m_value); }
+        T_PAIR        as_pair() override { return static_cast<T_PAIR>(m_value); }
 
         void               set_label(std::string label) override;
         const std::string& get_label() const override;
@@ -128,13 +129,74 @@ namespace spla {
         return m_value;
     }
     template<typename T>
-    T TScalar<T>::get_value() const {
-        return m_value;
-    }
+    T TScalar<T>::get_value() const { return m_value; }
+    template<>
+    inline T_PAIR TScalar<std::int32_t>::as_pair() { return Pair(); }
+    template<>
+    inline T_PAIR TScalar<std::uint32_t>::as_pair() { return Pair(); }
+    template<>
+    inline T_PAIR TScalar<float>::as_pair() { return Pair(); }
 
-    /**
-     * @}
-     */
+    template<>
+    class TScalar<Pair> final : public Scalar {
+    public:
+        TScalar() = default;
+        explicit TScalar(Pair value) : m_value(value) {}
+        ~TScalar() override = default;
+
+        Status set_pair(Pair value) override {
+            m_value = value;
+            return Status::Ok;
+        }
+
+        Status get_pair(Pair& value) override {
+            value = m_value;
+            return Status::Ok;
+        }
+
+        ref_ptr<Type> get_type() override { return PAIR; }
+
+        Status set_int(std::int32_t) override { return Status::InvalidArgument; }
+
+        Status set_uint(std::uint32_t) override { return Status::InvalidArgument; }
+
+        Status set_float(float) override { return Status::InvalidArgument; }
+
+        Status get_int(std::int32_t&) override { return Status::InvalidArgument; }
+
+        Status get_uint(std::uint32_t&) override { return Status::InvalidArgument; }
+
+        Status get_float(float&) override { return Status::InvalidArgument; }
+
+        T_INT as_int() override {
+            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to int");
+            return 0;
+        }
+
+        T_UINT as_uint() override {
+            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to uint");
+            return 0;
+        }
+
+        T_FLOAT as_float() override {
+            LOG_MSG(Status::InvalidArgument, "cannot convert Pair to float");
+            return 0.0f;
+        }
+        T_PAIR as_pair() override {
+            return m_value;
+        }
+
+        void set_label(std::string label) override { m_label = std::move(label); }
+
+        const std::string& get_label() const override { return m_label; }
+
+        Pair& get_value() { return m_value; }
+        Pair  get_value() const { return m_value; }
+
+    private:
+        std::string m_label;
+        Pair        m_value = Pair();
+    };
 
 }// namespace spla
 

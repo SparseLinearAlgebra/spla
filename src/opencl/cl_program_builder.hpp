@@ -60,6 +60,7 @@ namespace spla {
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpUnary>& op);
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpBinary>& op);
         CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelect>& op);
+        CLProgramBuilder& add_op(const char* name, const ref_ptr<OpSelectBinary>& op);
         CLProgramBuilder& set_source(const char* source);
         void              acquire();
 

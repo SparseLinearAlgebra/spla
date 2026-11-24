@@ -453,6 +453,76 @@ namespace spla {
             ref_ptr<ScheduleTask>* task_hnd = nullptr);
 
     /**
+     * @brief Execute (schedule) masked scalar assignment to a vector using binary selection
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Vector result to store assigned values
+     * @param mask Vector mask to choose where to assign
+     * @param mask_value Scalar value to compare with mask elements
+     * @param value Scalar value to assign
+     * @param op_assign Binary operator to assign values
+     * @param op_select_bin Binary select operator to choose values for assignment
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_assign_bslct_masked(
+            ref_ptr<Vector>         r,
+            ref_ptr<Vector>         mask,
+            ref_ptr<Scalar>         mask_value,
+            ref_ptr<Scalar>         value,
+            ref_ptr<OpBinary>       op_assign,
+            ref_ptr<OpSelectBinary> op_select_bin,
+            ref_ptr<Descriptor>     desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>*  task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) masked scalar assignment to a matrix using binary selection
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Matrix result to store assigned values
+     * @param mask Vector mask rows to choose where to assign
+     * @param value Scalar value to assign
+     * @param op_assign Binary operator to assign values
+     * @param op_select_bin Binary select operator to choose values for assignment
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_m_assign_bslct_masked(
+            ref_ptr<Matrix>         r,
+            ref_ptr<Vector>         mask,
+            ref_ptr<Scalar>         value,
+            ref_ptr<OpBinary>       op_assign,
+            ref_ptr<OpSelectBinary> op_select_bin,
+            ref_ptr<Descriptor>     desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>*  task_hnd = nullptr);
+
+    /**
+     * @brief Execute (schedule) vector gather operation: r[k] = source[indices[k]]
+     *
+     * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
+     *
+     * @param r Vector result to store gathered values
+     * @param source Vector to gather values from
+     * @param indices Vector of indices to gather by
+     * @param desc Scheduled task descriptor; default is null
+     * @param task_hnd Optional task hnd; pass not-null pointer to store task
+     *
+     * @return Status on task execution or status on hnd creation
+     */
+    SPLA_API Status exec_v_gather(
+            ref_ptr<Vector>        r,
+            ref_ptr<Vector>        source,
+            ref_ptr<Vector>        indices,
+            ref_ptr<Descriptor>    desc     = ref_ptr<Descriptor>(),
+            ref_ptr<ScheduleTask>* task_hnd = nullptr);
+
+    /**
      * @brief Execute (schedule) by structure map of one vector to another using unary operation
      *
      * @note Pass valid `task_hnd` to store as a task, rather then execute immediately.
