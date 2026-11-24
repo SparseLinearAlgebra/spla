@@ -44,10 +44,10 @@
 
 namespace spla {
 
-    MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {
-    }
+    MtxLoader::MtxLoader(std::string name) : m_name(std::move(name)) {}
 
-    bool MtxLoader::load(std::filesystem::path file_path, bool offset_indices, bool make_undirected, bool remove_loops) {
+    bool MtxLoader::load(std::filesystem::path file_path, bool offset_indices,
+                         bool make_undirected, bool remove_loops) {
         m_file_path    = std::move(file_path);
         m_base_is_zero = offset_indices;
 
@@ -65,7 +65,8 @@ namespace spla {
 
         std::string line;
         while (std::getline(file, line)) {
-            if (line[0] != '%') break;
+            if (line[0] != '%')
+                break;
             n_lines++;
         }
 
@@ -73,13 +74,23 @@ namespace spla {
         std::stringstream header(line);
         header >> m_n_rows >> m_n_cols >> nnz;
 
+        bool file_has_values = false;
+        if (line.find("pattern") ==
+            std::string::npos) {// есть подстрока pattern => граф невзвешенный
+            file_has_values = true;
+        }
+
         std::cout << "Loading matrix-market coordinate format data... " << std::endl;
         std::cout << " Reading from " << m_file_path << std::endl;
-        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols" << std::endl;
+        std::cout << " Matrix size " << m_n_rows << " rows, " << m_n_cols << " cols"
+                  << std::endl;
         std::cout << " Data: " << nnz << " directed edges" << std::endl;
-        if (remove_loops) std::cout << " Opt: remove self-loops" << std::endl;
-        if (offset_indices) std::cout << " Opt: offset indices by -1" << std::endl;
-        if (make_undirected) std::cout << " Opt: double edges" << std::endl;
+        if (remove_loops)
+            std::cout << " Opt: remove self-loops" << std::endl;
+        if (offset_indices)
+            std::cout << " Opt: offset indices by -1" << std::endl;
+        if (make_undirected)
+            std::cout << " Opt: double edges" << std::endl;
         std::cout << " Reading data: ";
 
         // optimized reading by sliding window
@@ -89,15 +100,18 @@ namespace spla {
         char              buffer[BUFFER_CAPACITY + 1];
 
         // read data
-        std::size_t       to_count       = 0;
-        std::size_t       to_read        = nnz;
-        std::size_t       to_preallocate = to_read * (make_undirected ? 2 : 1);
-        std::vector<uint> Ai;
-        std::vector<uint> Aj;
+        std::size_t        to_count       = 0;
+        std::size_t        to_read        = nnz;
+        std::size_t        to_preallocate = to_read * (make_undirected ? 2 : 1);
+        std::vector<uint>  Ai;
+        std::vector<uint>  Aj;
+        std::vector<float> Av;
 
         // preallocate to avoid copy
         Ai.reserve(to_preallocate);
         Aj.reserve(to_preallocate);
+        if (file_has_values)
+            Av.reserve(to_preallocate);
 
         float job_done  = 0.0f;
         float job_total = 35.0f;
@@ -134,7 +148,8 @@ namespace spla {
 
                     if (buffer_offset > 0) {
                         if (buffer_offset < BUFFER_CAPACITY) {
-                            std::memcpy(buffer, buffer + buffer_offset, BUFFER_CAPACITY - buffer_offset);
+                            std::memcpy(buffer, buffer + buffer_offset,
+                                        BUFFER_CAPACITY - buffer_offset);
                         }
                         buffer_offset = BUFFER_CAPACITY - buffer_offset;
                     }
@@ -149,15 +164,26 @@ namespace spla {
                 }
             }
 
-            char* end     = nullptr;
-            auto  i       = uint(std::strtoll(buffer + buffer_offset, &end, 10));
-            auto  j       = uint(std::strtoll(end, &end, 10));
+            char* end = nullptr;
+            auto  i   = uint(std::strtoll(buffer + buffer_offset, &end, 10));
+            auto  j   = uint(std::strtoll(end, &end, 10));
+            float val = 1.0f;// default value
+
+            if (file_has_values) {
+                char* next = end;
+                while (*next == ' ' || *next == '\t')
+                    next++;
+                if (*next != '\n' && *next != '\0') {
+                    val = static_cast<float>(std::strtod(next, &end));
+                }
+            }
             buffer_offset = line_end + 1;
 
             assert(i > 0 && j > 0);
 
             if (remove_loops) {
-                if (i == j) continue;
+                if (i == j)
+                    continue;
             }
             if (offset_indices) {
                 i -= 1;
@@ -166,53 +192,98 @@ namespace spla {
             if (make_undirected) {
                 Ai.push_back(j);
                 Aj.push_back(i);
+                if (file_has_values)
+                    Av.push_back(val);
             }
 
             Ai.push_back(i);
             Aj.push_back(j);
+            if (file_has_values)
+                Av.push_back(val);
         }
         t.lap_end();// parsing
 
-        std::vector<std::uint64_t> sorted;
-        {
-            sorted.reserve(Ai.size());
-            n_sort = Ai.size();
-
-            for (std::size_t k = 0; k < Ai.size(); k++) {
-                std::uint64_t entry = 0;
-                entry |= std::uint64_t(Ai[k]) << 32u;
-                entry |= std::uint64_t(Aj[k]) << 0u;
-                sorted.push_back(entry);
-            }
-            Ai.clear();
-            Aj.clear();
-
-            std::sort(sorted.begin(), sorted.end());
-        }
-        t.lap_end();// sorting
-
-        std::vector<uint> reduced_Ai;
-        std::vector<uint> reduced_Aj;
-        {
-            reduced_Ai.reserve(sorted.size());
-            reduced_Aj.reserve(sorted.size());
-
-            std::uint64_t entry_prev = 0xffffffffffffffff;
-            for (std::uint64_t entry : sorted) {
-                if (entry_prev != entry) {
-                    uint i = uint((entry >> 32u) & 0xffffffff);
-                    uint j = uint((entry >> 0u) & 0xffffffff);
-                    reduced_Ai.push_back(i);
-                    reduced_Aj.push_back(j);
+        if (file_has_values) {
+            struct Edge {
+                uint  i, j;
+                float w;
+                bool  operator<(const Edge& other) const {
+                    if (i != other.i)
+                        return i < other.i;
+                    return j < other.j;
                 }
-                entry_prev = entry;
+            };
+
+            std::vector<Edge> edges;
+            edges.reserve(Ai.size());
+            for (std::size_t k = 0; k < Ai.size(); k++) {
+                edges.push_back({Ai[k], Aj[k], Av[k]});
+            }
+
+            std::sort(edges.begin(), edges.end());
+
+            std::vector<uint>  reduced_Ai;
+            std::vector<uint>  reduced_Aj;
+            std::vector<float> reduced_Av;
+            reduced_Ai.reserve(edges.size());
+            reduced_Aj.reserve(edges.size());
+            reduced_Av.reserve(edges.size());
+
+            for (std::size_t k = 0; k < edges.size(); k++) {
+                if (k == 0 || edges[k].i != edges[k - 1].i ||
+                    edges[k].j != edges[k - 1].j) {
+                    reduced_Ai.push_back(edges[k].i);
+                    reduced_Aj.push_back(edges[k].j);
+                    reduced_Av.push_back(edges[k].w);
+                }
             }
 
             m_n_values = reduced_Ai.size();
             m_Ai       = std::move(reduced_Ai);
             m_Aj       = std::move(reduced_Aj);
+            m_Aw       = std::move(reduced_Av);
+
+        } else {
+            std::vector<std::uint64_t> sorted;
+            {
+                sorted.reserve(Ai.size());
+                n_sort = Ai.size();
+
+                for (std::size_t k = 0; k < Ai.size(); k++) {
+                    std::uint64_t entry = 0;
+                    entry |= std::uint64_t(Ai[k]) << 32u;
+                    entry |= std::uint64_t(Aj[k]) << 0u;
+                    sorted.push_back(entry);
+                }
+                Ai.clear();
+                Aj.clear();
+
+                std::sort(sorted.begin(), sorted.end());
+            }
+            t.lap_end();// sorting
+
+            std::vector<uint> reduced_Ai;
+            std::vector<uint> reduced_Aj;
+            {
+                reduced_Ai.reserve(sorted.size());
+                reduced_Aj.reserve(sorted.size());
+
+                std::uint64_t entry_prev = 0xffffffffffffffff;
+                for (std::uint64_t entry : sorted) {
+                    if (entry_prev != entry) {
+                        uint i = uint((entry >> 32u) & 0xffffffff);
+                        uint j = uint((entry >> 0u) & 0xffffffff);
+                        reduced_Ai.push_back(i);
+                        reduced_Aj.push_back(j);
+                    }
+                    entry_prev = entry;
+                }
+
+                m_n_values = reduced_Ai.size();
+                m_Ai       = std::move(reduced_Ai);
+                m_Aj       = std::move(reduced_Aj);
+            }
         }
-        t.lap_end();// reducing
 
         calc_stats();
         t.lap_end();// stats
@@ -220,12 +291,18 @@ namespace spla {
         t.stop();
 
         std::cout << " 100%" << std::endl;
-        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec " << n_lines << " lines"
-                  << " speed " << float(n_lines) / (t.get_laps_ms()[0] * 1e-3) << " lines/sec" << std::endl;
-        std::cout << " Sorted in " << t.get_laps_ms()[1] * 1e-3 << " sec " << n_sort << " lines" << std::endl;
-        std::cout << " Reduced in " << t.get_laps_ms()[2] * 1e-3 << " sec " << m_n_values << " lines" << std::endl;
-        std::cout << " Calc stats in " << t.get_laps_ms()[3] * 1e-3 << " sec" << std::endl;
-        std::cout << " Loaded in " << t.get_elapsed_ms() * 1e-3 << " sec, " << m_n_values << " edges total" << std::endl;
+        std::cout << " Parsed in " << t.get_laps_ms()[0] * 1e-3 << " sec " << n_lines
+                  << " lines"
+                  << " speed " << float(n_lines) / (t.get_laps_ms()[0] * 1e-3)
+                  << " lines/sec" << std::endl;
+        std::cout << " Sorted in " << t.get_laps_ms()[1] * 1e-3 << " sec " << n_sort
+                  << " lines" << std::endl;
+        std::cout << " Reduced in " << t.get_laps_ms()[2] * 1e-3 << " sec "
+                  << m_n_values << " lines" << std::endl;
+        std::cout << " Calc stats in " << t.get_laps_ms()[3] * 1e-3 << " sec"
+                  << std::endl;
+        std::cout << " Loaded in " << t.get_elapsed_ms() * 1e-3 << " sec, "
+                  << m_n_values << " edges total" << std::endl;
 
         output_stats();
 
@@ -241,8 +318,10 @@ namespace spla {
         }
 
         file << "%%MatrixMarket matrix coordinate pattern general\n";
-        file << "%-------------------------------------------------------------------------------\n";
-        file << "%-------------------------------------------------------------------------------\n";
+        file << "%-------------------------------------------------------------------"
+                "------------\n";
+        file << "%-------------------------------------------------------------------"
+                "------------\n";
 
         file << "% meta-info:\n";
         file << "% name: " << m_name << "\n";
@@ -254,10 +333,12 @@ namespace spla {
         file << "% deg-distribution: \n";
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
-            file << "%  " << m_deg_ranges[i] << " " << m_deg_ranges[i + 1] << " " << m_deg_distribution[i] << "\n";
+            file << "%  " << m_deg_ranges[i] << " " << m_deg_ranges[i + 1] << " "
+                 << m_deg_distribution[i] << "\n";
         }
 
-        file << "%-------------------------------------------------------------------------------\n";
+        file << "%-------------------------------------------------------------------"
+                "------------\n";
         file << m_n_rows << " " << m_n_cols << " " << m_n_values << "\n";
 
         if (!stats_only) {
@@ -292,9 +373,11 @@ namespace spla {
         auto n = static_cast<double>(m_n_rows);
 
         m_deg_avg = m_deg_avg / n;
-        m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) / (n > 1.0 ? n - 1.0 : 1.0));
+        m_deg_sd  = std::sqrt(n * (m_deg_sd / n - m_deg_avg * m_deg_avg) /
+                              (n > 1.0 ? n - 1.0 : 1.0));
 
-        const uint GROUPS_COUNT_MAX = std::max(uint(10), uint(std::log2(double(m_n_rows) * 0.77)));
+        const uint GROUPS_COUNT_MAX =
+                std::max(uint(10), uint(std::log2(double(m_n_rows) * 0.77)));
 
         std::vector<uint> count_per_deg(static_cast<uint>(m_deg_max) + 2, 0);
         std::vector<uint> count_per_deg_offsets(static_cast<uint>(m_deg_max) + 2, 0);
@@ -303,23 +386,27 @@ namespace spla {
             count_per_deg[std::min(deg_pre_vertex[i], uint(m_deg_max))] += 1;
         }
 
-        std::exclusive_scan(count_per_deg.begin(), count_per_deg.end(), count_per_deg_offsets.begin(), 0);
+        std::exclusive_scan(count_per_deg.begin(), count_per_deg.end(),
+                            count_per_deg_offsets.begin(), 0);
         count_per_deg_offsets.back() += 1;
 
         std::vector<double> distributions;
         std::vector<uint>   ranges;
 
-        auto range        = m_deg_max - m_deg_min;
-        auto groups_count = std::max(std::min(GROUPS_COUNT_MAX, static_cast<uint>(range)), 1u);
-        auto g            = static_cast<double>(groups_count);
+        auto range = m_deg_max - m_deg_min;
+        auto groups_count =
+                std::max(std::min(GROUPS_COUNT_MAX, static_cast<uint>(range)), 1u);
+        auto g = static_cast<double>(groups_count);
 
         auto total = static_cast<double>(count_per_deg_offsets.back());
         auto from  = count_per_deg_offsets.begin();
 
         ranges.push_back(static_cast<uint>(m_deg_min));
         for (uint i = 0; i < groups_count; ++i) {
-            auto next      = (from + 1 == count_per_deg_offsets.end()) ? from : from + 1;
-            auto to        = std::lower_bound(next, count_per_deg_offsets.end(), static_cast<uint>(total / g * static_cast<double>(i + 1)));
+            auto next = (from + 1 == count_per_deg_offsets.end()) ? from : from + 1;
+            auto to   = std::lower_bound(
+                    next, count_per_deg_offsets.end(),
+                    static_cast<uint>(total / g * static_cast<double>(i + 1)));
             auto to_offset = std::distance(count_per_deg_offsets.begin(), to);
 
             assert(to != count_per_deg_offsets.end());
@@ -346,7 +433,8 @@ namespace spla {
         const auto default_precision{std::cout.precision()};
         const auto n_digits = static_cast<uint>(std::log10(n) + 1.0);
 
-        const double DISPLAY_DENSITY = std::max(double(100), double(m_deg_distribution.size()));
+        const double DISPLAY_DENSITY =
+                std::max(double(100), double(m_deg_distribution.size()));
 
         for (std::size_t i = 0; i < m_deg_distribution.size(); i++) {
             auto deg     = m_deg_distribution[i] >= 0.01 ? m_deg_distribution[i] : 0.0;
@@ -354,28 +442,23 @@ namespace spla {
             auto k_end   = m_deg_ranges[i + 1];
             auto k_count = std::round(static_cast<uint>(deg * DISPLAY_DENSITY));
 
-            std::cout << "  [" << std::setw(n_digits) << k_start << " - " << std::setw(n_digits) << k_end << "): ";
-            std::cout << std::setw(6) << std::setprecision(2) << deg * 100.0 << std::setprecision(default_precision) << "% ";
-            for (uint s = 0; s < k_count; ++s) { std::cout << "*"; }
+            std::cout << "  [" << std::setw(n_digits) << k_start << " - "
+                      << std::setw(n_digits) << k_end << "): ";
+            std::cout << std::setw(6) << std::setprecision(2) << deg * 100.0
+                      << std::setprecision(default_precision) << "% ";
+            for (uint s = 0; s < k_count; ++s) {
+                std::cout << "*";
+            }
             std::cout << std::endl;
         }
     }
 
-    const std::vector<uint>& MtxLoader::get_Ai() const {
-        return m_Ai;
-    }
-    const std::vector<uint>& MtxLoader::get_Aj() const {
-        return m_Aj;
-    }
+    const std::vector<uint>&  MtxLoader::get_Ai() const { return m_Ai; }
+    const std::vector<uint>&  MtxLoader::get_Aj() const { return m_Aj; }
+    const std::vector<float>& MtxLoader::get_Aw() const { return m_Aw; }
 
-    uint MtxLoader::get_n_rows() const {
-        return m_n_rows;
-    }
-    uint MtxLoader::get_n_cols() const {
-        return m_n_cols;
-    }
-    std::size_t MtxLoader::get_n_values() const {
-        return m_n_values;
-    }
+    uint        MtxLoader::get_n_rows() const { return m_n_rows; }
+    uint        MtxLoader::get_n_cols() const { return m_n_cols; }
+    std::size_t MtxLoader::get_n_values() const { return m_n_values; }
 
 }// namespace spla

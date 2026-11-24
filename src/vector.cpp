@@ -51,6 +51,9 @@ namespace spla {
         if (type == FLOAT) {
             return ref_ptr<Vector>(new TVector<float>(n_rows));
         }
+        if (type == spla::PAIR) {
+            return ref_ptr<Vector>(new TVector<Pair>(n_rows));
+        }
 
         LOG_MSG(Status::NotImplemented, "not supported type " << type->get_name());
         return ref_ptr<Vector>{};
