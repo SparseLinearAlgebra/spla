@@ -12,3 +12,9 @@ registry.txt
 
 # Python cache files
 /**/__pycache__
+
+# Python build artifacts
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
