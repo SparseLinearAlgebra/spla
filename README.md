@@ -162,6 +162,10 @@ More details with performance study given down bellow.
     - CMake (the latest version)
     - Ninja (as build files generator)
     - Python 3.7+
+- **OpenCL runtime (for accelerated computation)**:
+    - A GPU OpenCL driver (Intel, AMD or Nvidia), or
+    - [PoCL](https://pocl.github.io/) to run on a CPU (e.g. `sudo apt install pocl-opencl-icd` on Ubuntu).
+    - The platform and device are selected with the `SPLA_OPENCL_PLATFORM` and `SPLA_OPENCL_DEVICE` environment variables (both default to `0`); a GPU device is preferred when present, otherwise a CPU device is used.
 - **Windows 10**:
     - Microsoft Visual C++ Compiler (MSVC) with C++ 17 support
     - x64 Native Tools Command Prompt for VS
