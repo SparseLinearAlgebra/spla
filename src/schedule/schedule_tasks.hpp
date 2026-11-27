@@ -465,6 +465,28 @@ namespace spla {
     };
 
     /**
+     * @class ScheduleTask_intersect
+     * @brief Set intersection of two sorted key-value arrays
+     */
+    class ScheduleTask_intersect final : public ScheduleTaskBase {
+    public:
+        ~ScheduleTask_intersect() override = default;
+
+        std::string                  get_name() override;
+        std::string                  get_key() override;
+        std::string                  get_key_full() override;
+        std::vector<ref_ptr<Object>> get_args() override;
+
+        ref_ptr<Vector>   a_keys;
+        ref_ptr<Vector>   a_vals;
+        ref_ptr<Vector>   b_keys;
+        ref_ptr<Vector>   b_vals;
+        ref_ptr<Vector>   r_keys;
+        ref_ptr<Vector>   r_vals;
+        ref_ptr<OpBinary> op;
+    };
+
+    /**
      * @}
      */
 

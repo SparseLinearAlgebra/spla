@@ -490,4 +490,26 @@ namespace spla {
         return {r.as<Object>(), v.as<Object>()};
     }
 
+    std::string ScheduleTask_intersect::get_name() {
+        return "intersect";
+    }
+    std::string ScheduleTask_intersect::get_key() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r_vals->get_type());
+        return key.str();
+    }
+    std::string ScheduleTask_intersect::get_key_full() {
+        std::stringstream key;
+        key << get_name()
+            << TYPE_KEY(r_keys->get_type())
+            << OP_KEY(op);
+        return key.str();
+    }
+    std::vector<ref_ptr<Object>> ScheduleTask_intersect::get_args() {
+        return {a_keys.as<Object>(), a_vals.as<Object>(),
+                b_keys.as<Object>(), b_vals.as<Object>(),
+                r_keys.as<Object>(), r_vals.as<Object>(),
+                op.as<Object>()};
+    }
 }// namespace spla

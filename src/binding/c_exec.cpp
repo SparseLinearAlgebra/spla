@@ -103,3 +103,6 @@ spla_Status spla_Exec_v_reduce(spla_Scalar r, spla_Scalar s, spla_Vector v, spla
 spla_Status spla_Exec_v_count_mf(spla_Scalar r, spla_Vector v, spla_Descriptor desc, spla_ScheduleTask* task) {
     SPLA_WRAP_EXEC(exec_v_count_mf, AS_S(r), AS_V(v));
 }
+spla_Status spla_Exec_intersect(spla_Vector a_keys, spla_Vector a_vals, spla_Vector b_keys, spla_Vector b_vals, spla_Vector r_keys, spla_Vector r_vals, spla_OpBinary op, spla_Descriptor desc, spla_ScheduleTask* task) {
+    SPLA_WRAP_EXEC(exec_intersect, AS_V(a_keys), AS_V(a_vals), AS_V(b_keys), AS_V(b_vals), AS_V(r_keys), AS_V(r_vals), AS_OB(op));
+}
