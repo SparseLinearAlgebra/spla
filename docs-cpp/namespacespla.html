@@ -723,15 +723,19 @@ Functions</h2></td></tr>
 <tr class="memitem:a81602d8740b27dbb54103397e2719dce" id="r_a81602d8740b27dbb54103397e2719dce"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a81602d8740b27dbb54103397e2719dce"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a81602d8740b27dbb54103397e2719dce">cl_exclusive_scan</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> n, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt; &gt; &amp;op, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc)</td></tr>
 <tr class="separator:a81602d8740b27dbb54103397e2719dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae60089dea31bc0e004ad954071adbe74" id="r_gae60089dea31bc0e004ad954071adbe74"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#gae60089dea31bc0e004ad954071adbe74">kernel_group_limit</a> (<a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;builder, <a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *acc, const char *kernel_name)</td></tr>
+<tr class="separator:gae60089dea31bc0e004ad954071adbe74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82ce99f4d84547eaa3851efa0f83f5ba" id="r_ga82ce99f4d84547eaa3851efa0f83f5ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__internal.html#ga82ce99f4d84547eaa3851efa0f83f5ba">capped_group_size</a> (<a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;builder, <a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *acc, const char *kernel_name)</td></tr>
+<tr class="separator:ga82ce99f4d84547eaa3851efa0f83f5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d72497a71046dff0e289f44e06e7538" id="r_a2d72497a71046dff0e289f44e06e7538"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a2d72497a71046dff0e289f44e06e7538"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2d72497a71046dff0e289f44e06e7538">cl_reduce</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> n, T init, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt; &gt; &amp;op_reduce, T &amp;result)</td></tr>
 <tr class="separator:a2d72497a71046dff0e289f44e06e7538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a966c87769d93df9d71a04c580faeed33" id="r_a966c87769d93df9d71a04c580faeed33"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a966c87769d93df9d71a04c580faeed33"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a966c87769d93df9d71a04c580faeed33">cl_reduce_by_key</a> (cl::CommandQueue &amp;queue, const cl::Buffer &amp;keys, const cl::Buffer &amp;values, const <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> size, cl::Buffer &amp;unique_keys, cl::Buffer &amp;reduce_values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> &amp;reduced_size, const <a class="el" href="classspla_1_1ref__ptr.html">ref_ptr</a>&lt; <a class="el" href="classspla_1_1TOpBinary.html">TOpBinary</a>&lt; T, T, T &gt; &gt; &amp;reduce_op, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc)</td></tr>
 <tr class="separator:a966c87769d93df9d71a04c580faeed33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6" id="r_afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afe2473735a8554abc0e9a9ddbfaa02e6">cl_sort_by_key_bitonic</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> size)</td></tr>
-<tr class="separator:afe2473735a8554abc0e9a9ddbfaa02e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8b8d6093c32ec678f7296350f9a9145" id="r_ac8b8d6093c32ec678f7296350f9a9145"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac8b8d6093c32ec678f7296350f9a9145"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac8b8d6093c32ec678f7296350f9a9145">cl_sort_by_key_bitonic</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> size)</td></tr>
+<tr class="separator:ac8b8d6093c32ec678f7296350f9a9145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c021748ff037119279445c31141919d" id="r_a7c021748ff037119279445c31141919d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a7c021748ff037119279445c31141919d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7c021748ff037119279445c31141919d">cl_sort_by_key_radix</a> (cl::CommandQueue &amp;queue, cl::Buffer &amp;keys, cl::Buffer &amp;values, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> n, <a class="el" href="classspla_1_1CLAlloc.html">CLAlloc</a> *tmp_alloc, <a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> max_key=0xffffffff)</td></tr>
 <tr class="separator:a7c021748ff037119279445c31141919d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1272,8 +1276,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="afe2473735a8554abc0e9a9ddbfaa02e6" name="afe2473735a8554abc0e9a9ddbfaa02e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe2473735a8554abc0e9a9ddbfaa02e6">&#9670;&#160;</a></span>cl_sort_by_key_bitonic()</h2>
+<a id="ac8b8d6093c32ec678f7296350f9a9145" name="ac8b8d6093c32ec678f7296350f9a9145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8b8d6093c32ec678f7296350f9a9145">&#9670;&#160;</a></span>cl_sort_by_key_bitonic()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1281,7 +1285,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void spla::cl_sort_by_key_bitonic </td>
+          <td class="memname">bool spla::cl_sort_by_key_bitonic </td>
           <td>(</td>
           <td class="paramtype">cl::CommandQueue &amp;</td>          <td class="paramname"><span class="paramname"><em>queue</em></span>, </td>
         </tr>

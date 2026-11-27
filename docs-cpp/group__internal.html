@@ -391,6 +391,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454" id="r_ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga274cd3c51e824f27c8583aa556d74454"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga274cd3c51e824f27c8583aa556d74454">spla::cl_dense_vec_to_coo</a> (const std::size_t n_rows, const T fill_value, const <a class="el" href="classspla_1_1CLDenseVec.html">CLDenseVec</a>&lt; T &gt; &amp;in, <a class="el" href="classspla_1_1CLCooVec.html">CLCooVec</a>&lt; T &gt; &amp;out, cl::CommandQueue &amp;queue)</td></tr>
 <tr class="separator:ga274cd3c51e824f27c8583aa556d74454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae60089dea31bc0e004ad954071adbe74" id="r_gae60089dea31bc0e004ad954071adbe74"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae60089dea31bc0e004ad954071adbe74">spla::kernel_group_limit</a> (<a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;builder, <a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *acc, const char *kernel_name)</td></tr>
+<tr class="separator:gae60089dea31bc0e004ad954071adbe74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82ce99f4d84547eaa3851efa0f83f5ba" id="r_ga82ce99f4d84547eaa3851efa0f83f5ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga82ce99f4d84547eaa3851efa0f83f5ba">spla::capped_group_size</a> (<a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;builder, <a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *acc, const char *kernel_name)</td></tr>
+<tr class="separator:ga82ce99f4d84547eaa3851efa0f83f5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d18fc5d68f681a0abe2f8fdf243ad9f" id="r_ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga0d18fc5d68f681a0abe2f8fdf243ad9f">spla::hash_combine</a> (std::size_t &amp;seed, const T &amp;v)</td></tr>
 <tr class="separator:ga0d18fc5d68f681a0abe2f8fdf243ad9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -724,6 +728,32 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classspla_1_1Vector.html#a74fcc063e0148784f2c55421f4d4884a">spla::Vector</a>.</p>
+
+</div>
+</div>
+<a id="ga82ce99f4d84547eaa3851efa0f83f5ba" name="ga82ce99f4d84547eaa3851efa0f83f5ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82ce99f4d84547eaa3851efa0f83f5ba">&#9670;&#160;</a></span>capped_group_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__spla.html#gacd62fc06c906c671419fec138f40d5ea">uint</a> spla::capped_group_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>builder</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *</td>          <td class="paramname"><span class="paramname"><em>acc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>kernel_name</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -3604,6 +3634,32 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__spla.html#ga556579e7c92bd09dcf035bd88d76fbea">FormatVector</a></td>          <td class="paramname"><span class="paramname"><em>format</em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae60089dea31bc0e004ad954071adbe74" name="gae60089dea31bc0e004ad954071adbe74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae60089dea31bc0e004ad954071adbe74">&#9670;&#160;</a></span>kernel_group_limit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t spla::kernel_group_limit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLProgramBuilder.html">CLProgramBuilder</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>builder</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classspla_1_1CLAccelerator.html">CLAccelerator</a> *</td>          <td class="paramname"><span class="paramname"><em>acc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>kernel_name</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

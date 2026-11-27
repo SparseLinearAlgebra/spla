@@ -1,8 +1,14 @@
 var searchData=
 [
-  ['validate_0',['validate',['../classspla_1_1TDecorationStorage.html#aa4a46695920d3fdd5a045e1d71e4d595',1,'spla::TDecorationStorage']]],
-  ['validate_5fctor_1',['validate_ctor',['../group__internal.html#gae12694d56335e4e7fbb6b5c222e064e9',1,'spla::TMatrix::validate_ctor()'],['../group__internal.html#gae03341af4762a2d4a847cdd72e995592',1,'spla::TVector::validate_ctor()'],['../group__internal.html#gac9341c980f3831e21ee1ba6c1ea68105',1,'spla::StorageManager::validate_ctor()']]],
-  ['validate_5frw_2',['validate_rw',['../group__internal.html#ga69667baa2ffe3f46cf26efebadeb0fc1',1,'spla::TMatrix::validate_rw()'],['../group__internal.html#gad2b50d4ac195e188c2c21c38e34c4467',1,'spla::TVector::validate_rw()'],['../group__internal.html#ga5b966107b9ef69b57fb13a50f31120b1',1,'spla::StorageManager::validate_rw()']]],
-  ['validate_5frwd_3',['validate_rwd',['../group__internal.html#ga3c8ee7585a2b9f77da83ef3e739b1ba9',1,'spla::TMatrix::validate_rwd()'],['../group__internal.html#ga3115b63ba560c5f4cd113d86ca51d62f',1,'spla::TVector::validate_rwd()'],['../group__internal.html#gacf348af6c29f12ef96c8e7048c14e011',1,'spla::StorageManager::validate_rwd()']]],
-  ['validate_5fwd_4',['validate_wd',['../group__internal.html#ga3b5268d9fd8ae17521a6b149378a0a78',1,'spla::TMatrix::validate_wd()'],['../group__internal.html#ga7b355facf49c588795bc0d9d03b6d598',1,'spla::TVector::validate_wd()'],['../group__internal.html#ga47956ee8969d75dfe6f32bb44f4a1757',1,'spla::StorageManager::validate_wd()']]]
+  ['tarray_0',['TArray',['../group__internal.html#gab0d6585b7c910f70d714ef826129dba4',1,'spla::TArray']]],
+  ['tc_1',['tc',['../group__spla.html#gafc8d8135c82e7917d456f035886ac585',1,'spla']]],
+  ['tc_5fnaive_2',['tc_naive',['../group__spla.html#gaf41d16588417468e554678d9be95329c',1,'spla']]],
+  ['time_5fprofile_5fdump_3',['time_profile_dump',['../classspla_1_1Library.html#a3af7af23e341b184c4f0d25e64eaf681',1,'spla::Library']]],
+  ['time_5fprofile_5freset_4',['time_profile_reset',['../classspla_1_1Library.html#a3cb0e8430a1fc87f410bd5dd8fa4e186',1,'spla::Library']]],
+  ['timeprofilerlabel_5',['TimeProfilerLabel',['../structspla_1_1TimeProfilerLabel.html#a4b2e019bbd7e6cd2f9362ba08e9a21e0',1,'spla::TimeProfilerLabel']]],
+  ['timeprofilerscope_6',['TimeProfilerScope',['../structspla_1_1TimeProfilerScope.html#a75f3b7a4194a3da0f85fcb7ad677b204',1,'spla::TimeProfilerScope']]],
+  ['timer_7',['Timer',['../classspla_1_1Timer.html#aff103231d70cb7f04fe9b959d37b03ad',1,'spla::Timer']]],
+  ['tmatrix_8',['TMatrix',['../group__internal.html#ga2f6b9a1070e583e79d2272d0ca502e1c',1,'spla::TMatrix']]],
+  ['tscalar_9',['TScalar',['../classspla_1_1TScalar.html#a319d952e7bd55e47d3d730ec4736876d',1,'spla::TScalar::TScalar()=default'],['../group__internal.html#ga35755e9689106c89c5992419a0e552ef',1,'spla::TScalar::TScalar(T value)']]],
+  ['tvector_10',['TVector',['../group__internal.html#ga83e2cdb83c6b5223bb1d23af42ad69c2',1,'spla::TVector']]]
 ];

@@ -1,11 +1,14 @@
 var searchData=
 [
-  ['operator_20bool_0',['operator bool',['../classspla_1_1ref__ptr.html#af556edb717dcb309412fd187cc3da943',1,'spla::ref_ptr']]],
-  ['operator_21_3d_1',['operator!=',['../classspla_1_1ref__ptr.html#af26461921504aebcd99c7d0287ff94f3',1,'spla::ref_ptr']]],
-  ['operator_28_29_2',['operator()',['../structspla_1_1pair__hash.html#ab984d9fca39fd14872dc93b3553eaf62',1,'spla::pair_hash']]],
-  ['operator_2a_3',['operator*',['../classspla_1_1ref__ptr.html#a20049e409c261e22d07f5e519f7b5193',1,'spla::ref_ptr']]],
-  ['operator_2d_3e_4',['operator-&gt;',['../classspla_1_1ref__ptr.html#a02c388fd73ac209ebbe5d1e7dd7f34a9',1,'spla::ref_ptr']]],
-  ['operator_3d_5',['operator=',['../classspla_1_1ref__ptr.html#aec0f8b0ba9490ee605b9f0d67c833dac',1,'spla::ref_ptr::operator=(const ref_ptr &amp;other)'],['../classspla_1_1ref__ptr.html#a66fe2e11422acad9b616342a979aa27d',1,'spla::ref_ptr::operator=(const ref_ptr&lt; G &gt; &amp;other)'],['../classspla_1_1ref__ptr.html#a876a6fd1bcdda08e1c228b7b88b33eb2',1,'spla::ref_ptr::operator=(ref_ptr &amp;&amp;other) noexcept']]],
-  ['operator_3d_3d_6',['operator==',['../classspla_1_1ref__ptr.html#a5fc9a61101b489dda680ce4ec2ca92b3',1,'spla::ref_ptr']]],
-  ['output_5fstats_7',['output_stats',['../classspla_1_1MtxLoader.html#aab5e60461655bff46fd94dc7a11c9599',1,'spla::MtxLoader']]]
+  ['make_0',['make',['../classspla_1_1Array.html#a6de361a2c103f2273b67751a1529398b',1,'spla::Array::make()'],['../classspla_1_1Descriptor.html#a70b53510904cf7865ac1906c8ee44ed2',1,'spla::Descriptor::make()'],['../classspla_1_1Matrix.html#aa90695abf4b49895f6284dceb0a542e0',1,'spla::Matrix::make()'],['../classspla_1_1MemView.html#a62dcde9d083e71a0997e3339de06c55b',1,'spla::MemView::make(void *buffer, std::size_t size, bool is_mutable=false)'],['../classspla_1_1MemView.html#adfa1fc7a7059ff6aed6fe37d254ad2a5',1,'spla::MemView::make()'],['../classspla_1_1Scalar.html#adc7fad772297393dd917329702fcf659',1,'spla::Scalar::make()'],['../classspla_1_1Vector.html#a70957ab4f2b0edcf59812ff94338b201',1,'spla::Vector::make()']]],
+  ['make_5ffloat_1',['make_float',['../classspla_1_1OpUnary.html#ab7a71a53ab96e19abb33b7defd83c3c6',1,'spla::OpUnary::make_float()'],['../classspla_1_1OpBinary.html#ac4cc70577e9d3aa4436839e7221d2c23',1,'spla::OpBinary::make_float()'],['../classspla_1_1OpSelect.html#abe8437fc7773b4abdd966e3806c991eb',1,'spla::OpSelect::make_float()'],['../classspla_1_1Scalar.html#a0b2432e827613e95de4614f811285f26',1,'spla::Scalar::make_float()']]],
+  ['make_5fint_2',['make_int',['../classspla_1_1OpUnary.html#a9cf002ff78df9a716c2b15df0d5a0900',1,'spla::OpUnary::make_int()'],['../classspla_1_1OpBinary.html#add85436ebe0223532718d091b0964eb0',1,'spla::OpBinary::make_int()'],['../classspla_1_1OpSelect.html#a949ed925b1831f1562a75e12b722ddfc',1,'spla::OpSelect::make_int()'],['../classspla_1_1Scalar.html#a5ee9a7a1e6fd839f4f671d51e4e7b236',1,'spla::Scalar::make_int()']]],
+  ['make_5fkernel_3',['make_kernel',['../classspla_1_1CLProgram.html#a8c3bbb26529b718808e265d2aca2e422',1,'spla::CLProgram::make_kernel()'],['../classspla_1_1CLProgramBuilder.html#ad76d29d3dfe73256ce0178e095d74ff4',1,'spla::CLProgramBuilder::make_kernel()']]],
+  ['make_5fref_4',['make_ref',['../group__spla.html#gab1633d81eac0411bd0234537bfb018bd',1,'spla']]],
+  ['make_5fschedule_5',['make_schedule',['../group__spla.html#ga582b4e6cbcd02d06afb39efdc5ae977f',1,'spla']]],
+  ['make_5ftype_6',['make_type',['../group__internal.html#gae0014fa21689ed7c89214674bf3a844f',1,'spla::TType']]],
+  ['make_5fuint_7',['make_uint',['../classspla_1_1OpUnary.html#ad679eee07e5099121330c9bfa4674015',1,'spla::OpUnary::make_uint()'],['../classspla_1_1OpBinary.html#a83874cfced4a7cc30ee09d23de0cde6b',1,'spla::OpBinary::make_uint()'],['../classspla_1_1OpSelect.html#ab87e878b6cd5b534fa9527cbd84400c1',1,'spla::OpSelect::make_uint()'],['../classspla_1_1Scalar.html#a8b0135abd80254421b6b822aaaa0a731',1,'spla::Scalar::make_uint()']]],
+  ['max_8',['max',['../namespacespla.html#af95f6178d905c3f71082e6627c284cba',1,'spla']]],
+  ['min_9',['min',['../namespacespla.html#aa18eb03c6788c62d9d70dfbaaabc7ea6',1,'spla']]],
+  ['mtxloader_10',['MtxLoader',['../classspla_1_1MtxLoader.html#afb957a5108eff829b32441b93ea7f691',1,'spla::MtxLoader']]]
 ];
