@@ -120,9 +120,14 @@ namespace spla {
         m_is_intel  = false;
         m_is_img    = false;
 
-        auto dev_type = m_device.getInfo<CL_DEVICE_TYPE>();
+        auto dev_type      = m_device.getInfo<CL_DEVICE_TYPE>();
+        auto platform_name = m_platform.getInfo<CL_PLATFORM_NAME>();
 
-        if (m_vendor_id == 0x10006 &&
+        if ((m_vendor_id == 0x10006 ||
+             m_vendor_name.find("pocl") != std::string::npos ||
+             m_vendor_name.find("POCL") != std::string::npos ||
+             m_vendor_name.find("PoCL") != std::string::npos ||
+             platform_name.find("Portable Computing Language") != std::string::npos) &&
             dev_type == CL_DEVICE_TYPE_CPU) {
             m_vendor_code = VENDOR_CODE_POCL_CPU;
             m_default_wgs = 64;
