@@ -75,6 +75,9 @@ namespace spla {
         std::string                                             m_program_code;
     };
 
+    size_t kernel_group_limit(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name);
+    uint   capped_group_size(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name);
+
     /**
      * @}
      */

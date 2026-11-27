@@ -62,6 +62,20 @@ namespace spla {
         m_source = source;
         return *this;
     }
+
+    size_t kernel_group_limit(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name) {
+        size_t     limit  = 0;
+        cl::Kernel kernel = builder.make_kernel(kernel_name);
+        clGetKernelWorkGroupInfo(kernel(), acc->get_device()(), CL_KERNEL_WORK_GROUP_SIZE, sizeof(limit), &limit, nullptr);
+        return limit;
+    }
+
+    uint capped_group_size(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name) {
+        const size_t limit = kernel_group_limit(builder, acc, kernel_name);
+        const size_t wave  = acc->get_wave_size();
+        return static_cast<uint>(limit / wave * wave);
+    }
+
     void CLProgramBuilder::acquire() {
         CLAccelerator*  acc   = get_acc_cl();
         CLProgramCache* cache = acc->get_cache();
