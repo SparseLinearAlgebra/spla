@@ -211,6 +211,12 @@ $(function(){ initResizable(false); });
 <li>Python 3.7+</li>
 </ul>
 </li>
+<li><b>OpenCL runtime (for accelerated computation)</b>:<ul>
+<li>A GPU OpenCL driver (Intel, AMD or Nvidia), or</li>
+<li><a href="https://pocl.github.io/">PoCL</a> to run on a CPU (e.g. <code>sudo apt install pocl-opencl-icd</code> on Ubuntu).</li>
+<li>The platform and device are selected with the <code>SPLA_OPENCL_PLATFORM</code> and <code>SPLA_OPENCL_DEVICE</code> environment variables (both default to <code>0</code>); a GPU device is preferred when present, otherwise a CPU device is used.</li>
+</ul>
+</li>
 <li><b>Windows 10</b>:<ul>
 <li>Microsoft Visual C++ Compiler (MSVC) with C++ 17 support</li>
 <li>x64 Native Tools Command Prompt for VS</li>
