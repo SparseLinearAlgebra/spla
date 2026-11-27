@@ -1,20 +1,22 @@
 import argparse
-import sys
 import math
+import sys
 from pathlib import Path
-from bfs_spla import bfs_spla 
-from sssp_spla import sssp_spla 
-from pr_spla import pr_spla 
-from tc_spla import tc_spla 
+
+from bfs_spla import bfs_spla
 from graph_spla import (
-    read_spla,
-    read_vectors_spla,
     read_mtx_pr_spla,
+    read_spla,
     read_vectors_pr_spla,
+    read_vectors_spla,
 )
-from pyspla import INT, FLOAT
+from pr_spla import pr_spla
+from pyspla import FLOAT, INT
+from sssp_spla import sssp_spla
+from tc_spla import tc_spla
 
 INF = math.inf
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -23,41 +25,47 @@ def main():
         choices=["bfs", "sssp", "pr", "tc"],
         required=True,
         help="Algorithm to run: "
-             "bfs - Breadth-First Search, "
-             "sssp - Single-Source Shortest Paths, "
-             "pr - PageRank, "
-             "tc - Triangle Counting",
+        "bfs - Breadth-First Search, "
+        "sssp - Single-Source Shortest Paths, "
+        "pr - PageRank, "
+        "tc - Triangle Counting",
     )
     parser.add_argument(
-        "-m", "--matrix",
+        "-m",
+        "--matrix",
         type=Path,
         help="Path to graph in Matrix Market format (.mtx)",
     )
     parser.add_argument(
-        "-v", "--vectors",
+        "-v",
+        "--vectors",
         type=Path,
         help="Path to graph in vectors format (.txt)",
     )
     parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         type=Path,
         default="result.txt",
         help="Output file path",
     )
     parser.add_argument(
-        "-s", "--start",
+        "-s",
+        "--start",
         type=int,
         default=0,
         help="Start vertex(default: 0)",
     )
     parser.add_argument(
-        "-a", "--alpha",
+        "-a",
+        "--alpha",
         type=float,
         default=0.85,
         help="Damping factor(default: 0.85)",
     )
     parser.add_argument(
-        "-e", "--eps",
+        "-e",
+        "--eps",
         type=float,
         default=1e-4,
         help="Convergence tolerance(default: 1e-4)",
@@ -73,13 +81,14 @@ def main():
             v, count, depth = bfs_spla(args.start, A)
         else:
             A = read_vectors_spla(str(args.vectors), dtype=INT)
-            v, count, depth = bfs_spla(args.start, A, push_only=True, pull_only=False, push_pull=False)
+            v, count, depth = bfs_spla(
+                args.start, A, push_only=True, pull_only=False, push_pull=False
+            )
         with open(args.output, "w") as f_out:
             f_out.write(f"Reached vertices: {count}\n")
             f_out.write(f"Max depth: {depth - 1}\n")
             idx, vals = v.to_lists()
-            for k in range(len(idx)):
-                f_out.write(f"{idx[k]} {vals[k] - 1}\n")
+            f_out.writelines(f"{idx[k]} {vals[k] - 1}\n" for k in range(len(idx)))
         print(f"Result saved to {args.output}")
 
     elif args.algo == "sssp":
@@ -88,7 +97,9 @@ def main():
             v = sssp_spla(args.start, A)
         else:
             A = read_vectors_spla(str(args.vectors), dtype=FLOAT)
-             v = sssp_spla(args.start, A, push_only=True, pull_only=False, push_pull=False)
+            v = sssp_spla(
+                args.start, A, push_only=True, pull_only=False, push_pull=False
+            )
         with open(args.output, "w") as f_out:
             idx, vals = v.to_lists()
             for k in range(len(idx)):
@@ -117,6 +128,7 @@ def main():
         with open(args.output, "w") as f_out:
             f_out.write(f"Triangles: {triangles}\n")
         print(f"Result saved to {args.output}")
+
 
 if __name__ == "__main__":
     main()

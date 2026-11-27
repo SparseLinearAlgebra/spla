@@ -10,21 +10,27 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pyspla import FLOAT, INT
-from graph_spla import read_spla, read_mtx_pr_spla
-from bfs_spla import bfs_spla
+try:
+    import networkx as nx
+
+    HAS_NETWORKX = True
+except ImportError:
+    HAS_NETWORKX = False
+
 from bfs_classic import bfs_naive as bfs_classic
-from sssp_spla import sssp_spla
-from pr_spla import pr_spla
+from bfs_spla import bfs_spla
+from graph_spla import read_mtx_pr_spla, read_spla
 from pr_classic import pagerank_naive as pr_classic
-from tc_spla import tc_spla
+from pr_spla import pr_spla
+from pyspla import FLOAT, INT
+from sssp_spla import sssp_spla
 from tc_classic import tc_naive as tc_classic
+from tc_spla import tc_sandia, tc_spla, tc_spla_mxmT
 
-
-DATA = Path(__file__).parent.parent.parent / "bench" / "dataset"
-UNDIRECTED_GRAPH = DATA / "belgium_osm.mtx"
-DIRECTED_GRAPH = DATA / "amazon-2008.mtx"
-UPPER = DATA / "upper" / "belgium_osm.mtx"
+DATA = Path(__file__).parent / "data"
+UNDIRECTED_GRAPH = DATA / "undirected.mtx"
+DIRECTED_GRAPH = DATA / "directed.mtx"
+UPPER = DATA / "undirected_upper.mtx"
 
 
 def split(A):
@@ -152,8 +158,9 @@ class TestPr(unittest.TestCase):
 
 
 class TestTc(unittest.TestCase):
-    def test_upper(self):
-        A = read_spla(str(UPPER), INT)
+    def _check(self, algo):
+        # triangle counting is unweighted: read with unit weights
+        A = read_spla(str(UPPER), INT, unit_weights=True)
         n, pairs, _ = split(A)
 
         adj = [[] for _ in range(n)]
@@ -162,9 +169,31 @@ class TestTc(unittest.TestCase):
             adj[v].append(u)
 
         ref = tc_classic(adj, n)
-        got = tc_spla(A)
+        got = algo(A)
 
         self.assertEqual(ref, got)
+
+    def test_sandia(self):
+        self._check(tc_sandia)
+
+    def test_default(self):
+        self._check(tc_spla)
+
+    def test_mxmT(self):
+        self._check(tc_spla_mxmT)
+
+    @unittest.skipUnless(HAS_NETWORKX, "networkx is not installed")
+    def test_networkx(self):
+        A = read_spla(str(UPPER), INT, unit_weights=True)
+        n, pairs, _ = split(A)
+
+        G = nx.Graph()
+        G.add_nodes_from(range(n))
+        G.add_edges_from(pairs)
+        ref = sum(nx.triangles(G).values()) // 3
+
+        self.assertEqual(tc_sandia(A), ref)
+        self.assertEqual(tc_spla_mxmT(A), ref)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,8 @@
 import math
+
 INF = math.inf
+
+
 def sssp_naive(start, graph, n):
     dist = [INF] * n
     dist[start] = 0

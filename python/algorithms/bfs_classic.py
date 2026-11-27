@@ -1,5 +1,6 @@
 from collections import deque
 
+
 def bfs_naive(start, graph, n):
     depth = [None] * n
     q = deque()

@@ -1,10 +1,14 @@
-from pyspla import INT, Matrix, Scalar, Vector, Descriptor
+from pyspla import INT, Descriptor, Matrix, Scalar, Vector
 
-def bfs_spla(s: int, A: Matrix,
-             push_only: bool = False,
-             pull_only: bool = False,
-             push_pull: bool = True,
-             front_factor: float = 0.05):
+
+def bfs_spla(
+    s: int,
+    A: Matrix,
+    push_only: bool = False,
+    pull_only: bool = False,
+    push_pull: bool = True,
+    front_factor: float = 0.05,
+):
     n = A.n_rows
     if not (push_only or pull_only or push_pull):
         push_only = True
@@ -30,9 +34,25 @@ def bfs_spla(s: int, A: Matrix,
         is_push_better = front_density <= front_factor
 
         if push_only or (push_pull and is_push_better):
-            front_prev.vxm(v, A,op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO, out=front_new, desc=desc)
+            front_prev.vxm(
+                v,
+                A,
+                op_mult=INT.LAND,
+                op_add=INT.LOR,
+                op_select=INT.EQZERO,
+                out=front_new,
+                desc=desc,
+            )
         else:
-            A.mxv(v, front_prev, op_mult=INT.LAND, op_add=INT.LOR, op_select=INT.EQZERO, out=front_new, desc=desc)
+            A.mxv(
+                v,
+                front_prev,
+                op_mult=INT.LAND,
+                op_add=INT.LOR,
+                op_select=INT.EQZERO,
+                out=front_new,
+                desc=desc,
+            )
 
         front_size = front_new.count_mf().get()
 

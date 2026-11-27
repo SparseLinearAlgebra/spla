@@ -1,19 +1,22 @@
+from pyspla import FLOAT, INT, Matrix
 from scipy.io import mmread
-from pyspla import Matrix, INT, FLOAT
 
 
 def sort_by_ij(I, J, V):
     return map(list, zip(*sorted(zip(I, J, V))))
 
 
-def read_spla(filepath, dtype=FLOAT):
+def read_spla(filepath, dtype=FLOAT, unit_weights=False):
     coo = mmread(filepath).tocoo()
     n = int(max(coo.shape))
     rows = coo.row.astype(int).tolist()
     cols = coo.col.astype(int).tolist()
-    vals = coo.data.astype(float).tolist()
-    if dtype == INT:
-        vals = [int(v) for v in vals]
+    if unit_weights:
+        vals = [1] * len(rows) if dtype == INT else [1.0] * len(rows)
+    else:
+        vals = coo.data.astype(float).tolist()
+        if dtype == INT:
+            vals = [int(v) for v in vals]
     rows, cols, vals = sort_by_ij(rows, cols, vals)
     return Matrix.from_lists(rows, cols, vals, shape=(n, n), dtype=dtype)
 

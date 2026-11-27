@@ -3,11 +3,18 @@
 This project provides a Python implementation of graph algorithms using sparse
 linear algebra primitives from SPLA on GPU
 
-Tests (`test_compare.py`) checks that both implementations produce identical results.
+Tests (`test_compare.py`) check that the SPLA implementations produce the same
+results as the classic (pure-Python) reference implementations. The triangle
+counting tests additionally cross-check against NetworkX when it is installed
+(`pip install networkx`); that test is skipped otherwise.
+
+The tests read small Matrix Market fixtures from `data/` (next to this file):
+`undirected.mtx`, `undirected_upper.mtx`, and `directed.mtx`. The fixtures are
+not committed; place your own `.mtx` files there (any connected graph works).
 
 Run tests:
-```bash 
-python -m unittest test_compare.py -v
+```bash
+python -m unittest test_compare -v
 ```
 ---
 

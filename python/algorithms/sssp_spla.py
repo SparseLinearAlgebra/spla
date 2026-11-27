@@ -1,5 +1,7 @@
 import math
-from pyspla import FLOAT, Matrix, Scalar, Vector
+
+from pyspla import FLOAT, Scalar, Vector
+
 INF = math.inf
 
 
@@ -9,7 +11,9 @@ def make_vector(n):
     return v
 
 
-def sssp_spla(start, A, push_only=False, pull_only=False, push_pull=True, front_factor=0.05):
+def sssp_spla(
+    start, A, push_only=False, pull_only=False, push_pull=True, front_factor=0.05
+):
     n = A.n_rows
     if not (push_only or pull_only or push_pull):
         push_only = True
@@ -28,13 +32,25 @@ def sssp_spla(start, A, push_only=False, pull_only=False, push_pull=True, front_
         is_push_better = front_density <= front_factor
 
         if push_only or (push_pull and is_push_better):
-            feedback.vxm(mask, A,
-                         op_mult=FLOAT.PLUS, op_add=FLOAT.MIN,
-                         op_select=FLOAT.ALWAYS, init=init_inf, out=frontier)
+            feedback.vxm(
+                mask,
+                A,
+                op_mult=FLOAT.PLUS,
+                op_add=FLOAT.MIN,
+                op_select=FLOAT.ALWAYS,
+                init=init_inf,
+                out=frontier,
+            )
         else:
-            A.mxv(mask, feedback,
-                  op_mult=FLOAT.PLUS, op_add=FLOAT.MIN,
-                  op_select=FLOAT.ALWAYS, init=init_inf, out=frontier)
+            A.mxv(
+                mask,
+                feedback,
+                op_mult=FLOAT.PLUS,
+                op_add=FLOAT.MIN,
+                op_select=FLOAT.ALWAYS,
+                init=init_inf,
+                out=frontier,
+            )
 
         dist.eadd_fdb(frontier, FLOAT.MIN, feedback)
         fs = feedback.count_mf().get()
