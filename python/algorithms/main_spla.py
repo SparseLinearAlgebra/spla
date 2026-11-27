@@ -11,9 +11,10 @@ from graph_spla import (
     read_vectors_spla,
 )
 from pr_spla import pr_spla
-from pyspla import FLOAT, INT
 from sssp_spla import sssp_spla
 from tc_spla import tc_spla
+
+from pyspla import FLOAT, INT
 
 INF = math.inf
 
@@ -81,9 +82,7 @@ def main():
             v, count, depth = bfs_spla(args.start, A)
         else:
             A = read_vectors_spla(str(args.vectors), dtype=INT)
-            v, count, depth = bfs_spla(
-                args.start, A, push_only=True, pull_only=False, push_pull=False
-            )
+            v, count, depth = bfs_spla(args.start, A, push_only=True, pull_only=False, push_pull=False)
         with open(args.output, "w") as f_out:
             f_out.write(f"Reached vertices: {count}\n")
             f_out.write(f"Max depth: {depth - 1}\n")
@@ -97,9 +96,7 @@ def main():
             v = sssp_spla(args.start, A)
         else:
             A = read_vectors_spla(str(args.vectors), dtype=FLOAT)
-            v = sssp_spla(
-                args.start, A, push_only=True, pull_only=False, push_pull=False
-            )
+            v = sssp_spla(args.start, A, push_only=True, pull_only=False, push_pull=False)
         with open(args.output, "w") as f_out:
             idx, vals = v.to_lists()
             for k in range(len(idx)):

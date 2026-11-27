@@ -68,3 +68,22 @@ dev = [
     "networkx>=3.0",
     "ruff>=0.5",
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+# I/J/V are standard COO notation for sparse matrices
+ignore = ["E741"]
+
+[tool.ruff.lint.per-file-ignores]
+# __init__.py re-exports the public API via star imports and
+# initializes the native library between import groups
+"pyspla/__init__.py" = ["E402", "E501", "F401", "F403", "F405"]
+# example.py demonstrates the documented `from pyspla import *` usage
+"example.py" = ["F403", "F405"]
+# test files manipulate sys.path before importing project modules
+"tests/**" = ["E402"]
+"algorithms/test_compare.py" = ["E402"]

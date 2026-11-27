@@ -254,16 +254,16 @@ from .bridge import *
 
 bridge.initialize()
 
-from .library import *
+from .array import *
 from .descriptor import *
-from .op import *
+from .library import *
+from .matrix import *
 from .object import *
+from .op import *
+from .scalar import *
 from .schedule import *
 from .type import *
-from .array import *
-from .matrix import *
 from .vector import *
-from .scalar import *
 from .version import *
 
 __version__ = VERSIONS[-1]
@@ -287,5 +287,5 @@ __all__ = [
     "Matrix",
     "Vector",
     "Scalar",
-    "VERSIONS"
+    "VERSIONS",
 ]

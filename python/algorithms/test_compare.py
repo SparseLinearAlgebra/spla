@@ -22,10 +22,11 @@ from bfs_spla import bfs_spla
 from graph_spla import read_mtx_pr_spla, read_spla
 from pr_classic import pagerank_naive as pr_classic
 from pr_spla import pr_spla
-from pyspla import FLOAT, INT
 from sssp_spla import sssp_spla
 from tc_classic import tc_naive as tc_classic
 from tc_spla import tc_sandia, tc_spla, tc_spla_mxmT
+
+from pyspla import FLOAT, INT
 
 DATA = Path(__file__).parent / "data"
 UNDIRECTED_GRAPH = DATA / "undirected.mtx"

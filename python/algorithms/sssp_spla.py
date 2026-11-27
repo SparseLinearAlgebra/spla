@@ -11,9 +11,7 @@ def make_vector(n):
     return v
 
 
-def sssp_spla(
-    start, A, push_only=False, pull_only=False, push_pull=True, front_factor=0.05
-):
+def sssp_spla(start, A, push_only=False, pull_only=False, push_pull=True, front_factor=0.05):
     n = A.n_rows
     if not (push_only or pull_only or push_pull):
         push_only = True

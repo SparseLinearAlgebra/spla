@@ -27,15 +27,14 @@ SOFTWARE.
 """
 
 import ctypes
+import random as rnd
 
 from .bridge import backend, check
-from .type import Type, INT, UINT, FLOAT
-from .object import Object
-from .memview import MemView
-from .scalar import Scalar
 from .descriptor import Descriptor
-from .op import OpUnary, OpBinary, OpSelect
-import random as rnd
+from .memview import MemView
+from .object import Object
+from .scalar import Scalar
+from .type import FLOAT, INT, UINT, Type
 
 
 class Vector(Object):
@@ -246,11 +245,7 @@ class Vector(Object):
 
         keys_view_hnd = ctypes.c_void_p(0)
         values_view_hnd = ctypes.c_void_p(0)
-        check(
-            backend().spla_Vector_read(
-                self.hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)
-            )
-        )
+        check(backend().spla_Vector_read(self.hnd, ctypes.byref(keys_view_hnd), ctypes.byref(values_view_hnd)))
         return MemView(hnd=keys_view_hnd, owner=self), MemView(hnd=values_view_hnd, owner=self)
 
     def clear(self):
@@ -279,16 +274,8 @@ class Vector(Object):
         buffer_I = (UINT._c_type * count)()
         buffer_V = (self._dtype._c_type * count)()
 
-        check(
-            backend().spla_MemView_read(
-                I.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_I), buffer_I
-            )
-        )
-        check(
-            backend().spla_MemView_read(
-                V.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_V), buffer_V
-            )
-        )
+        check(backend().spla_MemView_read(I.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_I), buffer_I))
+        check(backend().spla_MemView_read(V.hnd, ctypes.c_size_t(0), ctypes.sizeof(buffer_V), buffer_V))
 
         return list(buffer_I), list(buffer_V)
 
@@ -343,9 +330,7 @@ class Vector(Object):
             value = self.get(row)
             value = value if value != skip_value else "."
             result += format_string.format(row) + "|"
-            result += format_string.format(
-                self.dtype.format_value(value, width, precision)
-            ).rstrip()
+            result += format_string.format(self.dtype.format_value(value, width, precision)).rstrip()
             if row < self.n_rows - 1:
                 result += "\n"
 
@@ -614,9 +599,7 @@ class Vector(Object):
         assert op_add
 
         check(
-            backend().spla_Exec_v_eadd(
-                out.hnd, self.hnd, v.hnd, op_add.hnd, self._get_desc(desc), self._get_task(None)
-            )
+            backend().spla_Exec_v_eadd(out.hnd, self.hnd, v.hnd, op_add.hnd, self._get_desc(desc), self._get_task(None))
         )
 
         return out
@@ -755,11 +738,7 @@ class Vector(Object):
         assert out.n_rows == self.n_rows
         assert out.dtype == self.dtype
 
-        check(
-            backend().spla_Exec_v_map(
-                out.hnd, self.hnd, op_map.hnd, self._get_desc(desc), self._get_task(None)
-            )
-        )
+        check(backend().spla_Exec_v_map(out.hnd, self.hnd, op_map.hnd, self._get_desc(desc), self._get_task(None)))
 
         return out
 
@@ -836,11 +815,7 @@ class Vector(Object):
         if out is None:
             out = Scalar(INT)
 
-        check(
-            backend().spla_Exec_v_count_mf(
-                out.hnd, self.hnd, self._get_desc(desc), self._get_task(None)
-            )
-        )
+        check(backend().spla_Exec_v_count_mf(out.hnd, self.hnd, self._get_desc(desc), self._get_task(None)))
 
         return out
 

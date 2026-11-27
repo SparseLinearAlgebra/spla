@@ -29,8 +29,8 @@ SOFTWARE.
 import ctypes
 
 from .bridge import backend, check
-from .type import INT, FLOAT
 from .object import Object
+from .type import FLOAT, INT
 
 
 class Scalar(Object):

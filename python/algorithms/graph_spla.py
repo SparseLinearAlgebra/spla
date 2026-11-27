@@ -1,5 +1,6 @@
-from pyspla import FLOAT, INT, Matrix
 from scipy.io import mmread
+
+from pyspla import FLOAT, INT, Matrix
 
 
 def sort_by_ij(I, J, V):
