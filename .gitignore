@@ -12,3 +12,15 @@ registry.txt
 
 # Python cache files
 /**/__pycache__
+
+# Python virtual environments (uv)
+.venv/
+
+# Staged native libraries (build artifacts packaged into wheels)
+python/pyspla/libspla_*
+python/pyspla/spla_*
+# Python packaging artifacts
+*.egg-info/
+
+# Local wheel build output (uv build)
+python/build/

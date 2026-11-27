@@ -1,5 +1,0 @@
-include LICENSE.md
-include VERSION.md
-include MANIFEST.in
-include setup.py
-include example.py
