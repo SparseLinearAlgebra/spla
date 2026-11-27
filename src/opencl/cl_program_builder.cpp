@@ -30,6 +30,7 @@
 #include <opencl/generated/auto_common_api.hpp>
 #include <spla/timer.hpp>
 
+#include <cassert>
 #include <stdexcept>
 
 namespace spla {
@@ -64,15 +65,21 @@ namespace spla {
     }
 
     size_t kernel_group_limit(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name) {
-        size_t     limit  = 0;
-        cl::Kernel kernel = builder.make_kernel(kernel_name);
-        clGetKernelWorkGroupInfo(kernel(), acc->get_device()(), CL_KERNEL_WORK_GROUP_SIZE, sizeof(limit), &limit, nullptr);
+        size_t       limit  = 0;
+        cl::Kernel   kernel = builder.make_kernel(kernel_name);
+        const cl_int rc     = clGetKernelWorkGroupInfo(kernel(), acc->get_device()(), CL_KERNEL_WORK_GROUP_SIZE, sizeof(limit), &limit, nullptr);
+        if (rc != CL_SUCCESS || limit == 0) {
+            LOG_MSG(Status::Error, "failed to query CL_KERNEL_WORK_GROUP_SIZE for kernel '" << kernel_name << "' (rc=" << rc
+                                                                                            << "); falling back to default work-group size " << acc->get_default_wgs());
+            return acc->get_default_wgs();
+        }
         return limit;
     }
 
     uint capped_group_size(CLProgramBuilder& builder, CLAccelerator* acc, const char* kernel_name) {
         const size_t limit = kernel_group_limit(builder, acc, kernel_name);
         const size_t wave  = acc->get_wave_size();
+        assert(wave != 0);
         return static_cast<uint>(limit / wave * wave);
     }
 
