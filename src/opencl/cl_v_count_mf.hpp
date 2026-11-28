@@ -73,9 +73,10 @@ namespace spla {
 
     private:
         Status execute_sp(const DispatchContext& ctx) {
-            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
-            CLCooVec<T>*        dec_v = v->template get<CLCooVec<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
+            v->validate_rw(FormatVector::AccCoo);
+            CLCooVec<T>* dec_v = v->template get<CLCooVec<T>>();
 
             t->r->set_uint(dec_v->values);
 
@@ -83,9 +84,10 @@ namespace spla {
         }
 
         Status execute_dn(const DispatchContext& ctx) {
-            auto                t     = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
-            ref_ptr<TVector<T>> v     = t->v.template cast_safe<TVector<T>>();
-            CLDenseVec<T>*      dec_v = v->template get<CLDenseVec<T>>();
+            auto                t = ctx.task.template cast_safe<ScheduleTask_v_count_mf>();
+            ref_ptr<TVector<T>> v = t->v.template cast_safe<TVector<T>>();
+            v->validate_rw(FormatVector::AccDense);
+            CLDenseVec<T>* dec_v = v->template get<CLDenseVec<T>>();
 
             std::shared_ptr<CLProgram> program;
             if (!ensure_kernel(program)) return Status::CompilationError;

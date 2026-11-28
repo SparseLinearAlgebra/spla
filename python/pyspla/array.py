@@ -27,12 +27,12 @@ SOFTWARE.
 """
 
 import ctypes
+import random as rnd
 
 from .bridge import backend, check
-from .type import Type, INT, UINT, FLOAT
-from .object import Object
 from .memview import MemView
-import random as rnd
+from .object import Object
+from .type import FLOAT, INT, UINT, Type
 
 
 class Array(Object):

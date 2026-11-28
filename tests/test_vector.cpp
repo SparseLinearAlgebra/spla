@@ -497,4 +497,27 @@ TEST(vector, map) {
     }
 }
 
+TEST(vector, set_fill_value_preserves_data) {
+    // Regression test: setting the fill value must not discard explicit entries.
+    // Only dense representations materialize the fill value, so they are
+    // invalidated; sparse representations keep their data.
+    auto ivec = spla::Vector::make(4, spla::INT);
+    ivec->set_int(0, 10);
+
+    ivec->set_fill_value(spla::Scalar::make_int(-1));
+
+    int x;
+    ivec->get_int(0, x);
+    EXPECT_EQ(x, 10);
+    ivec->get_int(1, x);
+    EXPECT_EQ(x, -1);
+
+    // data must survive a round trip through the dense representation
+    ivec->set_format(spla::FormatVector::CpuDense);
+    ivec->get_int(0, x);
+    EXPECT_EQ(x, 10);
+    ivec->get_int(1, x);
+    EXPECT_EQ(x, -1);
+}
+
 SPLA_GTEST_MAIN

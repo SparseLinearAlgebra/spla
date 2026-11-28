@@ -27,15 +27,14 @@ SOFTWARE.
 """
 
 import ctypes
+import random as rnd
 
 from .bridge import backend, check
-from .type import Type, INT, UINT, FLOAT
-from .object import Object
-from .memview import MemView
-from .scalar import Scalar
 from .descriptor import Descriptor
-from .op import OpUnary, OpBinary, OpSelect
-import random as rnd
+from .memview import MemView
+from .object import Object
+from .scalar import Scalar
+from .type import FLOAT, INT, UINT, Type
 
 
 class Matrix(Object):
@@ -112,10 +111,11 @@ class Matrix(Object):
 
         if not hnd:
             hnd = ctypes.c_void_p(0)
-            check(backend().spla_Matrix_make(ctypes.byref(hnd),
-                                             ctypes.c_uint(shape[0]),
-                                             ctypes.c_uint(shape[1]),
-                                             dtype._hnd))
+            check(
+                backend().spla_Matrix_make(
+                    ctypes.byref(hnd), ctypes.c_uint(shape[0]), ctypes.c_uint(shape[1]), dtype._hnd
+                )
+            )
 
         super().__init__(label, hnd)
 
@@ -275,13 +275,16 @@ class Matrix(Object):
         view_I_hnd = ctypes.c_void_p(0)
         view_J_hnd = ctypes.c_void_p(0)
         view_V_hnd = ctypes.c_void_p(0)
-        check(backend().spla_Matrix_read(self.hnd,
-                                         ctypes.byref(view_I_hnd),
-                                         ctypes.byref(view_J_hnd),
-                                         ctypes.byref(view_V_hnd)))
-        return MemView(hnd=view_I_hnd, owner=self), \
-               MemView(hnd=view_J_hnd, owner=self), \
-               MemView(hnd=view_V_hnd, owner=self)
+        check(
+            backend().spla_Matrix_read(
+                self.hnd, ctypes.byref(view_I_hnd), ctypes.byref(view_J_hnd), ctypes.byref(view_V_hnd)
+            )
+        )
+        return (
+            MemView(hnd=view_I_hnd, owner=self),
+            MemView(hnd=view_J_hnd, owner=self),
+            MemView(hnd=view_V_hnd, owner=self),
+        )
 
     def clear(self):
         """
@@ -479,8 +482,14 @@ class Matrix(Object):
         if seed is not None:
             rnd.seed(seed)
 
-        keys = sorted(list({(rnd.randint(0, shape[0] - 1), rnd.randint(0, shape[1] - 1))
-                            for _ in range(int(shape[0] * shape[1] * density))}))
+        keys = sorted(
+            list(
+                {
+                    (rnd.randint(0, shape[0] - 1), rnd.randint(0, shape[1] - 1))
+                    for _ in range(int(shape[0] * shape[1] * density))
+                }
+            )
+        )
 
         I = [k[0] for k in keys]
         J = [k[1] for k in keys]
@@ -646,9 +655,11 @@ class Matrix(Object):
         assert out.n_cols == M.n_cols
         assert self.n_cols == M.n_rows
 
-        check(backend().spla_Exec_mxm(out.hnd, self.hnd, M.hnd,
-                                      op_mult.hnd, op_add.hnd,
-                                      init.hnd, self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_mxm(
+                out.hnd, self.hnd, M.hnd, op_mult.hnd, op_add.hnd, init.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -757,9 +768,20 @@ class Matrix(Object):
         assert self.n_cols == M.n_cols
         assert mask.shape == out.shape
 
-        check(backend().spla_Exec_mxmT_masked(out.hnd, mask.hnd, self.hnd, M.hnd,
-                                              op_mult.hnd, op_add.hnd, op_select.hnd,
-                                              init.hnd, self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_mxmT_masked(
+                out.hnd,
+                mask.hnd,
+                self.hnd,
+                M.hnd,
+                op_mult.hnd,
+                op_add.hnd,
+                op_select.hnd,
+                init.hnd,
+                self._get_desc(desc),
+                self._get_task(None),
+            )
+        )
 
         return out
 
@@ -845,8 +867,9 @@ class Matrix(Object):
         assert out.n_rows == self.n_rows * M.n_rows
         assert out.n_cols == self.n_cols * M.n_cols
 
-        check(backend().spla_Exec_kron(out.hnd, self.hnd, M.hnd, op_mult.hnd,
-                                       self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_kron(out.hnd, self.hnd, M.hnd, op_mult.hnd, self._get_desc(desc), self._get_task(None))
+        )
 
         return out
 
@@ -1008,9 +1031,20 @@ class Matrix(Object):
         assert mask.n_rows == self.n_rows
         assert v.n_rows == self.n_cols
 
-        check(backend().spla_Exec_mxv_masked(out.hnd, mask.hnd, self.hnd, v.hnd,
-                                             op_mult.hnd, op_add.hnd, op_select.hnd,
-                                             init.hnd, self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_mxv_masked(
+                out.hnd,
+                mask.hnd,
+                self.hnd,
+                v.hnd,
+                op_mult.hnd,
+                op_add.hnd,
+                op_select.hnd,
+                init.hnd,
+                self._get_desc(desc),
+                self._get_task(None),
+            )
+        )
 
         return out
 
@@ -1068,8 +1102,9 @@ class Matrix(Object):
         assert self.dtype == M.dtype
         assert self.dtype == out.dtype
 
-        check(backend().spla_Exec_m_eadd(out.hnd, self.hnd, M.hnd, op_add.hnd,
-                                         self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_eadd(out.hnd, self.hnd, M.hnd, op_add.hnd, self._get_desc(desc), self._get_task(None))
+        )
 
         return out
 
@@ -1127,8 +1162,11 @@ class Matrix(Object):
         assert self.dtype == M.dtype
         assert self.dtype == out.dtype
 
-        check(backend().spla_Exec_m_emult(out.hnd, self.hnd, M.hnd, op_mult.hnd,
-                                          self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_emult(
+                out.hnd, self.hnd, M.hnd, op_mult.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -1173,8 +1211,11 @@ class Matrix(Object):
         assert out.dtype == self.dtype
         assert init.dtype == self.dtype
 
-        check(backend().spla_Exec_m_reduce_by_row(out.hnd, self.hnd, op_reduce.hnd, init.hnd,
-                                                  self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_reduce_by_row(
+                out.hnd, self.hnd, op_reduce.hnd, init.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -1219,8 +1260,11 @@ class Matrix(Object):
         assert out.dtype == self.dtype
         assert init.dtype == self.dtype
 
-        check(backend().spla_Exec_m_reduce_by_column(out.hnd, self.hnd, op_reduce.hnd, init.hnd,
-                                                     self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_reduce_by_column(
+                out.hnd, self.hnd, op_reduce.hnd, init.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -1257,8 +1301,11 @@ class Matrix(Object):
         assert out.dtype == self.dtype
         assert init.dtype == self.dtype
 
-        check(backend().spla_Exec_m_reduce(out.hnd, init.hnd, self.hnd, op_reduce.hnd,
-                                           self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_reduce(
+                out.hnd, init.hnd, self.hnd, op_reduce.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -1333,8 +1380,9 @@ class Matrix(Object):
         assert out.n_cols == self.n_rows
         assert out.dtype == self.dtype
 
-        check(backend().spla_Exec_m_transpose(out.hnd, self.hnd, op_apply.hnd,
-                                              self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_transpose(out.hnd, self.hnd, op_apply.hnd, self._get_desc(desc), self._get_task(None))
+        )
 
         return out
 
@@ -1396,8 +1444,11 @@ class Matrix(Object):
         assert out.n_rows == self.n_cols
         assert 0 <= index < self.n_rows
 
-        check(backend().spla_Exec_m_extract_row(out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd,
-                                                self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_extract_row(
+                out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -1457,8 +1508,11 @@ class Matrix(Object):
         assert out.n_rows == self.n_rows
         assert 0 <= index < self.n_cols
 
-        check(backend().spla_Exec_m_extract_column(out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd,
-                                                   self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_m_extract_column(
+                out.hnd, self.hnd, ctypes.c_uint(index), op_apply.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 

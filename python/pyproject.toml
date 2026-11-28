@@ -1,0 +1,95 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspla"
+description = "spla library python bindings"
+dynamic = ["version", "readme"]
+authors = [
+    { name = "Egor Orachev", email = "egororachyov@gmail.com" },
+]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+keywords = [
+    "python",
+    "cplusplus",
+    "generalized",
+    "sparse-matrix",
+    "linear-algebra",
+    "graph-analysis",
+    "graph-algorithms",
+    "graphblas",
+    "opencl",
+    "gpu",
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Environment :: GPU",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.urls]
+Homepage = "https://github.com/SparseLinearAlgebra/spla"
+"Spla project" = "https://github.com/SparseLinearAlgebra/spla"
+"Bug Tracker" = "https://github.com/SparseLinearAlgebra/spla/issues"
+
+[tool.setuptools]
+license-files = ["LICENSE.md"]
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION.md" }
+readme = { file = "README.md", content-type = "text/markdown" }
+
+[tool.setuptools.packages.find]
+include = ["pyspla*"]
+
+[tool.setuptools.package-data]
+pyspla = ["libspla_x64.so", "libspla_arm64.dylib", "spla_x64.dll"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "scipy>=1.10",
+    "networkx>=3.0",
+    "ruff>=0.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # scipy's spmatrix->sparray migration notice, triggered by mmread
+    "ignore::DeprecationWarning:scipy.io",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+# I/J/V are standard COO notation for sparse matrices
+ignore = ["E741"]
+
+[tool.ruff.lint.per-file-ignores]
+# __init__.py re-exports the public API via star imports and
+# initializes the native library between import groups
+"pyspla/__init__.py" = ["E402", "E501", "F401", "F403", "F405"]
+# example.py demonstrates the documented `from pyspla import *` usage
+"example.py" = ["F403", "F405"]
+# test files manipulate sys.path before importing project modules
+"tests/**" = ["E402"]

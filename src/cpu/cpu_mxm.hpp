@@ -84,6 +84,8 @@ namespace spla {
 
             std::vector<T> R_tmp(DN, I);
 
+            uint values = 0;
+
             for (uint row_R = 0; row_R < DM; row_R++) {
                 const auto& A_lst = p_lil_A->Ar[row_R];
                 auto&       R_lst = p_lil_R->Ar[row_R];
@@ -109,9 +111,14 @@ namespace spla {
                 for (uint col_R = 0; col_R < DN; col_R++) {
                     if (R_tmp[col_R] != I) {
                         R_lst.emplace_back(col_R, R_tmp[col_R]);
+                        values += 1;
                     }
                 }
             }
+
+            // keep the LIL values counter in sync with the actual row contents,
+            // otherwise conversions sized from it (e.g. Lil -> Coo) write out of bounds
+            p_lil_R->values = values;
 
             return Status::Ok;
         }

@@ -50,6 +50,33 @@ Delete package if no more required:
 $ pip uninstall pyspla
 ```
 
+## Development
+
+The Python tooling is managed with [uv](https://docs.astral.sh/uv/).
+
+```shell
+# from the repository root: build the native library (CPU-only config)
+cmake . -G Ninja -B build -DCMAKE_BUILD_TYPE=Release -DSPLA_BUILD_OPENCL=OFF
+cmake --build build
+
+# stage the library into the package
+cp build/libspla_x64.so python/pyspla/
+
+# from python/: create and sync the dev environment (installs pyspla + dev tools)
+cd python
+uv sync
+
+# lint and format check
+uv run ruff check .
+uv run ruff format --check .
+
+# run the test suite
+uv run pytest tests/ -v
+
+# build sdist + wheel (bundles the staged library)
+uv build
+```
+
 ## Contributors
 
 - Egor Orachyov (Github: [@EgorOrachyov](https://github.com/EgorOrachyov))

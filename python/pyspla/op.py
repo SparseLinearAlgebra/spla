@@ -28,12 +28,7 @@ SOFTWARE.
 
 from .object import Object
 
-__all__ = [
-    "Op",
-    "OpUnary",
-    "OpBinary",
-    "OpSelect"
-]
+__all__ = ["Op", "OpUnary", "OpBinary", "OpSelect"]
 
 
 class Op(Object):

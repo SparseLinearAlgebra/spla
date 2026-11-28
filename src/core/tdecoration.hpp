@@ -82,6 +82,7 @@ namespace spla {
         [[nodiscard]] bool is_valid(F format) const { return is_valid_i(static_cast<int>(format)); }
         void               validate(F format) { m_is_valid.set(static_cast<int>(format), true); }
         void               invalidate() { m_is_valid.reset(); }
+        void               invalidate(F format) { m_is_valid.reset(static_cast<int>(format)); }
 
         void set_fill_value(T value) { m_fill_value = value; }
         T    get_fill_value() const { return m_fill_value; }

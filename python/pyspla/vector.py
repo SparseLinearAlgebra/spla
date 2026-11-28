@@ -27,15 +27,14 @@ SOFTWARE.
 """
 
 import ctypes
+import random as rnd
 
 from .bridge import backend, check
-from .type import Type, INT, UINT, FLOAT
-from .object import Object
-from .memview import MemView
-from .scalar import Scalar
 from .descriptor import Descriptor
-from .op import OpUnary, OpBinary, OpSelect
-import random as rnd
+from .memview import MemView
+from .object import Object
+from .scalar import Scalar
+from .type import FLOAT, INT, UINT, Type
 
 
 class Vector(Object):
@@ -543,9 +542,20 @@ class Vector(Object):
         assert mask.n_rows == M.n_cols
         assert M.n_rows == self.n_rows
 
-        check(backend().spla_Exec_vxm_masked(out.hnd, mask.hnd, self.hnd, M.hnd,
-                                             op_mult.hnd, op_add.hnd, op_select.hnd,
-                                             init.hnd, self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_vxm_masked(
+                out.hnd,
+                mask.hnd,
+                self.hnd,
+                M.hnd,
+                op_mult.hnd,
+                op_add.hnd,
+                op_select.hnd,
+                init.hnd,
+                self._get_desc(desc),
+                self._get_task(None),
+            )
+        )
 
         return out
 
@@ -588,8 +598,9 @@ class Vector(Object):
         assert out.dtype == out.dtype
         assert op_add
 
-        check(backend().spla_Exec_v_eadd(out.hnd, self.hnd, v.hnd, op_add.hnd,
-                                         self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_v_eadd(out.hnd, self.hnd, v.hnd, op_add.hnd, self._get_desc(desc), self._get_task(None))
+        )
 
         return out
 
@@ -632,8 +643,11 @@ class Vector(Object):
         assert out.dtype == out.dtype
         assert op_mult
 
-        check(backend().spla_Exec_v_emult(out.hnd, self.hnd, v.hnd, op_mult.hnd,
-                                          self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_v_emult(
+                out.hnd, self.hnd, v.hnd, op_mult.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
 
         return out
 
@@ -677,8 +691,17 @@ class Vector(Object):
         assert op_assign
         assert op_select
 
-        check(backend().spla_Exec_v_assign_masked(self.hnd, mask.hnd, value.hnd, op_assign.hnd, op_select.hnd,
-                                                  self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_v_assign_masked(
+                self.hnd,
+                mask.hnd,
+                value.hnd,
+                op_assign.hnd,
+                op_select.hnd,
+                self._get_desc(desc),
+                self._get_task(None),
+            )
+        )
 
         return self
 
@@ -715,8 +738,7 @@ class Vector(Object):
         assert out.n_rows == self.n_rows
         assert out.dtype == self.dtype
 
-        check(backend().spla_Exec_v_map(out.hnd, self.hnd, op_map.hnd,
-                                        self._get_desc(desc), self._get_task(None)))
+        check(backend().spla_Exec_v_map(out.hnd, self.hnd, op_map.hnd, self._get_desc(desc), self._get_task(None)))
 
         return out
 
@@ -759,8 +781,41 @@ class Vector(Object):
         assert out.dtype == self.dtype
         assert init.dtype == self.dtype
 
-        check(backend().spla_Exec_v_reduce(out.hnd, init.hnd, self.hnd, op_reduce.hnd,
-                                           self._get_desc(desc), self._get_task(None)))
+        check(
+            backend().spla_Exec_v_reduce(
+                out.hnd,
+                init.hnd,
+                self.hnd,
+                op_reduce.hnd,
+                self._get_desc(desc),
+                self._get_task(None),
+            )
+        )
+
+        return out
+
+    def eadd_fdb(self, v, op_add, fdb, desc=None):
+        assert v
+        assert fdb
+        assert op_add
+        assert v.n_rows == self.n_rows
+        assert fdb.n_rows == self.n_rows
+        assert v.dtype == self.dtype
+        assert fdb.dtype == self.dtype
+
+        check(
+            backend().spla_Exec_v_eadd_fdb(
+                self.hnd, v.hnd, fdb.hnd, op_add.hnd, self._get_desc(desc), self._get_task(None)
+            )
+        )
+
+        return self
+
+    def count_mf(self, out=None, desc=None):
+        if out is None:
+            out = Scalar(INT)
+
+        check(backend().spla_Exec_v_count_mf(out.hnd, self.hnd, self._get_desc(desc), self._get_task(None)))
 
         return out
 
@@ -776,3 +831,11 @@ class Vector(Object):
 
     def _get_task(self, task):
         return ctypes.POINTER(ctypes.c_void_p)()
+
+    def set_fill_value(self, scalar):
+        check(backend().spla_Vector_set_fill_value(self.hnd, scalar.hnd))
+        return self
+
+    def fill_with(self, scalar):
+        check(backend().spla_Vector_fill_with(self.hnd, scalar.hnd))
+        return self

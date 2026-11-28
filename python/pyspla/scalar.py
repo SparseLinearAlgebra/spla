@@ -29,8 +29,8 @@ SOFTWARE.
 import ctypes
 
 from .bridge import backend, check
-from .type import INT, FLOAT
 from .object import Object
+from .type import FLOAT, INT
 
 
 class Scalar(Object):
@@ -208,7 +208,7 @@ class Scalar(Object):
         return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
 
     def __sub__(self, other):
-        return Scalar(dtype=self.dtype, value=self.get() + Scalar._value(other))
+        return Scalar(dtype=self.dtype, value=self.get() - Scalar._value(other))
 
     def __mul__(self, other):
         return Scalar(dtype=self.dtype, value=self.get() * Scalar._value(other))

@@ -360,6 +360,7 @@ add_library(spla SHARED
         src/binding/c_scalar.cpp
         src/binding/c_type.cpp
         src/binding/c_vector.cpp
+        src/binding/c_descriptor.cpp
         # C++ optional part
         ${SRC_OPENCL})
 

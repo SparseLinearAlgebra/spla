@@ -1,0 +1,91 @@
+name: Python
+
+on:
+  push:
+    branches:
+      - main
+      - release
+      - pre-release
+    paths:
+      - '.github/**'
+      - 'deps/**'
+      - 'include/**'
+      - 'src/**'
+      - 'python/**'
+      - 'CMakeLists.txt'
+  pull_request:
+    branches: [ main ]
+
+env:
+  build-dir: "build"
+  config: "Release"
+  nt: "4"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.4.0
+        with:
+          enable-cache: true
+
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Lint
+        run: uv run ruff check .
+
+  test:
+    name: Test ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            lib: libspla_x64.so
+          - os: windows-2022
+            lib: spla_x64.dll
+          - os: macos-latest
+            lib: libspla_arm64.dylib
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: runner.os == 'Windows'
+        with:
+          arch: amd64
+
+      - uses: astral-sh/setup-uv@v10.4.0
+        with:
+          enable-cache: true
+
+      - name: Configure CMake
+        run: |
+          cmake . -G Ninja -B ${{ env.build-dir }} \
+                  -DCMAKE_BUILD_TYPE=${{ env.config }} \
+                  -DSPLA_BUILD_TESTS=OFF \
+                  -DSPLA_BUILD_EXAMPLES=OFF \
+                  -DSPLA_BUILD_OPENCL=OFF
+
+      - name: Build library
+        run: |
+          cmake --build ${{ env.build-dir }} --verbose -j ${{ env.nt }}
+
+      - name: Stage native library
+        run: cp ${{ env.build-dir }}/${{ matrix.lib }} python/pyspla/
+
+      - name: Run tests
+        working-directory: python
+        run: uv run pytest tests/ -v
