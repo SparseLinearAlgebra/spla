@@ -69,6 +69,13 @@ dev = [
     "ruff>=0.5",
 ]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # scipy's spmatrix->sparray migration notice, triggered by mmread
+    "ignore::DeprecationWarning:scipy.io",
+]
+
 [tool.ruff]
 line-length = 120
 target-version = "py39"
@@ -86,4 +93,3 @@ ignore = ["E741"]
 "example.py" = ["F403", "F405"]
 # test files manipulate sys.path before importing project modules
 "tests/**" = ["E402"]
-"algorithms/test_compare.py" = ["E402"]

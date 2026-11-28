@@ -1,22 +1,15 @@
-import warnings
+"""Tests comparing the SPLA-based graph algorithms against classic references.
 
-warnings.simplefilter("ignore", DeprecationWarning)
+The SPLA implementations (python/algorithms) are checked against pure-Python
+reference implementations on the small Matrix Market fixtures in ``data/``.
+Triangle counting is additionally cross-checked against NetworkX when it is
+installed.
+"""
 
 import heapq
 import math
-import sys
-import unittest
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    import networkx as nx
-
-    HAS_NETWORKX = True
-except ImportError:
-    HAS_NETWORKX = False
-
+import networkx as nx
 from bfs_classic import bfs_naive as bfs_classic
 from bfs_spla import bfs_spla
 from graph_spla import read_mtx_pr_spla, read_spla
@@ -28,10 +21,9 @@ from tc_spla import tc_sandia, tc_spla, tc_spla_mxmT
 
 from pyspla import FLOAT, INT
 
-DATA = Path(__file__).parent / "data"
-UNDIRECTED_GRAPH = DATA / "undirected.mtx"
-DIRECTED_GRAPH = DATA / "directed.mtx"
-UPPER = DATA / "undirected_upper.mtx"
+UNDIRECTED_GRAPH = "undirected.mtx"
+DIRECTED_GRAPH = "directed.mtx"
+UPPER = "undirected_upper.mtx"
 
 
 def split(A):
@@ -79,9 +71,9 @@ def short_distance(n, adj, start):
     return dist
 
 
-class TestBfs(unittest.TestCase):
-    def _check(self, mtx, **kwargs):
-        A = read_spla(str(mtx), INT)
+class TestBfs:
+    def _check(self, data_dir, name, **kwargs):
+        A = read_spla(str(data_dir / name), INT)
         n, pairs, _ = split(A)
 
         ref = bfs_classic(0, adj_plain(n, pairs), n)
@@ -90,24 +82,24 @@ class TestBfs(unittest.TestCase):
         v, _, _ = bfs_spla(0, A, **kwargs)
         got = to_list(v, n, 0)
 
-        self.assertEqual(ref, got)
+        assert ref == got
 
-    def test_symmetric_push(self):
-        self._check(UNDIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
+    def test_symmetric_push(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
 
-    def test_symmetric_pull(self):
-        self._check(UNDIRECTED_GRAPH, push_only=False, pull_only=True, push_pull=False)
+    def test_symmetric_pull(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH, push_only=False, pull_only=True, push_pull=False)
 
-    def test_symmetric_push_pull(self):
-        self._check(UNDIRECTED_GRAPH, push_only=False, pull_only=False, push_pull=True)
+    def test_symmetric_push_pull(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH, push_only=False, pull_only=False, push_pull=True)
 
-    def test_directed_push(self):
-        self._check(DIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
+    def test_directed_push(self, data_dir):
+        self._check(data_dir, DIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
 
 
-class TestSssp(unittest.TestCase):
-    def _check(self, mtx, **kwargs):
-        A = read_spla(str(mtx), FLOAT)
+class TestSssp:
+    def _check(self, data_dir, name, **kwargs):
+        A = read_spla(str(data_dir / name), FLOAT)
         n, pairs, weights = split(A)
 
         ref = short_distance(n, adj_weighted(n, pairs, weights), 0)
@@ -119,21 +111,21 @@ class TestSssp(unittest.TestCase):
         for i, (a, b) in enumerate(zip(ref, got)):
             if math.isinf(a) and math.isinf(b):
                 continue
-            self.assertLessEqual(abs(a - b), 1e-4, f"v{i}: ref={a} got={b}")
+            assert abs(a - b) <= 1e-4, f"v{i}: ref={a} got={b}"
 
-    def test_symmetric_push(self):
-        self._check(UNDIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
+    def test_symmetric_push(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
 
-    def test_symmetric_pull(self):
-        self._check(UNDIRECTED_GRAPH, push_only=False, pull_only=True, push_pull=False)
+    def test_symmetric_pull(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH, push_only=False, pull_only=True, push_pull=False)
 
-    def test_directed_push(self):
-        self._check(DIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
+    def test_directed_push(self, data_dir):
+        self._check(data_dir, DIRECTED_GRAPH, push_only=True, pull_only=False, push_pull=False)
 
 
-class TestPr(unittest.TestCase):
-    def _check(self, mtx):
-        A = read_mtx_pr_spla(str(mtx))
+class TestPr:
+    def _check(self, data_dir, name):
+        A = read_mtx_pr_spla(str(data_dir / name))
         n, pairs, weights = split(A)
 
         adj = [[] for _ in range(n)]
@@ -149,19 +141,19 @@ class TestPr(unittest.TestCase):
         got = to_list(p, n, 0.0)
 
         max_diff = max(abs(a - b) for a, b in zip(ref, got))
-        self.assertLess(max_diff, 1e-4, f"max diff {max_diff:.2e}")
+        assert max_diff < 1e-4, f"max diff {max_diff:.2e}"
 
-    def test_symmetric(self):
-        self._check(UNDIRECTED_GRAPH)
+    def test_symmetric(self, data_dir):
+        self._check(data_dir, UNDIRECTED_GRAPH)
 
-    def test_directed(self):
-        self._check(DIRECTED_GRAPH)
+    def test_directed(self, data_dir):
+        self._check(data_dir, DIRECTED_GRAPH)
 
 
-class TestTc(unittest.TestCase):
-    def _check(self, algo):
+class TestTc:
+    def _check(self, data_dir, algo):
         # triangle counting is unweighted: read with unit weights
-        A = read_spla(str(UPPER), INT, unit_weights=True)
+        A = read_spla(str(data_dir / UPPER), INT, unit_weights=True)
         n, pairs, _ = split(A)
 
         adj = [[] for _ in range(n)]
@@ -172,20 +164,19 @@ class TestTc(unittest.TestCase):
         ref = tc_classic(adj, n)
         got = algo(A)
 
-        self.assertEqual(ref, got)
+        assert ref == got
 
-    def test_sandia(self):
-        self._check(tc_sandia)
+    def test_sandia(self, data_dir):
+        self._check(data_dir, tc_sandia)
 
-    def test_default(self):
-        self._check(tc_spla)
+    def test_default(self, data_dir):
+        self._check(data_dir, tc_spla)
 
-    def test_mxmT(self):
-        self._check(tc_spla_mxmT)
+    def test_mxmT(self, data_dir):
+        self._check(data_dir, tc_spla_mxmT)
 
-    @unittest.skipUnless(HAS_NETWORKX, "networkx is not installed")
-    def test_networkx(self):
-        A = read_spla(str(UPPER), INT, unit_weights=True)
+    def test_networkx(self, data_dir):
+        A = read_spla(str(data_dir / UPPER), INT, unit_weights=True)
         n, pairs, _ = split(A)
 
         G = nx.Graph()
@@ -193,9 +184,5 @@ class TestTc(unittest.TestCase):
         G.add_edges_from(pairs)
         ref = sum(nx.triangles(G).values()) // 3
 
-        self.assertEqual(tc_sandia(A), ref)
-        self.assertEqual(tc_spla_mxmT(A), ref)
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
+        assert tc_sandia(A) == ref
+        assert tc_spla_mxmT(A) == ref
