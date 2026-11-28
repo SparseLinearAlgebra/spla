@@ -129,4 +129,36 @@ TEST(mxm, perf_zero) {
     }
 }
 
+TEST(mxm, read_after_exec) {
+    // Regression test: the kernel must keep the LIL `values` counter in sync
+    // with the actual row contents. Otherwise the subsequent conversion to COO
+    // (e.g. via read()) sizes the output from the stale counter and writes
+    // out of bounds.
+    spla::uint M = 3, N = 4, K = 2;
+
+    auto R    = spla::Matrix::make(M, K, spla::FLOAT);
+    auto A    = spla::Matrix::make(M, N, spla::FLOAT);
+    auto B    = spla::Matrix::make(N, K, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0);
+
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 2, 2.0f);
+    A->set_float(1, 1, 3.0f);
+    A->set_float(1, 3, 4.0f);
+    A->set_float(2, 0, 5.0f);
+    A->set_float(2, 2, 6.0f);
+
+    B->set_float(0, 0, 7.0f);
+    B->set_float(0, 1, 1.0f);
+    B->set_float(1, 1, 1.0f);
+    B->set_float(2, 1, 1.0f);
+    B->set_float(3, 1, 1.0f);
+
+    spla::exec_mxm(R, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, init);
+
+    spla::ref_ptr<spla::MemView> vi, vj, vv;
+    ASSERT_EQ(R->read(vi, vj, vv), spla::Status::Ok);
+    EXPECT_EQ(vi->get_size() / sizeof(spla::uint), 5u);
+}
+
 SPLA_GTEST_MAIN

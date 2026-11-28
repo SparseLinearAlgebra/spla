@@ -73,6 +73,9 @@ namespace spla {
 
             Rr[i].emplace_back(j, x);
         }
+
+        // keep the LIL values counter in sync with the actual row contents
+        out.values = in.values;
     }
 
     template<typename T>

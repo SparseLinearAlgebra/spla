@@ -84,6 +84,8 @@ namespace spla {
             auto DM = R->get_n_rows();
             auto I  = init->get_value();
 
+            uint values = 0;
+
             for (uint row_R = 0; row_R < DM; row_R++) {
                 const auto& mask_lst = p_lil_mask->Ar[row_R];
                 const auto& A_lst    = p_lil_A->Ar[row_R];
@@ -120,9 +122,14 @@ namespace spla {
 
                     if (r != I) {
                         R_lst.emplace_back(mask_i, r);
+                        values += 1;
                     }
                 }
             }
+
+            // keep the LIL values counter in sync with the actual row contents,
+            // otherwise conversions sized from it (e.g. Lil -> Coo) write out of bounds
+            p_lil_R->values = values;
 
             return Status::Ok;
         }

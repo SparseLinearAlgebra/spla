@@ -140,4 +140,64 @@ TEST(mxmT_masked, perf_zero) {
 }
 
 
+TEST(mxmT_masked, read_after_exec) {
+    // Regression test: the kernel must keep the LIL `values` counter in sync
+    // with the actual row contents. Otherwise the subsequent conversion to COO
+    // (e.g. via read()) sizes the output from the stale counter and writes
+    // out of bounds.
+    spla::uint M = 3, N = 4, K = 2;
+
+    auto R    = spla::Matrix::make(M, K, spla::FLOAT);
+    auto mask = spla::Matrix::make(M, K, spla::FLOAT);
+    auto A    = spla::Matrix::make(M, N, spla::FLOAT);
+    auto B    = spla::Matrix::make(K, N, spla::FLOAT);
+    auto init = spla::Scalar::make_float(0.0);
+
+    mask->set_float(0, 0, 1.0f);
+    mask->set_float(0, 1, 1.0f);
+    mask->set_float(2, 0, 1.0f);
+    mask->set_float(2, 1, 1.0f);
+
+    A->set_float(0, 0, 1.0f);
+    A->set_float(0, 2, 2.0f);
+    A->set_float(1, 1, 3.0f);
+    A->set_float(1, 3, 4.0f);
+    A->set_float(2, 0, 5.0f);
+    A->set_float(2, 2, 6.0f);
+
+    B->set_float(0, 0, 7.0f);
+    B->set_float(0, 2, 8.0f);
+    B->set_float(1, 1, 9.0f);
+    B->set_float(1, 3, 10.0f);
+
+    spla::exec_mxmT_masked(R, mask, A, B, spla::MULT_FLOAT, spla::PLUS_FLOAT, spla::GTZERO_FLOAT, init);
+
+    spla::ref_ptr<spla::MemView> vi, vj, vv;
+    ASSERT_EQ(R->read(vi, vj, vv), spla::Status::Ok);
+
+    // some backends keep explicit zeros in the result, so verify the entries
+    // instead of the exact count: (0,0) = 23, (2,0) = 83, everything else 0
+    const auto              nnz = vi->get_size() / sizeof(spla::uint);
+    std::vector<spla::uint> i(nnz), j(nnz);
+    std::vector<float>      x(nnz);
+    vi->read(0, nnz * sizeof(spla::uint), i.data());
+    vj->read(0, nnz * sizeof(spla::uint), j.data());
+    vv->read(0, nnz * sizeof(float), x.data());
+
+    bool found_00 = false, found_20 = false;
+    for (size_t k = 0; k < nnz; k++) {
+        if (i[k] == 0 && j[k] == 0) {
+            EXPECT_FLOAT_EQ(x[k], 23.f);
+            found_00 = true;
+        } else if (i[k] == 2 && j[k] == 0) {
+            EXPECT_FLOAT_EQ(x[k], 83.f);
+            found_20 = true;
+        } else {
+            EXPECT_FLOAT_EQ(x[k], 0.f);
+        }
+    }
+    EXPECT_TRUE(found_00);
+    EXPECT_TRUE(found_20);
+}
+
 SPLA_GTEST_MAIN
