@@ -130,7 +130,17 @@ namespace spla {
     template<typename T>
     Status TVector<T>::set_fill_value(const ref_ptr<Scalar>& value) {
         if (value) {
-            m_storage.invalidate();
+            // Sparse representations (Coo, Dok) store explicit entries only and are
+            // unaffected by the fill value. Dense representations materialize it, so
+            // they must be rebuilt. If no sparse representation is valid, convert the
+            // data to COO first (using the old fill value) so it is not lost.
+            if (!m_storage.is_valid(FormatVector::CpuCoo) && !m_storage.is_valid(FormatVector::CpuDok)) {
+                validate_rw(FormatVector::CpuCoo);
+            }
+            m_storage.invalidate(FormatVector::CpuDense);
+#if defined(SPLA_BUILD_OPENCL)
+            m_storage.invalidate(FormatVector::AccDense);
+#endif
 
             if constexpr (std::is_same<T, T_INT>::value) m_storage.set_fill_value(value->as_int());
             if constexpr (std::is_same<T, T_UINT>::value) m_storage.set_fill_value(value->as_uint());
